@@ -3,9 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "PORT=8081 next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "PORT=8081 next start"
   },
   "dependencies": {
     "next": "^13.1.1",
