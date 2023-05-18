@@ -4,8 +4,10 @@
   "private": true,
   "scripts": {
     "dev": "PORT=8081 next dev",
+    "dev-pc": "set PORT=8081 && next dev",
     "build": "next build",
-    "start": "PORT=8081 next start"
+    "start": "PORT=8081 next start",
+    "start-pc": "set PORT=8081 && next start"
   },
   "dependencies": {
     "next": "^13.1.1",
