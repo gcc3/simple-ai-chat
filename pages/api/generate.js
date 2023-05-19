@@ -35,14 +35,21 @@ export default async function (req, res) {
         temperature: 0,
       });
       result = chatCompletion.data.choices[0].message.content;
-    }
-
-    if (process.env.MODEL === "text-davinci-003") {
+    } else if (process.env.MODEL === "text-davinci-003") {
       // endpoint: /v1/completions
       const completion = await openai.createCompletion({
         model: process.env.MODEL,
         prompt: generatePrompt(chatInput),
         temperature: 0,
+      });
+      result = completion.data.choices[0].text;
+    } else {
+      // endpoint: /v1/completions
+      const completion = await openai.createCompletion({
+        model: process.env.MODEL,
+        prompt: generatePrompt(chatInput),
+	stop: "\\n",
+	temperature: 0,
       });
       result = completion.data.choices[0].text;
     }
