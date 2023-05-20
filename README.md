@@ -40,6 +40,9 @@ For fine-tuned model,
 The prompt end will be added to the prompt  
 Stop will be used to end the completion
 
+* ROLE_SYSTEM  
+Set the system to role play.  
+
 
 Setup
 -----
