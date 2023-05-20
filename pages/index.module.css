@@ -1,4 +1,19 @@
 @import url(https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css);
+@font-face {
+  font-family: "ColfaxAI";
+  src: url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff2)
+      format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff) format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "ColfaxAI";
+  src: url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff2) format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff) format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
 .main,
 .main input {
   font-size: 16px;
@@ -22,8 +37,8 @@
 }
 .main input[type="text"] {
   padding: 10px 14px;
-  border: 1px solid #aaaaaa;
-  border-radius: 10px;
+  border: 1.5px solid #aaaaaa;
+  border-radius: 1px;
   margin-bottom: 24px;
   outline-color: #adadad;
 }
@@ -51,7 +66,7 @@
   font-size: 12px;
   color: #cccccc;
   margin-top: 80px;
-  margin-bottom: 20px;
+  margin-bottom: 45px;
   width: 600px;
   text-align: right;
 }
