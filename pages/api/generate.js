@@ -17,7 +17,7 @@ export default async function (req, res) {
 
   const chatInput = req.body.aiChat || "";
   if (chatInput.trim().length === 0) return;
-  console.log("Input:" + chatInput + "\n");
+  console.log("Input:\n" + chatInput + "\n");
 
   try {
     let result_data = null;
@@ -54,7 +54,7 @@ export default async function (req, res) {
     }
 
     // Output the result
-    console.log("Output:" + result_text + "\n");
+    console.log("Output:\n" + result_text + "\n");
     console.log("--- output info ---\n" 
       + "model = " + process.env.MODEL + "\n"
       + "temperature = " + process.env.TEMPERATURE + "\n"
