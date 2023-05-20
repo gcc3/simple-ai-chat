@@ -29,6 +29,7 @@ export default function Home() {
       }
 
       const result_lines = data.result.text.split("\n").map((line, line_number) => {
+        console.log(line);
         return (
           <div key={line_number}>
             {line}
@@ -36,7 +37,6 @@ export default function Home() {
           </div>
         );
       });
-
       const info = (
         <div>
           model: {data.result.info.model}
