@@ -32,7 +32,7 @@
 .main form {
   display: flex;
   flex-direction: column;
-  width: 610px;
+  width: 625px;
 }
 .main input[type="text"] {
   padding: 10px 14px;
