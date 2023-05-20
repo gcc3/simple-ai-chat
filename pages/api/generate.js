@@ -23,16 +23,21 @@ export default async function (req, res) {
     let result_data = null;
     let result_text = "null";
 
+    const role_system = process.env.ROLE_SYSTEM ? process.env.ROLE_SYSTEM : "";
+    const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
+    const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
+    const fine_tune_stop = process.env.FINE_TUNE_STOP ? process.env.FINE_TUNE_STOP : "";
+
     if (process.env.END_POINT === "chat_completion") {
       // endpoint: /v1/chat/completions
       const chatCompletion = await openai.createChatCompletion({
         model: process.env.MODEL,
         messages: [
-          { role: "system", content: process.env.ROLE_SYSTEM },
+          { role: "system", content: role_system },
           { role: "user", content: chatInput }
         ],
-        temperature: Number(process.env.TEMPERATURE),
-        top_p: Number(process.env.TOP_P),
+        temperature: temperature,
+        top_p: top_p,
       });
       result_data = chatCompletion.data;
       result_text = chatCompletion.data.choices[0].message.content;
@@ -43,9 +48,9 @@ export default async function (req, res) {
       const completion = await openai.createCompletion({
         model: process.env.MODEL,
         prompt: generatePrompt(chatInput),
-        temperature: Number(process.env.TEMPERATURE),
-        top_p: Number(process.env.TOP_P),
-        stop: process.env.FINE_TUNE_STOP,
+        temperature: temperature,
+        top_p: top_p,
+        stop: fine_tune_stop,
       });
       result_data = completion.data;
       result_text = completion.data.choices[0].text;
@@ -93,6 +98,8 @@ function generatePrompt(chatInput) {
   // TODO add prompt here
   console.log("Input: " + chatInput);
 
-  chatInput += process.env.FINE_TUNE_PROMPT_END
+  // Add fine tune prompt end
+  const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE_TUNE_PROMPT_END : "";
+  chatInput += fine_tune_prompt_end;
   return chatInput;
 }
