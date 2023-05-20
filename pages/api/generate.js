@@ -45,6 +45,7 @@ export default async function (req, res) {
         model: process.env.MODEL,
         prompt: generatePrompt(chatInput),
         temperature: Number(process.env.TEMPERATURE),
+        stop: process.env.FINE_TUNE_STOP,
       });
       result_data = completion.data;
       result_text = completion.data.choices[0].text;
@@ -56,7 +57,9 @@ export default async function (req, res) {
       + "model = " + process.env.MODEL + "\n"
       + "temperature = " + process.env.TEMPERATURE + "\n"
       + "endpoint = " + process.env.END_POINT + "\n"
-      + "choices = " + result_data.choices.length + "\n")
+      + "choices = " + result_data.choices.length + "\n"
+      + "fine_tune_prompt_end = " + process.env.FINE_TUNE_PROMPT_END + "\n"
+      + "fine_tune_stop = " + process.env.FINE_TUNE_STOP + "\n")
 
     res.status(200).json({
       result: result_text,
@@ -80,5 +83,7 @@ export default async function (req, res) {
 function generatePrompt(chatInput) {
   // TODO add prompt here
   console.log("Input: " + chatInput);
+
+  chatInput += process.env.FINE_TUNE_PROMPT_END
   return chatInput;
 }

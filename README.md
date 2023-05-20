@@ -28,6 +28,12 @@ Now support chat_completion, text_completion
 TEMPERATURE  
 From 0 to 1
 
+FINE_TUNE_PROMPT_END  
+FINE_TUNE_STOP  
+For fine-tuned model,  
+The prompt end will be added to the prompt  
+Stop will be used to end the completion
+
 
 Setup
 -----
