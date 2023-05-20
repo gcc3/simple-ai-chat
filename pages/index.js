@@ -8,11 +8,12 @@ export default function Home() {
   const [info, setInfo] = useState();
 
   async function onSubmit(event) {
-    if (!aiChatInput && aiChatInput.trim().length != 0) {
-      setResult("Generating...");
+    event.preventDefault();
+    if (aiChatInput.trim().length == 0) {
+      return;
     }
 
-    event.preventDefault();
+    setResult("Generating...");
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -62,7 +63,6 @@ export default function Home() {
       <main className={styles.main}>
         <form onSubmit={onSubmit}>
           <input
-            autofocus
             type="text"
             name="aiChat"
             placeholder="Say something..."
