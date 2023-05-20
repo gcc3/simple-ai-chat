@@ -16,20 +16,26 @@ Next.js https://nextjs.org/
 .env
 ----
 
-OPENAI_API_KEY  
+* OPENAI_API_KEY  
 Get from https://platform.openai.com/account/api-keys  
 
-MODEL  
+* MODEL  
 gpt-3.5-turbo, etc...
 
-END_POINT  
+* END_POINT  
 Now support chat_completion, text_completion  
 
-TEMPERATURE  
-From 0 to 1
+* TEMPERATURE  
+What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random  
+lower values like 0.2 will make it more focused and deterministic.  
 
-FINE_TUNE_PROMPT_END  
-FINE_TUNE_STOP  
+* TOP_P  
+0.1 means only the tokens comprising the top 10% probability mass are considered.  
+
+* N
+How many completions to generate for each prompt.
+
+* FINE_TUNE_PROMPT_END and FINE_TUNE_STOP  
 For fine-tuned model,  
 The prompt end will be added to the prompt  
 Stop will be used to end the completion

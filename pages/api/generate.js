@@ -34,6 +34,7 @@ export default async function (req, res) {
           },
         ],
         temperature: Number(process.env.TEMPERATURE),
+        top_p: Number(process.env.TOP_P),
       });
       result_data = chatCompletion.data;
       result_text = chatCompletion.data.choices[0].message.content;
@@ -45,6 +46,7 @@ export default async function (req, res) {
         model: process.env.MODEL,
         prompt: generatePrompt(chatInput),
         temperature: Number(process.env.TEMPERATURE),
+        top_p: Number(process.env.TOP_P),
         stop: process.env.FINE_TUNE_STOP,
       });
       result_data = completion.data;
@@ -56,6 +58,7 @@ export default async function (req, res) {
     console.log("--- output info ---\n" 
       + "model = " + process.env.MODEL + "\n"
       + "temperature = " + process.env.TEMPERATURE + "\n"
+      + "top_p = " + process.env.TOP_P + "\n"
       + "endpoint = " + process.env.END_POINT + "\n"
       + "choices = " + result_data.choices.length + "\n"
       + "fine_tune_prompt_end = " + process.env.FINE_TUNE_PROMPT_END + "\n"
