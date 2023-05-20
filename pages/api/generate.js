@@ -28,10 +28,8 @@ export default async function (req, res) {
       const chatCompletion = await openai.createChatCompletion({
         model: process.env.MODEL,
         messages: [
-          {
-            role: "user",
-            content: chatInput,
-          },
+          { role: "system", content: process.env.ROLE_SYSTEM },
+          { role: "user", content: chatInput }
         ],
         temperature: Number(process.env.TEMPERATURE),
         top_p: Number(process.env.TOP_P),
@@ -62,7 +60,8 @@ export default async function (req, res) {
       + "endpoint = " + process.env.END_POINT + "\n"
       + "choices = " + result_data.choices.length + "\n"
       + "fine_tune_prompt_end = " + process.env.FINE_TUNE_PROMPT_END + "\n"
-      + "fine_tune_stop = " + process.env.FINE_TUNE_STOP + "\n")
+      + "fine_tune_stop = " + process.env.FINE_TUNE_STOP + "\n"
+      + "role_system = " + process.env.ROLE_SYSTEM + "\n");
 
     res.status(200).json({
       result: {
