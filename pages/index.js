@@ -35,8 +35,6 @@ export default function Home() {
 
       const info = <div>
         model: {data.result.info.model}<br></br>
-        temperature: {data.result.info.temperature}<br></br>
-        top_p: {data.result.info.top_p}<br></br>
       </div>
 
       setResult(result_lines);
