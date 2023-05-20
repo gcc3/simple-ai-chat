@@ -16,12 +16,13 @@ export default async function (req, res) {
   }
 
   const chatInput = req.body.aiChat || "";
-  if (chatInput.trim().length === 0) {
-    return;
-  }
+  if (chatInput.trim().length === 0) return;
+  console.log("Input:" + chatInput + "\n");
 
   try {
-    let result = "null";
+    let result_data = null;
+    let result_text = "null";
+
     if (process.env.END_POINT === "chat_completion") {
       // endpoint: /v1/chat/completions
       const chatCompletion = await openai.createChatCompletion({
@@ -32,9 +33,10 @@ export default async function (req, res) {
             content: chatInput,
           },
         ],
-        temperature: process.env.TEMPERATURE,
+        temperature: Number(process.env.TEMPERATURE),
       });
-      result = chatCompletion.data.choices[0].message.content;
+      result_data = chatCompletion.data;
+      result_text = chatCompletion.data.choices[0].message.content;
     }
 
     if (process.env.END_POINT === "text_completion") {
@@ -42,15 +44,22 @@ export default async function (req, res) {
       const completion = await openai.createCompletion({
         model: process.env.MODEL,
         prompt: generatePrompt(chatInput),
-        temperature: process.env.TEMPERATURE,
+        temperature: Number(process.env.TEMPERATURE),
       });
-      result = completion.data.choices[0].text;
+      result_data = completion.data;
+      result_text = completion.data.choices[0].text;
     }
 
     // Output the result
-    console.log("Output:" + result + "\n");
+    console.log("Output:" + result_text + "\n");
+    console.log("--- output info ---\n" 
+      + "model = " + process.env.MODEL + "\n"
+      + "temperature = " + process.env.TEMPERATURE + "\n"
+      + "endpoint = " + process.env.END_POINT + "\n"
+      + "choices = " + result_data.choices.length + "\n")
+
     res.status(200).json({
-      result: result,
+      result: result_text,
     });
   } catch (error) {
     // Consider adjusting the error handling logic for your use case

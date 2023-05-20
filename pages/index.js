@@ -47,7 +47,7 @@ export default function Home() {
             value={aiChatInput}
             onChange={(e) => setAiChatInput(e.target.value)}
           />
-          <input type="submit" value="Submit" />
+          <input hidden type="submit" value="Submit" />
         </form>
         <div className={styles.result}>{result}</div>
       </main>
