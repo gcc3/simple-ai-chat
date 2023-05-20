@@ -7,6 +7,7 @@ export default function Home() {
   const [result, setResult] = useState();
 
   async function onSubmit(event) {
+    setResult("Generating...");
     event.preventDefault();
     try {
       const response = await fetch("/api/generate", {
@@ -38,12 +39,11 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <h2>Simple AI Chat</h2>
         <form onSubmit={onSubmit}>
           <input
             type="text"
             name="aiChat"
-            placeholder=""
+            placeholder="Say something..."
             value={aiChatInput}
             onChange={(e) => setAiChatInput(e.target.value)}
           />

@@ -32,12 +32,12 @@
 .main form {
   display: flex;
   flex-direction: column;
-  width: 320px;
+  width: 610px;
 }
 .main input[type="text"] {
-  padding: 12px 16px;
+  padding: 10px 14px;
   border: 1px solid #aaaaaa;
-  border-radius: 4px;
+  border-radius: 10px;
   margin-bottom: 24px;
   outline-color: #adadad;
 }
@@ -55,6 +55,7 @@
   cursor: pointer;
 }
 .main .result {
-  font-weight: bold;
-  margin-top: 40px;
+  font-weight: normal;
+  margin-top: 20px;
+  width: 600px;
 }
