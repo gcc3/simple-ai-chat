@@ -23,7 +23,16 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      setResult(data.result);
+      const result_lines = data.result.split("\n").map((line, line_number) => {
+        return (
+          <div key={line_number}>
+            {line}
+            <br></br>
+          </div>
+        );
+      });
+
+      setResult(result_lines);
       setAiChatInput("");
     } catch (error) {
       // Consider implementing your own error handling logic here
