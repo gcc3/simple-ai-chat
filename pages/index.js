@@ -8,7 +8,10 @@ export default function Home() {
   const [info, setInfo] = useState();
 
   async function onSubmit(event) {
-    setResult("Generating...");
+    if (!aiChatInput && aiChatInput.trim().length != 0) {
+      setResult("Generating...");
+    }
+
     event.preventDefault();
     try {
       const response = await fetch("/api/generate", {
@@ -33,9 +36,12 @@ export default function Home() {
         );
       });
 
-      const info = <div>
-        model: {data.result.info.model}<br></br>
-      </div>
+      const info = (
+        <div>
+          model: {data.result.info.model}
+          <br></br>
+        </div>
+      );
 
       setResult(result_lines);
       setInfo(info);
@@ -56,6 +62,7 @@ export default function Home() {
       <main className={styles.main}>
         <form onSubmit={onSubmit}>
           <input
+            autofocus
             type="text"
             name="aiChat"
             placeholder="Say something..."
