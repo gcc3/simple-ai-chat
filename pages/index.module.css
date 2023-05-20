@@ -1,24 +1,10 @@
-@font-face {
-  font-family: "ColfaxAI";
-  src: url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff2)
-      format("woff2"),
-    url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff) format("woff");
-  font-weight: normal;
-  font-style: normal;
-}
-@font-face {
-  font-family: "ColfaxAI";
-  src: url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff2) format("woff2"),
-    url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff) format("woff");
-  font-weight: bold;
-  font-style: normal;
-}
+@import url(https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css);
 .main,
 .main input {
   font-size: 16px;
   line-height: 24px;
   color: #353740;
-  font-family: "ColfaxAI", Helvetica, sans-serif;
+  font-family: "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
 }
 .main {
   display: flex;
