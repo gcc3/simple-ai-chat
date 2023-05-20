@@ -65,7 +65,14 @@ export default async function (req, res) {
       + "fine_tune_stop = " + process.env.FINE_TUNE_STOP + "\n")
 
     res.status(200).json({
-      result: result_text,
+      result: {
+        text : result_text, 
+        info: {
+          model: process.env.MODEL,
+          temperature: process.env.TEMPERATURE,
+          top_p: process.env.TOP_P,
+        }
+      },
     });
   } catch (error) {
     // Consider adjusting the error handling logic for your use case
