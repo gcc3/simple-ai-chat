@@ -22,7 +22,7 @@ export default async function (req, res) {
 
   try {
     let result = "null";
-    if (process.env.MODEL === "gpt-3.5-turbo") {
+    if (process.env.END_POINT === "chat_completion") {
       // endpoint: /v1/chat/completions
       const chatCompletion = await openai.createChatCompletion({
         model: process.env.MODEL,
@@ -32,24 +32,17 @@ export default async function (req, res) {
             content: chatInput,
           },
         ],
-        temperature: 0,
+        temperature: process.env.TEMPERATURE,
       });
       result = chatCompletion.data.choices[0].message.content;
-    } else if (process.env.MODEL === "text-davinci-003") {
+    }
+
+    if (process.env.END_POINT === "text_completion") {
       // endpoint: /v1/completions
       const completion = await openai.createCompletion({
         model: process.env.MODEL,
         prompt: generatePrompt(chatInput),
-        temperature: 0,
-      });
-      result = completion.data.choices[0].text;
-    } else {
-      // endpoint: /v1/completions
-      const completion = await openai.createCompletion({
-        model: process.env.MODEL,
-        prompt: generatePrompt(chatInput),
-	stop: "\\n",
-	temperature: 0,
+        temperature: process.env.TEMPERATURE,
       });
       result = completion.data.choices[0].text;
     }

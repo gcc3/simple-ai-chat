@@ -13,6 +13,22 @@ React https://reactjs.org/
 Next.js https://nextjs.org/  
 
 
+.env
+----
+
+OPENAI_API_KEY  
+Get from https://platform.openai.com/account/api-keys  
+
+MODEL  
+gpt-3.5-turbo, etc...
+
+END_POINT  
+Now support chat_completion, text_completion  
+
+TEMPERATURE  
+From 0 to 1
+
+
 Setup
 -----
 
