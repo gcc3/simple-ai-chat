@@ -34,6 +34,7 @@ export default function Home() {
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
     }
+
     openaiEssSrouce.onmessage = function(event) {
       if (event.data.startsWith("###ENV###")) {
         const env = event.data.replace("###ENV###", "").split(',');
@@ -54,10 +55,10 @@ export default function Home() {
         console.log("Session closed.")
         return;
       }
-
       setOutput(event.data);
-      console.log(event);
+      console.log(event.data);
     };
+
     openaiEssSrouce.onerror = function(error) {
       console.log("Stream Error: " + error);
     };
@@ -97,7 +98,6 @@ export default function Home() {
       
       setInput("");
     } catch (error) {
-      // Consider implementing your own error handling logic here
       console.error(error);
       alert(error.message);
     }
