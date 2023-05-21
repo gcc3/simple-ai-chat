@@ -33,7 +33,8 @@
 .main form {
   display: flex;
   flex-direction: column;
-  width: 625px;
+  width: 100%;
+  max-width: 625px;
 }
 .main input[type="text"] {
   padding: 10px 14px;
@@ -58,7 +59,8 @@
 .main .output {
   font-weight: normal;
   margin-top: 20px;
-  width: 600px;
+  width: 96%;
+  max-width: 600px;
   white-space: pre-wrap;
 }
 .main .info {
@@ -67,6 +69,7 @@
   color: #cccccc;
   margin-top: 80px;
   margin-bottom: 45px;
-  width: 600px;
+  width: 96%;
+  max-width: 600px;
   text-align: right;
 }
