@@ -50,6 +50,7 @@ export default async function (req, res) {
       }, { responseType: "stream" });
 
       res.writeHead(200, {
+        'connection': 'keep-alive',
         'Cache-Control': 'no-cache',
         'Content-Type': 'text/event-stream',
       });
