@@ -53,6 +53,8 @@ export default async function (req, res) {
         'connection': 'keep-alive',
         'Cache-Control': 'no-cache',
         'Content-Type': 'text/event-stream',
+        'X-Accel-Buffering': 'no',  // disables proxy buffering for NGINX
+                                    // IMPORTANT! without this the stream not working on remote server
       });
 
       res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
