@@ -2,7 +2,6 @@ import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
 import Cookies from 'universal-cookie';
-import generate_sse from "./api/generate_sse";
 
 const cookies = new Cookies();
 cookies.set('useStream', "true", { path: '/' });
@@ -18,9 +17,9 @@ export default function Home() {
       return;
     }
 
+    setInput("");
     if (cookies.get('useStream') === "true") {
       // Use SSE request
-      setOutput("Connecting...");
       generate_sse();
     } else {
       // Use general API request
@@ -30,12 +29,14 @@ export default function Home() {
   }
 
   function generate_sse() {
+    document.getElementById("output").innerHTML = "";
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + input);
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
     }
 
     openaiEssSrouce.onmessage = function(event) {
+      // Handle the environment info
       if (event.data.startsWith("###ENV###")) {
         const env = event.data.replace("###ENV###", "").split(',');
         const model = env[0];
@@ -50,12 +51,16 @@ export default function Home() {
         return;
       }
 
+      // Handle the DONE signal
       if (event.data === '[DONE]') {
         openaiEssSrouce.close()
         console.log("Session closed.")
         return;
       }
-      setOutput(event.data);
+
+      // Handle the stream output
+      const output = event.data.replace("\n", "<br>");
+      document.getElementById("output").innerHTML += output;
       console.log(event.data);
     };
 
@@ -95,8 +100,6 @@ export default function Home() {
           <br></br>
         </div>
       ));
-      
-      setInput("");
     } catch (error) {
       console.error(error);
       alert(error.message);
@@ -119,7 +122,7 @@ export default function Home() {
           />
           <input hidden type="submit" value="Submit" />
         </form>
-        <div className={styles.output}>{output}</div>
+        <div id="output" className={styles.output}>{output}</div>
         <div className={styles.info}>{info}</div>
       </main>
     </div>
