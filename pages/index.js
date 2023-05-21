@@ -59,7 +59,7 @@ export default function Home() {
       }
 
       // Handle the stream output
-      const output = event.data.replace("\n", "<br>");
+      let output = event.data;
       document.getElementById("output").innerHTML += output;
       console.log(event.data);
     };
