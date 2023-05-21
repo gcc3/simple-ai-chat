@@ -5,6 +5,13 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
+// configurations
+const role_system = process.env.ROLE_SYSTEM ? process.env.ROLE_SYSTEM : "";
+const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
+const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
+const fine_tune_stop = process.env.FINE_TUNE_STOP ? process.env.FINE_TUNE_STOP : "";
+const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE_TUNE_PROMPT_END : "";
+
 export default async function (req, res) {
   if (!configuration.apiKey) {
     res.status(500).json({
@@ -15,18 +22,21 @@ export default async function (req, res) {
     return;
   }
 
-  const chatInput = req.body.aiChat || "";
-  if (chatInput.trim().length === 0) return;
-  console.log("Input:\n" + chatInput + "\n");
+  // Input
+  const userInput = req.body.user_input || "";
+  if (userInput.trim().length === 0) return;
+  console.log("Input:\n" + userInput + "\n");
+  console.log("--- configuration info ---\n" 
+  + "model = " + process.env.MODEL + "\n"
+  + "temperature = " + process.env.TEMPERATURE + "\n"
+  + "top_p = " + process.env.TOP_P + "\n"
+  + "endpoint = " + process.env.END_POINT + "\n"
+  + "fine_tune_prompt_end = " + process.env.FINE_TUNE_PROMPT_END + "\n"
+  + "fine_tune_stop = " + process.env.FINE_TUNE_STOP + "\n"
+  + "role_system = " + process.env.ROLE_SYSTEM + "\n");
 
   try {
-    let result_data = null;
     let result_text = "null";
-
-    const role_system = process.env.ROLE_SYSTEM ? process.env.ROLE_SYSTEM : "";
-    const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
-    const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
-    const fine_tune_stop = process.env.FINE_TUNE_STOP ? process.env.FINE_TUNE_STOP : "";
 
     if (process.env.END_POINT === "chat_completion") {
       // endpoint: /v1/chat/completions
@@ -34,12 +44,11 @@ export default async function (req, res) {
         model: process.env.MODEL,
         messages: [
           { role: "system", content: role_system },
-          { role: "user", content: chatInput }
+          { role: "user", content: userInput }
         ],
         temperature: temperature,
         top_p: top_p,
       });
-      result_data = chatCompletion.data;
       result_text = chatCompletion.data.choices[0].message.content;
     }
 
@@ -47,27 +56,16 @@ export default async function (req, res) {
       // endpoint: /v1/completions
       const completion = await openai.createCompletion({
         model: process.env.MODEL,
-        prompt: generatePrompt(chatInput),
+        prompt: generatePrompt(userInput),
         temperature: temperature,
         top_p: top_p,
         stop: fine_tune_stop,
       });
-      result_data = completion.data;
       result_text = completion.data.choices[0].text;
     }
 
     // Output the result
     console.log("Output:\n" + result_text + "\n");
-    console.log("--- output info ---\n" 
-      + "model = " + process.env.MODEL + "\n"
-      + "temperature = " + process.env.TEMPERATURE + "\n"
-      + "top_p = " + process.env.TOP_P + "\n"
-      + "endpoint = " + process.env.END_POINT + "\n"
-      + "choices = " + result_data.choices.length + "\n"
-      + "fine_tune_prompt_end = " + process.env.FINE_TUNE_PROMPT_END + "\n"
-      + "fine_tune_stop = " + process.env.FINE_TUNE_STOP + "\n"
-      + "role_system = " + process.env.ROLE_SYSTEM + "\n");
-
     res.status(200).json({
       result: {
         text : result_text, 
@@ -94,12 +92,11 @@ export default async function (req, res) {
   }
 }
 
-function generatePrompt(chatInput) {
+function generatePrompt(userInput) {
   // TODO add prompt here
-  console.log("Input: " + chatInput);
+  console.log("Input: " + userInput);
 
   // Add fine tune prompt end
-  const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE_TUNE_PROMPT_END : "";
-  chatInput += fine_tune_prompt_end;
-  return chatInput;
+  userInput += fine_tune_prompt_end;
+  return userInput;
 }

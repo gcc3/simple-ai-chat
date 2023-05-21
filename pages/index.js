@@ -3,24 +3,24 @@ import { useState } from "react";
 import styles from "./index.module.css";
 
 export default function Home() {
-  const [aiChatInput, setAiChatInput] = useState("");
-  const [result, setResult] = useState();
+  const [input, setInput] = useState("");
+  const [output, setOutput] = useState();
   const [info, setInfo] = useState();
 
   async function onSubmit(event) {
     event.preventDefault();
-    if (aiChatInput.trim().length == 0) {
+    if (input.trim().length == 0) {
       return;
     }
 
-    setResult("Generating...");
+    setOutput("Generating...");
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ aiChat: aiChatInput }),
+        body: JSON.stringify({ user_input: input }),
       });
 
       const data = await response.json();
@@ -28,7 +28,7 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      const result_lines = data.result.text.split("\n").map((line, line_number) => {
+      setOutput(data.result.text.split("\n").map((line, line_number) => {
         console.log(line);
         return (
           <div key={line_number}>
@@ -36,17 +36,16 @@ export default function Home() {
             <br></br>
           </div>
         );
-      });
-      const info = (
+      }));
+
+      setInfo((
         <div>
           model: {data.result.info.model}
           <br></br>
         </div>
-      );
+      ));
 
-      setResult(result_lines);
-      setInfo(info);
-      setAiChatInput("");
+      setInput("");
     } catch (error) {
       // Consider implementing your own error handling logic here
       console.error(error);
@@ -64,14 +63,13 @@ export default function Home() {
         <form onSubmit={onSubmit}>
           <input
             type="text"
-            name="aiChat"
             placeholder="Say something..."
-            value={aiChatInput}
-            onChange={(e) => setAiChatInput(e.target.value)}
+            value={input}
+            onChange={(e) => setInput(e.target.value)}
           />
           <input hidden type="submit" value="Submit" />
         </form>
-        <div className={styles.result}>{result}</div>
+        <div className={styles.output}>{output}</div>
         <div className={styles.info}>{info}</div>
       </main>
     </div>
