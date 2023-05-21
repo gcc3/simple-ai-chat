@@ -1,6 +1,11 @@
 import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
+import Cookies from 'universal-cookie';
+import generate_sse from "./api/generate_sse";
+
+const cookies = new Cookies();
+cookies.set('useStream', "false", { path: '/' });
 
 export default function Home() {
   const [input, setInput] = useState("");
@@ -13,7 +18,31 @@ export default function Home() {
       return;
     }
 
-    setOutput("Generating...");
+    if (cookies.get('useStream') === "true") {
+      // Use SSE request
+      setOutput("Connecting...");
+      generate_sse();
+    } else {
+      // Use general API request
+      setOutput("Generating...");
+      generate();
+    }
+  }
+
+  function generate_sse() {
+    const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + input);
+    openaiEssSrouce.onopen = function(event) {
+      console.log("Start generating...");
+    }
+    openaiEssSrouce.onmessage = function(event) {
+      setOutput(event.data);
+    };
+    openaiEssSrouce.onerror = function(error) {
+      throw new Error(`Stream error: ${error}`);
+    };
+  }
+
+  async function generate() {
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -44,7 +73,7 @@ export default function Home() {
           <br></br>
         </div>
       ));
-
+      
       setInput("");
     } catch (error) {
       // Consider implementing your own error handling logic here
