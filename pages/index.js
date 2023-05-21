@@ -4,7 +4,7 @@ import styles from "./index.module.css";
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
-cookies.set('useStream', "true", { path: '/' });
+cookies.set('useStream', "true", { secure: true, sameSite: 'none', path: '/' });
 
 export default function Home() {
   const [input, setInput] = useState("");
