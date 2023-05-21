@@ -62,6 +62,8 @@ export default async function (req, res) {
           const lines = data.toString().split('\n').filter(line => line.trim() !== '');
           for (const line of lines) {
             const chunkData = line.replace(/^data: /, '');
+
+            // handle the DONE signal
             if (chunkData === '[DONE]') {
               res.write(`data: [DONE]\n\n`)
               console.log("Output:\n" + result_text + "\n");
@@ -69,6 +71,8 @@ export default async function (req, res) {
               res.end();
               return
             }
+
+            // handle the message
             const message = JSON.parse(chunkData).choices[0].delta.content;
             if (message) {
               result_text += message;
