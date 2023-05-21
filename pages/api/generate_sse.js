@@ -36,9 +36,11 @@ export default async function (req, res) {
   + "role_system = " + process.env.ROLE_SYSTEM + "\n");
 
   try {
+    let completion;
+    
     if (process.env.END_POINT === "chat_completion") {
       // endpoint: /v1/chat/completions
-      const chatCompletion = openai.createChatCompletion({
+      completion = openai.createChatCompletion({
         model: process.env.MODEL,
         messages: [
           { role: "system", content: role_system },
@@ -48,57 +50,58 @@ export default async function (req, res) {
         top_p: top_p,
         stream: true,
       }, { responseType: "stream" });
-
-      res.writeHead(200, {
-        'connection': 'keep-alive',
-        'Cache-Control': 'no-cache',
-        'Content-Type': 'text/event-stream',
-        'X-Accel-Buffering': 'no',  // disables proxy buffering for NGINX
-                                    // IMPORTANT! without this the stream not working on remote server
-      });
-
-      res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
-      chatCompletion.then(resp => {
-        process.stdout.write("Output:\n");
-
-        resp.data.on('data', data => {
-          const lines = data.toString().split('\n').filter(line => line.trim() !== '');
-          for (const line of lines) {
-            const chunkData = line.replace(/^data: /, '');
-
-            // handle the DONE signal
-            if (chunkData === '[DONE]') {
-              res.write(`data: [DONE]\n\n`)
-              process.stdout.write("\n\n");
-              res.flush();
-              res.end();
-              return
-            }
-
-            // handle the message
-            const content = JSON.parse(chunkData).choices[0].delta.content;
-            if (content) {
-              let message = "";
-              message = content.replaceAll("\n", "###RETURN###");
-              process.stdout.write(content);
-              res.write(`data: ${message}\n\n`)
-            }
-            res.flush();
-          }
-        });
-      })
     }
 
     if (process.env.END_POINT === "text_completion") {
       // endpoint: /v1/completions
-      const completion = await openai.createCompletion({
+      completion = await openai.createCompletion({
         model: process.env.MODEL,
         prompt: generatePrompt(userInput),
         temperature: temperature,
         top_p: top_p,
         stop: fine_tune_stop,
-      });
+        stream: true,
+      }, { responseType: "stream" });
     }
+
+    res.writeHead(200, {
+      'connection': 'keep-alive',
+      'Cache-Control': 'no-cache',
+      'Content-Type': 'text/event-stream',
+      'X-Accel-Buffering': 'no',  // disables proxy buffering for NGINX
+                                  // IMPORTANT! without this the stream not working on remote server
+    });
+
+    res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
+    completion.then(resp => {
+      process.stdout.write("Output:\n");
+
+      resp.data.on('data', data => {
+        const lines = data.toString().split('\n').filter(line => line.trim() !== '');
+        for (const line of lines) {
+          const chunkData = line.replace(/^data: /, '');
+
+          // handle the DONE signal
+          if (chunkData === '[DONE]') {
+            res.write(`data: [DONE]\n\n`)
+            process.stdout.write("\n\n");
+            res.flush();
+            res.end();
+            return
+          }
+
+          // handle the message
+          const content = JSON.parse(chunkData).choices[0].delta.content;
+          if (content) {
+            let message = "";
+            message = content.replaceAll("\n", "###RETURN###");
+            process.stdout.write(content);
+            res.write(`data: ${message}\n\n`)
+          }
+          res.flush();
+        }
+      });
+    })
   } catch (error) {
     // Consider adjusting the error handling logic for your use case
     if (error.response) {
