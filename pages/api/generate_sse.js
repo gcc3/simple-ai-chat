@@ -73,9 +73,11 @@ export default async function (req, res) {
             }
 
             // handle the message
-            const message = JSON.parse(chunkData).choices[0].delta.content;
-            if (message) {
-              result_text += message;
+            const content = JSON.parse(chunkData).choices[0].delta.content;
+            if (content) {
+              result_text += content;
+              let message = "";
+              message = content.replaceAll("\n", "###RETURN###");
               res.write(`data: ${message}\n\n`)
             }
             res.flush();

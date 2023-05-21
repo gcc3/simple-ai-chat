@@ -60,6 +60,7 @@ export default function Home() {
 
       // Handle the stream output
       let output = event.data;
+      output = output.replaceAll("###RETURN###", '<br>');
       document.getElementById("output").innerHTML += output;
       console.log(event.data);
     };
