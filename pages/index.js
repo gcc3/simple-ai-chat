@@ -5,7 +5,7 @@ import Cookies from 'universal-cookie';
 import generate_sse from "./api/generate_sse";
 
 const cookies = new Cookies();
-cookies.set('useStream', "false", { path: '/' });
+cookies.set('useStream', "true", { path: '/' });
 
 export default function Home() {
   const [input, setInput] = useState("");
@@ -32,13 +32,34 @@ export default function Home() {
   function generate_sse() {
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + input);
     openaiEssSrouce.onopen = function(event) {
-      console.log("Start generating...");
+      console.log("Session start.");
     }
     openaiEssSrouce.onmessage = function(event) {
+      if (event.data.startsWith("###ENV###")) {
+        const env = event.data.replace("###ENV###", "").split(',');
+        const model = env[0];
+        const temperature = env[1];
+        const top_p = env[2];
+        setInfo((
+          <div>
+            model: {model}
+            <br></br>
+          </div>
+        ));
+        return;
+      }
+
+      if (event.data === '[DONE]') {
+        openaiEssSrouce.close()
+        console.log("Session closed.")
+        return;
+      }
+
       setOutput(event.data);
+      console.log(event);
     };
     openaiEssSrouce.onerror = function(error) {
-      throw new Error(`Stream error: ${error}`);
+      console.log("Stream Error: " + error);
     };
   }
 

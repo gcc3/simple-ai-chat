@@ -56,14 +56,17 @@ export default async function (req, res) {
         'Content-Type': 'text/event-stream',
       });
 
+      res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
       chatCompletion.then(resp => {
         resp.data.on('data', data => {
           const lines = data.toString().split('\n').filter(line => line.trim() !== '');
           for (const line of lines) {
             const chunkData = line.replace(/^data: /, '');
             if (chunkData === '[DONE]') {
+              res.write(`data: [DONE]\n\n`)
               console.log("Output:\n" + result_text + "\n");
               res.flush();
+              res.end();
               return
             }
             const message = JSON.parse(chunkData).choices[0].delta.content;
