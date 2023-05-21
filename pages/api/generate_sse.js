@@ -77,7 +77,7 @@ export default async function (req, res) {
             if (content) {
               let message = "";
               message = content.replaceAll("\n", "###RETURN###");
-              process.stdout.write(message);
+              process.stdout.write(content);
               res.write(`data: ${message}\n\n`)
             }
             res.flush();
