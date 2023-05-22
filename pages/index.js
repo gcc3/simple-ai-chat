@@ -111,6 +111,7 @@ export default function Home() {
     <div>
       <Head>
         <title>Simple AI Chat</title>
+        <script src="./window-effect.js" />
       </Head>
 
       <main className={styles.main}>
