@@ -2,7 +2,6 @@ import Head from "next/head";
 import { useState } from "react";
 import styles from "./index.module.css";
 import Cookies from 'universal-cookie';
-import Script from 'next/script';
 
 const cookies = new Cookies();
 cookies.set('useStream', "true", { secure: true, sameSite: 'none', path: '/' });
@@ -112,10 +111,10 @@ export default function Home() {
     <div>
       <Head>
         <title>Simple AI Chat</title>
-        <Script src="window-effect.js" strategy="beforeInteractive" />
       </Head>
 
       <main className={styles.main}>
+        <script src="window-effect.js" />
         <form onSubmit={onSubmit}>
           <input
             type="text"
