@@ -44,7 +44,10 @@ Stop will be used to end the completion
 Set the role system's content to role play.  
 
 * PROMPT_PREFIX and PROMPT_SUFFIX  
-Add prefix and suffix for prompt avoid duplicate text input  
+Add prefix and suffix for prompt avoid duplicate text input.  
+
+* MAX_TOKENS  
+Control the max tokens generate in the chat completion.  
 
 
 Setup

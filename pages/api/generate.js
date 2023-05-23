@@ -13,6 +13,7 @@ const fine_tune_stop = process.env.FINE_TUNE_STOP ? process.env.FINE_TUNE_STOP :
 const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE_TUNE_PROMPT_END : "";
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
+const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 250;
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -40,7 +41,8 @@ export default async function (req, res) {
   + "fine_tune_stop = " + process.env.FINE_TUNE_STOP + "\n"
   + "role_content_system = " + process.env.ROLE_CONTENT_SYSTEM + "\n")
   + "prompt_prefix = " + process.env.PROMPT_PREFIX + "\n"
-  + "prompt_suffix = " + process.env.PROMPT_SUFFIX + "\n";
+  + "prompt_suffix = " + process.env.PROMPT_SUFFIX + "\n"
+  + "max_tokens = " + process.env.MAX_TOKENS + "\n";
 
   try {
     let result_text = "null";
@@ -55,6 +57,7 @@ export default async function (req, res) {
         ],
         temperature: temperature,
         top_p: top_p,
+        max_tokens: max_tokens,
       });
       result_text = chatCompletion.data.choices[0].message.content;
     }
@@ -67,6 +70,7 @@ export default async function (req, res) {
         temperature: temperature,
         top_p: top_p,
         stop: fine_tune_stop,
+        max_tokens: max_tokens,
       });
       result_text = completion.data.choices[0].text;
     }
