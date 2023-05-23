@@ -32,7 +32,7 @@ lower values like 0.2 will make it more focused and deterministic.
 * TOP_P  
 Range 0 ~ 1, 0.1 means only the tokens comprising the top 10% probability mass are considered.  
 
-* N
+* N  
 How many completions to generate for each prompt.
 
 * FINE_TUNE_PROMPT_END and FINE_TUNE_STOP  
