@@ -6,11 +6,13 @@ const configuration = new Configuration({
 const openai = new OpenAIApi(configuration);
 
 // configurations
-const role_system = process.env.ROLE_SYSTEM ? process.env.ROLE_SYSTEM : "";
+const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
 const fine_tune_stop = process.env.FINE_TUNE_STOP ? process.env.FINE_TUNE_STOP : "";
 const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE_TUNE_PROMPT_END : "";
+const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
+const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -23,9 +25,12 @@ export default async function (req, res) {
   }
 
   // Input
-  const userInput = req.query.user_input || "";
+  let userInput = req.query.user_input || "";
   if (userInput.trim().length === 0) return;
+  userInput = prompt_prefix + userInput + prompt_suffix;
   console.log("Input:\n" + userInput + "\n");
+
+  // Configuration info
   console.log("--- configuration info ---\n" 
   + "model = " + process.env.MODEL + "\n"
   + "temperature = " + process.env.TEMPERATURE + "\n"
@@ -33,7 +38,9 @@ export default async function (req, res) {
   + "endpoint = " + process.env.END_POINT + "\n"
   + "fine_tune_prompt_end = " + process.env.FINE_TUNE_PROMPT_END + "\n"
   + "fine_tune_stop = " + process.env.FINE_TUNE_STOP + "\n"
-  + "role_system = " + process.env.ROLE_SYSTEM + "\n");
+  + "role_content_system = " + process.env.ROLE_CONTENT_SYSTEM + "\n"
+  + "prompt_prefix = " + process.env.PROMPT_PREFIX + "\n"
+  + "prompt_suffix = " + process.env.PROMPT_SUFFIX + "\n");
 
   try {
     res.writeHead(200, {
@@ -49,7 +56,7 @@ export default async function (req, res) {
       const chatCompletion = openai.createChatCompletion({
         model: process.env.MODEL,
         messages: [
-          { role: "system", content: role_system },
+          { role: "system", content: role_content_system },
           { role: "user", content: userInput }
         ],
         temperature: temperature,
