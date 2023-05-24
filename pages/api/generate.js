@@ -105,11 +105,25 @@ export default async function (req, res) {
   }
 }
 
-function generateMessages(userInput) {
+async function generateMessages(userInput) {
   let messages = [];
   // System message, important
   messages.push({ role: "system", content: role_content_system });
-  dict_search_result = dictionarySerach(userInput);
+
+  // Dictionary search
+  if (process.env.DICT_SEARCH == "true") {
+    console.log("--- dictionary search ---");
+    const keywords = await keywordExtraction(userInput);
+    console.log("keywords: " + keywords);
+    const definations = await dictionarySearch(keywords);
+    console.log("result: " + definations + "\n");
+
+    // Add definations to messages
+    definations.map(entry => {
+      const message = entry[0] + "について、解釈は以下の通り：" + entry[1] + "です。"
+      messages.push({ role: "system", content: message });
+    });
+  }
 
   // TODO here insert history messages (user and assistant messages)
   messages.push({ role: "user", content: userInput });
@@ -117,28 +131,56 @@ function generateMessages(userInput) {
 }
 
 function generatePrompt(userInput) {
-  let prompt = "";
-
   // Add fine tune prompt end
-  prompt = userInput + fine_tune_prompt_end;
+  const prompt = userInput + fine_tune_prompt_end;
   return prompt;
 }
 
-function dictionarySerach(userInput) {
-  // 1. Keyword extraction
-  console.log("Keyword extracting...")
-  fetch('https://labs.goo.ne.jp/api/keyword', {
+async function keywordExtraction(userInput) {
+  let keywords = [];
+
+  // 1. Simple extraction
+  // Topic is a keyword
+  let topic  = ""
+  if (userInput.includes("の意味")) topic = userInput.split("の意味")[0];
+  if (userInput.includes("とは")) topic = userInput.split("とは")[0];
+  if (userInput.includes("は何")) topic = userInput.split("って何")[0];
+  if (userInput.includes("はなん")) topic = userInput.split("って何")[0];
+  if (topic !== "") keywords.push(topic.trim());
+
+  // 2. Keyword extraction from goo API
+  await fetch('https://labs.goo.ne.jp/api/keyword', {
     method: 'POST',
-    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ 
-      app_id: process.env.GOO_API_KEY, 
+      app_id: process.env.GOO_API_APP_ID,
       title: "",
-      body: userInput
+      body: userInput,
+      max_num: 5,
     })
-  }).then(response => response.json())
+  })
+  .then(response => response.json())
   .then(data => {
-    console.log(data);
+    data.keywords.forEach(keyword => {
+      for (const [key, value] of Object.entries(keyword)) {
+        keywords.push(key.trim());
+      }
+    });
   });
 
-  // 2. Search the keyword in the dictionary
+  return keywords;
+}
+
+async function dictionarySearch(entries) {
+  let definations = [];
+  const parser = fs.createReadStream("./dict.csv", { encoding: "utf8" })
+  .pipe(parse({separator: ',', quote: '\"'}))
+  for await (const record of parser) {
+    for (const entry of entries) {
+      if (record[0] === entry) {
+        definations.push(record);
+      }
+    }
+  }
+  return definations;
 }
