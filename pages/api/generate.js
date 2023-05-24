@@ -1,5 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 
+// OpenAI
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -104,10 +105,24 @@ export default async function (req, res) {
   }
 }
 
-function generateMessages(userInput) {
+async function generateMessages(userInput) {
   let messages = [];
   // System message, important
   messages.push({ role: "system", content: role_content_system });
+
+  // Dictionary search
+  if (process.env.DICT_SEARCH == "true") {
+    console.log("--- dictionary search ---");
+    const keywords = await keywordExtraction(userInput);
+    const definations = await dictionarySearch(keywords);
+    console.log("search result: " + definations + "\n");
+
+    // Add definations to messages
+    definations.map(entry => {
+      const message = entry[0] + "についての説明は以下の通り：" + entry[1]
+      messages.push({ role: "system", content: message });
+    });
+  }
 
   // TODO here insert history messages (user and assistant messages)
   messages.push({ role: "user", content: userInput });
@@ -115,9 +130,102 @@ function generateMessages(userInput) {
 }
 
 function generatePrompt(userInput) {
-  let prompt = "";
-
   // Add fine tune prompt end
-  prompt = userInput + fine_tune_prompt_end;
+  const prompt = userInput + fine_tune_prompt_end;
   return prompt;
+}
+
+async function keywordExtraction(userInput) {
+  let topics = [];
+  const sentences = userInput.split(/、|，|,|。|.|/);
+  for (const sentence of sentences) {
+    // Simple extraction
+    // Topic is a keyword
+    let topic  = ""
+    if (sentence.includes("の意味")) topic = sentence.substring(0, sentence.search("の意味"));
+    else if (sentence.includes("について")) topic = sentence.substring(0, sentence.search("について"));
+    else if (sentence.includes("とは")) topic = sentence.substring(0, sentence.search("とは"));
+    else if (sentence.includes("は何")) topic = sentence.substring(0, sentence.search("は何"));
+    else if (sentence.includes("はなん")) topic = sentence.substring(0, sentence.search("はなん"));
+    if (topic !== "") topics.push(topic.trim());
+  }
+  console.log("topics: " + topics);
+
+  // Keyword extraction from goo API
+  let keywords = [];
+  await fetch('https://labs.goo.ne.jp/api/keyword', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      app_id: process.env.GOO_API_APP_ID,
+      title: "",
+      body: userInput,
+      focus: "ORG",
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    data.keywords.forEach(entry => {
+      for (const [key, value] of Object.entries(entry)) {
+        keywords.push(key.trim());
+      }
+    });
+  });
+  console.log("keywords: " + keywords);
+
+  // NER from goo API
+  let ner = [];
+  await fetch('https://labs.goo.ne.jp/api/entity', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      app_id: process.env.GOO_API_APP_ID,
+      sentence: userInput,
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    data.ne_list.forEach(entry => {
+      ner.push(entry[0]);
+    });
+  });
+  console.log("ner: " + ner);
+
+  // Morphological analysis from goo API
+  let morph = []
+  await fetch('https://labs.goo.ne.jp/api/morph', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      app_id: process.env.GOO_API_APP_ID,
+      sentence: userInput,
+      info_filter: "form",
+      pos_filter: "名詞|冠名詞"
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    data.word_list[0].forEach(entry => {
+      morph.push(entry[0]);
+    });
+  });
+  console.log("morph: " + morph);
+
+  let entries = topics.concat(keywords).concat(ner).concat(morph);
+  return entries;
+}
+
+async function dictionarySearch(entries) {
+  let definations = [];
+  const parser = fs.createReadStream("./dict.csv", { encoding: "utf8" })
+  .pipe(parse({separator: ',', quote: '\"'}))
+  for await (const record of parser) {
+    for (const entry of entries) {
+      if (record[0].includes(entry)) {
+        definations.push(record);
+      }
+    }
+    if (definations.length > 10) break;  // limit the number of definations
+  }
+  return definations;
 }
