@@ -114,7 +114,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <script src="window-effect.js" />
+        <script src="./js/resize.js" />
         <form onSubmit={onSubmit}>
           <input
             type="text"

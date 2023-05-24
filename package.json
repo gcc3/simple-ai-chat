@@ -3,11 +3,9 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "PORT=8081 next dev",
-    "dev-pc": "set PORT=8081 && next dev",
+    "dev": "cross-env PORT=8081 next dev",
     "build": "next build",
-    "start": "PORT=8081 next start",
-    "start-pc": "set PORT=8081 && next start"
+    "start": "cross-env PORT=8081 next start"
   },
   "dependencies": {
     "next": "^13.1.1",
@@ -18,5 +16,8 @@
   },
   "engines": {
     "node": ">=14.6.0"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }
