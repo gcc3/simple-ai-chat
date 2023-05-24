@@ -4,7 +4,8 @@ import styles from "./index.module.css";
 import Cookies from 'universal-cookie';
 
 const cookies = new Cookies();
-cookies.set('useStream', "true", { secure: true, sameSite: 'none', path: '/' });
+cookies.set('useStream', "true", { sameSite: 'none', path: '/' });  // removed secure: true
+                                                                    // it will cause local server issue
 
 export default function Home() {
   const [input, setInput] = useState("");
