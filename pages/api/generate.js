@@ -143,10 +143,10 @@ async function keywordExtraction(userInput) {
   // Topic is a keyword
   let topic  = ""
   if (userInput.includes("の意味")) topic = userInput.split("の意味")[0];
-  if (userInput.includes("について")) topic = userInput.split("について")[0];
-  if (userInput.includes("とは")) topic = userInput.split("とは")[0];
-  if (userInput.includes("は何")) topic = userInput.split("って何")[0];
-  if (userInput.includes("はなん")) topic = userInput.split("って何")[0];
+  else if (userInput.includes("について")) topic = userInput.split("について")[0];
+  else if (userInput.includes("とは")) topic = userInput.split("とは")[0];
+  else if (userInput.includes("は何")) topic = userInput.split("は何")[0];
+  else if (userInput.includes("はなん")) topic = userInput.split("はなん")[0];
   if (topic !== "") keywords.push(topic.trim());
 
   // 2. Keyword extraction from goo API
