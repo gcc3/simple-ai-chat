@@ -9,6 +9,7 @@ Dependencies
 ------------
 
 OpenAI https://platform.openai.com/docs/introduction  
+OpenAI API https://platform.openai.com/docs/api-reference  
 React https://reactjs.org/  
 Next.js https://nextjs.org/  
 
@@ -48,6 +49,9 @@ Add prefix and suffix for prompt avoid duplicate text input.
 
 * MAX_TOKENS  
 Control the max tokens generate in the chat completion.  
+
+* GOO_API_APP_ID  
+Use for text extraction API  
 
 
 Setup

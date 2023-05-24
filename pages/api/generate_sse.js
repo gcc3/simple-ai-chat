@@ -159,8 +159,6 @@ function generateMessages(userInput) {
   let messages = [];
   // System message, important
   messages.push({ role: "system", content: role_content_system });
-
-  // TODO here insert history messages (user and assistant messages)
   messages.push({ role: "user", content: userInput });
   return messages;
 }
