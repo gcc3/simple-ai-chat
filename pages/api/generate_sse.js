@@ -175,7 +175,7 @@ async function generateMessages(userInput) {
 
     // Add definations to messages
     definations.map(entry => {
-      const message = entry[0] + "について、解釈は以下の通り：" + entry[1] + "です。"
+      const message = entry[0] + "についての説明は以下の通り：" + entry[1]
       messages.push({ role: "system", content: message });
     });
   }
