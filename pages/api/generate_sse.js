@@ -278,6 +278,7 @@ async function dictionarySearch(entries) {
     for (const entry of entries) {
       if (record[0].includes(entry)) {
         definations.push(record);
+        break;
       }
     }
     if (definations.length > 10) break;  // limit the number of definations
