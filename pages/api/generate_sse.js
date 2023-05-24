@@ -1,9 +1,14 @@
 import { Configuration, OpenAIApi } from "openai";
+import { parse } from 'csv-parse';
 
+// OpenAI
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+
+// For csv paser
+const fs = require("fs");
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -57,7 +62,7 @@ export default async function (req, res) {
       // endpoint: /v1/chat/completions
       const chatCompletion = openai.createChatCompletion({
         model: process.env.MODEL,
-        messages: generateMessages(userInput),
+        messages: await generateMessages(userInput),
         temperature: temperature,
         top_p: top_p,
         max_tokens: max_tokens,
@@ -155,20 +160,23 @@ export default async function (req, res) {
   }
 }
 
-function generateMessages(userInput) {
+async function generateMessages(userInput) {
   let messages = [];
   // System message, important
   messages.push({ role: "system", content: role_content_system });
 
   // Dictionary search
   if (process.env.DICT_SEARCH == "true") {
-    const keywords = keywordExtraction(userInput);
-    keywords.forEach(keyword => {
-      const defination = dictionarySearch(keyword);
-      if (defination !== "") {
-        const message = keyword + "について、解釈は以下の通り：" + defination + "です。"
-        messages.push({ role: "system", content: message });
-      }
+    console.log("--- dictionary search ---");
+    const keywords = await keywordExtraction(userInput);
+    console.log("keywords: " + keywords);
+    const definations = await dictionarySearch(keywords);
+    console.log("result: " + definations + "\n");
+
+    // Add definations to messages
+    definations.map(entry => {
+      const message = entry[0] + "について、解釈は以下の通り：" + entry[1] + "です。"
+      messages.push({ role: "system", content: message });
     });
   }
 
@@ -178,10 +186,8 @@ function generateMessages(userInput) {
 }
 
 function generatePrompt(userInput) {
-  let prompt = "";
-
   // Add fine tune prompt end
-  prompt = userInput + fine_tune_prompt_end;
+  const prompt = userInput + fine_tune_prompt_end;
   return prompt;
 }
 
@@ -195,7 +201,7 @@ async function keywordExtraction(userInput) {
   if (userInput.includes("とは")) topic = userInput.split("とは")[0];
   if (userInput.includes("は何")) topic = userInput.split("って何")[0];
   if (userInput.includes("はなん")) topic = userInput.split("って何")[0];
-  if (topic !== "") keywords.push(topic);
+  if (topic !== "") keywords.push(topic.trim());
 
   // 2. Keyword extraction from goo API
   await fetch('https://labs.goo.ne.jp/api/keyword', {
@@ -212,7 +218,7 @@ async function keywordExtraction(userInput) {
   .then(data => {
     data.keywords.forEach(keyword => {
       for (const [key, value] of Object.entries(keyword)) {
-        keywords.push(key);
+        keywords.push(key.trim());
       }
     });
   });
@@ -220,7 +226,16 @@ async function keywordExtraction(userInput) {
   return keywords;
 }
 
-function dictionarySearch(entry) {
-  // TODO
-  return "";
+async function dictionarySearch(entries) {
+  let definations = [];
+  const parser = fs.createReadStream("./dict.csv", { encoding: "utf8" })
+  .pipe(parse({separator: ',', quote: '\"'}))
+  for await (const record of parser) {
+    for (const entry of entries) {
+      if (record[0] === entry) {
+        definations.push(record);
+      }
+    }
+  }
+  return definations;
 }
