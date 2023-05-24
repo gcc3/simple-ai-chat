@@ -169,9 +169,8 @@ async function generateMessages(userInput) {
   if (process.env.DICT_SEARCH == "true") {
     console.log("--- dictionary search ---");
     const keywords = await keywordExtraction(userInput);
-    console.log("keywords: " + keywords);
     const definations = await dictionarySearch(keywords);
-    console.log("result: " + definations + "\n");
+    console.log("search result: " + definations + "\n");
 
     // Add definations to messages
     definations.map(entry => {
@@ -192,19 +191,23 @@ function generatePrompt(userInput) {
 }
 
 async function keywordExtraction(userInput) {
+  let topics = [];
+  const sentences = userInput.split(/、|，|,|。|.|/);
+  for (const sentence of sentences) {
+    // Simple extraction
+    // Topic is a keyword
+    let topic  = ""
+    if (sentence.includes("の意味")) topic = sentence.substring(0, sentence.search("の意味"));
+    else if (sentence.includes("について")) topic = sentence.substring(0, sentence.search("について"));
+    else if (sentence.includes("とは")) topic = sentence.substring(0, sentence.search("とは"));
+    else if (sentence.includes("は何")) topic = sentence.substring(0, sentence.search("は何"));
+    else if (sentence.includes("はなん")) topic = sentence.substring(0, sentence.search("はなん"));
+    if (topic !== "") topics.push(topic.trim());
+  }
+  console.log("topics: " + topics);
+
+  // Keyword extraction from goo API
   let keywords = [];
-
-  // 1. Simple extraction
-  // Topic is a keyword
-  let topic  = ""
-  if (userInput.includes("の意味")) topic = userInput.split("の意味")[0];
-  else if (userInput.includes("について")) topic = userInput.split("について")[0];
-  else if (userInput.includes("とは")) topic = userInput.split("とは")[0];
-  else if (userInput.includes("は何")) topic = userInput.split("は何")[0];
-  else if (userInput.includes("はなん")) topic = userInput.split("はなん")[0];
-  if (topic !== "") keywords.push(topic.trim());
-
-  // 2. Keyword extraction from goo API
   await fetch('https://labs.goo.ne.jp/api/keyword', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
@@ -212,19 +215,59 @@ async function keywordExtraction(userInput) {
       app_id: process.env.GOO_API_APP_ID,
       title: "",
       body: userInput,
-      max_num: 5,
+      focus: "ORG",
     })
   })
   .then(response => response.json())
   .then(data => {
-    data.keywords.forEach(keyword => {
-      for (const [key, value] of Object.entries(keyword)) {
+    data.keywords.forEach(entry => {
+      for (const [key, value] of Object.entries(entry)) {
         keywords.push(key.trim());
       }
     });
   });
+  console.log("keywords: " + keywords);
 
-  return keywords;
+  // NER from goo API
+  let ner = [];
+  await fetch('https://labs.goo.ne.jp/api/entity', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      app_id: process.env.GOO_API_APP_ID,
+      sentence: userInput,
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    data.ne_list.forEach(entry => {
+      ner.push(entry[0]);
+    });
+  });
+  console.log("ner: " + ner);
+
+  // Morphological analysis from goo API
+  let morph = []
+  await fetch('https://labs.goo.ne.jp/api/morph', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      app_id: process.env.GOO_API_APP_ID,
+      sentence: userInput,
+      info_filter: "form",
+      pos_filter: "名詞|冠名詞"
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    data.word_list[0].forEach(entry => {
+      morph.push(entry[0]);
+    });
+  });
+  console.log("morph: " + morph);
+
+  let entries = topics.concat(keywords).concat(ner).concat(morph);
+  return entries;
 }
 
 async function dictionarySearch(entries) {
