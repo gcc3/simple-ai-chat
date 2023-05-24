@@ -54,7 +54,8 @@ Control the max tokens generate in the chat completion.
 Enable the dictionary search, value should be `true` or `false`  
 
 * GOO_API_APP_ID  
-Use for text extraction API  
+Text extraction API  
+Get from https://labs.goo.ne.jp/apiusage/  
 
 
 Setup
@@ -64,6 +65,7 @@ Setup
 
    ```bash
    $ npm install
+   $ npm install next -g
    ```
 
 2. Make a copy of the example environment variables file
@@ -72,10 +74,13 @@ Setup
    $ cp .env.example .env
    ```
 
-3. Add [API key](https://platform.openai.com/account/api-keys) to the newly created `.env` file
-
-4. Run the app
+3. Run the app
 
    ```bash
    $ npm run dev
    ```
+   
+4. Create `dict.csv` (optional)
+
+  The format should be "entry", "defination"
+  
