@@ -50,6 +50,9 @@ Add prefix and suffix for prompt avoid duplicate text input.
 * MAX_TOKENS  
 Control the max tokens generate in the chat completion.  
 
+* DICT_SEARCH  
+Enable the dictionary search, value should be `true` or `false`  
+
 * GOO_API_APP_ID  
 Use for text extraction API  
 

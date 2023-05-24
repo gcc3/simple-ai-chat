@@ -159,6 +159,20 @@ function generateMessages(userInput) {
   let messages = [];
   // System message, important
   messages.push({ role: "system", content: role_content_system });
+
+  // Dictionary search
+  if (process.env.DICT_SEARCH == "true") {
+    const keywords = keywordExtraction(userInput);
+    keywords.forEach(keyword => {
+      const defination = dictionarySearch(keyword);
+      if (defination !== "") {
+        const message = keyword + "について、解釈は以下の通り：" + defination + "です。"
+        messages.push({ role: "system", content: message });
+      }
+    });
+  }
+
+  // TODO here insert history messages (user and assistant messages)
   messages.push({ role: "user", content: userInput });
   return messages;
 }
@@ -169,4 +183,44 @@ function generatePrompt(userInput) {
   // Add fine tune prompt end
   prompt = userInput + fine_tune_prompt_end;
   return prompt;
+}
+
+async function keywordExtraction(userInput) {
+  let keywords = [];
+
+  // 1. Simple extraction
+  // Topic is a keyword
+  let topic  = ""
+  if (userInput.includes("の意味")) topic = userInput.split("の意味")[0];
+  if (userInput.includes("とは")) topic = userInput.split("とは")[0];
+  if (userInput.includes("は何")) topic = userInput.split("って何")[0];
+  if (userInput.includes("はなん")) topic = userInput.split("って何")[0];
+  if (topic !== "") keywords.push(topic);
+
+  // 2. Keyword extraction from goo API
+  await fetch('https://labs.goo.ne.jp/api/keyword', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ 
+      app_id: process.env.GOO_API_APP_ID,
+      title: "",
+      body: userInput,
+      max_num: 5,
+    })
+  })
+  .then(response => response.json())
+  .then(data => {
+    data.keywords.forEach(keyword => {
+      for (const [key, value] of Object.entries(keyword)) {
+        keywords.push(key);
+      }
+    });
+  });
+
+  return keywords;
+}
+
+function dictionarySearch(entry) {
+  // TODO
+  return "";
 }

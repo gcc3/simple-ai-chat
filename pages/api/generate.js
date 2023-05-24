@@ -1,5 +1,6 @@
 import { Configuration, OpenAIApi } from "openai";
 
+// OpenAI
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
@@ -108,6 +109,7 @@ function generateMessages(userInput) {
   let messages = [];
   // System message, important
   messages.push({ role: "system", content: role_content_system });
+  dict_search_result = dictionarySerach(userInput);
 
   // TODO here insert history messages (user and assistant messages)
   messages.push({ role: "user", content: userInput });
@@ -120,4 +122,23 @@ function generatePrompt(userInput) {
   // Add fine tune prompt end
   prompt = userInput + fine_tune_prompt_end;
   return prompt;
+}
+
+function dictionarySerach(userInput) {
+  // 1. Keyword extraction
+  console.log("Keyword extracting...")
+  fetch('https://labs.goo.ne.jp/api/keyword', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: JSON.stringify({ 
+      app_id: process.env.GOO_API_KEY, 
+      title: "",
+      body: userInput
+    })
+  }).then(response => response.json())
+  .then(data => {
+    console.log(data);
+  });
+
+  // 2. Search the keyword in the dictionary
 }
