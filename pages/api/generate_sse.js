@@ -37,9 +37,9 @@ export default async function (req, res) {
   + "temperature = " + process.env.TEMPERATURE + "\n"
   + "top_p = " + process.env.TOP_P + "\n"
   + "endpoint = " + process.env.END_POINT + "\n"
-  + "fine_tune_prompt_end = " + process.env.FINE_TUNE_PROMPT_END + "\n"
-  + "fine_tune_stop = " + process.env.FINE_TUNE_STOP + "\n"
-  + "role_content_system = " + process.env.ROLE_CONTENT_SYSTEM + "\n"
+  + "fine_tune_prompt_end (text) = " + process.env.FINE_TUNE_PROMPT_END + "\n"
+  + "fine_tune_stop (text) = " + process.env.FINE_TUNE_STOP + "\n"
+  + "role_content_system (chat) = " + process.env.ROLE_CONTENT_SYSTEM + "\n"
   + "prompt_prefix = " + process.env.PROMPT_PREFIX + "\n"
   + "prompt_suffix = " + process.env.PROMPT_SUFFIX + "\n"
   + "max_tokens = " + process.env.MAX_TOKENS + "\n");
@@ -57,10 +57,7 @@ export default async function (req, res) {
       // endpoint: /v1/chat/completions
       const chatCompletion = openai.createChatCompletion({
         model: process.env.MODEL,
-        messages: [
-          { role: "system", content: role_content_system },
-          { role: "user", content: userInput }
-        ],
+        messages: generateMessages(userInput),
         temperature: temperature,
         top_p: top_p,
         max_tokens: max_tokens,
@@ -158,11 +155,20 @@ export default async function (req, res) {
   }
 }
 
+function generateMessages(userInput) {
+  let messages = [];
+  // System message, important
+  messages.push({ role: "system", content: role_content_system });
+
+  // TODO here insert history messages (user and assistant messages)
+  messages.push({ role: "user", content: userInput });
+  return messages;
+}
+
 function generatePrompt(userInput) {
-  // TODO add prompt here
-  console.log("Input: " + userInput);
+  let prompt = "";
 
   // Add fine tune prompt end
-  userInput += fine_tune_prompt_end;
-  return userInput;
+  prompt = userInput + fine_tune_prompt_end;
+  return prompt;
 }
