@@ -143,7 +143,7 @@ function generatePrompt(userInput) {
 
 async function keywordExtraction(userInput) {
   let topics = [];
-  const sentences = userInput.split(/、|，|,|。|.|/);
+  const sentences = userInput.split(/[、，,。.]+/);
   for (const sentence of sentences) {
     // Simple extraction
     // Topic is a keyword
