@@ -8,29 +8,36 @@ cookies.set('useStream', "true", { sameSite: 'none', path: '/' });  // removed s
                                                                     // it will cause local server issue
 
 export default function Home() {
-  const [input, setInput] = useState("");
+  const [userInput, setUserInput] = useState("");
   const [output, setOutput] = useState();
   const [info, setInfo] = useState();
 
   async function onSubmit(event) {
     event.preventDefault();
-    if (input.trim().length == 0) {
+    if (userInput.trim().length == 0) {
       return;
     }
 
-    setInput("");
+    // Pre-process the input
+    let input = userInput.trim();
+    input = input.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+      return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+    });
+    setUserInput("");
+
     if (cookies.get('useStream') === "true") {
       // Use SSE request
-      generate_sse();
+      generate_sse(input);
     } else {
       // Use general API request
       setOutput("Generating...");
-      generate();
+      generate(input);
     }
   }
 
-  function generate_sse() {
+  function generate_sse(input) {
     document.getElementById("output").innerHTML = "";
+
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + input);
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
@@ -80,7 +87,7 @@ export default function Home() {
     };
   }
 
-  async function generate() {
+  async function generate(input) {
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -129,8 +136,8 @@ export default function Home() {
           <input
             type="text"
             placeholder="Say something..."
-            value={input}
-            onChange={(e) => setInput(e.target.value)}
+            value={userInput}
+            onChange={(e) => setUserInput(e.target.value)}
           />
           <input hidden type="submit" value="Submit" />
         </form>
