@@ -9,4 +9,4 @@ for line in Lines:
         print(row_buff[0] + ", length is not vaild. length = " + str(len(row_buff)))
         continue
     row_buff[0] = unicodedata.normalize('NFKC', row_buff[0])  # full-width to half-width
-    output.write(','.join(row_buff))
+    output.write('\",\"'.join(row_buff))
