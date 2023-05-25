@@ -37,7 +37,7 @@ export default async function (req, res) {
   let userInput = req.query.user_input || "";
   if (userInput.trim().length === 0) return;
   userInput = prompt_prefix + userInput + prompt_suffix;
-  console.log("\nInput (query_id = " + query_id + "):\n" + userInput + "\n");
+  console.log("Input (query_id = " + query_id + "):\n" + userInput + "\n");
 
   // Configuration info
   console.log("--- configuration info ---\n" 
