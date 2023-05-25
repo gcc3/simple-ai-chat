@@ -83,7 +83,7 @@ export default async function (req, res) {
 
     // Output the result
     if (result_text.trim().length === 0) result_text = "(null)";
-    console.log(chalk.blue("Output (query_id = "+ query_id + "):"));
+    console.log(chalk.blueBright("Output (query_id = "+ query_id + "):"));
     console.log(result_text + "\n");
     res.status(200).json({
       result: {

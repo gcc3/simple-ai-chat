@@ -78,7 +78,7 @@ export default async function (req, res) {
 
       res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
       chatCompletion.then(resp => {
-        if (stream_console) process.stdout.write(chalk.blue("Output (query_id = "+ query_id + "):\n"));
+        if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ query_id + "):\n"));
 
         resp.data.on('data', data => {
           const lines = data.toString().split('\n').filter(line => line.trim() !== '');
@@ -92,7 +92,7 @@ export default async function (req, res) {
                 process.stdout.write("\n\n");
               } else {
                 if (result_text.trim().length === 0) result_text = "(null)";
-                console.log(chalk.blue("Output (query_id = "+ query_id + "):"));
+                console.log(chalk.blueBright("Output (query_id = "+ query_id + "):"));
                 console.log(result_text + "\n");
               }
               res.flush();
@@ -128,7 +128,7 @@ export default async function (req, res) {
 
       res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
       completion.then(resp => {
-        if (stream_console) process.stdout.write(chalk.blue("Output (query_id = "+ query_id + "):\n"));
+        if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ query_id + "):\n"));
 
         resp.data.on('data', data => {
           const lines = data.toString().split('\n').filter(line => line.trim() !== '');
@@ -142,7 +142,7 @@ export default async function (req, res) {
                 process.stdout.write("\n\n");
               } else {
                 if (result_text.trim().length === 0) result_text = "(null)";
-                console.log(chalk.blue("Output (query_id = "+ query_id + "):"));
+                console.log(chalk.blueBright("Output (query_id = "+ query_id + "):"));
                 console.log(result_text + "\n");
               }
               res.flush();
