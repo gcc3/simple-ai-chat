@@ -26,11 +26,13 @@ export default async function (req, res) {
     return;
   }
 
+  const query_id = Date.now();
+
   // Input
   let userInput = req.body.user_input || "";
   if (userInput.trim().length === 0) return;
   userInput = prompt_prefix + userInput + prompt_suffix;
-  console.log("Input:\n" + userInput + "\n");
+  console.log("\nInput (query_id = " + query_id + "):\n" + userInput + "\n");
 
   // Configuration info
   console.log("--- configuration info ---\n" 
@@ -79,7 +81,7 @@ export default async function (req, res) {
 
     // Output the result
     if (result_text.trim().length === 0) result_text = "(null)";
-    console.log("Output:\n" + result_text + "\n");
+    console.log("Output (query_id = "+ query_id + "):\n" + result_text + "\n");
     res.status(200).json({
       result: {
         text : result_text, 

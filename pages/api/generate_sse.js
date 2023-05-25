@@ -31,11 +31,13 @@ export default async function (req, res) {
     return;
   }
 
+  const query_id = Date.now();
+
   // Input
   let userInput = req.query.user_input || "";
   if (userInput.trim().length === 0) return;
   userInput = prompt_prefix + userInput + prompt_suffix;
-  console.log("Input:\n" + userInput + "\n");
+  console.log("\nInput (query_id = " + query_id + "):\n" + userInput + "\n");
 
   // Configuration info
   console.log("--- configuration info ---\n" 
@@ -74,7 +76,7 @@ export default async function (req, res) {
 
       res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
       chatCompletion.then(resp => {
-        if (stream_console) process.stdout.write("Output:\n");
+        if (stream_console) process.stdout.write("Output (query_id = "+ query_id + "):\n");
 
         resp.data.on('data', data => {
           const lines = data.toString().split('\n').filter(line => line.trim() !== '');
@@ -88,7 +90,7 @@ export default async function (req, res) {
                 process.stdout.write("\n\n");
               } else {
                 if (result_text.trim().length === 0) result_text = "(null)";
-                console.log("Output:\n" + result_text + "\n");
+                console.log("Output (query_id = "+ query_id + "):\n" + result_text + "\n");
               }
               res.flush();
               res.end();
@@ -123,7 +125,7 @@ export default async function (req, res) {
 
       res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
       completion.then(resp => {
-        if (stream_console) process.stdout.write("Output:\n");
+        if (stream_console) process.stdout.write("Output (query_id = "+ query_id + "):\n");
 
         resp.data.on('data', data => {
           const lines = data.toString().split('\n').filter(line => line.trim() !== '');
@@ -137,7 +139,7 @@ export default async function (req, res) {
                 process.stdout.write("\n\n");
               } else {
                 if (result_text.trim().length === 0) result_text = "(null)";
-                console.log("Output:\n" + result_text + "\n");
+                console.log("Output (query_id = "+ query_id + "):\n" + result_text + "\n");
               }
               res.flush();
               res.end();
