@@ -43,16 +43,16 @@ export default async function (req, res) {
 
   // Configuration info
   console.log("--- configuration info ---\n" 
-  + "model = " + process.env.MODEL + "\n"
-  + "temperature = " + process.env.TEMPERATURE + "\n"
-  + "top_p = " + process.env.TOP_P + "\n"
-  + "endpoint = " + process.env.END_POINT + "\n"
-  + "fine_tune_prompt_end (text) = " + process.env.FINE_TUNE_PROMPT_END + "\n"
-  + "fine_tune_stop (text) = " + process.env.FINE_TUNE_STOP + "\n"
-  + "role_content_system (chat) = " + process.env.ROLE_CONTENT_SYSTEM + "\n"
-  + "prompt_prefix = " + process.env.PROMPT_PREFIX + "\n"
-  + "prompt_suffix = " + process.env.PROMPT_SUFFIX + "\n"
-  + "max_tokens = " + process.env.MAX_TOKENS + "\n");
+  + "model: " + process.env.MODEL + "\n"
+  + "temperature: " + process.env.TEMPERATURE + "\n"
+  + "top_p: " + process.env.TOP_P + "\n"
+  + "endpoint: " + process.env.END_POINT + "\n"
+  + "fine_tune_prompt_end (text): " + process.env.FINE_TUNE_PROMPT_END + "\n"
+  + "fine_tune_stop (text): " + process.env.FINE_TUNE_STOP + "\n"
+  + "role_content_system (chat): " + process.env.ROLE_CONTENT_SYSTEM + "\n"
+  + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
+  + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
+  + "max_tokens: " + process.env.MAX_TOKENS + "\n");
 
   try {
     let result_text = "";
@@ -117,7 +117,7 @@ export default async function (req, res) {
         console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
         console.error(error.message + "\n");
         console.log("--- query detail ---");
-        console.log(JSON.stringify(messages) + "\n");
+        console.log("message: " + JSON.stringify(messages) + "\n");
         res.write(`data: [ERR] ${error}\n\n`)
         res.end();
       });
@@ -176,7 +176,7 @@ export default async function (req, res) {
         console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
         console.error(error.message);
         console.log("--- query detail ---");
-        console.log(JSON.stringify(prompt) + "\n");
+        console.log("prompt: " +JSON.stringify(prompt) + "\n");
         res.write(`data: [ERR] ${error}\n\n`)
         res.end();
       });

@@ -38,16 +38,16 @@ export default async function (req, res) {
 
   // Configuration info
   console.log("--- configuration info ---\n" 
-  + "model = " + process.env.MODEL + "\n"
-  + "temperature = " + process.env.TEMPERATURE + "\n"
-  + "top_p = " + process.env.TOP_P + "\n"
-  + "endpoint = " + process.env.END_POINT + "\n"
-  + "fine_tune_prompt_end (text) = " + process.env.FINE_TUNE_PROMPT_END + "\n"
-  + "fine_tune_stop (text) = " + process.env.FINE_TUNE_STOP + "\n"
-  + "role_content_system (chat) = " + process.env.ROLE_CONTENT_SYSTEM + "\n")
-  + "prompt_prefix = " + process.env.PROMPT_PREFIX + "\n"
-  + "prompt_suffix = " + process.env.PROMPT_SUFFIX + "\n"
-  + "max_tokens = " + process.env.MAX_TOKENS + "\n";
+  + "model: " + process.env.MODEL + "\n"
+  + "temperature: " + process.env.TEMPERATURE + "\n"
+  + "top_p: " + process.env.TOP_P + "\n"
+  + "endpoint: " + process.env.END_POINT + "\n"
+  + "fine_tune_prompt_end (text): " + process.env.FINE_TUNE_PROMPT_END + "\n"
+  + "fine_tune_stop (text): " + process.env.FINE_TUNE_STOP + "\n"
+  + "role_content_system (chat): " + process.env.ROLE_CONTENT_SYSTEM + "\n"
+  + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
+  + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
+  + "max_tokens: " + process.env.MAX_TOKENS + "\n");
 
   try {
     let result_text = "";
