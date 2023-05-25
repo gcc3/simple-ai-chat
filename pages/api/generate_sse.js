@@ -19,7 +19,7 @@ const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
-const stream_console = process.env.STREAM_CONSOLE ? process.env.STREAM_CONSOLE : false;
+const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -51,7 +51,7 @@ export default async function (req, res) {
   + "max_tokens = " + process.env.MAX_TOKENS + "\n");
 
   try {
-    let result_text = "null";
+    let result_text = "";
 
     res.writeHead(200, {
       'connection': 'keep-alive',
@@ -84,8 +84,12 @@ export default async function (req, res) {
             // handle the DONE signal
             if (chunkData === '[DONE]') {
               res.write(`data: [DONE]\n\n`)
-              if (stream_console) process.stdout.write("\n\n");
-              else console.log("Output:\n" + result_text);
+              if (stream_console) {
+                process.stdout.write("\n\n");
+              } else {
+                if (result_text.trim().length === 0) result_text = "(null)";
+                console.log("Output:\n" + result_text + "\n");
+              }
               res.flush();
               res.end();
               return
@@ -129,8 +133,12 @@ export default async function (req, res) {
             // handle the DONE signal
             if (chunkData === '[DONE]') {
               res.write(`data: [DONE]\n\n`)
-              if (stream_console) process.stdout.write("\n\n");
-              else console.log("Output:\n" + result_text);
+              if (stream_console) {
+                process.stdout.write("\n\n");
+              } else {
+                if (result_text.trim().length === 0) result_text = "(null)";
+                console.log("Output:\n" + result_text + "\n");
+              }
               res.flush();
               res.end();
               return

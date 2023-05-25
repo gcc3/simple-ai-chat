@@ -46,7 +46,7 @@ export default async function (req, res) {
   + "max_tokens = " + process.env.MAX_TOKENS + "\n";
 
   try {
-    let result_text = "null";
+    let result_text = "";
 
     if (process.env.END_POINT === "chat_completion") {
       // endpoint: /v1/chat/completions
@@ -78,6 +78,7 @@ export default async function (req, res) {
     }
 
     // Output the result
+    if (result_text.trim().length === 0) result_text = "(null)";
     console.log("Output:\n" + result_text + "\n");
     res.status(200).json({
       result: {
