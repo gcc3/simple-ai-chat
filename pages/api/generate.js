@@ -124,7 +124,7 @@ async function generateMessages(userInput) {
     console.log("search result: " + definations + "\n");
 
     // Add definations to messages
-    definations.map(entry => {
+    definations.map(entry => { 
       const message = entry[0] + "についての説明は以下の通り：" + entry[1]
       messages.push({ role: "system", content: message });
     });
