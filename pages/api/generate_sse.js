@@ -19,6 +19,7 @@ const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
+const stream_console = process.env.STREAM_CONSOLE ? process.env.STREAM_CONSOLE : false;
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -50,6 +51,8 @@ export default async function (req, res) {
   + "max_tokens = " + process.env.MAX_TOKENS + "\n");
 
   try {
+    let result_text = "null";
+
     res.writeHead(200, {
       'connection': 'keep-alive',
       'Cache-Control': 'no-cache',
@@ -71,7 +74,7 @@ export default async function (req, res) {
 
       res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
       chatCompletion.then(resp => {
-        process.stdout.write("Output:\n");
+        if (stream_console) process.stdout.write("Output:\n");
 
         resp.data.on('data', data => {
           const lines = data.toString().split('\n').filter(line => line.trim() !== '');
@@ -81,7 +84,8 @@ export default async function (req, res) {
             // handle the DONE signal
             if (chunkData === '[DONE]') {
               res.write(`data: [DONE]\n\n`)
-              process.stdout.write("\n\n");
+              if (stream_console) process.stdout.write("\n\n");
+              else console.log("Output:\n" + result_text);
               res.flush();
               res.end();
               return
@@ -92,7 +96,7 @@ export default async function (req, res) {
             if (content) {
               let message = "";
               message = content.replaceAll("\n", "###RETURN###");
-              process.stdout.write(content);
+              if (stream_console) process.stdout.write(content); else result_text += content;
               res.write(`data: ${message}\n\n`)
             }
             res.flush();
@@ -115,7 +119,7 @@ export default async function (req, res) {
 
       res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
       completion.then(resp => {
-        process.stdout.write("Output:\n");
+        if (stream_console) process.stdout.write("Output:\n");
 
         resp.data.on('data', data => {
           const lines = data.toString().split('\n').filter(line => line.trim() !== '');
@@ -125,7 +129,8 @@ export default async function (req, res) {
             // handle the DONE signal
             if (chunkData === '[DONE]') {
               res.write(`data: [DONE]\n\n`)
-              process.stdout.write("\n\n");
+              if (stream_console) process.stdout.write("\n\n");
+              else console.log("Output:\n" + result_text);
               res.flush();
               res.end();
               return
@@ -136,7 +141,7 @@ export default async function (req, res) {
             if (text) {
               let message = "";
               message = text.replaceAll("\n", "###RETURN###");
-              process.stdout.write(text);
+              if (stream_console) process.stdout.write(text); else result_text += text;
               res.write(`data: ${message}\n\n`)
             }
             res.flush();

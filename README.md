@@ -57,6 +57,9 @@ Enable the dictionary search, value should be `true` or `false`
 Text extraction API  
 Get from https://labs.goo.ne.jp/apiusage/  
 
+* STREAM_CONSOLE  
+Control the stream in console or not, value should be `true` or `false`  
+If set to true then it will only support single session, for multiple session the text will be distort.  
 
 Setup
 -----
