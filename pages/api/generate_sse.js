@@ -111,7 +111,12 @@ export default async function (req, res) {
             res.flush();
           }
         });
-      })
+      }).catch(error => {
+        console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+        console.error(error.message);
+        res.write(`data: [ERR] ${error}\n\n`)
+        res.end();
+      });
     }
 
     if (process.env.END_POINT === "text_completion") {
@@ -161,7 +166,12 @@ export default async function (req, res) {
             res.flush();
           }
         });
-      })
+      }).catch(error => {
+        console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+        console.error(error.message);
+        res.write(`data: [ERR] ${error}\n\n`)
+        res.end();
+      });
     }
   } catch (error) {
     // Consider adjusting the error handling logic for your use case

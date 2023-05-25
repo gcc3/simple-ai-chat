@@ -54,8 +54,16 @@ export default function Home() {
 
       // Handle the DONE signal
       if (event.data === '[DONE]') {
-        openaiEssSrouce.close()
+        openaiEssSrouce.close();
         console.log("Session closed.")
+        return;
+      }
+
+      // Print error message
+      if (event.data.startsWith('[ERR]')) {
+        openaiEssSrouce.close();
+        document.getElementById("output").innerHTML += "(server error...)";
+        console.log(event.data);
         return;
       }
 
@@ -67,7 +75,8 @@ export default function Home() {
     };
 
     openaiEssSrouce.onerror = function(error) {
-      console.log("Stream Error: " + error);
+      console.log("Other Stream Error: " + error);
+      openaiEssSrouce.close();
     };
   }
 
