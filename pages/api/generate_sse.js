@@ -117,7 +117,7 @@ export default async function (req, res) {
         console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
         console.error(error.message + "\n");
         console.log("--- query detail ---");
-        console.log(messages + "\n");
+        console.log(JSON.stringify(messages) + "\n");
         res.write(`data: [ERR] ${error}\n\n`)
         res.end();
       });
@@ -176,7 +176,7 @@ export default async function (req, res) {
         console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
         console.error(error.message);
         console.log("--- query detail ---");
-        console.log(prompt + "\n");
+        console.log(JSON.stringify(prompt) + "\n");
         res.write(`data: [ERR] ${error}\n\n`)
         res.end();
       });
