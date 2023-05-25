@@ -66,10 +66,12 @@ export default async function (req, res) {
     });
 
     if (process.env.END_POINT === "chat_completion") {
+      const messages = await generateMessages(userInput);
+
       // endpoint: /v1/chat/completions
       const chatCompletion = openai.createChatCompletion({
         model: process.env.MODEL,
-        messages: await generateMessages(userInput),
+        messages: messages,
         temperature: temperature,
         top_p: top_p,
         max_tokens: max_tokens,
@@ -113,17 +115,21 @@ export default async function (req, res) {
         });
       }).catch(error => {
         console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
-        console.error(error.message);
+        console.error(error.message + "\n");
+        console.log("--- query detail ---");
+        console.log(messages + "\n");
         res.write(`data: [ERR] ${error}\n\n`)
         res.end();
       });
     }
 
     if (process.env.END_POINT === "text_completion") {
+      const prompt = generatePrompt(userInput);
+
       // endpoint: /v1/completions
       const completion = openai.createCompletion({
         model: process.env.MODEL,
-        prompt: generatePrompt(userInput),
+        prompt: prompt,
         temperature: temperature,
         top_p: top_p,
         stop: fine_tune_stop,
@@ -169,6 +175,8 @@ export default async function (req, res) {
       }).catch(error => {
         console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
         console.error(error.message);
+        console.log("--- query detail ---");
+        console.log(prompt + "\n");
         res.write(`data: [ERR] ${error}\n\n`)
         res.end();
       });
