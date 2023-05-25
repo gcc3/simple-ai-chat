@@ -211,7 +211,8 @@ async function generateMessages(userInput) {
     // Add definations to messages
     definations.map(entry => {
       const message = entry[0] + "についての説明は以下の通り：" + entry[1]
-      messages.push({ role: "system", content: message });
+      if (messages.length <= 8 )
+        messages.push({ role: "system", content: message });
     });
   }
 
@@ -317,7 +318,7 @@ async function dictionarySearch(entries) {
         break;
       }
     }
-    if (definations.length > 10) break;  // limit the number of definations
+    if (definations.length > 8) break;  // limit the number of definations
   }
   return definations;
 }
