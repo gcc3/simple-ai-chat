@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
+import chalk from 'chalk';
 
 // OpenAI
 const configuration = new Configuration({
@@ -32,7 +33,8 @@ export default async function (req, res) {
   let userInput = req.body.user_input || "";
   if (userInput.trim().length === 0) return;
   userInput = prompt_prefix + userInput + prompt_suffix;
-  console.log("Input (query_id = " + query_id + "):\n" + userInput + "\n");
+  console.log(chalk.yellowBright("Input (query_id = " + query_id + "):"));
+  console.log(userInput + "\n");
 
   // Configuration info
   console.log("--- configuration info ---\n" 
@@ -81,7 +83,8 @@ export default async function (req, res) {
 
     // Output the result
     if (result_text.trim().length === 0) result_text = "(null)";
-    console.log("Output (query_id = "+ query_id + "):\n" + result_text + "\n");
+    console.log(chalk.blue("Output (query_id = "+ query_id + "):"));
+    console.log(result_text + "\n");
     res.status(200).json({
       result: {
         text : result_text, 
