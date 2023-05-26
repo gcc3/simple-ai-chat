@@ -29,7 +29,7 @@ export async function generateMessages(userInput) {
     console.log("--- dictionary search ---");
     const entries = await keywordExtraction(userInput);
     const definations = await dictionarySearch(entries);
-    console.log("search result: " + definations + "\n");
+    console.log("search result: " + definations.join("/ ") + "\n");
 
     // Add definations to messages
     definations.map(entry => {
