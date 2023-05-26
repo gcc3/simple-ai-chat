@@ -57,10 +57,12 @@ export default async function (req, res) {
     let result_text = "";
 
     if (process.env.END_POINT === "chat_completion") {
+      const messages = await generateMessages(userInput);
+
       // endpoint: /v1/chat/completions
       const chatCompletion = await openai.createChatCompletion({
         model: process.env.MODEL,
-        messages: generateMessages(userInput),
+        messages: messages,
         temperature: temperature,
         top_p: top_p,
         max_tokens: max_tokens,
@@ -78,10 +80,12 @@ export default async function (req, res) {
     }
 
     if (process.env.END_POINT === "text_completion") {
+      const prompt = generatePrompt(userInput);
+
       // endpoint: /v1/completions
       const completion = await openai.createCompletion({
         model: process.env.MODEL,
-        prompt: generatePrompt(userInput),
+        prompt: prompt,
         temperature: temperature,
         top_p: top_p,
         stop: fine_tune_stop,
