@@ -204,8 +204,8 @@ async function generateMessages(userInput) {
   // Dictionary search
   if (process.env.DICT_SEARCH == "true") {
     console.log("--- dictionary search ---");
-    const keywords = await keywordExtraction(userInput);
-    const definations = await dictionarySearch(keywords);
+    const entries = await keywordExtraction(userInput);
+    const definations = await dictionarySearch(entries);
     console.log("search result: " + definations + "\n");
 
     // Add definations to messages
@@ -218,6 +218,7 @@ async function generateMessages(userInput) {
 
   // TODO here insert history messages (user and assistant messages)
   messages.push({ role: "user", content: userInput });
+  console.log("messages: " + JSON.stringify(messages) + "\n");
   return messages;
 }
 
@@ -303,22 +304,62 @@ async function keywordExtraction(userInput) {
   });
   console.log("morph: " + morph);
 
-  let entries = topics.concat(keywords).concat(ner).concat(morph);
-  return entries;
+  return {
+    topics: topics,
+    keywords: keywords,
+    ner: ner,
+    morph: morph,
+  };
 }
 
 async function dictionarySearch(entries) {
-  let definations = [];
+  const topics = entries.topics;
+  const keywords = entries.keywords;
+  const ner = entries.ner;
+  const morph = entries.morph;
+
+  let definations_topics = [];
+  let definations_keywords = [];
+  let definations_sub = [];
   const parser = fs.createReadStream("./dict.csv", { encoding: "utf8" })
   .pipe(parse({separator: ',', quote: '\"'}))
   for await (const record of parser) {
-    for (const entry of entries) {
-      if (record[0].includes(entry)) {
-        definations.push(record);
+    for (const topic of topics) {
+      if (record[0].includes(topic)) {
+        definations_topics.push(record);
         break;
       }
     }
-    if (definations.length > 8) break;  // limit the number of definations
+
+    for (const keyword of keywords) {
+      if (record[0].includes(keyword)) {
+        definations_keywords.push(record);
+        break;
+      }
+    }
+
+    for (const sub of ner.concat(morph)) {
+      if (record[0].includes(sub)) {
+        definations_sub.push(record);
+        break;
+      }
+    }
+  }
+
+  let definations = [];
+  for (const def of definations_topics) {
+    definations.push(def);
+    if (definations.length >= 8) break;
+  }
+
+  for (const def of definations_keywords) {
+    definations.push(def);
+    if (definations.length >= 8) break;
+  }
+
+  for (const def of definations_sub) {
+    definations.push(def);
+    if (definations.length >= 8) break;
   }
   return definations;
 }
