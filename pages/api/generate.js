@@ -63,7 +63,14 @@ export default async function (req, res) {
       });
 
       // Get result
-      result_text = chatCompletion.data.choices[0].message.content;
+      const choices = chatCompletion.data.choices;
+      if (!choices || choices.length === 0) {
+        console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+        console.error("No choice\n");
+        result_text = "(Silent...)";
+      } else {
+        result_text = choices[0].message.content;
+      }
     }
 
     if (process.env.END_POINT === "text_completion") {
@@ -78,7 +85,14 @@ export default async function (req, res) {
       });
 
       // Get result
-      result_text = completion.data.choices[0].text;
+      const choices = completion.data.choices;
+      if (!choices || choices.length === 0) {
+        console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+        console.error("No choice\n");
+        result_text = "(Silent...)";
+      } else {
+        result_text = choices[0].text;
+      }
     }
 
     // Output the result

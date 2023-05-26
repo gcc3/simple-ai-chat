@@ -103,7 +103,16 @@ export default async function (req, res) {
             }
 
             // handle the message
-            const content = JSON.parse(chunkData).choices[0].delta.content;
+            const choices = JSON.parse(chunkData).choices;
+            if (!choices || choices.length === 0) {
+              console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+              console.error("No choices\n");
+              res.write(`data: (Silent...)\n\n`)
+              res.flush();
+              res.end();
+              return;
+            }
+            const content = choices[0].delta.content;
             if (content) {
               let message = "";
               message = content.replaceAll("\n", "###RETURN###");
@@ -162,7 +171,16 @@ export default async function (req, res) {
             }
 
             // handle the message
-            const text = JSON.parse(chunkData).choices[0].text;
+            const choices = JSON.parse(chunkData).choices;
+            if (!choices || choices.length === 0) {
+              console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+              console.error("No choice\n");
+              res.write(`data: (Silent...)\n\n`)
+              res.flush();
+              res.end();
+              return;
+            }
+            const text = choices[0].text;
             if (text) {
               let message = "";
               message = text.replaceAll("\n", "###RETURN###");
@@ -211,7 +229,7 @@ async function generateMessages(userInput) {
     // Add definations to messages
     definations.map(entry => {
       const message = entry[0] + "についての説明は以下の通り：" + entry[1]
-      if (messages.length <= 8 )
+      if (messages.length <= 8)
         messages.push({ role: "system", content: message });
     });
   }
