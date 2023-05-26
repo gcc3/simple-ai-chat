@@ -1,7 +1,7 @@
 import { Configuration, OpenAIApi } from "openai";
 import chalk from 'chalk';
-import { generateMessages } from "./utils/prompt_utils";
-import { generatePrompt } from "./utils/prompt_utils";
+import { generateMessages } from "./utils/promptUtils";
+import { generatePrompt } from "./utils/promptUtils";
 
 // OpenAI
 const configuration = new Configuration({
