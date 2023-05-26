@@ -135,46 +135,51 @@ async function keywordExtraction(userInput) {
   };
 }
 
-async function dictionarySearch(entries) {
-  const topics = entries.topics;
-  const keywords = entries.keywords;
-  const ner = entries.ner;
-  const morph = entries.morph;
+async function dictionarySearch(target_entries) {
+  const topics = target_entries.topics;
+  const keywords = target_entries.keywords;
+  const ner = target_entries.ner;
+  const morph = target_entries.morph;
 
   let definations_topics = [];
   let definations_keywords = [];
   let definations_sub = [];
-  const parser = fs.createReadStream("./dict.csv", { encoding: "utf8" })
+  const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
   .pipe(parse({separator: ',', quote: '\"'}))
-  for await (const record of parser) {
+
+  // find definations
+  for await (const entry of dict) {
     let isMatch = false;
 
+    // topics has most priority
     for (const topic of topics) {
-      if (record[0].includes(topic)) {
-        definations_topics.push(record);
+      if (entry[0].includes(topic)) {
+        definations_topics.push(entry);
         isMatch = true;
         break;
       }
-      if (isMatch) break;
     }
+    if (isMatch) continue;
 
+    // keywords has second priority
     for (const keyword of keywords) {
-      if (record[0].includes(keyword)) {
-        definations_keywords.push(record);
+      if (entry[0].includes(keyword)) {
+        definations_keywords.push(entry);
         isMatch = true;
         break;
       }
-      if (isMatch) break;
     }
+    if (isMatch) continue;
 
+    // ner and morph has third priority
     for (const sub of ner.concat(morph)) {
-      if (record[0].includes(sub)) {
-        definations_sub.push(record);
+      if (entry[0].includes(sub)) {
+        definations_sub.push(entry);
         isMatch = true;
         break;
       }
-      if (isMatch) break;
     }
+    if (isMatch) continue;
   }
 
   let definations = [];
