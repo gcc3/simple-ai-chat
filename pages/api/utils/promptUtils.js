@@ -147,25 +147,33 @@ async function dictionarySearch(entries) {
   const parser = fs.createReadStream("./dict.csv", { encoding: "utf8" })
   .pipe(parse({separator: ',', quote: '\"'}))
   for await (const record of parser) {
+    let isMatch = false;
+
     for (const topic of topics) {
       if (record[0].includes(topic)) {
         definations_topics.push(record);
+        isMatch = true;
         break;
       }
+      if (isMatch) break;
     }
 
     for (const keyword of keywords) {
       if (record[0].includes(keyword)) {
         definations_keywords.push(record);
+        isMatch = true;
         break;
       }
+      if (isMatch) break;
     }
 
     for (const sub of ner.concat(morph)) {
       if (record[0].includes(sub)) {
         definations_sub.push(record);
+        isMatch = true;
         break;
       }
+      if (isMatch) break;
     }
   }
 
