@@ -9,6 +9,7 @@ cookies.set('useStream', "true", { sameSite: 'none', path: '/' });  // removed s
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
+  const [placeholder, setPlaceholder] = useState("Say something...");
   const [output, setOutput] = useState();
   const [info, setInfo] = useState();
 
@@ -20,6 +21,7 @@ export default function Home() {
 
     // Pre-process the input
     let input = userInput.trim();
+    setPlaceholder(userInput);
     input = input.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
@@ -135,7 +137,7 @@ export default function Home() {
         <form onSubmit={onSubmit}>
           <input
             type="text"
-            placeholder="Say something..."
+            placeholder={placeholder}
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
           />
