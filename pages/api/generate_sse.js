@@ -34,13 +34,6 @@ export default async function (req, res) {
 
   const query_id = Date.now();
 
-  // Input
-  let userInput = req.query.user_input || "";
-  if (userInput.trim().length === 0) return;
-  userInput = prompt_prefix + userInput + prompt_suffix;
-  console.log(chalk.yellowBright("Input (query_id = " + query_id + "):"));
-  console.log(userInput + "\n");
-
   // Configuration info
   console.log("--- configuration info ---\n" 
   + "model: " + process.env.MODEL + "\n"
@@ -53,6 +46,13 @@ export default async function (req, res) {
   + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
   + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
   + "max_tokens: " + process.env.MAX_TOKENS + "\n");
+
+  // Input
+  let userInput = req.query.user_input || "";
+  if (userInput.trim().length === 0) return;
+  userInput = prompt_prefix + userInput + prompt_suffix;
+  console.log(chalk.yellowBright("Input (query_id = " + query_id + "):"));
+  console.log(userInput + "\n");
 
   try {
     let result_text = "";

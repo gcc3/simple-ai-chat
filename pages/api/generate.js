@@ -1,4 +1,5 @@
 import { Configuration, OpenAIApi } from "openai";
+import { parse } from 'csv-parse';
 import chalk from 'chalk';
 
 // OpenAI
@@ -6,6 +7,9 @@ const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+
+// For csv paser
+const fs = require("fs");
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -16,6 +20,7 @@ const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
+const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -29,13 +34,6 @@ export default async function (req, res) {
 
   const query_id = Date.now();
 
-  // Input
-  let userInput = req.body.user_input || "";
-  if (userInput.trim().length === 0) return;
-  userInput = prompt_prefix + userInput + prompt_suffix;
-  console.log(chalk.yellowBright("Input (query_id = " + query_id + "):"));
-  console.log(userInput + "\n");
-
   // Configuration info
   console.log("--- configuration info ---\n" 
   + "model: " + process.env.MODEL + "\n"
@@ -48,6 +46,13 @@ export default async function (req, res) {
   + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
   + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
   + "max_tokens: " + process.env.MAX_TOKENS + "\n");
+
+  // Input
+  let userInput = req.body.user_input || "";
+  if (userInput.trim().length === 0) return;
+  userInput = prompt_prefix + userInput + prompt_suffix;
+  console.log(chalk.yellowBright("Input (query_id = " + query_id + "):"));
+  console.log(userInput + "\n");
 
   try {
     let result_text = "";
