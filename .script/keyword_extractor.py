@@ -21,7 +21,7 @@ def get_keywords(text):
 lines = input.readlines()
 for idx, line in enumerate(lines):
     if idx == 0: continue;
-    time.sleep(1)
+    time.sleep(10)
     
     # 1. pre-process
     row_buff = line.split("\",\"")
