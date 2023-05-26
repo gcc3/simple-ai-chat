@@ -47,3 +47,7 @@ for idx, line in enumerate(lines):
     
     print(str(idx) + ":" + row_buff[2])
     output.write(','.join(row_buff) + "\n")
+
+# close file
+input.close()
+output.close()

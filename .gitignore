@@ -33,3 +33,7 @@ yarn-error.log*
 # dict
 dict.csv
 dict_buff.csv
+
+# vscode
+.vscode
+```
