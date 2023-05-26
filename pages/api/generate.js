@@ -20,7 +20,6 @@ const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
-const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -139,14 +138,15 @@ async function generateMessages(userInput) {
   // Dictionary search
   if (process.env.DICT_SEARCH == "true") {
     console.log("--- dictionary search ---");
-    const keywords = await keywordExtraction(userInput);
-    const definations = await dictionarySearch(keywords);
+    const entries = await keywordExtraction(userInput);
+    const definations = await dictionarySearch(entries);
     console.log("search result: " + definations + "\n");
 
     // Add definations to messages
     definations.map(entry => {
       const message = entry[0] + "についての説明は以下の通り：" + entry[1]
-      messages.push({ role: "system", content: message });
+      if (messages.length <= 8)
+        messages.push({ role: "system", content: message });
     });
   }
 
@@ -237,22 +237,62 @@ async function keywordExtraction(userInput) {
   });
   console.log("morph: " + morph);
 
-  let entries = topics.concat(keywords).concat(ner).concat(morph);
-  return entries;
+  return {
+    topics: topics,
+    keywords: keywords,
+    ner: ner,
+    morph: morph,
+  };
 }
 
 async function dictionarySearch(entries) {
-  let definations = [];
+  const topics = entries.topics;
+  const keywords = entries.keywords;
+  const ner = entries.ner;
+  const morph = entries.morph;
+
+  let definations_topics = [];
+  let definations_keywords = [];
+  let definations_sub = [];
   const parser = fs.createReadStream("./dict.csv", { encoding: "utf8" })
   .pipe(parse({separator: ',', quote: '\"'}))
   for await (const record of parser) {
-    for (const entry of entries) {
-      if (record[0].includes(entry)) {
-        definations.push(record);
+    for (const topic of topics) {
+      if (record[0].includes(topic)) {
+        definations_topics.push(record);
         break;
       }
     }
-    if (definations.length > 10) break;  // limit the number of definations
+
+    for (const keyword of keywords) {
+      if (record[0].includes(keyword)) {
+        definations_keywords.push(record);
+        break;
+      }
+    }
+
+    for (const sub of ner.concat(morph)) {
+      if (record[0].includes(sub)) {
+        definations_sub.push(record);
+        break;
+      }
+    }
+  }
+
+  let definations = [];
+  for (const def of definations_topics) {
+    definations.push(def);
+    if (definations.length >= 8) break;
+  }
+
+  for (const def of definations_keywords) {
+    definations.push(def);
+    if (definations.length >= 8) break;
+  }
+
+  for (const def of definations_sub) {
+    definations.push(def);
+    if (definations.length >= 8) break;
   }
   return definations;
 }

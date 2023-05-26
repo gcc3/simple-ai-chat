@@ -236,7 +236,6 @@ async function generateMessages(userInput) {
 
   // TODO here insert history messages (user and assistant messages)
   messages.push({ role: "user", content: userInput });
-  console.log("messages: " + JSON.stringify(messages) + "\n");
   return messages;
 }
 

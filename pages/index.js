@@ -1,17 +1,16 @@
 import Head from "next/head";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import styles from "./index.module.css";
-import Cookies from 'universal-cookie';
-
-const cookies = new Cookies();
-cookies.set('useStream', "true", { sameSite: 'none', path: '/' });  // removed secure: true
-                                                                    // it will cause local server issue
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [placeholder, setPlaceholder] = useState("Say something...");
   const [output, setOutput] = useState();
   const [info, setInfo] = useState();
+
+  useEffect(() => {
+    localStorage.setItem('useStream', "true");
+  }, []);
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -27,7 +26,7 @@ export default function Home() {
     });
     setUserInput("");
 
-    if (cookies.get('useStream') === "true") {
+    if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
       generate_sse(input);
     } else {
