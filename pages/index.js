@@ -50,8 +50,8 @@ export default function Home() {
       if (event.data.startsWith("###ENV###")) {
         const env = event.data.replace("###ENV###", "").split(',');
         const model = env[0];
-        const temperature = env[1];
-        const top_p = env[2];
+        const temperature = env[1];  // not used
+        const top_p = env[2];        // not used
         setInfo((
           <div>
             model: {model}
