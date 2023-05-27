@@ -18,6 +18,33 @@ export default function Home() {
       return;
     }
 
+    // Command input
+    if (userInput.startsWith(":")) {
+      if (userInput.startsWith(":help")) {
+        setOutput(
+          <div>
+            <div>Commands:</div>
+            <div>:help - Show this help message.</div>
+            <div>:stream [true|false] - Switch on/off stream mode.</div>
+          </div>
+        );
+      }
+
+      if (userInput.startsWith(":stream")) {
+        if (userInput.endsWith("false")) {
+          localStorage.setItem('useStream', "false");
+          setOutput("Switched to general mode.");
+        } else if (userInput.endsWith("true")) {
+          localStorage.setItem('useStream', "true");
+          setOutput("Switched to stream mode.");
+        } else {
+          setOutput("Usage: :stream [true|false]");
+        }
+      }
+      setUserInput("");
+      return;
+    }
+
     // Pre-process the input
     let input = userInput.trim();
     setPlaceholder(userInput);
@@ -70,7 +97,7 @@ export default function Home() {
       // Print error message
       if (event.data.startsWith('[ERR]')) {
         openaiEssSrouce.close();
-        document.getElementById("output").innerHTML += "(server error...)";
+        document.getElementById("output").innerHTML += "Server error.";
         console.log(event.data);
         return;
       }
