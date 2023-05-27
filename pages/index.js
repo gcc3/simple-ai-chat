@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import styles from "./index.module.css";
-import command from "./command.js";
+import command from "../command.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
