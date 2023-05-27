@@ -3,6 +3,7 @@
 // to generte messages for chatCompletion
 // extracting keywords, and searching dictionary
 import { parse } from 'csv-parse';
+import fs from 'fs';
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -14,9 +15,6 @@ const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : ""
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
-
-// For csv paser
-const fs = require("fs");
 
 // Generate messages for chatCompletion
 export async function generateMessages(userInput) {
@@ -145,7 +143,7 @@ async function dictionarySearch(target_entries) {
   let definations_keywords = [];
   let definations_sub = [];
   const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
-  .pipe(parse({separator: ',', quote: '\"'}))
+  .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 
   // find definations
   for await (const entry of dict) {

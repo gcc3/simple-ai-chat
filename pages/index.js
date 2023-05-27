@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import styles from "./index.module.css";
+import commands from "./commands.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
@@ -20,27 +21,14 @@ export default function Home() {
 
     // Command input
     if (userInput.startsWith(":")) {
-      if (userInput.startsWith(":help")) {
-        setOutput(
-          <div>
-            <div>Commands:</div>
-            <div>:help - Show this help message.</div>
-            <div>:stream [true|false] - Switch on/off stream mode.</div>
-          </div>
-        );
+      if (userInput.startsWith(":clear")) {
+        setOutput("");
+        setUserInput("");
+        return;
       }
 
-      if (userInput.startsWith(":stream")) {
-        if (userInput.endsWith("false")) {
-          localStorage.setItem('useStream', "false");
-          setOutput("Switched to general mode.");
-        } else if (userInput.endsWith("true")) {
-          localStorage.setItem('useStream', "true");
-          setOutput("Switched to stream mode.");
-        } else {
-          setOutput("Usage: :stream [true|false]");
-        }
-      }
+      setOutput(await commands(userInput));
+      setPlaceholder(userInput);
       setUserInput("");
       return;
     }
