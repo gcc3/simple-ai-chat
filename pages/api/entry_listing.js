@@ -1,5 +1,4 @@
-import { parse } from 'csv-parse';
-import fs from 'fs';
+import { dictionaryEntrisListing } from './utils/dictionaryUtils';
 
 export default async function (req, res) {
   try {
@@ -22,16 +21,4 @@ export default async function (req, res) {
       },
     });
   }
-}
-
-async function dictionaryEntrisListing() {
-  let entries = [];
-  const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
-  .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
-
-  // find entries
-  for await (const [entry, def] of dict) {
-    entries.push(entry);
-  }
-  return entries;
 }

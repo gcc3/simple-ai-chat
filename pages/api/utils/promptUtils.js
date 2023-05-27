@@ -2,8 +2,7 @@
 // to generate prompt for textCompletion
 // to generte messages for chatCompletion
 // extracting keywords, and searching dictionary
-import { parse } from 'csv-parse';
-import fs from 'fs';
+import { dictionarySearch } from './dictionaryUtils.js';
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -128,72 +127,6 @@ async function keywordExtraction(userInput) {
   return {
     topics: topics,
     keywords: keywords,
-    ner: ner,
-    morph: morph,
+    sub: ner.concat(morph)
   };
-}
-
-async function dictionarySearch(target_entries) {
-  const topics = target_entries.topics;
-  const keywords = target_entries.keywords;
-  const ner = target_entries.ner;
-  const morph = target_entries.morph;
-
-  let definations_topics = [];
-  let definations_keywords = [];
-  let definations_sub = [];
-  const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
-  .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
-
-  // find definations
-  for await (const entry of dict) {
-    let isMatch = false;
-
-    // topics has most priority
-    for (const topic of topics) {
-      if (entry[0].includes(topic)) {
-        definations_topics.push(entry);
-        isMatch = true;
-        break;
-      }
-    }
-    if (isMatch) continue;
-
-    // keywords has second priority
-    for (const keyword of keywords) {
-      if (entry[0].includes(keyword)) {
-        definations_keywords.push(entry);
-        isMatch = true;
-        break;
-      }
-    }
-    if (isMatch) continue;
-
-    // ner and morph has third priority
-    for (const sub of ner.concat(morph)) {
-      if (entry[0].includes(sub)) {
-        definations_sub.push(entry);
-        isMatch = true;
-        break;
-      }
-    }
-    if (isMatch) continue;
-  }
-
-  let definations = [];
-  for (const def of definations_topics) {
-    definations.push(def);
-    if (definations.length >= 8) break;
-  }
-
-  for (const def of definations_keywords) {
-    definations.push(def);
-    if (definations.length >= 8) break;
-  }
-
-  for (const def of definations_sub) {
-    definations.push(def);
-    if (definations.length >= 8) break;
-  }
-  return definations;
 }
