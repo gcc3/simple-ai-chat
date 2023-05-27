@@ -4,10 +4,10 @@ export default function stream(args) {
   
   if (onoff === "on") {
     localStorage.setItem('useStream', "true");
-    return "Switched to general mode.";
+    return "Switched to stream mode.";
   } else if (onoff === "off") {
     localStorage.setItem('useStream', "false");
-    return "Switched to stream mode.";
+    return "Switched to general mode.";
   } else {
     return "Usage: :stream [true|false]";
   }
