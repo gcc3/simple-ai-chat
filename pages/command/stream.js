@@ -1,7 +1,6 @@
 
-export default function stream(userInput) {
-  const args = userInput.split(' ');
-  const onoff = args[1];
+export default function stream(args) {
+  const onoff = args[0];
   
   if (onoff === "on") {
     localStorage.setItem('useStream', "true");

@@ -1,16 +1,45 @@
 import { parse } from 'csv-parse';
 import fs from 'fs';
+import chalk from 'chalk';
 
-export async function dictionaryEntrisListing() {
-  let entries = [];
+export async function dictionaryEntryListing() {
+  let words = [];
   const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
   .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 
-  // find entries
-  for await (const [entry, def] of dict) {
-    entries.push(entry);
+  // find words
+  for await (const [word, def] of dict) {
+    words.push(word);
   }
-  return entries;
+  return words;
+}
+
+export async function dictionaryEntryAdd(word, defination) {
+  const createCsvWriter = require('csv-writer').createObjectCsvWriter;
+  const csvWriter = createCsvWriter({
+    path: 'dict.csv',
+    header: [
+        {id: 'word', title: 'word'},
+        {id: 'defination', title: 'defination'}
+    ],
+    append: true,
+    fieldDelimiter: ',',
+    recordDelimiter: '\n',
+    alwaysQuote: true,
+  });
+
+  const entry = {
+    word: word,
+    defination: defination,
+  };
+
+  await csvWriter
+    .writeRecords([entry])
+    .then(() => {
+        console.log(chalk.greenBright("New entry added: " + JSON.stringify(entry)));
+    });
+
+  return entry;
 }
 
 export async function dictionarySearch({ topics, keywords, sub }) {
