@@ -49,10 +49,6 @@ export default async function entry(args) {
     }
     return "";
   }
-  
-  if (command === "rm" || command === "remove") {
-    return "Usage: :entry [add|remove|list]";
-  }
 
-  return "Usage: :entry [add|remove|list]";
+  return "Usage: :entry [ls|list|add]";
 }
