@@ -1,7 +1,7 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
 import styles from "./index.module.css";
-import commands from "./commands.js";
+import command from "./command.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
@@ -28,7 +28,7 @@ export default function Home() {
         return;
       }
 
-      const commandResult = await commands(userInput);
+      const commandResult = await command(userInput);
       console.log("Command result: " + commandResult);
       setOutput(commandResult);
       setPlaceholder(userInput);
