@@ -21,13 +21,16 @@ export default function Home() {
 
     // Command input
     if (userInput.startsWith(":")) {
+      console.log("Command input: " + userInput)
       if (userInput.startsWith(":clear")) {
         setOutput("");
         setUserInput("");
         return;
       }
 
-      setOutput(await commands(userInput));
+      const commandResult = await commands(userInput);
+      console.log("Command result: " + commandResult);
+      setOutput(commandResult);
       setPlaceholder(userInput);
       setUserInput("");
       return;
