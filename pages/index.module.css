@@ -38,9 +38,11 @@
 .main input[type="text"] {
   padding: 10px 14px;
   border: 1.5px solid #aaaaaa;
-  border-radius: 1px;
+  border-radius: 3px;
   margin-bottom: 24px;
+  outline: 0;
   outline-color: #adadad;
+  box-shadow: none;
 }
 .main ::placeholder {
   color: #8e8ea0;
