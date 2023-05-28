@@ -2,6 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "./utils/promptUtils";
 import { generatePrompt } from "./utils/promptUtils";
+import { logfile } from "./utils/logUtils.js";
 
 // OpenAI
 const configuration = new Configuration({
@@ -46,11 +47,11 @@ export default async function (req, res) {
   + "max_tokens: " + process.env.MAX_TOKENS + "\n");
 
   // Input
-  let userInput = req.query.user_input || "";
-  if (userInput.trim().length === 0) return;
-  userInput = prompt_prefix + userInput + prompt_suffix;
+  let input = req.query.user_input || "";
+  if (input.trim().length === 0) return;
+  input = prompt_prefix + input + prompt_suffix;
   console.log(chalk.yellowBright("Input (query_id = " + query_id + "):"));
-  console.log(userInput + "\n");
+  console.log(input + "\n");
 
   try {
     let result_text = "";
@@ -65,7 +66,7 @@ export default async function (req, res) {
     });
 
     if (process.env.END_POINT === "chat_completion") {
-      const generateMessagesResult = await generateMessages(userInput);
+      const generateMessagesResult = await generateMessages(input);
       score = generateMessagesResult.score;
 
       // endpoint: /v1/chat/completions
@@ -99,6 +100,7 @@ export default async function (req, res) {
                 console.log(chalk.blueBright("Output (query_id = "+ query_id + "):"));
                 console.log(result_text + "\n");
               }
+              logfile("T=" + query_id + ",Q=" + input + ",A=" + result_text);
               res.flush();
               res.end();
               return
@@ -135,7 +137,7 @@ export default async function (req, res) {
     }
 
     if (process.env.END_POINT === "text_completion") {
-      const prompt = generatePrompt(userInput);
+      const prompt = generatePrompt(input);
 
       // endpoint: /v1/completions
       const completion = openai.createCompletion({
@@ -169,6 +171,7 @@ export default async function (req, res) {
                 console.log(chalk.blueBright("Output (query_id = "+ query_id + "):"));
                 console.log(result_text + "\n");
               }
+              logfile("T=" + query_id + ",Q=" + input + ",A=" + result_text);
               res.flush();
               res.end();
               return

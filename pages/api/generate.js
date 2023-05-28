@@ -46,18 +46,18 @@ export default async function (req, res) {
   + "max_tokens: " + process.env.MAX_TOKENS + "\n");
 
   // Input
-  let userInput = req.body.user_input || "";
-  if (userInput.trim().length === 0) return;
-  userInput = prompt_prefix + userInput + prompt_suffix;
+  let input = req.body.user_input || "";
+  if (input.trim().length === 0) return;
+  input = prompt_prefix + input + prompt_suffix;
   console.log(chalk.yellowBright("Input (query_id = " + query_id + "):"));
-  console.log(userInput + "\n");
+  console.log(input + "\n");
 
   try {
     let result_text = "";
     let score = 0;
 
     if (process.env.END_POINT === "chat_completion") {
-      const generateMessagesResult = await generateMessages(userInput);
+      const generateMessagesResult = await generateMessages(input);
       score = generateMessagesResult.score;
 
       // endpoint: /v1/chat/completions
@@ -81,7 +81,7 @@ export default async function (req, res) {
     }
 
     if (process.env.END_POINT === "text_completion") {
-      const prompt = generatePrompt(userInput);
+      const prompt = generatePrompt(input);
 
       // endpoint: /v1/completions
       const completion = await openai.createCompletion({
@@ -108,6 +108,7 @@ export default async function (req, res) {
     if (result_text.trim().length === 0) result_text = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ query_id + "):"));
     console.log(result_text + "\n");
+    logfile("T=" + query_id + ",Q=" + input + ",A=" + result_text);
     res.status(200).json({
       result: {
         text : result_text,
