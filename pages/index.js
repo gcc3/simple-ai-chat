@@ -149,9 +149,9 @@ export default function Home() {
       if (localStorage.getItem('useStats') === "true") {
         setStats((
           <div>
-            score: {data.result.score}<br></br>
-            temperature: {data.result.temperature}<br></br>
-            top_p: {data.result.top_p}<br></br>
+            score: {data.result.stats.score}<br></br>
+            temperature: {data.result.stats.temperature}<br></br>
+            top_p: {data.result.stats.top_p}<br></br>
           </div>
         ));
       }

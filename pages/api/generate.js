@@ -110,12 +110,14 @@ export default async function (req, res) {
     console.log(result_text + "\n");
     res.status(200).json({
       result: {
-        text : result_text, 
-        info: {
-          model: process.env.MODEL,
+        text : result_text,
+        stats: {
           temperature: process.env.TEMPERATURE,
           top_p: process.env.TOP_P,
           score: score,
+        },
+        info: {
+          model: process.env.MODEL,
         }
       },
     });
