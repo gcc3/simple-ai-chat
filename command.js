@@ -1,7 +1,7 @@
 
-import help from "./command/help.js";
-import stream from "./command/stream.js";
-import entry from "./command/entry.js";
+import help from "./commands/help.js";
+import stream from "./commands/stream.js";
+import entry from "./commands/entry.js";
 
 export default function commands(userInput) {
   const args = userInput.trim()
