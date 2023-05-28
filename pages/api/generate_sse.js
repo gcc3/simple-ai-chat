@@ -100,7 +100,7 @@ export default async function (req, res) {
                 console.log(chalk.blueBright("Output (query_id = "+ query_id + "):"));
                 console.log(result_text + "\n");
               }
-              logfile("T=" + query_id + ",Q=" + input + ",A=" + result_text, req);
+              logfile("T=" + query_id + " Q=" + input + " A=" + result_text, req);
               res.flush();
               res.end();
               return
@@ -171,7 +171,7 @@ export default async function (req, res) {
                 console.log(chalk.blueBright("Output (query_id = "+ query_id + "):"));
                 console.log(result_text + "\n");
               }
-              logfile("T=" + query_id + ",Q=" + input + ",A=" + result_text, req);
+              logfile("T=" + query_id + " Q=" + input + " A=" + result_text, req);
               res.flush();
               res.end();
               return
