@@ -15,35 +15,30 @@ export default function Home() {
 
   async function onSubmit(event) {
     event.preventDefault();
-    if (userInput.trim().length == 0) {
-      return;
-    }
+
+    // Pre-process the input
+    const input = userInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+      return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
+    });
+    if (input.length == 0) return;
+    setPlaceholder(userInput);
+    setUserInput("");
 
     // Command input
-    if (userInput.startsWith(":")) {
-      console.log("Command input: " + userInput)
-      if (userInput.startsWith(":clear")) {
+    if (input.startsWith(":")) {
+      console.log("Command Input: " + input)
+      if (input.startsWith(":clear")) {
         setOutput("");
-        setUserInput("");
         return;
       }
 
-      const commandResult = await command(userInput);
-      console.log("Command result: " + commandResult);
+      const commandResult = await command(input);
+      console.log("Command Result: " + commandResult);
       setOutput(commandResult);
-      setPlaceholder(userInput);
-      setUserInput("");
       return;
     }
 
-    // Pre-process the input
-    let input = userInput.trim();
-    setPlaceholder(userInput);
-    input = input.replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
-      return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-    });
-    setUserInput("");
-
+    // Normal input
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
       generate_sse(input);

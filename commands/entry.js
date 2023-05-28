@@ -28,7 +28,6 @@ export default async function entry(args) {
       return "Usage: :entry add [word] [definition]";
     }
 
-    console.log(args[1])
     if (!args[1].startsWith("\"") || !args[1].endsWith("\"") 
     || !args[2].startsWith("\"") || !args[2].endsWith("\"")) {
       return "Word and definition must be quoted with double quotes.";
@@ -40,7 +39,7 @@ export default async function entry(args) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ word: args[1].replaceAll("\"", ""), defination: args[2].replaceAll("\"", "") }),
+        body: JSON.stringify({ word: args[1].replace(/[",]+/g, ""), defination: args[2].replace(/[",]+/g, "") }),
       });
 
       const data = await response.json();

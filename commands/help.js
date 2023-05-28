@@ -1,4 +1,4 @@
-export default function help() {
+export default function help(args) {
   const commands = "Commands: \n" +
     ":help - Show this help message.\n" +
     ":entry [ls|list|add] - Manage dictionary entries.\n" +
