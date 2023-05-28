@@ -60,6 +60,7 @@ async function keywordExtraction(userInput) {
     else if (sentence.includes("とは")) topic = sentence.substring(0, sentence.search("とは"));
     else if (sentence.includes("は何")) topic = sentence.substring(0, sentence.search("は何"));
     else if (sentence.includes("はなん")) topic = sentence.substring(0, sentence.search("はなん"));
+    else if (sentence.includes("ってなん")) topic = sentence.substring(0, sentence.search("ってなん"));
     if (topic !== "") topics.push(topic.trim());
   }
   console.log("topics: " + topics);
