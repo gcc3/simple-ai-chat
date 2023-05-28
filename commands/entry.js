@@ -15,7 +15,11 @@ export default async function entry(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return data.result.entries.join(" ");
+      if (data.result.entries.length === 0) {
+        return "No entry found.";
+      } else {
+        return data.result.entries.join(" ");
+      }
     } catch (error) {
       console.error(error);
       alert(error.message);
