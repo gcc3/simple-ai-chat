@@ -13,6 +13,7 @@ export default function commands(input) {
     // Has arguments
     command = input.substring(0, input.indexOf(' '));
     args = extractArgs(input.substring(input.indexOf(' ') + 1));
+    console.log("Command Arguments: " + args);
   }
   
   if (command.startsWith(":help")) return help(args);

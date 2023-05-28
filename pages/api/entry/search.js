@@ -4,7 +4,10 @@ export default async function (req, res) {
   try {
     // Get the keyword
     const keyword = req.body.keyword || "";
+    console.log("Searching for keyword: \"" + keyword + "\"...")
+
     const dictionarySearchResult = await simpleDictionarySearch(keyword);
+    console.log("Found entries: " + dictionarySearchResult.entries + "\n");
 
     // Output the result
     res.status(200).json({

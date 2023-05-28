@@ -6,6 +6,13 @@ export default async function search(args) {
   if (!args[0].startsWith("\"") || !args[0].endsWith("\"")) {
     return "Keyword must be quoted with double quotes.";
   }
+
+  // Remove double quotes
+  for (const arg of args) {
+    if (arg.startsWith("\"") && arg.endsWith("\"")) {
+      args[args.indexOf(arg)] = arg.substring(1, arg.length - 1);
+    }
+  }
   
   const keyword = args[0];
   try {

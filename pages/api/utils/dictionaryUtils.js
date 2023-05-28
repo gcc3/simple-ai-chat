@@ -113,7 +113,7 @@ export async function dictionarySearch({ topics, keywords, sub }) {
   };
 }
 
-export async function simpleDictionarySearch(keywords) {
+export async function simpleDictionarySearch(keyword) {
   let entries = [];
   let entries_keywords = [];
 
@@ -122,21 +122,15 @@ export async function simpleDictionarySearch(keywords) {
 
   // find definations
   for await (const entry of dict) {
-    let isMatch = false;
-
     // keywords
-    for (const keyword of keywords) {
-      if (entry[0].includes(keyword)) {
-        entries_keywords.push(entry);
-        isMatch = true;
-        break;
-      }
+    if (entry[0].includes(keyword)) {
+      console.log(entry[0]);
+      entries_keywords.push(entry);
     }
-    if (isMatch) continue;
   }
 
-  for (const def of entries_keywords) {
-    entries.push(def);
+  for (const entry of entries_keywords) {
+    entries.push(entry);
     if (entries.length >= 15) break;
   }
   
