@@ -52,7 +52,8 @@ Control the max tokens generate in the chat completion.
 
 * DICT_SEARCH  
 Enable the dictionary search, value should be `true` or `false`  
-Create `dict.csv` file from `dict.csv.example` before using this.  
+To use this feature, GOO_API_APP_ID must be set.  
+`dict.csv` should be create before using this feature.  
 
 * GOO_API_APP_ID  
 Text extraction API  
@@ -65,26 +66,26 @@ If set to true then it will only support single session, for multiple session th
 Setup
 -----
 
-1. Install the requirements
+1. Install the requirements  
 
-   ```bash
-   $ npm install
-   $ npm install next -g
-   ```
+   ```bash  
+   $ npm install  
+   $ npm install next -g  
+   ```  
 
-2. Make a copy of the example environment variables file
+2. Make a copy of the example environment variables file  
 
-   ```bash
-   $ cp .env.example .env
-   ```
+   ```bash  
+   $ cp .env.example .env  
+   ```  
 
-3. Run the app
+3. Run the app  
 
-   ```bash
-   $ npm run dev
-   ```
+   ```bash  
+   $ npm run dev  
+   ```  
    
-4. Create `dict.csv` (optional)
+4. Create `dict.csv` (optional)  
 
-  The format should be "entry", "defination"
+  Create `dict.csv` file from `dict.csv.example` before using dictionary search feature.  
   
