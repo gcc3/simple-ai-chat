@@ -4,14 +4,19 @@ import chalk from 'chalk';
 
 export async function dictionaryEntryListing() {
   let words = [];
-  const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
-  .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 
-  // find words
-  for await (const [word, def] of dict) {
-    words.push(word);
+  try {
+    const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
+    .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
+
+    // find words
+    for await (const [word, def] of dict) {
+      words.push(word);
+    }
+    return words;
+  } catch (err) {
+    return "File error.";
   }
-  return words;
 }
 
 export async function dictionaryEntryAdd(word, defination) {
