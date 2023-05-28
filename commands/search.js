@@ -32,7 +32,11 @@ export default async function search(args) {
     if (data.result.entries.length === 0) {
       return "No entry found.";
     } else {
-      return data.result.entries.join(" ");
+      let result = "";
+      for (const entry of data.result.entries) {
+        result += entry + "\n\n";
+      }
+      return result;
     }
   } catch (error) {
     console.error(error);
