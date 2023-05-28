@@ -124,7 +124,6 @@ export async function simpleDictionarySearch(keyword) {
   for await (const entry of dict) {
     // keywords
     if (entry[0].includes(keyword)) {
-      console.log(entry[0]);
       entries_keywords.push(entry);
     }
   }
