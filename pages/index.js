@@ -24,7 +24,10 @@ export default function Home() {
     });
     if (input.length == 0) return;
     setPlaceholder(userInput);
+    setOutput("");
     setUserInput("");
+    setInfo();
+    setStats();
 
     // Command input
     if (input.startsWith(":")) {
@@ -37,8 +40,6 @@ export default function Home() {
       const commandResult = await command(input);
       console.log("Command Result: " + commandResult);
       setOutput(commandResult);
-      setInfo();
-      setStats();
       return;
     }
 
