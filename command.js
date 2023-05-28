@@ -4,8 +4,8 @@ import stream from "./commands/stream.js";
 import entry from "./commands/entry.js";
 
 export default function commands(userInput) {
-  const args = userInput.trim()
-                .replace(/\s\s+/g, ' ')
+  const command = userInput.trim();
+  const args = command.replace(/\s\s+/g, ' ')
                 .split(' ').slice(1);
 
   if (userInput.startsWith(":help")) {
