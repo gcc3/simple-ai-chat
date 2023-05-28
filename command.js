@@ -3,6 +3,7 @@ import help from "./commands/help.js";
 import stats from "./commands/stats.js";
 import stream from "./commands/stream.js";
 import entry from "./commands/entry.js";
+import search from "./commands/search.js";
 
 export default function commands(input) {
   let command = input;
@@ -18,6 +19,7 @@ export default function commands(input) {
   if (command.startsWith(":entry")) return entry(args);
   if (command.startsWith(":stats")) return stats(args);
   if (command.startsWith(":stream")) return stream(args);
+  if (command.startsWith(":search")) return search(args);
   return "Unknown command.";
 }
 
