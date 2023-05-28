@@ -52,6 +52,7 @@ Control the max tokens generate in the chat completion.
 
 * DICT_SEARCH  
 Enable the dictionary search, value should be `true` or `false`  
+Create `dict.csv` file from `dict.csv.example` before using this.  
 
 * GOO_API_APP_ID  
 Text extraction API  
