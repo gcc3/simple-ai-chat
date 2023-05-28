@@ -1,5 +1,6 @@
 
 import help from "./commands/help.js";
+import stats from "./commands/stats.js";
 import stream from "./commands/stream.js";
 import entry from "./commands/entry.js";
 
@@ -15,6 +16,7 @@ export default function commands(input) {
   
   if (command.startsWith(":help")) return help(args);
   if (command.startsWith(":entry")) return entry(args);
+  if (command.startsWith(":stats")) return stats(args);
   if (command.startsWith(":stream")) return stream(args);
   return "Unknown command.";
 }

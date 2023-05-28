@@ -22,14 +22,17 @@ export async function generateMessages(userInput) {
   messages.push({ role: "system", content: role_content_system });
 
   // Dictionary search
+  let score = 0;
   if (process.env.DICT_SEARCH == "true") {
     console.log("--- dictionary search ---");
     const entries = await keywordExtraction(userInput);
-    const definations = await dictionarySearch(entries);
-    console.log("search result: " + definations.join("/ ") + "\n");
+    const dictionarySearchResult = await dictionarySearch(entries);
+    score = dictionarySearchResult.score;
+    console.log("search result: " + dictionarySearchResult.def.join("/ "));
+    console.log("credibility score: " + score + "\n");
 
     // Add definations to messages
-    definations.map(entry => {
+    dictionarySearchResult.def.map(entry => {
       const message = entry[0] + "についての説明は以下の通り：" + entry[1]
       if (messages.length <= 8)
         messages.push({ role: "system", content: message });
@@ -38,7 +41,10 @@ export async function generateMessages(userInput) {
 
   // TODO here insert history messages (user and assistant messages)
   messages.push({ role: "user", content: userInput });
-  return messages;
+  return { 
+    messages: messages,
+    score: score,
+  };
 }
 
 // Generate prompt for textCompletion

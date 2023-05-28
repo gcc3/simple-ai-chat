@@ -1,4 +1,3 @@
-
 export default function stream(args) {
   const onoff = args[0];
   

@@ -54,6 +54,7 @@ export default async function (req, res) {
 
   try {
     let result_text = "";
+    let score = 0;
 
     res.writeHead(200, {
       'connection': 'keep-alive',
@@ -64,19 +65,22 @@ export default async function (req, res) {
     });
 
     if (process.env.END_POINT === "chat_completion") {
-      const messages = await generateMessages(userInput);
+      const generateMessagesResult = await generateMessages(userInput);
+      score = generateMessagesResult.score;
 
       // endpoint: /v1/chat/completions
       const chatCompletion = openai.createChatCompletion({
         model: process.env.MODEL,
-        messages: messages,
+        messages: generateMessagesResult.messages,
         temperature: temperature,
         top_p: top_p,
         max_tokens: max_tokens,
         stream: true,
       }, { responseType: "stream" });
 
-      res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
+      res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
+      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
+
       chatCompletion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ query_id + "):\n"));
 
@@ -145,6 +149,8 @@ export default async function (req, res) {
       }, { responseType: "stream" });
 
       res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
+      res.write(`data: ###STATS###${score}\n\n`);
+
       completion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ query_id + "):\n"));
 

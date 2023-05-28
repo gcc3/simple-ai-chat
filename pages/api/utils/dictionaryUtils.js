@@ -43,6 +43,9 @@ export async function dictionaryEntryAdd(word, defination) {
 }
 
 export async function dictionarySearch({ topics, keywords, sub }) {
+  let definations = [];
+  let score = 0;
+
   let definations_topics = [];
   let definations_keywords = [];
   let definations_sub = [];
@@ -85,21 +88,26 @@ export async function dictionarySearch({ topics, keywords, sub }) {
     if (isMatch) continue;
   }
 
-  let definations = [];
   for (const def of definations_topics) {
     definations.push(def);
+    score += 5;
     if (definations.length >= 8) break;
   }
 
   for (const def of definations_keywords) {
     definations.push(def);
+    score += 3;
     if (definations.length >= 8) break;
   }
 
   for (const def of definations_sub) {
     definations.push(def);
+    score += 1;
     if (definations.length >= 8) break;
   }
 
-  return definations;
+  return { 
+    def: definations, 
+    score: score, 
+  };
 }

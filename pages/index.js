@@ -8,9 +8,11 @@ export default function Home() {
   const [placeholder, setPlaceholder] = useState("Say something...");
   const [output, setOutput] = useState();
   const [info, setInfo] = useState();
+  const [stats, setStats] = useState();
 
   useEffect(() => {
     localStorage.setItem('useStream', "true");
+    localStorage.setItem('useStats', "false");
   }, []);
 
   async function onSubmit(event) {
@@ -35,6 +37,8 @@ export default function Home() {
       const commandResult = await command(input);
       console.log("Command Result: " + commandResult);
       setOutput(commandResult);
+      setInfo();
+      setStats();
       return;
     }
 
@@ -62,14 +66,29 @@ export default function Home() {
       if (event.data.startsWith("###ENV###")) {
         const env = event.data.replace("###ENV###", "").split(',');
         const model = env[0];
-        const temperature = env[1];  // not used
-        const top_p = env[2];        // not used
         setInfo((
           <div>
             model: {model}
             <br></br>
           </div>
         ));
+        return;
+      }
+
+      if (event.data.startsWith("###STATS###")) {
+        if (localStorage.getItem('useStats') === "true") {
+          const stats = event.data.replace("###STATS###", "").split(',');
+          const score = stats[0];
+          const temperature = stats[1];
+          const top_p = stats[2];
+          setStats((
+            <div>
+              score: {score}<br></br>
+              temperature: {temperature}<br></br>
+              top_p: {top_p}<br></br>
+            </div>
+          ));
+        }
         return;
       }
 
@@ -126,6 +145,17 @@ export default function Home() {
         );
       }));
 
+      if (localStorage.getItem('useStats') === "true") {
+        setStats((
+          <div>
+            score: {data.result.score}
+            temperature: {data.result.temperature}
+            top_p: {data.result.top_p}
+            <br></br>
+          </div>
+        ));
+      }
+
       setInfo((
         <div>
           model: {data.result.info.model}
@@ -156,6 +186,7 @@ export default function Home() {
           <input hidden type="submit" value="Submit" />
         </form>
         <div id="output" className={styles.output}>{output}</div>
+        <div className={styles.stats}>{stats}</div>
         <div className={styles.info}>{info}</div>
       </main>
     </div>
