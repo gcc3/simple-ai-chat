@@ -112,3 +112,35 @@ export async function dictionarySearch({ topics, keywords, sub }) {
     score: score, 
   };
 }
+
+export async function simpleDictionarySearch(keywords) {
+  let entries = [];
+  let entries_keywords = [];
+
+  const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
+  .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
+
+  // find definations
+  for await (const entry of dict) {
+    let isMatch = false;
+
+    // keywords
+    for (const keyword of keywords) {
+      if (entry[0].includes(keyword)) {
+        entries_keywords.push(entry);
+        isMatch = true;
+        break;
+      }
+    }
+    if (isMatch) continue;
+  }
+
+  for (const def of entries_keywords) {
+    entries.push(def);
+    if (entries.length >= 15) break;
+  }
+  
+  return {
+    entries: entries
+  }
+}
