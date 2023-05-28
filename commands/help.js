@@ -3,6 +3,7 @@ export default function help(args) {
     ":help - Show this help message.\n" +
     ":entry [ls|list|add] - Manage dictionary entries.\n" +
     ":search [keyword] - Search dictionary.\n" +
+    ":log - Show log.\n" +
     ":stats [show|hide] - Show/hide stats info.\n" +
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":clear - Clear output.\n";
