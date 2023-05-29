@@ -63,6 +63,17 @@ Get from https://labs.goo.ne.jp/apiusage/
 Control the stream in console or not, value should be `true` or `false`  
 If set to true then it will only support single session, for multiple session the text will be distort.  
 
+
+log.config
+----------
+
+Can setup output log filter rules.  
+One row one rule.  
+
+Example:  
+IP=127.0.0.1    
+
+
 Setup
 -----
 

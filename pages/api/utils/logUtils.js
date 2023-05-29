@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { type } from 'os';
 
 export function logfile(log, req) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -10,20 +11,34 @@ export function logfile(log, req) {
 }
 
 export function loglist() {
-  let log = fs.readFileSync('./log.txt', 'utf8');
+  const log = fs.readFileSync('./log.txt', 'utf8')
+               .replaceAll("###RETURN###", " ");
+
+  // only show last 10 lines without IP filter
+  let loglines = log.split("\n").slice(-10)
+                  .filter(line => logfilter(line, "IP"));
+
+  // remove IP and browser info in log output
+  loglines = loglines.map(line => {
+    if (!line.includes("IP=")) return line;
+    else return line.substring(0, line.search("IP="))
+  }).join("\n\n");
   
-  // only show last 10 lines
-  log = log.split("\n").slice(-10).join("\n\n")
-         .replaceAll("###RETURN###", " ");
+  return loglines;
+}
 
-  // For each line, remove IP and BSR
-  log = log.split("\n").map(line => {
-    if (line.includes("IP=")) {
-      return line.substring(0, line.indexOf("IP=") - 1);
-    } else {
-      return line;
+function logfilter(line, indicater) {
+  if (line === "") return false;
+
+  // filter with rules
+  const rules = fs.readFileSync('./log.config', 'utf8').split("\n");
+  for (const rule of rules) {
+    if (rule.startsWith(indicater)) {
+      const ruleValue = rule.substring(indicater.length + 1).trim();
+      if (line.includes(ruleValue)) {
+        return false;
+      }
     }
-  }).join("\n");
-
-  return log;
+  }
+  return true;
 }
