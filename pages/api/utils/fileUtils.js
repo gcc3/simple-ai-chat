@@ -4,21 +4,21 @@ export function fixLastRowNotEmpty(filePath) {
   if (isLastRowEmpty(filePath)) {
     return;
   }
-  console.log(`Fixing last row of ${filePath}...`);
+  console.log(`Fixing last row in ${filePath} as it is not empty...`);
   addEmptyLineToLastRow(filePath);
 }
 
 function isLastRowEmpty(filePath) {
-  const fileContent = fs.readFileSync(filePath, 'utf-8');
-  const lines = fileContent.trim().split('\n');
-  
-  if (lines.length === 0) {
-    // File is empty
-    return false;
-  }
+  let data = fs.readFileSync(filePath, 'utf8');
 
-  const lastLine = lines[lines.length - 1].trim();
-  return lastLine === '';
+  let lines = data.split('\n');
+  let lastLine = lines[lines.length - 1];
+
+  if (lastLine.trim() === '') {
+      return true;
+  } else {
+      return false;
+  }
 }
 
 function addEmptyLineToLastRow(filePath) {
