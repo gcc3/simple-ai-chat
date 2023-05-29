@@ -1,6 +1,7 @@
 import { parse } from 'csv-parse';
 import fs from 'fs';
 import chalk from 'chalk';
+import { fixLastRowNotEmpty } from './fileUtils';
 
 export async function dictionaryEntryListing() {
   let words = [];
@@ -16,6 +17,8 @@ export async function dictionaryEntryListing() {
 }
 
 export async function dictionaryEntryAdd(word, defination) {
+  fixLastRowNotEmpty('dict.csv');
+
   const createCsvWriter = require('csv-writer').createObjectCsvWriter;
   const csvWriter = createCsvWriter({
     path: 'dict.csv',
