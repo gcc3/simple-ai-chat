@@ -14,6 +14,26 @@ React https://reactjs.org/
 Next.js https://nextjs.org/  
 
 
+Setup
+-----
+
+1. Install the requirements  
+   ```bash  
+   $ npm install  
+   $ npm install next -g  
+   ```  
+
+2. Create necessary files.  
+   Create `log.config`  
+   Create `log.txt`  
+   Create `.env` from `.env.example  
+   Create `dict.csv` from `dict.csv.example` (optional)  
+
+3. Build and run the app.  
+   `$ npm run build`
+   `$ npm run dev` or `$npm start`  
+
+
 .env
 ----
 
@@ -72,31 +92,3 @@ One row one rule.
 
 Example:  
 IP=127.0.0.1    
-
-
-Setup
------
-
-1. Install the requirements  
-
-   ```bash  
-   $ npm install  
-   $ npm install next -g  
-   ```  
-
-2. Make a copy of the example environment variables file  
-
-   ```bash  
-   $ cp .env.example .env  
-   ```  
-
-3. Run the app  
-
-   ```bash  
-   $ npm run dev  
-   ```  
-   
-4. Create `dict.csv` (optional)  
-
-  Create `dict.csv` file from `dict.csv.example` before using dictionary search feature.  
-  
