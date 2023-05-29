@@ -24,7 +24,7 @@ Setup
 2. Create necessary files.  
    Create `log.config`  
    Create `log.txt`  
-   Create `.env` from `.env.example  
+   Create `.env` from `.env.example`  
    Create `dict.csv` from `dict.csv.example` (optional)  
 
 3. Build and run the app.  
