@@ -64,22 +64,22 @@
   max-width: 600px;
   white-space: pre-wrap;
 }
-.main .info {
-  font-weight: normal;
-  font-size: 12px;
-  color: #cccccc;
-  margin-top: 40px;
-  margin-bottom: 45px;
-  width: 96%;
-  max-width: 600px;
-  text-align: right;
-}
 .main .stats {
   font-weight: normal;
   font-size: 12px;
   color: #767676;
-  margin-top: 40px;
+  margin-top: 30px;
   width: 96%;
   max-width: 600px;
   text-align: left;
+}
+.main .info {
+  font-weight: normal;
+  font-size: 12px;
+  color: #cccccc;
+  margin-top: 43px;
+  margin-bottom: 45px;
+  width: 96%;
+  max-width: 600px;
+  text-align: right;
 }

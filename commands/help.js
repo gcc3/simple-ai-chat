@@ -4,7 +4,7 @@ export default function help(args) {
     ":entry [ls|list|add] - Manage dictionary entries.\n" +
     ":search [keyword] - Search dictionary.\n" +
     ":log - Show log.\n" +
-    ":stats [show|hide] - Show/hide stats info.\n" +
+    ":stats [show|hide|on|off] - Show/hide stats info.\n" +
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":clear - Clear output.\n";
 
