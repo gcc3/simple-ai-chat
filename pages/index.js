@@ -31,7 +31,7 @@ export default function Home() {
 
     // Command input
     if (input.startsWith(":")) {
-      console.log("Command Input: " + input)
+      console.log("Command Input: " + input.substring(1));
       if (input.startsWith(":clear")) {
         setOutput("");
         return;
