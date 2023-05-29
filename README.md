@@ -18,10 +18,8 @@ Setup
 -----
 
 1. Install the requirements  
-   ```bash  
-   $ npm install  
-   $ npm install next -g  
-   ```  
+   `$ npm install`  
+   `$ npm install next -g`  
 
 2. Create necessary files.  
    Create `log.config`  
@@ -30,7 +28,7 @@ Setup
    Create `dict.csv` from `dict.csv.example` (optional)  
 
 3. Build and run the app.  
-   `$ npm run build`
+   `$ npm run build`  
    `$ npm run dev` or `$npm start`  
 
 
