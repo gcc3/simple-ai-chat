@@ -2,6 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "./utils/promptUtils";
 import { generatePrompt } from "./utils/promptUtils";
+import { logfile } from "./utils/logUtils.js";
 
 // OpenAI
 const configuration = new Configuration({
