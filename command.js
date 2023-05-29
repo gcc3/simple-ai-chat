@@ -29,7 +29,7 @@ export default function commands(input) {
 }
 
 function extractArgs(input) {
-  let regex = /\b\w+\b|"[^"]*"/g;
+  let regex = /([^\s,"]+|"[^"]*")/g;
   let match;
   let matchList = [];
   while ((match = regex.exec(input)) !== null) {
