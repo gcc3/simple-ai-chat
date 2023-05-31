@@ -13,7 +13,7 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('useStream', "true");
     localStorage.setItem('useStats', "false");
-    localStorage.setItem("queryId", Date.now())
+    localStorage.setItem("queryId", Date.now());
   }, []);
 
   async function onSubmit(event) {
@@ -35,6 +35,7 @@ export default function Home() {
       console.log("Command Input: " + input.substring(1));
       if (input.startsWith(":clear")) {
         setOutput("");
+        localStorage.setItem("queryId", Date.now());  // reset query id
         return;
       }
 
