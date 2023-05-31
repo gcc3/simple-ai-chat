@@ -39,10 +39,13 @@ export async function generateMessages(userInput, queryId, tokenizer) {
 
     // Add definations to messages
     dictionarySearchResult.def.map(entry => {
-      const message = entry[0] + "についての説明は以下の通り：" + entry[1]
-      token_ct += tokenizer.encode(message).length;
-      if (token_ct < token_limit - max_tokens)
-        messages.push({ role: "system", content: message });
+      // At most push 5 definations
+      if (messages.length < 6) {
+        const message = entry[0] + "についての説明は以下の通り：" + entry[1];
+        token_ct += tokenizer.encode(message).length;
+        if (token_ct < token_limit - max_tokens)
+          messages.push({ role: "system", content: message });
+      }
     });
   }
 
@@ -62,6 +65,8 @@ export async function generateMessages(userInput, queryId, tokenizer) {
 
   // Finally, insert user input
   messages.push({ role: "user", content: userInput });
+  console.log("messages: " + JSON.stringify(messages) + "\n");
+
   return { 
     messages: messages,
     score: score,
