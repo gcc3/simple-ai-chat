@@ -3,6 +3,7 @@
 // to generte messages for chatCompletion
 // extracting keywords, and searching dictionary
 import { dictionarySearch } from './dictionaryUtils.js';
+import { loglist } from './logUtils.js';
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -39,7 +40,20 @@ export async function generateMessages(userInput, queryId) {
     });
   }
 
-  // TODO here insert history messages (user and assistant messages)
+  // Chat history
+  const historyChat = await loglist(queryId);
+  if (historyChat !== "") {
+    for (const line of historyChat.split("\n")) {
+      if (messages.length <= 8) {
+        const question = line.substring(line.search("Q=") + 2, line.search(" A="));
+        const answer = line.substring(line.search("A=") + 2);
+        messages.push({ role: "user", content: question });
+        messages.push({ role: "assistant", content: answer });
+      }
+    }
+  }
+
+  // Finally, insert user input
   messages.push({ role: "user", content: userInput });
   return { 
     messages: messages,
