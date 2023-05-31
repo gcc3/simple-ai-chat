@@ -51,17 +51,23 @@ export async function generateMessages(input, queryId, tokenizer) {
   }
 
   // Chat history
-  const historyChat = await loglist(queryId, 50);
-  if (historyChat !== "") {
-    for (const line of historyChat.split("\n")) {
+  const loglistForSession = await loglist(queryId, 35);
+  if (loglistForSession !== "") {
+    let chatSets = [];
+    for (const line of loglistForSession.split("\n")) {
       const question = line.substring(line.search("Q=") + 2, line.search(" A=")).trim();
       const answer = line.substring(line.search("A=") + 2).trim();
       if (token_ct + tokenizer.encode(question + answer).length < token_limit - max_tokens) {
-        messages.push({ role: "user", content: question });
-        messages.push({ role: "assistant", content: answer });
+        chatSets.push({ question: question, answer: answer });
         token_ct += tokenizer.encode(question + answer).length;
       }
     }
+
+    // Add chat history to messages
+    chatSets.reverse().map(chatSet => {
+      messages.push({ role: "user", content: chatSet.question });
+      messages.push({ role: "assistant", content: chatSet.answer });
+    });
   }
 
   // Finally, insert user input

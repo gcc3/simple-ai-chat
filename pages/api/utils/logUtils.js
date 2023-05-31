@@ -20,7 +20,7 @@ export function loglist(queryId, maxLogCount = 20) {
                   .filter(line => logfilter(line, "IP"));
 
   // remove IP and browser info in log output
-  loglines = loglines.map(line => {
+  loglines = loglines.reverse().map(line => {
     if (!line.includes("IP=")) return line;
     else return line.substring(0, line.search("IP="))
   }).join("\n");
