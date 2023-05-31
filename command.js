@@ -7,6 +7,7 @@ import ls from "./commands/ls.js";
 import search from "./commands/search.js";
 import log from "./commands/log.js";
 import info from "./commands/info.js";
+import session from "./commands/session.js";
 
 export default function commands(input) {
   let command = input;
@@ -27,6 +28,7 @@ export default function commands(input) {
   if (command.startsWith(":search")) return search(args);
   if (command.startsWith(":log")) return log(args);
   if (command.startsWith(":info")) return info(args);
+  if (command.startsWith(":session")) return session(args);
   return "Unknown command.";
 }
 
