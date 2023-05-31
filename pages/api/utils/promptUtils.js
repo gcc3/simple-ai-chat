@@ -16,7 +16,7 @@ const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 
 // Generate messages for chatCompletion
-export async function generateMessages(userInput) {
+export async function generateMessages(userInput, queryId) {
   let messages = [];
   // System message, important
   messages.push({ role: "system", content: role_content_system });

@@ -31,7 +31,7 @@ export default async function (req, res) {
     return;
   }
 
-  const query_id = req.body.query_id || "";
+  const queryId = req.body.query_id || "";
 
   // Configuration info
   console.log("--- configuration info ---\n" 
@@ -50,7 +50,7 @@ export default async function (req, res) {
   let input = req.body.user_input || "";
   if (input.trim().length === 0) return;
   input = prompt_prefix + input + prompt_suffix;
-  console.log(chalk.yellowBright("Input (query_id = " + query_id + "):"));
+  console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
   console.log(input + "\n");
 
   try {
@@ -58,7 +58,7 @@ export default async function (req, res) {
     let score = 0;
 
     if (process.env.END_POINT === "chat_completion") {
-      const generateMessagesResult = await generateMessages(input);
+      const generateMessagesResult = await generateMessages(input, queryId);
       score = generateMessagesResult.score;
 
       // endpoint: /v1/chat/completions
@@ -73,7 +73,7 @@ export default async function (req, res) {
       // Get result
       const choices = chatCompletion.data.choices;
       if (!choices || choices.length === 0) {
-        console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+        console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
         console.error("No choice\n");
         result_text = "(Silent...)";
       } else {
@@ -97,7 +97,7 @@ export default async function (req, res) {
       // Get result
       const choices = completion.data.choices;
       if (!choices || choices.length === 0) {
-        console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+        console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
         console.error("No choice\n");
         result_text = "(Silent...)";
       } else {
@@ -107,9 +107,9 @@ export default async function (req, res) {
 
     // Output the result
     if (result_text.trim().length === 0) result_text = "(null)";
-    console.log(chalk.blueBright("Output (query_id = "+ query_id + "):"));
+    console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(result_text + "\n");
-    logfile("T=" + Date.now() + " S=" + query_id + " Q=" + input + " A=" + result_text, req);
+    logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
     res.status(200).json({
       result: {
         text : result_text,

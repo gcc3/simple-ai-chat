@@ -31,7 +31,7 @@ export default async function (req, res) {
     return;
   }
 
-  const query_id = req.query.query_id || "";
+  const queryId = req.query.query_id || "";
 
   // Configuration info
   console.log("--- configuration info ---\n" 
@@ -50,7 +50,7 @@ export default async function (req, res) {
   let input = req.query.user_input || "";
   if (input.trim().length === 0) return;
   input = prompt_prefix + input + prompt_suffix;
-  console.log(chalk.yellowBright("Input (query_id = " + query_id + "):"));
+  console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
   console.log(input + "\n");
 
   try {
@@ -66,7 +66,7 @@ export default async function (req, res) {
     });
 
     if (process.env.END_POINT === "chat_completion") {
-      const generateMessagesResult = await generateMessages(input);
+      const generateMessagesResult = await generateMessages(input, queryId);
       score = generateMessagesResult.score;
 
       // endpoint: /v1/chat/completions
@@ -83,7 +83,7 @@ export default async function (req, res) {
       res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
 
       chatCompletion.then(resp => {
-        if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ query_id + "):\n"));
+        if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
 
         resp.data.on('data', data => {
           const lines = data.toString().split('\n').filter(line => line.trim() !== '');
@@ -97,10 +97,10 @@ export default async function (req, res) {
                 process.stdout.write("\n\n");
               } else {
                 if (result_text.trim().length === 0) result_text = "(null)";
-                console.log(chalk.blueBright("Output (query_id = "+ query_id + "):"));
+                console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
                 console.log(result_text + "\n");
               }
-              logfile("T=" + Date.now() + " S=" + query_id + " Q=" + input + " A=" + result_text, req);
+              logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
               res.flush();
               res.end();
               return
@@ -109,7 +109,7 @@ export default async function (req, res) {
             // handle the message
             const choices = JSON.parse(chunkData).choices;
             if (!choices || choices.length === 0) {
-              console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+              console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
               console.error("No choices\n");
               res.write(`data: (Silent...)\n\n`)
               res.flush();
@@ -127,7 +127,7 @@ export default async function (req, res) {
           }
         });
       }).catch(error => {
-        console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+        console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
         console.error(error.message + "\n");
         console.log("--- query detail ---");
         console.log("message: " + JSON.stringify(messages) + "\n");
@@ -154,7 +154,7 @@ export default async function (req, res) {
       res.write(`data: ###STATS###${score}\n\n`);
 
       completion.then(resp => {
-        if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ query_id + "):\n"));
+        if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
 
         resp.data.on('data', data => {
           const lines = data.toString().split('\n').filter(line => line.trim() !== '');
@@ -168,10 +168,10 @@ export default async function (req, res) {
                 process.stdout.write("\n\n");
               } else {
                 if (result_text.trim().length === 0) result_text = "(null)";
-                console.log(chalk.blueBright("Output (query_id = "+ query_id + "):"));
+                console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
                 console.log(result_text + "\n");
               }
-              logfile("T=" + Date.now() + " S=" + query_id + " Q=" + input + " A=" + result_text, req);
+              logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
               res.flush();
               res.end();
               return
@@ -180,7 +180,7 @@ export default async function (req, res) {
             // handle the message
             const choices = JSON.parse(chunkData).choices;
             if (!choices || choices.length === 0) {
-              console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+              console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
               console.error("No choice\n");
               res.write(`data: (Silent...)\n\n`)
               res.flush();
@@ -198,7 +198,7 @@ export default async function (req, res) {
           }
         });
       }).catch(error => {
-        console.log(chalk.redBright("Error (query_id = " + query_id + "):"));
+        console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
         console.error(error.message);
         console.log("--- query detail ---");
         console.log("prompt: " +JSON.stringify(prompt) + "\n");
