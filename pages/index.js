@@ -86,11 +86,13 @@ export default function Home() {
           const score = stats[0];
           const temperature = stats[1];
           const top_p = stats[2];
+          const token_ct = stats[3];
           setStats((
             <div>
               score: <span style={{color: score > 0 ? 'green' : '#DE3163'}}>{score}</span><br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
+              token_ct: {token_ct}<br></br>
             </div>
           ));
         }

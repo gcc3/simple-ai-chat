@@ -3,12 +3,15 @@ import chalk from 'chalk';
 import { generateMessages } from "./utils/promptUtils";
 import { generatePrompt } from "./utils/promptUtils";
 import { logfile } from "./utils/logUtils.js";
+import assert from "node:assert";
+import { get_encoding, encoding_for_model } from "tiktoken";
 
 // OpenAI
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+const tokenizer = encoding_for_model(process.env.MODEL);
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -56,10 +59,12 @@ export default async function (req, res) {
   try {
     let result_text = "";
     let score = 0;
+    let token_ct = 0;
 
     if (process.env.END_POINT === "chat_completion") {
-      const generateMessagesResult = await generateMessages(input, queryId);
+      const generateMessagesResult = await generateMessages(input, queryId, tokenizer);
       score = generateMessagesResult.score;
+      token_ct = generateMessagesResult.token_ct;
 
       // endpoint: /v1/chat/completions
       const chatCompletion = await openai.createChatCompletion({
@@ -117,6 +122,7 @@ export default async function (req, res) {
           temperature: process.env.TEMPERATURE,
           top_p: process.env.TOP_P,
           score: score,
+          token_ct: token_ct,
         },
         info: {
           model: process.env.MODEL,

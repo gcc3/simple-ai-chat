@@ -13,14 +13,19 @@ const fine_tune_stop = process.env.FINE_TUNE_STOP ? process.env.FINE_TUNE_STOP :
 const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE_TUNE_PROMPT_END : "";
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
-const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
+const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 700;
+const token_limit = 4097;
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 
 // Generate messages for chatCompletion
-export async function generateMessages(userInput, queryId) {
+export async function generateMessages(userInput, queryId, tokenizer) {
   let messages = [];
+  let token_ct = 0;
+
   // System message, important
-  messages.push({ role: "system", content: role_content_system });
+  token_ct += tokenizer.encode(role_content_system).length;
+  if (token_ct < token_limit - max_tokens)
+    messages.push({ role: "system", content: role_content_system });
 
   // Dictionary search
   let score = 0;
@@ -35,7 +40,8 @@ export async function generateMessages(userInput, queryId) {
     // Add definations to messages
     dictionarySearchResult.def.map(entry => {
       const message = entry[0] + "についての説明は以下の通り：" + entry[1]
-      if (messages.length <= 5)
+      token_ct += tokenizer.encode(message).length;
+      if (token_ct < token_limit - max_tokens)
         messages.push({ role: "system", content: message });
     });
   }
@@ -44,9 +50,10 @@ export async function generateMessages(userInput, queryId) {
   const historyChat = await loglist(queryId);
   if (historyChat !== "") {
     for (const line of historyChat.split("\n")) {
-      if (messages.length <= 9) {
-        const question = line.substring(line.search("Q=") + 2, line.search(" A=")).trim();
-        const answer = line.substring(line.search("A=") + 2).trim();
+      const question = line.substring(line.search("Q=") + 2, line.search(" A=")).trim();
+      const answer = line.substring(line.search("A=") + 2).trim();
+      token_ct += tokenizer.encode(question + answer).length;
+      if (token_ct < token_limit - max_tokens) {
         messages.push({ role: "user", content: question });
         messages.push({ role: "assistant", content: answer });
       }
@@ -58,6 +65,7 @@ export async function generateMessages(userInput, queryId) {
   return { 
     messages: messages,
     score: score,
+    token_ct: token_ct,
   };
 }
 
@@ -150,4 +158,8 @@ async function keywordExtraction(userInput) {
     keywords: keywords,
     sub: ner.concat(morph)
   };
+}
+
+function tokenizer(model, messages) {
+  const enc = get_encoding("gpt2");
 }

@@ -3,12 +3,15 @@ import chalk from 'chalk';
 import { generateMessages } from "./utils/promptUtils";
 import { generatePrompt } from "./utils/promptUtils";
 import { logfile } from "./utils/logUtils.js";
+import assert from "node:assert";
+import { get_encoding, encoding_for_model } from "tiktoken";
 
 // OpenAI
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 const openai = new OpenAIApi(configuration);
+const tokenizer = encoding_for_model(process.env.MODEL);
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -56,6 +59,7 @@ export default async function (req, res) {
   try {
     let result_text = "";
     let score = 0;
+    let token_ct = 0;
 
     res.writeHead(200, {
       'connection': 'keep-alive',
@@ -66,8 +70,9 @@ export default async function (req, res) {
     });
 
     if (process.env.END_POINT === "chat_completion") {
-      const generateMessagesResult = await generateMessages(input, queryId);
+      const generateMessagesResult = await generateMessages(input, queryId, tokenizer);
       score = generateMessagesResult.score;
+      token_ct = generateMessagesResult.token_ct;
 
       // endpoint: /v1/chat/completions
       const chatCompletion = openai.createChatCompletion({
@@ -80,7 +85,7 @@ export default async function (req, res) {
       }, { responseType: "stream" });
 
       res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
+      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct}\n\n`);
 
       chatCompletion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
@@ -150,8 +155,8 @@ export default async function (req, res) {
         stream: true,
       }, { responseType: "stream" });
 
-      res.write(`data: ###ENV###${process.env.MODEL},${process.env.TEMPERATURE},${process.env.TOP_P}\n\n`);
-      res.write(`data: ###STATS###${score}\n\n`);
+      res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
+      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct}\n\n`);
 
       completion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
