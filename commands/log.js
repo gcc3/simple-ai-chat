@@ -1,6 +1,10 @@
 export default async function log(args) {
+  const queryId = args[0];
+
+  const url = queryId ? "/api/log/list?query_id=" + queryId : "/api/log/list";
+  console.log("URL: " + url);
   try {
-    const response = await fetch("/api/log/list", {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

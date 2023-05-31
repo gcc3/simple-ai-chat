@@ -10,12 +10,13 @@ export function logfile(log, req) {
   });
 }
 
-export function loglist() {
+export function loglist(queryId) {
   const log = fs.readFileSync('./log.txt', 'utf8')
                .replaceAll("###RETURN###", " ");
 
   // only show last 10 lines with an IP filter
   let loglines = log.split("\n").slice(-10)
+                  .filter(line => ((queryId && queryId !== "" && line.includes("S=" + queryId)) || !queryId))
                   .filter(line => logfilter(line, "IP"));
 
   // remove IP and browser info in log output

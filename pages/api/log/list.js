@@ -2,7 +2,7 @@ import { loglist } from "../utils/logUtils";
 
 export default async function (req, res) {
   try {
-    const logs = loglist();
+    const logs = loglist(req.query.query_id);
 
     // Output the result
     res.status(200).json({
