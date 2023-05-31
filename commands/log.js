@@ -19,7 +19,9 @@ export default async function log(args) {
     if (data.result.logs === "") {
       return "No log found.";
     } else {
-      return data.result.logs;
+      // Add new line for each log
+      const logs = data.result.logs.replaceAll("\n", "\n\n");
+      return logs;
     }
   } catch (error) {
     console.error(error);

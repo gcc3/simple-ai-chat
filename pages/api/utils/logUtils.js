@@ -23,7 +23,7 @@ export function loglist(queryId) {
   loglines = loglines.map(line => {
     if (!line.includes("IP=")) return line;
     else return line.substring(0, line.search("IP="))
-  }).join("\n\n");
+  }).join("\n");
   
   return loglines;
 }
