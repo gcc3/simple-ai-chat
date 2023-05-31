@@ -41,7 +41,7 @@ export async function generateMessages(input, queryId, tokenizer) {
     dictionarySearchResult.def.map(entry => {
       // At most push 5 definations
       if (messages.length < 6) {
-        const message = entry[0] + "についての説明は以下の通り：" + entry[1];
+        const message = "The explanation for \"" + entry[0] + "\" is as follows\n\n\"\"\"\n" + entry[1] + "\n\"\"\"";
         if (token_ct + tokenizer.encode(message).length < token_limit - max_tokens) {
           messages.push({ role: "system", content: message });
           token_ct += tokenizer.encode(message).length;
@@ -88,6 +88,8 @@ async function keywordExtraction(userInput) {
     // Simple extraction
     // Topic is a keyword
     let topic  = ""
+
+    // Extract topic for Japanese
     if (sentence.includes("の意味")) topic = sentence.substring(0, sentence.search("の意味"));
     else if (sentence.includes("について")) topic = sentence.substring(0, sentence.search("について"));
     else if (sentence.includes("とは")) topic = sentence.substring(0, sentence.search("とは"));
