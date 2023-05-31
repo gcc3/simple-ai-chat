@@ -13,6 +13,7 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('useStream', "true");
     localStorage.setItem('useStats', "false");
+    localStorage.setItem("queryId", Date.now())
   }, []);
 
   async function onSubmit(event) {
@@ -57,7 +58,9 @@ export default function Home() {
   function generate_sse(input) {
     document.getElementById("output").innerHTML = "";
 
-    const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + input);
+    const query_id = localStorage.getItem("queryId");
+    const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" 
+                                + input + "&query_id=" + query_id);
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
     }
@@ -128,7 +131,10 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ user_input: input }),
+        body: JSON.stringify({
+            user_input: input, 
+            query_id: localStorage.getItem("queryId")
+          }),
       });
 
       const data = await response.json();

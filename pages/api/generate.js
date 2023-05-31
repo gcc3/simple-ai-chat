@@ -31,7 +31,7 @@ export default async function (req, res) {
     return;
   }
 
-  const query_id = Date.now();
+  const query_id = req.body.query_id || "";
 
   // Configuration info
   console.log("--- configuration info ---\n" 
