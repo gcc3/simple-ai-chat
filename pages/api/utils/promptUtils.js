@@ -35,7 +35,7 @@ export async function generateMessages(userInput, queryId) {
     // Add definations to messages
     dictionarySearchResult.def.map(entry => {
       const message = entry[0] + "についての説明は以下の通り：" + entry[1]
-      if (messages.length <= 8)
+      if (messages.length <= 5)
         messages.push({ role: "system", content: message });
     });
   }
@@ -44,9 +44,9 @@ export async function generateMessages(userInput, queryId) {
   const historyChat = await loglist(queryId);
   if (historyChat !== "") {
     for (const line of historyChat.split("\n")) {
-      if (messages.length <= 8) {
-        const question = line.substring(line.search("Q=") + 2, line.search(" A="));
-        const answer = line.substring(line.search("A=") + 2);
+      if (messages.length <= 9) {
+        const question = line.substring(line.search("Q=") + 2, line.search(" A=")).trim();
+        const answer = line.substring(line.search("A=") + 2).trim();
         messages.push({ role: "user", content: question });
         messages.push({ role: "assistant", content: answer });
       }

@@ -130,7 +130,7 @@ export default async function (req, res) {
         console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
         console.error(error.message + "\n");
         console.log("--- query detail ---");
-        console.log("message: " + JSON.stringify(messages) + "\n");
+        console.log("message: " + JSON.stringify(generateMessagesResult.messages) + "\n");
         res.write(`data: [ERR] ${error}\n\n`)
         res.end();
       });
