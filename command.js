@@ -6,6 +6,7 @@ import entry from "./commands/entry.js";
 import ls from "./commands/ls.js";
 import search from "./commands/search.js";
 import log from "./commands/log.js";
+import info from "./commands/info.js";
 
 export default function commands(input) {
   let command = input;
@@ -25,6 +26,7 @@ export default function commands(input) {
   if (command.startsWith(":stream")) return stream(args);
   if (command.startsWith(":search")) return search(args);
   if (command.startsWith(":log")) return log(args);
+  if (command.startsWith(":info")) return info(args);
   return "Unknown command.";
 }
 
