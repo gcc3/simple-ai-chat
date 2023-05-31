@@ -14,7 +14,7 @@ export function loglist() {
   const log = fs.readFileSync('./log.txt', 'utf8')
                .replaceAll("###RETURN###", " ");
 
-  // only show last 10 lines without IP filter
+  // only show last 10 lines with an IP filter
   let loglines = log.split("\n").slice(-10)
                   .filter(line => logfilter(line, "IP"));
 
