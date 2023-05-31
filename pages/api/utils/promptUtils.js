@@ -18,20 +18,20 @@ const token_limit = 4097;
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 
 // Generate messages for chatCompletion
-export async function generateMessages(userInput, queryId, tokenizer) {
+export async function generateMessages(input, queryId, tokenizer) {
   let messages = [];
   let token_ct = 0;
+  token_ct += tokenizer.encode(role_content_system).length;
+  token_ct += tokenizer.encode(input).length;
 
   // System message, important
-  token_ct += tokenizer.encode(role_content_system).length;
-  if (token_ct < token_limit - max_tokens)
-    messages.push({ role: "system", content: role_content_system });
+  messages.push({ role: "system", content: role_content_system });
 
   // Dictionary search
   let score = 0;
   if (process.env.DICT_SEARCH == "true") {
     console.log("--- dictionary search ---");
-    const entries = await keywordExtraction(userInput);
+    const entries = await keywordExtraction(input);
     const dictionarySearchResult = await dictionarySearch(entries);
     score = dictionarySearchResult.score;
     console.log("search result: " + dictionarySearchResult.def.join("/ "));
@@ -42,31 +42,31 @@ export async function generateMessages(userInput, queryId, tokenizer) {
       // At most push 5 definations
       if (messages.length < 6) {
         const message = entry[0] + "についての説明は以下の通り：" + entry[1];
-        token_ct += tokenizer.encode(message).length;
-        if (token_ct < token_limit - max_tokens)
+        if (token_ct + tokenizer.encode(message).length < token_limit - max_tokens) {
           messages.push({ role: "system", content: message });
+          token_ct += tokenizer.encode(message).length;
+        }
       }
     });
   }
 
   // Chat history
-  const historyChat = await loglist(queryId);
+  const historyChat = await loglist(queryId, 50);
   if (historyChat !== "") {
     for (const line of historyChat.split("\n")) {
       const question = line.substring(line.search("Q=") + 2, line.search(" A=")).trim();
       const answer = line.substring(line.search("A=") + 2).trim();
-      token_ct += tokenizer.encode(question + answer).length;
-      if (token_ct < token_limit - max_tokens) {
+      if (token_ct + tokenizer.encode(question + answer).length < token_limit - max_tokens) {
         messages.push({ role: "user", content: question });
         messages.push({ role: "assistant", content: answer });
+        token_ct += tokenizer.encode(question + answer).length;
       }
     }
   }
 
   // Finally, insert user input
-  messages.push({ role: "user", content: userInput });
+  messages.push({ role: "user", content: input });
   console.log("messages: " + JSON.stringify(messages) + "\n");
-
   return { 
     messages: messages,
     score: score,
