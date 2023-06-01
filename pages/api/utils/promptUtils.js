@@ -60,6 +60,8 @@ export async function generateMessages(input, queryId, tokenizer) {
       if (token_ct + tokenizer.encode(question + answer).length < token_limit - max_tokens) {
         chatSets.push({ question: question, answer: answer });
         token_ct += tokenizer.encode(question + answer).length;
+      } else {
+        break;
       }
     }
 
