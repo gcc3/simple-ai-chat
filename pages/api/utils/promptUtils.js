@@ -72,7 +72,6 @@ export async function generateMessages(input, queryId, tokenizer) {
 
   // Finally, insert user input
   messages.push({ role: "user", content: input });
-  console.log("messages: " + JSON.stringify(messages) + "\n");
   return { 
     messages: messages,
     score: score,
