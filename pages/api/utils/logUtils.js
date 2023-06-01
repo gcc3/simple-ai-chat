@@ -10,7 +10,7 @@ export function logfile(log, req) {
   });
 }
 
-export function loglist(queryId, maxLogCount = 20) {
+export function loglist(queryId, maxLogCount = 30) {
   const log = fs.readFileSync('./log.txt', 'utf8')
                .replaceAll("###RETURN###", " ");
 
@@ -19,7 +19,7 @@ export function loglist(queryId, maxLogCount = 20) {
     .filter(line => ((queryId && queryId !== "" && line.includes("S=" + queryId)) || !queryId))  // filter by queryId
     .filter(line => logfilter(line, "IP"))  // filter by IP
     .reverse()  // reverse order
-    .slice(maxLogCount * -1);  // only show last x lines
+    .slice(maxLogCount);  // only show last x lines
 
   // remove IP and browser info in the log output
   loglines = loglines.map(line => {
