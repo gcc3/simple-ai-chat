@@ -19,7 +19,7 @@ export function loglist(queryId, maxLogCount = 30) {
     .filter(line => ((queryId && queryId !== "" && line.includes("S=" + queryId)) || !queryId))  // filter by queryId
     .filter(line => logfilter(line, "IP"))  // filter by IP
     .reverse()  // reverse order
-    .slice(maxLogCount);  // only show last x lines
+    .slice(0, maxLogCount);  // only show last x lines
 
   // remove IP and browser info in the log output
   loglines = loglines.map(line => {
