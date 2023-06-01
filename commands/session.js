@@ -8,7 +8,7 @@ export default function session(args) {
     localStorage.setItem("queryId", sessionId);
     return "Attached";
   } else {
-    return "Invalid session ID";
+    return "Invalid session ID.";
   }
 }
 
