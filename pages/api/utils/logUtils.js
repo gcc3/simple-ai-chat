@@ -15,12 +15,14 @@ export function loglist(queryId, maxLogCount = 20) {
                .replaceAll("###RETURN###", " ");
 
   // only show last 10 lines with an IP filter
-  let loglines = log.split("\n").slice(maxLogCount * -1)
-                  .filter(line => ((queryId && queryId !== "" && line.includes("S=" + queryId)) || !queryId))
-                  .filter(line => logfilter(line, "IP"));
+  let loglines = log.split("\n")
+    .filter(line => ((queryId && queryId !== "" && line.includes("S=" + queryId)) || !queryId))  // filter by queryId
+    .filter(line => logfilter(line, "IP"))  // filter by IP
+    .reverse()  // reverse order
+    .slice(maxLogCount * -1);  // only show last x lines
 
-  // remove IP and browser info in log output
-  loglines = loglines.reverse().map(line => {
+  // remove IP and browser info in the log output
+  loglines = loglines.map(line => {
     if (!line.includes("IP=")) return line;
     else return line.substring(0, line.search("IP="))
   }).join("\n");
