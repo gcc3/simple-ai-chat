@@ -61,8 +61,10 @@ export default function Home() {
     document.getElementById("output").innerHTML = "";
 
     const query_id = localStorage.getItem("queryId");
-    const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" 
-                                + input + "&query_id=" + query_id);
+    const role = localStorage.getItem("role");
+    const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + input 
+                                                           + "&query_id=" + query_id
+                                                           + "&role=" + role);
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
     }
@@ -137,7 +139,8 @@ export default function Home() {
         },
         body: JSON.stringify({
             user_input: input, 
-            query_id: localStorage.getItem("queryId")
+            query_id: localStorage.getItem("queryId"),
+            role: localStorage.getItem("role"),
           }),
       });
 
