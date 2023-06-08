@@ -18,7 +18,7 @@ export default async function role(args) {
       if (data.result.roles.length === 0) {
         return "No role found.";
       } else {
-        return data.result.roles.join(" ");
+        return "\\" + data.result.roles.join(" \\");
       }
     } catch (error) {
       console.error(error);

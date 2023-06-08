@@ -18,7 +18,7 @@ export default async function entry(args) {
       if (data.result.entries.length === 0) {
         return "No entry found.";
       } else {
-        return data.result.entries.join(" ");
+        return "\\" + data.result.entries.join(" \\");
       }
     } catch (error) {
       console.error(error);
