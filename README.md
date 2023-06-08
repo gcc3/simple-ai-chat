@@ -26,6 +26,7 @@ Setup
    Create `log.txt`  
    Create `.env` from `.env.example`  
    Create `dict.csv` from `dict.csv.example` (optional)  
+   Create `role.csv` from `role.csv.example` (optional)  
 
 3. Build and run the app.  
    `$ npm run build`  

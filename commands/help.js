@@ -9,6 +9,7 @@ export default function help(args) {
     ":stats [show|hide|on|off] - Show/hide stats info.\n" +
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":session [session_id] - Attach to session.\n" +
+    ":role [ls|list] - List all roles.\n" +
     ":info - Show info.\n" +
     ":clear - Clear output.\n";
 

@@ -4,6 +4,7 @@ import chalk from 'chalk';
 import { fixLastRowNotEmpty } from './fileUtils';
 
 export async function dictionaryEntryListing() {
+  fixLastRowNotEmpty('dict.csv');
   let words = [];
 
   const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })

@@ -25,7 +25,7 @@ export default async function entry(args) {
       alert(error.message);
     }
     return "";
-  } 
+  }
   
   if (command === "add") {
     if (args.length != 3) {

@@ -8,6 +8,7 @@ import search from "./commands/search.js";
 import log from "./commands/log.js";
 import info from "./commands/info.js";
 import session from "./commands/session.js";
+import role from "./commands/role.js";
 
 export default function commands(input) {
   let command = input;
@@ -29,6 +30,7 @@ export default function commands(input) {
   if (command.startsWith(":log")) return log(args);
   if (command.startsWith(":info")) return info(args);
   if (command.startsWith(":session")) return session(args);
+  if (command.startsWith(":role")) return role(args);
   return "Unknown command.";
 }
 
