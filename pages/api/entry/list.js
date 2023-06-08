@@ -2,7 +2,6 @@ import { dictionaryEntryListing } from '../utils/dictionaryUtils';
 
 export default async function (req, res) {
   try {
-    // const entries = [];
     const entries = await dictionaryEntryListing();
 
     // Output the result

@@ -2,7 +2,6 @@ import { roleListing } from '../utils/roleUtils';
 
 export default async function (req, res) {
   try {
-    // const entries = [];
     const roles = await roleListing();
 
     // Output the result
