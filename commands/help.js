@@ -10,6 +10,7 @@ export default function help(args) {
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":session [session_id] - Attach to session.\n" +
     ":role [ls|list] - List all roles.\n" +
+    ":role use [role_name] - Use role.\n" +
     ":info - Show info.\n" +
     ":clear - Clear output.\n";
 

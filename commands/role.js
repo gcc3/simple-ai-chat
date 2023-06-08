@@ -27,5 +27,19 @@ export default async function role(args) {
     return "";
   }
 
+  if (command === "use") {
+    if (args.length != 2) {
+      return "Usage: :role [role_name]\n"
+    }
+
+    const roleName = args[1];
+    if (roleName != null) {
+      localStorage.setItem("role", roleName);
+      return "Role set to " + roleName + ".";
+    } else {
+      return "Invalid role name.";
+    }
+  }
+
   return "Error.";
 }
