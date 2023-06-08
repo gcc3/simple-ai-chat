@@ -55,7 +55,8 @@ export default async function (req, res) {
   + "role_content_system (chat): " + process.env.ROLE_CONTENT_SYSTEM + "\n"
   + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
   + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
-  + "max_tokens: " + process.env.MAX_TOKENS + "\n");
+  + "max_tokens: " + process.env.MAX_TOKENS + "\n"
+  + "role: " + role + "\n");
 
   try {
     let result_text = "";
