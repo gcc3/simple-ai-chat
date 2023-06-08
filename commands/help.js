@@ -11,8 +11,8 @@ export default function help(args) {
     ":session [session_id] - Attach to session.\n" +
     ":role [ls|list] - List all roles.\n" +
     ":role use [role_name] - Use role.\n" +
-    ":info - Show info.\n" +
-    ":clear - Clear output.\n";
+    ":info - Show current config info.\n" +
+    ":clear - Clear output and reset.\n";
 
   return commands;
 }

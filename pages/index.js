@@ -36,6 +36,7 @@ export default function Home() {
       if (input.startsWith(":clear")) {
         setOutput("");
         localStorage.setItem("queryId", Date.now());  // reset query id
+        localStorage.setItem("role", "");  // reset query id
         return;
       }
 
