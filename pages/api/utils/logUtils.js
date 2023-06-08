@@ -17,7 +17,7 @@ export function loglist(queryId, maxLogCount = 30) {
   // only show last 10 lines with an IP filter
   let loglines = log.split("\n")
     .filter(line => ((queryId && queryId !== "" && line.includes("S=" + queryId)) || !queryId))  // filter by queryId
-    .filter(line => logfilter(line, "IP"))  // filter by IP
+    .filter(line => queryId || logfilter(line, "IP"))  // filter by IP
     .reverse()  // reverse order
     .slice(0, maxLogCount);  // only show last x lines
 
