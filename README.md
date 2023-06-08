@@ -27,6 +27,7 @@ Setup
    Create `.env` from `.env.example`  
    Create `dict.csv` from `dict.csv.example` (optional)  
    Create `role.csv` from `role.csv.example` (optional)  
+   `role.csv` is get from https://github.com/f/awesome-chatgpt-prompts  
 
 3. Build and run the app.  
    `$ npm run build`  
