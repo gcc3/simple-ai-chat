@@ -35,6 +35,7 @@ export default async function (req, res) {
   }
 
   const queryId = req.query.query_id || "";
+  const role = req.query.role || "";
 
   // Configuration info
   console.log("--- configuration info ---\n" 
@@ -70,7 +71,7 @@ export default async function (req, res) {
     });
 
     if (process.env.END_POINT === "chat_completion") {
-      const generateMessagesResult = await generateMessages(input, queryId, tokenizer);
+      const generateMessagesResult = await generateMessages(input, queryId, role, tokenizer);
       score = generateMessagesResult.score;
       token_ct = generateMessagesResult.token_ct;
 

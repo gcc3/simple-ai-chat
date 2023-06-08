@@ -4,6 +4,7 @@
 // extracting keywords, and searching dictionary
 import { dictionarySearch } from './dictionaryUtils.js';
 import { loglist } from './logUtils.js';
+import { rolePrompt } from './roleUtils.js';
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -18,7 +19,7 @@ const token_limit = 4000;
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 
 // Generate messages for chatCompletion
-export async function generateMessages(input, queryId, tokenizer) {
+export async function generateMessages(input, queryId, role, tokenizer) {
   let messages = [];
   let token_ct = 0;
   token_ct += tokenizer.encode(role_content_system).length;
@@ -26,6 +27,12 @@ export async function generateMessages(input, queryId, tokenizer) {
 
   // System message, important
   messages.push({ role: "system", content: role_content_system });
+
+  // Roleplay role prompt
+  if (role !== "") {
+    messages.push({ role: "system", content: rolePrompt(role) });
+    token_ct += tokenizer.encode(role).length;
+  }
 
   // Dictionary search
   let score = 0;
