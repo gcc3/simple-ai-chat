@@ -32,7 +32,11 @@ export default async function role(args) {
       return "Usage: :role use [role_name]\n"
     }
 
-    const roleName = args[1];
+    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
+      return "Role name must be quoted with double quotes.";
+    }
+
+    const roleName = args[1].slice(1, -1);
 
     // Check role exists
     try {
