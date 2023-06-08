@@ -12,7 +12,8 @@ export default function help(args) {
     ":role [ls|list] - List all roles.\n" +
     ":role use [role_name] - Use role.\n" +
     ":info - Show current config info.\n" +
-    ":clear - Clear output and reset.\n";
+    ":clear - Clear output and reset.\n" +
+    ":quit - Quit, or use `:q` for shorter";
 
   return commands;
 }

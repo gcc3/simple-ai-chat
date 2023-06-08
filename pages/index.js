@@ -33,6 +33,11 @@ export default function Home() {
     // Command input
     if (input.startsWith(":")) {
       console.log("Command Input: " + input.substring(1));
+      if (input === ":quit" || input === ":q") {
+        window.close();
+        return;
+      }
+
       if (input.startsWith(":clear")) {
         setOutput("");
         localStorage.setItem("queryId", Date.now());  // reset query id
