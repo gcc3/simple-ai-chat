@@ -200,6 +200,7 @@ export default function Home() {
             placeholder={placeholder}
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
+            autoFocus
           />
           <input hidden type="submit" value="Submit" />
         </form>
