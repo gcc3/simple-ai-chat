@@ -7,11 +7,11 @@ export async function dictionaryEntryListing() {
   fixLastRowNotEmpty('dict.csv');
   let words = [];
 
-  const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
-  .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
+  const csvRows = fs.createReadStream("./dict.csv", { encoding: "utf8" })
+                    .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 
   // find words
-  for await (const [word, def] of dict) {
+  for await (const [word, def] of csvRows) {
     words.push(word);
   }
   return words;
@@ -56,7 +56,7 @@ export async function dictionarySearch({ topics, keywords, sub }) {
   let definations_sub = [];
 
   const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
-  .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
+                 .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 
   // find definations
   for await (const entry of dict) {
@@ -121,11 +121,11 @@ export async function simpleDictionarySearch(keyword) {
   let entries = [];
   let entries_keywords = [];
 
-  const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
+  const csvRows = fs.createReadStream("./dict.csv", { encoding: "utf8" })
   .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 
   // find definations
-  for await (const entry of dict) {
+  for await (const entry of csvRows) {
     // keywords
     if (entry[0].includes(keyword)) {
       entries_keywords.push(entry);

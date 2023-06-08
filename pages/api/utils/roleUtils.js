@@ -4,31 +4,29 @@ import { fixLastRowNotEmpty } from './fileUtils';
 
 export async function roleListing() {
   fixLastRowNotEmpty('role.csv');
+
   let roles = [];
+  const csvRows = fs.createReadStream("./role.csv", { encoding: "utf8" })
+                    .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 
-  const dict = fs.createReadStream("./role.csv", { encoding: "utf8" })
-  .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
-
-  // find words
-  for await (const [role, prompt] of dict) {
+  // push role
+  for await (const [role, prompt] of csvRows) {
     roles.push(role);
   }
   return roles;
 }
 
-export async function rolePrompt(role) {
+export async function rolePrompt(roleName) {
   fixLastRowNotEmpty('role.csv');
-  let prompt = "";
 
-  const dict = fs.createReadStream("./role.csv", { encoding: "utf8" })
-  .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
+  const csvRows = fs.createReadStream("./role.csv", { encoding: "utf8" })
+                    .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 
-  // find words
-  for await (const [role_, prompt_] of dict) {
-    if (role === role_) {
-      prompt = prompt_;
-      break;
+  // find role
+  for await (const role of csvRows) {
+    if (roleName === role[0]) {
+      return role[1];  // prompt
     }
   }
-  return prompt;
+  return "";
 }

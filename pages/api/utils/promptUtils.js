@@ -30,7 +30,7 @@ export async function generateMessages(input, queryId, role, tokenizer) {
 
   // Roleplay role prompt
   if (role !== "") {
-    messages.push({ role: "system", content: rolePrompt(role) });
+    messages.push({ role: "system", content: await rolePrompt(role) });
     token_ct += tokenizer.encode(role).length;
   }
 
