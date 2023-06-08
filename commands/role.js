@@ -29,7 +29,7 @@ export default async function role(args) {
 
   if (command === "use") {
     if (args.length != 2) {
-      return "Usage: :role [role_name]\n"
+      return "Usage: :role use [role_name]\n"
     }
 
     const roleName = args[1];
@@ -41,5 +41,6 @@ export default async function role(args) {
     }
   }
 
-  return "Error.";
+  return "Usage: :role [ls|list]\n" + 
+         "       :role use [role_name]\n";
 }
