@@ -35,6 +35,10 @@ export default function Home() {
       console.log("Command Input: " + input.substring(1));
       
       if (input === ":role reset") {
+        if (localStorage.getItem("role") === "") {
+          setOutput("Role is already empty.");
+          return;
+        }
         localStorage.setItem("role", "");  // reset role
         setOutput("Role reset.");
         return;
