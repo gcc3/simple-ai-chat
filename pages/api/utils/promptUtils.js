@@ -22,11 +22,13 @@ const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 export async function generateMessages(input, queryId, role, tokenizer) {
   let messages = [];
   let token_ct = 0;
-  token_ct += tokenizer.encode(role_content_system).length;
   token_ct += tokenizer.encode(input).length;
 
   // System message, important
-  messages.push({ role: "system", content: role_content_system });
+  if (role_content_system !== "") {
+    messages.push({ role: "system", content: role_content_system });
+    token_ct += tokenizer.encode(role_content_system).length;
+  }
 
   // Roleplay role prompt
   if (role !== "") {
