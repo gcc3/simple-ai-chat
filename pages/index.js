@@ -43,7 +43,6 @@ export default function Home() {
       if (input === ":clear") {
         setOutput("");
         localStorage.setItem("queryId", Date.now());  // reset query id
-        localStorage.setItem("role", "");  // reset role
         return;
       }
 

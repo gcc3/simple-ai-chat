@@ -12,7 +12,7 @@ export default function help(args) {
     ":role [ls|list|reset] - List all roles, reset role.\n" +
     ":role use [role_name] - Use role.\n" +
     ":info - Show current config info.\n" +
-    ":clear - Clear output and reset.\n";
+    ":clear - Clear output.\n";
 
   return commands;
 }
