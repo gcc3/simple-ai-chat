@@ -68,6 +68,6 @@ export default async function role(args) {
     }
   }
 
-  return "Usage: :role [ls|list]\n" + 
+  return "Usage: :role [ls|list|reset]\n" + 
          "       :role use [role_name]\n";
 }

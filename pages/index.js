@@ -34,10 +34,16 @@ export default function Home() {
     if (input.startsWith(":")) {
       console.log("Command Input: " + input.substring(1));
       
-      if (input.startsWith(":clear")) {
+      if (input === ":role reset") {
+        localStorage.setItem("role", "");  // reset role
+        setOutput("Role reset.");
+        return;
+      }
+
+      if (input === ":clear") {
         setOutput("");
         localStorage.setItem("queryId", Date.now());  // reset query id
-        localStorage.setItem("role", "");  // reset query id
+        localStorage.setItem("role", "");  // reset role
         return;
       }
 
