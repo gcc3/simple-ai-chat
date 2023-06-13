@@ -1,12 +1,8 @@
 export default async function log(args) {
   let url = "/api/log/list";
   if (args.length > 0) {
-    if (args[0] == "all") {
-      url = "/api/log/list";
-    } else {
-      const queryId = args[0];
-      url = "/api/log/list?query_id=" + queryId;
-    }
+    const queryId = args[0];
+    url = "/api/log/list?query_id=" + queryId;
   } else {
     url = "/api/log/list?query_id=" + localStorage.getItem("queryId");
   }

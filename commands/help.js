@@ -5,7 +5,7 @@ export default function help(args) {
     ":ls - List all entries, same as :entry ls.\n" +
     ":search [keyword] - Search dictionary.\n" +
     ":log - Show current session log.\n" +
-    ":log [all|session_id] - Show all logs or session logs.\n" +
+    ":log [session_id] - Show session logs.\n" +
     ":stats [show|hide|on|off] - Show/hide stats info.\n" +
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":session [session_id] - Attach to session.\n" +
