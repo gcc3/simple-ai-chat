@@ -170,9 +170,10 @@ export default function Home() {
       }));
 
       if (localStorage.getItem('useStats') === "true") {
+        const score = data.result.stats.score;
         setStats((
           <div>
-            score: {data.result.stats.score}<br></br>
+            <span style={{color: score > 0 ? 'green' : '#DE3163'}}>{score}</span>
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>
           </div>
