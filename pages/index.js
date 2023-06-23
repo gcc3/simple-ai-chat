@@ -78,11 +78,22 @@ export default function Home() {
         const model = env[0];
         setInfo((
           <div>
-            model: {model}
-            <br></br>
+            model: {model}<br></br>
           </div>
         ));
         return;
+      }
+
+      // Evaluation
+      if (event.data.startsWith("###EVAL###")) {
+        const evaluation = event.data.replace("###EVAL###", "");
+        if (localStorage.getItem('useEval') === "true") {
+          setEvaluation(
+            <div>
+              eval: {evaluation}<br></br>
+            </div>
+          );
+        }
       }
 
       if (event.data.startsWith("###STATS###")) {
@@ -96,7 +107,7 @@ export default function Home() {
           if (localStorage.getItem('useEval') === "true") {
             setEvaluation(
               <div>
-                eval: <br></br>
+                eval: evaluating...<br></br>
               </div>
             );
           }
@@ -117,15 +128,6 @@ export default function Home() {
       if (event.data === '[DONE]') {
         openaiEssSrouce.close();
         console.log("Session closed.")
-
-        // Evaluation
-        if (localStorage.getItem('useEval') === "true") {
-          setEvaluation(
-            <div>
-              eval: evaluating...<br></br>
-            </div>
-          );
-        }
         return;
       }
 
