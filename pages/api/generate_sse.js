@@ -262,7 +262,7 @@ async function evaluate(input, messages, result_text) {
 
   // Create evaluation message
   const eval_message = [];
-  const dictionary_message = messages_filtered.length == 0 ? "There is complete no information in the dictionary." : "In the dictionary, the search result is: " + JSON.stringify(messages_filtered);
+  const dictionary_message = messages_filtered.length == 0 ? "There is completely no information in the dictionary." : "In the dictionary, the search result is: " + JSON.stringify(messages_filtered);
   eval_message.push({
     role: "user", content: "Hi, I'm creating a chat application, to enhance the AI response, I'm using a dictionary to let AI reference to." + "\n\n" +
     "Now, the user asks: " + input + "\n\n" +
