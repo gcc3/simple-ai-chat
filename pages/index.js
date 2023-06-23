@@ -9,6 +9,7 @@ export default function Home() {
   const [output, setOutput] = useState();
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
+  const [evaluation, setEvaluation] = useState();
 
   useEffect(() => {
     localStorage.setItem('useStream', "true");
@@ -29,6 +30,7 @@ export default function Home() {
     setUserInput("");
     setInfo();
     setStats();
+    setEvaluation();
 
     // Command input
     if (input.startsWith(":")) {
@@ -90,14 +92,23 @@ export default function Home() {
           const temperature = stats[1];
           const top_p = stats[2];
           const token_ct = stats[3];
-          setStats((
+
+          if (localStorage.getItem('useEval') === "true") {
+            setEvaluation(
+              <div>
+                eval: <br></br>
+              </div>
+            );
+          }
+
+          setStats(
             <div>
               score: <span style={{color: score > 0 ? 'green' : '#DE3163'}}>{score}</span><br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
             </div>
-          ));
+          );
         }
         return;
       }
@@ -106,6 +117,15 @@ export default function Home() {
       if (event.data === '[DONE]') {
         openaiEssSrouce.close();
         console.log("Session closed.")
+
+        // Evaluation
+        if (localStorage.getItem('useEval') === "true") {
+          setEvaluation(
+            <div>
+              eval: evaluating...<br></br>
+            </div>
+          );
+        }
         return;
       }
 
@@ -201,6 +221,7 @@ export default function Home() {
           <input hidden type="submit" value="Submit" />
         </form>
         <div id="output" className={styles.output}>{output}</div>
+        {evaluation && <div className={styles.evaluation}>{evaluation}</div>}
         {stats && <div className={styles.stats}>{stats}</div>}
         <div className={styles.info}>{info}</div>
       </main>
