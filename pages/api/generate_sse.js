@@ -271,7 +271,9 @@ async function evaluate(input, messages, result_text) {
     "Please notice, the dictionary search may not exactly match input word." + "\n\n" +
     "After a while the AI response with: " + result_text + "\n\n" +
     "Now please evaluate the AI response credibility, 1 is the worst, 10 is the best. If you cannot estimate, evalute as 0. " +
-    "Please briefly explain why you estimate this score wihin 1 sentence. "
+    "Then briefly explain why you estimate this score wihin 1 sentence.\n\n" + 
+    "Response with format \"score - explaination\"\n" +
+    "Example: 7 - Becasue..."
   })
 
   console.log("--- result evaluation ---");
