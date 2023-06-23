@@ -1,6 +1,7 @@
 
 import help from "./commands/help.js";
 import stats from "./commands/stats.js";
+import evaluation from "./commands/eval.js";
 import stream from "./commands/stream.js";
 import entry from "./commands/entry.js";
 import ls from "./commands/ls.js";
@@ -25,6 +26,7 @@ export default function commands(input) {
   if (command.startsWith(":entry")) return entry(args);
   if (command.startsWith(":ls")) return ls(args);
   if (command.startsWith(":stats")) return stats(args);
+  if (command.startsWith(":eval")) return evaluation(args);
   if (command.startsWith(":stream")) return stream(args);
   if (command.startsWith(":search")) return search(args);
   if (command.startsWith(":log")) return log(args);
