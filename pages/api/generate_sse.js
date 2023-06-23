@@ -268,7 +268,7 @@ async function evaluate(input, messages, result_text) {
     "Hi, I'm creating a AI chat application, to enhance the AI response I'm using a dictionary to let AI reference to." + "\n\n" +
     "Now, the user asks: " + input + "\n\n" +
     "After searching the dictionary. " + dictionary_message + "\n\n" +
-    "Please notice, the dictionary search may not exactly match input word." + "\n\n" +
+    "Please notice, the dictionary search may not exactly match input word. And sometimes AI has hallucinations, it may looks correct, but as no exactly match in dictionary the response is completely fake." + "\n\n" +
     "After a while the AI response with: " + result_text + "\n\n" +
     "Now please evaluate the AI response credibility, 1 is the worst, 10 is the best. If you cannot estimate, evalute as 0. " +
     "Then briefly explain why you estimate this score wihin 1 sentence.\n\n" + 
