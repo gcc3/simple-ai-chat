@@ -89,7 +89,7 @@ export default function Home() {
         const val = parseFloat(evaluation);
         setEvaluation(
           <div>
-            eval: <span style={{color: val > 7 ? 'green' : '#DE3163'}}>{evaluation}</span><br></br>
+            self_eval_score: <span style={{color: val > 7 ? 'green' : '#DE3163'}}>{evaluation}</span><br></br>
           </div>
         );
         return;
@@ -105,13 +105,13 @@ export default function Home() {
 
           setEvaluation(
             <div>
-              eval: evaluating...<br></br>
+              self_eval_score: evaluating...<br></br>
             </div>
           );
 
           setStats(
             <div>
-              score: <span style={{color: score > 0 ? 'green' : '#DE3163'}}>{score}</span><br></br>
+              dict_search_score: <span style={{color: score > 0 ? 'green' : '#DE3163'}}>{score}</span><br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
