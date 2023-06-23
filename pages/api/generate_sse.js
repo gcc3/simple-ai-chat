@@ -267,13 +267,12 @@ async function evaluate(input, messages, result_text) {
     role: "user", content: "Hi, I'm creating a chat application, to enhance the AI response, I'm using a dictionary to let AI reference to." + "\n\n" +
     "Now, the user asks: " + input + "\n\n" +
     + "After searching the dictionary. " + dictionary_message + "\n\n" +
+    + "Please notice, the dictionary search may not exactly match input work." + "\n\n" +
     "Please estimate the AI response credibility, 1 is the worst, 10 is the best, Pleae only response with number."
   })
 
   console.log("--- result evaluation ---");
   console.log("eval_message: " + JSON.stringify(eval_message));
-  console.log("input: " + input);
-  console.log("result_text: " + result_text);
 
   if (!configuration.apiKey) {
     return "error";
