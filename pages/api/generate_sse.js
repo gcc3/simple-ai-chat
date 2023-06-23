@@ -262,13 +262,16 @@ async function evaluate(input, messages, result_text) {
 
   // Create evaluation message
   const eval_message = [];
-  const dictionary_message = messages_filtered.length == 0 ? "There is completely no information in the dictionary." : "In the dictionary, the search result is: " + JSON.stringify(messages_filtered);
+  const dictionary_message = messages_filtered.length == 0 ? "There is completely no information in the dictionary." : "In the dictionary, the search result in JSON is: " + JSON.stringify(messages_filtered);
   eval_message.push({
-    role: "user", content: "Hi, I'm creating a chat application, to enhance the AI response, I'm using a dictionary to let AI reference to." + "\n\n" +
+    role: "user", content: 
+    "Hi, I'm creating a AI chat application, to enhance the AI response I'm using a dictionary to let AI reference to." + "\n\n" +
     "Now, the user asks: " + input + "\n\n" +
-    + "After searching the dictionary. " + dictionary_message + "\n\n" +
-    + "Please notice, the dictionary search may not exactly match input work." + "\n\n" +
-    "Please estimate the AI response credibility, 1 is the worst, 10 is the best, Pleae only response with number."
+    "After searching the dictionary. " + dictionary_message + "\n\n" +
+    "Please notice, the dictionary search may not exactly match input word." + "\n\n" +
+    "After a while the AI response with: " + result_text + "\n\n" +
+    "Now please evaluate the AI response credibility, 1 is the worst, 10 is the best. If you cannot estimate, evalute as 0. " +
+    "Please briefly explain why you estimate this score wihin 1 sentence. "
   })
 
   console.log("--- result evaluation ---");
