@@ -85,9 +85,11 @@ export default function Home() {
 
       // Evaluation
       if (event.data.startsWith("###EVAL###")) {
+        const evaluation = event.data.replace("###EVAL###", "");
+        const val = parseFloat(evaluation);
         setEvaluation(
           <div>
-            eval: {event.data.replace("###EVAL###", "")}<br></br>
+            eval: <span style={{color: val > 7 ? 'green' : '#DE3163'}}>{evaluation}</span><br></br>
           </div>
         );
         return;

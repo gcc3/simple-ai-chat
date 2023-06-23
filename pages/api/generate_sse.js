@@ -103,11 +103,28 @@ export default async function (req, res) {
             // handle the DONE signal
             if (chunkData === '[DONE]') {
               if (use_eval) {
-                const eval_result = evaluate(messages, input, result_text);
-                res.write(`data: ###EVAL###${eval_result}\n\n`);
-                console.log("eval: " + eval_result + "\n");
+                evaluate(input, messages, result_text).then((eval_result) => {
+                  res.write(`data: ###EVAL###${eval_result}\n\n`);
+                  console.log("eval: " + eval_result + "\n");
+
+                  // Done message
+                  res.write(`data: [DONE]\n\n`)
+                  if (stream_console) {
+                    process.stdout.write("\n\n");
+                  } else {
+                    if (result_text.trim().length === 0) result_text = "(null)";
+                    console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
+                    console.log(result_text + "\n");
+                  }
+                  logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+                  res.flush();
+                  res.end();
+                  return
+                });
+                return;
               }
 
+              // Done message
               res.write(`data: [DONE]\n\n`)
               if (stream_console) {
                 process.stdout.write("\n\n");
@@ -237,10 +254,68 @@ export default async function (req, res) {
   }
 }
 
-function evaluate(messages, input, result_text) {
+async function evaluate(input, messages, result_text) {
   console.log("--- result evaluation ---");
   console.log("messages: " + JSON.stringify(messages));
   console.log("input: " + input);
   console.log("result_text: " + result_text);
-  return "10";
+
+  // Create evaluation message
+  const eval_message = [];
+  eval_message.push({
+    role: "user", content: "Hi, I'm creating a chat application, to enhance the AI response, I'm using a CSV dictionary" +
+    "Now the user asks: " + input +
+    "In the dictionary, the search result is: " + messages +
+    "The AI responds is: " + result_text +
+    "Please evaluate the AI response, 1 is the worst, 10 is the best" +
+    "Pleae only response with number.",
+  })
+
+  if (!configuration.apiKey) {
+    return "error";
+  }
+
+  // Input
+  if (input.trim().length === 0) return;
+  input = prompt_prefix + input + prompt_suffix;
+
+  try {
+    let result_text = "";
+
+    if (process.env.END_POINT === "chat_completion") {
+      // endpoint: /v1/chat/completions
+      const chatCompletion = await openai.createChatCompletion({
+        model: process.env.MODEL,
+        messages: eval_message,
+        temperature: temperature,
+        top_p: top_p,
+        max_tokens: max_tokens,
+      });
+
+      // Get result
+      const choices = chatCompletion.data.choices;
+      if (!choices || choices.length === 0) {
+        result_text = "result error";
+      } else {
+        result_text = choices[0].message.content;
+      }
+    }
+
+    if (process.env.END_POINT === "text_completion") {
+      return "model unsupported"
+    }
+
+    // Output the result
+    if (result_text.trim().length === 0) result_text = "null";
+    return result_text;
+  } catch (error) {
+    // Consider adjusting the error handling logic for your use case
+    console.log("Error:");
+    if (error.response) {
+      console.error(error.response.status, error.response.data);
+    } else {
+      console.error(`Error with OpenAI API request: ${error.message}`);
+    }
+    return "error";
+  }
 }
