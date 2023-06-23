@@ -31,7 +31,7 @@ export async function generateMessages(input, queryId, role, tokenizer) {
   }
 
   // Roleplay role prompt
-  if (role !== "") {
+  if (role !== "" && role !== "default") {
     messages.push({ role: "system", content: await rolePrompt(role) });
     token_ct += tokenizer.encode(role).length;
   }

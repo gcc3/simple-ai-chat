@@ -64,9 +64,11 @@ export default function Home() {
 
     const query_id = localStorage.getItem("queryId");
     const role = localStorage.getItem("role");
+    const use_eval = localStorage.getItem('useEval');
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + input 
                                                            + "&query_id=" + query_id
-                                                           + "&role=" + role);
+                                                           + "&role=" + role
+                                                           + "&use_eval=" + use_eval);
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
     }
@@ -87,13 +89,12 @@ export default function Home() {
       // Evaluation
       if (event.data.startsWith("###EVAL###")) {
         const evaluation = event.data.replace("###EVAL###", "");
-        if (localStorage.getItem('useEval') === "true") {
-          setEvaluation(
-            <div>
-              eval: {evaluation}<br></br>
-            </div>
-          );
-        }
+        setEvaluation(
+          <div>
+            eval: {evaluation}<br></br>
+          </div>
+        );
+        return;
       }
 
       if (event.data.startsWith("###STATS###")) {
@@ -104,13 +105,11 @@ export default function Home() {
           const top_p = stats[2];
           const token_ct = stats[3];
 
-          if (localStorage.getItem('useEval') === "true") {
-            setEvaluation(
-              <div>
-                eval: evaluating...<br></br>
-              </div>
-            );
-          }
+          setEvaluation(
+            <div>
+              eval: evaluating...<br></br>
+            </div>
+          );
 
           setStats(
             <div>

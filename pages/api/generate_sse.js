@@ -3,7 +3,6 @@ import chalk from 'chalk';
 import { generateMessages } from "./utils/promptUtils";
 import { generatePrompt } from "./utils/promptUtils";
 import { logfile } from "./utils/logUtils.js";
-import assert from "node:assert";
 import { get_encoding, encoding_for_model } from "tiktoken";
 
 // OpenAI
@@ -35,7 +34,8 @@ export default async function (req, res) {
   }
 
   const queryId = req.query.query_id || "";
-  const role = req.query.role || "";
+  const role = req.query.role || "default";
+  const use_eval = req.query.use_eval || false;
 
   // Input
   let input = req.query.user_input || "";
@@ -56,12 +56,14 @@ export default async function (req, res) {
   + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
   + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
   + "max_tokens: " + process.env.MAX_TOKENS + "\n"
-  + "role: " + role + "\n");
+  + "role: " + role + "\n"
+  + "eval: " + use_eval + "\n");
 
   try {
     let result_text = "";
     let score = 0;
     let token_ct = 0;
+    let messages = [];
 
     res.writeHead(200, {
       'connection': 'keep-alive',
@@ -75,11 +77,12 @@ export default async function (req, res) {
       const generateMessagesResult = await generateMessages(input, queryId, role, tokenizer);
       score = generateMessagesResult.score;
       token_ct = generateMessagesResult.token_ct;
+      messages = generateMessagesResult.messages;
 
       // endpoint: /v1/chat/completions
       const chatCompletion = openai.createChatCompletion({
         model: process.env.MODEL,
-        messages: generateMessagesResult.messages,
+        messages: messages,
         temperature: temperature,
         top_p: top_p,
         max_tokens: max_tokens,
@@ -99,6 +102,12 @@ export default async function (req, res) {
 
             // handle the DONE signal
             if (chunkData === '[DONE]') {
+              let eval_result = "";
+              if (use_eval) {
+                eval_result = evaluate(messages, input, result_text);
+                res.write(`data: ###EVAL###${eval_result}\n\n`);
+              }
+
               res.write(`data: [DONE]\n\n`)
               if (stream_console) {
                 process.stdout.write("\n\n");
@@ -106,6 +115,9 @@ export default async function (req, res) {
                 if (result_text.trim().length === 0) result_text = "(null)";
                 console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
                 console.log(result_text + "\n");
+                if (use_eval) {
+                  console.log("eval: " + eval_result + "\n");
+                }
               }
               logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
               res.flush();
@@ -137,7 +149,7 @@ export default async function (req, res) {
         console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
         console.error(error.message + "\n");
         console.log("--- query detail ---");
-        console.log("message: " + JSON.stringify(generateMessagesResult.messages) + "\n");
+        console.log("message: " + JSON.stringify(messages) + "\n");
         res.write(`data: [ERR] ${error}\n\n`)
         res.end();
       });
@@ -226,4 +238,12 @@ export default async function (req, res) {
     res.flush();
     res.end();
   }
+}
+
+function evaluate(messages, input, result_text) {
+  console.log("Evaluating result...");
+  console.log("messages: " + JSON.stringify(messages));
+  console.log("input: " + input);
+  console.log("result_text: " + result_text);
+  return "Not implemented yet";
 }

@@ -7,7 +7,6 @@ export default function help(args) {
     ":log - Show current session log.\n" +
     ":log [session_id] - Show session logs.\n" +
     ":stats [on|off|show|hide] - Show/hide stats info.\n" +
-    ":eval [on|off|show|hide] - Show/hide result evaluation.\n" +
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":session [session_id] - Attach to session.\n" +
     ":role [ls|list|reset] - List all roles, reset role.\n" +
