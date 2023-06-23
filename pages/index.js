@@ -13,6 +13,7 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('useStream', "true");
     localStorage.setItem('useStats', "false");
+    localStorage.setItem('useEval', "false");
     localStorage.setItem("queryId", Date.now());
   }, []);
 
