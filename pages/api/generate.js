@@ -3,7 +3,6 @@ import chalk from 'chalk';
 import { generateMessages } from "./utils/promptUtils";
 import { generatePrompt } from "./utils/promptUtils";
 import { logfile } from "./utils/logUtils.js";
-import assert from "node:assert";
 import { get_encoding, encoding_for_model } from "tiktoken";
 
 // OpenAI

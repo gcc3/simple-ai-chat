@@ -3,7 +3,6 @@ import chalk from 'chalk';
 import { generateMessages } from "./utils/promptUtils";
 import { generatePrompt } from "./utils/promptUtils";
 import { logfile } from "./utils/logUtils.js";
-import assert from "node:assert";
 import { get_encoding, encoding_for_model } from "tiktoken";
 
 // OpenAI
@@ -23,6 +22,7 @@ const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : ""
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
+const use_eval = process.env.USE_EVAL == "true" ? true : false;
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -35,7 +35,7 @@ export default async function (req, res) {
   }
 
   const queryId = req.query.query_id || "";
-  const role = req.query.role || "";
+  const role = req.query.role || "default";
 
   // Input
   let input = req.query.user_input || "";
@@ -56,12 +56,14 @@ export default async function (req, res) {
   + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
   + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
   + "max_tokens: " + process.env.MAX_TOKENS + "\n"
-  + "role: " + role + "\n");
+  + "role: " + role + "\n"
+  + "use_eval: " + process.env.USE_EVAL + "\n");
 
   try {
     let result_text = "";
     let score = 0;
     let token_ct = 0;
+    let messages = [];
 
     res.writeHead(200, {
       'connection': 'keep-alive',
@@ -75,11 +77,12 @@ export default async function (req, res) {
       const generateMessagesResult = await generateMessages(input, queryId, role, tokenizer);
       score = generateMessagesResult.score;
       token_ct = generateMessagesResult.token_ct;
+      messages = generateMessagesResult.messages;
 
       // endpoint: /v1/chat/completions
       const chatCompletion = openai.createChatCompletion({
         model: process.env.MODEL,
-        messages: generateMessagesResult.messages,
+        messages: messages,
         temperature: temperature,
         top_p: top_p,
         max_tokens: max_tokens,
@@ -99,6 +102,29 @@ export default async function (req, res) {
 
             // handle the DONE signal
             if (chunkData === '[DONE]') {
+              if (use_eval) {
+                evaluate(input, messages, result_text).then((eval_result) => {
+                  res.write(`data: ###EVAL###${eval_result}\n\n`);
+                  console.log("eval: " + eval_result + "\n");
+
+                  // Done message
+                  res.write(`data: [DONE]\n\n`)
+                  if (stream_console) {
+                    process.stdout.write("\n\n");
+                  } else {
+                    if (result_text.trim().length === 0) result_text = "(null)";
+                    console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
+                    console.log(result_text + "\n");
+                  }
+                  logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+                  res.flush();
+                  res.end();
+                  return
+                });
+                return;
+              }
+
+              // Done message
               res.write(`data: [DONE]\n\n`)
               if (stream_console) {
                 process.stdout.write("\n\n");
@@ -137,7 +163,7 @@ export default async function (req, res) {
         console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
         console.error(error.message + "\n");
         console.log("--- query detail ---");
-        console.log("message: " + JSON.stringify(generateMessagesResult.messages) + "\n");
+        console.log("message: " + JSON.stringify(messages) + "\n");
         res.write(`data: [ERR] ${error}\n\n`)
         res.end();
       });
@@ -225,5 +251,75 @@ export default async function (req, res) {
     }
     res.flush();
     res.end();
+  }
+}
+
+async function evaluate(input, messages, result_text) {
+  // Trim messages
+  const messages_filtered = messages.filter(message => {
+    return message['role'] === "system";
+  });
+
+  // Create evaluation message
+  const eval_message = [];
+  const dictionary_message = messages_filtered.length == 0 ? "There is complete no information in the dictionary." : "In the dictionary, the search result is: " + JSON.stringify(messages_filtered);
+  eval_message.push({
+    role: "user", content: "Hi, I'm creating a chat application, to enhance the AI response, I'm using a dictionary to let AI reference to." + "\n\n" +
+    "Now, the user asks: " + input + "\n\n" +
+    + "After searching the dictionary. " + dictionary_message + "\n\n" +
+    "Please estimate the AI response credibility, 1 is the worst, 10 is the best, Pleae only response with number."
+  })
+
+  console.log("--- result evaluation ---");
+  console.log("eval_message: " + JSON.stringify(eval_message));
+  console.log("input: " + input);
+  console.log("result_text: " + result_text);
+
+  if (!configuration.apiKey) {
+    return "error";
+  }
+
+  // Input
+  if (input.trim().length === 0) return;
+  input = prompt_prefix + input + prompt_suffix;
+
+  try {
+    let result_text = "";
+
+    if (process.env.END_POINT === "chat_completion") {
+      // endpoint: /v1/chat/completions
+      const chatCompletion = await openai.createChatCompletion({
+        model: process.env.MODEL,
+        messages: eval_message,
+        temperature: temperature,
+        top_p: top_p,
+        max_tokens: max_tokens,
+      });
+
+      // Get result
+      const choices = chatCompletion.data.choices;
+      if (!choices || choices.length === 0) {
+        result_text = "result error";
+      } else {
+        result_text = choices[0].message.content;
+      }
+    }
+
+    if (process.env.END_POINT === "text_completion") {
+      return "model unsupported"
+    }
+
+    // Output the result
+    if (result_text.trim().length === 0) result_text = "null";
+    return result_text;
+  } catch (error) {
+    // Consider adjusting the error handling logic for your use case
+    console.log("Error:");
+    if (error.response) {
+      console.error(error.response.status, error.response.data);
+    } else {
+      console.error(`Error with OpenAI API request: ${error.message}`);
+    }
+    return "error";
   }
 }

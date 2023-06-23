@@ -6,7 +6,7 @@ export default function help(args) {
     ":search [keyword] - Search dictionary.\n" +
     ":log - Show current session log.\n" +
     ":log [session_id] - Show session logs.\n" +
-    ":stats [show|hide|on|off] - Show/hide stats info.\n" +
+    ":stats [on|off|show|hide] - Show/hide stats info.\n" +
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":session [session_id] - Attach to session.\n" +
     ":role [ls|list|reset] - List all roles, reset role.\n" +

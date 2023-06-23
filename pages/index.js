@@ -9,6 +9,7 @@ export default function Home() {
   const [output, setOutput] = useState();
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
+  const [evaluation, setEvaluation] = useState();
 
   useEffect(() => {
     localStorage.setItem('useStream', "true");
@@ -28,21 +29,12 @@ export default function Home() {
     setUserInput("");
     setInfo();
     setStats();
+    setEvaluation();
 
     // Command input
     if (input.startsWith(":")) {
       console.log("Command Input: " + input.substring(1));
       
-      if (input === ":role reset") {
-        if (localStorage.getItem("role") === "") {
-          setOutput("Role is already empty.");
-          return;
-        }
-        localStorage.setItem("role", "");  // reset role
-        setOutput("Role reset.");
-        return;
-      }
-
       if (input === ":clear") {
         setOutput(null);
         localStorage.setItem("queryId", Date.now());  // reset query id
@@ -85,10 +77,21 @@ export default function Home() {
         const model = env[0];
         setInfo((
           <div>
-            model: {model}
-            <br></br>
+            model: {model}<br></br>
           </div>
         ));
+        return;
+      }
+
+      // Evaluation
+      if (event.data.startsWith("###EVAL###")) {
+        const evaluation = event.data.replace("###EVAL###", "");
+        const val = parseFloat(evaluation);
+        setEvaluation(
+          <div>
+            self_eval_score: <span style={{color: val > 7 ? 'green' : '#DE3163'}}>{evaluation}</span><br></br>
+          </div>
+        );
         return;
       }
 
@@ -99,14 +102,21 @@ export default function Home() {
           const temperature = stats[1];
           const top_p = stats[2];
           const token_ct = stats[3];
-          setStats((
+
+          setEvaluation(
             <div>
-              score: <span style={{color: score > 0 ? 'green' : '#DE3163'}}>{score}</span><br></br>
+              self_eval_score: evaluating...<br></br>
+            </div>
+          );
+
+          setStats(
+            <div>
+              dict_search_score: <span style={{color: score > 0 ? 'green' : '#DE3163'}}>{score}</span><br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
             </div>
-          ));
+          );
         }
         return;
       }
@@ -210,6 +220,7 @@ export default function Home() {
           <input hidden type="submit" value="Submit" />
         </form>
         <div id="output" className={styles.output}>{output}</div>
+        {evaluation && stats && <div className={styles.stats}>{evaluation}</div>}
         {stats && <div className={styles.stats}>{stats}</div>}
         <div className={styles.info}>{info}</div>
       </main>

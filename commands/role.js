@@ -1,6 +1,14 @@
 export default async function role(args) {
   const command = args[0];
 
+  if (command === "reset") {
+    if (localStorage.getItem("role") === "") {
+      return "Role is already empty.";
+    }
+    localStorage.setItem("role", "");  // reset role
+    return "Role reset.";
+  }
+
   if (command === "ls" || command === "list") {
     try {
       const response = await fetch("/api/role/list", {

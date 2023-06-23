@@ -3,11 +3,11 @@ export default function stats(args) {
   
   if (showhide === "show" || showhide === "on") {
     localStorage.setItem('useStats', "true");
-    return "Show stats turned on.";
+    return "Show stats.";
   } else if (showhide === "hide" || showhide === "off") {
     localStorage.setItem('useStats', "false");
-    return "Hide stats turned off.";
+    return "Hide stats.";
   } else {
-    return "Usage: :stats [show|hide]";
+    return "Usage: :stats [on|off|show|hide]";
   }
 }

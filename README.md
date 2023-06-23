@@ -83,6 +83,9 @@ Get from https://labs.goo.ne.jp/apiusage/
 Control the stream in console or not, value should be `true` or `false`  
 If set to true then it will only support single session, for multiple session the text will be distort.  
 
+* USE_EVAL  
+Use AI to evaluate the result, value should be `true` or `false`  
+
 
 log.config
 ----------
