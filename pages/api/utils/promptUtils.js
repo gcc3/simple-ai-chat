@@ -44,7 +44,7 @@ export async function generateMessages(input, queryId, role, tokenizer) {
     const dictionarySearchResult = await dictionarySearch(entries);
     score = dictionarySearchResult.score;
     console.log("search result: " + dictionarySearchResult.def.join("/ "));
-    console.log("credibility score: " + score + "\n");
+    console.log("dict search score: " + score + "\n");
 
     // Add definations to messages
     dictionarySearchResult.def.map(entry => {
