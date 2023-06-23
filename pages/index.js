@@ -25,7 +25,6 @@ export default function Home() {
     });
     if (input.length == 0) return;
     setPlaceholder(userInput);
-    setOutput("");
     setUserInput("");
     setInfo();
     setStats();
@@ -45,7 +44,7 @@ export default function Home() {
       }
 
       if (input === ":clear") {
-        setOutput("");
+        setOutput(null);
         localStorage.setItem("queryId", Date.now());  // reset query id
         return;
       }
