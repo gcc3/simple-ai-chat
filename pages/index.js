@@ -14,7 +14,6 @@ export default function Home() {
   useEffect(() => {
     localStorage.setItem('useStream', "true");
     localStorage.setItem('useStats', "false");
-    localStorage.setItem('useEval', "false");
     localStorage.setItem("queryId", Date.now());
   }, []);
 
@@ -64,11 +63,9 @@ export default function Home() {
 
     const query_id = localStorage.getItem("queryId");
     const role = localStorage.getItem("role");
-    const use_eval = localStorage.getItem('useEval');
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + input 
                                                            + "&query_id=" + query_id
-                                                           + "&role=" + role
-                                                           + "&use_eval=" + use_eval);
+                                                           + "&role=" + role);
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
     }
@@ -88,10 +85,9 @@ export default function Home() {
 
       // Evaluation
       if (event.data.startsWith("###EVAL###")) {
-        const evaluation = event.data.replace("###EVAL###", "");
         setEvaluation(
           <div>
-            eval: {evaluation}<br></br>
+            eval: {event.data.replace("###EVAL###", "")}<br></br>
           </div>
         );
         return;
@@ -222,7 +218,7 @@ export default function Home() {
           <input hidden type="submit" value="Submit" />
         </form>
         <div id="output" className={styles.output}>{output}</div>
-        {evaluation && <div className={styles.evaluation}>{evaluation}</div>}
+        {evaluation && stats && <div className={styles.stats}>{evaluation}</div>}
         {stats && <div className={styles.stats}>{stats}</div>}
         <div className={styles.info}>{info}</div>
       </main>

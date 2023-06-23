@@ -22,6 +22,7 @@ const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : ""
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
+const use_eval = process.env.USE_EVAL == "true" ? true : false;
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -35,7 +36,6 @@ export default async function (req, res) {
 
   const queryId = req.query.query_id || "";
   const role = req.query.role || "default";
-  const use_eval = req.query.use_eval || false;
 
   // Input
   let input = req.query.user_input || "";
@@ -57,7 +57,7 @@ export default async function (req, res) {
   + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
   + "max_tokens: " + process.env.MAX_TOKENS + "\n"
   + "role: " + role + "\n"
-  + "eval: " + use_eval + "\n");
+  + "use_eval: " + process.env.USE_EVAL + "\n");
 
   try {
     let result_text = "";
@@ -102,10 +102,10 @@ export default async function (req, res) {
 
             // handle the DONE signal
             if (chunkData === '[DONE]') {
-              let eval_result = "";
               if (use_eval) {
-                eval_result = evaluate(messages, input, result_text);
+                const eval_result = evaluate(messages, input, result_text);
                 res.write(`data: ###EVAL###${eval_result}\n\n`);
+                console.log("eval: " + eval_result + "\n");
               }
 
               res.write(`data: [DONE]\n\n`)
@@ -115,9 +115,6 @@ export default async function (req, res) {
                 if (result_text.trim().length === 0) result_text = "(null)";
                 console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
                 console.log(result_text + "\n");
-                if (use_eval) {
-                  console.log("eval: " + eval_result + "\n");
-                }
               }
               logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
               res.flush();
@@ -241,9 +238,9 @@ export default async function (req, res) {
 }
 
 function evaluate(messages, input, result_text) {
-  console.log("Evaluating result...");
+  console.log("--- result evaluation ---");
   console.log("messages: " + JSON.stringify(messages));
   console.log("input: " + input);
   console.log("result_text: " + result_text);
-  return "Not implemented yet";
+  return "10";
 }
