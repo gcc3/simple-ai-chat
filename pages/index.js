@@ -12,8 +12,6 @@ export default function Home() {
   const [evaluation, setEvaluation] = useState();
 
   useEffect(() => {
-    localStorage.setItem('useStream', "true");
-    localStorage.setItem('useStats', "false");
     localStorage.setItem("queryId", Date.now());
   }, []);
 
