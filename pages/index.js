@@ -200,9 +200,14 @@ export default function Home() {
 
       if (localStorage.getItem('useStats') === "true") {
         const score = data.result.stats.score;
+        
+        let scoreColor = "#767676";                  // default
+        if (score >= 4)      scoreColor = "green";   // green
+        else if (score > 0)  scoreColor = "#CC7722"; // orange
+        else if (score == 0) scoreColor = "#DE3163"; // red
         setStats((
           <div>
-            <span style={{color: score > 0 ? 'green' : '#DE3163'}}>{score}</span>
+            dict_search_score: <span style={{color: score > 0 ? 'green' : '#DE3163'}}>{score}</span>
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>
           </div>
