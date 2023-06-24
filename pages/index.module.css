@@ -65,9 +65,18 @@
   max-width: 600px;
   white-space: pre-wrap;
 }
+.main .evaluation {
+  font-weight: normal;
+  font-size: 12px;
+  color: #767676;
+  width: 96%;
+  max-width: 600px;
+  text-align: left;
+}
 .main .stats {
   font-weight: normal;
   font-size: 12px;
+  margin-bottom: 30px;
   color: #767676;
   width: 96%;
   max-width: 600px;
@@ -77,7 +86,7 @@
   font-weight: normal;
   font-size: 12px;
   color: #cccccc;
-  margin-top: 43px;
+  margin-top: 5px;
   margin-bottom: 45px;
   width: 96%;
   max-width: 600px;
