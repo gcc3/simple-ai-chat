@@ -3,6 +3,7 @@ import chalk from 'chalk';
 import { generateMessages } from "./utils/promptUtils";
 import { generatePrompt } from "./utils/promptUtils";
 import { logfile } from "./utils/logUtils";
+import { tryParseJSON } from "./utils/jsonUtils"
 import { get_encoding, encoding_for_model } from "tiktoken";
 import { evaluate } from './evaluate';
 
@@ -146,7 +147,7 @@ export default async function (req, res) {
             }
 
             // handle the message
-            const choices = JSON.parse(chunkData).choices;
+            const choices = tryParseJSON(chunkData).choices;
             if (!choices || choices.length === 0) {
               console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
               console.error("No choices\n");
@@ -217,7 +218,7 @@ export default async function (req, res) {
             }
 
             // handle the message
-            const choices = JSON.parse(chunkData).choices;
+            const choices = tryParseJSON(chunkData).choices;
             if (!choices || choices.length === 0) {
               console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
               console.error("No choice\n");
