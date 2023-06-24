@@ -5,6 +5,9 @@ window.addEventListener("resize", (event) => {
 
 window.addEventListener("load", (event) => {
   adjustPaddingTop();
+
+  // After loading, show the input box
+  document.getElementById("input").removeAttribute("hidden");
 });
 
 function adjustPaddingTop() {

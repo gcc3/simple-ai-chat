@@ -229,7 +229,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <script src="./js/resize.js" />
-        <form onSubmit={onSubmit}>
+        <form id="input" onSubmit={onSubmit} hidden>
           <input
             type="text"
             placeholder={placeholder}
