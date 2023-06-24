@@ -3,9 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "cross-env PORT=8081 next dev",
     "build": "next build",
-    "start": "cross-env PORT=8081 next start"
+    "dev": "next dev",
+    "start": "next start",
+    "start-1": "cross-env PORT=3001 next start",
+    "start-2": "cross-env PORT=3002 next start",
+    "start-3": "cross-env PORT=3003 next start"
   },
   "dependencies": {
     "chalk": "^5.2.0",
