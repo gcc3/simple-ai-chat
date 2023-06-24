@@ -4,6 +4,7 @@ import styles from "./index.module.css";
 import command from "../command.js";
 
 export default function Home() {
+  const [isLoading, setIsLoading] = useState(false);
   const [userInput, setUserInput] = useState("");
   const [placeholder, setPlaceholder] = useState("Say something...");
   const [output, setOutput] = useState();
@@ -21,6 +22,10 @@ export default function Home() {
     if (localStorage.getItem("useStream") === null) {
       localStorage.setItem("useStream", "true");
     }
+
+    window.addEventListener('load', () => {
+      setIsLoading(false);
+    });
   }, []);
 
   async function onSubmit(event) {
@@ -221,6 +226,10 @@ export default function Home() {
     }
   }
 
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
   return (
     <div>
       <Head>
@@ -229,7 +238,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <script src="./js/resize.js" />
-        <form id="input" onSubmit={onSubmit} hidden>
+        <form id="input" onSubmit={onSubmit}>
           <input
             type="text"
             placeholder={placeholder}
