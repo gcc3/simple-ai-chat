@@ -89,9 +89,9 @@ export default function Home() {
         const val = parseInt(evaluation);
 
         let valColor = "#767676";                // default
-        if (val >= 7)      valColor = "green";   // lime green
-        else if (val >= 4) valColor = "orange";  // cadmium orange
-        else if (val >= 0) valColor = "red";     // red
+        if (val >= 7)      valColor = "green";   // green
+        else if (val >= 4) valColor = "#CC7722"; // orange
+        else if (val >= 0) valColor = "#DE3163"; // red
         setEvaluation(
           <div>
             self_eval_score: <span style={{color: valColor}}>{evaluation}</span><br></br>
@@ -115,9 +115,9 @@ export default function Home() {
           );
 
           let scoreColor = "#767676";                  // default
-          if (score >= 4)      scoreColor = "green";   // lime green
-          else if (score > 0)  scoreColor = "orange";  // cadmium orange
-          else if (score == 0) scoreColor = "red";     // red
+          if (score >= 4)      scoreColor = "green";   // green
+          else if (score > 0)  scoreColor = "#CC7722"; // orange
+          else if (score == 0) scoreColor = "#DE3163"; // red
           setStats(
             <div>
               dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
