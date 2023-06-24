@@ -224,7 +224,7 @@ export default function Home() {
   return (
     <div>
       <Head>
-        <title>Simple AI - Chat</title>
+        <title>simple ai - chat</title>
       </Head>
 
       <main className={styles.main}>
