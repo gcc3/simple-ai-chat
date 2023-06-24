@@ -86,10 +86,15 @@ export default function Home() {
       // Evaluation
       if (event.data.startsWith("###EVAL###")) {
         const evaluation = event.data.replace("###EVAL###", "");
-        const val = parseFloat(evaluation);
+        const val = parseInt(evaluation);
+
+        let valColor = "#767676";                // default
+        if (val >= 7)      valColor = "green";   // lime green
+        else if (val >= 4) valColor = "orange";  // cadmium orange
+        else if (val >= 0) valColor = "red";     // red
         setEvaluation(
           <div>
-            self_eval_score: <span style={{color: val > 7 ? 'green' : '#DE3163'}}>{evaluation}</span><br></br>
+            self_eval_score: <span style={{color: valColor}}>{evaluation}</span><br></br>
           </div>
         );
         return;
@@ -109,9 +114,13 @@ export default function Home() {
             </div>
           );
 
+          let scoreColor = "#767676";                  // default
+          if (score >= 4)      scoreColor = "green";   // lime green
+          else if (score > 0)  scoreColor = "orange";  // cadmium orange
+          else if (score == 0) scoreColor = "red";     // red
           setStats(
             <div>
-              dict_search_score: <span style={{color: score > 0 ? 'green' : '#DE3163'}}>{score}</span><br></br>
+              dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
