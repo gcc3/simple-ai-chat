@@ -147,7 +147,14 @@ export default async function (req, res) {
             }
 
             // handle the message
-            const choices = tryParseJSON(chunkData).choices;
+            let jsonChunk = tryParseJSON(chunkData);
+            if (jsonChunk == null) {
+              res.write(`data: ###ERR###\n\n`)
+              res.flush();
+              res.end();
+            }
+
+            const choices = jsonChunk.choices;
             if (!choices || choices.length === 0) {
               console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
               console.error("No choices\n");
@@ -218,7 +225,14 @@ export default async function (req, res) {
             }
 
             // handle the message
-            const choices = tryParseJSON(chunkData).choices;
+            let jsonChunk = tryParseJSON(chunkData);
+            if (jsonChunk == null) {
+              res.write(`data: ###ERR###\n\n`)
+              res.flush();
+              res.end();
+            }
+
+            const choices = jsonChunk.choices;
             if (!choices || choices.length === 0) {
               console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
               console.error("No choice\n");

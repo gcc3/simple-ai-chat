@@ -148,6 +148,13 @@ export default function Home() {
         return;
       }
 
+      if (event.data.startsWith("###ERR###")) {
+        openaiEssSrouce.close();
+        document.getElementById("output").innerHTML += "<br><br>Server error.";
+        console.log(event.data);
+        return;
+      }
+
       // Print error message
       if (event.data.startsWith('[ERR]')) {
         openaiEssSrouce.close();

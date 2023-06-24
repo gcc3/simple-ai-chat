@@ -79,6 +79,7 @@ export async function evaluate(input, definations, result_text) {
     "Response with format \"score - explaination\"\n" +
     "Example: 7 - Becasue..."
   })
+  console.log("--- result evaluation --- ");
   console.log("eval_message: " + JSON.stringify(eval_message));
 
   try {
