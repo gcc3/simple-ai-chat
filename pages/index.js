@@ -228,7 +228,6 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <script src="./js/resize.js" />
         <form id="input" onSubmit={onSubmit}>
           <input
             type="text"

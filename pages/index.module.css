@@ -92,3 +92,20 @@
   max-width: 600px;
   text-align: right;
 }
+
+/* Styles for differnt window sizes */
+@media screen and (max-width: 649px) {
+  .main {
+    padding-top: 0px;
+  }
+}
+@media screen and (min-width: 650px) and (max-width: 800px) {
+  .main {
+    padding-top: 25px;
+  }
+}
+@media screen and (min-width: 801px) {
+  .main {
+    padding-top: 50px;
+  }
+}
