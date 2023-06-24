@@ -144,7 +144,7 @@ export default function Home() {
     };
 
     openaiEssSrouce.onerror = function(error) {
-      console.log("Other Stream Error: " + error);
+      console.log("Other Stream Error: " + JSON.stringify(error));
       openaiEssSrouce.close();
     };
   }
