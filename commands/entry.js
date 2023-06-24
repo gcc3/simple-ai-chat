@@ -24,7 +24,6 @@ export default async function entry(args) {
       console.error(error);
       alert(error.message);
     }
-    return "";
   }
   
   if (command === "add") {
@@ -56,7 +55,6 @@ export default async function entry(args) {
       console.error(error);
       alert(error.message);
     }
-    return "";
   }
 
   return "Usage: :entry [ls|list|add]";

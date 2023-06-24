@@ -3,6 +3,7 @@ export default function help(args) {
     ":help - Show this help message.\n" +
     ":entry [ls|list|add] - Manage dictionary entries.\n" +
     ":ls - List all entries, same as :entry ls.\n" +
+    ":add [word] [defination] - Same as :entry add.\n" +
     ":search [keyword] - Search dictionary.\n" +
     ":log - Show current session log.\n" +
     ":log [session_id] - Show session logs.\n" +
