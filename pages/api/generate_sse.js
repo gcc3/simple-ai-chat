@@ -93,7 +93,7 @@ export default async function (req, res) {
       }, { responseType: "stream" });
 
       res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct}\n\n`);
+      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL}\n\n`);
 
       chatCompletion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));

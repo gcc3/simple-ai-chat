@@ -107,12 +107,15 @@ export default function Home() {
           const temperature = stats[1];
           const top_p = stats[2];
           const token_ct = stats[3];
+          const use_eval = stats[4];
 
-          setEvaluation(
-            <div>
-              self_eval_score: evaluating...<br></br>
-            </div>
-          );
+          if (use_eval === "true") {
+            setEvaluation(
+              <div>
+                self_eval_score: evaluating...<br></br>
+              </div>
+            );
+          }
 
           let scoreColor = "#767676";                  // default
           if (score >= 4)      scoreColor = "green";   // green
