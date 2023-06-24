@@ -36,6 +36,7 @@ export default async function (req, res) {
 
   const queryId = req.query.query_id || "";
   const role = req.query.role || "default";
+  const use_stats = req.query.use_stats || "off";
 
   // Input
   let input = req.query.user_input || "";
@@ -61,6 +62,7 @@ export default async function (req, res) {
 
   try {
     let result_text = "";
+    let definations = [];
     let score = 0;
     let token_ct = 0;
     let messages = [];
@@ -75,6 +77,7 @@ export default async function (req, res) {
 
     if (process.env.END_POINT === "chat_completion") {
       const generateMessagesResult = await generateMessages(input, queryId, role, tokenizer);
+      definations = generateMessagesResult.definations;
       score = generateMessagesResult.score;
       token_ct = generateMessagesResult.token_ct;
       messages = generateMessagesResult.messages;
@@ -102,8 +105,10 @@ export default async function (req, res) {
 
             // handle the DONE signal
             if (chunkData === '[DONE]') {
-              if (use_eval) {
-                evaluate(input, messages, result_text).then((eval_result) => {
+
+              // Evaluate result
+              if (use_eval && use_stats === "true") {
+                evaluate(input, definations, result_text).then((eval_result) => {
                   res.write(`data: ###EVAL###${eval_result}\n\n`);
                   console.log("eval: " + eval_result + "\n");
 
@@ -254,15 +259,12 @@ export default async function (req, res) {
   }
 }
 
-async function evaluate(input, messages, result_text) {
-  // Trim messages
-  const messages_filtered = messages.filter(message => {
-    return message['role'] === "system";
-  });
-
+async function evaluate(input, definations, result_text) {
   // Create evaluation message
   const eval_message = [];
-  const dictionary_message = messages_filtered.length == 0 ? "There is completely no information in the dictionary." : "In the dictionary, the search result in JSON is: " + JSON.stringify(messages_filtered);
+  const dictionary_message = definations.length == 0 ? 
+    "There is completely no information found." : 
+    "The search result in JSON is: " + JSON.stringify(definations);
   eval_message.push({
     role: "user", content: 
     "Hi, I'm creating a AI chat application, to enhance the AI response I'm using a dictionary to let AI reference to." + "\n\n" +

@@ -38,12 +38,14 @@ export async function generateMessages(input, queryId, role, tokenizer) {
 
   // Dictionary search
   let score = 0;
+  let definations = [];
   if (process.env.DICT_SEARCH == "true") {
     console.log("--- dictionary search ---");
     const entries = await keywordExtraction(input);
     const dictionarySearchResult = await dictionarySearch(entries);
     score = dictionarySearchResult.score;
-    console.log("search result: " + dictionarySearchResult.def.join("/ "));
+    definations = dictionarySearchResult.def;
+    console.log("search result: " + definations.join("/ "));
     console.log("dict search score: " + score + "\n");
 
     // Add definations to messages
@@ -83,8 +85,9 @@ export async function generateMessages(input, queryId, role, tokenizer) {
 
   // Finally, insert user input
   messages.push({ role: "user", content: input });
-  return { 
+  return {
     messages: messages,
+    definations: definations,
     score: score,
     token_ct: token_ct,
   };

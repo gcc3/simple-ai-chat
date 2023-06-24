@@ -63,9 +63,11 @@ export default function Home() {
 
     const query_id = localStorage.getItem("queryId");
     const role = localStorage.getItem("role");
+    const use_stats = localStorage.getItem("useStats");
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + input 
                                                            + "&query_id=" + query_id
-                                                           + "&role=" + role);
+                                                           + "&role=" + role
+                                                           + "&use_stats=" + use_stats);
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
     }
