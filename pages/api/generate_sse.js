@@ -260,6 +260,10 @@ export default async function (req, res) {
 }
 
 async function evaluate(input, definations, result_text) {
+  if (!configuration.apiKey) {
+    return "error";
+  }
+
   // Create evaluation message
   const eval_message = [];
   const dictionary_message = definations.length == 0 ? 
@@ -280,14 +284,6 @@ async function evaluate(input, definations, result_text) {
 
   console.log("--- result evaluation ---");
   console.log("eval_message: " + JSON.stringify(eval_message));
-
-  if (!configuration.apiKey) {
-    return "error";
-  }
-
-  // Input
-  if (input.trim().length === 0) return;
-  input = prompt_prefix + input + prompt_suffix;
 
   try {
     let result_text = "";
