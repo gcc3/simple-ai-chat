@@ -69,15 +69,16 @@ export async function evaluate(input, definations, result_text) {
     "The search result in JSON is: " + JSON.stringify(definations);
   eval_message.push({
     role: "user", content: 
-    "Hi, I'm creating a AI chat application, to enhance the AI response I'm using a dictionary to let AI reference to." + "\n\n" +
+    "Hi, I'm creating an AI chat application. To enhance the AI's responses I'm using a dictionary for the AI to reference." + "\n\n" +
     "Now, the user asks: " + input + "\n\n" +
     "After searching the dictionary. " + dictionary_message + "\n\n" +
-    "Please notice, the dictionary search may not exactly match input word. And sometimes AI has hallucinations, it may looks correct, but as no exactly match in dictionary the response is completely fake." + "\n\n" +
-    "After a while the AI response with: " + result_text + "\n\n" +
-    "Now please evaluate the AI response correctness and credibility, 1 is the worst, 10 is the best. If you cannot estimate, evalute as 0. " +
-    "Then briefly explain why you estimate this score wihin 1 sentence.\n\n" + 
-    "Response with format \"score - explaination\"\n" +
-    "Example: 7 - Becasue..."
+    "Please notice, the dictionary search may not exactly match the input word. Additionally, sometimes the AI may hallucinate; it may appear correct, but as no exactly match in dictionary the response is completely fake." + "\n\n" +
+    "After a while, the AI responds with: " + result_text + "\n\n" +
+    "Please evaluate the AI's response for correctness and credibility, 1 being the worst, 10 being the best. " +
+    "If the AI response as it doesn't know or doesn't have the information honestly, instead of making fake information or lying, give it a higher score. " +
+    "Then, briefly explain why you've given this score in one sentence.\n\n" + 
+    "Response in the format: \"score - explaination\"\n" +
+    "Example: 7 - Because..."
   })
   console.log("--- result evaluation --- ");
   console.log("eval_message: " + JSON.stringify(eval_message));
