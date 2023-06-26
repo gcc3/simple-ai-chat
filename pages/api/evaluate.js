@@ -66,15 +66,16 @@ export async function evaluate(input, definations, result_text) {
   const eval_message = [];
   const dictionary_message = definations.length == 0 ? 
     "There is completely no information found." : 
-    "The search result in JSON is: " + JSON.stringify(definations);
+    "The dictionary search result in JSON format is: " + JSON.stringify(definations);
   eval_message.push({
     role: "user", content: 
-    "Hi, I'm creating an AI chat application. To enhance the AI's responses I'm using a dictionary for the AI to reference." + "\n\n" +
+    "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using a dictionary for the AI to reference." + "\n\n" +
     "Now, the user asks: " + input + "\n\n" +
     "After searching the dictionary. " + dictionary_message + "\n\n" +
-    "Please notice, the dictionary search may not exactly match the input word. Additionally, sometimes the AI may hallucinate; it may appear correct, but as no exactly match in dictionary the response is completely fake." + "\n\n" +
     "After a while, the AI responds with: " + result_text + "\n\n" +
-    "Please evaluate the AI's response for correctness and credibility, 1 being the worst, 10 being the best. " +
+    "Please evaluate the AI's response for correctness and credibility, 1 being the worst or contains any fake information, 10 being the best, and correct. " +
+    "Please only evaluate/consider the correctness, not the information comprehensiveness. " +
+    "When you evaluating, notice that sometimes the AI has hallucination answer, the response may looks correct, but as no exactly match in dictionary the response is completely fake. " +
     "If the AI response as it doesn't know or doesn't have the information honestly, instead of making fake information or lying, give it a higher score. " +
     "Then, briefly explain why you've given this score in one sentence.\n\n" + 
     "Response in the format: \"score - explaination\"\n" +
