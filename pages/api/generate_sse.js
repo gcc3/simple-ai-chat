@@ -147,11 +147,12 @@ export default async function (req, res) {
             }
 
             // handle the message
-            let jsonChunk = tryParseJSON(chunkData);
-            if (jsonChunk == null) {
+            const jsonChunk = tryParseJSON(chunkData);
+            if (jsonChunk === null || !jsonChunk.choices) {
               res.write(`data: ###ERR###\n\n`)
               res.flush();
               res.end();
+              return;
             }
 
             const choices = jsonChunk.choices;
@@ -225,18 +226,19 @@ export default async function (req, res) {
             }
 
             // handle the message
-            let jsonChunk = tryParseJSON(chunkData);
-            if (jsonChunk == null) {
+            const jsonChunk = tryParseJSON(chunkData);
+            if (jsonChunk === null || !jsonChunk.choices) {
               res.write(`data: ###ERR###\n\n`)
               res.flush();
               res.end();
+              return;
             }
 
             const choices = jsonChunk.choices;
             if (!choices || choices.length === 0) {
               console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
               console.error("No choice\n");
-              res.write(`data: (Silent...)\n\n`)
+              res.write(`data: AI is Silent...\n\n`)
               res.flush();
               res.end();
               return;

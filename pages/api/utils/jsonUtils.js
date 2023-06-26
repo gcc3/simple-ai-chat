@@ -5,7 +5,8 @@ export function tryParseJSON(jsonString) {
       return obj;
     }
   } catch (e) {
-    console.log("JSON try parse failed: " + jsonString)
+    console.log("JSON try parse failed: " + jsonString);
+    return null;
   }
   return null;
 }
