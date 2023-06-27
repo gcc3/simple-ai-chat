@@ -8,6 +8,8 @@ Forked from https://github.com/openai/openai-quickstart-node
 Main Features
 -------------
 
+Use `:help` to show commands.  
+
 * Session  
 Use `:info` to check current session ID, and attach session with `:session [session_id]` to continue previous talk.  
 Use `:log` to show the current conversation history.  
