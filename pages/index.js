@@ -214,7 +214,7 @@ export default function Home() {
         else if (score == 0) scoreColor = "#DE3163"; // red
         setStats((
           <div>
-            dict_search_score: <span style={{color: score > 0 ? 'green' : '#DE3163'}}>{score}</span>
+            dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>
           </div>
