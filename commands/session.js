@@ -6,7 +6,7 @@ export default function session(args) {
   const sessionId = args[0];
   if (sessionId != null && containsOnlyNumbers(sessionId) && sessionId.length === 13) {
     localStorage.setItem("queryId", sessionId);
-    return "Attached";
+    return "Attached.";
   } else {
     return "Invalid session ID.";
   }
