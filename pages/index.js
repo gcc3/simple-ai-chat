@@ -43,6 +43,7 @@ export default function Home() {
       
       if (input === ":clear") {
         setOutput(null);
+        document.getElementById("output").innerHTML = "";
         localStorage.setItem("queryId", Date.now());  // reset query id
         return;
       }
