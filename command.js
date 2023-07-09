@@ -10,6 +10,7 @@ import log from "./commands/log.js";
 import info from "./commands/info.js";
 import session from "./commands/session.js";
 import role from "./commands/role.js";
+import clear from "./commands/clear.js";
 
 export default function commands(input) {
   let command = input;
@@ -33,6 +34,7 @@ export default function commands(input) {
   if (command.startsWith(":info")) return info(args);
   if (command.startsWith(":session")) return session(args);
   if (command.startsWith(":role")) return role(args);
+  if (command.startsWith(":clear")) return clear(args);
   return "Unknown command.";
 }
 
