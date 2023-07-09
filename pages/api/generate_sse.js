@@ -41,7 +41,7 @@ export default async function (req, res) {
   const use_stats = req.query.use_stats || "false";
 
   // Input
-  let input = req.query.user_input || "";
+  let input = decodeURIComponent(req.query.user_input) || "";
   if (input.trim().length === 0) return;
   input = prompt_prefix + input + prompt_suffix;
   console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
