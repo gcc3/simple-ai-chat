@@ -1,9 +1,9 @@
 export default function speak(args) {
   if (args[0] === "on") {
-    localStorage.setItem('useAutoSpeak', "true");
+    localStorage.setItem('useSpeak', "true");
     return "Switched on auto speak.";
   } else if (args[0] === "off") {
-    localStorage.setItem('useAutoSpeak', "false");
+    localStorage.setItem('useSpeak', "false");
     return "Switched off auto speak.";
   } else if (args[0] === "stop") {
     window.speechSynthesis.cancel();

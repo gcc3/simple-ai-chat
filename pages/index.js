@@ -23,8 +23,8 @@ export default function Home() {
       localStorage.setItem("useStream", "true");
     }
 
-    if (localStorage.getItem("useAutoSpeak") === null) {
-      localStorage.setItem("useAutoSpeak", "false");
+    if (localStorage.getItem("useSpeak") === null) {
+      localStorage.setItem("useSpeak", "false");
     }
   }, []);
 
@@ -147,7 +147,7 @@ export default function Home() {
         console.log("Session closed.")
 
         // Speak result
-        if (localStorage.getItem('useAutoSpeak') === "true") {
+        if (localStorage.getItem('useSpeak') === "true") {
           let text = document.getElementById("output").innerHTML;
           text = text.replaceAll("<br>", " ");
           speak(text);
@@ -212,7 +212,7 @@ export default function Home() {
         );
       }));
 
-      if (localStorage.getItem('useAutoSpeak') === "true") {
+      if (localStorage.getItem('useSpeak') === "true") {
         speak(data.result.text);
       }
 
