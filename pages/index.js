@@ -52,7 +52,7 @@ export default function Home() {
       console.log("Command Input: " + input.substring(1));
       const commandResult = await command(input);
       console.log("Command Result: " + commandResult);
-      if (commandResult) {
+      if (commandResult !== null) {
         document.getElementById("output").innerHTML = "";  // clear output
         setOutput(commandResult);
       }
