@@ -40,14 +40,6 @@ export default function Home() {
     // Command input
     if (input.startsWith(":")) {
       console.log("Command Input: " + input.substring(1));
-      
-      if (input === ":clear") {
-        setOutput(null);
-        document.getElementById("output").innerHTML = "";
-        localStorage.setItem("queryId", Date.now());  // reset query id
-        return;
-      }
-
       const commandResult = await command(input);
       console.log("Command Result: " + commandResult);
       setOutput(commandResult);
