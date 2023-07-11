@@ -149,7 +149,7 @@ export default function Home() {
         // Speak result
         if (localStorage.getItem('useAutoSpeak') === "true") {
           let text = document.getElementById("output").innerHTML;
-          text = output.replaceAll("<br>", " ");
+          text = text.replaceAll("<br>", " ");
           speak(text);
         }
         return;
