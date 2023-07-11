@@ -21,7 +21,7 @@ export default async function lang(args) {
     "zh-CN",
     "zh-HK",
     "zh-TW",
-  ]
+  ];
 
   if (command === "ls" || command === "list") {
     return "\\" + langCodes.join(" \\");
