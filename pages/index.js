@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import styles from "./index.module.css";
 import command from "../command.js";
+import { speak } from "./api/utils/speakUtils.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
@@ -20,6 +21,10 @@ export default function Home() {
 
     if (localStorage.getItem("useStream") === null) {
       localStorage.setItem("useStream", "true");
+    }
+
+    if (localStorage.getItem("useAutoSpeak") === null) {
+      localStorage.setItem("useAutoSpeak", "false");
     }
   }, []);
 
@@ -140,6 +145,12 @@ export default function Home() {
       if (event.data === '[DONE]') {
         openaiEssSrouce.close();
         console.log("Session closed.")
+
+        // Speak result
+        if (localStorage.getItem('useAutoSpeak') === "true") {
+          const output = document.getElementById("output").innerHTML;
+          speak(output);
+        }
         return;
       }
 
@@ -199,6 +210,10 @@ export default function Home() {
           </div>
         );
       }));
+
+      if (localStorage.getItem('useAutoSpeak') === "true") {
+        speak(data.result.text);
+      }
 
       if (localStorage.getItem('useStats') === "true") {
         const score = data.result.stats.score;
