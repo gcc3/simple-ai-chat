@@ -10,24 +10,28 @@ Main Features
 
 Use `:help` to show commands.  
 
-* Session  
-Use `:info` to check current session ID, and attach session with `:session [session_id]` to continue previous talk.  
-Use `:log` to show the current conversation history.  
-
 * Dictionary search  
 A local dictionary will be used as messages to let AI reference to enhance the AI response quality.  
-To check/add entry use `:entry list`, `:search [keyword]`, and `:entry add`.  
+To check/add entry use `:entry list`, `:search [keyword]`, and `:entry add`. 
+
+* Session  
+Use `:info` to check the current session ID, and attach the session with `:session [session_id]` to continue the previous talk.  
+Use `:log` to show the current conversation history.  
 
 * Roleplay  
-To use roleplay, samply type `:role use [role_name]`.  
-Use `:role list` to check current avaiable roles.  
-Promopts provided by the Awesome ChatGPT Prompts  
+To use roleplay, simply type `:role use [role_name]`.  
+Use `:role list` to check current available roles.  
+Prompts provided by the Awesome ChatGPT Prompts  
 
 * Self Result Evaluation  
-I found that the AI can evalute the result of itself very well.  
-And this can solve credibility problem in dictionary search.  
-To show the stats information which including the self result evaluation use `:stats on`.  
+I found that the AI can evaluate the result of itself very well.  
+And this can solve the credibility problem in dictionary searches.  
+To show the stats information includings the self result evaluation use `:stats on`.  
 
+* Speak  
+Use `:speak on` to turn on the speak after generating.  
+Use `:speak stop` to stop the speaking.  
+To change language use `:lang use [language code]`  
 
 
 Dependencies
