@@ -35,16 +35,22 @@ export default function Home() {
   async function onSubmit(event) {
     event.preventDefault();
 
+    // Clear info, stats, evaluation
+    const resetInfo = () => {
+      setInfo();
+      setStats();
+      setEvaluation();
+    }
+
     // Pre-process the input
     const input = userInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
     if (input.length == 0) return;
+
+    // Clear input and output
     setPlaceholder(userInput);
     setUserInput("");
-    setInfo();
-    setStats();
-    setEvaluation();
     setOutput();
 
     // Command input
@@ -52,14 +58,18 @@ export default function Home() {
       console.log("Command Input: " + input.substring(1));
       const commandResult = await command(input);
       console.log("Command Result: " + commandResult);
+
+      // Use command return to bypass reset output and info
       if (commandResult !== null) {
         document.getElementById("output").innerHTML = "";  // clear output
         setOutput(commandResult);
+        resetInfo();
       }
       return;
     }
 
     // Normal input
+    resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
       generate_sse(input);
