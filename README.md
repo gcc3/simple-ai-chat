@@ -119,4 +119,4 @@ Can setup output log filter rules.
 One row one rule.  
 
 Example:  
-IP=127.0.0.1    
+`IP=127.0.0.1`  
