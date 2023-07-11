@@ -3,10 +3,10 @@ export default function speak(args) {
   
   if (onoff === "on") {
     localStorage.setItem('useAutoSpeak', "true");
-    return "Switched to auto speak.";
+    return "Switched on auto speak.";
   } else if (onoff === "off") {
     localStorage.setItem('useAutoSpeak', "false");
-    return "Switched to not auto speak.";
+    return "Switched off auto speak.";
   } else {
     return "Usage: :speak [on|off]";
   }
