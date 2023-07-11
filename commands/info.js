@@ -3,7 +3,8 @@ export default function info(args) {
                "Show Stats: " + localStorage.getItem("useStats") + "\n" +
                "Stream: " + localStorage.getItem("useStream") + "\n" +
                "Speak: " + localStorage.getItem("useSpeak") + "\n" +
-               "Role: " + (localStorage.getItem("role") || "default") + "\n";
+               "Language: " + (localStorage.getItem("lang") || "en") + "\n"
+               "Role: " + (localStorage.getItem("role") || "default");
 
   return info;
 }

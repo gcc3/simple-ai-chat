@@ -26,6 +26,10 @@ export default function Home() {
     if (localStorage.getItem("useSpeak") === null) {
       localStorage.setItem("useSpeak", "false");
     }
+
+    if (localStorage.getItem("lang") === null) {
+      localStorage.setItem("lang", "en-US");  // by default use English
+    }
   }, []);
 
   async function onSubmit(event) {

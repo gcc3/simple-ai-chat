@@ -12,6 +12,7 @@ import session from "./commands/session.js";
 import role from "./commands/role.js";
 import clear from "./commands/clear.js";
 import speak from "./commands/speak.js";
+import lang from "./commands/lang.js";
 
 export default function commands(input) {
   let command = input;
@@ -37,6 +38,7 @@ export default function commands(input) {
   if (command.startsWith(":role")) return role(args);
   if (command.startsWith(":clear")) return clear(args);
   if (command.startsWith(":speak")) return speak(args);
+  if (command.startsWith(":lang")) return lang(args);
   return "Unknown command.";
 }
 

@@ -11,6 +11,8 @@ export default function help(args) {
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":speak [on|off] - Switch on/off auto speak.\n" +
     ":speak [stop] - Stop the current speak.\n" +
+    ":lang [ls|list] - List all languages.\n" +
+    ":lang use [language_code] - Use language.\n" +
     ":session [session_id] - Attach to session.\n" +
     ":role [ls|list|reset] - List all roles, reset role.\n" +
     ":role use [role_name] - Use role.\n" +
