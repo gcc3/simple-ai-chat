@@ -148,8 +148,9 @@ export default function Home() {
 
         // Speak result
         if (localStorage.getItem('useAutoSpeak') === "true") {
-          const output = document.getElementById("output").innerHTML;
-          speak(output);
+          let text = document.getElementById("output").innerHTML;
+          text = output.replaceAll("<br>", " ");
+          speak(text);
         }
         return;
       }
