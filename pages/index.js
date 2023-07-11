@@ -36,12 +36,14 @@ export default function Home() {
     setInfo();
     setStats();
     setEvaluation();
+    setOutput();
 
     // Command input
     if (input.startsWith(":")) {
       console.log("Command Input: " + input.substring(1));
       const commandResult = await command(input);
       console.log("Command Result: " + commandResult);
+      document.getElementById("output").innerHTML = "";  // clear output
       setOutput(commandResult);
       return;
     }
