@@ -52,8 +52,10 @@ export default function Home() {
       console.log("Command Input: " + input.substring(1));
       const commandResult = await command(input);
       console.log("Command Result: " + commandResult);
-      document.getElementById("output").innerHTML = "";  // clear output
-      setOutput(commandResult);
+      if (commandResult) {
+        document.getElementById("output").innerHTML = "";  // clear output
+        setOutput(commandResult);
+      }
       return;
     }
 
