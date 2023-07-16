@@ -229,6 +229,7 @@ export default async function (req, res) {
             // handle function calling
             const function_call = choices[0].delta.function_call;
             if (function_call) {
+              use_eval = false;
               res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`)
             }
             
