@@ -1,4 +1,4 @@
-import { getWeather } from "../functions/get_weather";
+import { getWeather } from "../function/get_weather";
 
 export function executeFunction(functionName, functionArgs) {
   // here functionArgs is a string
