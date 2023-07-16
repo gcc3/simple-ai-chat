@@ -131,7 +131,6 @@ export default async function (req, res) {
       },
     });
   } catch (error) {
-    // Consider adjusting the error handling logic for your use case
     console.log("Error:");
     if (error.response) {
       console.error(error.response.status, error.response.data);
