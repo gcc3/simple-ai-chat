@@ -4,6 +4,7 @@ import { generateMessages } from "./utils/promptUtils";
 import { generatePrompt } from "./utils/promptUtils";
 import { logfile } from "./utils/logUtils.js";
 import { get_encoding, encoding_for_model } from "tiktoken";
+import { getFunctions, executeFunction } from "./utils/functionUtils";
 
 // OpenAI
 const configuration = new Configuration({
@@ -74,6 +75,8 @@ export default async function (req, res) {
         temperature: temperature,
         top_p: top_p,
         max_tokens: max_tokens,
+        functions: getFunctions(),
+        function_call: "auto"
       });
 
       // Get result
@@ -81,9 +84,49 @@ export default async function (req, res) {
       if (!choices || choices.length === 0) {
         console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
         console.error("No choice\n");
-        result_text = "(Silent...)";
+        result_text = "Silent...";
       } else {
         result_text = choices[0].message.content;
+
+        // Function call
+        if (choices[0].message.function_call) {
+          console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
+
+          const responseFunctionMessage = choices[0].message;
+          const functionName = responseFunctionMessage.function_call.name;
+          const functionArgs = JSON.parse(responseFunctionMessage.function_call.arguments);
+          console.log("Function name: " + functionName);
+          console.log("Function arguments: " + responseFunctionMessage.function_call.arguments);
+
+          const functionResponse = await executeFunction(functionName, functionArgs);
+          console.log("Function response: " + JSON.stringify(functionResponse));
+  
+          let functionMessages = [];
+          functionMessages.push(responseFunctionMessage);
+          functionMessages.push({
+              "role": "function",
+              "name": functionName,
+              "content": functionResponse,
+          });
+  
+          const functionChatCompletion = await openai.createChatCompletion({
+              model: process.env.MODEL,
+              messages: functionMessages,
+              temperature: temperature,
+              top_p: top_p,
+              max_tokens: max_tokens,
+          });
+
+          if (!choices || choices.length === 0) {
+            console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
+            console.error("No choice\n");
+            result_text = "Silent...";
+          } else {
+            const functionResult = functionChatCompletion.data.choices[0].message.content;
+            result_text = functionResult;
+            console.log("Second Response: " + functionResult);
+          }
+        }
       }
     }
 
