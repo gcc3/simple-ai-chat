@@ -129,12 +129,14 @@ export default async function (req, res) {
           const functionResult = await executeFunction(functionName, argsString);
           console.log("Result: " + functionResult);
   
-          let functionMessages = [];
+          // Functions messages
+          // Include original messages
+          let functionMessages = generateMessagesResult.messages;
           functionMessages.push(responseFunctionMessage);
           functionMessages.push({
-              "role": "function",
-              "name": functionName,
-              "content": functionResult,
+            "role": "function",
+            "name": functionName,
+            "content": functionResult,
           });
   
           const functionChatCompletion = await openai.createChatCompletion({
@@ -152,7 +154,6 @@ export default async function (req, res) {
           } else {
             const functionResult = functionChatCompletion.data.choices[0].message.content;
             result_text = functionResult;
-            console.log("Response: " + functionResult + "\n");
           }
         }
       }
