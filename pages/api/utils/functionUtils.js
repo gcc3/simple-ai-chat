@@ -1,4 +1,5 @@
 import { getWeather } from "../function/get_weather";
+import { getTime } from "../function/get_time";
 
 export function executeFunction(functionName, functionArgs) {
   // here functionArgs is a string
@@ -13,13 +14,21 @@ export function executeFunction(functionName, functionArgs) {
   });
 
   // Functions
-  if (functionName === "get_weather") {
-    return getWeather(args.location);
-  }
+  if (functionName === "get_time") return getTime();
+  if (functionName === "get_weather") return getWeather(args.location);
 }
 
 export function getFunctions() {
   return [
+    {
+      name: 'get_time',
+      description: 'Get current time.',
+      parameters: {
+        type: "object",
+        properties: {},
+        required: [],
+      },
+    },
     {
       name: 'get_weather',
       description: 'Get weather for a given location or city.',
