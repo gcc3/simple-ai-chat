@@ -104,6 +104,8 @@ export default function Home() {
       // Handle the function calling
       if (event.data.startsWith("###FUNC###")) {
         do_function_calling = true;
+        document.getElementById("output").innerHTML = "Function calling...";
+
         const func = event.data.replace("###FUNC###", "");
         const funcObject = JSON.parse(func);
         if (funcObject.name) {
