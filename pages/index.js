@@ -36,7 +36,7 @@ export default function Home() {
     });
     if (input.length == 0) return;
 
-    // Clear input and output
+    // Clear input
     setPlaceholder(userInput);
     setUserInput("");
 
@@ -86,7 +86,7 @@ export default function Home() {
       return;
     }
 
-    // Normal input
+    // Clear output and info
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
@@ -94,7 +94,7 @@ export default function Home() {
       generate_sse(input);
     } else {
       // Use general API request
-      setOutput("Generating...");
+      setOutput("...");
       generate(input);
     }
   }
