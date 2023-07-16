@@ -72,15 +72,26 @@ export default async function (req, res) {
       token_ct = generateMessagesResult.token_ct;
 
       // endpoint: /v1/chat/completions
-      const chatCompletion = await openai.createChatCompletion({
-        model: process.env.MODEL,
-        messages: generateMessagesResult.messages,
-        temperature: temperature,
-        top_p: top_p,
-        max_tokens: max_tokens,
-        functions: getFunctions(),
-        function_call: "auto"
-      });
+      let chatCompletion;
+      if (process.env.USE_FUNCTION_CALLING != "true") {
+        chatCompletion = await openai.createChatCompletion({
+          model: process.env.MODEL,
+          messages: generateMessagesResult.messages,
+          temperature: temperature,
+          top_p: top_p,
+          max_tokens: max_tokens
+        });
+      } else {
+        chatCompletion = await openai.createChatCompletion({
+          model: process.env.MODEL,
+          messages: generateMessagesResult.messages,
+          temperature: temperature,
+          top_p: top_p,
+          max_tokens: max_tokens,
+          functions: getFunctions(),
+          function_call: "auto"
+        });
+      }
 
       // Get result
       const choices = chatCompletion.data.choices;
@@ -92,7 +103,7 @@ export default async function (req, res) {
         result_text = choices[0].message.content;
 
         // Function call
-        if (process.env.USE_FUNCTION_CALLING && choices[0].message.function_call) {
+        if (process.env.USE_FUNCTION_CALLING == "true" && choices[0].message.function_call) {
           console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
           do_function_calling = true;
 
@@ -129,7 +140,7 @@ export default async function (req, res) {
           } else {
             const functionResult = functionChatCompletion.data.choices[0].message.content;
             result_text = functionResult;
-            console.log("Response: " + functionResult);
+            console.log("Response: " + functionResult + "\n");
           }
         }
       }
