@@ -70,7 +70,8 @@ export default function Home() {
   }
 
   function generate_sse(input) {
-    document.getElementById("output").innerHTML = "";
+    // Add a placeholder
+    document.getElementById("output").innerHTML = " ";
 
     const query_id = localStorage.getItem("queryId");
     const role = localStorage.getItem("role");
@@ -201,7 +202,7 @@ export default function Home() {
 
       if (event.data.startsWith("###ERR###")) {
         openaiEssSrouce.close();
-        document.getElementById("output").innerHTML += "<br><br>Server error.";
+        document.getElementById("output").innerHTML = "Server error.";
         console.log(event.data);
         return;
       }
@@ -209,7 +210,7 @@ export default function Home() {
       // Print error message
       if (event.data.startsWith('[ERR]')) {
         openaiEssSrouce.close();
-        document.getElementById("output").innerHTML += "Server error.";
+        document.getElementById("output").innerHTML = "Server error.";
         console.log(event.data);
         return;
       }
@@ -217,6 +218,11 @@ export default function Home() {
       // Handle the stream output
       let output = event.data;
       output = output.replaceAll("###RETURN###", '<br>');
+
+      // Remove the placeholder
+      if (document.getElementById("output").innerHTML === " ") {
+        document.getElementById("output").innerHTML = output;
+      }
       document.getElementById("output").innerHTML += output;
       console.log(event.data);
     };
