@@ -25,7 +25,7 @@ const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : ""
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
-let use_eval = process.env.USE_EVAL == "true" ? true : false;
+const use_eval = process.env.USE_EVAL == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 
 export default async function (req, res) {
@@ -164,7 +164,7 @@ export default async function (req, res) {
             if (chunkData === '[DONE]') {
 
               // Evaluate result
-              if (use_eval && use_stats === "true") {
+              if (use_eval && use_stats === "true" && result_text.trim().length > 0) {
                 evaluate(input, definations, functionResult, result_text).then((eval_result) => {
                   res.write(`data: ###EVAL###${eval_result}\n\n`);
                   console.log("eval: " + eval_result + "\n");
@@ -229,7 +229,6 @@ export default async function (req, res) {
             // handle function calling
             const function_call = choices[0].delta.function_call;
             if (function_call) {
-              use_eval = false;
               res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`)
             }
             
