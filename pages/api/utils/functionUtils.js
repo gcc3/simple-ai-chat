@@ -22,7 +22,7 @@ export function getFunctions() {
   return [
     {
       name: 'get_time',
-      description: 'Get current time.',
+      description: 'Provide the current time.',
       parameters: {
         type: "object",
         properties: {},

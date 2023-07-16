@@ -16,5 +16,5 @@ export default async function (req, res) {
 }
 
 export async function getTime() {
-  return new Date().toLocaleString();
+  return new Date().toUTCString();
 }
