@@ -57,13 +57,15 @@ export default function Home() {
     if (input.startsWith(":")) {
       console.log("Command Input: " + input.substring(1));
       const commandResult = await command(input);
-      console.log("Command Result: " + commandResult);
 
       // Use command return to bypass reset output and info
       if (commandResult !== null) {
+        console.log("Command Output: " + commandResult);
         document.getElementById("output").innerHTML = "";  // clear output
         setOutput(commandResult);
         resetInfo();
+      } else {
+        console.log("Not command output.")
       }
       return;
     }
