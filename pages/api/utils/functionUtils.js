@@ -12,6 +12,7 @@ export function executeFunction(functionName, functionArgs) {
     args[key] = value;
   });
 
+  // Functions
   if (functionName === "get_weather") {
     return getWeather(args.location);
   }
@@ -27,7 +28,7 @@ export function getFunctions() {
         properties: {
             location: {
                 type: "string",
-                description: "The city and state, e.g. San Francisco, CA",
+                description: "The city and state, e.g. San Francisco, CA. If the city is not in English, translate it to English first.",
             }
         },
         required: ["location"],
