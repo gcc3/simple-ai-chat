@@ -14,22 +14,10 @@ export default function Home() {
 
   useEffect(() => {
     localStorage.setItem("queryId", Date.now());
-    
-    if (localStorage.getItem("useStats") === null) {
-      localStorage.setItem("useStats", "false");
-    }
-
-    if (localStorage.getItem("useStream") === null) {
-      localStorage.setItem("useStream", "true");
-    }
-
-    if (localStorage.getItem("useSpeak") === null) {
-      localStorage.setItem("useSpeak", "false");
-    }
-
-    if (localStorage.getItem("lang") === null) {
-      localStorage.setItem("lang", "en-US");  // by default use English
-    }
+    if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
+    if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
+    if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
+    if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
   }, []);
 
   async function onSubmit(event) {
@@ -91,6 +79,11 @@ export default function Home() {
                                                            + "&query_id=" + query_id
                                                            + "&role=" + role
                                                            + "&use_stats=" + use_stats);
+
+    let do_function_calling = false;
+    let functionName = "";
+    let functionArguements = "";
+
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
     }
@@ -105,6 +98,20 @@ export default function Home() {
             model: {model}<br></br>
           </div>
         ));
+        return;
+      }
+
+      // Handle the function calling
+      if (event.data.startsWith("###FUNC###")) {
+        do_function_calling = true;
+        const func = event.data.replace("###FUNC###", "");
+        const funcObject = JSON.parse(func);
+        if (funcObject.name) {
+          functionName = funcObject.name;
+        }
+        if (funcObject.arguments) {
+          functionArguements += funcObject.arguments;
+        }
         return;
       }
 
@@ -149,6 +156,7 @@ export default function Home() {
           setStats(
             <div>
               dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
+              func: none<br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
@@ -162,6 +170,23 @@ export default function Home() {
       if (event.data === '[DONE]') {
         openaiEssSrouce.close();
         console.log("Session closed.")
+
+        // Function calling
+        if (do_function_calling) {
+          const args = JSON.parse(functionArguements);
+          let argsStrings = [];
+          for (const [key, value] of Object.entries(args)) {
+            console.log(key, value);
+            argsStrings.push(key + "=" + value);
+          }
+          const argsString = argsStrings.join(", ");
+          console.log("Function calling: " + functionName + "(" + argsString + ")");
+          document.getElementById("output").innerHTML = "Function calling...";
+          
+          // Generate with function calling
+          //generate_sse("!" + functionName + "(" + argsString + ")");
+          return;
+        }
 
         // Speak result
         if (localStorage.getItem('useSpeak') === "true") {
@@ -243,10 +268,10 @@ export default function Home() {
         setStats((
           <div>
             dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
+            func: {data.result.stats.func || "none"}<br></br>
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>
             token_ct: {data.result.stats.token_ct}<br></br>
-            func: {data.result.stats.func || "none"}<br></br>
           </div>
         ));
       }

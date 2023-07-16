@@ -23,6 +23,7 @@ const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : ""
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
+const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -73,13 +74,15 @@ export default async function (req, res) {
 
       // endpoint: /v1/chat/completions
       let chatCompletion;
-      if (process.env.USE_FUNCTION_CALLING != "true") {
+      if (use_function_calling) {
         chatCompletion = await openai.createChatCompletion({
           model: process.env.MODEL,
           messages: generateMessagesResult.messages,
           temperature: temperature,
           top_p: top_p,
-          max_tokens: max_tokens
+          max_tokens: max_tokens,
+          functions: getFunctions(),  // function calling
+          function_call: "auto"
         });
       } else {
         chatCompletion = await openai.createChatCompletion({
@@ -88,8 +91,7 @@ export default async function (req, res) {
           temperature: temperature,
           top_p: top_p,
           max_tokens: max_tokens,
-          functions: getFunctions(),
-          function_call: "auto"
+          function_call: "none"
         });
       }
 
@@ -103,7 +105,7 @@ export default async function (req, res) {
         result_text = choices[0].message.content;
 
         // Function call
-        if (process.env.USE_FUNCTION_CALLING == "true" && choices[0].message.function_call) {
+        if (use_function_calling && choices[0].message.function_call) {
           console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
           do_function_calling = true;
 
