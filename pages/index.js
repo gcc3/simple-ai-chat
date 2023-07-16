@@ -222,8 +222,9 @@ export default function Home() {
       // Remove the placeholder
       if (document.getElementById("output").innerHTML === " ") {
         document.getElementById("output").innerHTML = output;
+      } else {
+        document.getElementById("output").innerHTML += output;
       }
-      document.getElementById("output").innerHTML += output;
       console.log(event.data);
     };
 
