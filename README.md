@@ -37,10 +37,10 @@ To change language use `:lang use [language code]`
 Dependencies
 ------------
 
-OpenAI https://platform.openai.com/docs/introduction  
 OpenAI API https://platform.openai.com/docs/api-reference  
 React https://reactjs.org/  
 Next.js https://nextjs.org/  
+WolframAlpha APIs https://products.wolframalpha.com/api  
 
 
 Setup
@@ -114,6 +114,10 @@ If set to true then it will only support single session, for multiple session th
 
 * USE_EVAL  
 Use AI to evaluate the result, value should be `true` or `false`  
+
+* WOLFRAM_ALPHA_APPID  
+For API calls for wolfram alpha API.  
+Get from https://products.wolframalpha.com/api  
 
 
 log.config
