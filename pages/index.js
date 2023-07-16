@@ -56,6 +56,36 @@ export default function Home() {
       return;
     }
 
+    // Function CLI
+    // Format: !function_name(arg1=value1, arg2=value2, ...)
+    // Example: !get_weather(location=Tokyo)
+    if (input.startsWith("!")) {
+      const function_input = input.substring(1);
+      const funcName = function_input.split("(")[0];
+      const funcArgs = function_input.split("(")[1].split(")")[0];
+      console.log("Function Input: " + input.substring(1));
+      console.log("Function Name: " + funcName);
+      console.log("Function Args: " + funcArgs);
+      try {
+        const response = await fetch("/api/function/" + funcName + "?" + new URLSearchParams(funcArgs), {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+    
+        const functionResult = await response.text();
+        console.log("Function Output: " + functionResult);
+        if (response.status !== 200) {
+          throw data.error || new Error(`Request failed with status ${response.status}`);
+        }
+        setOutput(functionResult);
+      } catch (error) {
+        console.error(error);
+      }
+      return;
+    }
+
     // Normal input
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
