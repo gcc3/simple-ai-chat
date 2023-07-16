@@ -51,7 +51,6 @@ export default function Home() {
     // Clear input and output
     setPlaceholder(userInput);
     setUserInput("");
-    setOutput();
 
     // Command input
     if (input.startsWith(":")) {
@@ -61,7 +60,6 @@ export default function Home() {
       // Use command return to bypass reset output and info
       if (commandResult !== null) {
         console.log("Command Output: " + commandResult);
-        document.getElementById("output").innerHTML = "";  // clear output
         setOutput(commandResult);
         resetInfo();
       } else {
@@ -74,6 +72,7 @@ export default function Home() {
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
+      setOutput("");
       generate_sse(input);
     } else {
       // Use general API request
