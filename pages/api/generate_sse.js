@@ -74,9 +74,11 @@ export default async function (req, res) {
   let functionName = "";
   let functionArgs = "";
   let functionResult = "";
+  let original_input = "";
   if (input.startsWith("!")) {
     do_function_calling = true;
-    const function_input = input.substring(1);
+    original_input = input.split("Q=")[1];
+    const function_input = input.split("Q=")[0].substring(1);
     console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
 
     // Function name and arguments
@@ -176,7 +178,12 @@ export default async function (req, res) {
                     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
                     console.log(result_text + "\n");
                   }
-                  logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+
+                  if (do_function_calling) {
+                    logfile("T=" + Date.now() + " S=" + queryId + " Q=" + original_input + " A=" + result_text, req);
+                  } else {
+                    logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+                  }
                   res.flush();
                   res.end();
                   return
