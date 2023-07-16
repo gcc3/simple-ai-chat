@@ -45,9 +45,29 @@ export default async function (req, res) {
   // Input
   let input = decodeURIComponent(req.query.user_input) || "";
   if (input.trim().length === 0) return;
-  input = prompt_prefix + input + prompt_suffix;
-  console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
-  console.log(input + "\n");
+
+  // Normal input
+  if (!input.startsWith("!")) {
+    input = prompt_prefix + input + prompt_suffix;
+    console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
+    console.log(input + "\n");
+  }
+
+  // Function calling input
+  if (input.startsWith("!")) {
+    const function_calling_input = input.substring(1);
+    const functionName = function_calling_input.split("(")[0];
+    const functionArgs = function_calling_input.split("(")[1].split(")")[0];
+
+    console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
+    console.log("Function name: " + functionName);
+    console.log("Arguments: " + functionArgs);
+
+    // Execute function
+    const functionResult = await executeFunction(functionName, functionArgs);
+    console.log("Result: " + JSON.stringify(functionResult));
+    return;
+  }
 
   // Configuration info
   console.log("--- configuration info ---\n" 

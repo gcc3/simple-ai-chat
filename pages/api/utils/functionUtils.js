@@ -1,8 +1,19 @@
 import { getWeather } from "../functions/get_weather";
 
 export function executeFunction(functionName, functionArgs) {
+  // here functionArgs is a string
+  // format: param1=value1, param2=value2, ...
+
+  // convert to array of objects
+  let args = {};
+  functionArgs.split(",").map((functionArg) => {
+    functionArg = functionArg.trim();
+    const [key, value] = functionArg.split("=");
+    args[key] = value;
+  });
+
   if (functionName === "get_weather") {
-    return getWeather(functionArgs.location);
+    return getWeather(args.location);
   }
 }
 

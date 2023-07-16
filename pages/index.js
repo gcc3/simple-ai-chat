@@ -184,7 +184,7 @@ export default function Home() {
           document.getElementById("output").innerHTML = "Function calling...";
           
           // Generate with function calling
-          //generate_sse("!" + functionName + "(" + argsString + ")");
+          generate_sse("!" + functionName + "(" + argsString + ")");
           return;
         }
 
