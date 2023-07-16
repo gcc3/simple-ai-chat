@@ -112,11 +112,19 @@ export default async function (req, res) {
           const responseFunctionMessage = choices[0].message;
           const functionName = responseFunctionMessage.function_call.name;
           function_name = functionName;
-          const functionArgs = JSON.parse(responseFunctionMessage.function_call.arguments);
-          console.log("Function name: " + functionName);
-          console.log("Arguments: " + JSON.stringify(responseFunctionMessage.function_call.arguments));
+          
+          const args = JSON.parse(responseFunctionMessage.function_call.arguments);
+          let argsStrings = [];
+          for (const [key, value] of Object.entries(args)) {
+            console.log(key, value);
+            argsStrings.push(key + "=" + value);
+          }
+          const argsString = argsStrings.join(", ");
 
-          const functionResult = await executeFunction(functionName, functionArgs);
+          console.log("Function name: " + functionName);
+          console.log("Arguments: " + argsString);
+
+          const functionResult = await executeFunction(functionName, argsString);
           console.log("Result: " + JSON.stringify(functionResult));
   
           let functionMessages = [];
