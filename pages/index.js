@@ -182,7 +182,6 @@ export default function Home() {
           }
           const argsString = argsStrings.join(", ");
           console.log("Function calling: " + functionName + "(" + argsString + ")");
-          document.getElementById("output").innerHTML = "Function calling...";
           
           // Generate with function calling
           generate_sse("!" + functionName + "(" + argsString + ")");
