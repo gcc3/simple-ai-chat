@@ -22,6 +22,7 @@ export async function getWeather(location) {
     appid: process.env.WOLFRAM_ALPHA_APPID,
     input: "What's the weather in " + location,
     format: "plaintext",
+    units: "metric",
     includepodid: "InstantaneousWeather:WeatherData"
   }), {
     method: "GET",
