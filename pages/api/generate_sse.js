@@ -77,11 +77,10 @@ export default async function (req, res) {
   let original_input = "";
   if (input.startsWith("!")) {
     do_function_calling = true;
-    original_input = input.split("Q=")[1];
-    const function_input = input.split("Q=")[0].substring(1);
     console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
 
     // Function name and arguments
+    const function_input = input.split("Q=")[0].substring(1);
     functionName = function_input.split("(")[0];
     functionArgs = function_input.split("(")[1].split(")")[0];
     console.log("Function name: " + functionName);
@@ -91,6 +90,10 @@ export default async function (req, res) {
     functionResult = await executeFunction(functionName, functionArgs);
     console.log("Result: " + functionResult + "\n");
     logfile("T=" + Date.now() + " S=" + queryId + " F=" + function_input + " A=" + functionResult, req);
+
+    // Replace input with original
+    original_input = input.split("Q=")[1];
+    input = original_input;
   }
 
   try {
@@ -179,11 +182,7 @@ export default async function (req, res) {
                     console.log(result_text + "\n");
                   }
 
-                  if (do_function_calling) {
-                    logfile("T=" + Date.now() + " S=" + queryId + " Q=" + original_input + " A=" + result_text, req);
-                  } else {
-                    logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
-                  }
+                  logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
                   res.flush();
                   res.end();
                   return
