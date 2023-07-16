@@ -108,11 +108,14 @@ export default async function (req, res) {
         if (use_function_calling && choices[0].message.function_call) {
           console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
           do_function_calling = true;
-
           const responseFunctionMessage = choices[0].message;
+
+          // Function name
           const functionName = responseFunctionMessage.function_call.name;
           function_name = functionName;
+          console.log("Function name: " + functionName);
           
+          // Arguments
           const args = JSON.parse(responseFunctionMessage.function_call.arguments);
           let argsStrings = [];
           for (const [key, value] of Object.entries(args)) {
@@ -120,10 +123,9 @@ export default async function (req, res) {
             argsStrings.push(key + "=" + value);
           }
           const argsString = argsStrings.join(", ");
-
-          console.log("Function name: " + functionName);
           console.log("Arguments: " + argsString);
 
+          // Execute function
           const functionResult = await executeFunction(functionName, argsString);
           console.log("Result: " + JSON.stringify(functionResult));
   

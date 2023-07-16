@@ -51,39 +51,44 @@ export default async function (req, res) {
     input = prompt_prefix + input + prompt_suffix;
     console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
     console.log(input + "\n");
+
+    // Configuration info
+    console.log("--- configuration info ---\n" 
+    + "model: " + process.env.MODEL + "\n"
+    + "temperature: " + process.env.TEMPERATURE + "\n"
+    + "top_p: " + process.env.TOP_P + "\n"
+    + "endpoint: " + process.env.END_POINT + "\n"
+    + "fine_tune_prompt_end (text): " + process.env.FINE_TUNE_PROMPT_END + "\n"
+    + "fine_tune_stop (text): " + process.env.FINE_TUNE_STOP + "\n"
+    + "role_content_system (chat): " + process.env.ROLE_CONTENT_SYSTEM + "\n"
+    + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
+    + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
+    + "max_tokens: " + process.env.MAX_TOKENS + "\n"
+    + "use_eval: " + process.env.USE_EVAL + "\n"
+    + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
+    + "role: " + role + "\n");
   }
 
   // Function calling input
+  let do_function_calling = false;
+  let functionName = "";
+  let functionArgs = "";
+  let functionResult = "";
   if (input.startsWith("!")) {
-    const function_calling_input = input.substring(1);
-    const functionName = function_calling_input.split("(")[0];
-    const functionArgs = function_calling_input.split("(")[1].split(")")[0];
-
+    do_function_calling = true;
+    const function_input = input.substring(1);
     console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
+
+    // Function name and arguments
+    functionName = function_input.split("(")[0];
+    functionArgs = function_input.split("(")[1].split(")")[0];
     console.log("Function name: " + functionName);
     console.log("Arguments: " + functionArgs);
 
     // Execute function
-    const functionResult = await executeFunction(functionName, functionArgs);
-    console.log("Result: " + JSON.stringify(functionResult));
-    return;
+    functionResult = await executeFunction(functionName, functionArgs);
+    console.log("Result: " + JSON.stringify(functionResult) + "\n");
   }
-
-  // Configuration info
-  console.log("--- configuration info ---\n" 
-  + "model: " + process.env.MODEL + "\n"
-  + "temperature: " + process.env.TEMPERATURE + "\n"
-  + "top_p: " + process.env.TOP_P + "\n"
-  + "endpoint: " + process.env.END_POINT + "\n"
-  + "fine_tune_prompt_end (text): " + process.env.FINE_TUNE_PROMPT_END + "\n"
-  + "fine_tune_stop (text): " + process.env.FINE_TUNE_STOP + "\n"
-  + "role_content_system (chat): " + process.env.ROLE_CONTENT_SYSTEM + "\n"
-  + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
-  + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
-  + "max_tokens: " + process.env.MAX_TOKENS + "\n"
-  + "use_eval: " + process.env.USE_EVAL + "\n"
-  + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
-  + "role: " + role + "\n");
 
   try {
     let result_text = "";
@@ -106,6 +111,15 @@ export default async function (req, res) {
       score = generateMessagesResult.score;
       token_ct = generateMessagesResult.token_ct;
       messages = generateMessagesResult.messages;
+
+      if (do_function_calling) {
+        // Feed with function calling message
+        messages.push({
+          "role": "function",
+          "name": functionName,
+          "content": functionResult,
+        });
+      }
 
       // endpoint: /v1/chat/completions
       let chatCompletion;
@@ -133,7 +147,7 @@ export default async function (req, res) {
       }
 
       res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL}\n\n`);
+      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName}\n\n`);
 
       chatCompletion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));

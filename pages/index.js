@@ -140,6 +140,7 @@ export default function Home() {
           const top_p = stats[2];
           const token_ct = stats[3];
           const use_eval = stats[4];
+          const func = stats[5];
 
           if (use_eval === "true") {
             setEvaluation(
@@ -156,7 +157,7 @@ export default function Home() {
           setStats(
             <div>
               dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
-              func: none<br></br>
+              func: {func || "none"}<br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
