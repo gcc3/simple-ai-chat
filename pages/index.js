@@ -14,22 +14,10 @@ export default function Home() {
 
   useEffect(() => {
     localStorage.setItem("queryId", Date.now());
-    
-    if (localStorage.getItem("useStats") === null) {
-      localStorage.setItem("useStats", "false");
-    }
-
-    if (localStorage.getItem("useStream") === null) {
-      localStorage.setItem("useStream", "true");
-    }
-
-    if (localStorage.getItem("useSpeak") === null) {
-      localStorage.setItem("useSpeak", "false");
-    }
-
-    if (localStorage.getItem("lang") === null) {
-      localStorage.setItem("lang", "en-US");  // by default use English
-    }
+    if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
+    if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
+    if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
+    if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
   }, []);
 
   async function onSubmit(event) {
@@ -51,19 +39,19 @@ export default function Home() {
     // Clear input and output
     setPlaceholder(userInput);
     setUserInput("");
-    setOutput();
 
     // Command input
     if (input.startsWith(":")) {
       console.log("Command Input: " + input.substring(1));
       const commandResult = await command(input);
-      console.log("Command Result: " + commandResult);
 
       // Use command return to bypass reset output and info
       if (commandResult !== null) {
-        document.getElementById("output").innerHTML = "";  // clear output
+        console.log("Command Output: " + commandResult);
         setOutput(commandResult);
         resetInfo();
+      } else {
+        console.log("Not command output.")
       }
       return;
     }
@@ -72,6 +60,7 @@ export default function Home() {
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
+      setOutput("");
       generate_sse(input);
     } else {
       // Use general API request
@@ -81,7 +70,8 @@ export default function Home() {
   }
 
   function generate_sse(input) {
-    document.getElementById("output").innerHTML = "";
+    // Add a placeholder
+    document.getElementById("output").innerHTML = " ";
 
     const query_id = localStorage.getItem("queryId");
     const role = localStorage.getItem("role");
@@ -90,6 +80,11 @@ export default function Home() {
                                                            + "&query_id=" + query_id
                                                            + "&role=" + role
                                                            + "&use_stats=" + use_stats);
+
+    let do_function_calling = false;
+    let functionName = "";
+    let functionArguements = "";
+
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
     }
@@ -104,6 +99,22 @@ export default function Home() {
             model: {model}<br></br>
           </div>
         ));
+        return;
+      }
+
+      // Handle the function calling
+      if (event.data.startsWith("###FUNC###")) {
+        do_function_calling = true;
+        document.getElementById("output").innerHTML = "Function calling...";
+
+        const func = event.data.replace("###FUNC###", "");
+        const funcObject = JSON.parse(func);
+        if (funcObject.name) {
+          functionName = funcObject.name;
+        }
+        if (funcObject.arguments) {
+          functionArguements += funcObject.arguments;
+        }
         return;
       }
 
@@ -132,6 +143,7 @@ export default function Home() {
           const top_p = stats[2];
           const token_ct = stats[3];
           const use_eval = stats[4];
+          const func = stats[5];
 
           if (use_eval === "true") {
             setEvaluation(
@@ -148,6 +160,7 @@ export default function Home() {
           setStats(
             <div>
               dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
+              func: {func || "none"}<br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
@@ -162,6 +175,22 @@ export default function Home() {
         openaiEssSrouce.close();
         console.log("Session closed.")
 
+        // Function calling
+        if (do_function_calling) {
+          const args = JSON.parse(functionArguements);
+          let argsStrings = [];
+          for (const [key, value] of Object.entries(args)) {
+            console.log(key, value);
+            argsStrings.push(key + "=" + value);
+          }
+          const argsString = argsStrings.join(", ");
+          console.log("Function calling: " + functionName + "(" + argsString + ")");
+          
+          // Generate with function calling
+          generate_sse("!" + functionName + "(" + argsString + ")");
+          return;
+        }
+
         // Speak result
         if (localStorage.getItem('useSpeak') === "true") {
           let text = document.getElementById("output").innerHTML;
@@ -173,7 +202,7 @@ export default function Home() {
 
       if (event.data.startsWith("###ERR###")) {
         openaiEssSrouce.close();
-        document.getElementById("output").innerHTML += "<br><br>Server error.";
+        document.getElementById("output").innerHTML = "Server error.";
         console.log(event.data);
         return;
       }
@@ -181,7 +210,7 @@ export default function Home() {
       // Print error message
       if (event.data.startsWith('[ERR]')) {
         openaiEssSrouce.close();
-        document.getElementById("output").innerHTML += "Server error.";
+        document.getElementById("output").innerHTML = "Server error.";
         console.log(event.data);
         return;
       }
@@ -189,6 +218,11 @@ export default function Home() {
       // Handle the stream output
       let output = event.data;
       output = output.replaceAll("###RETURN###", '<br>');
+
+      // Remove the placeholder
+      if (document.getElementById("output").innerHTML === " ") {
+        document.getElementById("output").innerHTML = output;
+      }
       document.getElementById("output").innerHTML += output;
       console.log(event.data);
     };
@@ -242,8 +276,10 @@ export default function Home() {
         setStats((
           <div>
             dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
+            func: {data.result.stats.func || "none"}<br></br>
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>
+            token_ct: {data.result.stats.token_ct}<br></br>
           </div>
         ));
       }

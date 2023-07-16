@@ -6,6 +6,7 @@ import { logfile } from "./utils/logUtils";
 import { tryParseJSON } from "./utils/jsonUtils"
 import { get_encoding, encoding_for_model } from "tiktoken";
 import { evaluate } from './evaluate';
+import { getFunctions, executeFunction } from "./utils/functionUtils";
 
 // OpenAI
 const configuration = new Configuration({
@@ -25,6 +26,7 @@ const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : ""
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 const use_eval = process.env.USE_EVAL == "true" ? true : false;
+const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -43,24 +45,50 @@ export default async function (req, res) {
   // Input
   let input = decodeURIComponent(req.query.user_input) || "";
   if (input.trim().length === 0) return;
-  input = prompt_prefix + input + prompt_suffix;
-  console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
-  console.log(input + "\n");
 
-  // Configuration info
-  console.log("--- configuration info ---\n" 
-  + "model: " + process.env.MODEL + "\n"
-  + "temperature: " + process.env.TEMPERATURE + "\n"
-  + "top_p: " + process.env.TOP_P + "\n"
-  + "endpoint: " + process.env.END_POINT + "\n"
-  + "fine_tune_prompt_end (text): " + process.env.FINE_TUNE_PROMPT_END + "\n"
-  + "fine_tune_stop (text): " + process.env.FINE_TUNE_STOP + "\n"
-  + "role_content_system (chat): " + process.env.ROLE_CONTENT_SYSTEM + "\n"
-  + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
-  + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
-  + "max_tokens: " + process.env.MAX_TOKENS + "\n"
-  + "role: " + role + "\n"
-  + "use_eval: " + process.env.USE_EVAL + "\n");
+  // Normal input
+  if (!input.startsWith("!")) {
+    input = prompt_prefix + input + prompt_suffix;
+    console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
+    console.log(input + "\n");
+
+    // Configuration info
+    console.log("--- configuration info ---\n" 
+    + "model: " + process.env.MODEL + "\n"
+    + "temperature: " + process.env.TEMPERATURE + "\n"
+    + "top_p: " + process.env.TOP_P + "\n"
+    + "endpoint: " + process.env.END_POINT + "\n"
+    + "fine_tune_prompt_end (text): " + process.env.FINE_TUNE_PROMPT_END + "\n"
+    + "fine_tune_stop (text): " + process.env.FINE_TUNE_STOP + "\n"
+    + "role_content_system (chat): " + process.env.ROLE_CONTENT_SYSTEM + "\n"
+    + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
+    + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
+    + "max_tokens: " + process.env.MAX_TOKENS + "\n"
+    + "use_eval: " + process.env.USE_EVAL + "\n"
+    + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
+    + "role: " + role + "\n");
+  }
+
+  // Function calling input
+  let do_function_calling = false;
+  let functionName = "";
+  let functionArgs = "";
+  let functionResult = "";
+  if (input.startsWith("!")) {
+    do_function_calling = true;
+    const function_input = input.substring(1);
+    console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
+
+    // Function name and arguments
+    functionName = function_input.split("(")[0];
+    functionArgs = function_input.split("(")[1].split(")")[0];
+    console.log("Function name: " + functionName);
+    console.log("Arguments: " + functionArgs);
+
+    // Execute function
+    functionResult = await executeFunction(functionName, functionArgs);
+    console.log("Result: " + JSON.stringify(functionResult) + "\n");
+  }
 
   try {
     let result_text = "";
@@ -84,18 +112,42 @@ export default async function (req, res) {
       token_ct = generateMessagesResult.token_ct;
       messages = generateMessagesResult.messages;
 
+      if (do_function_calling) {
+        // Feed with function calling message
+        messages.push({
+          "role": "function",
+          "name": functionName,
+          "content": functionResult,
+        });
+      }
+
       // endpoint: /v1/chat/completions
-      const chatCompletion = openai.createChatCompletion({
-        model: process.env.MODEL,
-        messages: messages,
-        temperature: temperature,
-        top_p: top_p,
-        max_tokens: max_tokens,
-        stream: true,
-      }, { responseType: "stream" });
+      let chatCompletion;
+      if (use_function_calling) {
+        chatCompletion = openai.createChatCompletion({
+          model: process.env.MODEL,
+          messages: messages,
+          temperature: temperature,
+          top_p: top_p,
+          max_tokens: max_tokens,
+          stream: true,
+          functions: getFunctions(),  // function calling
+          function_call: "auto"
+        }, { responseType: "stream" });
+      } else {
+        chatCompletion = openai.createChatCompletion({
+          model: process.env.MODEL,
+          messages: messages,
+          temperature: temperature,
+          top_p: top_p,
+          max_tokens: max_tokens,
+          stream: true,
+          function_call: "none"
+        }, { responseType: "stream" });
+      }
 
       res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL}\n\n`);
+      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName}\n\n`);
 
       chatCompletion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
@@ -104,7 +156,7 @@ export default async function (req, res) {
           const lines = data.toString().split('\n').filter(line => line.trim() !== '');
           for (const line of lines) {
             const chunkData = line.replace(/^data: /, '');
-
+            
             // handle the DONE signal
             if (chunkData === '[DONE]') {
 
@@ -146,7 +198,7 @@ export default async function (req, res) {
               return
             }
 
-            // handle the message
+            // convert to JSON
             const jsonChunk = tryParseJSON(chunkData);
             if (jsonChunk === null || !jsonChunk.choices) {
               res.write(`data: ###ERR###\n\n`)
@@ -155,6 +207,7 @@ export default async function (req, res) {
               return;
             }
 
+            // get the choices
             const choices = jsonChunk.choices;
             if (!choices || choices.length === 0) {
               console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
@@ -164,6 +217,14 @@ export default async function (req, res) {
               res.end();
               return;
             }
+
+            // handle function calling
+            const function_call = choices[0].delta.function_call;
+            if (function_call) {
+              res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`)
+            }
+            
+            // handle the message
             const content = choices[0].delta.content;
             if (content) {
               let message = "";
@@ -238,7 +299,7 @@ export default async function (req, res) {
             if (!choices || choices.length === 0) {
               console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
               console.error("No choice\n");
-              res.write(`data: AI is Silent...\n\n`)
+              res.write(`data: Silent...\n\n`)
               res.flush();
               res.end();
               return;
