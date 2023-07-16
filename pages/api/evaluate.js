@@ -29,10 +29,11 @@ export default async function (req, res) {
 
   const input = req.body.input || "";
   const definations = req.body.definations || "";
+  const functionResult = req.body.functionResult || "";
   const result_text = req.body.result_text || "";
 
   try {
-    evaluate(input, definations, result_text).then((eval_result) => {
+    evaluate(input, definations, functionResult, result_text).then((eval_result) => {
       // Output the result
       res.status(200).json({
         result:{
@@ -56,7 +57,7 @@ export default async function (req, res) {
   }
 }
 
-export async function evaluate(input, definations, result_text) {
+export async function evaluate(input, definations, functionResult, result_text) {
   if (!configuration.apiKey) {
     return "error";
   }
@@ -66,11 +67,16 @@ export async function evaluate(input, definations, result_text) {
   const dictionary_message = definations.length == 0 ? 
     "There is completely no information found." : 
     "The dictionary search result in JSON format is: " + JSON.stringify(definations);
+  const function_message = functionResult.length == 0 ?
+    "There is completely no information found." :
+    "The API search result in JSON format is: " + functionResult;
+
   eval_message.push({
     role: "user", content: 
-    "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using a dictionary for the AI to reference." + "\n\n" +
+    "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using a dictionary and API to get information for the AI to reference." + "\n\n" +
     "Now, the user asks: " + input + "\n\n" +
     "After searching the dictionary. " + dictionary_message + "\n\n" +
+    "After request more information with API." + function_message + "\n\n" +
     "After a while, the AI responds with: " + result_text + "\n\n" +
     "Please evaluate the AI's response for correctness and credibility, 1 being the worst or contains any fake information, 10 being the best, and correct. " +
     "Please only evaluate/consider the correctness, not the information comprehensiveness. " +
@@ -80,6 +86,7 @@ export async function evaluate(input, definations, result_text) {
     "Response in the format: \"score - explaination\"\n" +
     "Example: 7 - Because..."
   })
+
   console.log("--- result evaluation --- ");
   console.log("eval_message: " + JSON.stringify(eval_message));
 

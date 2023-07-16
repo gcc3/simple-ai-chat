@@ -87,7 +87,8 @@ export default async function (req, res) {
 
     // Execute function
     functionResult = await executeFunction(functionName, functionArgs);
-    console.log("Result: " + JSON.stringify(functionResult) + "\n");
+    console.log("Result: " + functionResult + "\n");
+    logfile("T=" + Date.now() + " S=" + queryId + " F=" + function_input + " A=" + functionResult, req);
   }
 
   try {
@@ -162,7 +163,7 @@ export default async function (req, res) {
 
               // Evaluate result
               if (use_eval && use_stats === "true") {
-                evaluate(input, definations, result_text).then((eval_result) => {
+                evaluate(input, definations, functionResult, result_text).then((eval_result) => {
                   res.write(`data: ###EVAL###${eval_result}\n\n`);
                   console.log("eval: " + eval_result + "\n");
 
