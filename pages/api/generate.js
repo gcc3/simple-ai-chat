@@ -56,13 +56,14 @@ export default async function (req, res) {
   + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
   + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
   + "max_tokens: " + process.env.MAX_TOKENS + "\n"
+  + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
   + "role: " + role + "\n");
 
   try {
     let result_text = "";
     let score = 0;
     let token_ct = 0;
-    let use_function_calling = false;
+    let do_function_calling = false;
     let function_name = "";
 
     if (process.env.END_POINT === "chat_completion") {
@@ -91,26 +92,26 @@ export default async function (req, res) {
         result_text = choices[0].message.content;
 
         // Function call
-        if (choices[0].message.function_call) {
+        if (process.env.USE_FUNCTION_CALLING && choices[0].message.function_call) {
           console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
-          use_function_calling = true;
+          do_function_calling = true;
 
           const responseFunctionMessage = choices[0].message;
           const functionName = responseFunctionMessage.function_call.name;
           function_name = functionName;
           const functionArgs = JSON.parse(responseFunctionMessage.function_call.arguments);
           console.log("Function name: " + functionName);
-          console.log("Function arguments: " + responseFunctionMessage.function_call.arguments);
+          console.log("Arguments: " + JSON.stringify(responseFunctionMessage.function_call.arguments));
 
-          const functionResponse = await executeFunction(functionName, functionArgs);
-          console.log("Function response: " + JSON.stringify(functionResponse));
+          const functionResult = await executeFunction(functionName, functionArgs);
+          console.log("Result: " + JSON.stringify(functionResult));
   
           let functionMessages = [];
           functionMessages.push(responseFunctionMessage);
           functionMessages.push({
               "role": "function",
               "name": functionName,
-              "content": functionResponse,
+              "content": functionResult,
           });
   
           const functionChatCompletion = await openai.createChatCompletion({
@@ -128,7 +129,7 @@ export default async function (req, res) {
           } else {
             const functionResult = functionChatCompletion.data.choices[0].message.content;
             result_text = functionResult;
-            console.log("Second Response: " + functionResult);
+            console.log("Response: " + functionResult);
           }
         }
       }
@@ -171,7 +172,7 @@ export default async function (req, res) {
           top_p: process.env.TOP_P,
           score: score,
           token_ct: token_ct,
-          func: use_function_calling && function_name
+          func: do_function_calling && function_name
         },
         info: {
           model: process.env.MODEL,
