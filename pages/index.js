@@ -244,6 +244,8 @@ export default function Home() {
             dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>
+            token_ct: {data.result.stats.token_ct}<br></br>
+            func: {data.result.stats.func || "none"}<br></br>
           </div>
         ));
       }

@@ -62,6 +62,8 @@ export default async function (req, res) {
     let result_text = "";
     let score = 0;
     let token_ct = 0;
+    let use_function_calling = false;
+    let function_name = "";
 
     if (process.env.END_POINT === "chat_completion") {
       const generateMessagesResult = await generateMessages(input, queryId, role, tokenizer);
@@ -91,9 +93,11 @@ export default async function (req, res) {
         // Function call
         if (choices[0].message.function_call) {
           console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
+          use_function_calling = true;
 
           const responseFunctionMessage = choices[0].message;
           const functionName = responseFunctionMessage.function_call.name;
+          function_name = functionName;
           const functionArgs = JSON.parse(responseFunctionMessage.function_call.arguments);
           console.log("Function name: " + functionName);
           console.log("Function arguments: " + responseFunctionMessage.function_call.arguments);
@@ -167,6 +171,7 @@ export default async function (req, res) {
           top_p: process.env.TOP_P,
           score: score,
           token_ct: token_ct,
+          func: use_function_calling && function_name
         },
         info: {
           model: process.env.MODEL,
