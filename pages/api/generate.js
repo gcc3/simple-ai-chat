@@ -176,7 +176,7 @@ export default async function (req, res) {
       if (!choices || choices.length === 0) {
         console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
         console.error("No choice\n");
-        result_text = "(Silent...)";
+        result_text = "Silent...";
       } else {
         result_text = choices[0].text;
       }
