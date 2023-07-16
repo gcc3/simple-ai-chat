@@ -71,7 +71,7 @@ export default function Home() {
 
   function generate_sse(input) {
     // Add a placeholder
-    document.getElementById("output").innerHTML = " ";
+    document.getElementById("output").innerHTML = "...";
 
     const query_id = localStorage.getItem("queryId");
     const role = localStorage.getItem("role");
@@ -105,7 +105,7 @@ export default function Home() {
       // Handle the function calling
       if (event.data.startsWith("###FUNC###")) {
         do_function_calling = true;
-        document.getElementById("output").innerHTML = "Function calling...";
+        document.getElementById("output").innerHTML = "...";
 
         const func = event.data.replace("###FUNC###", "");
         const funcObject = JSON.parse(func);
@@ -220,7 +220,7 @@ export default function Home() {
       output = output.replaceAll("###RETURN###", '<br>');
 
       // Remove the placeholder
-      if (document.getElementById("output").innerHTML === " ") {
+      if (document.getElementById("output").innerHTML === "...") {
         document.getElementById("output").innerHTML = output;
       } else {
         document.getElementById("output").innerHTML += output;
