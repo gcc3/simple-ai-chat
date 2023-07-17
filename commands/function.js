@@ -3,7 +3,7 @@ export default async function function_(args) {
 
   if (command === "ls" || command === "list") {
     let functions = [];
-    functions.push("get_time()");
+    functions.push("get_time(timezone=UTC)");
     functions.push("get_weather(location)");
 
     if (functions.length === 0) {
