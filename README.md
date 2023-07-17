@@ -2,13 +2,14 @@
 Simple AI Chat
 ==============
 
-Forked from https://github.com/openai/openai-quickstart-node  
 
+A dialogue application implemented based on OpenAI's API.  
+The backend of which can be customizable.  
 
 Main Features
 -------------
 
-Use `:help` to show commands.  
+Commands are supported, use `:help` to show commands.  
 
 * Dictionary search  
 A local dictionary will be used as messages to let AI reference to enhance the AI response quality.  
@@ -137,6 +138,6 @@ log.config
 
 Can setup output log filter rules.  
 One row one rule.  
+Example:  `IP=127.0.0.1`  
 
-Example:  
-`IP=127.0.0.1`  
+_Originally Forked from https://github.com/openai/openai-quickstart-node_  
