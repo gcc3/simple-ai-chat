@@ -34,7 +34,7 @@ And this can solve the credibility problem in dictionary searches.
 To show the stats information includings the self result evaluation use `:stats on`.  
 
 * Location Service  
-Use the device location to enhance the geology location beased questions (like weather or time).  
+Use the device location to enhance the geology location based questions (like weather or time).  
 To enable use, `:location on`  
 
 * Speak  
