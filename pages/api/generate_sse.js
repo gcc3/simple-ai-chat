@@ -6,7 +6,7 @@ import { logfile } from "utils/logUtils";
 import { tryParseJSON } from "utils/jsonUtils"
 import { get_encoding, encoding_for_model } from "tiktoken";
 import { evaluate } from './evaluate';
-import { getFunctions, executeFunction } from "utils/functionUtils";
+import { getFunctions, executeFunction } from "function.js";
 
 // OpenAI
 const configuration = new Configuration({

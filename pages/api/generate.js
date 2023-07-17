@@ -4,7 +4,7 @@ import { generateMessages } from "utils/promptUtils";
 import { generatePrompt } from "utils/promptUtils";
 import { logfile } from "utils/logUtils.js";
 import { get_encoding, encoding_for_model } from "tiktoken";
-import { getFunctions, executeFunction } from "utils/functionUtils";
+import { getFunctions, executeFunction } from "function.js";
 
 // OpenAI
 const configuration = new Configuration({
