@@ -1,8 +1,10 @@
+import getTime from "functions/get_time.js";
+
 export default async function (req, res) {
   try {
     res.status(200).json({
       result: {
-        time : await getTime()
+        time: await getTime(req.query.timezone)
       },
     });
   } catch (error) {
@@ -13,8 +15,4 @@ export default async function (req, res) {
       },
     });
   }
-}
-
-export async function getTime(timeZone="UTC") {
-  return new Date().toLocaleString('en-US', { timeZone: timeZone });
 }
