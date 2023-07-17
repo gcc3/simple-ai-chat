@@ -228,6 +228,14 @@ export default function Home() {
           generate_sse("!" + functionName + "(" + argsString + ")" + " Q=" + input);
           return;
         }
+
+        // Try speak some rest text
+        if (localStorage.getItem('useSpeak') === "true") {
+          let restText = document.getElementById("output").innerHTML.replace(textSpoken, "");
+          restText = restText.replaceAll("<br>", " ");
+          if (restText.length > 0)
+            speak(restText);
+        }
         
         return;
       }
