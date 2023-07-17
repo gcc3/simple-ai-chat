@@ -5,6 +5,7 @@ export default function help(args) {
     ":ls - List all entries, same as :entry ls.\n" +
     ":add [word] [defination] - Same as :entry add.\n" +
     ":search [keyword] - Search dictionary.\n" +
+    ":function [ls|list] - List all support functions.\n" +
     ":log - Show current session log.\n" +
     ":log [session_id] - Show session logs.\n" +
     ":stats [on|off|show|hide] - Show/hide stats info.\n" +

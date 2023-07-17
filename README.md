@@ -14,6 +14,11 @@ Use `:help` to show commands.
 A local dictionary will be used as messages to let AI reference to enhance the AI response quality.  
 To check/add entry use `:entry list`, `:search [keyword]`, and `:entry add`. 
 
+* Function calling  
+Support for function calling. To list available functions, use `:function ls`  
+To execute a function from input, use `!function_name(argument=value)`  
+Example: `!get_weather(localtion=Tokyo)`  
+
 * Session  
 Use `:info` to check the current session ID, and attach the session with `:session [session_id]` to continue the previous talk.  
 Use `:log` to show the current conversation history.  
