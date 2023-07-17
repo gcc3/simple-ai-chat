@@ -14,7 +14,7 @@ export function executeFunction(functionName, functionArgs) {
   });
 
   // Functions
-  if (functionName === "get_time") return getTime();
+  if (functionName === "get_time") return getTime(args.timezone);
   if (functionName === "get_weather") return getWeather(args.location);
 }
 
@@ -25,8 +25,13 @@ export function getFunctions() {
       description: 'Provide the current time.',
       parameters: {
         type: "object",
-        properties: {},
-        required: [],
+        properties: {
+            timezone: {
+              type: "string",
+              description: "The timezone to get the time for. If not provided, the time will be in UTC.",
+            }
+        },
+        required: ["timezone"],
       },
     },
     {
@@ -35,10 +40,10 @@ export function getFunctions() {
       parameters: {
         type: "object",
         properties: {
-            location: {
-                type: "string",
-                description: "The city and state, e.g. San Francisco, CA. If the city is not in English, translate it to English first.",
-            }
+          location: {
+            type: "string",
+            description: "The city and state, e.g. San Francisco, CA. If the city is not in English, translate it to English first.",
+          }
         },
         required: ["location"],
       }

@@ -15,6 +15,6 @@ export default async function (req, res) {
   }
 }
 
-export async function getTime() {
-  return new Date().toUTCString();
+export async function getTime(timeZone="UTC") {
+  return new Date().toLocaleString('en-US', { timeZone: timeZone });
 }
