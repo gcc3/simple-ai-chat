@@ -1,4 +1,3 @@
-
 export function speak(text) {
   var utterance = new SpeechSynthesisUtterance();
   utterance.text = text;
