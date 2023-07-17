@@ -3,7 +3,8 @@ Simple AI Chat
 ==============
 
 
-A dialogue application implemented based on OpenAI's API, the backend of which can be customizable.  
+A dialogue application implemented based on OpenAI's API.  
+The backend of which can be customizable.  
 
 Main Features
 -------------
@@ -136,7 +137,7 @@ log.config
 ----------
 
 Can setup output log filter rules.  
+One row one rule.  
 Example:  `IP=127.0.0.1`  
 
-Originally Forked from https://github.com/openai/openai-quickstart-node  
-One row one rule.  
+_Originally Forked from https://github.com/openai/openai-quickstart-node_  
