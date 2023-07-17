@@ -1,5 +1,5 @@
-import getWeather from "functions/get_weather.js";
-import getTime from "functions/get_time.js";
+import getWeather from "./functions/get_weather.js";
+import getTime from "./functions/get_time.js";
 
 export function executeFunction(functionName, functionArgs) {
   // here functionArgs is a string
