@@ -107,10 +107,14 @@ export default function Home() {
     const query_id = localStorage.getItem("queryId");
     const role = localStorage.getItem("role");
     const use_stats = localStorage.getItem("useStats");
+    const use_location = localStorage.getItem("useLocation");
+    const location = localStorage.getItem("location");
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
                                                            + "&query_id=" + query_id
                                                            + "&role=" + role
-                                                           + "&use_stats=" + use_stats);
+                                                           + "&use_stats=" + use_stats
+                                                           + "&use_location=" + use_location
+                                                           + "&location=" + location);
 
     let do_function_calling = false;
     let functionName = "";
@@ -276,6 +280,9 @@ export default function Home() {
             user_input: input, 
             query_id: localStorage.getItem("queryId"),
             role: localStorage.getItem("role"),
+            use_stats: localStorage.getItem("useStats"),
+            use_location: localStorage.getItem("useLocation"),
+            location: localStorage.getItem("location"),
           }),
       });
 

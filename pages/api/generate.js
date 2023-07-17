@@ -37,6 +37,9 @@ export default async function (req, res) {
 
   const queryId = req.body.query_id || "";
   const role = req.body.role || "";
+  const use_stats = req.body.use_stats || false;
+  const use_location = req.body.use_location || false;
+  const location = req.body.location || "";
 
   // Input
   let input = req.body.user_input || "";
