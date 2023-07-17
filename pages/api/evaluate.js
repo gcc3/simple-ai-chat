@@ -57,7 +57,7 @@ export default async function (req, res) {
   }
 }
 
-export async function evaluate(input, definations, functionResult, result_text) {
+export async function evaluate(input, definations, additionalInfo, result_text) {
   if (!configuration.apiKey) {
     return "error";
   }
@@ -67,16 +67,16 @@ export async function evaluate(input, definations, functionResult, result_text) 
   const dictionary_message = definations.length == 0 ? 
     "There is completely no information found." : 
     "The dictionary search result in JSON format is: " + JSON.stringify(definations);
-  const function_message = functionResult.length == 0 ?
+  const additional_info_message = additionalInfo.length == 0 ?
     "There is completely no information found." :
-    "The API search result in JSON format is: " + functionResult;
+    "The result is: " + additionalInfo;
 
   eval_message.push({
     role: "user", content: 
     "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using a dictionary and API to get information for the AI to reference." + "\n\n" +
     "Now, the user asks: " + input + "\n\n" +
     "After searching the dictionary. " + dictionary_message + "\n\n" +
-    "After request more information with API." + function_message + "\n\n" +
+    "After request more information with API." + additional_info_message + "\n\n" +
     "After a while, the AI responds with: " + result_text + "\n\n" +
     "Please evaluate the AI's response for correctness and credibility, 1 being the worst or contains any fake information, 10 being the best, and correct. " +
     "Please only evaluate/consider the correctness, not the information comprehensiveness. " +

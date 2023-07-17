@@ -122,6 +122,7 @@ export default async function (req, res) {
       token_ct = generateMessagesResult.token_ct;
       messages = generateMessagesResult.messages;
 
+      let additionalInfo = "";
       if (use_location === "true") {
         const lat = location.split(",")[0];
         const lng = location.split(",")[1];
@@ -129,12 +130,14 @@ export default async function (req, res) {
         const query = {latitude: lat, longitude: lng}
         const cities = nearbyCities(query)
         const city = cities[0]
+        const locationMessage = "User is currently near city " + city.name + ", " + city.country + ".";
 
         // Feed with location message
         messages.push({
           "role": "system",
-          "content": "User is currently near city " + city.name + ", " + city.country + "."
+          "content": locationMessage
         });
+        additionalInfo += locationMessage;
       }
 
       if (do_function_calling) {
@@ -144,6 +147,7 @@ export default async function (req, res) {
           "name": functionName,
           "content": functionResult,
         });
+        additionalInfo += functionResult;
       }
 
       console.log("--- messages ---");
@@ -190,7 +194,7 @@ export default async function (req, res) {
 
               // Evaluate result
               if (use_eval && use_stats === "true" && result_text.trim().length > 0) {
-                evaluate(input, definations, functionResult, result_text).then((eval_result) => {
+                evaluate(input, definations, additionalInfo, result_text).then((eval_result) => {
                   res.write(`data: ###EVAL###${eval_result}\n\n`);
                   console.log("eval: " + eval_result + "\n");
 
