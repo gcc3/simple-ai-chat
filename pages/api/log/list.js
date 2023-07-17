@@ -1,4 +1,4 @@
-import { loglist } from "../utils/logUtils";
+import { loglist } from "../../../utils/logUtils";
 
 export default async function (req, res) {
   try {

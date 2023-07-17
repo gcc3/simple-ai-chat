@@ -1,4 +1,4 @@
-import { simpleDictionarySearch } from '../utils/dictionaryUtils';
+import { simpleDictionarySearch } from '../../../utils/dictionaryUtils';
 
 export default async function (req, res) {
   try {

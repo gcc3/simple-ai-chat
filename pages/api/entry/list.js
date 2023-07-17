@@ -1,4 +1,4 @@
-import { dictionaryEntryListing } from '../utils/dictionaryUtils';
+import { dictionaryEntryListing } from '../../../utils/dictionaryUtils';
 
 export default async function (req, res) {
   try {
