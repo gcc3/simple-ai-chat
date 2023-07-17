@@ -40,5 +40,6 @@ export default async function lang(args) {
     }
   }
 
-  return "Usage: :lang [ls|list] or :lang use [language code]";
+  return "Usage: :lang [ls|list]\n" +
+         "       :lang use [language code]\n";
 }
