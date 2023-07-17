@@ -68,7 +68,7 @@ export default function Home() {
       console.log("Function Name: " + funcName);
       console.log("Function Args: " + funcArgs);
       try {
-        const response = await fetch("/api/function/" + funcName + "?" + new URLSearchParams(funcArgs), {
+        const response = await fetch("/api/function/exec?func=" + funcName + "&args=" + funcArgs, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",

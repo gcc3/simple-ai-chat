@@ -1,10 +1,10 @@
-import getWeather from "functions/get_weather.js";
+import { executeFunction } from "function.js";
 
 export default async function (req, res) {
   try {
     res.status(200).json({
       result: {
-        weather: await getWeather(req.query.location)
+        time: await executeFunction(req.query.func, req.query.args)
       },
     });
   } catch (error) {
