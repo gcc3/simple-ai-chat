@@ -11,6 +11,7 @@ export default function location(args) {
     localStorage.setItem('useLocation', "true");
     return "Location service enabled.";
   } else if (onoff === "off") {
+    localStorage.setItem('location', "");
     localStorage.setItem('useLocation', "false");
     return "Location service dsiabled.";
   } else {
