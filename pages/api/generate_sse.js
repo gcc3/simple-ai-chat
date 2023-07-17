@@ -132,8 +132,8 @@ export default async function (req, res) {
 
         // Feed with location message
         messages.push({
-          "role": "user",
-          "content": "I'm currently near city " + city.name + ", " + city.country + "."
+          "role": "system",
+          "content": "User is currently near city " + city.name + ", " + city.country + "."
         });
       }
 
@@ -146,7 +146,7 @@ export default async function (req, res) {
         });
       }
 
-      console.log("Messages:");
+      console.log("--- messages ---");
       console.log(JSON.stringify(messages) + "\n");
 
       // endpoint: /v1/chat/completions
