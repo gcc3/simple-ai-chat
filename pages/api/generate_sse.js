@@ -41,6 +41,8 @@ export default async function (req, res) {
   const queryId = req.query.query_id || "";
   const role = req.query.role || "default";
   const use_stats = req.query.use_stats || "false";
+  const use_location = req.query.use_location || "false";
+  const location = req.query.location || "";
 
   // Input
   let input = decodeURIComponent(req.query.user_input) || "";
@@ -66,6 +68,8 @@ export default async function (req, res) {
     + "max_tokens: " + process.env.MAX_TOKENS + "\n"
     + "use_eval: " + process.env.USE_EVAL + "\n"
     + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
+    + "use_lcation: " + use_location + "\n"
+    + "location: " + location + "\n"
     + "role: " + role + "\n");
   }
 
@@ -118,6 +122,21 @@ export default async function (req, res) {
       token_ct = generateMessagesResult.token_ct;
       messages = generateMessagesResult.messages;
 
+      if (use_location === "true") {
+        const lat = location.split(",")[0];
+        const lng = location.split(",")[1];
+        const nearbyCities = require("nearby-cities")
+        const query = {latitude: lat, longitude: lng}
+        const cities = nearbyCities(query)
+        const city = cities[0]
+
+        // Feed with location message
+        messages.push({
+          "role": "system",
+          "content": "User is located at " + city.name + ", " + city.country
+        });
+      }
+
       if (do_function_calling) {
         // Feed with function calling message
         messages.push({
@@ -126,6 +145,9 @@ export default async function (req, res) {
           "content": functionResult,
         });
       }
+
+      console.log("Messages:");
+      console.log(JSON.stringify(messages) + "\n");
 
       // endpoint: /v1/chat/completions
       let chatCompletion;
