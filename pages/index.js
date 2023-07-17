@@ -2,7 +2,7 @@ import Head from "next/head";
 import { useState, useEffect } from "react";
 import styles from "./index.module.css";
 import command from "../command.js";
-import { speak } from "./api/utils/speakUtils.js";
+import { speak, trySpeak } from "./api/utils/speakUtils.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
@@ -103,6 +103,9 @@ export default function Home() {
   function generate_sse(input) {
     // Add a placeholder
     document.getElementById("output").innerHTML = "...";
+
+    // preapre speech
+    var textSpoken = "";
 
     const query_id = localStorage.getItem("queryId");
     const role = localStorage.getItem("role");
@@ -225,13 +228,7 @@ export default function Home() {
           generate_sse("!" + functionName + "(" + argsString + ")" + " Q=" + input);
           return;
         }
-
-        // Speak result
-        if (localStorage.getItem('useSpeak') === "true") {
-          let text = document.getElementById("output").innerHTML;
-          text = text.replaceAll("<br>", " ");
-          speak(text);
-        }
+        
         return;
       }
 
@@ -260,6 +257,12 @@ export default function Home() {
       } else {
         document.getElementById("output").innerHTML += output;
       }
+
+      // Try speak
+      if (localStorage.getItem('useSpeak') === "true") {
+        textSpoken = trySpeak(document.getElementById("output").innerHTML, textSpoken);
+      }
+
       console.log(event.data);
     };
 
