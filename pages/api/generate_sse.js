@@ -132,8 +132,8 @@ export default async function (req, res) {
 
         // Feed with location message
         messages.push({
-          "role": "system",
-          "content": "User is located at " + city.name + ", " + city.country
+          "role": "user",
+          "content": "I'm currently near city " + city.name + ", " + city.country + "."
         });
       }
 
