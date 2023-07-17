@@ -1,4 +1,4 @@
-import { roleListing } from '../../../utils/roleUtils';
+import { roleListing } from 'utils/roleUtils';
 
 export default async function (req, res) {
   try {
