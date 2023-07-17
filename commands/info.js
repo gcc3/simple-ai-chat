@@ -4,7 +4,8 @@ export default function info(args) {
                "Stream: " + localStorage.getItem("useStream") + "\n" +
                "Speak: " + localStorage.getItem("useSpeak") + "\n" +
                "Language: " + (localStorage.getItem("lang") || "en") + "\n" +
-               "Location: " + localStorage.getItem("useLocation") + "\n" +
+               "Location Service: " + localStorage.getItem("useLocation") + "\n" +
+               "Location: (" + localStorage.getItem("location") + ")\n" +
                "Role: " + (localStorage.getItem("role") || "default");
 
   return info;
