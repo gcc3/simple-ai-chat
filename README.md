@@ -16,7 +16,8 @@ A local dictionary will be used as messages to let AI reference to enhance the A
 To check/add entry use `:entry list`, `:search [keyword]`, and `:entry add`. 
 
 * Function calling  
-Support for function calling. To list available functions, use `:function ls`  
+Support for [function calling](https://openai.com/blog/function-calling-and-other-api-updates), the AI can call the function itself, and with the description it can know when to use the function. Amazing!  
+To list available functions, use `:function ls`  
 To execute a function from input, use `!function_name(argument=value)`  
 Example: `!get_weather(localtion=Tokyo)`  
 
@@ -36,7 +37,7 @@ To show the stats information includings the self result evaluation use `:stats 
 
 * Location Service  
 Use the device location to enhance the geology location based questions (like weather or time).  
-To enable use, `:location on`  
+To enable use `:location on`  
 
 * Speak  
 Use `:speak on` to turn on the speak after generating.  
