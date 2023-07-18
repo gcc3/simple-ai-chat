@@ -6,6 +6,7 @@ Simple AI Chat
 A dialogue application implemented based on OpenAI's API.  
 The backend of which can be customizable.  
 
+
 Main Features
 -------------
 
