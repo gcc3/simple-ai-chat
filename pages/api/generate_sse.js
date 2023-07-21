@@ -123,9 +123,10 @@ export default async function (req, res) {
       messages = generateMessagesResult.messages;
 
       let additionalInfo = "";
-      if (use_location === "true") {
-        const lat = location.split(",")[0];
-        const lng = location.split(",")[1];
+      if (use_location === "true" && location) {
+        // localtion example: (40.7128, -74.0060)
+        const lat = location.slice(1, -1).split(",")[0];
+        const lng = location.slice(1, -1).split(",")[1];
         const nearbyCities = require("nearby-cities")
         const query = {latitude: lat, longitude: lng}
         const cities = nearbyCities(query)

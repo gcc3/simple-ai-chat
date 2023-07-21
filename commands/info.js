@@ -6,7 +6,7 @@ export default function info(args) {
                "Voice: " + (localStorage.getItem("voice") || "default") + "\n" +
                "Language: " + (localStorage.getItem("lang") || "en-US") + "\n" +
                "Location Service: " + localStorage.getItem("useLocation") + "\n" +
-               "Location: (" + localStorage.getItem("location") + ")\n" +
+               "Location: " + (localStorage.getItem("location") || "disabled") + "\n" +
                "Role: " + (localStorage.getItem("role") || "default");
 
   return info;

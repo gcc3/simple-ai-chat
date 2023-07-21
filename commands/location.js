@@ -5,7 +5,7 @@ export default function location(args) {
     // Get geo location
     navigator.geolocation.getCurrentPosition((position) => {
       console.log("Location: (" + position.coords.latitude + "," + position.coords.longitude + ")");
-      localStorage.setItem('location', position.coords.latitude + "," + position.coords.longitude);
+      localStorage.setItem('location', "(" + position.coords.latitude + "," + position.coords.longitude + ")");
     });
 
     localStorage.setItem('useLocation', "true");
