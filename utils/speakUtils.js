@@ -1,3 +1,5 @@
+import { getVoice } from "../utils/voiceUtils.js"
+
 export function speak(text) {
   var utterance = new SpeechSynthesisUtterance();
   utterance.text = text;
@@ -5,6 +7,8 @@ export function speak(text) {
   utterance.rate = 1;    // 0.1 to 10
   utterance.pitch = 1.1;     // 0 to 2
   utterance.lang = localStorage.getItem("lang");
+  const voice = getVoice(localStorage.getItem("voice"));
+  if (voice) utterance.voice = voice;
   window.speechSynthesis.speak(utterance);
 }
 

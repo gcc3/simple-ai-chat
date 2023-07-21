@@ -1,3 +1,5 @@
+import { getVoice } from "../utils/voiceUtils.js"
+
 export default async function voice(args) {
   const command = args[0];
 
@@ -25,7 +27,7 @@ export default async function voice(args) {
     const voiceName = args[1].slice(1, -1);
 
     // find voice and set
-    const voice = findVoice(voiceName);
+    const voice = getVoice(voiceName);
     if (voice) {
       localStorage.setItem("voice", voiceName);
       return "Voice is set to " + voiceName + ".";
@@ -36,14 +38,4 @@ export default async function voice(args) {
 
   return "Usage: :voice [ls|list]" + "\n" +
          "       :voice use [voice_name]" + "\n";
-}
-
-function findVoice(voiceName) {
-  const voices = window.speechSynthesis.getVoices();
-  for (let i = 0; i < voices.length ; i++) {
-    if (voices[i].lang === localStorage.getItem("lang") && voices[i].name === voiceName) {
-      return voices[i]
-    }
-  }
-  return null;
 }
