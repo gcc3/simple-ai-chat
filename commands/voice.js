@@ -12,7 +12,12 @@ export default async function voice(args) {
         langVoiceList.push(voices[i].name);
       }
     }
-    return "\\" + langVoiceList.join(" \\");
+    
+    if (langVoiceList.length === 0) {
+      return "No voices found for language " + localStorage.getItem("lang") + ".";
+    } else {
+      return "\\" + langVoiceList.join(" \\");
+    }
   }
   
   if (command === "use") {
