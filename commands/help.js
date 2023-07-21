@@ -14,6 +14,8 @@ export default function help(args) {
     ":speak [on|off] - Switch on/off auto speak.\n" +
     ":speak [stop] - Stop the current speak.\n" +
     ":stop - Stop the current speak, same as :speak stop.\n" +
+    ":voice [ls|list] - List all support voices.\n" +
+    ":voice use [voice_name] - Use voice.\n" + 
     ":lang [ls|list] - List all languages.\n" +
     ":lang use [language_code] - Use language.\n" +
     ":session [session_id] - Attach to session.\n" +

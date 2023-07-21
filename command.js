@@ -16,6 +16,7 @@ import lang from "./commands/lang.js";
 import stop from "./commands/stop.js";
 import function_ from "./commands/function.js";
 import location from "./commands/location.js";
+import voice from "./commands/voice.js";
 
 export default function commands(input) {
   let command = input;
@@ -45,6 +46,7 @@ export default function commands(input) {
   if (command.startsWith(":stop")) return stop(args);
   if (command.startsWith(":function")) return function_(args);
   if (command.startsWith(":location")) return location(args);
+  if (command.startsWith(":voice")) return voice(args);
   return "Unknown command.";
 }
 
