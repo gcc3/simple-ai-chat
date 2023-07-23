@@ -7,3 +7,15 @@ export function getVoice(voiceName) {
   }
   return null;
 }
+
+export function getVoices() {
+  return new Promise((resolve) => {
+    let id;
+    id = setInterval(() => {
+      if (window.speechSynthesis.getVoices().length !== 0) {
+        resolve(window.speechSynthesis.getVoices());
+        clearInterval(id);
+      }
+    }, 10);
+  })
+}

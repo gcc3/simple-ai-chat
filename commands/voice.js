@@ -1,10 +1,10 @@
-import { getVoice } from "../utils/voiceUtils.js"
+import { getVoice, getVoices } from "../utils/voiceUtils.js"
 
 export default async function voice(args) {
   const command = args[0];
 
   if (command === "ls" || command === "list") {
-    const voices = window.speechSynthesis.getVoices();
+    const voices = await getVoices();
     let langVoiceList = [];
     for (let i = 0; i < voices.length ; i++) {
       if (voices[i].lang === localStorage.getItem("lang")) {
