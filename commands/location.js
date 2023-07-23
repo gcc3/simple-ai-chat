@@ -13,7 +13,7 @@ export default function location(args) {
   } else if (onoff === "off") {
     localStorage.setItem('location', "");
     localStorage.setItem('useLocation', "false");
-    return "Location service dsiabled.";
+    return "Location service disabled.";
   } else {
     return "Usage: :location [on|off]";
   }
