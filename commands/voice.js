@@ -32,7 +32,7 @@ export default async function voice(args) {
     const voiceName = args[1].slice(1, -1);
 
     // find voice and set
-    const voice = getVoice(voiceName);
+    const voice = await getVoice(voiceName);
     if (voice) {
       localStorage.setItem("voice", voiceName);
       return "Voice is set to " + voiceName + ".";
