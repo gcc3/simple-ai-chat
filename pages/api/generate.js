@@ -94,7 +94,6 @@ export default async function (req, res) {
           temperature: temperature,
           top_p: top_p,
           max_tokens: max_tokens,
-          function_call: "none"
         });
       }
 
