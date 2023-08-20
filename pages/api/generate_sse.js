@@ -175,7 +175,6 @@ export default async function (req, res) {
           top_p: top_p,
           max_tokens: max_tokens,
           stream: true,
-          function_call: "none"
         }, { responseType: "stream" });
       }
 
