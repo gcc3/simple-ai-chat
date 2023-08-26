@@ -7,5 +7,5 @@ RUN npm install next -g
 COPY . .
 RUN npm run build
 
-EXPOSE 8081
+EXPOSE 3000
 CMD [ "npm", "start" ]

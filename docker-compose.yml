@@ -15,6 +15,6 @@ services:
     ports:
       - "3000:3000"
     expose:
-      - 8081
+      - 3000
     networks:
       - simple_ai_chat_network
