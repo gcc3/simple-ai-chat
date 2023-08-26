@@ -13,7 +13,7 @@ services:
       dockerfile: Dockerfile
     container_name: simple_ai_chat_app
     ports:
-      - "8081:8081"
+      - "3000:3000"
     expose:
       - 8081
     networks:
