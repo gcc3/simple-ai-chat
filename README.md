@@ -135,7 +135,7 @@ For API calls for wolfram alpha API.
 Get from https://products.wolframalpha.com/api
 
 * CORE_URL  
-[Simple AI Core](https://github.com/gcc3/simple-ai-core) is now available to help the chat answer with data.
+[Simple AI Core](https://github.com/gcc3/simple-ai-core) is now available to help the chat answer with data.  
 Function calling: `get_help(query)`  
 
 
