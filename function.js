@@ -1,5 +1,6 @@
 import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
+import queryAi from "./functions/query_ai.js";
 
 export function executeFunction(functionName, functionArgs) {
   // here functionArgs is a string
@@ -16,6 +17,9 @@ export function executeFunction(functionName, functionArgs) {
   // Functions
   if (functionName === "get_time") return getTime(args.timezone);
   if (functionName === "get_weather") return getWeather(args.location);
+
+  // Links to another AI
+  if (functionName === "get_help") return queryAi(args.query);
 }
 
 export function getFunctions() {
@@ -46,6 +50,20 @@ export function getFunctions() {
           }
         },
         required: ["location"],
+      }
+    },
+    {
+      name: 'get_help',
+      description: 'Get support or data or assistant from another AI.',
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "A question string. As you lack of some information or data, you need to ask another AI about that.",
+          }
+        },
+        required: ["query"],
       }
     }
   ];
