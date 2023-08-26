@@ -92,7 +92,10 @@ export default async function (req, res) {
 
     // Execute function
     functionResult = await executeFunction(functionName, functionArgs);
-    console.log("Result: " + functionResult + "\n");
+    if (!functionResult.endsWith("\n")) {
+      functionResult += "\n";
+    }
+    console.log("Result: " + functionResult);
     logfile("T=" + Date.now() + " S=" + queryId + " F=" + function_input + " A=" + functionResult, req);
 
     // Replace input with original
