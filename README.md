@@ -45,6 +45,9 @@ Use `:speak on` to turn on the speak after generating.
 Use `:speak stop` to stop the speaking.  
 To change language use `:lang use [language code]`  
 
+* AI links to AI (experimental)  
+Use function calling to link to another AI (core AI)  
+
 
 Dependencies
 ------------
