@@ -27,6 +27,7 @@ const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 const use_eval = process.env.USE_EVAL == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
+const force_core_ai_query = process.env.FORCE_CORE_AI_QUERY == "true" ? true : false;
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -68,6 +69,7 @@ export default async function (req, res) {
     + "max_tokens: " + process.env.MAX_TOKENS + "\n"
     + "use_eval: " + process.env.USE_EVAL + "\n"
     + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
+    + "force core ai query: " + process.env.FORCE_CORE_AI_QUERY + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + location + "\n"
     + "role: " + role + "\n");
@@ -152,6 +154,16 @@ export default async function (req, res) {
           "content": functionResult,
         });
         additionalInfo += functionResult;
+      }
+
+      if (force_core_ai_query) {
+        // Feed message with core AI query result
+        const coreAiQueryResult = await executeFunction("get_help", "query=" + input);
+        messages.push({
+          "role": "system",
+          "content": coreAiQueryResult,
+        });
+        additionalInfo += coreAiQueryResult;
       }
 
       console.log("--- messages ---");
