@@ -145,7 +145,7 @@ export default async function (req, res) {
       }
 
       if (do_function_calling) {
-        // Feed with function calling message
+        // Feed message with function calling result
         messages.push({
           "role": "function",
           "name": functionName,
