@@ -25,21 +25,28 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 }
 .main form {
-  display: flex;
-  flex-direction: column;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   width: 100%;
-  max-width: 625px;
+  background-color: #f7f7f7;
+  padding: 10px;
+  z-index: 10; /* Ensure it's always on top */
+  box-sizing: border-box;
 }
 .main input[type="text"] {
-  padding: 10px 14px;
-  border: 1.5px solid #aaaaaa;
-  border-radius: 1px;
-  margin-bottom: 24px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
   outline: 0;
   outline-color: #adadad;
-  box-shadow: none;
 }
 .main ::placeholder {
   color: #8e8ea0;
@@ -56,27 +63,29 @@
 }
 .main .wrapper {
   width: 100%;
-  max-width: 600px;
+  margin-bottom: 60px;
+  height: calc(100% - 60px);
+  overflow-y: scroll;
+  padding: 10px;
 }
 .main .output {
   font-weight: normal;
-  margin-top: 20px;
   margin-bottom: 30px;
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 10px;
+  margin-right: 10px;
   white-space: pre-wrap;
 }
 .main .evaluation {
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 10px;
+  margin-right: 10px;
   font-weight: normal;
   font-size: 12px;
   color: #767676;
   text-align: left;
 }
 .main .stats {
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 10px;
+  margin-right: 10px;
   font-weight: normal;
   font-size: 12px;
   margin-bottom: 30px;
@@ -84,32 +93,12 @@
   text-align: left;
 }
 .main .info {
-  margin-left: 4px;
-  margin-right: 4px;
+  position: fixed;
+  bottom: 67px;
+  margin-left: 10px;
+  margin-right: 10px;
   font-weight: normal;
   font-size: 12px;
   color: #cccccc;
-  margin-top: 5px;
-  margin-bottom: 35px;
   text-align: right;
-}
-
-/* Styles for differnt window sizes */
-@media screen and (max-width: 649px) {
-  .main {
-    padding-top: 0px;
-    padding-bottom: 0px;
-  }
-}
-@media screen and (min-width: 650px) and (max-width: 800px) {
-  .main {
-    padding-top: 25px;
-    padding-bottom: 25px;
-  }
-}
-@media screen and (min-width: 801px) {
-  .main {
-    padding-top: 50px;
-    padding-bottom: 50px;
-  }
 }
