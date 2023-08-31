@@ -57,20 +57,20 @@
   text-align: center;
   cursor: pointer;
 }
+.main .wrapper {
+  width: 96%;
+  max-width: 600px;
+}
 .main .output {
   font-weight: normal;
   margin-top: 20px;
   margin-bottom: 30px;
-  width: 96%;
-  max-width: 600px;
   white-space: pre-wrap;
 }
 .main .evaluation {
   font-weight: normal;
   font-size: 12px;
   color: #767676;
-  width: 96%;
-  max-width: 600px;
   text-align: left;
 }
 .main .stats {
@@ -78,8 +78,6 @@
   font-size: 12px;
   margin-bottom: 30px;
   color: #767676;
-  width: 96%;
-  max-width: 600px;
   text-align: left;
 }
 .main .info {
@@ -88,8 +86,6 @@
   color: #cccccc;
   margin-top: 5px;
   margin-bottom: 35px;
-  width: 96%;
-  max-width: 600px;
   text-align: right;
 }
 

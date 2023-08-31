@@ -363,10 +363,12 @@ export default function Home() {
           />
           <input hidden type="submit" value="Submit" />
         </form>
-        <div id="output" className={styles.output}>{output}</div>
-        {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
-        {stats && <div className={styles.stats}>{stats}</div>}
-        <div className={styles.info}>{info}</div>
+        <div id="wrapper" className={styles.wrapper}>
+          <div id="output" className={styles.output}>{output}</div>
+          {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
+          {stats && <div className={styles.stats}>{stats}</div>}
+          <div className={styles.info}>{info}</div>
+        </div>
       </main>
     </div>
   );
