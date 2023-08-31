@@ -26,9 +26,6 @@
   flex-direction: column;
   align-items: center;
 }
-.main .icon {
-  width: 34px;
-}
 .main form {
   display: flex;
   flex-direction: column;
