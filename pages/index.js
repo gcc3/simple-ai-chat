@@ -91,7 +91,6 @@ export default function Home() {
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
-      setOutput("");
       generate_sse(input);
     } else {
       // Use general API request
