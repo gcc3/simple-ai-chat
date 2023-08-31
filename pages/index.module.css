@@ -49,33 +49,27 @@
   box-sizing: border-box;
   outline: 0;
   outline-color: #adadad;
-  flex-grow: 1; /* Allow the input to take up available space */
-  margin-right: 10px; /* Add some space between the input and the button */
+  padding-right: 70px; /* make space for the button */
 }
 .main ::placeholder {
   color: #8e8ea0;
   opacity: 1;
 }
-/* .main input[type="submit"] {
-  padding: 12px 0;
-  color: #fff;
-  background-color: #3b3b3b;
-  border: none;
-  border-radius: 4px;
-  text-align: center;
-  cursor: pointer;
-} */
 .main .submit {
-  padding: 10px 20px;
-  background-color: #007BFF; /* Example blue color */
+  font-size: 14px;
+  position: absolute;
+  right: 22px; /* adjust as needed */
+  top: 50%;
+  transform: translateY(-50%); /* vertically center the button */
+  background-color: #b4b4b4;
   color: #fff;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+  transition: background-color 0.3s ease;
 }
 .main .submit:hover {
-  background-color: #0056b3; /* Darken the button color on hover */
+  background-color: #787878; /* Darken the button color on hover */
 }
 .main .wrapper {
   width: 100%;
