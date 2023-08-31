@@ -59,6 +59,7 @@
   font-size: 14px;
   position: absolute;
   right: 22px; /* adjust as needed */
+  width: 23px;
   top: 50%;
   transform: translateY(-50%); /* vertically center the button */
   background-color: #b4b4b4;
