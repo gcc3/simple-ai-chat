@@ -69,7 +69,7 @@ export default async function (req, res) {
     + "max_tokens: " + process.env.MAX_TOKENS + "\n"
     + "use_eval: " + process.env.USE_EVAL + "\n"
     + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
-    + "force core ai query: " + process.env.FORCE_CORE_AI_QUERY + "\n"
+    + "force_core_ai_query: " + process.env.FORCE_CORE_AI_QUERY + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + location + "\n"
     + "role: " + role + "\n");
