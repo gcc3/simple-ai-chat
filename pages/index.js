@@ -361,7 +361,7 @@ export default function Home() {
             onChange={(e) => setUserInput(e.target.value)}
             autoFocus
           />
-          <input hidden type="submit" value="Submit" />
+          <input className={styles.submit} type="submit" value="Send" />
         </form>
         <div id="wrapper" className={styles.wrapper}>
           <div id="output" className={styles.output}>{output}</div>

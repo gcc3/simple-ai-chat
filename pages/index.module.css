@@ -37,6 +37,8 @@
   padding: 10px;
   z-index: 10; /* Ensure it's always on top */
   box-sizing: border-box;
+  display: flex; /* Use flexbox to align the input and button */
+  align-items: center; /* Vertically center the items */
 }
 .main input[type="text"] {
   width: 100%;
@@ -47,12 +49,14 @@
   box-sizing: border-box;
   outline: 0;
   outline-color: #adadad;
+  flex-grow: 1; /* Allow the input to take up available space */
+  margin-right: 10px; /* Add some space between the input and the button */
 }
 .main ::placeholder {
   color: #8e8ea0;
   opacity: 1;
 }
-.main input[type="submit"] {
+/* .main input[type="submit"] {
   padding: 12px 0;
   color: #fff;
   background-color: #3b3b3b;
@@ -60,6 +64,18 @@
   border-radius: 4px;
   text-align: center;
   cursor: pointer;
+} */
+.main .submit {
+  padding: 10px 20px;
+  background-color: #007BFF; /* Example blue color */
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+.main .submit:hover {
+  background-color: #0056b3; /* Darken the button color on hover */
 }
 .main .wrapper {
   width: 100%;
@@ -70,7 +86,7 @@
 }
 .main .output {
   font-weight: normal;
-  margin-bottom: 10px;
+  margin-bottom: 30px;
   margin-left: 10px;
   margin-right: 10px;
   white-space: pre-wrap;
@@ -93,8 +109,6 @@
   text-align: left;
 }
 .main .info {
-  position: fixed;
-  bottom: 67px;
   margin-left: 10px;
   margin-right: 10px;
   font-weight: normal;
