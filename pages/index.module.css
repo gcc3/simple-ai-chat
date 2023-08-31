@@ -58,22 +58,28 @@
   cursor: pointer;
 }
 .main .wrapper {
-  width: 96%;
+  width: 100%;
   max-width: 600px;
 }
 .main .output {
   font-weight: normal;
   margin-top: 20px;
   margin-bottom: 30px;
+  margin-left: 4px;
+  margin-right: 4px;
   white-space: pre-wrap;
 }
 .main .evaluation {
+  margin-left: 4px;
+  margin-right: 4px;
   font-weight: normal;
   font-size: 12px;
   color: #767676;
   text-align: left;
 }
 .main .stats {
+  margin-left: 4px;
+  margin-right: 4px;
   font-weight: normal;
   font-size: 12px;
   margin-bottom: 30px;
@@ -81,6 +87,8 @@
   text-align: left;
 }
 .main .info {
+  margin-left: 4px;
+  margin-right: 4px;
   font-weight: normal;
   font-size: 12px;
   color: #cccccc;
