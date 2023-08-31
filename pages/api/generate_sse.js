@@ -160,10 +160,11 @@ export default async function (req, res) {
         console.log("--- core ai query ---");
         // Feed message with core AI query result
         const coreAiQueryResult = await executeFunction("get_help", "query=" + input);
-        console.log("result: " + coreAiQueryResult);
+        console.log("response: " + coreAiQueryResult);
         messages.push({
-          "role": "system",
-          "content": coreAiQueryResult,
+          "role": "function",
+          "name": "get_help",
+          "content": "After calling another AI, its response as: " + coreAiQueryResult,
         });
         additionalInfo += coreAiQueryResult;
       }
