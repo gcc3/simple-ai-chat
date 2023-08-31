@@ -59,7 +59,6 @@
   font-size: 14px;
   position: absolute;
   right: 22px; /* adjust as needed */
-  width: 23px;
   top: 50%;
   transform: translateY(-50%); /* vertically center the button */
   background-color: #b4b4b4;
@@ -110,4 +109,20 @@
   font-size: 12px;
   color: #cccccc;
   text-align: right;
+}
+
+/* Styles for differnt window sizes */
+@media screen and (max-width: 649px) {
+  .main .submit {
+    visibility: hidden;
+  }
+  .main input[type="text"] {
+    padding-right: 10px;
+  }
+}
+@media screen and (min-width: 650px) and (max-width: 800px) {
+  
+}
+@media screen and (min-width: 801px) {
+  
 }
