@@ -21,37 +21,45 @@ export function executeFunction(functionName, functionArgs) {
 }
 
 export function getFunctions() {
-  return [
-    {
-      name: 'get_time',
-      description: 'Provide the current time.',
-      parameters: {
-        type: "object",
-        properties: {
-            timezone: {
-              type: "string",
-              description: "The timezone to get the time for. If not provided, the time will be in UTC.",
-            }
-        },
-        required: ["timezone"],
-      },
-    },
-    {
-      name: 'get_weather',
-      description: 'Get weather for a given location or city.',
-      parameters: {
-        type: "object",
-        properties: {
-          location: {
+  let functions = []
+
+  // get time
+  functions.push({
+    name: 'get_time',
+    description: 'Provide the current time.',
+    parameters: {
+      type: "object",
+      properties: {
+          timezone: {
             type: "string",
-            description: "The city and state, e.g. San Francisco, CA. If the city is not in English, translate it to English first.",
+            description: "The timezone to get the time for. If not provided, the time will be in UTC.",
           }
-        },
-        required: ["location"],
-      }
+      },
+      required: ["timezone"],
     },
-    {
-      name: 'get_help',
+  });
+
+  // get weather
+  functions.push({
+    name: 'get_weather',
+    description: 'Get weather for a given location or city.',
+    parameters: {
+      type: "object",
+      properties: {
+        location: {
+          type: "string",
+          description: "The city and state, e.g. San Francisco, CA. If the city is not in English, translate it to English first.",
+        }
+      },
+      required: ["location"],
+    }
+  });
+
+  // query AI
+  // only if core AI is enabled
+  if (process.env.USE_CORE_AI === "true") {
+    functions.push({
+      name: 'query_ai',
       description: 'Get support or data or assistant from another AI.',
       parameters: {
         type: "object",
@@ -63,6 +71,8 @@ export function getFunctions() {
         },
         required: ["query"],
       }
-    }
-  ];
+    });
+  }
+
+  return functions;
 }
