@@ -345,6 +345,16 @@ export default function Home() {
     }
   }
 
+  // Input from placeholder when pressing tab
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 9 || event.which === 9) {
+        setUserInput(placeholder);
+
+        // Optional: prevent default tabbing behavior
+        event.preventDefault();
+    }
+  };
+
   return (
     <div>
       <Head>
@@ -359,6 +369,7 @@ export default function Home() {
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             autoFocus
+            onKeyDown={handleKeyDown}
           />
           <input className={styles.submit} type="submit" value="enter" />
         </form>
