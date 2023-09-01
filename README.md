@@ -137,9 +137,15 @@ Use function calling feature, value should be `true` or `false`.
 For API calls for wolfram alpha API.  
 Get from https://products.wolframalpha.com/api
 
-* CORE_URL  
-[Simple AI Core](https://github.com/gcc3/simple-ai-core) is now available to help the chat answer with data.  
-Function calling: `get_help(query)`  
+* USE_CORE_AI  
+[Simple AI Core](https://github.com/gcc3/simple-ai-core) is now available to help the chat answer with data. 
+Function calling: `query_ai(query)`  
+
+* CORE_AI_URL  
+To set up the core AI API url.  
+
+* FORCE_CORE_AI_QUERY  
+Force to query core AI for every query.  
 
 
 log.config

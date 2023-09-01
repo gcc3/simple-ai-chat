@@ -17,7 +17,7 @@ export function executeFunction(functionName, functionArgs) {
   // Functions
   if (functionName === "get_time") return getTime(args.timezone);
   if (functionName === "get_weather") return getWeather(args.location);
-  if (functionName === "get_help") return queryAi(args.query);  // call core AI to get help
+  if (functionName === "query_ai") return queryAi(args.query);  // call core AI to get help
 }
 
 export function getFunctions() {

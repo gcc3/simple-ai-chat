@@ -163,7 +163,7 @@ export default async function (req, res) {
         console.log("response: " + coreAiQueryResult);
         messages.push({
           "role": "function",
-          "name": "get_help",
+          "name": "query_ai",
           "content": "After calling another AI, its response as: " + coreAiQueryResult,
         });
         additionalInfo += coreAiQueryResult;
