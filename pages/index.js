@@ -6,7 +6,7 @@ import { speak, trySpeak } from "utils/speakUtils.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
-  const [placeholder, setPlaceholder] = useState("Say something...");
+  const [placeholder, setPlaceholder] = useState(":help");
   const [output, setOutput] = useState();
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
