@@ -349,8 +349,6 @@ export default function Home() {
   const handleKeyDown = (event) => {
     if (event.keyCode === 9 || event.which === 9) {
         setUserInput(placeholder);
-
-        // Optional: prevent default tabbing behavior
         event.preventDefault();
     }
   };
