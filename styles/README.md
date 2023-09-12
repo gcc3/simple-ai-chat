@@ -1,6 +1,6 @@
 
-Styles for Simple AI Chat
-=========================
+Styles
+======
 
 
 The simple.css is the original one.  
