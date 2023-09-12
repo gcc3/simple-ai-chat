@@ -1,7 +1,7 @@
 import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import queryCoreAi from "./functions/query_core_ai.js";
-import queryVectara from "./functions/query_vectara.js";
+import queryVector from "./functions/query_vector.js";
 
 export function executeFunction(functionName, functionArgs) {
   // here functionArgs is a string
@@ -19,7 +19,7 @@ export function executeFunction(functionName, functionArgs) {
   if (functionName === "get_time") return getTime(args.timezone);
   if (functionName === "get_weather") return getWeather(args.location);
   if (functionName === "query_core_ai") return queryCoreAi(args.query);   // call core AI to get help
-  if (functionName === "query_vectara") return queryVectara(args.query);  // call vector database to get help
+  if (functionName === "query_vector") return queryVector(args.query);  // call vector database to get help
 }
 
 export function getFunctions() {
@@ -80,7 +80,7 @@ export function getFunctions() {
   // only if Vectara is enabled
   if (process.env.USE_VECTARA === "true") {
     functions.push({
-      name: 'query_vectara',
+      name: 'query_vector',
       description: 'Get support data from vector database.',
       parameters: {
         type: "object",

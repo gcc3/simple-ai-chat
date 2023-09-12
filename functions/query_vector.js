@@ -1,4 +1,4 @@
-export default async function queryVectara(query) {
+export default async function queryVector(query) {
   const response = await fetch("https://api.vectara.io/v1/query"
   , {
       method: "POST",
