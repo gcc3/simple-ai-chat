@@ -1,0 +1,116 @@
+@import url(https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css);
+@font-face {
+  font-family: "ColfaxAI";
+  src: url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff2)
+      format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff) format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "ColfaxAI";
+  src: url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff2) format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff) format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+.main,
+.main input {
+  font-size: 16px;
+  line-height: 24px;
+  color: #353740;
+  font-family: "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
+}
+.main {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.main form {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 625px;
+}
+.main input[type="text"] {
+  padding: 10px 14px;
+  border: 1.5px solid #aaaaaa;
+  border-radius: 1px;
+  margin-bottom: 24px;
+  outline: 0;
+  outline-color: #adadad;
+  box-shadow: none;
+}
+.main ::placeholder {
+  color: #8e8ea0;
+  opacity: 1;
+}
+.main input[type="submit"] {
+  padding: 12px 0;
+  color: #fff;
+  background-color: #3b3b3b;
+  border: none;
+  border-radius: 4px;
+  text-align: center;
+  cursor: pointer;
+  visibility: collapse;
+}
+.main .wrapper {
+  width: 100%;
+  max-width: 600px;
+}
+.main .output {
+  font-weight: normal;
+  margin-top: 20px;
+  margin-bottom: 30px;
+  margin-left: 4px;
+  margin-right: 4px;
+  white-space: pre-wrap;
+}
+.main .evaluation {
+  margin-left: 4px;
+  margin-right: 4px;
+  font-weight: normal;
+  font-size: 12px;
+  color: #767676;
+  text-align: left;
+}
+.main .stats {
+  margin-left: 4px;
+  margin-right: 4px;
+  font-weight: normal;
+  font-size: 12px;
+  margin-bottom: 30px;
+  color: #767676;
+  text-align: left;
+}
+.main .info {
+  margin-left: 4px;
+  margin-right: 4px;
+  font-weight: normal;
+  font-size: 12px;
+  color: #cccccc;
+  margin-top: 5px;
+  margin-bottom: 35px;
+  text-align: right;
+}
+
+/* Styles for differnt window sizes */
+@media screen and (max-width: 649px) {
+  .main {
+    padding-top: 0px;
+    padding-bottom: 0px;
+  }
+}
+@media screen and (min-width: 650px) and (max-width: 800px) {
+  .main {
+    padding-top: 25px;
+    padding-bottom: 25px;
+  }
+}
+@media screen and (min-width: 801px) {
+  .main {
+    padding-top: 50px;
+    padding-bottom: 50px;
+  }
+}
