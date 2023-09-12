@@ -39,8 +39,8 @@ export default async function queryVector(query) {
   if (data.responseSet[0].response[0].score < 0.5) {
     result = "no similar context found.";
   } else {
-    result = "" + data.responseSet[0].response[0].text;
-    result = ", result score: " + data.responseSet[0].response[0].score;
+    result = data.responseSet[0].response[0].text;
+    result += " (result score: " + data.responseSet[0].response[0].score + ")";
   }
   return result;
 }
