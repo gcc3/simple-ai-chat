@@ -6,7 +6,7 @@ import { speak, trySpeak } from "utils/speakUtils.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
-  const [placeholder, setPlaceholder] = useState("Say something...");
+  const [placeholder, setPlaceholder] = useState(":help");
   const [output, setOutput] = useState();
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
@@ -91,7 +91,6 @@ export default function Home() {
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
-      setOutput("");
       generate_sse(input);
     } else {
       // Use general API request
@@ -346,6 +345,14 @@ export default function Home() {
     }
   }
 
+  // Input from placeholder when pressing tab
+  const handleKeyDown = (event) => {
+    if (event.keyCode === 9 || event.which === 9) {
+        setUserInput(placeholder);
+        event.preventDefault();
+    }
+  };
+
   return (
     <div>
       <Head>
@@ -360,8 +367,9 @@ export default function Home() {
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             autoFocus
+            onKeyDown={handleKeyDown}
           />
-          <input hidden type="submit" value="Submit" />
+          <input className={styles.submit} type="submit" value="enter" />
         </form>
         <div id="wrapper" className={styles.wrapper}>
           <div id="output" className={styles.output}>{output}</div>

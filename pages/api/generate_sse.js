@@ -27,6 +27,7 @@ const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 const use_eval = process.env.USE_EVAL == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
+const use_core_ai = process.env.USE_CORE_AI == "true" ? true : false;
 const force_core_ai_query = process.env.FORCE_CORE_AI_QUERY == "true" ? true : false;
 
 export default async function (req, res) {
@@ -69,6 +70,7 @@ export default async function (req, res) {
     + "max_tokens: " + process.env.MAX_TOKENS + "\n"
     + "use_eval: " + process.env.USE_EVAL + "\n"
     + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
+    + "use_core_ai: " + process.env.USE_CORE_AI + "\n"
     + "force_core_ai_query: " + process.env.FORCE_CORE_AI_QUERY + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + location + "\n"
@@ -156,14 +158,14 @@ export default async function (req, res) {
         additionalInfo += functionResult;
       }
 
-      if (force_core_ai_query) {
+      if (use_core_ai && force_core_ai_query) {
         console.log("--- core ai query ---");
         // Feed message with core AI query result
-        const coreAiQueryResult = await executeFunction("get_help", "query=" + input);
-        console.log("response: " + coreAiQueryResult);
+        const coreAiQueryResult = await executeFunction("query_ai", "query=" + input);
+        console.log("response: " + coreAiQueryResult && "undefined\n");
         messages.push({
           "role": "function",
-          "name": "get_help",
+          "name": "query_ai",
           "content": "After calling another AI, its response as: " + coreAiQueryResult,
         });
         additionalInfo += coreAiQueryResult;

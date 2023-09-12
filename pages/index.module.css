@@ -25,58 +25,77 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow: hidden;
 }
 .main form {
-  display: flex;
-  flex-direction: column;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
   width: 100%;
-  max-width: 625px;
+  background-color: #f7f7f7;
+  padding: 10px;
+  z-index: 10; /* Ensure it's always on top */
+  box-sizing: border-box;
+  display: flex; /* Use flexbox to align the input and button */
+  align-items: center; /* Vertically center the items */
 }
 .main input[type="text"] {
-  padding: 10px 14px;
-  border: 1.5px solid #aaaaaa;
-  border-radius: 1px;
-  margin-bottom: 24px;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  box-sizing: border-box;
   outline: 0;
   outline-color: #adadad;
-  box-shadow: none;
+  padding-right: 90px; /* make space for the button */
 }
 .main ::placeholder {
   color: #8e8ea0;
   opacity: 1;
 }
-.main input[type="submit"] {
-  padding: 12px 0;
+.main .submit {
+  font-size: 14px;
+  position: absolute;
+  right: 22px; /* adjust as needed */
+  top: 50%;
+  transform: translateY(-50%); /* vertically center the button */
+  background-color: #d3d3d3;
   color: #fff;
-  background-color: #3b3b3b;
   border: none;
   border-radius: 4px;
-  text-align: center;
   cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.main .submit:hover {
+  background-color: #828282; /* Darken the button color on hover */
 }
 .main .wrapper {
   width: 100%;
-  max-width: 600px;
+  margin-bottom: 60px;
+  height: calc(100% - 60px);
+  overflow-y: scroll;
+  padding: 10px;
 }
 .main .output {
   font-weight: normal;
-  margin-top: 20px;
   margin-bottom: 30px;
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 10px;
+  margin-right: 10px;
   white-space: pre-wrap;
 }
 .main .evaluation {
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 10px;
+  margin-right: 10px;
   font-weight: normal;
   font-size: 12px;
   color: #767676;
   text-align: left;
 }
 .main .stats {
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 10px;
+  margin-right: 10px;
   font-weight: normal;
   font-size: 12px;
   margin-bottom: 30px;
@@ -84,32 +103,26 @@
   text-align: left;
 }
 .main .info {
-  margin-left: 4px;
-  margin-right: 4px;
+  margin-left: 10px;
+  margin-right: 10px;
   font-weight: normal;
   font-size: 12px;
   color: #cccccc;
-  margin-top: 5px;
-  margin-bottom: 35px;
   text-align: right;
 }
 
 /* Styles for differnt window sizes */
 @media screen and (max-width: 649px) {
-  .main {
-    padding-top: 0px;
-    padding-bottom: 0px;
+  .main .submit {
+    visibility: hidden;
+  }
+  .main input[type="text"] {
+    padding-right: 10px;
   }
 }
 @media screen and (min-width: 650px) and (max-width: 800px) {
-  .main {
-    padding-top: 25px;
-    padding-bottom: 25px;
-  }
+  
 }
 @media screen and (min-width: 801px) {
-  .main {
-    padding-top: 50px;
-    padding-bottom: 50px;
-  }
+  
 }

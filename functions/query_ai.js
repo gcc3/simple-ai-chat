@@ -1,6 +1,6 @@
 export default async function queryAi(query) {
-  const core_url = process.env.CORE_URL;
-  const response = await fetch("http://" + core_url + "/query?" + new URLSearchParams({
+  const core_ai_url = process.env.CORE_AI_URL;
+  const response = await fetch("http://" + core_ai_url + "/query?" + new URLSearchParams({
       input: query,
     })
   , {
