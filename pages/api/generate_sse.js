@@ -183,7 +183,7 @@ export default async function (req, res) {
         console.log("response: " + vectorQueryResult && "undefined\n");
         messages.push({
           "role": "function",
-          "name": "query_vectara",
+          "name": "query_vector",
           "content": "Retrieved context: " + vectorQueryResult,
         });
         additionalInfo += vectorQueryResult;
