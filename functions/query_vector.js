@@ -13,7 +13,7 @@ export default async function queryVector(query) {
           {
             "query": query,
             "start": 0,
-            "numResults": 1,
+            "numResults": 3,
             "contextConfig": {
               "charsBefore": 30,
               "charsAfter": 30,
@@ -35,5 +35,11 @@ export default async function queryVector(query) {
   });
 
   const data = await response.json();
-  return data.responseSet[0].response[0].text;
+  let result = "search result 1: " + data.responseSet[0].response[0].text;
+  result = ", result 1 score: " + data.responseSet[0].response[0].score;
+  result += "search result 2: " + data.responseSet[0].response[1].text;
+  result = ", result 2 score: " + data.responseSet[0].response[1].score;
+  result += "search result 3: " + data.responseSet[0].response[2].text;
+  result = ", result 3 score: " + data.responseSet[0].response[2].score;
+  return result;
 }
