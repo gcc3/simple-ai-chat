@@ -13,7 +13,7 @@ export default async function queryVector(query) {
           {
             "query": query,
             "start": 0,
-            "numResults": 3,
+            "numResults": 1,
             "contextConfig": {
               "charsBefore": 30,
               "charsAfter": 30,
@@ -35,11 +35,12 @@ export default async function queryVector(query) {
   });
 
   const data = await response.json();
-  let result = "search result 1: " + data.responseSet[0].response[0].text;
-  result = ", result 1 score: " + data.responseSet[0].response[0].score;
-  result += "search result 2: " + data.responseSet[0].response[1].text;
-  result = ", result 2 score: " + data.responseSet[0].response[1].score;
-  result += "search result 3: " + data.responseSet[0].response[2].text;
-  result = ", result 3 score: " + data.responseSet[0].response[2].score;
+  let result = "";
+  if (data.responseSet[0].response[0].score < 0.5) {
+    result = "no similar context found.";
+  } else {
+    result = "" + data.responseSet[0].response[0].text;
+    result = ", result score: " + data.responseSet[0].response[0].score;
+  }
   return result;
 }
