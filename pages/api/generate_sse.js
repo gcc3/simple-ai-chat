@@ -49,7 +49,8 @@ export default async function (req, res) {
   const location = req.query.location || "";
 
   // Input
-  let input = decodeURIComponent(req.query.user_input) || "";
+  let user_input_escape = req.query.user_input.replaceAll("%", "％").trim();  // escape %
+  let input = decodeURIComponent(user_input_escape) || "";
   if (input.trim().length === 0) return;
 
   // Normal input
@@ -173,6 +174,19 @@ export default async function (req, res) {
           "content": "After calling another AI, its response as: " + coreAiQueryResult,
         });
         additionalInfo += coreAiQueryResult;
+      }
+
+      if (use_vectara && force_vectara_query) {
+        console.log("--- vector query ---");
+        // Feed message with core AI query result
+        const vectorQueryResult = await executeFunction("query_vector", "query=" + input);
+        console.log("response: " + vectorQueryResult && "undefined\n");
+        messages.push({
+          "role": "function",
+          "name": "query_vectara",
+          "content": "Retrieved context: " + vectorQueryResult,
+        });
+        additionalInfo += vectorQueryResult;
       }
 
       console.log("--- messages ---");
