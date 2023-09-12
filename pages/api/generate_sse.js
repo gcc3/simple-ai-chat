@@ -161,7 +161,7 @@ export default async function (req, res) {
       if (use_core_ai && force_core_ai_query) {
         console.log("--- core ai query ---");
         // Feed message with core AI query result
-        const coreAiQueryResult = await executeFunction("query_ai1", "query=" + input);
+        const coreAiQueryResult = await executeFunction("query_ai", "query=" + input);
         console.log("response: " + coreAiQueryResult && "undefined\n");
         messages.push({
           "role": "function",
