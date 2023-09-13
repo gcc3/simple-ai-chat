@@ -167,26 +167,34 @@ export default async function (req, res) {
         console.log("--- core ai query ---");
         // Feed message with core AI query result
         const coreAiQueryResult = await executeFunction("query_core_ai", "query=" + input);
-        console.log("response: " + coreAiQueryResult && "undefined\n");
-        messages.push({
-          "role": "function",
-          "name": "query_core_ai",
-          "content": "After calling another AI, its response as: " + coreAiQueryResult,
-        });
-        additionalInfo += coreAiQueryResult;
+        if (coreAiQueryResult === undefined) {
+          console.log("response: undefined.\n");
+        } else {
+          console.log("response: " + coreAiQueryResult);
+          messages.push({
+            "role": "function",
+            "name": "query_core_ai",
+            "content": "After calling another AI, its response as: " + coreAiQueryResult,
+          });
+          additionalInfo += coreAiQueryResult;
+        }
       }
 
       if (use_vector && force_vector_query) {
         console.log("--- vector query ---");
         // Feed message with core AI query result
         const vectorQueryResult = await executeFunction("query_vector", "query=" + input);
-        console.log("response: " + vectorQueryResult && "undefined\n");
-        messages.push({
-          "role": "function",
-          "name": "query_vector",
-          "content": "Retrieved context: " + vectorQueryResult,
-        });
-        additionalInfo += vectorQueryResult;
+        if (vectorQueryResult === undefined) {
+          console.log("response: undefined.\n");
+        } else {
+          console.log("response: " + vectorQueryResult);
+          messages.push({
+            "role": "function",
+            "name": "query_vector",
+            "content": "Retrieved context: " + vectorQueryResult,
+          });
+          additionalInfo += vectorQueryResult;
+        }
       }
 
       console.log("--- messages ---");
