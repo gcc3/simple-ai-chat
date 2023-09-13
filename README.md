@@ -45,8 +45,12 @@ Use `:speak on` to turn on the speak after generating.
 Use `:speak stop` to stop the speaking.  
 To change language use `:lang use [language code]`  
 
-* AI links to AI (experimental)  
+* AI links to AI
 Use function calling to link to another AI (core AI)  
+
+* Vector Database  
+Query data from vector database engine.  
+Currently support [Vectara](https://vectara.com/).  
 
 
 Dependencies
