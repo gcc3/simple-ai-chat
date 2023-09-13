@@ -48,5 +48,7 @@ export default async function queryVector(query) {
     result = data.responseSet[0].response[0].text;
     result += " (result score: " + data.responseSet[0].response[0].score + ")";
   }
+
+  if (!result.endsWith("\n")) result += "\n";
   return result;
 }
