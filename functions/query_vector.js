@@ -36,6 +36,12 @@ export default async function queryVector(query) {
 
   const data = await response.json();
   let result = "";
+  if (data.responseSet === undefined || data.responseSet.length === 0) {
+    result = "no response set found.";
+  } else if (data.responseSet[0].response === undefined || data.responseSet[0].response.length === 0) {
+    result = "no response found.";
+  }
+
   if (data.responseSet[0].response[0].score < 0.5) {
     result = "no similar context found.";
   } else {
