@@ -147,6 +147,21 @@ To set up the core AI API url.
 * FORCE_CORE_AI_QUERY  
 Force to query core AI for every query.  
 
+* USE_VECTARA  
+Control enable vectara (vector database), value should be `true` or `false`.  
+
+* VECTARA_API_KEY  
+The API key of the vectara, can generate from the console.  
+
+* VECTARA_CUSTOMER_ID  
+The customer ID of vectara, can get from user profile.  
+
+* VECTARA_CORPUS_ID  
+The indice id.  
+
+* FORCE_VECTARA_QUERY  
+Force query from the vectara vector database.  
+
 
 log.config
 ----------
