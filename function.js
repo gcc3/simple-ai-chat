@@ -4,9 +4,12 @@ import queryCoreAi from "./functions/query_core_ai.js";
 import queryVector from "./functions/query_vector.js";
 
 export function executeFunction(functionName, functionArgs) {
+  if (process.env.USE_FUNCTION_CALLING !== "true") {
+    return "Function calling is not enabled.";
+  }
+  
   // here functionArgs is a string
   // format: param1=value1, param2=value2, ...
-
   // convert to array of objects
   let args = {};
   functionArgs.split(",").map((functionArg) => {
@@ -16,10 +19,27 @@ export function executeFunction(functionName, functionArgs) {
   });
 
   // Functions
-  if (functionName === "get_time") return getTime(args.timezone);
-  if (functionName === "get_weather") return getWeather(args.location);
-  if (functionName === "query_core_ai") return queryCoreAi(args.query);   // call core AI to get help
-  if (functionName === "query_vector") return queryVector(args.query);  // call vector database to get help
+  if (functionName === "get_time") {
+    return getTime(args.timezone);
+  }
+  
+  if (functionName === "get_weather") {
+    return getWeather(args.location);
+  }
+  
+  // call core AI to get help
+  if (functionName === "query_core_ai") {
+    if (process.env.USE_CORE_AI !== "true") return "Core AI is not enabled.";
+    return queryCoreAi(args.query);
+  }
+
+  // call vector database to get help
+  if (functionName === "query_vector") {
+    if (process.env.USE_VECTOR !== "true") return "Vector database is not enabled.";
+    return queryVector(args.query);
+  }
+
+  return "No such function.";
 }
 
 export function getFunctions() {
