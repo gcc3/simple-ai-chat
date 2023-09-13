@@ -78,7 +78,7 @@ export function getFunctions() {
 
   // query Vertara vector data
   // only if Vectara is enabled
-  if (process.env.USE_VECTARA === "true") {
+  if (process.env.USE_VECTOR === "true") {
     functions.push({
       name: 'query_vector',
       description: 'Get support data from vector database.',
