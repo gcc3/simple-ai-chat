@@ -139,7 +139,7 @@ Get from https://products.wolframalpha.com/api
 
 * USE_CORE_AI  
 [Simple AI Core](https://github.com/gcc3/simple-ai-core) is now available to help the chat answer with data. 
-Function calling: `query_ai(query)`  
+Function calling: `query_core_ai(query)`  
 
 * CORE_AI_URL  
 To set up the core AI API url.  
