@@ -15,10 +15,10 @@ export default async function queryVector(query) {
             "start": 0,
             "numResults": 1,
             "contextConfig": {
-              "charsBefore": 300,
-              "charsAfter": 300,
-              "sentencesBefore": 30,
-              "sentencesAfter": 30,
+              "charsBefore": 60,
+              "charsAfter": 60,
+              "sentencesBefore": 5,
+              "sentencesAfter": 5,
               "startTag": "<b>",
               "endTag": "</b>"
             },

@@ -182,7 +182,8 @@ export default async function (req, res) {
       }
 
       let vector_score = "";
-      let vector_doc = "none";
+      let vector_refer_doc = "none";
+      let vector_refer_context = "none";
       if (use_vector && force_vector_query) {
         console.log("--- vector query ---");
         // Feed message with core AI query result
@@ -202,7 +203,8 @@ export default async function (req, res) {
           if (vectorQueryResult.includes("###VECTOR###")) {
             const vector_stats = vectorQueryResult.substring(vectorQueryResult.indexOf("###VECTOR###") + 12).trim();
             vector_score = vector_stats.split(",")[0];
-            vector_doc = vector_stats.split(",")[1];
+            vector_refer_doc = vector_stats.split(",")[1];
+            vector_refer_context = vectorQueryResult.substring(0, vectorQueryResult.indexOf("###VECTOR###"));
           }
         }
       }
@@ -235,7 +237,7 @@ export default async function (req, res) {
       }
 
       res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName},${vector_doc}\n\n`);
+      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName},${vector_refer_doc},${vector_refer_context}\n\n`);
 
       chatCompletion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
