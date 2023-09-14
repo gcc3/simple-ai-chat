@@ -50,11 +50,10 @@ export default async function queryVector(query) {
     const responseSet = data.responseSet[0];
     responseSet.response.forEach(r => {
       if (r.score >= 0.5) {
-        // response
-        result += "response - score = " + r.score + ", content = " + r.text + "\n";
-
-        // document
         const document = responseSet.document[r.documentIndex];
+        result += "response - score = " + r.score 
+                         + ", document = " + document.id 
+                         + ", content = " + r.text + "\n";
         documents.push(document.id);
       }
     });

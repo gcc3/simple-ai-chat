@@ -178,6 +178,7 @@ export default async function (req, res) {
             "content": "After calling another AI, its response as: " + coreAiQueryResult,
           });
           additionalInfo += coreAiQueryResult;
+          logfile("T=" + Date.now() + " S=" + queryId + " F(f)=query_core_ai(query=" + input + ") A=" + coreAiQueryResult, req);
         }
       }
 
@@ -196,6 +197,7 @@ export default async function (req, res) {
             "content": "Retrieved context: " + vectorQueryResult,
           });
           additionalInfo += vectorQueryResult;
+          logfile("T=" + Date.now() + " S=" + queryId + " F(f)=query_vector(query=" + input + ") A=" + vectorQueryResult, req);
 
           // Get vector score and refer doc info
           if (vectorQueryResult.includes("###VECTOR###")) {
