@@ -36,6 +36,7 @@ export default async function queryVector(query) {
 
   const data = await response.json();
   let result = "";
+
   if (data.responseSet === undefined || data.responseSet.length === 0) {
     result = "no response set found.";
   } else if (data.responseSet[0].response === undefined || data.responseSet[0].response.length === 0) {
@@ -45,8 +46,12 @@ export default async function queryVector(query) {
   if (data.responseSet[0].response[0].score < 0.5) {
     result = "no similar context found.";
   } else {
-    result = data.responseSet[0].response[0].text;
-    result += " (result score: " + data.responseSet[0].response[0].score + ")";
+    const responseSet = data.responseSet[0];
+    const response = responseSet.response[0];
+    const document = responseSet.document[response.documentIndex];
+    
+    result = response.text;
+    result += " ###STATS###" + response.score + "," + document.id;
   }
 
   if (!result.endsWith("\n")) result += "\n";
