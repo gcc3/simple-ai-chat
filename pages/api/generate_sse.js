@@ -71,6 +71,7 @@ export default async function (req, res) {
     + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
     + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
     + "max_tokens: " + process.env.MAX_TOKENS + "\n"
+    + "dict_search: " + process.env.DICT_SEARCH + "\n"
     + "use_eval: " + process.env.USE_EVAL + "\n"
     + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
     + "use_core_ai: " + process.env.USE_CORE_AI + "\n"
