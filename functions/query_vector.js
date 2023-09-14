@@ -58,7 +58,7 @@ export default async function queryVector(query) {
         documents.push(document.id);
       }
     });
-    result += " ###VECTOR###" + documents.join(", ");
+    result += " ###VECTOR###" + documents.join(" ");
   }
 
   if (!result.endsWith("\n")) result += "\n";
