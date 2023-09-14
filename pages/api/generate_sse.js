@@ -190,7 +190,7 @@ export default async function (req, res) {
         if (vectorQueryResult === undefined) {
           console.log("response: undefined.\n");
         } else {
-          console.log("response: " + vectorQueryResult);
+          console.log("response: " + vectorQueryResult.replaceAll("\n", "\\n") + "\n");
           messages.push({
             "role": "function",
             "name": "query_vector",
