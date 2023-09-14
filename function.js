@@ -5,7 +5,7 @@ import queryVector from "./functions/query_vector.js";
 
 export function executeFunction(functionName, functionArgs) {
   if (process.env.USE_FUNCTION_CALLING !== "true") {
-    return "Function calling is not enabled.";
+    return "function calling is not enabled.\n";
   }
   
   // here functionArgs is a string

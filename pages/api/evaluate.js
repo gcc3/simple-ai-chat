@@ -64,8 +64,9 @@ export async function evaluate(input, definations, additionalInfo, result_text) 
 
   // Create evaluation message
   const eval_message = [];
+  let dictionary_message = "";
   if (process.env.DICT_SEARCH === "true") {
-    const dictionary_message = definations.length == 0 ? 
+    dictionary_message = definations.length == 0 ? 
     "There is completely no information found." : 
     "The dictionary search result in JSON format is: " + JSON.stringify(definations);
   }
@@ -77,7 +78,7 @@ export async function evaluate(input, definations, additionalInfo, result_text) 
     role: "user", content: 
     "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using a dictionary and API to get information for the AI to reference." + "\n\n" +
     "Now, the user asks: " + input + "\n\n" +
-    (process.env.DICT_SEARCH === "true") ? ("After searching the dictionary. " + dictionary_message + "\n\n") : "" +
+    (process.env.DICT_SEARCH === "true" ? ("After searching the dictionary. " + dictionary_message + "\n\n") : "") +
     "After request more information with API." + additional_info_message + "\n\n" +
     "After a while, the AI responds with: " + result_text + "\n\n" +
     "Please evaluate the AI's response for correctness and credibility, 1 being the worst or contains any fake information, 10 being the best, and correct. " +
