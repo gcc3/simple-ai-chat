@@ -181,6 +181,8 @@ export default async function (req, res) {
         }
       }
 
+      let vector_score = "";
+      let vector_doc = "none";
       if (use_vector && force_vector_query) {
         console.log("--- vector query ---");
         // Feed message with core AI query result
@@ -195,6 +197,13 @@ export default async function (req, res) {
             "content": "Retrieved context: " + vectorQueryResult,
           });
           additionalInfo += vectorQueryResult;
+
+          // Get vector score and refer doc info
+          if (vectorQueryResult.includes("###VECTOR###")) {
+            const vector_stats = vectorQueryResult.substring(vectorQueryResult.indexOf("###VECTOR###") + 12).trim();
+            vector_score = vector_stats.split(",")[0];
+            vector_doc = vector_stats.split(",")[1];
+          }
         }
       }
 
@@ -226,7 +235,7 @@ export default async function (req, res) {
       }
 
       res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName}\n\n`);
+      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName},${vector_doc}\n\n`);
 
       chatCompletion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
@@ -340,7 +349,7 @@ export default async function (req, res) {
       }, { responseType: "stream" });
 
       res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct}\n\n`);
+      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct}}\n\n`);
 
       completion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
