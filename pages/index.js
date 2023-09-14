@@ -190,13 +190,9 @@ export default function Home() {
             );
           }
 
-          let scoreColor = "#767676";                  // default
-          if (score >= 4)      scoreColor = "green";   // green
-          else if (score > 0)  scoreColor = "#CC7722"; // orange
-          else if (score == 0) scoreColor = "#DE3163"; // red
           setStats(
             <div>
-              dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
+              dict_search_score: {score}<br></br>
               func: {func || "none"}<br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
@@ -318,13 +314,9 @@ export default function Home() {
       if (localStorage.getItem('useStats') === "true") {
         const score = data.result.stats.score;
         
-        let scoreColor = "#767676";                  // default
-        if (score >= 4)      scoreColor = "green";   // green
-        else if (score > 0)  scoreColor = "#CC7722"; // orange
-        else if (score == 0) scoreColor = "#DE3163"; // red
         setStats((
           <div>
-            dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
+            dict_search_score: {score}<br></br>
             func: {data.result.stats.func || "none"}<br></br>
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>
