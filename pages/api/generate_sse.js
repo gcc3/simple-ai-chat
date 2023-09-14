@@ -181,7 +181,6 @@ export default async function (req, res) {
         }
       }
 
-      let vector_score = "";
       let refer_doc = "none";
       if (use_vector && force_vector_query) {
         console.log("--- vector query ---");
@@ -201,8 +200,7 @@ export default async function (req, res) {
           // Get vector score and refer doc info
           if (vectorQueryResult.includes("###VECTOR###")) {
             const vector_stats = vectorQueryResult.substring(vectorQueryResult.indexOf("###VECTOR###") + 12).trim();
-            vector_score = vector_stats.split(",")[0];
-            refer_doc = vector_stats.split(",")[1];
+            refer_doc = vector_stats;
           }
         }
       }
