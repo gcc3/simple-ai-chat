@@ -54,7 +54,11 @@ export default async function queryVector(query) {
         result += "response - score = " + r.score 
                          + ", document = " + document.id 
                          + ", content = " + r.text + "\n";
-        documents.push(document.id);
+
+        // add document, but only once
+        if (!documents.includes(document)) {
+          documents.push(document);
+        }
       }
     });
     result += " ###VECTOR###" + documents.join(" ");
