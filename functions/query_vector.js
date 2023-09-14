@@ -56,8 +56,8 @@ export default async function queryVector(query) {
                          + ", content = " + r.text + "\n";
 
         // add document, but only once
-        if (!documents.includes(document)) {
-          documents.push(document);
+        if (!documents.includes(document.id)) {
+          documents.push(document.id);
         }
       }
     });
