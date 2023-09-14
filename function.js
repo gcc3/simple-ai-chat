@@ -33,7 +33,7 @@ export function executeFunction(functionName, functionArgs) {
     return queryCoreAi(args.query);
   }
 
-  // call vector database to get help
+  // call vector database to get support data
   if (functionName === "query_vector") {
     if (process.env.USE_VECTOR !== "true") return "Vector database is not enabled.";
     return queryVector(args.query);

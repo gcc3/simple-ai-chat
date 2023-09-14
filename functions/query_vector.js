@@ -51,7 +51,7 @@ export default async function queryVector(query) {
     const document = responseSet.document[response.documentIndex];
     
     result = response.text;
-    result += " ###STATS###" + response.score + "," + document.id;
+    result += " ###VECTOR###" + response.score + "," + document.id;
   }
 
   if (!result.endsWith("\n")) result += "\n";
