@@ -51,15 +51,13 @@ export default async function queryVector(query) {
     responseSet.response.forEach(r => {
       if (r.score >= 0.5) {
         // response
-        result += "response, score = " + r.score + ", content = " + r.text + "\n";
+        result += "response - score = " + r.score + ", content = " + r.text + "\n";
 
         // document
         const document = responseSet.document[r.documentIndex];
         documents.push(document.id);
       }
     });
-
-    result = response.text;
     result += " ###VECTOR###" + documents.join(", ");
   }
 
