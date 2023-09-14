@@ -64,6 +64,5 @@ export default async function queryVector(query) {
     result += " ###VECTOR###" + documents.join(" ");
   }
 
-  if (!result.endsWith("\n")) result += "\n";
   return result;
 }
