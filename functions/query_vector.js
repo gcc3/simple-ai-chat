@@ -13,7 +13,7 @@ export default async function queryVector(query) {
           {
             "query": query,
             "start": 0,
-            "numResults": 1,
+            "numResults": 5,
             "contextConfig": {
               "charsBefore": 60,
               "charsAfter": 60,
@@ -36,6 +36,7 @@ export default async function queryVector(query) {
 
   const data = await response.json();
   let result = "";
+  let documents = [];
 
   if (data.responseSet === undefined || data.responseSet.length === 0) {
     result = "no response set found.";
@@ -47,12 +48,19 @@ export default async function queryVector(query) {
     result = "no similar context found.";
   } else {
     const responseSet = data.responseSet[0];
-    const response = responseSet.response[0];
-    const document = responseSet.document[response.documentIndex];
-    const score = response.score;  // not using
+    responseSet.response.forEach(r => {
+      if (r.score >= 0.5) {
+        // response
+        result += "response, score = " + r.score + ", content = " + r.text + "\n";
+
+        // document
+        const document = responseSet.document[r.documentIndex];
+        documents.push(document.id);
+      }
+    });
 
     result = response.text;
-    result += " ###VECTOR###" + document.id;
+    result += " ###VECTOR###" + documents.join(", ");
   }
 
   if (!result.endsWith("\n")) result += "\n";
