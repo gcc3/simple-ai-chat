@@ -7,6 +7,7 @@ import { speak, trySpeak } from "utils/speakUtils.js";
 export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [placeholder, setPlaceholder] = useState(":help");
+  const [enter, setEnter] = useState("enter");
   const [output, setOutput] = useState();
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
@@ -29,6 +30,11 @@ export default function Home() {
           // Set placeholder
           if (result.result.init_placeholder) {
             setPlaceholder(result.result.init_placeholder);
+          }
+
+          // Set enter key text
+          if (result.result.enter) {
+            setEnter(result.result.enter);
           }
       } catch (error) {
           console.error("There was an error fetching the data:", error);
@@ -380,7 +386,7 @@ export default function Home() {
             autoFocus
             onKeyDown={handleKeyDown}
           />
-          <input className={styles.submit} type="submit" value="enter" />
+          <input className={styles.submit} type="submit" value={enter} />
         </form>
         <div id="wrapper" className={styles.wrapper}>
           <div id="output" className={styles.output}>{output}</div>
