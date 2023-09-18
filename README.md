@@ -79,7 +79,12 @@ Setup
 
 3. Build and run the app.  
    `$ npm run build`  
-   `$ npm run dev` or `$npm start`  
+   `$ npm run dev` or `$npm start`
+
+4. Setup style  
+   As the theme feature is not implemented yet, manually copy style from styles folder  
+   to `pages/index.module.css` is required.  
+   `index.module.css` need to be created manually.  
 
 
 .env
