@@ -19,6 +19,23 @@ export default function Home() {
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
     if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
+
+    // Get system info
+    const getSystemInfo = async () => {
+      try {
+          const response = await fetch('/api/info/list');
+          const result = await response.json();
+          
+          // Set placeholder
+          if (result.result.init_placeholder) {
+            setPlaceholder(result.result.init_placeholder);
+          }
+      } catch (error) {
+          console.error("There was an error fetching the data:", error);
+      }
+    }
+    getSystemInfo();
+
   }, []);
 
   async function onSubmit(event) {
