@@ -46,3 +46,6 @@ role.csv
 
 # .script
 /.script/
+
+# style
+/pages/index.module.css
