@@ -82,8 +82,8 @@ Setup
    `$ npm run dev` or `$npm start`
 
 4. Setup style  
-   As the theme feature is not implemented yet, manually copy style from styles folder  
-   to `pages/index.module.css` is required.  
+   As the theme feature is not implemented yet, manually copy style from styles folder is required.  
+   Copy a style and paste to `pages/index.module.css`.  
    `index.module.css` need to be created manually.  
 
 
@@ -118,7 +118,10 @@ Stop will be used to end the completion
 Set the role system's content to role play.  
 
 * PROMPT_PREFIX and PROMPT_SUFFIX  
-Add prefix and suffix for prompt avoid duplicate text input.  
+Add prefix and suffix for prompt avoid duplicate text input.
+
+* INIT_PLACEHOLDER and ENTER  
+Control the default placeholder text and enter key text.  
 
 * MAX_TOKENS  
 Control the max tokens generate in the chat completion.  
