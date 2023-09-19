@@ -1,0 +1,135 @@
+@import url(https://cdn.jsdelivr.net/npm/firacode@6.2.0/distr/fira_code.css);
+@font-face {
+  font-family: "ColfaxAI";
+  src: url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff2)
+      format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIRegular.woff) format("woff");
+  font-weight: normal;
+  font-style: normal;
+}
+@font-face {
+  font-family: "ColfaxAI";
+  src: url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff2) format("woff2"),
+    url(https://cdn.openai.com/API/fonts/ColfaxAIBold.woff) format("woff");
+  font-weight: bold;
+  font-style: normal;
+}
+.main,
+.main input {
+  font-size: 16px;
+  line-height: 24px;
+  color: #353740;
+  font-family: "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
+}
+.main {
+  max-width: 100%;  /* Prevents the main div from overflowing */
+  overflow-x: hidden;  /* Prevent horizontal scroll */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+  padding: 10px;
+}
+.main form {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: #f7f7f7;
+  padding: 15px;
+  z-index: 10; /* Ensure it's always on top */
+  box-sizing: border-box;
+  display: flex; /* Use flexbox to align the input and button */
+  align-items: center; /* Vertically center the items */
+}
+.main input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 20px;
+  line-height: 34px;
+  box-sizing: border-box;
+  outline: 0;
+  outline-color: #adadad;
+  margin-right: 100px;
+}
+.main ::placeholder {
+  color: #8e8ea0;
+  opacity: 1;
+}
+.main .submit {
+  width: 90px;
+  font-size: 20px;
+  line-height: 34px;
+  padding: 10px;
+  position: absolute;
+  right: 15px; /* adjust as needed */
+  top: 50%;
+  transform: translateY(-50%); /* vertically center the button */
+  background-color: #0000eb;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.main .submit:hover {
+  background-color: #00009f; /* Darken the button color on hover */
+}
+.main .wrapper {
+  width: 100%;
+  margin-bottom: 60px;
+  padding: 10px;
+}
+.main .output {
+  font-size: 20px;
+  line-height: 34px;
+  font-weight: normal;
+  margin-bottom: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
+  white-space: pre-wrap;
+}
+.main .evaluation {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-weight: normal;
+  font-size: 16px;
+  color: #767676;
+  text-align: left;
+}
+.main .stats {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-weight: normal;
+  font-size: 16px;
+  margin-bottom: 30px;
+  color: #767676;
+  text-align: left;
+}
+.main .info {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-weight: normal;
+  font-size: 16px;
+  color: #cccccc;
+  text-align: right;
+}
+
+/* Styles for differnt window sizes */
+@media screen and (max-width: 649px) {
+  .main .submit {
+    visibility: hidden;
+  }
+  .main input[type="text"] {
+    padding-right: 10px;
+  }
+}
+@media screen and (min-width: 650px) and (max-width: 800px) {
+
+}
+@media screen and (min-width: 801px) {
+
+}
