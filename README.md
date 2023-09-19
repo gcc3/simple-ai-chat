@@ -46,7 +46,7 @@ Use `:speak stop` to stop the speaking.
 To change language use `:lang use [language code]`  
 
 * AI links to AI  
-Use function calling to link to another AI (core AI)  
+Use function calling to link to another AI node.  
 
 * Vector Database  
 Query data from vector database engine.  
