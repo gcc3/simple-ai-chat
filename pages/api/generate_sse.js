@@ -27,8 +27,8 @@ const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 const use_eval = process.env.USE_EVAL == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
-const use_core_ai = process.env.USE_CORE_AI == "true" ? true : false;
-const force_core_ai_query = process.env.FORCE_CORE_AI_QUERY == "true" ? true : false;
+const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
+const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
 
@@ -74,8 +74,8 @@ export default async function (req, res) {
     + "dict_search: " + process.env.DICT_SEARCH + "\n"
     + "use_eval: " + process.env.USE_EVAL + "\n"
     + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
-    + "use_core_ai: " + process.env.USE_CORE_AI + "\n"
-    + "force_core_ai_query: " + process.env.FORCE_CORE_AI_QUERY + "\n"
+    + "use_node_ai: " + process.env.USE_NODE_AI + "\n"
+    + "force_node_ai_query: " + process.env.FORCE_NODE_AI_QUERY + "\n"
     + "use_vector: " + process.env.USE_VECTOR + "\n"
     + "force_vector_query: " + process.env.FORCE_VECTOR_QUERY + "\n"
     + "use_lcation: " + use_location + "\n"
@@ -164,21 +164,21 @@ export default async function (req, res) {
         additionalInfo += functionResult;
       }
 
-      if (use_core_ai && force_core_ai_query) {
+      if (use_node_ai && force_node_ai_query) {
         console.log("--- core ai query ---");
         // Feed message with core AI query result
-        const coreAiQueryResult = await executeFunction("query_core_ai", "query=" + input);
-        if (coreAiQueryResult === undefined) {
+        const nodeAiQueryResult = await executeFunction("query_node_ai", "query=" + input);
+        if (nodeAiQueryResult === undefined) {
           console.log("response: undefined.\n");
         } else {
-          console.log("response: " + coreAiQueryResult);
+          console.log("response: " + nodeAiQueryResult);
           messages.push({
             "role": "function",
-            "name": "query_core_ai",
-            "content": "After calling another AI, its response as: " + coreAiQueryResult,
+            "name": "query_node_ai",
+            "content": "After calling another AI, its response as: " + nodeAiQueryResult,
           });
-          additionalInfo += coreAiQueryResult;
-          logfile("T=" + Date.now() + " S=" + queryId + " F(f)=query_core_ai(query=" + input + ") A=" + coreAiQueryResult, req);
+          additionalInfo += nodeAiQueryResult;
+          logfile("T=" + Date.now() + " S=" + queryId + " F(f)=query_node_ai(query=" + input + ") A=" + nodeAiQueryResult, req);
         }
       }
 

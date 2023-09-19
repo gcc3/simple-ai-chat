@@ -1,6 +1,6 @@
 import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
-import queryCoreAi from "./functions/query_core_ai.js";
+import queryNodeAi from "./functions/query_node_ai.js";
 import queryVector from "./functions/query_vector.js";
 
 export function executeFunction(functionName, functionArgs) {
@@ -28,9 +28,9 @@ export function executeFunction(functionName, functionArgs) {
   }
   
   // call core AI to get help
-  if (functionName === "query_core_ai") {
-    if (process.env.USE_CORE_AI !== "true") return "Core AI is not enabled.";
-    return queryCoreAi(args.query);
+  if (functionName === "query_node_ai") {
+    if (process.env.USE_NODE_AI !== "true") return "Core AI is not enabled.";
+    return queryNodeAi(args.query);
   }
 
   // call vector database to get support data
@@ -79,9 +79,9 @@ export function getFunctions() {
 
   // query core AI
   // only if core AI is enabled
-  if (process.env.USE_CORE_AI === "true") {
+  if (process.env.USE_NODE_AI === "true") {
     functions.push({
-      name: 'query_core_ai',
+      name: 'query_node_ai',
       description: 'Get support or data or assistant from another AI.',
       parameters: {
         type: "object",

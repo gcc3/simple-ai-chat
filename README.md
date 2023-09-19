@@ -149,14 +149,14 @@ Use function calling feature, value should be `true` or `false`.
 For API calls for wolfram alpha API.  
 Get from https://products.wolframalpha.com/api
 
-* USE_CORE_AI  
+* USE_NODE_AI  
 [Simple AI Core](https://github.com/gcc3/simple-ai-core) is now available to help the chat answer with data. 
-Function calling: `query_core_ai(query)`  
+Function calling: `query_node_ai(query)`  
 
-* CORE_AI_URL  
+* NODE_AI_URL  
 To set up the core AI API url.  
 
-* FORCE_CORE_AI_QUERY  
+* FORCE_NODE_AI_QUERY  
 Force to query core AI for every query.  
 
 * USE_VECTOR  

@@ -14,8 +14,8 @@ export default async function (req, res) {
     const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
     const use_eval = process.env.USE_EVAL == "true" ? true : false;
     const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
-    const use_core_ai = process.env.USE_CORE_AI == "true" ? true : false;
-    const force_core_ai_query = process.env.FORCE_CORE_AI_QUERY == "true" ? true : false;
+    const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
+    const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
     const use_vector = process.env.USE_VECTOR == "true" ? true : false;
     const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
 
@@ -35,8 +35,8 @@ export default async function (req, res) {
         stream_console: stream_console,
         use_eval: use_eval,
         use_function_calling: use_function_calling,
-        use_core_ai: use_core_ai,
-        force_core_ai_query: force_core_ai_query,
+        use_node_ai: use_node_ai,
+        force_node_ai_query: force_node_ai_query,
         use_vector: use_vector,
         force_vector_query: force_vector_query,
         use_vector: use_vector,
