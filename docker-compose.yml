@@ -8,6 +8,11 @@ networks:
 services:
   app:
     image: simple-ai-chat
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
     build:
       context: .
       dockerfile: Dockerfile
