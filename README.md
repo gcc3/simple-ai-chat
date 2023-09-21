@@ -47,6 +47,8 @@ To change language use `:lang use [language code]`
 
 * AI links to AI  
 Use function calling to link to another AI node.  
+To use multiple AI node, a AI hub is suggested.  
+Refer project [Simple AI Node](https://github.com/gcc3/simple-ai-node) and [Simple AI Hub](https://github.com/gcc3/simple-ai-hub).  
 
 * Vector Database  
 Query data from vector database engine.  
@@ -150,7 +152,8 @@ For API calls for wolfram alpha API.
 Get from https://products.wolframalpha.com/api
 
 * USE_NODE_AI  
-[Simple AI Core](https://github.com/gcc3/simple-ai-core) is now available to help the chat answer with data. 
+[Simple AI Node](https://github.com/gcc3/simple-ai-node) is available to help the chat answer with data.
+To use multiple node, consider use [Simple AI Hub](https://github.com/gcc3/simple-ai-hub)  
 Function calling: `query_node_ai(query)`  
 
 * NODE_AI_URL  
