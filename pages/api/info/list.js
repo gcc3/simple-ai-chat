@@ -9,6 +9,8 @@ export default async function (req, res) {
     const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
     const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
     const init_placeholder = process.env.INIT_PLACEHOLDER ? process.env.INIT_PLACEHOLDER : "";
+    const waiting = process.env.WAITING ? process.env.WAITING : "...";
+    const querying = process.env.QUERYING ? process.env.QUERYING : "...";
     const enter = process.env.ENTER ? process.env.ENTER : "";
     const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
     const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
@@ -30,6 +32,8 @@ export default async function (req, res) {
         prompt_prefix: prompt_prefix,
         prompt_suffix: prompt_suffix,
         init_placeholder: init_placeholder,
+        waiting: waiting,
+        querying: querying,
         enter: enter,
         max_tokens: max_tokens,
         stream_console: stream_console,

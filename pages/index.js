@@ -7,6 +7,8 @@ import { speak, trySpeak } from "utils/speakUtils.js";
 export default function Home() {
   const [userInput, setUserInput] = useState("");
   const [placeholder, setPlaceholder] = useState(":help");
+  const [waiting, setWaiting] = useState("...");
+  const [querying, setQuerying] = useState("...");
   const [enter, setEnter] = useState("enter");
   const [output, setOutput] = useState();
   const [info, setInfo] = useState();
@@ -25,17 +27,11 @@ export default function Home() {
     const getSystemInfo = async () => {
       try {
           const response = await fetch('/api/info/list');
-          const result = await response.json();
-          
-          // Set placeholder
-          if (result.result.init_placeholder) {
-            setPlaceholder(result.result.init_placeholder);
-          }
-
-          // Set enter key text
-          if (result.result.enter) {
-            setEnter(result.result.enter);
-          }
+          const result = (await response.json()).result;
+          if (result.init_placeholder) setPlaceholder(result.init_placeholder);  // Set placeholder text
+          if (result.enter) setEnter(result.enter);                              // Set enter key text
+          if (result.waiting) setWaiting(result.waiting);                        // Set waiting text
+          if (result.querying) setQuerying(result.querying);                     // Set querying text
       } catch (error) {
           console.error("There was an error fetching the data:", error);
       }
@@ -117,14 +113,15 @@ export default function Home() {
       generate_sse(input);
     } else {
       // Use general API request
-      setOutput("...");
+      setOutput(waiting);
       generate(input);
     }
   }
 
   function generate_sse(input) {
     // Add a placeholder
-    document.getElementById("output").innerHTML = "...";
+    if (document.getElementById("output").innerHTML !== querying)
+      document.getElementById("output").innerHTML = waiting;
 
     // preapre speech
     var textSpoken = "";
@@ -165,7 +162,7 @@ export default function Home() {
       // Handle the function calling
       if (event.data.startsWith("###FUNC###")) {
         do_function_calling = true;
-        document.getElementById("output").innerHTML = "...";
+        document.getElementById("output").innerHTML = querying;
 
         const func = event.data.replace("###FUNC###", "");
         const funcObject = JSON.parse(func);
@@ -280,7 +277,7 @@ export default function Home() {
       output = output.replaceAll("###RETURN###", '<br>');
 
       // Remove the placeholder
-      if (document.getElementById("output").innerHTML === "...") {
+      if (document.getElementById("output").innerHTML === waiting || document.getElementById("output").innerHTML === querying) {
         document.getElementById("output").innerHTML = output;
       } else {
         document.getElementById("output").innerHTML += output;
