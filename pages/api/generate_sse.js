@@ -105,7 +105,7 @@ export default async function (req, res) {
     if (!functionResult.endsWith("\n")) {
       functionResult += "\n";
     }
-    console.log("Result: " + functionResult);
+    console.log("Result: " + functionResult.replace(/\n/g, "\\n"));
     logfile("T=" + Date.now() + " S=" + queryId + " F=" + function_input + " A=" + functionResult, req);
 
     // Replace input with original
