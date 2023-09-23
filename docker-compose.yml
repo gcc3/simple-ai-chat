@@ -1,8 +1,8 @@
 version: '0.1'
 
 networks:
-  simple_ai_chat_network:
-    name: simple_ai_chat_network
+  simple_ai_network:
+    name: simple_ai_network
     driver: bridge
 
 services:
@@ -22,4 +22,4 @@ services:
     expose:
       - 3000
     networks:
-      - simple_ai_chat_network
+      - simple_ai_network
