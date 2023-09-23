@@ -129,7 +129,7 @@ export default async function (req, res) {
 
           // Execute function
           const functionResult = await executeFunction(functionName, argsString);
-          console.log("Result: " + functionResult.replace(/\n/g, "\\n"));
+          console.log("Result: " + functionResult.replace(/\n/g, "\\n") + "\n");
   
           // Functions messages
           // Include original messages
