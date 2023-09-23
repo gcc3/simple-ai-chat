@@ -16,7 +16,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: simple_ai_chat_app
+    container_name: simple_ai_chat
     ports:
       - "3000:3000"
     expose:
