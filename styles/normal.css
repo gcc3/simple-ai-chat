@@ -81,8 +81,8 @@
 .main .wrapper {
   width: 100%;
   height: calc(100vh - 140px);
-  margin-bottom: 60px;
   padding: 10px;
+  margin-bottom: 60px;
   overflow-y: auto;
 }
 .main .output {
