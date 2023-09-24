@@ -1,4 +1,4 @@
 /* global styles */
 body {
-  background-color: #ffffff;
+  background-color : transparent;
 }
