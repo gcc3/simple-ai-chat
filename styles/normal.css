@@ -36,7 +36,7 @@
   left: 0;
   right: 0;
   width: 100%;
-  background-color: #ffffff;  /* input area background color */
+  background-color: transparent;  /* input area background color */
   padding: 15px;
   z-index: 10; /* ensure it's always on top */
   box-sizing: border-box;
