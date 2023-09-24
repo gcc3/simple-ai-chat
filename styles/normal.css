@@ -80,8 +80,10 @@
 }
 .main .wrapper {
   width: 100%;
+  height: calc(100vh - 140px);
   margin-bottom: 60px;
   padding: 10px;
+  overflow-y: auto;
 }
 .main .output {
   font-size: 20px;
