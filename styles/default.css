@@ -22,8 +22,8 @@
   font-family: "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
 }
 .main {
-  max-width: 100%;  /* Prevents the main div from overflowing */
-  overflow-x: hidden;  /* Prevent horizontal scroll */
+  max-width: 100%;  /* prevents the main div from overflowing */
+  overflow-x: hidden;  /* prevent horizontal scroll */
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -37,10 +37,10 @@
   width: 100%;
   background-color: #f7f7f7;
   padding: 10px;
-  z-index: 10; /* Ensure it's always on top */
+  z-index: 10; /* ensure it's always on top */
   box-sizing: border-box;
-  display: flex; /* Use flexbox to align the input and button */
-  align-items: center; /* Vertically center the items */
+  display: flex; /* use flexbox to align the input and button */
+  align-items: center; /* vertically center the items */
 }
 .main input[type="text"] {
   width: 100%;
@@ -71,7 +71,7 @@
   transition: background-color 0.3s ease;
 }
 .main .submit:hover {
-  background-color: #828282; /* Darken the button color on hover */
+  background-color: #828282; /* darken the button color on hover */
 }
 .main .wrapper {
   width: 100%;
