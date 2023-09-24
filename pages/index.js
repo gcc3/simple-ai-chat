@@ -374,6 +374,12 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        <div id="wrapper" className={styles.wrapper}>
+          <div id="output" className={styles.output}>{output}</div>
+          {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
+          {stats && <div className={styles.stats}>{stats}</div>}
+          <div className={styles.info}>{info}</div>
+        </div>
         <form id="input" onSubmit={onSubmit}>
           <input
             type="text"
@@ -385,12 +391,6 @@ export default function Home() {
           />
           <input className={styles.submit} type="submit" value={enter} />
         </form>
-        <div id="wrapper" className={styles.wrapper}>
-          <div id="output" className={styles.output}>{output}</div>
-          {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
-          {stats && <div className={styles.stats}>{stats}</div>}
-          <div className={styles.info}>{info}</div>
-        </div>
       </main>
     </div>
   );
