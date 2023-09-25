@@ -45,13 +45,13 @@
 .main input[type="text"] {
   width: 100%;
   padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
   font-size: 16px;
-  box-sizing: border-box;
   outline: 0;
   outline-color: #adadad;
-  padding-right: 90px; /* make space for the button */
+  padding-right: 90px;  /* make space for the button */
+  box-sizing: border-box;
+  border: 1px solid #ccc;
+  border-radius: 4px;
   box-shadow: 0.21875rem 0.21875rem 0.875rem rgba(139, 139, 139, 0.4);
 }
 .main ::placeholder {
