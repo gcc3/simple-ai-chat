@@ -52,6 +52,7 @@
   outline: 0;
   outline-color: #adadad;
   padding-right: 90px; /* make space for the button */
+  box-shadow: 0.21875rem 0.21875rem 0.875rem rgba(139, 139, 139, 0.4);
 }
 .main ::placeholder {
   color: #8e8ea0;
