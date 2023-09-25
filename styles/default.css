@@ -35,12 +35,12 @@
   left: 0;
   right: 0;
   width: 100%;
-  background-color: #f7f7f7;
+  background-color: transparent;  /* input area background color */
   padding: 10px;
-  z-index: 10; /* ensure it's always on top */
+  z-index: 10;  /* ensure it's always on top */
   box-sizing: border-box;
-  display: flex; /* use flexbox to align the input and button */
-  align-items: center; /* vertically center the items */
+  display: flex;  /* use flexbox to align the input and button */
+  align-items: center;  /* vertically center the items */
 }
 .main input[type="text"] {
   width: 100%;
