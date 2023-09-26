@@ -54,6 +54,9 @@ Refer project [Simple AI Node](https://github.com/gcc3/simple-ai-node) and [Simp
 Query data from vector database engine.  
 Currently support [Vectara](https://vectara.com/).  
 
+* Full Screen Mode  
+Use `:fullscreen on` to turn on fullscreen mode.
+
 
 Dependencies
 ------------
@@ -119,6 +122,9 @@ Add prefix and suffix for prompt avoid duplicate text input.
 
 * INIT_PLACEHOLDER and ENTER  
 Control the default placeholder text and enter key text.  
+
+* WAITING and QUERYING  
+Indicating the message that will show when waiting and querying.  
 
 * MAX_TOKENS  
 Control the max tokens generate in the chat completion.  
