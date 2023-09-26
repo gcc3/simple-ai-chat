@@ -37,7 +37,8 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0.21875rem 0.21875rem 0.875rem rgba(139, 139, 139, 0.4);
-  background-color: var(--input-box-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
 }
 .main ::placeholder {
   color: #8e8ea0;
@@ -46,10 +47,10 @@
 .main .submit {
   font-size: 14px;
   position: absolute;
-  right: 22px; /* adjust as needed */
+  right: 22px;  /* adjust as needed */
   top: 50%;
-  transform: translateY(-50%); /* vertically center the button */
-  background-color: #d3d3d3;
+  transform: translateY(-50%);  /* vertically center the button */
+  background-color: var(--button-color);
   color: #fff;
   border: none;
   border-radius: 4px;
@@ -57,7 +58,7 @@
   transition: background-color 0.3s ease;
 }
 .main .submit:hover {
-  background-color: #828282; /* darken the button color on hover */
+  background-color: #828282;  /* darken the button color on hover */
 }
 .main .wrapper {
   width: 100%;
@@ -72,6 +73,7 @@
   margin-left: 10px;
   margin-right: 10px;
   white-space: pre-wrap;
+  color: var(--text-color);
 }
 .main .evaluation {
   margin-left: 10px;
