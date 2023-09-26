@@ -83,12 +83,6 @@ Setup
    `$ npm run build`  
    `$ npm run dev` or `$npm start`
 
-4. Setup style  
-   As the theme feature is not implemented yet, manually copy style from styles folder is required.  
-   Copy a style and paste to `styles/pages/index.module.css`.  
-   `index.module.css` need to be created manually.  
-   Copy `globals.css.example` create and paste to `styles/globals.css`.  
-
 
 .env
 ----
