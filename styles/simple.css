@@ -34,12 +34,13 @@
 }
 .main input[type="text"] {
   padding: 10px 14px;
-  border: 1.5px solid #aaaaaa;
-  border-radius: 1px;
   margin-bottom: 24px;
   outline: 0;
   outline-color: #adadad;
   box-shadow: none;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-shadow: 0.21875rem 0.21875rem 0.875rem rgba(139, 139, 139, 0.4);
 }
 .main ::placeholder {
   color: #8e8ea0;
