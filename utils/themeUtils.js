@@ -15,8 +15,8 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty('--text-color', '#00f700');
     document.documentElement.style.setProperty('--placeholder-color', '#027a02');
     document.documentElement.style.setProperty('--border-color', '#333333');
-    document.documentElement.style.setProperty('--button-color', '#2b2b2b');
-    document.documentElement.style.setProperty('--button-hover-color', '#3d3d3d');
-    document.documentElement.style.setProperty('--button-text-color', '#7f7f7f');
+    document.documentElement.style.setProperty('--button-color', '#1c1c1c');
+    document.documentElement.style.setProperty('--button-hover-color', '#303030');
+    document.documentElement.style.setProperty('--button-text-color', '#505050');
   }
 }
