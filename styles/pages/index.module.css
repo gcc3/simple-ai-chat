@@ -15,6 +15,7 @@
   flex-direction: column;
   width: 100%;
   max-width: 625px;
+  background-color: transparent;  /* input area background color */
 }
 .main input[type="text"] {
   padding: 10px 14px;
@@ -25,6 +26,7 @@
   border: 1px solid #ccc;
   border-radius: 4px;
   box-shadow: 0.21875rem 0.21875rem 0.875rem rgba(139, 139, 139, 0.4);
+  background-color: var(--input-box-color);
 }
 .main ::placeholder {
   color: #8e8ea0;

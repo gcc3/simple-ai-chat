@@ -4,6 +4,7 @@ import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import command from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
+import { setTheme } from "utils/themeUtils.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
@@ -25,9 +26,11 @@ export default function Home() {
     if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
     if (localStorage.getItem("useFullscreen") === null) localStorage.setItem("useFullscreen", "false");
+    if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
 
     // Set styles and themes
     setIsFullscreen(localStorage.getItem("useFullscreen") === "true");
+    setTheme(localStorage.getItem("theme"))
 
     // Get system info
     const getSystemInfo = async () => {
@@ -85,9 +88,8 @@ export default function Home() {
       }
 
       // For some command apply immediately
-      if (input.startsWith(":fullscreen")) {
-        setIsFullscreen(localStorage.getItem("useFullscreen") === "true");
-      }
+      if (input.startsWith(":fullscreen")) setIsFullscreen(localStorage.getItem("useFullscreen") === "true");
+      if (input.startsWith(":theme")) setTheme(localStorage.getItem("theme"));
       return;
     }
 

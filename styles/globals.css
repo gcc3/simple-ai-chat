@@ -15,5 +15,5 @@
   font-style: normal;
 }
 body {
-  background-color : transparent;
+  background-color: var(--background-color);
 }
