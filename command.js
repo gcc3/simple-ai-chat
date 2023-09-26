@@ -18,6 +18,7 @@ import function_ from "./commands/function.js";
 import location from "./commands/location.js";
 import voice from "./commands/voice.js";
 import system from "./commands/system.js";
+import fullscreen from "./commands/fullscreen.js";
 
 export default function commands(input) {
   let command = input;
@@ -49,6 +50,7 @@ export default function commands(input) {
   if (command.startsWith(":location")) return location(args);
   if (command.startsWith(":voice")) return voice(args);
   if (command.startsWith(":system")) return system(args);
+  if (command.startsWith(":fullscreen")) return fullscreen(args);
   return "Unknown command.";
 }
 
