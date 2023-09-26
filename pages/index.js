@@ -1,6 +1,6 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import styles from "./index.module.css";
+import styles from "../styles/pages/index.module.css";
 import command from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 
