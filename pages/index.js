@@ -83,6 +83,11 @@ export default function Home() {
       } else {
         console.log("Not command output.")
       }
+
+      // For some command apply immediately
+      if (input.startsWith(":fullscreen")) {
+        setIsFullscreen(localStorage.getItem("useFullscreen") === "true");
+      }
       return;
     }
 
