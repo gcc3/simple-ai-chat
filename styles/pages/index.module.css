@@ -23,19 +23,19 @@
   outline: 0;
   outline-color: #adadad;
   box-shadow: none;
-  border: 1px solid #ccc;
+  border: 1px solid var(--border-color);
   border-radius: 4px;
   box-shadow: 0.21875rem 0.21875rem 0.875rem rgba(139, 139, 139, 0.4);
   background-color: var(--background-color);
   color: var(--text-color);
 }
 .main ::placeholder {
-  color: #8e8ea0;
+  color: var(--placeholder-color);
   opacity: 1;
 }
 .main input[type="submit"] {
   padding: 12px 0;
-  color: #fff;
+  color: var(--button-text-color);
   background-color: var(--button-color);
   border: none;
   border-radius: 4px;
