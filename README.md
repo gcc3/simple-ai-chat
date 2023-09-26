@@ -54,7 +54,7 @@ Refer project [Simple AI Node](https://github.com/gcc3/simple-ai-node) and [Simp
 Query data from vector database engine.  
 Currently support [Vectara](https://vectara.com/).  
 
-* Color Theme
+* Color Theme  
 Use `:theme [light/dark]` to change color theme.  
 
 * Full Screen Mode  
