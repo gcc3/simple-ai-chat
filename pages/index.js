@@ -1,6 +1,7 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import styles from "../styles/pages/index.module.css";
+import defaultStyles from "../styles/pages/index.module.css";
+import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import command from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 
@@ -14,6 +15,7 @@ export default function Home() {
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
+  const [isFullscreen, setIsFullscreen] = useState();
 
   useEffect(() => {
     localStorage.setItem("queryId", Date.now());
@@ -22,6 +24,10 @@ export default function Home() {
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
     if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
+    if (localStorage.getItem("useFullscreen") === null) localStorage.setItem("useFullscreen", "false");
+
+    // Set styles and themes
+    setIsFullscreen(localStorage.getItem("useFullscreen") === "true");
 
     // Get system info
     const getSystemInfo = async () => {
@@ -37,8 +43,12 @@ export default function Home() {
       }
     }
     getSystemInfo();
-
   }, []);
+
+  // Early return, to avoid a screen flash
+  if (isFullscreen === undefined) {
+    return null;
+  }
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -366,6 +376,9 @@ export default function Home() {
         event.preventDefault();
     }
   };
+
+  // Styles and themes
+  let styles = isFullscreen ? fullscreenStyles : defaultStyles;
 
   return (
     <div>

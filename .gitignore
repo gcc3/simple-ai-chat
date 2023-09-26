@@ -48,5 +48,4 @@ role.csv
 /.script/
 
 # style
-/styles/pages/index.module.css
 /styles/globals.css
