@@ -7,6 +7,16 @@ A dialogue application implemented based on OpenAI's API.
 The backend of which can be customizable.  
 
 
+Dependencies
+------------
+
+OpenAI API https://platform.openai.com/docs/api-reference  
+React https://reactjs.org/  
+Next.js https://nextjs.org/  
+WolframAlpha APIs https://products.wolframalpha.com/api  
+Vectara https://vectara.com/  
+
+
 Main Features
 -------------
 
@@ -61,13 +71,13 @@ Use `:theme [light/dark]` to change color theme.
 Use `:fullscreen on` to turn on fullscreen mode.  
 
 
-Dependencies
-------------
+Shortcut
+--------
 
-OpenAI API https://platform.openai.com/docs/api-reference  
-React https://reactjs.org/  
-Next.js https://nextjs.org/  
-WolframAlpha APIs https://products.wolframalpha.com/api  
+`/` or `TAB` to jump to input box.  
+`TAB` key to auto input the placeholder text.  
+`ESC` to clear input.  
+`Ctrl + F` to use fullscreen mode.  
 
 
 Setup
