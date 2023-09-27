@@ -32,6 +32,48 @@ export default function Home() {
     setIsFullscreen(localStorage.getItem("useFullscreen") === "true");
     setTheme(localStorage.getItem("theme"))
 
+    // Global shortcut keys
+    window.addEventListener("keydown", (event) => {
+      switch (event.key) {
+        case "Escape":
+          if (document.activeElement.id === "input") {
+            // If there is input, ECS to clear input
+            // userInput.length not work
+            if (document.getElementById("input").value.length > 0) {
+              setUserInput("");
+              event.preventDefault();
+            } else {
+              // ESC to unfocus input
+              document.getElementById("input").blur();
+              event.preventDefault();
+            }
+          }
+          break;
+    
+        case "Tab":  // TAB to focus on input
+          if (document.activeElement.id !== "input") {
+            document.getElementById("input").focus();
+            event.preventDefault();
+          }
+          break;
+    
+        case "/":  // Press / to focus on input
+          if (document.activeElement.id !== "input") {
+            document.getElementById("input").focus();
+            event.preventDefault();
+          }
+          break;
+    
+        case "f":  // Ctrl + F to toggle fullscreen
+          if (event.ctrlKey) {
+            setIsFullscreen(true);
+            localStorage.setItem("useFullscreen", "true");
+            event.preventDefault();
+          }
+          break;
+      }
+    });
+
     // Get system info
     const getSystemInfo = async () => {
       try {
@@ -377,9 +419,11 @@ export default function Home() {
   }
 
   // Input from placeholder when pressing tab
-  const handleKeyDown = (event) => {
+  const handleInputKeyDown = (event) => {
     if (event.keyCode === 9 || event.which === 9) {
-        setUserInput(placeholder);
+        if (userInput.length === 0) {
+          setUserInput(placeholder);
+        }
         event.preventDefault();
     }
   };
@@ -394,14 +438,16 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <form id="input" onSubmit={onSubmit}>
+        <form onSubmit={onSubmit}>
           <input
+            id="input"
             type="text"
             placeholder={placeholder}
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             autoFocus
-            onKeyDown={handleKeyDown}
+            onKeyDown={handleInputKeyDown}
+            autocomplete="off"
           />
           <input className={styles.submit} type="submit" value={enter} />
         </form>
