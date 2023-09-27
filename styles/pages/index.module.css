@@ -61,7 +61,7 @@
   margin-right: 4px;
   font-weight: normal;
   font-size: 12px;
-  color: #767676;
+  color: var(--stats-text-color);
   text-align: left;
 }
 .main .stats {
@@ -70,7 +70,7 @@
   font-weight: normal;
   font-size: 12px;
   margin-bottom: 30px;
-  color: #767676;
+  color: var(--stats-text-color);
   text-align: left;
 }
 .main .info {
@@ -78,7 +78,7 @@
   margin-right: 4px;
   font-weight: normal;
   font-size: 12px;
-  color: #cccccc;
+  color: var(--info-text-color);;
   margin-top: 5px;
   margin-bottom: 35px;
   text-align: right;
