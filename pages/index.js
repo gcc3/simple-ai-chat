@@ -447,7 +447,7 @@ export default function Home() {
             onChange={(e) => setUserInput(e.target.value)}
             autoFocus
             onKeyDown={handleInputKeyDown}
-            autocomplete="off"
+            autoComplete="off"
           />
           <input className={styles.submit} type="submit" value={enter} />
         </form>

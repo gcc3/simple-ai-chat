@@ -1,10 +1,14 @@
 import fs from 'fs';
-import { type } from 'os';
+import path from 'path';
 
-export function logfile(log, req) {
+const sqlite3 = require('sqlite3').verbose();
+
+export function logadd(log, req) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
   log = log.replaceAll("\n", "###RETURN###") + " IP=" + ip + " BSR=" + browser;
+
+  // log to file
   fs.appendFile('./log.txt', log + '\n', function (err) {
     if (err) throw err;
   });
@@ -44,4 +48,27 @@ function logfilter(line, indicater) {
     }
   }
   return true;
+}
+
+function setupDatabase(callback) {
+  const dbPath = path.join('..', 'log.db');
+  const db = new sqlite3.Database(dbPath, (err) => {
+    if (err) {
+      callback(err);
+      return;
+    }
+
+    const sql = `
+      CREATE TABLE IF NOT EXISTS logs (
+        id INTEGER PRIMARY KEY AUTOINCREMENT,
+        log TEXT NOT NULL,
+        time INTEGER,
+        session INTEGER
+      )
+    `;
+
+    db.run(sql, callback);
+  });
+
+  return db;
 }

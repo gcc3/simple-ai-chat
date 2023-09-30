@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { generatePrompt } from "utils/promptUtils";
-import { logfile } from "utils/logUtils.js";
+import { logadd } from "utils/logUtils.js";
 import { get_encoding, encoding_for_model } from "tiktoken";
 import { getFunctions, executeFunction } from "function.js";
 
@@ -189,7 +189,7 @@ export default async function (req, res) {
     if (result_text.trim().length === 0) result_text = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(result_text + "\n");
-    logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+    logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
     res.status(200).json({
       result: {
         text : result_text,
