@@ -32,7 +32,7 @@ export function loglist(queryId, maxLogCount = 30) {
 
 function logfilter(line, indicater) {
   if (line === "") return false;
-
+  
   // filter with rules
   const rules = fs.readFileSync('./log.config', 'utf8').split("\n");
   for (const rule of rules) {

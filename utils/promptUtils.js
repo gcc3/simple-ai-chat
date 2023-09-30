@@ -23,7 +23,7 @@ export async function generateMessages(input, queryId, role, tokenizer) {
   let messages = [];
   let token_ct = 0;
   token_ct += tokenizer.encode(input).length;
-
+  
   // System message, important
   if (role_content_system !== "") {
     messages.push({ role: "system", content: role_content_system });
