@@ -16,7 +16,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
-          cd /var/www/simple-ai.io
+          cd /var/www/simple-ai.io/simple-ai-chat
           git checkout master
           git pull
           npm install
