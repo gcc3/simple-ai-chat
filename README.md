@@ -55,10 +55,8 @@ Use `:speak on` to turn on the speak after generating.
 Use `:speak stop` to stop the speaking.  
 To change language use `:lang use [language code]`  
 
-* AI links to AI  
-Use function calling to link to another AI node.  
-To use multiple AI node, a AI hub is suggested.  
-Refer project [Simple AI Node](https://github.com/gcc3/simple-ai-node) and [Simple AI Hub](https://github.com/gcc3/simple-ai-hub).  
+* AI links   
+Refer AI Links below.
 
 * Vector Database  
 Query data from vector database engine.  
@@ -69,6 +67,23 @@ Use `:theme [light/dark]` to change color theme.
 
 * Full Screen Mode  
 Use `:fullscreen on` to turn on fullscreen mode.  
+
+
+AI Links
+--------
+
+Simple AI is able to link to another support AI by function calling.  
+
+The API response format must be
+
+```json
+{
+    "result": "Sample result text."
+}
+```
+
+Also, 2 projects [simple-ai-node](https://github.com/gcc3/simple-ai-node) and [simple-ai-hub](https://github.com/gcc3/simple-ai-hub) are provided.  
+To use multiple AI node, a AI hub is suggested, it can send query to multipe node simultaneously.  
 
 
 Shortcut
