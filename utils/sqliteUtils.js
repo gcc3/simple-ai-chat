@@ -1,7 +1,26 @@
+const fs = require('fs');
+
 const sqlite3 = require('sqlite3').verbose();
 
-const getDatabaseConnection = () => {
-  return new sqlite3.Database('../db.sqlite', sqlite3.OPEN_READWRITE, (err) => {
+const createDatabaseFile = () => {
+  return new sqlite3.Database('./db.sqlite', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+    if (err) {
+      console.error(err.message);
+      return null;
+    }
+  });
+};
+
+const getDatabaseConnection = async () => {
+  if (!fs.existsSync('./db.sqlite')) {
+    console.log("Database not exist, trying to create.")
+
+    const db = createDatabaseFile();
+    initializeDatabase(db);
+    return db;
+  }
+  
+  return new sqlite3.Database('./db.sqlite', sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
     }
@@ -9,13 +28,7 @@ const getDatabaseConnection = () => {
 };
 
 // Initialize the database
-const initializeDatabase = () => {
-  const db = getDatabaseConnection();
-  if (!db) {
-    console.error('Failed to establish database connection.');
-    return;
-  }
-
+const initializeDatabase = (db) => {
   const createLogsTable = `
   CREATE TABLE IF NOT EXISTS logs (
       id INTEGER PRIMARY KEY,
@@ -23,19 +36,15 @@ const initializeDatabase = () => {
       session INTEGER NOT NULL,
       log TEXT NOT NULL
   );`;
-
   db.run(createLogsTable);
-  db.close();
 };
 
-initializeDatabase();
-
-// Logs
-const getLogs = async () => {
-  const db = getDatabaseConnection();
+// Get logs by session
+const getLogs = async (session) => {
+  const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT * FROM logs`, [], (err, rows) => {
+      db.all(`SELECT log FROM logs WHERE session = ?`, [session], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -48,7 +57,7 @@ const getLogs = async () => {
 };
 
 const insertLog = async (time, session, log) => {
-  const db = getDatabaseConnection();
+  const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("INSERT INTO logs (time, session, log) VALUES (?, ?, ?)");
