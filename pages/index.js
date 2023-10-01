@@ -316,15 +316,8 @@ export default function Home() {
         return;
       }
 
-      if (event.data.startsWith("###ERR###")) {
-        openaiEssSrouce.close();
-        document.getElementById("output").innerHTML = "Server error.";
-        console.log(event.data);
-        return;
-      }
-
-      // Print error message
-      if (event.data.startsWith('[ERR]')) {
+      // Handle error
+      if (event.data.startsWith("###ERR###") || event.data.startsWith('[ERR]')) {
         openaiEssSrouce.close();
         document.getElementById("output").innerHTML = "Server error.";
         console.log(event.data);
@@ -335,6 +328,7 @@ export default function Home() {
       let output = event.data;
       output = output.replaceAll("###RETURN###", '<br>');
 
+      // Print output
       // Remove the placeholder
       if (document.getElementById("output").innerHTML === waiting || document.getElementById("output").innerHTML === querying) {
         document.getElementById("output").innerHTML = output;
