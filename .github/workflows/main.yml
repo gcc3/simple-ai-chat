@@ -22,4 +22,4 @@ jobs:
           export PATH=$PATH:~/.nvm/versions/node/v18.16.0/bin/
           npm install
           npm run build
-          pm2 restart simple-ai-chat
+          pm2 restart simple-ai.io
