@@ -16,6 +16,10 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
+          # Ensure 'node' is available, and if not, link 'nodejs' to 'node'
+          if ! command -v node &> /dev/null && command -v nodejs &> /dev/null; then
+            sudo ln -s $(which nodejs) /usr/bin/node
+          fi
           cd /var/www/simple-ai.io/simple-ai-chat
           git checkout master
           git pull
