@@ -19,6 +19,6 @@ jobs:
           cd /var/www/simple-ai.io/simple-ai-chat
           git checkout master
           git pull
-          npm install
-          npm run build
-          pm2 restart simple-ai.io
+          ~/.nvm/versions/node/v18.16.0/bin/npm install
+          ~/.nvm/versions/node/v18.16.0/bin/npm run build
+          ~/.nvm/versions/node/v18.16.0/bin/pm2 restart simple-ai-chat
