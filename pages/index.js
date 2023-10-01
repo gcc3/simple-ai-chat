@@ -327,14 +327,14 @@ export default function Home() {
       // Handle the stream output
       let output = event.data;
       output = output.replaceAll("###RETURN###", '<br>');
+      
+      // Clear the waiting or querying text
+      if (document.getElementById("output").innerHTML === waiting || document.getElementById("output").innerHTML === querying) {
+        document.getElementById("output").innerHTML = "";
+      }
 
       // Print output
-      // Remove the placeholder
-      if (document.getElementById("output").innerHTML === waiting || document.getElementById("output").innerHTML === querying) {
-        document.getElementById("output").innerHTML = output;
-      } else {
-        document.getElementById("output").innerHTML += output;
-      }
+      document.getElementById("output").innerHTML += output;
 
       // Try speak
       if (localStorage.getItem('useSpeak') === "true") {
