@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { generatePrompt } from "utils/promptUtils";
-import { logfile } from "utils/logUtils";
+import { logadd } from "utils/logUtils";
 import { tryParseJSON } from "utils/jsonUtils"
 import { get_encoding, encoding_for_model } from "tiktoken";
 import { evaluate } from './evaluate';
@@ -27,7 +27,10 @@ const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500
 const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 const use_eval = process.env.USE_EVAL == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
-const force_core_ai_query = process.env.FORCE_CORE_AI_QUERY == "true" ? true : false;
+const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
+const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
+const use_vector = process.env.USE_VECTOR == "true" ? true : false;
+const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
 
 export default async function (req, res) {
   if (!configuration.apiKey) {
@@ -46,7 +49,8 @@ export default async function (req, res) {
   const location = req.query.location || "";
 
   // Input
-  let input = decodeURIComponent(req.query.user_input) || "";
+  let user_input_escape = req.query.user_input.replaceAll("%", "％").trim();  // escape %
+  let input = decodeURIComponent(user_input_escape) || "";
   if (input.trim().length === 0) return;
 
   // Normal input
@@ -67,9 +71,13 @@ export default async function (req, res) {
     + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
     + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
     + "max_tokens: " + process.env.MAX_TOKENS + "\n"
+    + "dict_search: " + process.env.DICT_SEARCH + "\n"
     + "use_eval: " + process.env.USE_EVAL + "\n"
     + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
-    + "force_core_ai_query: " + process.env.FORCE_CORE_AI_QUERY + "\n"
+    + "use_node_ai: " + process.env.USE_NODE_AI + "\n"
+    + "force_node_ai_query: " + process.env.FORCE_NODE_AI_QUERY + "\n"
+    + "use_vector: " + process.env.USE_VECTOR + "\n"
+    + "force_vector_query: " + process.env.FORCE_VECTOR_QUERY + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + location + "\n"
     + "role: " + role + "\n");
@@ -97,8 +105,8 @@ export default async function (req, res) {
     if (!functionResult.endsWith("\n")) {
       functionResult += "\n";
     }
-    console.log("Result: " + functionResult);
-    logfile("T=" + Date.now() + " S=" + queryId + " F=" + function_input + " A=" + functionResult, req);
+    console.log("Result: " + functionResult.replace(/\n/g, "\\n") + "\n");
+    logadd("T=" + Date.now() + " S=" + queryId + " F=" + function_input + " A=" + functionResult, req);
 
     // Replace input with original
     original_input = input.split("Q=")[1];
@@ -156,17 +164,47 @@ export default async function (req, res) {
         additionalInfo += functionResult;
       }
 
-      if (force_core_ai_query) {
+      if (use_node_ai && force_node_ai_query) {
         console.log("--- core ai query ---");
         // Feed message with core AI query result
-        const coreAiQueryResult = await executeFunction("get_help", "query=" + input);
-        console.log("response: " + coreAiQueryResult);
-        messages.push({
-          "role": "function",
-          "name": "get_help",
-          "content": "After calling another AI, its response as: " + coreAiQueryResult,
-        });
-        additionalInfo += coreAiQueryResult;
+        const nodeAiQueryResult = await executeFunction("query_node_ai", "query=" + input);
+        if (nodeAiQueryResult === undefined) {
+          console.log("response: undefined.\n");
+        } else {
+          console.log("response: " + nodeAiQueryResult);
+          messages.push({
+            "role": "function",
+            "name": "query_node_ai",
+            "content": "After calling another AI, its response as: " + nodeAiQueryResult,
+          });
+          additionalInfo += nodeAiQueryResult;
+          logadd("T=" + Date.now() + " S=" + queryId + " F(f)=query_node_ai(query=" + input + ") A=" + nodeAiQueryResult, req);
+        }
+      }
+
+      let refer_doc = "none";
+      if (use_vector && force_vector_query) {
+        console.log("--- vector query ---");
+        // Feed message with core AI query result
+        const vectorQueryResult = await executeFunction("query_vector", "query=" + input);
+        if (vectorQueryResult === undefined) {
+          console.log("response: undefined.\n");
+        } else {
+          console.log("response: " + vectorQueryResult.replaceAll("\n", "\\n") + "\n");
+          messages.push({
+            "role": "function",
+            "name": "query_vector",
+            "content": "Retrieved context: " + vectorQueryResult,
+          });
+          additionalInfo += vectorQueryResult;
+          logadd("T=" + Date.now() + " S=" + queryId + " F(f)=query_vector(query=" + input + ") A=" + vectorQueryResult, req);
+
+          // Get vector score and refer doc info
+          if (vectorQueryResult.includes("###VECTOR###")) {
+            const vector_stats = vectorQueryResult.substring(vectorQueryResult.indexOf("###VECTOR###") + 12).trim();
+            refer_doc = vector_stats;
+          }
+        }
       }
 
       console.log("--- messages ---");
@@ -197,7 +235,7 @@ export default async function (req, res) {
       }
 
       res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName}\n\n`);
+      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName},${refer_doc}\n\n`);
 
       chatCompletion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
@@ -226,7 +264,7 @@ export default async function (req, res) {
                     console.log(result_text + "\n");
                   }
 
-                  logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+                  logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
                   res.flush();
                   res.end();
                   return
@@ -243,7 +281,7 @@ export default async function (req, res) {
                 console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
                 console.log(result_text + "\n");
               }
-              logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+              logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
               res.flush();
               res.end();
               return
@@ -311,7 +349,7 @@ export default async function (req, res) {
       }, { responseType: "stream" });
 
       res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct}\n\n`);
+      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct}}\n\n`);
 
       completion.then(resp => {
         if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
@@ -331,7 +369,7 @@ export default async function (req, res) {
                 console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
                 console.log(result_text + "\n");
               }
-              logfile("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+              logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
               res.flush();
               res.end();
               return

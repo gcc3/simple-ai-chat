@@ -19,6 +19,7 @@
     "openai": "^3.3.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "sqlite3": "^5.1.6",
     "tiktoken": "^1.0.9",
     "universal-cookie": "^4.0.4",
     "xml2js": "^0.6.0"

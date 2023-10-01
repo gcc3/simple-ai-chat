@@ -1,16 +1,22 @@
 import Head from "next/head";
 import { useState, useEffect } from "react";
-import styles from "./index.module.css";
+import defaultStyles from "../styles/pages/index.module.css";
+import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import command from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
+import { setTheme } from "utils/themeUtils.js";
 
 export default function Home() {
   const [userInput, setUserInput] = useState("");
-  const [placeholder, setPlaceholder] = useState("Say something...");
+  const [placeholder, setPlaceholder] = useState("");
+  const [waiting, setWaiting] = useState("...");
+  const [querying, setQuerying] = useState("...");
+  const [enter, setEnter] = useState("enter");
   const [output, setOutput] = useState();
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
+  const [isFullscreen, setIsFullscreen] = useState();
 
   useEffect(() => {
     localStorage.setItem("queryId", Date.now());
@@ -19,7 +25,75 @@ export default function Home() {
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
     if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
+    if (localStorage.getItem("useFullscreen") === null) localStorage.setItem("useFullscreen", "false");
+    if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
+
+    // Set styles and themes
+    setIsFullscreen(localStorage.getItem("useFullscreen") === "true");
+    setTheme(localStorage.getItem("theme"))
+
+    // Global shortcut keys
+    window.addEventListener("keydown", (event) => {
+      switch (event.key) {
+        case "Escape":
+          if (document.activeElement.id === "input") {
+            // If there is input, ECS to clear input
+            // userInput.length not work
+            if (document.getElementById("input").value.length > 0) {
+              setUserInput("");
+              event.preventDefault();
+            } else {
+              // ESC to unfocus input
+              document.getElementById("input").blur();
+              event.preventDefault();
+            }
+          }
+          break;
+    
+        case "Tab":  // TAB to focus on input
+          if (document.activeElement.id !== "input") {
+            document.getElementById("input").focus();
+            event.preventDefault();
+          }
+          break;
+    
+        case "/":  // Press / to focus on input
+          if (document.activeElement.id !== "input") {
+            document.getElementById("input").focus();
+            event.preventDefault();
+          }
+          break;
+    
+        case "f":  // Ctrl + F to toggle fullscreen
+          if (event.ctrlKey) {
+            setIsFullscreen(true);
+            localStorage.setItem("useFullscreen", "true");
+            event.preventDefault();
+          }
+          break;
+      }
+    });
+
+    // Get system info
+    const getSystemInfo = async () => {
+      try {
+          const response = await fetch('/api/info/list');
+          const result = (await response.json()).result;
+          if (result.init_placeholder) setPlaceholder(result.init_placeholder);  // Set placeholder text
+          if (result.enter) setEnter(result.enter);                              // Set enter key text
+          if (result.waiting) setWaiting(result.waiting);                        // Set waiting text
+          if (result.querying) setQuerying(result.querying);                     // Set querying text
+      } catch (error) {
+          console.error("There was an error fetching the data:", error);
+      }
+    }
+    getSystemInfo();
   }, []);
+
+  // Early return, to avoid a screen flash
+  if (isFullscreen === undefined) {
+    return null;
+  }
 
   async function onSubmit(event) {
     event.preventDefault();
@@ -54,6 +128,10 @@ export default function Home() {
       } else {
         console.log("Not command output.")
       }
+
+      // For some command apply immediately
+      if (input.startsWith(":fullscreen")) setIsFullscreen(localStorage.getItem("useFullscreen") === "true");
+      if (input.startsWith(":theme")) setTheme(localStorage.getItem("theme"));
       return;
     }
 
@@ -91,18 +169,18 @@ export default function Home() {
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
-      setOutput("");
       generate_sse(input);
     } else {
       // Use general API request
-      setOutput("...");
+      setOutput(waiting);
       generate(input);
     }
   }
 
   function generate_sse(input) {
     // Add a placeholder
-    document.getElementById("output").innerHTML = "...";
+    if (document.getElementById("output").innerHTML !== querying)
+      document.getElementById("output").innerHTML = waiting;
 
     // preapre speech
     var textSpoken = "";
@@ -143,7 +221,7 @@ export default function Home() {
       // Handle the function calling
       if (event.data.startsWith("###FUNC###")) {
         do_function_calling = true;
-        document.getElementById("output").innerHTML = "...";
+        document.getElementById("output").innerHTML = querying;
 
         const func = event.data.replace("###FUNC###", "");
         const funcObject = JSON.parse(func);
@@ -182,6 +260,7 @@ export default function Home() {
           const token_ct = stats[3];
           const use_eval = stats[4];
           const func = stats[5];
+          const refer_doc = stats[6];
 
           if (use_eval === "true") {
             setEvaluation(
@@ -191,14 +270,11 @@ export default function Home() {
             );
           }
 
-          let scoreColor = "#767676";                  // default
-          if (score >= 4)      scoreColor = "green";   // green
-          else if (score > 0)  scoreColor = "#CC7722"; // orange
-          else if (score == 0) scoreColor = "#DE3163"; // red
           setStats(
             <div>
-              dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
+              dict_search_score: {score}<br></br>
               func: {func || "none"}<br></br>
+              refer_doc: {refer_doc}<br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
@@ -240,15 +316,8 @@ export default function Home() {
         return;
       }
 
-      if (event.data.startsWith("###ERR###")) {
-        openaiEssSrouce.close();
-        document.getElementById("output").innerHTML = "Server error.";
-        console.log(event.data);
-        return;
-      }
-
-      // Print error message
-      if (event.data.startsWith('[ERR]')) {
+      // Handle error
+      if (event.data.startsWith("###ERR###") || event.data.startsWith('[ERR]')) {
         openaiEssSrouce.close();
         document.getElementById("output").innerHTML = "Server error.";
         console.log(event.data);
@@ -258,13 +327,14 @@ export default function Home() {
       // Handle the stream output
       let output = event.data;
       output = output.replaceAll("###RETURN###", '<br>');
-
-      // Remove the placeholder
-      if (document.getElementById("output").innerHTML === "...") {
-        document.getElementById("output").innerHTML = output;
-      } else {
-        document.getElementById("output").innerHTML += output;
+      
+      // Clear the waiting or querying text
+      if (document.getElementById("output").innerHTML === waiting || document.getElementById("output").innerHTML === querying) {
+        document.getElementById("output").innerHTML = "";
       }
+
+      // Print output
+      document.getElementById("output").innerHTML += output;
 
       // Try speak
       if (localStorage.getItem('useSpeak') === "true") {
@@ -319,13 +389,9 @@ export default function Home() {
       if (localStorage.getItem('useStats') === "true") {
         const score = data.result.stats.score;
         
-        let scoreColor = "#767676";                  // default
-        if (score >= 4)      scoreColor = "green";   // green
-        else if (score > 0)  scoreColor = "#CC7722"; // orange
-        else if (score == 0) scoreColor = "#DE3163"; // red
         setStats((
           <div>
-            dict_search_score: <span style={{color: scoreColor}}>{score}</span><br></br>
+            dict_search_score: {score}<br></br>
             func: {data.result.stats.func || "none"}<br></br>
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>
@@ -346,6 +412,19 @@ export default function Home() {
     }
   }
 
+  // Input from placeholder when pressing tab
+  const handleInputKeyDown = (event) => {
+    if (event.keyCode === 9 || event.which === 9) {
+        if (userInput.length === 0) {
+          setUserInput(placeholder);
+        }
+        event.preventDefault();
+    }
+  };
+
+  // Styles and themes
+  let styles = isFullscreen ? fullscreenStyles : defaultStyles;
+
   return (
     <div>
       <Head>
@@ -353,15 +432,18 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <form id="input" onSubmit={onSubmit}>
+        <form onSubmit={onSubmit}>
           <input
+            id="input"
             type="text"
             placeholder={placeholder}
             value={userInput}
             onChange={(e) => setUserInput(e.target.value)}
             autoFocus
+            onKeyDown={handleInputKeyDown}
+            autoComplete="off"
           />
-          <input hidden type="submit" value="Submit" />
+          <input className={styles.submit} type="submit" value={enter} />
         </form>
         <div id="wrapper" className={styles.wrapper}>
           <div id="output" className={styles.output}>{output}</div>

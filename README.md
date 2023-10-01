@@ -7,6 +7,16 @@ A dialogue application implemented based on OpenAI's API.
 The backend of which can be customizable.  
 
 
+Dependencies
+------------
+
+OpenAI API https://platform.openai.com/docs/api-reference  
+React https://reactjs.org/  
+Next.js https://nextjs.org/  
+WolframAlpha APIs https://products.wolframalpha.com/api  
+Vectara https://vectara.com/  
+
+
 Main Features
 -------------
 
@@ -45,17 +55,44 @@ Use `:speak on` to turn on the speak after generating.
 Use `:speak stop` to stop the speaking.  
 To change language use `:lang use [language code]`  
 
-* AI links to AI (experimental)  
-Use function calling to link to another AI (core AI)  
+* AI links   
+Refer AI Links below.
+
+* Vector Database  
+Query data from vector database engine.  
+Currently support [Vectara](https://vectara.com/).  
+
+* Color Theme  
+Use `:theme [light/dark]` to change color theme.  
+
+* Full Screen Mode  
+Use `:fullscreen on` to turn on fullscreen mode.  
 
 
-Dependencies
-------------
+AI Links
+--------
 
-OpenAI API https://platform.openai.com/docs/api-reference  
-React https://reactjs.org/  
-Next.js https://nextjs.org/  
-WolframAlpha APIs https://products.wolframalpha.com/api  
+Simple AI is able to link to another support AI by function calling.  
+
+The API response format must be
+
+```json
+{
+    "result": "Sample result text."
+}
+```
+
+Also, 2 projects [simple-ai-node](https://github.com/gcc3/simple-ai-node) and [simple-ai-hub](https://github.com/gcc3/simple-ai-hub) are provided.  
+To use multiple AI node, a AI hub is suggested, it can send query to multipe node simultaneously.  
+
+
+Shortcut
+--------
+
+`/` or `TAB` to jump to input box.  
+`TAB` key to auto input the placeholder text.  
+`ESC` to clear input.  
+`Ctrl + F` to use fullscreen mode.  
 
 
 Setup
@@ -75,7 +112,7 @@ Setup
 
 3. Build and run the app.  
    `$ npm run build`  
-   `$ npm run dev` or `$npm start`  
+   `$ npm run dev` or `$npm start`
 
 
 .env
@@ -109,7 +146,13 @@ Stop will be used to end the completion
 Set the role system's content to role play.  
 
 * PROMPT_PREFIX and PROMPT_SUFFIX  
-Add prefix and suffix for prompt avoid duplicate text input.  
+Add prefix and suffix for prompt avoid duplicate text input.
+
+* INIT_PLACEHOLDER and ENTER  
+Control the default placeholder text and enter key text.  
+
+* WAITING and QUERYING  
+Indicating the message that will show when waiting and querying.  
 
 * MAX_TOKENS  
 Control the max tokens generate in the chat completion.  
@@ -137,9 +180,35 @@ Use function calling feature, value should be `true` or `false`.
 For API calls for wolfram alpha API.  
 Get from https://products.wolframalpha.com/api
 
-* CORE_URL  
-[Simple AI Core](https://github.com/gcc3/simple-ai-core) is now available to help the chat answer with data.  
-Function calling: `get_help(query)`  
+* USE_NODE_AI  
+[Simple AI Node](https://github.com/gcc3/simple-ai-node) is available to help the chat answer with data.
+To use multiple node, consider use [Simple AI Hub](https://github.com/gcc3/simple-ai-hub)  
+Function calling: `query_node_ai(query)`  
+
+* NODE_AI_URL  
+To set up the core AI API url.  
+
+* FORCE_NODE_AI_QUERY  
+Force to query core AI for every query.  
+
+* USE_VECTOR  
+Control enable vectara (vector database), value should be `true` or `false`.  
+
+* VECTARA_API_KEY  
+The API key of the vectara, can generate from the console.  
+
+* VECTARA_CUSTOMER_ID  
+The customer ID of vectara, can get from user profile.  
+
+* VECTARA_CORPUS_ID  
+The indice id.  
+
+* FORCE_VECTOR_QUERY  
+Force query from the vectara vector database.  
+
+* DB  
+Use database to store logs, use `DB=sqlite`.  
+Use file to store logs, use `DB=file`.  
 
 
 log.config

@@ -1,0 +1,118 @@
+.main,
+.main input {
+  font-size: 16px;
+  line-height: 24px;
+  color: #353740;
+  font-family: "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
+}
+.main {
+  max-width: 100%;  /* prevents the main div from overflowing */
+  overflow-x: hidden;  /* prevent horizontal scroll */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  overflow: hidden;
+}
+.main form {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  background-color: transparent;  /* input area background color */
+  padding: 10px;
+  z-index: 10;  /* ensure it's always on top */
+  box-sizing: border-box;
+  display: flex;  /* use flexbox to align the input and button */
+  align-items: center;  /* vertically center the items */
+}
+.main input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  font-size: 16px;
+  outline: 0;
+  outline-color: #adadad;
+  padding-right: 90px;  /* make space for the button */
+  box-sizing: border-box;
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  box-shadow: 0.21875rem 0.21875rem 0.875rem var(--border-shadow-color);
+  background-color: var(--background-color);
+  color: var(--text-color);
+}
+.main ::placeholder {
+  color: var(--placeholder-color);
+  opacity: 1;
+}
+.main .submit {
+  font-size: 14px;
+  position: absolute;
+  right: 22px;  /* adjust as needed */
+  top: 50%;
+  transform: translateY(-50%);  /* vertically center the button */
+  background-color: var(--button-color);
+  color: var(--button-text-color);
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+.main .submit:hover {
+  background-color: var(--button-hover-color);  /* darken the button color on hover */
+}
+.main .wrapper {
+  width: 100%;
+  height: calc(100vh - 100px);
+  padding: 10px;
+  margin-bottom: 60px;
+  overflow-y: auto;
+}
+.main .output {
+  font-weight: normal;
+  margin-bottom: 30px;
+  margin-left: 10px;
+  margin-right: 10px;
+  white-space: pre-wrap;
+  color: var(--text-color);
+}
+.main .evaluation {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-weight: normal;
+  font-size: 12px;
+  color: var(--stats-text-color);;
+  text-align: left;
+}
+.main .stats {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-weight: normal;
+  font-size: 12px;
+  margin-bottom: 30px;
+  color: var(--stats-text-color);;
+  text-align: left;
+}
+.main .info {
+  margin-left: 10px;
+  margin-right: 10px;
+  font-weight: normal;
+  font-size: 12px;
+  color: var(--info-text-color);;
+  text-align: right;
+}
+
+/* Styles for differnt window sizes */
+@media screen and (max-width: 649px) {
+  .main .submit {
+    visibility: hidden;
+  }
+  .main input[type="text"] {
+    padding-right: 10px;
+  }
+}
+@media screen and (min-width: 650px) and (max-width: 800px) {
+  
+}
+@media screen and (min-width: 801px) {
+  
+}

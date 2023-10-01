@@ -19,7 +19,7 @@ export async function speak(text) {
 export function trySpeak(currentText, textSpoken) {
   const text = currentText.replace(textSpoken, "");
   if (text.length > 0) {
-    const ends = [".", "?", "!", ":", ";", "｡", "。", "？", "！", "：", "；"];
+    const ends = [".", "?", "!", ":", ";", ",", "，", "､", "、", "・", "｡", "。", "？", "！", "：", "；"];
     if (ends.some(end => text.includes(end))) {
       speak(text.replaceAll("<br>", " "));
       textSpoken += text;

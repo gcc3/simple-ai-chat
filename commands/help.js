@@ -1,6 +1,9 @@
 export default function help(args) {
   const commands = "Commands: \n" +
     ":help - Show this help message.\n" +
+    ":clear - Clear output and reset.\n" +
+    ":fullscreen [on/off] - Use fullscreen mode.\n" +
+    ":theme [light/dark] - Change color theme.\n" +
     ":entry [ls|list|add] - Manage dictionary entries.\n" +
     ":ls - List all entries, same as :entry ls.\n" +
     ":add [word] [defination] - Same as :entry add.\n" +
@@ -21,8 +24,8 @@ export default function help(args) {
     ":session [session_id] - Attach to session.\n" +
     ":role [ls|list|reset] - List all roles, reset role.\n" +
     ":role use [role_name] - Use role.\n" +
-    ":info - Show current config info.\n" +
-    ":clear - Clear output.\n";
+    ":info - Show user configuration.\n" +
+    ":system - Show system configuration.\n";
 
   return commands;
 }

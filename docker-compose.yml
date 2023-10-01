@@ -1,20 +1,25 @@
 version: '0.1'
 
 networks:
-  simple_ai_chat_network:
-    name: simple_ai_chat_network
+  simple_ai_network:
+    name: simple_ai_network
     driver: bridge
 
 services:
   app:
     image: simple-ai-chat
+    deploy:
+      resources:
+        limits:
+          cpus: '0.50'
+          memory: 512M
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: simple_ai_chat_app
+    container_name: simple_ai_chat
     ports:
       - "3000:3000"
     expose:
       - 3000
     networks:
-      - simple_ai_chat_network
+      - simple_ai_network
