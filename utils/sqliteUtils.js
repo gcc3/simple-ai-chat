@@ -16,7 +16,7 @@ const getDatabaseConnection = async () => {
     console.log("Database not exist, trying to create.")
 
     const db = createDatabaseFile();
-    initializeDatabase(db);
+    await initializeDatabase(db);
     return db;
   }
   
@@ -29,14 +29,21 @@ const getDatabaseConnection = async () => {
 
 // Initialize the database
 const initializeDatabase = (db) => {
-  const createLogsTable = `
-  CREATE TABLE IF NOT EXISTS logs (
-      id INTEGER PRIMARY KEY,
-      time INTEGER NOT NULL,
-      session INTEGER NOT NULL,
-      log TEXT NOT NULL
-  );`;
-  db.run(createLogsTable);
+  return new Promise((resolve, reject) => {
+    const createLogsTable = `
+    CREATE TABLE IF NOT EXISTS logs (
+        id INTEGER PRIMARY KEY,
+        time INTEGER NOT NULL,
+        session INTEGER NOT NULL,
+        log TEXT NOT NULL
+    );`;
+    db.run(createLogsTable, (err) => {
+      if (err) {
+        reject(err);
+      }
+      resolve();
+    });
+  });
 };
 
 // Get logs by session
