@@ -206,6 +206,10 @@ The indice id.
 * FORCE_VECTOR_QUERY  
 Force query from the vectara vector database.  
 
+* DB  
+Use database to store logs, use `DB=sqlite`.  
+Use file to store logs, use `DB=file`.  
+
 
 log.config
 ----------
