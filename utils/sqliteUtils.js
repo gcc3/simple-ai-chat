@@ -51,7 +51,7 @@ const getLogs = async (session) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT log FROM logs WHERE session = ?`, [session], (err, rows) => {
+      db.all(`SELECT log FROM logs WHERE session = ? ORDER BY time DESC`, [session], (err, rows) => {
         if (err) {
           reject(err);
         }
