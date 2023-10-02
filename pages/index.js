@@ -123,7 +123,7 @@ export default function Home() {
       // Use command return to bypass reset output and info
       if (commandResult !== null) {
         console.log("Command Output: " + commandResult);
-        setOutput(commandResult);
+        document.getElementById("output").innerHTML = commandResult;
         resetInfo();
       } else {
         console.log("Not command output.")
@@ -158,7 +158,7 @@ export default function Home() {
         if (response.status !== 200) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
-        setOutput(functionResult);
+        document.getElementById("output").innerHTML = functionResult;
       } catch (error) {
         console.error(error);
       }
