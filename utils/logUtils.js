@@ -44,7 +44,9 @@ export async function loglist(queryId, maxLogCount = 30) {
   }
 
   if (process.env.DB == "sqlite") {
-    const logs = await getLogs(queryId);
+    const logs = await getLogs(queryId)
+                .replaceAll("###RETURN###", " ");
+                
     loglines = logs.map(e => {
       const line = e.log;
       if (!line.includes("IP=")) return line;
