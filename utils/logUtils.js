@@ -44,14 +44,14 @@ export async function loglist(queryId, maxLogCount = 30) {
   }
 
   if (process.env.DB == "sqlite") {
-    const logs = await getLogs(queryId)
-                .replaceAll("###RETURN###", " ");
-                
-    loglines = logs.map(e => {
-      const line = e.log;
-      if (!line.includes("IP=")) return line;
-      else return line.substring(0, line.search("IP="))
-    }).join('\n');
+    const logs = await getLogs(queryId);
+    if (logs) {
+      loglines = logs.map(e => {
+        const line = e.log.replaceAll("###RETURN###", " ");
+        if (!line.includes("IP=")) return line;
+        else return line.substring(0, line.search("IP="))
+      }).join('\n');
+    }
   }
   
   return loglines;
