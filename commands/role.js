@@ -5,7 +5,12 @@ export default async function role(args) {
     if (localStorage.getItem("role") === "") {
       return "Role is already empty.";
     }
+
     localStorage.setItem("role", "");  // reset role
+
+    // Reset query id to forget previous memory
+    localStorage.setItem("queryId", Date.now());
+    
     return "Role reset.";
   }
 
