@@ -70,6 +70,10 @@ export default async function role(args) {
 
     if (roleName != null) {
       localStorage.setItem("role", roleName);
+
+      // Reset query id to forget previous memory
+      localStorage.setItem("queryId", Date.now());
+
       return "Role set to " + roleName + ".";
     } else {
       return "Invalid role name.";
