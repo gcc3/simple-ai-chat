@@ -3,6 +3,18 @@ import { setTheme } from "utils/themeUtils.js";
 export default async function entry(args) {
   const command = args[0];
 
+  if (command === "logout") {
+    localStorage.removeItem("user");
+    
+    // Reset query id to forget previous memory
+    localStorage.setItem("queryId", Date.now());
+
+    if (localStorage.getItem("role")) {
+      localStorage.setItem("role", "");
+    }
+    return "Logout successful."
+  }
+
   if (command === "login") {
     if (args.length != 2) {
       return "Usage: :user login [username]";
@@ -135,7 +147,7 @@ export default async function entry(args) {
 
   return "Usage: :user add [username]" + "\n" +
          "       :user set pass [password]" + "\n" +
-         "       :user set theme [light/dark]" + "\n" +
-         "       :user set role [role]" + "\n" +
-         "       :user login [username]";
+         "       :user set [key] [value]" + "\n" +
+         "       :user login [username]" + "\n" +
+         "       :user logout";
 }
