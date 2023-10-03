@@ -1,3 +1,5 @@
+import { setTheme } from "utils/themeUtils.js";
+
 export default async function entry(args) {
   const command = args[0];
 
@@ -6,8 +8,45 @@ export default async function entry(args) {
       return "Usage: :user login [username]";
     }
 
-    localStorage.setItem("user", args[1]);
-    return "Login successful."
+    const username = args[1];
+    let user = null;
+    try {
+      const response = await fetch(`/api/user/${username}`);
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      user = data;
+    } catch (error) {
+      console.error(error);
+    }
+    
+    if (user) {
+      localStorage.setItem("user", user.name);
+      console.log("User set to ", localStorage.getItem("user"));
+
+      // Settings
+      if (user.settings) {
+        const settings = JSON.parse(user.settings);
+
+        if (settings.theme) {
+          localStorage.setItem("theme", settings.theme);
+          setTheme(localStorage.getItem("theme"));
+          console.log("Theme applied: ", localStorage.getItem("theme"));
+        }
+
+        if (settings.role) {
+          localStorage.setItem("role", settings.role);
+          console.log("Role applied: ", localStorage.getItem("role"));
+        }
+      }
+
+      return "Login successful."
+    } else {
+      return "User not found."
+    }
   }
 
   if (command === "add") {
@@ -34,7 +73,6 @@ export default async function entry(args) {
       return "Added."
     } catch (error) {
       console.error(error);
-      alert(error.message);
     }
   }
 
@@ -63,7 +101,6 @@ export default async function entry(args) {
       return "Password updated."
     } catch (error) {
       console.error(error);
-      alert(error.message);
     }
   }
 
@@ -93,7 +130,6 @@ export default async function entry(args) {
       return "Setting updated."
     } catch (error) {
       console.error(error);
-      alert(error.message);
     }
   }
 

@@ -8,7 +8,7 @@ export default async function (req, res) {
   
   const { user, key, value } = req.body;
 
-  // Basic validation
+  // Validation
   if (!user || !key || !value) {
     return res.status(400).json({ error: 'user and settings are required.' });
   }
