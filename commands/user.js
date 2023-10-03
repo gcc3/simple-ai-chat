@@ -85,6 +85,7 @@ export default async function entry(args) {
       return "Added."
     } catch (error) {
       console.error(error);
+      return "Error."
     }
   }
 
@@ -113,6 +114,7 @@ export default async function entry(args) {
       return "Password updated."
     } catch (error) {
       console.error(error);
+      return "Error."
     }
   }
 
@@ -142,6 +144,7 @@ export default async function entry(args) {
       return "Setting updated."
     } catch (error) {
       console.error(error);
+      return "Error."
     }
   }
 
