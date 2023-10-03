@@ -5,19 +5,19 @@ export default async function entry(args) {
 
   if (command === "logout") {
     localStorage.removeItem("user");
-    
+
     // Reset query id to forget previous memory
     localStorage.setItem("queryId", Date.now());
 
     if (localStorage.getItem("role")) {
       localStorage.setItem("role", "");
     }
-    return "Logout successful."
+    return "Logout successful.";
   }
 
   if (command === "login") {
-    if (args.length != 2) {
-      return "Usage: :user login [username]";
+    if (args.length != 3) {
+      return "Usage: :user login [username] [password]";
     }
 
     const username = args[1];
@@ -34,8 +34,12 @@ export default async function entry(args) {
     } catch (error) {
       console.error(error);
     }
-    
+
     if (user) {
+      if (user.password !== args[2]) {
+        return "Password incorrect.";
+      }
+
       localStorage.setItem("user", user.name);
       console.log("User set to ", localStorage.getItem("user"));
 
@@ -55,9 +59,9 @@ export default async function entry(args) {
         }
       }
 
-      return "Login successful."
+      return "Login successful.";
     } else {
-      return "User not found."
+      return "User not found.";
     }
   }
 
@@ -66,14 +70,16 @@ export default async function entry(args) {
       return "Usage: :user add [username]";
     }
 
+    const username = args[1];
+
     try {
-      const response = await fetch('/api/user/add', {
-        method: 'POST',
+      const response = await fetch("/api/user/add", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: args[1],
+          name: username,
         }),
       });
 
@@ -82,9 +88,11 @@ export default async function entry(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return "Added."
+      localStorage.setItem("user", username);
+      return "User created, default password is " + data.password;
     } catch (error) {
       console.error(error);
+      return "Error.";
     }
   }
 
@@ -93,11 +101,15 @@ export default async function entry(args) {
       return "Usage: :user set pass [password]";
     }
 
+    if (!localStorage.getItem("user")) {
+      return "Please login."
+    }
+
     try {
-      const response = await fetch('/api/user/update/pass', {
-        method: 'POST',
+      const response = await fetch("/api/user/update/password", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           user: localStorage.getItem("user"),
@@ -110,22 +122,24 @@ export default async function entry(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return "Password updated."
+      return "Password updated.";
     } catch (error) {
       console.error(error);
+      return "Error.";
     }
   }
 
+  // Setup settings
   if (command === "set" && args[1] !== "pass") {
     if (args.length != 3) {
       return "Usage: :user set [key] [value]";
     }
 
     try {
-      const response = await fetch('/api/user/update/settings', {
-        method: 'POST',
+      const response = await fetch("/api/user/update/settings", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
           user: localStorage.getItem("user"),
@@ -139,15 +153,18 @@ export default async function entry(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return "Setting updated."
+      return "Setting updated.";
     } catch (error) {
       console.error(error);
+      return "Error.";
     }
   }
 
-  return "Usage: :user add [username]" + "\n" +
-         "       :user set pass [password]" + "\n" +
-         "       :user set [key] [value]" + "\n" +
-         "       :user login [username]" + "\n" +
-         "       :user logout";
+  return (
+    "Usage: :user add [username]" + "\n" +
+    "       :user set pass [password]" + "\n" +
+    "       :user set [key] [value]" + "\n" +
+    "       :user login [username] [password]" + "\n" +
+    "       :user logout"
+  );
 }

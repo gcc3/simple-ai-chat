@@ -1,9 +1,9 @@
-const fs = require('fs');
+const fs = require("fs");
 
-const sqlite3 = require('sqlite3').verbose();
+const sqlite3 = require("sqlite3").verbose();
 
 const createDatabaseFile = () => {
-  return new sqlite3.Database('./db.sqlite', sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
+  return new sqlite3.Database("./db.sqlite", sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
     if (err) {
       console.error(err.message);
       return null;
@@ -14,7 +14,6 @@ const createDatabaseFile = () => {
 // Initialize the database
 const initializeDatabase = (db) => {
   return new Promise((resolve, reject) => {
-    
     // Create logs table
     const createLogsTable = `
       CREATE TABLE IF NOT EXISTS logs (
@@ -23,27 +22,27 @@ const initializeDatabase = (db) => {
           session INTEGER NOT NULL,
           log TEXT NOT NULL
       );`;
-      
+
     db.run(createLogsTable, (err) => {
       if (err) {
         return reject(err);
       }
-      
+
       // Create users table
       const createUsersTable = `
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
-            pass TEXT NOT NULL,
+            password TEXT NOT NULL,
             settings TEXT,
             last_login TEXT
         );`;
-        
+
       db.run(createUsersTable, (err) => {
         if (err) {
           return reject(err);
         }
-        
+
         resolve();
       });
     });
@@ -51,15 +50,15 @@ const initializeDatabase = (db) => {
 };
 
 const getDatabaseConnection = async () => {
-  if (!fs.existsSync('./db.sqlite')) {
-    console.log("Database not exist, trying to create.")
+  if (!fs.existsSync("./db.sqlite")) {
+    console.log("Database not exist, trying to create.");
 
     const db = createDatabaseFile();
     await initializeDatabase(db);
     return db;
   }
-  
-  return new sqlite3.Database('./db.sqlite', sqlite3.OPEN_READWRITE, (err) => {
+
+  return new sqlite3.Database("./db.sqlite", sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
     }
@@ -120,17 +119,16 @@ const getUser = async (name) => {
   }
 };
 
-const insertUser = async (name, pass, settings, last_login) => {
+const insertUser = async (name, password, settings, last_login) => {
   const db = await getDatabaseConnection();
 
   // Check if the name adheres to Unix naming conventions
   if (!/^[a-z][a-z0-9_-]*$/.test(name)) {
-    throw new Error('Invalid username. The name must adhere to Unix naming conventions.');
+    throw new Error("Invalid username. The name must adhere to Unix naming conventions.");
   }
 
   try {
     return await new Promise((resolve, reject) => {
-
       // First, check if the username already exists
       db.get("SELECT id FROM users WHERE name = ?", [name], (err, row) => {
         if (err) {
@@ -140,13 +138,13 @@ const insertUser = async (name, pass, settings, last_login) => {
 
         // If the username already exists, reject the promise
         if (row) {
-          reject(new Error('Username already exists.'));
+          reject(new Error("Username already exists."));
           return;
         }
 
         // If the username doesn't exist, proceed with the insertion
-        const stmt = db.prepare("INSERT INTO users (name, pass, settings, last_login) VALUES (?, ?, ?, ?)");
-        stmt.run([name, pass, settings, last_login], function (err) {
+        const stmt = db.prepare("INSERT INTO users (name, password, settings, last_login) VALUES (?, ?, ?, ?)");
+        stmt.run([name, password, settings, last_login], function (err) {
           if (err) {
             reject(err);
             return;
@@ -156,7 +154,6 @@ const insertUser = async (name, pass, settings, last_login) => {
         });
         stmt.finalize();
       });
-
     });
   } finally {
     db.close();
@@ -173,9 +170,9 @@ const deleteUser = async (userName) => {
           reject(err);
         }
         if (this.changes > 0) {
-          resolve(true); 
+          resolve(true);
         } else {
-          resolve(false); 
+          resolve(false);
         }
       });
       stmt.finalize();
@@ -185,19 +182,19 @@ const deleteUser = async (userName) => {
   }
 };
 
-const updateUserPass = async (userName, newPass) => {
+const updateUserPassword = async (userName, newPassword) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET pass = ? WHERE name = ?");
-      stmt.run([newPass, userName], function (err) {
+      const stmt = db.prepare("UPDATE users SET password = ? WHERE name = ?");
+      stmt.run([newPassword, userName], function (err) {
         if (err) {
           reject(err);
         }
         if (this.changes > 0) {
-          resolve(true); 
+          resolve(true);
         } else {
-          resolve(false); 
+          resolve(false);
         }
       });
       stmt.finalize();
@@ -217,9 +214,9 @@ const updateUserLastLogin = async (userName, lastLogin) => {
           reject(err);
         }
         if (this.changes > 0) {
-          resolve(true); 
+          resolve(true);
         } else {
-          resolve(false); 
+          resolve(false);
         }
       });
       stmt.finalize();
@@ -234,7 +231,7 @@ const updateUserSettings = async (userName, key, value) => {
   const user = await getUser(userName);
 
   if (!user) {
-    throw new Error('User not found.');
+    throw new Error("User not found.");
   }
 
   let newSettings = {};
@@ -252,9 +249,9 @@ const updateUserSettings = async (userName, key, value) => {
           reject(err);
         }
         if (this.changes > 0) {
-          resolve(true); 
+          resolve(true);
         } else {
-          resolve(false); 
+          resolve(false);
         }
       });
       stmt.finalize();
@@ -265,7 +262,6 @@ const updateUserSettings = async (userName, key, value) => {
 };
 
 module.exports = {
-
   // logs
   getLogs,
   insertLog,
@@ -274,8 +270,7 @@ module.exports = {
   getUser,
   insertUser,
   deleteUser,
-  updateUserPass,
+  updateUserPassword,
   updateUserLastLogin,
-  updateUserSettings
-
+  updateUserSettings,
 };
