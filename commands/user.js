@@ -101,6 +101,10 @@ export default async function entry(args) {
       return "Usage: :user set pass [password]";
     }
 
+    if (!localStorage.getItem("user")) {
+      return "Please login."
+    }
+
     try {
       const response = await fetch("/api/user/update/password", {
         method: "POST",
