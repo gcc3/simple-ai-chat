@@ -20,6 +20,7 @@ import voice from "./commands/voice.js";
 import system from "./commands/system.js";
 import fullscreen from "./commands/fullscreen.js";
 import theme from "./commands/theme.js";
+import user from "./commands/user.js";
 
 export default function commands(input) {
   let command = input;
@@ -53,6 +54,7 @@ export default function commands(input) {
   if (command.startsWith(":system")) return system(args);
   if (command.startsWith(":fullscreen")) return fullscreen(args);
   if (command.startsWith(":theme")) return theme(args);
+  if (command.startsWith(":user")) return user(args);
   return "Unknown command.";
 }
 

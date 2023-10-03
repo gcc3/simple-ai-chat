@@ -11,6 +11,45 @@ const createDatabaseFile = () => {
   });
 };
 
+// Initialize the database
+const initializeDatabase = (db) => {
+  return new Promise((resolve, reject) => {
+    
+    // Create logs table
+    const createLogsTable = `
+      CREATE TABLE IF NOT EXISTS logs (
+          id INTEGER PRIMARY KEY,
+          time INTEGER NOT NULL,
+          session INTEGER NOT NULL,
+          log TEXT NOT NULL
+      );`;
+      
+    db.run(createLogsTable, (err) => {
+      if (err) {
+        return reject(err);
+      }
+      
+      // Create users table
+      const createUsersTable = `
+        CREATE TABLE IF NOT EXISTS users (
+            id INTEGER PRIMARY KEY,
+            name TEXT NOT NULL,
+            pass TEXT NOT NULL,
+            settings TEXT,
+            last_login TEXT
+        );`;
+        
+      db.run(createUsersTable, (err) => {
+        if (err) {
+          return reject(err);
+        }
+        
+        resolve();
+      });
+    });
+  });
+};
+
 const getDatabaseConnection = async () => {
   if (!fs.existsSync('./db.sqlite')) {
     console.log("Database not exist, trying to create.")
@@ -27,25 +66,7 @@ const getDatabaseConnection = async () => {
   });
 };
 
-// Initialize the database
-const initializeDatabase = (db) => {
-  return new Promise((resolve, reject) => {
-    const createLogsTable = `
-    CREATE TABLE IF NOT EXISTS logs (
-        id INTEGER PRIMARY KEY,
-        time INTEGER NOT NULL,
-        session INTEGER NOT NULL,
-        log TEXT NOT NULL
-    );`;
-    db.run(createLogsTable, (err) => {
-      if (err) {
-        reject(err);
-      }
-      resolve();
-    });
-  });
-};
-
+// I. logs
 // Get logs by session
 const getLogs = async (session) => {
   const db = await getDatabaseConnection();
@@ -82,7 +103,179 @@ const insertLog = async (time, session, log) => {
   }
 };
 
+// II. users
+const getUser = async (name) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM users WHERE name = ?`, [name], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const insertUser = async (name, pass, settings, last_login) => {
+  const db = await getDatabaseConnection();
+
+  // Check if the name adheres to Unix naming conventions
+  if (!/^[a-z][a-z0-9_-]*$/.test(name)) {
+    throw new Error('Invalid username. The name must adhere to Unix naming conventions.');
+  }
+
+  try {
+    return await new Promise((resolve, reject) => {
+
+      // First, check if the username already exists
+      db.get("SELECT id FROM users WHERE name = ?", [name], (err, row) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        // If the username already exists, reject the promise
+        if (row) {
+          reject(new Error('Username already exists.'));
+          return;
+        }
+
+        // If the username doesn't exist, proceed with the insertion
+        const stmt = db.prepare("INSERT INTO users (name, pass, settings, last_login) VALUES (?, ?, ?, ?)");
+        stmt.run([name, pass, settings, last_login], function (err) {
+          if (err) {
+            reject(err);
+            return;
+          }
+          // This `this.lastID` provides the ID of the last inserted row.
+          resolve(this.lastID);
+        });
+        stmt.finalize();
+      });
+
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const deleteUser = async (userName) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("DELETE FROM users WHERE name = ?");
+      stmt.run([userName], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true); 
+        } else {
+          resolve(false); 
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateUserPass = async (userName, newPass) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET pass = ? WHERE name = ?");
+      stmt.run([newPass, userName], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true); 
+        } else {
+          resolve(false); 
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateUserLastLogin = async (userName, lastLogin) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET last_login = ? WHERE name = ?");
+      stmt.run([lastLogin, userName], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true); 
+        } else {
+          resolve(false); 
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateUserSettings = async (userName, key, value) => {
+  const db = await getDatabaseConnection();
+  const user = await getUser(userName);
+
+  if (!user) {
+    throw new Error('User not found.');
+  }
+
+  let newSettings = {};
+  if (user.settings) {
+    newSettings = JSON.parse(user.settings);
+  }
+  newSettings[key] = value;
+  const settings = JSON.stringify(newSettings);
+
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET settings = ? WHERE name = ?");
+      stmt.run([settings, userName], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true); 
+        } else {
+          resolve(false); 
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 module.exports = {
+
+  // logs
   getLogs,
-  insertLog
+  insertLog,
+
+  // users
+  getUser,
+  insertUser,
+  deleteUser,
+  updateUserPass,
+  updateUserLastLogin,
+  updateUserSettings
+
 };
