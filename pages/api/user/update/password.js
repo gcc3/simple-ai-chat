@@ -1,4 +1,4 @@
-import { updateUserPass } from 'utils/sqliteUtils.js';
+import { updateUserPassword } from 'utils/sqliteUtils.js';
 
 export default async function (req, res) {
   // Check if the method is POST.
@@ -14,7 +14,7 @@ export default async function (req, res) {
   }
 
   try {
-    const wasSuccessful = await updateUserPass(user, password);
+    const wasSuccessful = await updateUserPassword(user, password);
     if (wasSuccessful) {
       return res.status(200).json({ success: true, message: "Password updated successfully" });
     } else {
