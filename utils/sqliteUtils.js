@@ -104,7 +104,7 @@ const insertLog = async (time, session, log) => {
 };
 
 // II. users
-const getUsers = async (name) => {
+const getUser = async (name) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -122,15 +122,61 @@ const getUsers = async (name) => {
 
 const insertUser = async (name, pass, settings, last_login) => {
   const db = await getDatabaseConnection();
+
+  // Check if the name adheres to Unix naming conventions
+  if (!/^[a-z][a-z0-9_-]*$/.test(name)) {
+    throw new Error('Invalid username. The name must adhere to Unix naming conventions.');
+  }
+
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("INSERT INTO users (name, pass, settings, last_login) VALUES (?, ?, ?, ?)");
-      stmt.run([name, pass, settings, last_login], function (err) {
+
+      // First, check if the username already exists
+      db.get("SELECT id FROM users WHERE name = ?", [name], (err, row) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        // If the username already exists, reject the promise
+        if (row) {
+          reject(new Error('Username already exists.'));
+          return;
+        }
+
+        // If the username doesn't exist, proceed with the insertion
+        const stmt = db.prepare("INSERT INTO users (name, pass, settings, last_login) VALUES (?, ?, ?, ?)");
+        stmt.run([name, pass, settings, last_login], function (err) {
+          if (err) {
+            reject(err);
+            return;
+          }
+          // This `this.lastID` provides the ID of the last inserted row.
+          resolve(this.lastID);
+        });
+        stmt.finalize();
+      });
+
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const deleteUser = async (userName) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("DELETE FROM users WHERE name = ?");
+      stmt.run([userName], function (err) {
         if (err) {
           reject(err);
         }
-        // This `this.lastID` provides the ID of the last inserted row.
-        resolve(this.lastID);
+        if (this.changes > 0) {
+          resolve(true); 
+        } else {
+          resolve(false); 
+        }
       });
       stmt.finalize();
     });
@@ -139,20 +185,19 @@ const insertUser = async (name, pass, settings, last_login) => {
   }
 };
 
-const deleteUser = async (userId) => {
+const updateUserPass = async (userName, newPass) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("DELETE FROM users WHERE id = ?");
-      stmt.run([userId], function (err) {
+      const stmt = db.prepare("UPDATE users SET pass = ? WHERE name = ?");
+      stmt.run([newPass, userName], function (err) {
         if (err) {
           reject(err);
         }
-        // This `this.changes` provides the number of rows deleted.
         if (this.changes > 0) {
-          resolve(true); // Indicates successful deletion
+          resolve(true); 
         } else {
-          resolve(false); // No rows were deleted (maybe user not found)
+          resolve(false); 
         }
       });
       stmt.finalize();
@@ -162,20 +207,19 @@ const deleteUser = async (userId) => {
   }
 };
 
-const updateUserPass = async (userId, newPass) => {
+const updateUserLastLogin = async (userName, lastLogin) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET pass = ? WHERE id = ?");
-      stmt.run([newPass, userId], function (err) {
+      const stmt = db.prepare("UPDATE users SET last_login = ? WHERE name = ?");
+      stmt.run([lastLogin, userName], function (err) {
         if (err) {
           reject(err);
         }
-        // This `this.changes` provides the number of rows updated.
         if (this.changes > 0) {
-          resolve(true); // Indicates successful update
+          resolve(true); 
         } else {
-          resolve(false); // No rows were updated (maybe user not found)
+          resolve(false); 
         }
       });
       stmt.finalize();
@@ -185,20 +229,19 @@ const updateUserPass = async (userId, newPass) => {
   }
 };
 
-const updateUserLastLogin = async (userId, lastLogin) => {
+const updateUserSettings = async (userName, newSettings) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET last_login = ? WHERE id = ?");
-      stmt.run([lastLogin, userId], function (err) {
+      const stmt = db.prepare("UPDATE users SET settings = ? WHERE name = ?");
+      stmt.run([newSettings, userName], function (err) {
         if (err) {
           reject(err);
         }
-        // This `this.changes` provides the number of rows updated.
         if (this.changes > 0) {
-          resolve(true); // Indicates successful update
+          resolve(true); 
         } else {
-          resolve(false); // No rows were updated (maybe user not found)
+          resolve(false); 
         }
       });
       stmt.finalize();
@@ -215,10 +258,11 @@ module.exports = {
   insertLog,
 
   // users
-  getUsers,
+  getUser,
   insertUser,
   deleteUser,
   updateUserPass,
-  updateUserLastLogin
+  updateUserLastLogin,
+  updateUserSettings
 
 };
