@@ -108,7 +108,7 @@ const getUser = async (name) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT * FROM users WHERE name = ?`, [name], (err, rows) => {
+      db.get(`SELECT * FROM users WHERE name = ?`, [name], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -229,12 +229,25 @@ const updateUserLastLogin = async (userName, lastLogin) => {
   }
 };
 
-const updateUserSettings = async (userName, newSettings) => {
+const updateUserSettings = async (userName, key, value) => {
   const db = await getDatabaseConnection();
+  const user = await getUser(userName);
+
+  if (!user) {
+    throw new Error('User not found.');
+  }
+
+  let newSettings = {};
+  if (user.settings) {
+    newSettings = JSON.parse(user.settings);
+  }
+  newSettings[key] = value;
+  const settings = JSON.stringify(newSettings);
+
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET settings = ? WHERE name = ?");
-      stmt.run([newSettings, userName], function (err) {
+      stmt.run([settings, userName], function (err) {
         if (err) {
           reject(err);
         }

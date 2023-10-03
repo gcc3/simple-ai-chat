@@ -10,7 +10,7 @@ export default async function (req, res) {
 
   // Basic validation
   if (!user || !password) {
-    return res.status(400).json({ error: 'username and pass are required.' });
+    return res.status(400).json({ error: 'user and password are required.' });
   }
 
   try {
