@@ -29,6 +29,7 @@ export default function help(args) {
     ":user set pass [password] - Set a user password.\n" +
     ":user set email [email] - Set user Email.\n" +
     ":user set [key] [value] - Set user settings.\n" +
+    ":user info - Get login user info.\n" +
     ":user login [username] - Login user.\n" +
     ":user logout - Logout user.\n" +
     ":system - Show system configuration.\n";
