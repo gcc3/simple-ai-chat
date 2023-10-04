@@ -35,8 +35,8 @@ export default async function (req, res) {
         message: "User \"" + username + "\" is created with password \"" + password + "\""
       });
   } catch (error) {
-    console.error("Error inserting user:", error);
-    return res.status(500).json({ error: "An error occurred while adding the user." });
+    console.error(error.message);
+    return res.status(500).json({ error: error.message });
   }
 }
 

@@ -124,7 +124,7 @@ const insertUser = async (name, password, settings, last_login) => {
 
   // Check if the name adheres to Unix naming conventions
   if (!/^[a-z][a-z0-9_-]*$/.test(name)) {
-    throw new Error("Invalid username. The name must adhere to Unix naming conventions.");
+    throw new Error("Invalid username.");  // the name must adhere to Unix naming conventions.
   }
 
   try {

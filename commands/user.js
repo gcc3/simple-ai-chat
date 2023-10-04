@@ -93,7 +93,7 @@ export default async function entry(args) {
       return data.message;
     } catch (error) {
       console.error(error);
-      return "Error.";
+      return error;
     }
   }
 
