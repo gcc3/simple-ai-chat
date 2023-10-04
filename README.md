@@ -68,6 +68,10 @@ Use `:theme [light/dark]` to change color theme.
 * Full Screen Mode  
 Use `:fullscreen on` to turn on fullscreen mode.  
 
+* User (In progress)  
+Use `:user` command to add new user, set user settings, login, logout.  
+After login the user settings will be loaded to local environment.  
+
 
 AI Links
 --------

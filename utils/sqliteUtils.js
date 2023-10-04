@@ -34,6 +34,7 @@ const initializeDatabase = (db) => {
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             password TEXT NOT NULL,
+            email TEXT,
             settings TEXT,
             last_login TEXT
         );`;
@@ -124,7 +125,7 @@ const insertUser = async (name, password, settings, last_login) => {
 
   // Check if the name adheres to Unix naming conventions
   if (!/^[a-z][a-z0-9_-]*$/.test(name)) {
-    throw new Error("Invalid username. The name must adhere to Unix naming conventions.");
+    throw new Error("Invalid username.");  // the name must adhere to Unix naming conventions.
   }
 
   try {
@@ -188,6 +189,28 @@ const updateUserPassword = async (userName, newPassword) => {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET password = ? WHERE name = ?");
       stmt.run([newPassword, userName], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateUserEmail = async (userName, newEmail) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET email = ? WHERE name = ?");
+      stmt.run([newEmail, userName], function (err) {
         if (err) {
           reject(err);
         }
@@ -271,6 +294,7 @@ module.exports = {
   insertUser,
   deleteUser,
   updateUserPassword,
+  updateUserEmail,
   updateUserLastLogin,
   updateUserSettings,
 };

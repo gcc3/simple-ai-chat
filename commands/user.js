@@ -71,7 +71,6 @@ export default async function entry(args) {
     }
 
     const username = args[1];
-
     try {
       const response = await fetch("/api/user/add", {
         method: "POST",
@@ -79,7 +78,7 @@ export default async function entry(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: username,
+          username: username,
         }),
       });
 
@@ -88,14 +87,17 @@ export default async function entry(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      localStorage.setItem("user", username);
-      return "User created, default password is " + data.password;
+      if (data.success) {
+        localStorage.setItem("user", username);
+      }
+      return data.message;
     } catch (error) {
       console.error(error);
-      return "Error.";
+      return error;
     }
   }
 
+  // Set password
   if (command === "set" && args[1] === "pass") {
     if (args.length != 3) {
       return "Usage: :user set pass [password]";
@@ -129,10 +131,56 @@ export default async function entry(args) {
     }
   }
 
-  // Setup settings
-  if (command === "set" && args[1] !== "pass") {
+  // Set Email
+  if (command === "set" && args[1] === "email") {
     if (args.length != 3) {
-      return "Usage: :user set [key] [value]";
+      return "Usage: :user set email [email]";
+    }
+
+    if (!localStorage.getItem("user")) {
+      return "Please login."
+    }
+
+    const email = args[2];
+    try {
+      const response = await fetch("/api/user/update/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: localStorage.getItem("user"),
+          email: email,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return "Email updated.";
+    } catch (error) {
+      console.error(error);
+      return "Error.";
+    }
+  }
+
+  // Set settings
+  if (command === "set") {
+    if (args.length != 3) {
+      return "Usage: :user set theme [light/dark]" + "\n" +
+             "       :user set role [role]" + "\n";
+    }
+
+    const key = args[1];
+    const value = args[2];
+
+    // Check key is valid
+    const validKeys = ['theme', 'role'];
+    if (!validKeys.includes(key)) {
+      return "Usage: :user set theme [light/dark]" + "\n" +
+             "       :user set role [role]" + "\n";
     }
 
     try {
@@ -143,8 +191,8 @@ export default async function entry(args) {
         },
         body: JSON.stringify({
           user: localStorage.getItem("user"),
-          key: args[1],
-          value: args[2],
+          key: key,
+          value: value,
         }),
       });
 

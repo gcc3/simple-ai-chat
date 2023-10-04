@@ -8,7 +8,7 @@ export default async function (req, res) {
   
   const { user, password } = req.body;
 
-  // Basic validation
+  // Validation
   if (!user || !password) {
     return res.status(400).json({ error: 'user and password are required.' });
   }
@@ -18,7 +18,7 @@ export default async function (req, res) {
     if (wasSuccessful) {
       return res.status(200).json({ success: true, message: "Password updated successfully" });
     } else {
-      return res.status(400).json({ error: 'Failed to update password or user not found.' });
+      return res.status(400).json({ error: 'Failed to update password.' });
     }
   } catch (error) {
     console.error('Error updating user password:', error);
