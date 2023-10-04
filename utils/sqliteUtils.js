@@ -34,6 +34,7 @@ const initializeDatabase = (db) => {
             id INTEGER PRIMARY KEY,
             name TEXT NOT NULL,
             password TEXT NOT NULL,
+            email TEXT,
             settings TEXT,
             last_login TEXT
         );`;
@@ -204,6 +205,28 @@ const updateUserPassword = async (userName, newPassword) => {
   }
 };
 
+const updateUserEmail = async (userName, newEmail) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET email = ? WHERE name = ?");
+      stmt.run([newEmail, userName], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const updateUserLastLogin = async (userName, lastLogin) => {
   const db = await getDatabaseConnection();
   try {
@@ -271,6 +294,7 @@ module.exports = {
   insertUser,
   deleteUser,
   updateUserPassword,
+  updateUserEmail,
   updateUserLastLogin,
   updateUserSettings,
 };

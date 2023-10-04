@@ -97,6 +97,7 @@ export default async function entry(args) {
     }
   }
 
+  // Set password
   if (command === "set" && args[1] === "pass") {
     if (args.length != 3) {
       return "Usage: :user set pass [password]";
@@ -130,10 +131,46 @@ export default async function entry(args) {
     }
   }
 
-  // Setup settings
+  // Set Email
+  if (command === "set" && args[1] === "email") {
+    if (args.length != 3) {
+      return "Usage: :user set email [email]";
+    }
+
+    if (!localStorage.getItem("user")) {
+      return "Please login."
+    }
+
+    const email = args[2];
+    try {
+      const response = await fetch("/api/user/update/email", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          user: localStorage.getItem("user"),
+          email: email,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return "Email updated.";
+    } catch (error) {
+      console.error(error);
+      return "Error.";
+    }
+  }
+
+  // Set settings
   if (command === "set") {
     if (args.length != 3) {
-      return "Usage: :user set [key] [value]";
+      return "Usage: :user set theme [light/dark]" + "\n" +
+             "       :user set role [role]" + "\n";
     }
 
     const key = args[1];
