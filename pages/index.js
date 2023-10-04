@@ -217,6 +217,12 @@ export default function Home() {
     }
 
     openaiEssSrouce.onmessage = function(event) {
+      if (global.STATE == STATES.IDLE) {
+        openaiEssSrouce.close();
+        console.log("Session closed by state control.")
+        return;
+      }
+
       // Handle the environment info
       if (event.data.startsWith("###ENV###")) {
         const env = event.data.replace("###ENV###", "").split(',');
