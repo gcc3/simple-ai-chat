@@ -21,6 +21,8 @@ import system from "./commands/system.js";
 import fullscreen from "./commands/fullscreen.js";
 import theme from "./commands/theme.js";
 import user from "./commands/user.js";
+import login from "./commands/login.js";
+import logout from "./commands/logout.js";
 
 export default function commands(input) {
   let command = input;
@@ -40,6 +42,8 @@ export default function commands(input) {
   if (command.startsWith(":stats")) return stats(args);
   if (command.startsWith(":stream")) return stream(args);
   if (command.startsWith(":search")) return search(args);
+  if (command.startsWith(":login")) return login(args);
+  if (command.startsWith(":logout")) return logout(args);
   if (command.startsWith(":log")) return log(args);
   if (command.startsWith(":info")) return info(args);
   if (command.startsWith(":session")) return session(args);

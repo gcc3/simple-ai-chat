@@ -5,10 +5,7 @@ export default function speak(args) {
   } else if (args[0] === "off") {
     localStorage.setItem('useSpeak', "false");
     return "Switched off auto speak.";
-  } else if (args[0] === "stop") {
-    window.speechSynthesis.cancel();
-    return null;
   } else {
-    return "Usage: :speak [on|off|stop]";
+    return "Usage: :speak [on|off]";
   }
 }
