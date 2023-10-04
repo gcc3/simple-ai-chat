@@ -211,6 +211,7 @@ export default async function entry(args) {
   return (
     "Usage: :user add [username]" + "\n" +
     "       :user set pass [password]" + "\n" +
+    "       :user set email [email]" + "\n" +
     "       :user set [key] [value]" + "\n" +
     "       :user login [username] [password]" + "\n" +
     "       :user logout"
