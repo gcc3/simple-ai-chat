@@ -24,15 +24,15 @@ export default function help(args) {
     ":session [session_id] - Attach to session.\n" +
     ":role [ls|list|reset] - List all roles, reset role.\n" +
     ":role use [role_name] - Use role.\n" +
-    ":info - Show user configuration.\n" +
     ":user add [username] - Add user.\n" +
     ":user set pass [password] - Set a user password.\n" +
     ":user set email [email] - Set user Email.\n" +
     ":user set [key] [value] - Set user settings.\n" +
-    ":user info - Get login user info.\n" +
+    ":user info - Get login user info, configurations.\n" +
     ":user login [username] - Login user.\n" +
     ":user logout - Logout user.\n" +
-    ":system - Show system configuration.\n";
+    ":info - Show local configurations.\n" +
+    ":system - Show system configurations.\n";
 
   return commands;
 }

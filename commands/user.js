@@ -213,6 +213,10 @@ export default async function entry(args) {
              "       :user set role [role]" + "\n";
     }
 
+    if (!localStorage.getItem("user")) {
+      return "Please login."
+    }
+
     const key = args[1];
     let value = args[2];
 
@@ -226,15 +230,6 @@ export default async function entry(args) {
     if (!validKeys.includes(key)) {
       return "Usage: :user set theme [light/dark]" + "\n" +
              "       :user set role [role]" + "\n";
-    }
-
-    // Set local settings
-    if (key === "theme") {
-      localStorage.setItem("theme", value);
-      setTheme(localStorage.getItem("theme"));
-    }
-    if (key === "role") {
-      localStorage.setItem("role", value);
     }
 
     // Update remote settings
@@ -254,6 +249,15 @@ export default async function entry(args) {
       const data = await response.json();
       if (response.status !== 200) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      // Set local settings too
+      if (key === "theme") {
+        localStorage.setItem("theme", value);
+        setTheme(localStorage.getItem("theme"));
+      }
+      if (key === "role") {
+        localStorage.setItem("role", value);
       }
 
       return "Setting updated.";
