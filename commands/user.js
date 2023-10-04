@@ -36,73 +36,6 @@ export default async function entry(args) {
     }
   }
 
-  if (command === "logout") {
-    // Clear user info
-    localStorage.removeItem("user");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("userSettings");
-
-    // Reset query id to forget previous memory
-    localStorage.setItem("queryId", Date.now());
-
-    if (localStorage.getItem("role")) {
-      localStorage.setItem("role", "");
-    }
-    return "Logout successful.";
-  }
-
-  if (command === "login") {
-    if (args.length != 3) {
-      return "Usage: :user login [username] [password]";
-    }
-
-    const username = args[1];
-    let user = null;
-    try {
-      const response = await fetch(`/api/user/${username}`);
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      user = data;
-    } catch (error) {
-      console.error(error);
-    }
-
-    if (user) {
-      if (user.password !== args[2]) {
-        return "Password incorrect.";
-      }
-
-      localStorage.setItem("user", user.name);
-      localStorage.setItem("userEmail", user.email);
-      localStorage.setItem("userSettings", user.settings);
-      console.log("User set to ", localStorage.getItem("user"));
-
-      // Settings
-      if (user.settings) {
-        const settings = JSON.parse(user.settings);
-
-        if (settings.theme) {
-          localStorage.setItem("theme", settings.theme);
-          setTheme(localStorage.getItem("theme"));
-          console.log("Theme applied: ", localStorage.getItem("theme"));
-        }
-
-        if (settings.role) {
-          localStorage.setItem("role", settings.role);
-          console.log("Role applied: ", localStorage.getItem("role"));
-        }
-      }
-
-      return "Login successful.";
-    } else {
-      return "User not found.";
-    }
-  }
-
   if (command === "add") {
     if (args.length != 2) {
       return "Usage: :user add [username]";
@@ -272,8 +205,6 @@ export default async function entry(args) {
     "       :user set pass [password]" + "\n" +
     "       :user set email [email]" + "\n" +
     "       :user set [key] [value]" + "\n" +
-    "       :user info" + "\n" +
-    "       :user login [username] [password]" + "\n" +
-    "       :user logout"
+    "       :user info" + "\n"
   );
 }
