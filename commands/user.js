@@ -214,7 +214,12 @@ export default async function entry(args) {
     }
 
     const key = args[1];
-    const value = args[2];
+    let value = args[2];
+
+    // Value trim and validiation
+    if (value.startsWith('"') && value.endsWith('"')) {
+      value = value.substring(1, value.length - 1);
+    }
 
     // Check key is valid
     const validKeys = ['theme', 'role'];
