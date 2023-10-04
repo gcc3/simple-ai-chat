@@ -1,6 +1,7 @@
 export default function help(args) {
   const commands = "Commands: \n" +
     ":help - Show this help message.\n" +
+    ":stop - Stop generating.\n" +
     ":clear - Clear output and reset.\n" +
     ":fullscreen [on/off] - Use fullscreen mode.\n" +
     ":theme [light/dark] - Change color theme.\n" +
@@ -15,8 +16,6 @@ export default function help(args) {
     ":stats [on|off|show|hide] - Show/hide stats info.\n" +
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":speak [on|off] - Switch on/off auto speak.\n" +
-    ":speak [stop] - Stop the current speak.\n" +
-    ":stop - Stop the current speak, same as :speak stop.\n" +
     ":voice [ls|list] - List all support voices.\n" +
     ":voice use [voice_name] - Use voice.\n" + 
     ":lang [ls|list] - List all languages.\n" +

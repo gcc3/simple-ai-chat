@@ -6,7 +6,13 @@ import command from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 
+// Status control
+const STATES = { IDLE: 0, DOING: 1 };
+global.STATE = STATES.IDLE;  // a global state
+
 export default function Home() {
+
+  // States
   const [userInput, setUserInput] = useState("");
   const [placeholder, setPlaceholder] = useState("");
   const [waiting, setWaiting] = useState("...");
@@ -18,6 +24,7 @@ export default function Home() {
   const [evaluation, setEvaluation] = useState();
   const [isFullscreen, setIsFullscreen] = useState();
 
+  // Initializing
   useEffect(() => {
     localStorage.setItem("queryId", Date.now());
     if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
@@ -178,6 +185,10 @@ export default function Home() {
   }
 
   function generate_sse(input) {
+    // If already doing, return
+    if (global.STATE === STATES.DOING) return;
+    global.STATE = STATES.DOING;
+
     // Add a placeholder
     if (document.getElementById("output").innerHTML !== querying)
       document.getElementById("output").innerHTML = waiting;
@@ -289,6 +300,9 @@ export default function Home() {
         openaiEssSrouce.close();
         console.log("Session closed.")
 
+        // Reset state
+        global.STATE = STATES.IDLE;
+
         // Function calling
         if (do_function_calling) {
           const args = JSON.parse(functionArguements);
@@ -333,12 +347,14 @@ export default function Home() {
         document.getElementById("output").innerHTML = "";
       }
 
-      // Print output
-      document.getElementById("output").innerHTML += output;
+      if (global.STATE === STATES.DOING) {
+        // Print output
+        document.getElementById("output").innerHTML += output;
 
-      // Try speak
-      if (localStorage.getItem('useSpeak') === "true") {
-        textSpoken = trySpeak(document.getElementById("output").innerHTML, textSpoken);
+        // Try speak
+        if (localStorage.getItem('useSpeak') === "true") {
+          textSpoken = trySpeak(document.getElementById("output").innerHTML, textSpoken);
+        }
       }
 
       console.log(event.data);
