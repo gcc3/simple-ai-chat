@@ -131,9 +131,19 @@ export default async function entry(args) {
   }
 
   // Setup settings
-  if (command === "set" && args[1] !== "pass") {
+  if (command === "set") {
     if (args.length != 3) {
       return "Usage: :user set [key] [value]";
+    }
+
+    const key = args[1];
+    const value = args[2];
+
+    // Check key is valid
+    const validKeys = ['theme', 'role'];
+    if (!validKeys.includes(key)) {
+      return "Usage: :user set theme [light/dark]" + "\n" +
+             "       :user set role [role]" + "\n";
     }
 
     try {
@@ -144,8 +154,8 @@ export default async function entry(args) {
         },
         body: JSON.stringify({
           user: localStorage.getItem("user"),
-          key: args[1],
-          value: args[2],
+          key: key,
+          value: value,
         }),
       });
 
