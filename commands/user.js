@@ -228,6 +228,16 @@ export default async function entry(args) {
              "       :user set role [role]" + "\n";
     }
 
+    // Set local settings
+    if (key === "theme") {
+      localStorage.setItem("theme", value);
+      setTheme(localStorage.getItem("theme"));
+    }
+    if (key === "role") {
+      localStorage.setItem("role", value);
+    }
+
+    // Update remote settings
     try {
       const response = await fetch("/api/user/update/settings", {
         method: "POST",
