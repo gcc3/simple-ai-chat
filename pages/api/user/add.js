@@ -25,14 +25,14 @@ export default async function (req, res) {
     }
 
     const password = generateRandomString(8);
-    await insertUser(username, password, "", "");  // password, settings, last_login
-                                                   // insertUser will also check the user existance
+    await insertUser(username, password, "", "", "");  // password, email, settings, last_login
+                                                       // insertUser will also check the user existance
 
     // No error
     return res.status(200).json(
       { 
         success: true,
-        message: "User \"" + username + "\" is created with password \"" + password + "\""
+        message: "User \"" + username + "\" is created with password \"" + password + "\"."
       });
   } catch (error) {
     console.error(error.message);

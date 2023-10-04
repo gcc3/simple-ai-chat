@@ -120,7 +120,7 @@ const getUser = async (name) => {
   }
 };
 
-const insertUser = async (name, password, settings, last_login) => {
+const insertUser = async (name, password, email, settings, last_login) => {
   const db = await getDatabaseConnection();
 
   // Check if the name adheres to Unix naming conventions
@@ -144,8 +144,8 @@ const insertUser = async (name, password, settings, last_login) => {
         }
 
         // If the username doesn't exist, proceed with the insertion
-        const stmt = db.prepare("INSERT INTO users (name, password, settings, last_login) VALUES (?, ?, ?, ?)");
-        stmt.run([name, password, settings, last_login], function (err) {
+        const stmt = db.prepare("INSERT INTO users (name, password, email, settings, last_login) VALUES (?, ?, ?, ?, ?)");
+        stmt.run([name, password, email, settings, last_login], function (err) {
           if (err) {
             reject(err);
             return;
