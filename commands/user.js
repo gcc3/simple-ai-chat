@@ -71,7 +71,6 @@ export default async function entry(args) {
     }
 
     const username = args[1];
-
     try {
       const response = await fetch("/api/user/add", {
         method: "POST",
@@ -79,7 +78,7 @@ export default async function entry(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: username,
+          username: username,
         }),
       });
 
@@ -88,8 +87,10 @@ export default async function entry(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      localStorage.setItem("user", username);
-      return "User created, default password is " + data.password;
+      if (data.success) {
+        localStorage.setItem("user", username);
+      }
+      return data.message;
     } catch (error) {
       console.error(error);
       return "Error.";
