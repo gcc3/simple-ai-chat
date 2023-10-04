@@ -3,8 +3,44 @@ import { setTheme } from "utils/themeUtils.js";
 export default async function entry(args) {
   const command = args[0];
 
+  if (command === "info") {
+    const username = localStorage.getItem("user");
+
+    if (username) {
+      let user = null;
+      try {
+        const response = await fetch(`/api/user/${username}`);
+  
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.error || new Error(`Request failed with status ${response.status}`);
+        }
+  
+        user = data;
+      } catch (error) {
+        console.error(error);
+      }
+  
+      if (user) {
+        localStorage.setItem("userEmail", user.email);
+        localStorage.setItem("userSettings", user.settings);
+
+        return "User: " + username + "\n" +
+               "Email: " + user.email + "\n" +
+               "Settings: " + user.settings + "\n"
+      } else {
+        return "User removed.";
+      }
+    } else {
+      return "Please login.";
+    }
+  }
+
   if (command === "logout") {
+    // Clear user info
     localStorage.removeItem("user");
+    localStorage.removeItem("userEmail");
+    localStorage.removeItem("userSettings");
 
     // Reset query id to forget previous memory
     localStorage.setItem("queryId", Date.now());
@@ -41,6 +77,8 @@ export default async function entry(args) {
       }
 
       localStorage.setItem("user", user.name);
+      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("userSettings", user.settings);
       console.log("User set to ", localStorage.getItem("user"));
 
       // Settings
@@ -89,6 +127,8 @@ export default async function entry(args) {
 
       if (data.success) {
         localStorage.setItem("user", username);
+        localStorage.setItem("userEmail", "");
+        localStorage.setItem("userSettings", "");
       }
       return data.message;
     } catch (error) {
@@ -174,7 +214,12 @@ export default async function entry(args) {
     }
 
     const key = args[1];
-    const value = args[2];
+    let value = args[2];
+
+    // Value trim and validiation
+    if (value.startsWith('"') && value.endsWith('"')) {
+      value = value.substring(1, value.length - 1);
+    }
 
     // Check key is valid
     const validKeys = ['theme', 'role'];
@@ -211,7 +256,9 @@ export default async function entry(args) {
   return (
     "Usage: :user add [username]" + "\n" +
     "       :user set pass [password]" + "\n" +
+    "       :user set email [email]" + "\n" +
     "       :user set [key] [value]" + "\n" +
+    "       :user info" + "\n" +
     "       :user login [username] [password]" + "\n" +
     "       :user logout"
   );
