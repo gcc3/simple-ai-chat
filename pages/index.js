@@ -71,10 +71,17 @@ export default function Home() {
           }
           break;
     
-        case "f":  // Ctrl + F to toggle fullscreen
+        case "f":  // control + f to toggle fullscreen
           if (event.ctrlKey) {
             setIsFullscreen(true);
             localStorage.setItem("useFullscreen", "true");
+            event.preventDefault();
+          }
+          break;
+
+        case "c":  // control + c to stop generating
+          if (event.ctrlKey && global.STATE === STATES.DOING) {
+            command(":stop");
             event.preventDefault();
           }
           break;
