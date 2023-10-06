@@ -2,7 +2,7 @@ export default function help(args) {
   const commands = "Commands: \n" +
     ":help - Show this help message.\n" +
     ":stop - Stop generating. (^C)\n" +
-    ":clear - Clear output and reset session.\n" +
+    ":clear - Clear output and reset session. (^L)\n" +
     ":fullscreen [on/off] - Use fullscreen mode. (^F)\n" +
     ":theme [light/dark] - Change color theme.\n" +
     ":entry [ls|list|add] - Manage dictionary entries.\n" +

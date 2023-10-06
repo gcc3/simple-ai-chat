@@ -85,6 +85,17 @@ export default function Home() {
             event.preventDefault();
           }
           break;
+
+        case "l":  // control + l to clear output and reset session
+          if (event.ctrlKey && global.STATE === STATES.IDLE) {
+            document.getElementById("output").innerHTML = "";
+            setInfo();
+            setStats();
+            setEvaluation();
+            command(":clear");
+            event.preventDefault();
+          }
+          break;
       }
     });
 
