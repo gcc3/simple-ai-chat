@@ -218,6 +218,10 @@ Force query from the vectara vector database.
 Use database to store logs, use `DB=sqlite`.  
 Use file to store logs, use `DB=file`.  
 
+* JWT_SECRET  
+Secret for user authentication.  
+Generate with `openssl rand -base64 32`.  
+
 
 log.config
 ----------

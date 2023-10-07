@@ -1,7 +1,7 @@
 import { insertUser, getUser } from "utils/sqliteUtils.js";
 
 export default async function (req, res) {
-  // Check if the method is POST.
+  // Check if the method is POST
   if (req.method !== "POST") {
     return res.status(405).end();
   }
