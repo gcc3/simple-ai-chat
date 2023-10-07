@@ -17,7 +17,7 @@ export default async function (req, res) {
   // Input and validation
   const { key, value } = req.body;
   if (!key || !value) {
-    return res.status(400).json({ error: 'username and settings are required.' });
+    return res.status(400).json({ error: 'Username and settings are required.' });
   }
 
   try {

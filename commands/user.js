@@ -75,10 +75,6 @@ export default async function entry(args) {
       return "Usage: :user set pass [password]";
     }
 
-    if (!localStorage.getItem("user")) {
-      return "Please login."
-    }
-
     try {
       const response = await fetch("/api/user/update/password", {
         method: "POST",
@@ -107,10 +103,6 @@ export default async function entry(args) {
   if (command === "set" && args[1] === "email") {
     if (args.length != 3) {
       return "Usage: :user set email [email]";
-    }
-
-    if (!localStorage.getItem("user")) {
-      return "Please login."
     }
 
     const email = args[2];
@@ -143,10 +135,6 @@ export default async function entry(args) {
     if (args.length != 3) {
       return "Usage: :user set theme [light/dark]" + "\n" +
              "       :user set role [role]" + "\n";
-    }
-
-    if (!localStorage.getItem("user")) {
-      return "Please login."
     }
 
     const key = args[1];

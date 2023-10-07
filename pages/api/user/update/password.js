@@ -17,7 +17,7 @@ export default async function (req, res) {
   // Input and validation
   const { password } = req.body;
   if (!password) {
-    return res.status(400).json({ error: 'password are required.' });
+    return res.status(400).json({ error: 'Password are required.' });
   }
 
   try {
