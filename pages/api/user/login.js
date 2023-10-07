@@ -28,12 +28,12 @@ export default async (req, res) => {
   // Create JWT token
   const payload = { id: user.id, username: user.username };
   const secret = process.env.JWT_SECRET;
-  const token = jwt.sign(payload, secret, { expiresIn: '1h' });
+  const token = jwt.sign(payload, secret, { expiresIn: '24h' });
 
   // Update user status
   updateUserStatus(user.username, 'active');
 
   // Set the token as a cookie
-  res.setHeader('Set-Cookie', `auth=${token}; HttpOnly; Path=/; Max-Age=3600`);
+  res.setHeader('Set-Cookie', `auth=${token}; HttpOnly; Path=/; Max-Age=86400`);
   res.status(200).json({ success: true });
 };
