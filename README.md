@@ -31,7 +31,7 @@ To check/add entry use `:entry list`, `:search [keyword]`, and `:entry add`.
 Support for [function calling](https://openai.com/blog/function-calling-and-other-api-updates), the AI can call the function itself, and with the description it can know when to use the function. Amazing!  
 To list available functions, use `:function ls`  
 To execute a function from input, use `!function_name(argument=value)`  
-Example: `!get_weather(localtion=Tokyo)`  
+Example: `!get_weather(location=Tokyo)`  
 
 * Session  
 Use `:info` to check the current session ID, and attach the session with `:session [session_id]` to continue the previous talk.  
