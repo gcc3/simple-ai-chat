@@ -12,6 +12,7 @@ Dependencies
 
 OpenAI API https://platform.openai.com/docs/api-reference  
 React https://reactjs.org/  
+Redux https://redux.js.org/  
 Next.js https://nextjs.org/  
 WolframAlpha APIs https://products.wolframalpha.com/api  
 Vectara https://vectara.com/  
@@ -62,8 +63,9 @@ Refer AI Links below.
 Query data from vector database engine.  
 Currently support [Vectara](https://vectara.com/).  
 
-* Color Theme  
-Use `:theme [light/dark]` to change color theme.  
+* Dark Mode
+A terminal style dark theme.  
+Use `:theme [light/dark]` to change color theme.
 
 * Full Screen Mode  
 Use `:fullscreen on` to turn on fullscreen mode.  
@@ -96,7 +98,9 @@ Shortcut
 `/` or `TAB` to jump to input box.  
 `TAB` key to auto input the placeholder text.  
 `ESC` to clear input.  
-`Ctrl + F` to use fullscreen mode.  
+`Ctrl + C` to stop generating.  
+`Ctrl + F` to toggle fullscreen mode on/off.  
+`Ctrl + L` to clear output and reset.  
 
 
 Setup
