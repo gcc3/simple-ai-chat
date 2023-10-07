@@ -99,7 +99,7 @@ export default async function entry(args) {
       return "Password updated.";
     } catch (error) {
       console.error(error);
-      return "Error.";
+      return error;
     }
   }
 
@@ -195,7 +195,7 @@ export default async function entry(args) {
       return "Setting updated.";
     } catch (error) {
       console.error(error);
-      return "Error.";
+      return error;
     }
   }
 
