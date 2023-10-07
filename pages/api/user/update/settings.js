@@ -21,7 +21,7 @@ export default async function (req, res) {
       return res.status(400).json({ error: 'Failed to update settings or user not found.' });
     }
   } catch (error) {
-    console.error('Error updating user settings:', error);
-    return res.status(500).json({ error: 'An error occurred while updating the settings.' });
+    console.error('Error:', error);
+    return res.status(500).json({ error: 'Error occurred while updating the user settings.' });
   }
 }

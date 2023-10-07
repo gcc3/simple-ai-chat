@@ -137,7 +137,7 @@ export default async function entry(args) {
       return "Email updated.";
     } catch (error) {
       console.error(error);
-      return "Error.";
+      return error;
     }
   }
 

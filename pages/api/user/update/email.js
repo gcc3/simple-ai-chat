@@ -14,14 +14,14 @@ export default async function (req, res) {
   }
 
   try {
-    const wasSuccessful = await updateUserEmail(user, email);
+    const wasSuccessful = await updateUserEmail(username, email);
     if (wasSuccessful) {
       return res.status(200).json({ success: true, message: "Email updated successfully" });
     } else {
       return res.status(400).json({ error: 'Failed to update Email.' });
     }
   } catch (error) {
-    console.error('Error updating user Email:', error);
-    return res.status(500).json({ error: 'An error occurred while updating the Email.' });
+    console.error('Error: ', error);
+    return res.status(500).json({ error: 'Error occurred while updating the Email.' });
   }
 }
