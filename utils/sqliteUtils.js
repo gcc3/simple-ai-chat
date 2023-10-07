@@ -36,7 +36,9 @@ const initializeDatabase = (db) => {
             password TEXT NOT NULL,
             email TEXT,
             settings TEXT,
-            last_login TEXT
+            last_login TEXT,
+            status TEXT NOT NULL,
+            created_at TEXT NOT NULL,
         );`;
 
       db.run(createUsersTable, (err) => {
@@ -120,7 +122,7 @@ const getUser = async (name) => {
   }
 };
 
-const insertUser = async (name, password, email, settings, last_login) => {
+const insertUser = async (name, password, email, settings, last_login, status, created_at) => {
   const db = await getDatabaseConnection();
 
   // Check if the name adheres to Unix naming conventions
@@ -144,8 +146,8 @@ const insertUser = async (name, password, email, settings, last_login) => {
         }
 
         // If the username doesn't exist, proceed with the insertion
-        const stmt = db.prepare("INSERT INTO users (name, password, email, settings, last_login) VALUES (?, ?, ?, ?, ?)");
-        stmt.run([name, password, email, settings, last_login], function (err) {
+        const stmt = db.prepare("INSERT INTO users (name, password, email, settings, last_login, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        stmt.run([name, password, email, settings, last_login, status, created_at], function (err) {
           if (err) {
             reject(err);
             return;
