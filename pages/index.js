@@ -6,7 +6,7 @@ import command from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from 'react-redux';
-import { toggleFullscreen, reverseFullscreen } from '../state/fullscreenSlice';
+import { toggleFullscreen, reverseFullscreen } from '../states/fullscreenSlice';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };

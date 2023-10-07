@@ -1,5 +1,5 @@
 import store from '../store.js';
-import { toggleFullscreen } from '../state/fullscreenSlice.js';
+import { toggleFullscreen } from '../states/fullscreenSlice.js';
 
 export default function fullscreen(args) {
   const onoff = args[0];
