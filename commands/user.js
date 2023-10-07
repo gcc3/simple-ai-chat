@@ -3,6 +3,7 @@ import { setTheme } from "utils/themeUtils.js";
 export default async function entry(args) {
   const command = args[0];
 
+  // Get user info, configurations
   if (command === "info") {
     const username = localStorage.getItem("user");
 
@@ -36,6 +37,7 @@ export default async function entry(args) {
     }
   }
 
+  // Add user
   if (command === "add") {
     if (args.length != 2) {
       return "Usage: :user add [username]";
@@ -87,7 +89,7 @@ export default async function entry(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user: localStorage.getItem("user"),
+          username: localStorage.getItem("user"),
           password: args[2],
         }),
       });
@@ -122,7 +124,7 @@ export default async function entry(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user: localStorage.getItem("user"),
+          username: localStorage.getItem("user"),
           email: email,
         }),
       });
@@ -173,7 +175,7 @@ export default async function entry(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user: localStorage.getItem("user"),
+          username: localStorage.getItem("user"),
           key: key,
           value: value,
         }),

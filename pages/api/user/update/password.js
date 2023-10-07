@@ -6,15 +6,15 @@ export default async function (req, res) {
     return res.status(405).end();
   }
   
-  const { user, password } = req.body;
+  const { username, password } = req.body;
 
   // Validation
-  if (!user || !password) {
-    return res.status(400).json({ error: 'user and password are required.' });
+  if (!username || !password) {
+    return res.status(400).json({ error: 'username and password are required.' });
   }
 
   try {
-    const wasSuccessful = await updateUserPassword(user, password);
+    const wasSuccessful = await updateUserPassword(username, password);
     if (wasSuccessful) {
       return res.status(200).json({ success: true, message: "Password updated successfully" });
     } else {

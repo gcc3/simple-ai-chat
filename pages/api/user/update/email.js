@@ -6,11 +6,11 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
-  const { user, email } = req.body;
+  const { username, email } = req.body;
 
   // Validation
-  if (!user || !email) {
-    return res.status(400).json({ error: 'user and email are required.' });
+  if (!username || !email) {
+    return res.status(400).json({ error: 'username and email are required.' });
   }
 
   try {

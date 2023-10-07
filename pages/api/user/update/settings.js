@@ -6,15 +6,15 @@ export default async function (req, res) {
     return res.status(405).end();
   }
   
-  const { user, key, value } = req.body;
+  const { username, key, value } = req.body;
 
   // Validation
-  if (!user || !key || !value) {
-    return res.status(400).json({ error: 'user and settings are required.' });
+  if (!username || !key || !value) {
+    return res.status(400).json({ error: 'username and settings are required.' });
   }
 
   try {
-    const wasSuccessful = await updateUserSettings(user, key, value);
+    const wasSuccessful = await updateUserSettings(username, key, value);
     if (wasSuccessful) {
       return res.status(200).json({ success: true, message: "Settings updated successfully" });
     } else {
