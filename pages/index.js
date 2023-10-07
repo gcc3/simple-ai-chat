@@ -41,7 +41,7 @@ export default function Home() {
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
 
     // Set styles and themes
-    dispatch(reverseFullscreen());
+    dispatch(toggleFullscreen(localStorage.getItem("useFullscreen") === "true"));
     setTheme(localStorage.getItem("theme"))
 
     // Global shortcut keys
