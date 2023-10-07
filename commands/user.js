@@ -89,7 +89,6 @@ export default async function entry(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: localStorage.getItem("user"),
           password: args[2],
         }),
       });
@@ -124,7 +123,6 @@ export default async function entry(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: localStorage.getItem("user"),
           email: email,
         }),
       });
@@ -175,7 +173,6 @@ export default async function entry(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: localStorage.getItem("user"),
           key: key,
           value: value,
         }),

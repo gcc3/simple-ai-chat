@@ -5,12 +5,17 @@ export default async function (req, res) {
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
-  
-  const { username, password } = req.body;
 
-  // Validation
-  if (!username || !password) {
-    return res.status(400).json({ error: 'username and password are required.' });
+  // Authentication
+  const token = req.cookies.auth;
+  if (!token) return { success: false, error: 'Token not provided' };
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const { id, username } = decoded;
+  
+  // Input and validation
+  const { password } = req.body;
+  if (!password) {
+    return res.status(400).json({ error: 'password are required.' });
   }
 
   try {

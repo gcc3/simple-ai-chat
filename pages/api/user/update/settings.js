@@ -6,10 +6,15 @@ export default async function (req, res) {
     return res.status(405).end();
   }
   
-  const { username, key, value } = req.body;
+  // Authentication
+  const token = req.cookies.auth;
+  if (!token) return { success: false, error: 'Token not provided' };
+  const decoded = jwt.verify(token, process.env.JWT_SECRET);
+  const { id, username } = decoded;
 
-  // Validation
-  if (!username || !key || !value) {
+  // Input and validation
+  const { key, value } = req.body;
+  if (!key || !value) {
     return res.status(400).json({ error: 'username and settings are required.' });
   }
 
