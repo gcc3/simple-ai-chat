@@ -57,7 +57,7 @@ Use `:speak stop` to stop the speaking.
 To change language use `:lang use [language code]`  
 
 * AI links   
-Refer AI Links below.
+Refer AI Links below.  
 
 * Vector Database  
 Query data from vector database engine.  
@@ -69,10 +69,12 @@ Use `:theme [light/dark]` to change color theme.
 
 * Full Screen Mode  
 Use `:fullscreen on` to turn on fullscreen mode.  
+Or use shortcut `control + F`.  
 
-* User (In progress)  
-Use `:user` command to add new user, set user settings, login, logout.  
-After login the user settings will be loaded to local environment.  
+* User  
+Use `:user` command to add new user, set user settings, password, Email.  
+Use `:login`, `:logout` to login and logout user.  
+User settings will be applied after login.  
 
 
 AI Links
@@ -80,7 +82,7 @@ AI Links
 
 Simple AI is able to link to another support AI by function calling.  
 
-The API response format must be
+The API response format:  
 
 ```json
 {
@@ -92,15 +94,15 @@ Also, 2 projects [simple-ai-node](https://github.com/gcc3/simple-ai-node) and [s
 To use multiple AI node, a AI hub is suggested, it can send query to multipe node simultaneously.  
 
 
-Shortcut
---------
+Shortcuts
+---------
 
 `/` or `TAB` to jump to input box.  
 `TAB` key to auto input the placeholder text.  
 `ESC` to clear input.  
-`Ctrl + C` to stop generating.  
-`Ctrl + F` to toggle fullscreen mode on/off.  
-`Ctrl + L` to clear output and reset.  
+`control + C` to stop generating.  
+`control + F` to toggle fullscreen mode on/off.  
+`control + L` to clear output and reset.  
 
 
 Setup
