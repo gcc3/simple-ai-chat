@@ -1,4 +1,4 @@
-import { getUser } from "utils/sqliteUtils.js";
+import { getUser, updateUserStatus } from "utils/sqliteUtils.js";
 import jwt from 'jsonwebtoken';
 
 export default async (req, res) => {
@@ -29,6 +29,9 @@ export default async (req, res) => {
   const payload = { id: user.id, username: user.username };
   const secret = process.env.JWT_SECRET;
   const token = jwt.sign(payload, secret, { expiresIn: '1h' });
+
+  // Update user status
+  updateUserStatus(user.username, 'active');
 
   // Set the token as a cookie
   res.setHeader('Set-Cookie', `auth=${token}; HttpOnly; Path=/; Max-Age=3600`);

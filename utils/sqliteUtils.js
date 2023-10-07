@@ -286,6 +286,28 @@ const updateUserSettings = async (userName, key, value) => {
   }
 };
 
+const updateUserStatus = async (userName, status) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET status = ? WHERE name = ?");
+      stmt.run([lastLogin, status], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 module.exports = {
   // logs
   getLogs,
@@ -299,4 +321,5 @@ module.exports = {
   updateUserEmail,
   updateUserLastLogin,
   updateUserSettings,
+  updateUserStatus,
 };
