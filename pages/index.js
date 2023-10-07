@@ -71,10 +71,11 @@ export default function Home() {
           }
           break;
     
-        case "f":  // control + f to toggle fullscreen
+        case "f":  // control + f to toggle fullscreen on/off
           if (event.ctrlKey) {
-            setIsFullscreen(true);
-            localStorage.setItem("useFullscreen", "true");
+            const useFullScreen = localStorage.getItem("useFullscreen") === "true";
+            setIsFullscreen(!useFullScreen);
+            localStorage.setItem("useFullscreen", useFullScreen ? "false" : "true");
             event.preventDefault();
           }
           break;
