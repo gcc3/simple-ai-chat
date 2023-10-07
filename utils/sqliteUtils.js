@@ -38,23 +38,25 @@ const initializeDatabase = (db) => {
             settings TEXT,
             last_login TEXT,
             status TEXT NOT NULL,
-            created_at TEXT NOT NULL,
+            created_at TEXT NOT NULL
         );`;
 
       db.run(createUsersTable, (err) => {
         if (err) {
           return reject(err);
         }
-
+        
         resolve();
       });
     });
+
+    console.log("Database created.");
   });
 };
 
 const getDatabaseConnection = async () => {
   if (!fs.existsSync("./db.sqlite")) {
-    console.log("Database not exist, trying to create.");
+    console.log("Database not exist, trying to create...");
 
     const db = createDatabaseFile();
     await initializeDatabase(db);
