@@ -25,7 +25,8 @@ export default async function (req, res) {
     }
 
     const password = generateRandomString(8);
-    await insertUser(username, password, "", "", "", "active", new Date());  // password, email, settings, last_login, status, created_at
+    const created_at = new Date();
+    await insertUser(username, password, "", "", "", "active", created_at);  // password, email, settings, last_login, status, created_at
                                                                              // insertUser will also check the user existance
 
     // No error
