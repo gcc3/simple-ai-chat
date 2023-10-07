@@ -1,5 +1,8 @@
 export default async function logout(args) {
   const username = localStorage.getItem("user");
+  if (!username) {
+    return "Not logged in.";
+  }
 
   // Logout from server
   try {
