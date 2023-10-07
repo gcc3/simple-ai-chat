@@ -17,10 +17,10 @@ export default async function (req, res) {
   // Input and validation
   const { email } = req.body;
   if (!email) {
-    return res.status(400).json({ error: 'email are required.' });
+    return res.status(400).json({ error: 'Email is required.' });
   }
   if (!email.includes('@')) {
-    return res.status(400).json({ error: 'email is invalid.' });
+    return res.status(400).json({ error: 'Email is invalid.' });
   }
 
   try {
