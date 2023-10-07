@@ -1,7 +1,7 @@
 import { insertUser, getUser } from "utils/sqliteUtils.js";
 
 export default async function (req, res) {
-  // Check if the method is POST.
+  // Check if the method is POST
   if (req.method !== "POST") {
     return res.status(405).end();
   }
@@ -20,13 +20,14 @@ export default async function (req, res) {
       return res.status(200).json(
         { 
           success: false, 
-          message: "User exist." 
+          message: "User already exist." 
         });
     }
 
     const password = generateRandomString(8);
-    await insertUser(username, password, "", "", "");  // password, email, settings, last_login
-                                                       // insertUser will also check the user existance
+    const created_at = new Date();
+    await insertUser(username, password, "", "", "", "active", created_at);  // password, email, settings, last_login, status, created_at
+                                                                             // insertUser will also check the user existance
 
     // No error
     return res.status(200).json(

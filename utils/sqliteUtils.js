@@ -32,27 +32,31 @@ const initializeDatabase = (db) => {
       const createUsersTable = `
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY,
-            name TEXT NOT NULL,
+            username TEXT NOT NULL,
             password TEXT NOT NULL,
             email TEXT,
             settings TEXT,
-            last_login TEXT
+            last_login TEXT,
+            status TEXT NOT NULL,
+            created_at TEXT NOT NULL
         );`;
 
       db.run(createUsersTable, (err) => {
         if (err) {
           return reject(err);
         }
-
+        
         resolve();
       });
     });
+
+    console.log("Database created.");
   });
 };
 
 const getDatabaseConnection = async () => {
   if (!fs.existsSync("./db.sqlite")) {
-    console.log("Database not exist, trying to create.");
+    console.log("Database not exist, trying to create...");
 
     const db = createDatabaseFile();
     await initializeDatabase(db);
@@ -104,11 +108,11 @@ const insertLog = async (time, session, log) => {
 };
 
 // II. users
-const getUser = async (name) => {
+const getUser = async (username) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM users WHERE name = ?`, [name], (err, rows) => {
+      db.get(`SELECT * FROM users WHERE username = ?`, [username], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -120,18 +124,18 @@ const getUser = async (name) => {
   }
 };
 
-const insertUser = async (name, password, email, settings, last_login) => {
+const insertUser = async (username, password, email, settings, last_login, status, created_at) => {
   const db = await getDatabaseConnection();
 
-  // Check if the name adheres to Unix naming conventions
-  if (!/^[a-z][a-z0-9_-]*$/.test(name)) {
-    throw new Error("Invalid username.");  // the name must adhere to Unix naming conventions.
+  // Check if the username adheres to Unix naming conventions
+  if (!/^[a-z][a-z0-9_-]*$/.test(username)) {
+    throw new Error("Invalid username.");  // the username must adhere to Unix naming conventions.
   }
 
   try {
     return await new Promise((resolve, reject) => {
       // First, check if the username already exists
-      db.get("SELECT id FROM users WHERE name = ?", [name], (err, row) => {
+      db.get("SELECT id FROM users WHERE username = ?", [username], (err, row) => {
         if (err) {
           reject(err);
           return;
@@ -144,8 +148,8 @@ const insertUser = async (name, password, email, settings, last_login) => {
         }
 
         // If the username doesn't exist, proceed with the insertion
-        const stmt = db.prepare("INSERT INTO users (name, password, email, settings, last_login) VALUES (?, ?, ?, ?, ?)");
-        stmt.run([name, password, email, settings, last_login], function (err) {
+        const stmt = db.prepare("INSERT INTO users (username, password, email, settings, last_login, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
+        stmt.run([username, password, email, settings, last_login, status, created_at], function (err) {
           if (err) {
             reject(err);
             return;
@@ -161,12 +165,12 @@ const insertUser = async (name, password, email, settings, last_login) => {
   }
 };
 
-const deleteUser = async (userName) => {
+const deleteUser = async (username) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("DELETE FROM users WHERE name = ?");
-      stmt.run([userName], function (err) {
+      const stmt = db.prepare("DELETE FROM users WHERE username = ?");
+      stmt.run([username], function (err) {
         if (err) {
           reject(err);
         }
@@ -183,12 +187,12 @@ const deleteUser = async (userName) => {
   }
 };
 
-const updateUserPassword = async (userName, newPassword) => {
+const updateUserPassword = async (username, newPassword) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET password = ? WHERE name = ?");
-      stmt.run([newPassword, userName], function (err) {
+      const stmt = db.prepare("UPDATE users SET password = ? WHERE username = ?");
+      stmt.run([newPassword, username], function (err) {
         if (err) {
           reject(err);
         }
@@ -205,12 +209,12 @@ const updateUserPassword = async (userName, newPassword) => {
   }
 };
 
-const updateUserEmail = async (userName, newEmail) => {
+const updateUserEmail = async (username, newEmail) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET email = ? WHERE name = ?");
-      stmt.run([newEmail, userName], function (err) {
+      const stmt = db.prepare("UPDATE users SET email = ? WHERE username = ?");
+      stmt.run([newEmail, username], function (err) {
         if (err) {
           reject(err);
         }
@@ -227,12 +231,12 @@ const updateUserEmail = async (userName, newEmail) => {
   }
 };
 
-const updateUserLastLogin = async (userName, lastLogin) => {
+const updateUserLastLogin = async (username, lastLogin) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET last_login = ? WHERE name = ?");
-      stmt.run([lastLogin, userName], function (err) {
+      const stmt = db.prepare("UPDATE users SET last_login = ? WHERE username = ?");
+      stmt.run([lastLogin, username], function (err) {
         if (err) {
           reject(err);
         }
@@ -249,9 +253,9 @@ const updateUserLastLogin = async (userName, lastLogin) => {
   }
 };
 
-const updateUserSettings = async (userName, key, value) => {
+const updateUserSettings = async (username, key, value) => {
   const db = await getDatabaseConnection();
-  const user = await getUser(userName);
+  const user = await getUser(username);
 
   if (!user) {
     throw new Error("User not found.");
@@ -266,8 +270,30 @@ const updateUserSettings = async (userName, key, value) => {
 
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET settings = ? WHERE name = ?");
-      stmt.run([settings, userName], function (err) {
+      const stmt = db.prepare("UPDATE users SET settings = ? WHERE username = ?");
+      stmt.run([settings, username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateUserStatus = async (username, status) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET status = ? WHERE username = ?");
+      stmt.run([status, username], function (err) {
         if (err) {
           reject(err);
         }
@@ -297,4 +323,5 @@ module.exports = {
   updateUserEmail,
   updateUserLastLogin,
   updateUserSettings,
+  updateUserStatus,
 };

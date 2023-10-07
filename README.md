@@ -31,7 +31,7 @@ To check/add entry use `:entry list`, `:search [keyword]`, and `:entry add`.
 Support for [function calling](https://openai.com/blog/function-calling-and-other-api-updates), the AI can call the function itself, and with the description it can know when to use the function. Amazing!  
 To list available functions, use `:function ls`  
 To execute a function from input, use `!function_name(argument=value)`  
-Example: `!get_weather(localtion=Tokyo)`  
+Example: `!get_weather(location=Tokyo)`  
 
 * Session  
 Use `:info` to check the current session ID, and attach the session with `:session [session_id]` to continue the previous talk.  
@@ -57,7 +57,7 @@ Use `:speak stop` to stop the speaking.
 To change language use `:lang use [language code]`  
 
 * AI links   
-Refer AI Links below.
+Refer AI Links below.  
 
 * Vector Database  
 Query data from vector database engine.  
@@ -69,10 +69,12 @@ Use `:theme [light/dark]` to change color theme.
 
 * Full Screen Mode  
 Use `:fullscreen on` to turn on fullscreen mode.  
+Or use shortcut `control + F`.  
 
-* User (In progress)  
-Use `:user` command to add new user, set user settings, login, logout.  
-After login the user settings will be loaded to local environment.  
+* User  
+Use `:user` command to add new user, set user settings, password, Email.  
+Use `:login`, `:logout` to login and logout user.  
+User settings will be applied after login.  
 
 
 AI Links
@@ -80,7 +82,7 @@ AI Links
 
 Simple AI is able to link to another support AI by function calling.  
 
-The API response format must be
+The API response format:  
 
 ```json
 {
@@ -92,15 +94,15 @@ Also, 2 projects [simple-ai-node](https://github.com/gcc3/simple-ai-node) and [s
 To use multiple AI node, a AI hub is suggested, it can send query to multipe node simultaneously.  
 
 
-Shortcut
---------
+Shortcuts
+---------
 
 `/` or `TAB` to jump to input box.  
 `TAB` key to auto input the placeholder text.  
 `ESC` to clear input.  
-`Ctrl + C` to stop generating.  
-`Ctrl + F` to toggle fullscreen mode on/off.  
-`Ctrl + L` to clear output and reset.  
+`control + C` to stop generating.  
+`control + F` to toggle fullscreen mode on/off.  
+`control + L` to clear output and reset.  
 
 
 Setup
@@ -217,6 +219,10 @@ Force query from the vectara vector database.
 * DB  
 Use database to store logs, use `DB=sqlite`.  
 Use file to store logs, use `DB=file`.  
+
+* JWT_SECRET  
+Secret for user authentication.  
+Generate with `openssl rand -base64 32`.  
 
 
 log.config

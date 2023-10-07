@@ -1,4 +1,5 @@
 import { updateUserEmail } from 'utils/sqliteUtils.js';
+import { authenticate } from 'utils/authUtils.js';
 
 export default async function (req, res) {
   // Check if the method is POST.
@@ -6,22 +7,31 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
-  const { user, email } = req.body;
+  // Authentication
+  const authResult = authenticate(req, res);
+  if (!authResult.success) {
+    return res.status(401).json({ error: authResult.error });
+  }
+  const { id, username } = authResult.user;
 
-  // Validation
-  if (!user || !email) {
-    return res.status(400).json({ error: 'user and email are required.' });
+  // Input and validation
+  const { email } = req.body;
+  if (!email) {
+    return res.status(400).json({ error: 'email are required.' });
+  }
+  if (!email.includes('@')) {
+    return res.status(400).json({ error: 'email is invalid.' });
   }
 
   try {
-    const wasSuccessful = await updateUserEmail(user, email);
+    const wasSuccessful = await updateUserEmail(username, email);
     if (wasSuccessful) {
       return res.status(200).json({ success: true, message: "Email updated successfully" });
     } else {
       return res.status(400).json({ error: 'Failed to update Email.' });
     }
   } catch (error) {
-    console.error('Error updating user Email:', error);
-    return res.status(500).json({ error: 'An error occurred while updating the Email.' });
+    console.error('Error: ', error);
+    return res.status(500).json({ error: 'Error occurred while updating the Email.' });
   }
 }

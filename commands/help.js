@@ -23,7 +23,7 @@ export default function help(args) {
     ":session [session_id] - Attach to session.\n" +
     ":role [ls|list|reset] - List all roles, reset role.\n" +
     ":role use [role_name] - Use role.\n" +
-    ":user add [username] - Add user.\n" +
+    ":user add [username] - Create a user.\n" +
     ":user set pass [password] - Set a user password.\n" +
     ":user set email [email] - Set user Email.\n" +
     ":user set [key] [value] - Set user settings.\n" +
