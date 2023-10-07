@@ -15,14 +15,14 @@ export default async (req, res) => {
   }
 
   // Get user
-  const user = getUser(username);
+  const user = await getUser(username);
   if (!user) {
-    return res.status(401).json({ error: 'Invalid credentials' });
+    return res.status(401).json({ error: 'User not found.' });
   }
 
   // Check password
   if (user.password !== password) {
-    return res.status(401).json({ error: 'Invalid credentials' });
+    return res.status(401).json({ error: 'Incorrect password.' });
   }
 
   // Create JWT token
@@ -35,5 +35,11 @@ export default async (req, res) => {
 
   // Set the token as a cookie
   res.setHeader('Set-Cookie', `auth=${token}; HttpOnly; Path=/; Max-Age=86400`);
-  res.status(200).json({ success: true });
+  res.status(200).json({ 
+    success: true, 
+    user: { 
+      username: user.username, 
+      email: user.email, 
+      settings: user.settings } 
+  });
 };

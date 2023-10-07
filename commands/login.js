@@ -10,27 +10,27 @@ export default async function login(args) {
 
   let user = null;
   try {
-    const response = await fetch(`/api/user/${username}`);
+    const response = await fetch("/api/user/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        username: username,
+        password: password,
+      }),
+    });
 
     const data = await response.json();
     if (response.status !== 200) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    user = data;
-  } catch (error) {
-    console.error(error);
-  }
-
-  if (user) {
-    if (user.password !== password) {
-      return "Password incorrect.";
-    }
-
-    localStorage.setItem("user", user.name);
+    user = data.user;
+    localStorage.setItem("user", user.username);
     localStorage.setItem("userEmail", user.email);
     localStorage.setItem("userSettings", user.settings);
-    console.log("User set to ", localStorage.getItem("user"));
+    console.log("User is set to \"" + localStorage.getItem("user") + "\".");
 
     // Settings
     if (user.settings) {
@@ -47,7 +47,10 @@ export default async function login(args) {
     }
 
     return "Login successful.";
-  } else {
-    return "User not found.";
+  } catch (error) {
+
+    // Login failed
+    console.error(error);
+    return error;
   }
 }
