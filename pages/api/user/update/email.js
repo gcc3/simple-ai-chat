@@ -1,5 +1,5 @@
 import { updateUserEmail } from 'utils/sqliteUtils.js';
-import jwt from 'jsonwebtoken';
+import { authenticate } from 'utils/authUtils.js';
 
 export default async function (req, res) {
   // Check if the method is POST.
@@ -8,10 +8,11 @@ export default async function (req, res) {
   }
 
   // Authentication
-  const token = req.cookies.auth;
-  if (!token) return { success: false, error: 'Token not provided' };
-  const decoded = jwt.verify(token, process.env.JWT_SECRET);
-  const { id, username } = decoded;
+  const authResult = authenticate(req, res);
+  if (!authResult.success) {
+    return res.status(401).json({ error: authResult.error });
+  }
+  const { id, username } = authResult.user;
 
   // Input and validation
   const { email } = req.body;

@@ -5,35 +5,32 @@ export default async function entry(args) {
 
   // Get user info, configurations
   if (command === "info") {
-    const username = localStorage.getItem("user");
+    let user = null;
+    try {
+      const response = await fetch(`/api/user/info`, {
+        method: "GET",
+        credentials: 'include',
+      });
 
-    if (username) {
-      let user = null;
-      try {
-        const response = await fetch(`/api/user/${username}`);
-  
-        const data = await response.json();
-        if (response.status !== 200) {
-          throw data.error || new Error(`Request failed with status ${response.status}`);
-        }
-  
-        user = data;
-      } catch (error) {
-        console.error(error);
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
       }
-  
-      if (user) {
-        localStorage.setItem("userEmail", user.email);
-        localStorage.setItem("userSettings", user.settings);
 
-        return "User: " + username + "\n" +
-               "Email: " + user.email + "\n" +
-               "Settings: " + user.settings + "\n"
-      } else {
-        return "User removed.";
-      }
+      user = data.user;
+    } catch (error) {
+      console.error(error);
+    }
+
+    if (user) {
+      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("userSettings", user.settings);
+
+      return "User: " + user.username + "\n" +
+             "Email: " + user.email + "\n" +
+             "Settings: " + user.settings + "\n"
     } else {
-      return "Please login.";
+      return "User removed.";
     }
   }
 
@@ -85,6 +82,7 @@ export default async function entry(args) {
     try {
       const response = await fetch("/api/user/update/password", {
         method: "POST",
+        credentials: 'include',
         headers: {
           "Content-Type": "application/json",
         },
@@ -119,6 +117,7 @@ export default async function entry(args) {
     try {
       const response = await fetch("/api/user/update/email", {
         method: "POST",
+        credentials: 'include',
         headers: {
           "Content-Type": "application/json",
         },
@@ -169,6 +168,7 @@ export default async function entry(args) {
     try {
       const response = await fetch("/api/user/update/settings", {
         method: "POST",
+        credentials: 'include',
         headers: {
           "Content-Type": "application/json",
         },
