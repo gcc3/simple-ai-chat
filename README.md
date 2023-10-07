@@ -14,7 +14,6 @@ OpenAI API https://platform.openai.com/docs/api-reference
 React https://reactjs.org/  
 Redux https://redux.js.org/  
 Next.js https://nextjs.org/  
-NextAuth.js https://next-auth.js.org/  
 WolframAlpha APIs https://products.wolframalpha.com/api  
 Vectara https://vectara.com/  
 
