@@ -7,10 +7,45 @@ import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from 'react-redux';
 import { toggleFullscreen, reverseFullscreen } from '../states/fullscreenSlice';
+import { markdownFormatter } from "utils/markdownUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
 global.STATE = STATES.IDLE;  // a global state
+
+// Mutation observer
+global.outputMutationObserver = null;  // will setup in useEffect
+
+// Print
+// The master print output function
+function print(text, ignoreFormatter=true, append=false) {
+  const outputElement = document.getElementById("output");
+
+  if (outputElement) {
+    if (ignoreFormatter) {
+      // Temproary stop observing
+      // For some output, we don't want to format it
+      global.outputMutationObserver.disconnect();
+    }
+
+    // Print the output
+    if (append) {
+      outputElement.innerHTML += text;
+    } else {
+      outputElement.innerHTML = text;
+    }
+
+    if (ignoreFormatter) {
+      // Resume observing
+      global.outputMutationObserver.observe((outputElement), { 
+        childList: true, 
+        attributes: false, 
+        subtree: true,
+        characterData: true
+      });
+    }
+  }
+};
 
 export default function Home() {
 
@@ -85,9 +120,11 @@ export default function Home() {
           break;
 
         case "c":  // control + c to stop generating
-          if (event.ctrlKey && global.STATE === STATES.DOING) {
+          if (event.ctrlKey) {
             command(":stop");
-            event.preventDefault();
+            if (global.STATE === STATES.DOING) {
+              event.preventDefault();
+            }
           }
           break;
 
@@ -119,52 +156,28 @@ export default function Home() {
     }
     getSystemInfo();
 
-    // Markdown formatter
-    // Format output with a markdown formatter and a mutation observer
-    // Initialize mutation observer
-    const observer = new MutationObserver(mutationsList => {
+    // Initialize global output mutation observer
+    global.outputMutationObserver = new MutationObserver(mutationsList => {
       for (let mutation of mutationsList) {
         if (mutation.type === 'childList' || mutation.type === 'characterData') {
-          markdownFormatter();
+          // Formatter should only works when generating
+          if (global.STATE === STATES.DOING) {
+            markdownFormatter();
+          }
         }
       }
     });
 
-    // Markdown formatter
-    const markdownFormatter = () => {
-      // Temproary stop observing
-      observer.disconnect();
-
-      // Format the output
-      const outputElement = document.getElementById("output");
-      if (outputElement) {
-        const output = outputElement.innerHTML;
-
-        outputElement.innerHTML = output
-          .replace(/```([^`]+)```/g, '<pre>$1</pre>')                    // Replace the ```text``` with <pre> and </pre>
-          .replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>')           // Replace the `text` with <code> and </code>, but ignore ```text```
-          .replace(/<pre>\s*(\w+)?\s*<br>/g, '<pre>')                    // Replace <pre> language_name <br> with <pre><br>
-          .replace(/<\/pre><br><br>/g, '</pre><br>')                     // Replace <pre><br><br> with <pre><br>
-          .replace(/<br><\/pre>/g, '</pre>')                             // Replace <br></pre> with </pre>
-          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')            // Replace the **text** with <strong> and </strong>
-          .replace(/\*([^*]+)\*/g, '<em>$1</em>')                        // Replace the *text* with <em> and </em>
-      }
-
-      // Resume observing
-      observer.observe(document.getElementById("output"), 
-      { childList: true, attributes: false, subtree: true, characterData: true });
-    }
-
     // Start observing
-    observer.observe(document.getElementById("output"), 
-    { childList: true, attributes: false, subtree: true, characterData: true });
+    global.outputMutationObserver.observe(document.getElementById("output"), { 
+      childList: true, 
+      attributes: false, 
+      subtree: true, 
+      characterData: true 
+    });
   }, []);
 
-  // Early return, to avoid a screen flash
-  if (isFullscreen === undefined) {
-    return null;
-  }
-
+  // On submit input
   async function onSubmit(event) {
     event.preventDefault();
 
@@ -193,7 +206,9 @@ export default function Home() {
       // Use command return to bypass reset output and info
       if (commandResult !== null) {
         console.log("Command Output: " + commandResult);
-        document.getElementById("output").innerHTML = commandResult;
+
+        // Print the output
+        print(commandResult);
         resetInfo();
       } else {
         console.log("Not command output.")
@@ -227,14 +242,15 @@ export default function Home() {
         if (response.status !== 200) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
-        document.getElementById("output").innerHTML = functionResult;
+
+        print(functionResult);
       } catch (error) {
         console.error(error);
       }
       return;
     }
 
-    // Clear output and info
+    // Clear info and start generating
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
@@ -246,6 +262,7 @@ export default function Home() {
     }
   }
 
+  // I. SSE generate
   function generate_sse(input) {
     // If already doing, return
     if (global.STATE === STATES.DOING) return;
@@ -387,6 +404,7 @@ export default function Home() {
           return;
         }
 
+        // URL formatter
         // Replace URL with link
         const outputElement = document.getElementById("output");
         if (outputElement) {
@@ -445,6 +463,7 @@ export default function Home() {
     };
   }
 
+  // II. Normal generate
   async function generate(input) {
     try {
       const response = await fetch("/api/generate", {
