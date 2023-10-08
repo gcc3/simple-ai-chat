@@ -122,17 +122,17 @@ export default function Home() {
     // Output formatter
     // Format output with a markdown formatter and a mutation observer
     // Initialize mutation observer
-    const outputTextFormatterObserver = new MutationObserver(mutationsList => {
+    const outputMutationObserver = new MutationObserver(mutationsList => {
       for (let mutation of mutationsList) {
         if (mutation.type === 'childList' || mutation.type === 'characterData') {
-          formatter();
+          formatter(outputMutationObserver);
         }
       }
     });
 
-    const formatter = () => {
+    const formatter = (observer) => {
       // Temproary stop observing
-      outputTextFormatterObserver.disconnect();
+      observer.disconnect();
 
       // Format the output
       const outputElement = document.getElementById("output");
@@ -150,12 +150,12 @@ export default function Home() {
       }
 
       // Resume observing
-      outputTextFormatterObserver.observe(document.getElementById("output"), 
+      observer.observe(document.getElementById("output"), 
       { childList: true, attributes: false, subtree: true, characterData: true });
     }
 
     // Start observing
-    outputTextFormatterObserver.observe(document.getElementById("output"), 
+    outputMutationObserver.observe(document.getElementById("output"), 
     { childList: true, attributes: false, subtree: true, characterData: true });
   }, []);
 
