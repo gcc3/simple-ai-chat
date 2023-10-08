@@ -119,21 +119,20 @@ export default function Home() {
     }
     getSystemInfo();
 
-    // Markdown formatter
+    // Output formatter
     // Format output with a markdown formatter and a mutation observer
     // Initialize mutation observer
-    const observer = new MutationObserver(mutationsList => {
+    const outputTextFormatterObserver = new MutationObserver(mutationsList => {
       for (let mutation of mutationsList) {
         if (mutation.type === 'childList' || mutation.type === 'characterData') {
-          markdownFormatter();
+          formatter();
         }
       }
     });
 
-    // Markdown formatter
-    const markdownFormatter = () => {
+    const formatter = () => {
       // Temproary stop observing
-      observer.disconnect();
+      outputTextFormatterObserver.disconnect();
 
       // Format the output
       const outputElement = document.getElementById("output");
@@ -151,12 +150,12 @@ export default function Home() {
       }
 
       // Resume observing
-      observer.observe(document.getElementById("output"), 
+      outputTextFormatterObserver.observe(document.getElementById("output"), 
       { childList: true, attributes: false, subtree: true, characterData: true });
     }
 
     // Start observing
-    observer.observe(document.getElementById("output"), 
+    outputTextFormatterObserver.observe(document.getElementById("output"), 
     { childList: true, attributes: false, subtree: true, characterData: true });
   }, []);
 
@@ -165,6 +164,7 @@ export default function Home() {
     return null;
   }
 
+  // On submit input
   async function onSubmit(event) {
     event.preventDefault();
 
@@ -234,7 +234,7 @@ export default function Home() {
       return;
     }
 
-    // Clear output and info
+    // Clear info and start generating
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
@@ -246,6 +246,7 @@ export default function Home() {
     }
   }
 
+  // I. SSE generate
   function generate_sse(input) {
     // If already doing, return
     if (global.STATE === STATES.DOING) return;
@@ -445,6 +446,7 @@ export default function Home() {
     };
   }
 
+  // II. Normal generate
   async function generate(input) {
     try {
       const response = await fetch("/api/generate", {
