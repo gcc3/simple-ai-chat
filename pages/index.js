@@ -5,9 +5,10 @@ import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import command from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
-import { useDispatch, useSelector } from 'react-redux';
-import { toggleFullscreen, reverseFullscreen } from '../states/fullscreenSlice';
-import { markdownFormatter } from "utils/markdownUtils";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleFullscreen, reverseFullscreen } from "../states/fullscreenSlice.js";
+import { markdownFormatter } from "utils/markdownUtils.js";
+import { urlFormatter } from "utils/textUtils.js";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -16,9 +17,10 @@ global.STATE = STATES.IDLE;  // a global state
 // Mutation observer
 global.outputMutationObserver = null;  // will setup in useEffect
 
+
+// The master output functions
 // Print
-// The master print output function
-function print(text, ignoreFormatter=true, append=false) {
+function printOutput(text, ignoreFormatter=true, append=false) {
   const outputElement = document.getElementById("output");
 
   if (outputElement) {
@@ -46,6 +48,16 @@ function print(text, ignoreFormatter=true, append=false) {
     }
   }
 };
+
+// Clear outpu
+function clearOutput() {
+  printOutput("");
+}
+
+// Get output
+function getOutput() {
+  return document.getElementById("output").innerHTML;
+}
 
 export default function Home() {
 
@@ -130,7 +142,7 @@ export default function Home() {
 
         case "l":  // control + l to clear output and reset session
           if (event.ctrlKey && global.STATE === STATES.IDLE) {
-            document.getElementById("output").innerHTML = "";
+            clearOutput();
             setInfo();
             setStats();
             setEvaluation();
@@ -208,7 +220,7 @@ export default function Home() {
         console.log("Command Output: " + commandResult);
 
         // Print the output
-        print(commandResult);
+        printOutput(commandResult);
         resetInfo();
       } else {
         console.log("Not command output.")
@@ -243,7 +255,7 @@ export default function Home() {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        print(functionResult);
+        printOutput(functionResult);
       } catch (error) {
         console.error(error);
       }
@@ -269,8 +281,7 @@ export default function Home() {
     global.STATE = STATES.DOING;
 
     // Add a placeholder
-    if (document.getElementById("output").innerHTML !== querying)
-      document.getElementById("output").innerHTML = waiting;
+    if (getOutput() !== querying) printOutput(waiting);
 
     // preapre speech
     var textSpoken = "";
@@ -317,7 +328,7 @@ export default function Home() {
       // Handle the function calling
       if (event.data.startsWith("###FUNC###")) {
         do_function_calling = true;
-        document.getElementById("output").innerHTML = querying;
+        printOutput(querying);
 
         const func = event.data.replace("###FUNC###", "");
         const funcObject = JSON.parse(func);
@@ -405,32 +416,22 @@ export default function Home() {
         }
 
         // URL formatter
-        // Replace URL with link
-        const outputElement = document.getElementById("output");
-        if (outputElement) {
-          const output = outputElement.innerHTML;
-          outputElement.innerHTML = output.replace(/(https?:\/\/[^\s]+|www\.[^\s]+)/g, function(match) {
-            // If the URL starts with www., prepend http:// to it
-            var link = match.startsWith('www.') ? 'http://' + match : match;
-            return '<a href="' + link + '" target="_blank">' + match + '</a>';
-          });
-        }
+        urlFormatter();
 
         // Try speak some rest text
         if (localStorage.getItem('useSpeak') === "true") {
-          let restText = document.getElementById("output").innerHTML.replace(textSpoken, "");
+          let restText = getOutput().replace(textSpoken, "");
           restText = restText.replaceAll("<br>", " ");
           if (restText.length > 0)
             speak(restText);
         }
-        
         return;
       }
 
       // Handle error
       if (event.data.startsWith("###ERR###") || event.data.startsWith('[ERR]')) {
         openaiEssSrouce.close();
-        document.getElementById("output").innerHTML = "Server error.";
+        printOutput("Server error.");
         console.log(event.data);
         return;
       }
@@ -440,17 +441,17 @@ export default function Home() {
       output = output.replaceAll("###RETURN###", '<br>');
       
       // Clear the waiting or querying text
-      if (document.getElementById("output").innerHTML === waiting || document.getElementById("output").innerHTML === querying) {
-        document.getElementById("output").innerHTML = "";
+      if (getOutput() === waiting || getOutput() === querying) {
+        clearOutput();
       }
 
       if (global.STATE === STATES.DOING) {
         // Print output
-        document.getElementById("output").innerHTML += output;
+        printOutput(output, false, true);
 
         // Try speak
         if (localStorage.getItem('useSpeak') === "true") {
-          textSpoken = trySpeak(document.getElementById("output").innerHTML, textSpoken);
+          textSpoken = trySpeak(getOutput(), textSpoken);
         }
       }
 
