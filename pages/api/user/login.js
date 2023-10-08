@@ -1,5 +1,5 @@
 import { getUser, updateUserLastLogin, updateUserStatus } from "utils/sqliteUtils.js";
-import jwt from 'jsonwebtoken';
+import { createToken } from "utils/tokenUtils.js";
 
 export default async (req, res) => {
   // Check if the method is POST.
@@ -26,9 +26,10 @@ export default async (req, res) => {
   }
 
   // Create JWT token
-  const payload = { id: user.id, username: user.username };
-  const secret = process.env.JWT_SECRET;
-  const token = jwt.sign(payload, secret, { expiresIn: '24h' });
+  const token = createToken(payload);
+  if (!token) {
+    return res.status(500).json({ error: 'Failed to create token.' });
+  }
 
   // Update user status
   await updateUserStatus(user.username, 'active');
