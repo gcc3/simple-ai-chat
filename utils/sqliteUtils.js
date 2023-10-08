@@ -89,12 +89,12 @@ const getLogs = async (session) => {
   }
 };
 
-const insertLog = async (time, session, user, log) => {
+const insertLog = async (time, session, username, log) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("INSERT INTO logs (time, session, user, log) VALUES (?, ?, ?, ?)");
-      stmt.run([time, session, user, log], function (err) {
+      stmt.run([time, session, username, log], function (err) {
         if (err) {
           reject(err);
         }

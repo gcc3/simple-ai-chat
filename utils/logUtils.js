@@ -7,9 +7,10 @@ export function logadd(log, req) {
   const browser = req.headers['user-agent'];
 
   // Get user
+  let username = "anonymous";
   let { success, user } = authenticate(req);
-  if (!success) user = "Anonymous";
-  log = log.replaceAll("\n", "###RETURN###") + " USER=" + user + " IP=" + ip + " BSR=" + browser;
+  if (success) username = user.username;
+  log = log.replaceAll("\n", "###RETURN###") + " USER=" + username + " IP=" + ip + " BSR=" + browser;
 
   if (process.env.DB == "file") {
     fs.appendFile('./log.txt', log + '\n', function (err) {
@@ -22,7 +23,7 @@ export function logadd(log, req) {
     const mSession = log.match(/S=(\d+)/);
     const time = mTime ? mTime[1] : null;
     const session = mSession ? mSession[1] : null;
-    insertLog(time, session, user, log);
+    insertLog(time, session, username, log);
   }
 }
 
