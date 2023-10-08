@@ -104,7 +104,7 @@ export default function Home() {
       }
     });
 
-    // Get system info
+    // Get system configurations
     const getSystemInfo = async () => {
       try {
           const response = await fetch('/api/info/list');
