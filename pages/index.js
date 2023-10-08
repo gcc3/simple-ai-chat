@@ -130,10 +130,6 @@ export default function Home() {
       }
     });
 
-    // Start observing
-    observer.observe(document.getElementById("output"), 
-    { childList: true, attributes: false, subtree: true, characterData: true });
-
     // Markdown formater
     const markdownFormater = () => {
       // Temproary stop observing
@@ -144,29 +140,23 @@ export default function Home() {
       if (outputElement) {
         const output = outputElement.innerHTML;
 
-        // Replace the `text` with <pre> and </pre>, but ignore ```text```
-        outputElement.innerHTML = output.replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>');
-
-        // Replace the ```text``` with <pre> and </pre>
-        outputElement.innerHTML = outputElement.innerHTML.replace(/```([^`]+)```/g, '<pre>$1</pre>');
-
-        // Replace <pre> language_name <br> with <pre> <br>
-        outputElement.innerHTML = outputElement.innerHTML.replace(/<pre>\s*(\w+)?\s*<br>/g, '<pre>');
-
-        // Replace <pre><br><br> with <pre><br>
-        outputElement.innerHTML = outputElement.innerHTML.replace(/<\/pre><br><br>/g, '</pre><br>');
-
-        // Replace the **text** with <strong> and </strong>
-        outputElement.innerHTML = outputElement.innerHTML.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
-
-        // Replace the *text* with <em> and </em>
-        outputElement.innerHTML = outputElement.innerHTML.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        outputElement.innerHTML = output
+          .replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>')       // Replace the `text` with <code> and </code>, but ignore ```text```
+          .replace(/```([^`]+)```/g, '<pre>$1</pre>')                // Replace the ```text``` with <pre> and </pre>
+          .replace(/<pre>\s*(\w+)?\s*<br>/g, '<pre>')                // Replace <pre> language_name <br> with <pre><br>
+          .replace(/<\/pre><br><br>/g, '</pre><br>')                 // Replace <pre><br><br> with <pre><br>
+          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')        // Replace the **text** with <strong> and </strong>
+          .replace(/\*([^*]+)\*/g, '<em>$1</em>');                   // Replace the *text* with <em> and </em>
       }
 
       // Resume observing
       observer.observe(document.getElementById("output"), 
       { childList: true, attributes: false, subtree: true, characterData: true });
     }
+
+    // Start observing
+    observer.observe(document.getElementById("output"), 
+    { childList: true, attributes: false, subtree: true, characterData: true });
   }, []);
 
   // Early return, to avoid a screen flash
