@@ -39,6 +39,7 @@ export default function Home() {
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
     if (localStorage.getItem("useFullscreen") === null) localStorage.setItem("useFullscreen", "false");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
+    if (localStorage.getItem("role") === null) localStorage.setItem("role", "");
 
     // Set styles and themes
     dispatch(toggleFullscreen(localStorage.getItem("useFullscreen") === "true"));

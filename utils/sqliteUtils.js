@@ -20,6 +20,7 @@ const initializeDatabase = (db) => {
           id INTEGER PRIMARY KEY,
           time INTEGER NOT NULL,
           session INTEGER NOT NULL,
+          user TEXT NOT NULL,
           log TEXT NOT NULL
       );`;
 
@@ -88,12 +89,12 @@ const getLogs = async (session) => {
   }
 };
 
-const insertLog = async (time, session, log) => {
+const insertLog = async (time, session, username, log) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("INSERT INTO logs (time, session, log) VALUES (?, ?, ?)");
-      stmt.run([time, session, log], function (err) {
+      const stmt = db.prepare("INSERT INTO logs (time, session, user, log) VALUES (?, ?, ?, ?)");
+      stmt.run([time, session, username, log], function (err) {
         if (err) {
           reject(err);
         }
