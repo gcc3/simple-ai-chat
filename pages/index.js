@@ -13,6 +13,40 @@ import { markdownFormatter } from "utils/markdownUtils";
 const STATES = { IDLE: 0, DOING: 1 };
 global.STATE = STATES.IDLE;  // a global state
 
+// Mutation observer
+global.outputMutationObserver = null;  // will setup in useEffect
+
+// Print
+// The master print output function
+function print(text, ignoreFormatter=true, append=false) {
+  const outputElement = document.getElementById("output");
+
+  if (outputElement) {
+    if (ignoreFormatter) {
+      // Temproary stop observing
+      // For some output, we don't want to format it
+      global.outputMutationObserver.disconnect();
+    }
+
+    // Print the output
+    if (append) {
+      outputElement.innerHTML += text;
+    } else {
+      outputElement.innerHTML = text;
+    }
+
+    if (ignoreFormatter) {
+      // Resume observing
+      global.outputMutationObserver.observe((outputElement), { 
+        childList: true, 
+        attributes: false, 
+        subtree: true,
+        characterData: true
+      });
+    }
+  }
+};
+
 export default function Home() {
 
   // States
@@ -120,20 +154,20 @@ export default function Home() {
     }
     getSystemInfo();
 
-    // Initialize mutation observer
-    const outputMutationObserver = new MutationObserver(mutationsList => {
+    // Initialize global output mutation observer
+    global.outputMutationObserver = new MutationObserver(mutationsList => {
       for (let mutation of mutationsList) {
         if (mutation.type === 'childList' || mutation.type === 'characterData') {
           // Formatter should only works when generating
           if (global.STATE === STATES.DOING) {
-            markdownFormatter(outputMutationObserver);
+            markdownFormatter();
           }
         }
       }
     });
 
     // Start observing
-    outputMutationObserver.observe(document.getElementById("output"), { 
+    global.outputMutationObserver.observe(document.getElementById("output"), { 
       childList: true, 
       attributes: false, 
       subtree: true, 
@@ -170,7 +204,9 @@ export default function Home() {
       // Use command return to bypass reset output and info
       if (commandResult !== null) {
         console.log("Command Output: " + commandResult);
-        document.getElementById("output").innerHTML = commandResult;
+
+        // Print the output
+        print(commandResult);
         resetInfo();
       } else {
         console.log("Not command output.")
@@ -204,7 +240,8 @@ export default function Home() {
         if (response.status !== 200) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
-        document.getElementById("output").innerHTML = functionResult;
+
+        print(functionResult);
       } catch (error) {
         console.error(error);
       }

@@ -1,9 +1,9 @@
-export function markdownFormatter(observer) {
+export function markdownFormatter() {
   const outputElement = document.getElementById("output");
   if (outputElement) {
     
     // Temproary stop observing
-    observer.disconnect();
+    global.outputMutationObserver.disconnect();
 
     // Format the output
     const output = outputElement.innerHTML;
@@ -17,7 +17,7 @@ export function markdownFormatter(observer) {
       .replace(/\*([^*]+)\*/g, '<em>$1</em>')                        // Replace the *text* with <em> and </em>
 
     // Resume observing
-    observer.observe(outputElement, { 
+    global.outputMutationObserver.observe(outputElement, { 
       childList: true, 
       attributes: false, 
       subtree: true, 
