@@ -222,7 +222,7 @@ Use file to store logs, use `DB=file`.
 
 * JWT_SECRET  
 Secret for user authentication.  
-Generate with `openssl rand -base64 32`.  
+Generate with `openssl rand -hex 16`.  
 
 
 log.config
