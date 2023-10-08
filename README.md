@@ -234,6 +234,6 @@ log.config
 
 Can setup output log filter rules.  
 One row one rule.  
-Example:  `IP=127.0.0.1`  
+Example:  `IP=127.0.0.1`, `USER=username`  
 
 _Originally Forked from https://github.com/openai/openai-quickstart-node_  
