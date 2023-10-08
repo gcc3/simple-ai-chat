@@ -122,7 +122,9 @@ export default function Home() {
         case "c":  // control + c to stop generating
           if (event.ctrlKey) {
             command(":stop");
-            event.preventDefault();
+            if (global.STATE === STATES.DOING) {
+              event.preventDefault();
+            }
           }
           break;
 
