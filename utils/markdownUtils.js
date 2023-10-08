@@ -1,7 +1,6 @@
 export function markdownFormatter() {
   const outputElement = document.getElementById("output");
   if (outputElement) {
-    
     // Temproary stop observing
     global.outputMutationObserver.disconnect();
 
