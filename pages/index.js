@@ -17,7 +17,6 @@ global.STATE = STATES.IDLE;  // a global state
 // Mutation observer
 global.outputMutationObserver = null;  // will setup in useEffect
 
-
 // The master output functions
 // Print
 function printOutput(text, ignoreFormatter=true, append=false) {
