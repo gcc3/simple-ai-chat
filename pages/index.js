@@ -65,7 +65,7 @@ export default function Home() {
   const [waiting, setWaiting] = useState("...");
   const [querying, setQuerying] = useState("...");
   const [enter, setEnter] = useState("enter");
-  const [output, setOutput] = useState();
+  const [output, setOutput] = useState();  // this will use for genereate (without sse)
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
@@ -266,7 +266,7 @@ export default function Home() {
       // Use SSE request
       generate_sse(input);
     } else {
-      // Use general API request
+      // Use general simple API request
       setOutput(waiting);
       generate(input);
     }
@@ -463,7 +463,7 @@ export default function Home() {
   }
 
   // II. Normal generate
-  async function generate(input) {
+  async function generate(input) {    
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
