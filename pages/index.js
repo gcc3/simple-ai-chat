@@ -86,7 +86,7 @@ export default function Home() {
           break;
 
         case "c":  // control + c to stop generating
-          if (event.ctrlKey && global.STATE === STATES.DOING) {
+          if (event.ctrlKey) {
             command(":stop");
             event.preventDefault();
           }
@@ -120,8 +120,6 @@ export default function Home() {
     }
     getSystemInfo();
 
-    // Output formatter
-    // Format output with a markdown formatter and a mutation observer
     // Initialize mutation observer
     const outputMutationObserver = new MutationObserver(mutationsList => {
       for (let mutation of mutationsList) {
@@ -132,14 +130,13 @@ export default function Home() {
     });
 
     // Start observing
-    outputMutationObserver.observe(document.getElementById("output"), 
-    { childList: true, attributes: false, subtree: true, characterData: true });
+    outputMutationObserver.observe(document.getElementById("output"), { 
+      childList: true, 
+      attributes: false, 
+      subtree: true, 
+      characterData: true 
+    });
   }, []);
-
-  // Early return, to avoid a screen flash
-  if (isFullscreen === undefined) {
-    return null;
-  }
 
   // On submit input
   async function onSubmit(event) {
