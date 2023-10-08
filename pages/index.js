@@ -119,19 +119,19 @@ export default function Home() {
     }
     getSystemInfo();
 
-    // Markdown formater
-    // Format output with a markdown formater and a mutation observer
+    // Markdown formatter
+    // Format output with a markdown formatter and a mutation observer
     // Initialize mutation observer
     const observer = new MutationObserver(mutationsList => {
       for (let mutation of mutationsList) {
         if (mutation.type === 'childList' || mutation.type === 'characterData') {
-          markdownFormater();
+          markdownFormatter();
         }
       }
     });
 
-    // Markdown formater
-    const markdownFormater = () => {
+    // Markdown formatter
+    const markdownFormatter = () => {
       // Temproary stop observing
       observer.disconnect();
 
