@@ -23,7 +23,7 @@ export default async function entry(args) {
     }
 
     if (user) {
-      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("user", user.username);
       localStorage.setItem("userSettings", user.settings);
 
       return "User: " + user.username + "\n" +
@@ -59,7 +59,6 @@ export default async function entry(args) {
 
       if (data.success) {
         localStorage.setItem("user", username);
-        localStorage.setItem("userEmail", "");
         localStorage.setItem("userSettings", "");
       }
       return data.message;

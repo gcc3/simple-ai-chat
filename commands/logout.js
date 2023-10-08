@@ -23,7 +23,6 @@ export default async function logout(args) {
 
     // Clear user info
     localStorage.removeItem("user");
-    localStorage.removeItem("userEmail");
     localStorage.removeItem("userSettings");
 
     // Reset query id to forget previous memory
