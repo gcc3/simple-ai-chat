@@ -65,7 +65,6 @@ export default function Home() {
   const [waiting, setWaiting] = useState("...");
   const [querying, setQuerying] = useState("...");
   const [enter, setEnter] = useState("enter");
-  const [output, setOutput] = useState();  // this will use for genereate (without sse)
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
@@ -267,7 +266,7 @@ export default function Home() {
       generate_sse(input);
     } else {
       // Use general simple API request
-      setOutput(waiting);
+      printOutput(waiting);
       generate(input);
     }
   }
@@ -485,15 +484,8 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      setOutput(data.result.text.split("\n").map((line, line_number) => {
-        console.log(line);
-        return (
-          <div key={line_number}>
-            {line}
-            <br></br>
-          </div>
-        );
-      }));
+      // Print output
+      printOutput(data.result.text.replace("\n", "<br>"));
 
       if (localStorage.getItem('useSpeak') === "true") {
         speak(data.result.text);
@@ -559,7 +551,7 @@ export default function Home() {
           <input className={styles.submit} type="submit" value={enter} />
         </form>
         <div id="wrapper" className={styles.wrapper}>
-          <div id="output" className={styles.output}>{output}</div>
+          <div id="output" className={styles.output}></div>
           {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
           {stats && <div className={styles.stats}>{stats}</div>}
           <div className={styles.info}>{info}</div>
