@@ -18,7 +18,7 @@ global.STATE = STATES.IDLE;  // a global state
 global.outputMutationObserver = null;  // will setup in useEffect
 
 // The master output functions
-// Print
+// Print output
 function printOutput(text, ignoreFormatter=true, append=false) {
   const outputElement = document.getElementById("output");
 
@@ -48,7 +48,7 @@ function printOutput(text, ignoreFormatter=true, append=false) {
   }
 };
 
-// Clear outpu
+// Clear output
 function clearOutput() {
   printOutput("");
 }
