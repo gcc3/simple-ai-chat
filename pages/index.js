@@ -141,12 +141,12 @@ export default function Home() {
         const output = outputElement.innerHTML;
 
         outputElement.innerHTML = output
-          .replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>')       // Replace the `text` with <code> and </code>, but ignore ```text```
-          .replace(/```([^`]+)```/g, '<pre>$1</pre>')                // Replace the ```text``` with <pre> and </pre>
-          .replace(/<pre>\s*(\w+)?\s*<br>/g, '<pre>')                // Replace <pre> language_name <br> with <pre><br>
-          .replace(/<\/pre><br><br>/g, '</pre><br>')                 // Replace <pre><br><br> with <pre><br>
-          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')        // Replace the **text** with <strong> and </strong>
-          .replace(/\*([^*]+)\*/g, '<em>$1</em>');                   // Replace the *text* with <em> and </em>
+          .replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>')  // Replace the `text` with <code> and </code>, but ignore ```text```
+          .replace(/```([^`]+)```/g, '<pre>$1</pre>')           // Replace the ```text``` with <pre> and </pre>
+          .replace(/<pre>\s*(\w+)?\s*<br>/g, '<pre>')           // Replace <pre> language_name <br> with <pre><br>
+          .replace(/<\/pre><br><br>/g, '</pre><br>')            // Replace <pre><br><br> with <pre><br>
+          .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')   // Replace the **text** with <strong> and </strong>
+          .replace(/\*([^*]+)\*/g, '<em>$1</em>');              // Replace the *text* with <em> and </em>
       }
 
       // Resume observing
