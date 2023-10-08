@@ -59,7 +59,6 @@ function getOutput() {
 }
 
 export default function Home() {
-
   // States
   const [userInput, setUserInput] = useState("");
   const [placeholder, setPlaceholder] = useState("");
