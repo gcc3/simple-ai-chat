@@ -11,7 +11,7 @@ export const authenticate = (req, res) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return { success: true, user: decoded };
   } catch (error) {
-    return { success: false, error: 'Authentication failed.' };  // Token not valid
+    return { success: false, error: 'Authentication decoed failed.' };
   }
 };
 
