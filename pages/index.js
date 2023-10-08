@@ -118,6 +118,55 @@ export default function Home() {
       }
     }
     getSystemInfo();
+
+    // Markdown formater
+    // Format output with a markdown formater and a mutation observer
+    // Initialize mutation observer
+    const observer = new MutationObserver(mutationsList => {
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
+          markdownFormater();
+        }
+      }
+    });
+
+    // Start observing
+    observer.observe(document.getElementById("output"), 
+    { childList: true, attributes: false, subtree: true, characterData: true });
+
+    // Markdown formater
+    const markdownFormater = () => {
+      // Temproary stop observing
+      observer.disconnect();
+
+      // Format the output
+      const outputElement = document.getElementById("output");
+      if (outputElement) {
+        const output = outputElement.innerHTML;
+
+        // Replace the `text` with <pre> and </pre>, but ignore ```text```
+        outputElement.innerHTML = output.replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>');
+
+        // Replace the ```text``` with <pre> and </pre>
+        outputElement.innerHTML = outputElement.innerHTML.replace(/```([^`]+)```/g, '<pre>$1</pre>');
+
+        // Replace <pre> language_name <br> with <pre> <br>
+        outputElement.innerHTML = outputElement.innerHTML.replace(/<pre>\s*(\w+)?\s*<br>/g, '<pre>');
+
+        // Replace <pre><br><br> with <pre><br>
+        outputElement.innerHTML = outputElement.innerHTML.replace(/<\/pre><br><br>/g, '</pre><br>');
+
+        // Replace the **text** with <strong> and </strong>
+        outputElement.innerHTML = outputElement.innerHTML.replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>');
+
+        // Replace the *text* with <em> and </em>
+        outputElement.innerHTML = outputElement.innerHTML.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      }
+
+      // Resume observing
+      observer.observe(document.getElementById("output"), 
+      { childList: true, attributes: false, subtree: true, characterData: true });
+    }
   }, []);
 
   // Early return, to avoid a screen flash
