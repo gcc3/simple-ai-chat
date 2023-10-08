@@ -9,6 +9,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen, reverseFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
 import { urlFormatter } from "utils/textUtils.js";
+import ReactDOMServer from 'react-dom/server';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -484,12 +485,20 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Print output
-      printOutput(data.result.text.replace("\n", "<br>"));
+      // Render output
+      const output = data.result.text.split("\n").map((line, line_number) => {
+        console.log(line);
+        return (
+          <div key={line_number}>
+            {line}
+            <br></br>
+          </div>
+        );
+      });
+      const outputHtml = ReactDOMServer.renderToStaticMarkup(output);
 
-      if (localStorage.getItem('useSpeak') === "true") {
-        speak(data.result.text);
-      }
+      // Print output
+      printOutput(outputHtml);
 
       if (localStorage.getItem('useStats') === "true") {
         const score = data.result.stats.score;
