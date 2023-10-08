@@ -26,6 +26,7 @@ export default async (req, res) => {
   }
 
   // Create JWT token
+  const payload = { id: user.id, username: user.username };
   const token = createToken(payload);
   if (!token) {
     return res.status(500).json({ error: 'Failed to create token.' });
