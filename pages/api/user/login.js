@@ -1,5 +1,5 @@
 import { getUser, updateUserLastLogin, updateUserStatus } from "utils/sqliteUtils.js";
-import { createToken } from "utils/tokenUtils.js";
+import { createToken } from "utils/authUtils.js";
 
 export default async (req, res) => {
   // Check if the method is POST.
