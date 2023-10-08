@@ -17,3 +17,21 @@
 body {
   background-color: var(--background-color);
 }
+code {
+  background: var(--code-block-background-color);
+  word-wrap: break-word;
+  box-decoration-break: clone;
+  padding: .1rem .4rem .1rem;
+  border-radius: .4rem;
+  font-family: "Fira Code", monospace;
+  font-size: 94%;
+}
+pre {
+  background: var(--code-block-background-color);
+  border-radius: .5rem;
+  padding: .5rem;
+  overflow-x: auto;
+  font-family: "Fira Code", monospace;
+  font-size: 94%;
+  margin: 0px;
+}

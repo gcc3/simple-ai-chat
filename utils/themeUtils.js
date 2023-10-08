@@ -11,6 +11,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty('--info-text-color', '#cccccc');
     document.documentElement.style.setProperty('--border-color', '#ccc');
     document.documentElement.style.setProperty('--border-shadow-color', 'rgba(139, 139, 139, 0.4)');
+    document.documentElement.style.setProperty('--code-block-background-color', '#f6f6f6');
   }
   
   if (theme == "dark") {
@@ -24,5 +25,6 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty('--info-text-color', '#007000');
     document.documentElement.style.setProperty('--border-color', 'rgba(0, 112, 0, 0.3)');
     document.documentElement.style.setProperty('--border-shadow-color', 'rgba(0, 112, 0, 0.5)');
+    document.documentElement.style.setProperty('--code-block-background-color', '#001f00');
   }
 }
