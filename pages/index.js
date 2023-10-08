@@ -391,7 +391,11 @@ export default function Home() {
         const outputElement = document.getElementById("output");
         if (outputElement) {
           const output = outputElement.innerHTML;
-          outputElement.innerHTML = output.replace(/(https?:\/\/[^\s]+|www\.[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+          outputElement.innerHTML = output.replace(/(https?:\/\/[^\s]+|www\.[^\s]+)/g, function(match) {
+            // If the URL starts with www., prepend http:// to it
+            var link = match.startsWith('www.') ? 'http://' + match : match;
+            return '<a href="' + link + '" target="_blank">' + match + '</a>';
+          });
         }
 
         // Try speak some rest text
