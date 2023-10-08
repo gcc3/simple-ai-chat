@@ -20,6 +20,7 @@ export default async function entry(args) {
       user = data.user;
     } catch (error) {
       console.error(error);
+      return error;
     }
 
     if (user) {
