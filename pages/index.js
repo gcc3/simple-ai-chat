@@ -157,6 +157,7 @@ export default function Home() {
     // Start observing
     observer.observe(document.getElementById("output"), 
     { childList: true, attributes: false, subtree: true, characterData: true });
+    console.log("Markdown formater initialized.");
   }, []);
 
   // Early return, to avoid a screen flash
