@@ -17,8 +17,7 @@ export default async function (req, res) {
     // Check user existance
     const user = await getUser(username);
     if (user) {
-      return res.status(200).json(
-        { 
+      return res.status(200).json({ 
           success: false, 
           message: "User already exist." 
         });
@@ -30,8 +29,7 @@ export default async function (req, res) {
                                                                              // insertUser will also check the user existance
 
     // No error
-    return res.status(200).json(
-      { 
+    return res.status(200).json({ 
         success: true,
         message: "User \"" + username + "\" is created with password \"" + password + "\"."
       });

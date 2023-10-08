@@ -26,9 +26,9 @@ export default async function (req, res) {
         }
       });
     } else {
-      res.status(404).json({ message: 'User not found' });
+      res.status(404).json({ error: 'User not found' });
     }
   } catch (error) {
-    res.status(500).json({ message: 'Internal Server Error' });
+    res.status(500).json({ error: 'Internal Server Error' });
   }
 }
