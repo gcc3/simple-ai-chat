@@ -387,6 +387,13 @@ export default function Home() {
           return;
         }
 
+        // Replace URL with link
+        const outputElement = document.getElementById("output");
+        if (outputElement) {
+          const output = outputElement.innerHTML;
+          outputElement.innerHTML = output.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+        }
+
         // Try speak some rest text
         if (localStorage.getItem('useSpeak') === "true") {
           let restText = document.getElementById("output").innerHTML.replace(textSpoken, "");

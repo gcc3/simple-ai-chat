@@ -38,3 +38,7 @@ pre {
 strong {
   font-weight: 570;
 }
+a {
+  color: var(--text-color);
+  text-decoration: none;
+}
