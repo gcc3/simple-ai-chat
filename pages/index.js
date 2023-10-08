@@ -18,8 +18,8 @@ global.STATE = STATES.IDLE;  // a global state
 // Mutation observer
 global.outputMutationObserver = null;  // will setup in useEffect
 
-// The master output functions
 // Print output
+global.rawOutput = "";
 function printOutput(text, ignoreFormatter=true, append=false) {
   const outputElement = document.getElementById("output");
 
@@ -33,8 +33,10 @@ function printOutput(text, ignoreFormatter=true, append=false) {
     // Print the output
     if (append) {
       outputElement.innerHTML += text;
+      global.rawOutput += text;
     } else {
       outputElement.innerHTML = text;
+      global.rawOutput = text;
     }
 
     if (ignoreFormatter) {
@@ -418,7 +420,7 @@ export default function Home() {
 
         // Try speak some rest text
         if (localStorage.getItem('useSpeak') === "true") {
-          let restText = getOutput().replace(textSpoken, "");
+          let restText = global.rawOutput.replace(textSpoken, "");
           restText = restText.replaceAll("<br>", " ");
           if (restText.length > 0)
             speak(restText);
@@ -449,7 +451,7 @@ export default function Home() {
 
         // Try speak
         if (localStorage.getItem('useSpeak') === "true") {
-          textSpoken = trySpeak(getOutput(), textSpoken);
+          textSpoken = trySpeak(global.rawOutput, textSpoken);
         }
       }
 
