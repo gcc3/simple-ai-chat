@@ -76,6 +76,9 @@ Use `:user` command to add new user, set user settings, password, Email.
 Use `:login`, `:logout` to login and logout user.  
 User settings will be applied after login.  
 
+* Code Display  
+Support code block display with a markdown formater.  
+
 
 AI Links
 --------
