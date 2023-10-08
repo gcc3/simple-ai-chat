@@ -391,7 +391,7 @@ export default function Home() {
         const outputElement = document.getElementById("output");
         if (outputElement) {
           const output = outputElement.innerHTML;
-          outputElement.innerHTML = output.replace(/(https?:\/\/[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
+          outputElement.innerHTML = output.replace(/(https?:\/\/[^\s]+|www\.[^\s]+)/g, '<a href="$1" target="_blank">$1</a>');
         }
 
         // Try speak some rest text
