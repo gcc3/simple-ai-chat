@@ -7,7 +7,7 @@ export function logadd(log, req) {
   const browser = req.headers['user-agent'];
 
   // Get user
-  let username = "anonymous";
+  let username = "";
   let { success, user } = authenticate(req);
   if (success) username = user.username;
   log = log.replaceAll("\n", "###RETURN###") + " USER=" + username + " IP=" + ip + " BSR=" + browser;
