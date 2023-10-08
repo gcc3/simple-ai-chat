@@ -124,7 +124,10 @@ export default function Home() {
     const outputMutationObserver = new MutationObserver(mutationsList => {
       for (let mutation of mutationsList) {
         if (mutation.type === 'childList' || mutation.type === 'characterData') {
-          markdownFormatter(outputMutationObserver);
+          // Formatter should only works when generating
+          if (global.STATE === STATES.DOING) {
+            markdownFormatter(outputMutationObserver);
+          }
         }
       }
     });
@@ -362,6 +365,7 @@ export default function Home() {
           return;
         }
 
+        // URL formatter
         // Replace URL with link
         const outputElement = document.getElementById("output");
         if (outputElement) {
