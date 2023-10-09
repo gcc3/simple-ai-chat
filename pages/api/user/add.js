@@ -21,7 +21,7 @@ export default async function (req, res) {
     if (user) {
       return res.status(200).json({ 
           success: false, 
-          message: "User already exist." 
+          message: "Username already used." 
         });
     }
     
