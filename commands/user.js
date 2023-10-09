@@ -205,9 +205,13 @@ export default async function entry(args) {
     }
 
     // Check key is valid
-    const validKeys = ['theme', 'role'];
+    const validKeys = ['theme', 'role', 'speak', 'stats'];
     if (!validKeys.includes(key)) {
-      return "Usage: :user set [key] [value]";
+      return "Vaild keys: \n" + 
+             "theme [dark/light]\n" +
+             " role [role_name]\n" +
+             "speak [on/off]\n" +
+             "stats [on/off]\n";
     }
 
     // Update remote settings
