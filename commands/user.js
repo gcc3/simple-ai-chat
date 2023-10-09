@@ -55,7 +55,7 @@ export default async function entry(args) {
 
       return "User: " + user.username + "\n" +
              "Email: " + user.email + "\n" +
-             "Settings: " + user.settings + "\n"
+             "Settings: " + JSON.stringify(JSON.parse(user.settings), null, 2) + "\n"
     } else {
       return "User removed.";
     }
