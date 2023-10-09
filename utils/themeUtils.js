@@ -11,7 +11,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty('--info-text-color', '#cccccc');
     document.documentElement.style.setProperty('--border-color', '#ccc');
     document.documentElement.style.setProperty('--border-shadow-color', 'rgba(139, 139, 139, 0.4)');
-    document.documentElement.style.setProperty('--code-block-background-color', '#f6f8fa');
+    document.documentElement.style.setProperty('--code-block-background-color', '#f6f6f6');  // GitHub is using #f6f8fa, #f6f6f6 is warmer.
   }
   
   if (theme == "dark") {
