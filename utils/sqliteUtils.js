@@ -125,6 +125,22 @@ const getUser = async (username) => {
   }
 };
 
+const getUsers = async () => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT username, email FROM users`, [], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const insertUser = async (username, password, email, settings, last_login, status, created_at) => {
   const db = await getDatabaseConnection();
 
@@ -335,6 +351,7 @@ module.exports = {
   insertLog,
 
   // users
+  getUsers,
   getUser,
   insertUser,
   deleteUser,
