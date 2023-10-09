@@ -4,6 +4,8 @@ export function initSettings(format="json") {
   // Default settings
   newSettings["role"] = "";
   newSettings["theme"] = "light";
+  newSettings["speak"] = "off";
+  newSettings["stats"] = "on";
 
   if (format === "json") {
     return JSON.stringify(newSettings);

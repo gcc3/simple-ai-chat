@@ -1,4 +1,4 @@
-import { generatePassword } from "./userUtils";
+import { generatePassword, initSettings } from "./userUtils";
 
 const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
@@ -65,7 +65,7 @@ const getDatabaseConnection = async () => {
     await initializeDatabase(db);
 
     // Create root user
-    insertUser("root", generatePassword(), "root@localhost", "{}", "", "inactive", new Date());
+    insertUser("root", generatePassword(), "root@localhost", initSettings(), "", "inactive", new Date());
     return db;
   }
 
