@@ -1,4 +1,5 @@
 import { insertUser, getUser } from "utils/sqliteUtils.js";
+import { initSettings, generatePassword } from "utils/userUtils.js";
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -6,6 +7,7 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
+  // User required username
   const { username } = req.body;
 
   // validation
@@ -22,17 +24,13 @@ export default async function (req, res) {
           message: "User already exist." 
         });
     }
-
-    // Default settings
-    let newSettings = {};
-    newSettings["role"] = "";
-    newSettings["theme"] = "light";
     
-    const settings = JSON.stringify(newSettings);
-    const password = generateRandomString(8);
+    const password = generatePassword(8);
+    const settings = initSettings("json");
     const created_at = new Date();
-    await insertUser(username, password, "", settings, "", "active", created_at);  // password, email, settings, last_login, status, created_at
-                                                                             // insertUser will also check the user existance
+
+    // password, email, settings, last_login, status, created_at
+    await insertUser(username, password, "", settings, "", "active", created_at);  
 
     // No error
     return res.status(200).json({ 
@@ -43,14 +41,4 @@ export default async function (req, res) {
     console.error(error.message);
     return res.status(500).json({ error: error.message });
   }
-}
-
-function generateRandomString(length) {
-  var result = "";
-  var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  var charactersLength = characters.length;
-  for (var i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
-  }
-  return result;
 }
