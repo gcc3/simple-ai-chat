@@ -65,7 +65,7 @@ const getDatabaseConnection = async () => {
     await initializeDatabase(db);
 
     // Create root user
-    insertUser("root", generatePassword(), "root@localhost", generateSettings(), "", "inactive", new Date());
+    insertUser("root", generatePassword(), "root@localhost", "", "", "inactive", new Date());
     return db;
   }
 
