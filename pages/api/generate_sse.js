@@ -115,7 +115,7 @@ export default async function (req, res) {
 
   try {
     let result_text = "";
-    let definations = [];
+    let definitions = [];
     let score = 0;
     let token_ct = 0;
     let messages = [];
@@ -130,7 +130,7 @@ export default async function (req, res) {
 
     if (process.env.END_POINT === "chat_completion") {
       const generateMessagesResult = await generateMessages(input, queryId, role, tokenizer);
-      definations = generateMessagesResult.definations;
+      definitions = generateMessagesResult.definitions;
       score = generateMessagesResult.score;
       token_ct = generateMessagesResult.token_ct;
       messages = generateMessagesResult.messages;
@@ -250,7 +250,7 @@ export default async function (req, res) {
 
               // Evaluate result
               if (use_eval && use_stats === "true" && result_text.trim().length > 0) {
-                evaluate(input, definations, additionalInfo, result_text).then((eval_result) => {
+                evaluate(input, definitions, additionalInfo, result_text).then((eval_result) => {
                   res.write(`data: ###EVAL###${eval_result}\n\n`);
                   console.log("eval: " + eval_result + "\n");
 

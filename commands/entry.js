@@ -42,7 +42,7 @@ export default async function entry(args) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ word: args[1].replace(/[",]+/g, ""), defination: args[2].replace(/[",]+/g, "") }),
+        body: JSON.stringify({ word: args[1].replace(/[",]+/g, ""), definition: args[2].replace(/[",]+/g, "") }),
       });
 
       const data = await response.json();

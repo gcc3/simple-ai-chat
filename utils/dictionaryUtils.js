@@ -17,7 +17,7 @@ export async function dictionaryEntryListing() {
   return words;
 }
 
-export async function dictionaryEntryAdd(word, defination) {
+export async function dictionaryEntryAdd(word, definition) {
   fixLastRowNotEmpty('dict.csv');
 
   const createCsvWriter = require('csv-writer').createObjectCsvWriter;
@@ -25,7 +25,7 @@ export async function dictionaryEntryAdd(word, defination) {
     path: 'dict.csv',
     header: [
         {id: 'word', title: 'word'},
-        {id: 'defination', title: 'defination'}
+        {id: 'definition', title: 'definition'}
     ],
     append: true,
     fieldDelimiter: ',',
@@ -35,7 +35,7 @@ export async function dictionaryEntryAdd(word, defination) {
 
   const entry = {
     word: word,
-    defination: defination,
+    definition: definition,
   };
 
   await csvWriter
@@ -48,24 +48,24 @@ export async function dictionaryEntryAdd(word, defination) {
 }
 
 export async function dictionarySearch({ topics, keywords, sub }) {
-  let definations = [];
+  let definitions = [];
   let score = 0;
 
-  let definations_topics = [];
-  let definations_keywords = [];
-  let definations_sub = [];
+  let definitions_topics = [];
+  let definitions_keywords = [];
+  let definitions_sub = [];
 
   const dict = fs.createReadStream("./dict.csv", { encoding: "utf8" })
                  .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 
-  // find definations
+  // find definitions
   for await (const entry of dict) {
     let isMatch = false;
 
     // topics has most priority
     for (const topic of topics) {
       if (entry[0].includes(topic)) {
-        definations_topics.push(entry);
+        definitions_topics.push(entry);
         isMatch = true;
         break;
       }
@@ -75,7 +75,7 @@ export async function dictionarySearch({ topics, keywords, sub }) {
     // keywords has second priority
     for (const keyword of keywords) {
       if (entry[0].includes(keyword)) {
-        definations_keywords.push(entry);
+        definitions_keywords.push(entry);
         isMatch = true;
         break;
       }
@@ -85,7 +85,7 @@ export async function dictionarySearch({ topics, keywords, sub }) {
     // ner and morph has third priority
     for (const s of sub) {
       if (entry[0].includes(s)) {
-        definations_sub.push(entry);
+        definitions_sub.push(entry);
         isMatch = true;
         break;
       }
@@ -93,26 +93,26 @@ export async function dictionarySearch({ topics, keywords, sub }) {
     if (isMatch) continue;
   }
 
-  for (const def of definations_topics) {
-    definations.push(def);
+  for (const def of definitions_topics) {
+    definitions.push(def);
     score += 5;
-    if (definations.length >= 8) break;
+    if (definitions.length >= 8) break;
   }
 
-  for (const def of definations_keywords) {
-    definations.push(def);
+  for (const def of definitions_keywords) {
+    definitions.push(def);
     score += 3;
-    if (definations.length >= 8) break;
+    if (definitions.length >= 8) break;
   }
 
-  for (const def of definations_sub) {
-    definations.push(def);
+  for (const def of definitions_sub) {
+    definitions.push(def);
     score += 1;
-    if (definations.length >= 8) break;
+    if (definitions.length >= 8) break;
   }
 
   return { 
-    def: definations, 
+    def: definitions, 
     score: score, 
   };
 }
@@ -124,7 +124,7 @@ export async function simpleDictionarySearch(keyword) {
   const csvRows = fs.createReadStream("./dict.csv", { encoding: "utf8" })
   .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 
-  // find definations
+  // find definitions
   for await (const entry of csvRows) {
     // keywords
     if (entry[0].includes(keyword)) {

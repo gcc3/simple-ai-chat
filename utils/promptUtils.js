@@ -38,19 +38,19 @@ export async function generateMessages(input, queryId, role, tokenizer) {
 
   // Dictionary search
   let score = 0;
-  let definations = [];
+  let definitions = [];
   if (process.env.DICT_SEARCH == "true") {
     console.log("--- dictionary search ---");
     const entries = await keywordExtraction(input);
     const dictionarySearchResult = await dictionarySearch(entries);
     score = dictionarySearchResult.score;
-    definations = dictionarySearchResult.def;
-    console.log("search result: " + definations.join("/ "));
+    definitions = dictionarySearchResult.def;
+    console.log("search result: " + definitions.join("/ "));
     console.log("dict search score: " + score + "\n");
 
-    // Add definations to messages
+    // Add definitions to messages
     dictionarySearchResult.def.map(entry => {
-      // At most push 5 definations
+      // At most push 5 definitions
       if (messages.length < 6) {
         const message = "The explanation for \"" + entry[0] + "\" is as follows\n\n\"\"\"\n" + entry[1] + "\n\"\"\"";
         if (token_ct + tokenizer.encode(message).length < token_limit - max_tokens) {
@@ -87,7 +87,7 @@ export async function generateMessages(input, queryId, role, tokenizer) {
   messages.push({ role: "user", content: input });
   return {
     messages: messages,
-    definations: definations,
+    definitions: definitions,
     score: score,
     token_ct: token_ct,
   };
