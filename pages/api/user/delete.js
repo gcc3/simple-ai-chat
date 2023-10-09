@@ -29,6 +29,10 @@ export default async function (req, res) {
 
   try {
     await deleteUser(username);
+
+    // Clear the auth token cookie
+    res.setHeader('Set-Cookie', `auth=; HttpOnly; Path=/; Max-Age=0`);
+    
     return res.status(200).json({ success: true, message: 'User deleted.' });
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
