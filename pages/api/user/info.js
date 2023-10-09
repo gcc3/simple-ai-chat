@@ -26,7 +26,11 @@ export default async function (req, res) {
         }
       });
     } else {
-      res.status(404).json({ error: 'User not found.' });
+      // Clear the auth token cookie
+      res.setHeader('Set-Cookie', `auth=; HttpOnly; Path=/; Max-Age=0`);
+
+      // Return user is removed when user not exist
+      res.status(404).json({ error: 'User has been removed.' });
     }
   } catch (error) {
     res.status(500).json({ error: 'Internal Server Error' });
