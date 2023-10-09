@@ -26,7 +26,7 @@ export default async function (req, res) {
     }
     
     // Generate password
-    const password = generatePassword(8);
+    const password = generatePassword();
 
     // password, email, settings, last_login, status, created_at
     await insertUser(username, password, "", initSettings("json"), "", "active", new Date());  

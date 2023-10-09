@@ -11,7 +11,7 @@ export function initSettings(format="json") {
   return newSettings;
 }
 
-export function generatePassword(length) {
+export function generatePassword(length=8) {
   var result = "";
   var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
   var charactersLength = characters.length;

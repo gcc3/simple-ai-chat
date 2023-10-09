@@ -1,5 +1,6 @@
-const fs = require("fs");
+import { generatePassword } from "./userUtils";
 
+const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
 
 const createDatabaseFile = () => {
@@ -14,6 +15,7 @@ const createDatabaseFile = () => {
 // Initialize the database
 const initializeDatabase = (db) => {
   return new Promise((resolve, reject) => {
+
     // Create logs table
     const createLogsTable = `
       CREATE TABLE IF NOT EXISTS logs (
@@ -51,6 +53,8 @@ const initializeDatabase = (db) => {
       });
     });
 
+    // Create root user
+    insertUser("root", generatePassword(), "root@localhost", "{}", "", "inactive", new Date());
     console.log("Database created.");
   });
 };
