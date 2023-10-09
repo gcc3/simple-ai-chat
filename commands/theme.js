@@ -1,12 +1,12 @@
 export default async function theme(args) {
-  const theme = args[0];
+  const value = args[0];
   
   if (value !== "light" && value !== "dark") {
     return "Usage: :theme [light/dark]";
   }
 
   // Update local setting
-  localStorage.setItem('theme', theme);
+  localStorage.setItem('theme', value);
 
   // There is user logged in
   // Update remote setting
@@ -20,7 +20,7 @@ export default async function theme(args) {
         },
         body: JSON.stringify({
           key: "theme",
-          value: theme,
+          value: value,
         }),
       });
 
