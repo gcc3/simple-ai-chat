@@ -8,7 +8,7 @@ import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen, reverseFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
-import { urlFormatter } from "utils/textUtils.js";
+import { urlFormatter, passwordFormatter } from "utils/textUtils.js";
 import ReactDOMServer from 'react-dom/server';
 
 // Status control
@@ -16,10 +16,14 @@ const STATES = { IDLE: 0, DOING: 1 };
 global.STATE = STATES.IDLE;  // a global state
 
 // Mutation observer
-global.outputMutationObserver = null;  // will setup in useEffect
+// will setup in useEffect
+global.inputMutationObserver = null;
+global.outputMutationObserver = null;
+
+// Raw output buffer
+global.rawOutput = "";
 
 // Print output
-global.rawOutput = "";
 function printOutput(text, ignoreFormatter=true, append=false) {
   const outputElement = document.getElementById("output");
 
@@ -168,25 +172,30 @@ export default function Home() {
     }
     getSystemInfo();
 
-    // Initialize global output mutation observer
-    global.outputMutationObserver = new MutationObserver(mutationsList => {
-      for (let mutation of mutationsList) {
-        if (mutation.type === 'childList' || mutation.type === 'characterData') {
-          // Formatter should only works when generating
-          if (global.STATE === STATES.DOING) {
-            markdownFormatter();
+    // Initialize global input mutation observer
+    global.inputMutationObserver = new MutationObserver(mutationsList => {
+      for (let mutation of mutationsList)
+        if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+          let input = mutation.target.value;
+          if (input.startsWith(':login')) {
+            //passwordFormatter();
           }
         }
-      }
+    });
+
+    // Initialize global output mutation observer
+    global.outputMutationObserver = new MutationObserver(mutationsList => {
+      for (let mutation of mutationsList)
+        if (mutation.type === 'childList' || mutation.type === 'characterData')
+          // Formatter should only works when generating
+          if (global.STATE === STATES.DOING) 
+            markdownFormatter();
     });
 
     // Start observing
-    global.outputMutationObserver.observe(document.getElementById("output"), { 
-      childList: true, 
-      attributes: false, 
-      subtree: true, 
-      characterData: true 
-    });
+    const observingConfig = { childList: true, attributes: true, subtree: true, characterData: true };
+    global.inputMutationObserver.observe(document.getElementById("input"), observingConfig);
+    global.outputMutationObserver.observe(document.getElementById("output"), observingConfig);
   }, []);
 
   // On submit input
