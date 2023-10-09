@@ -25,17 +25,18 @@ export default async function (req, res) {
         });
     }
     
+    // Generate password
     const password = generatePassword(8);
-    const settings = initSettings("json");
-    const created_at = new Date();
 
     // password, email, settings, last_login, status, created_at
-    await insertUser(username, password, "", settings, "", "active", created_at);  
+    await insertUser(username, password, "", initSettings("json"), "", "active", new Date());  
 
     // No error
     return res.status(200).json({ 
         success: true,
-        message: "User \"" + username + "\" is created with password \"" + password + "\"."
+        username: username,
+        password: password,
+        message: "User \"" + username + "\" is created with password \"" + password + "\".",
       });
   } catch (error) {
     console.error(error.message);
