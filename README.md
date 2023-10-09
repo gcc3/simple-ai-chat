@@ -120,9 +120,10 @@ Setup
    Create `log.config`  
    Create `log.txt`  
    Create `.env` from `.env.example`  
-   Create `dict.csv` from `dict.csv.example` (optional)  
+   Create `dict.csv` from `dict.csv.example` (required if turn on the dictionary search.)  
    Create `role.csv` from `role.csv.example` (optional)  
-   `role.csv` is get from https://github.com/f/awesome-chatgpt-prompts  
+   `role.csv.example` is got from https://github.com/f/awesome-chatgpt-prompts  
+   * `db.sqlite` will be created automatically.  
 
 3. Build and run the app.  
    `$ npm run build`  
@@ -136,7 +137,7 @@ Setup
 Get from https://platform.openai.com/account/api-keys  
 
 * MODEL  
-gpt-3.5-turbo, etc...
+`gpt-4`, `gpt-3.5-turbo`, etc...
 
 * END_POINT  
 Now support chat_completion, text_completion  
@@ -232,7 +233,7 @@ Generate with `openssl rand -hex 16`.
 log.config
 ----------
 
-Can setup output log filter rules.  
+Can setup output log filter rules for not storing testing messages.  
 One row one rule.  
 Example:  `IP=127.0.0.1`, `USER=username`  
 
