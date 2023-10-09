@@ -1,5 +1,5 @@
 import { insertUser, getUser } from "utils/sqliteUtils.js";
-import { generateSettings, generatePassword } from "utils/userUtils.js";
+import { generatePassword } from "utils/userUtils.js";
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -29,7 +29,11 @@ export default async function (req, res) {
     const password = generatePassword();
 
     // password, email, settings, last_login, status, created_at
-    await insertUser(username, password, "", "", "", "active", new Date());  
+    await insertUser(username, password, "", "", "", "active", new Date());
+    await updateUserSettings(username, "role", localStorage.getItem("role") || "");
+    await updateUserSettings(username, "theme", localStorage.getItem("theme") || "light");
+    await updateUserSettings(username, "speak", localStorage.getItem("speak") || "off");
+    await updateUserSettings(username, "stats", localStorage.getItem("stats") || "on");
 
     // No error
     return res.status(200).json({ 

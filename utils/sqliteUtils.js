@@ -1,4 +1,4 @@
-import { generatePassword, generateSettings } from "./userUtils";
+import { generatePassword } from "./userUtils";
 
 const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
@@ -64,8 +64,13 @@ const getDatabaseConnection = async () => {
     const db = createDatabaseFile();
     await initializeDatabase(db);
 
-    // Create root user
-    insertUser("root", generatePassword(), "root@localhost", "", "", "inactive", new Date());
+    // Create root user with defatut settings
+    await insertUser("root", generatePassword(), "root@localhost", "", "", "inactive", new Date());
+    await updateUserSettings("root", "role", "");
+    await updateUserSettings("root", "theme", "light");
+    await updateUserSettings("root", "speak", "off");
+    await updateUserSettings("root", "stats", "off");
+
     return db;
   }
 

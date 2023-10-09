@@ -1,11 +1,11 @@
-export function generateSettings(format="json") {
+export function generateSettings(format="json", role="", theme="light", speak="off", stats="on") {
   let newSettings = {};
   
   // Default settings
-  newSettings["role"] = "";
-  newSettings["theme"] = "light";
-  newSettings["speak"] = "off";
-  newSettings["stats"] = "on";
+  newSettings["role"] = role;
+  newSettings["theme"] = theme;
+  newSettings["speak"] = speak;
+  newSettings["stats"] = stats;
 
   if (format === "json") {
     return JSON.stringify(newSettings);
