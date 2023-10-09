@@ -1,5 +1,5 @@
 import { insertUser, getUser } from "utils/sqliteUtils.js";
-import { initSettings, generatePassword } from "utils/userUtils.js";
+import { generateSettings, generatePassword } from "utils/userUtils.js";
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -29,7 +29,7 @@ export default async function (req, res) {
     const password = generatePassword();
 
     // password, email, settings, last_login, status, created_at
-    await insertUser(username, password, "", initSettings("json"), "", "active", new Date());  
+    await insertUser(username, password, "", generateSettings("json"), "", "active", new Date());  
 
     // No error
     return res.status(200).json({ 

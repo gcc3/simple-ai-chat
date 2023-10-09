@@ -1,11 +1,11 @@
-export function initSettings(format="json") {
+export function generateSettings(format="json") {
   let newSettings = {};
   
   // Default settings
-  newSettings["role"] = "";
-  newSettings["theme"] = "light";
-  newSettings["speak"] = "off";
-  newSettings["stats"] = "on";
+  newSettings["role"] = localStorage.getItem("role");
+  newSettings["theme"] = localStorage.getItem("theme");
+  newSettings["speak"] = localStorage.getItem("useSpeak") === "true" ? "on" : "off";
+  newSettings["stats"] = localStorage.getItem("useStats") === "true" ? "on" : "off";
 
   if (format === "json") {
     return JSON.stringify(newSettings);

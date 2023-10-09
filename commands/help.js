@@ -13,7 +13,7 @@ export default function help(args) {
     ":location [on|off] - Switch on/off location service.\n" +
     ":log - Show current session log.\n" +
     ":log [session_id] - Show session logs.\n" +
-    ":stats [on|off|show|hide] - Show/hide stats info.\n" +
+    ":stats [on|off] - Show/hide stats info and scores.\n" +
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":speak [on|off] - Switch on/off auto speak.\n" +
     ":voice [ls|list] - List all supported voices.\n" +
@@ -26,7 +26,6 @@ export default function help(args) {
     ":user [ls|list] - List all users.\n" +
     ":user [add|delete| [username] - Create or delete a user.\n" +
     ":user set [pass/email] [value] - Change password, set Email.\n" +
-    ":user set [key] [value] - Set user settings.\n" +
     ":user info - Get logged-in user info and settings.\n" +
     ":login [username] [password] - Login user.\n" +
     ":logout - Logout user.\n" +

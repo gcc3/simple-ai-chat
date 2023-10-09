@@ -43,6 +43,14 @@ export default async function login(args) {
       if (settings.role) {
         localStorage.setItem("role", settings.role);
       }
+
+      if (settings.speak) {
+        localStorage.setItem("useSpeak", settings.speak == "on" ? "true" : "false");
+      }
+
+      if (settings.stats) {
+        localStorage.setItem("useStats", settings.stats == "on" ? "true" : "false");
+      }
     }
 
     return "Login successful.";

@@ -419,7 +419,7 @@ export default function Home() {
         urlFormatter();
 
         // Try speak some rest text
-        if (localStorage.getItem('useSpeak') === "true") {
+        if (localStorage.getItem("useSpeak") === "true") {
           let restText = global.rawOutput.replace(textSpoken, "");
           restText = restText.replaceAll("<br>", " ");
           if (restText.length > 0)
@@ -450,7 +450,7 @@ export default function Home() {
         printOutput(output, false, true);
 
         // Try speak
-        if (localStorage.getItem('useSpeak') === "true") {
+        if (localStorage.getItem("useSpeak") === "true") {
           textSpoken = trySpeak(global.rawOutput, textSpoken);
         }
       }

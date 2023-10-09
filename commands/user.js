@@ -190,69 +190,9 @@ export default async function entry(args) {
     }
   }
 
-  // Set settings
-  if (command === "set") {
-    if (args.length != 3) {
-      return "Usage: :user set [key] [value]";
-    }
-
-    const key = args[1];
-    let value = args[2];
-
-    // Value trim and validiation
-    if (value.startsWith('"') && value.endsWith('"')) {
-      value = value.substring(1, value.length - 1);
-    }
-
-    // Check key is valid
-    const validKeys = ['theme', 'role', 'speak', 'stats'];
-    if (!validKeys.includes(key)) {
-      return "Vaild keys: \n" + 
-             "theme [dark/light]\n" +
-             " role [role_name]\n" +
-             "speak [on/off]\n" +
-             "stats [on/off]\n";
-    }
-
-    // Update remote settings
-    try {
-      const response = await fetch("/api/user/update/settings", {
-        method: "POST",
-        credentials: 'include',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          key: key,
-          value: value,
-        }),
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      // Set local settings too
-      if (key === "theme") {
-        localStorage.setItem("theme", value);
-        setTheme(localStorage.getItem("theme"));
-      }
-      if (key === "role") {
-        localStorage.setItem("role", value);
-      }
-
-      return "Setting updated.";
-    } catch (error) {
-      console.error(error);
-      return error;
-    }
-  }
-
   return (
     "Usage: :user add [username]" + "\n" +
     "       :user set [pass/email] [value]" + "\n" +
-    "       :user set [key] [value]" + "\n" +
     "       :user info" + "\n"
   );
 }
