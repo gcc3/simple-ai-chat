@@ -8,7 +8,7 @@ export default async function (req, res) {
   }
 
   // User required username
-  const { username } = req.body;
+  const { username, settings } = req.body;
 
   // validation
   if (!username) {
@@ -27,13 +27,8 @@ export default async function (req, res) {
     
     // Generate password
     const password = generatePassword();
-
-    // password, email, settings, last_login, status, created_at
-    await insertUser(username, password, "", "", "", "active", new Date());
-    await updateUserSettings(username, "role", localStorage.getItem("role") || "");
-    await updateUserSettings(username, "theme", localStorage.getItem("theme") || "light");
-    await updateUserSettings(username, "speak", localStorage.getItem("speak") || "off");
-    await updateUserSettings(username, "stats", localStorage.getItem("stats") || "on");
+    await insertUser(username, password,    "", settings,         "", "active", new Date());
+                  // username, password, email, settings, last_login,   status, created_at
 
     // No error
     return res.status(200).json({ 

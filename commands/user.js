@@ -76,6 +76,12 @@ export default async function entry(args) {
         },
         body: JSON.stringify({
           username: username,
+          settings: JSON.stringify({
+            role:  localStorage.getItem("role") || "",
+            theme: localStorage.getItem("theme") || "light",
+            speak: localStorage.getItem("speak") || "off",
+            stats: localStorage.getItem("stats") || "on",
+          }),
         }),
       });
 
