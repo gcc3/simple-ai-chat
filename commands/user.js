@@ -69,6 +69,40 @@ export default async function entry(args) {
     }
   }
 
+  // Delete user
+  if (command === "delete") {
+    if (args.length != 2) {
+      return "Usage: :user add [username]";
+    }
+
+    const username = args[1];
+    try {
+      const response = await fetch("/api/user/delete", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      if (data.success) {
+        localStorage.removeItem("user");
+        localStorage.removeItem("userSettings");
+      }
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
   // Set password
   if (command === "set" && args[1] === "pass") {
     if (args.length != 3) {
