@@ -11,6 +11,6 @@ export default async function system(args) {
     throw data.error || new Error(`Request failed with status ${response.status}`);
   }
 
-  const system = JSON.stringify(data.result).replace(/[{}]/g, "").split(",").join("\n");
+  const system = JSON.stringify(data.result, null, 2);
   return system;
 }
