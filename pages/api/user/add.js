@@ -34,7 +34,9 @@ export default async function (req, res) {
     // No error
     return res.status(200).json({ 
         success: true,
-        message: "User \"" + username + "\" is created with password \"" + password + "\"."
+        username: username,
+        password: password,
+        message: "User \"" + username + "\" is created with password \"" + password + "\".",
       });
   } catch (error) {
     console.error(error.message);
