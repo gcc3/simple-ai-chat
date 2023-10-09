@@ -232,6 +232,24 @@ const updateUserEmail = async (username, newEmail) => {
   }
 };
 
+const emailExists = async (email) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("SELECT * FROM users WHERE email = ?");
+      stmt.get([email], function (err, row) {
+        if (err) {
+          reject(err);
+        }
+        resolve(row);
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const updateUserLastLogin = async (username, lastLogin) => {
   const db = await getDatabaseConnection();
   try {
@@ -325,4 +343,5 @@ module.exports = {
   updateUserLastLogin,
   updateUserSettings,
   updateUserStatus,
+  emailExists,
 };
