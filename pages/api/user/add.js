@@ -29,7 +29,7 @@ export default async function (req, res) {
     const password = generatePassword();
 
     // password, email, settings, last_login, status, created_at
-    await insertUser(username, password, "", generateSettings("json"), "", "active", new Date());  
+    await insertUser(username, password, "", generateSettings(), "", "active", new Date());  
 
     // No error
     return res.status(200).json({ 
