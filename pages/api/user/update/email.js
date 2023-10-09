@@ -24,9 +24,9 @@ export default async function (req, res) {
   }
 
   // Check if the email already exists in the database.
-  const user = await emailExists(email);
-  if (user) {
-    return res.status(400).json({ error: 'Email already used by user \"' + user.username + '\".' });
+  const emailUser = await emailExists(email);
+  if (emailUser) {
+    return res.status(400).json({ error: 'Email already used by user \"' + emailUser.username + '\".' });
   }
 
   try {
