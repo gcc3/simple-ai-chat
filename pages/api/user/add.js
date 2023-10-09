@@ -23,9 +23,15 @@ export default async function (req, res) {
         });
     }
 
+    // Default settings
+    let newSettings = {};
+    newSettings["role"] = "";
+    newSettings["theme"] = "light";
+    
+    const settings = JSON.stringify(newSettings);
     const password = generateRandomString(8);
     const created_at = new Date();
-    await insertUser(username, password, "", "", "", "active", created_at);  // password, email, settings, last_login, status, created_at
+    await insertUser(username, password, "", settings, "", "active", created_at);  // password, email, settings, last_login, status, created_at
                                                                              // insertUser will also check the user existance
 
     // No error

@@ -28,12 +28,12 @@ export default async function (req, res) {
   }
 
   const input = req.body.input || "";
-  const definations = req.body.definations || "";
+  const definitions = req.body.definitions || "";
   const functionResult = req.body.functionResult || "";
   const result_text = req.body.result_text || "";
 
   try {
-    evaluate(input, definations, functionResult, result_text).then((eval_result) => {
+    evaluate(input, definitions, functionResult, result_text).then((eval_result) => {
       // Output the result
       res.status(200).json({
         result:{
@@ -57,7 +57,7 @@ export default async function (req, res) {
   }
 }
 
-export async function evaluate(input, definations, additionalInfo, result_text) {
+export async function evaluate(input, definitions, additionalInfo, result_text) {
   if (!configuration.apiKey) {
     return "error";
   }
@@ -66,9 +66,9 @@ export async function evaluate(input, definations, additionalInfo, result_text) 
   const eval_message = [];
   let dictionary_message = "";
   if (process.env.DICT_SEARCH === "true") {
-    dictionary_message = definations.length == 0 ? 
+    dictionary_message = definitions.length == 0 ? 
     "There is completely no information found." : 
-    "The dictionary search result in JSON format is: " + JSON.stringify(definations);
+    "The dictionary search result in JSON format is: " + JSON.stringify(definitions);
   }
   const additional_info_message = additionalInfo.length == 0 ?
   "There is completely no information found." :

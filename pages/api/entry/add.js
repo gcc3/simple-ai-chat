@@ -3,18 +3,18 @@ import { dictionaryEntryAdd } from 'utils/dictionaryUtils';
 export default async function (req, res) {
   try {
     const word = req.body.word || "";
-    const defination = req.body.defination || "";
-    if (word === "" || defination === "") {
-      throw new Error("Missing word or defination.");
+    const definition = req.body.definition || "";
+    if (word === "" || definition === "") {
+      throw new Error("Missing word or definition.");
     }
 
-    const entry = await dictionaryEntryAdd(word, defination);
+    const entry = await dictionaryEntryAdd(word, definition);
 
     // Output the result
     res.status(200).json({
       result: {
         word: entry.word,
-        defination: entry.defination
+        definition: entry.definition
       },
     });
   } catch (error) {
