@@ -3,6 +3,32 @@ import { setTheme } from "utils/themeUtils.js";
 export default async function entry(args) {
   const command = args[0];
 
+  // List users
+  if (command === "list" || command === "ls") {
+    try {
+      const response = await fetch("/api/user/list", {
+        method: "GET",
+        credentials: 'include',
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      const users = data.users;
+      let output = "";
+      for (let i = 0; i < users.length; i++) {
+        const user = users[i];
+        output += user.username + " ";
+      }
+      return output;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
   // Get user info, configurations
   if (command === "info") {
     let user = null;
@@ -72,7 +98,7 @@ export default async function entry(args) {
   // Delete user
   if (command === "delete") {
     if (args.length != 2) {
-      return "Usage: :user add [username]";
+      return "Usage: :user delete [username]";
     }
 
     const username = args[1];
@@ -164,68 +190,9 @@ export default async function entry(args) {
     }
   }
 
-  // Set settings
-  if (command === "set") {
-    if (args.length != 3) {
-      return "Usage: :user set theme [light/dark]" + "\n" +
-             "       :user set role [role]" + "\n";
-    }
-
-    const key = args[1];
-    let value = args[2];
-
-    // Value trim and validiation
-    if (value.startsWith('"') && value.endsWith('"')) {
-      value = value.substring(1, value.length - 1);
-    }
-
-    // Check key is valid
-    const validKeys = ['theme', 'role'];
-    if (!validKeys.includes(key)) {
-      return "Usage: :user set theme [light/dark]" + "\n" +
-             "       :user set role [role]" + "\n";
-    }
-
-    // Update remote settings
-    try {
-      const response = await fetch("/api/user/update/settings", {
-        method: "POST",
-        credentials: 'include',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          key: key,
-          value: value,
-        }),
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      // Set local settings too
-      if (key === "theme") {
-        localStorage.setItem("theme", value);
-        setTheme(localStorage.getItem("theme"));
-      }
-      if (key === "role") {
-        localStorage.setItem("role", value);
-      }
-
-      return "Setting updated.";
-    } catch (error) {
-      console.error(error);
-      return error;
-    }
-  }
-
   return (
     "Usage: :user add [username]" + "\n" +
-    "       :user set pass [password]" + "\n" +
-    "       :user set email [email]" + "\n" +
-    "       :user set [key] [value]" + "\n" +
+    "       :user set [pass/email] [value]" + "\n" +
     "       :user info" + "\n"
   );
 }

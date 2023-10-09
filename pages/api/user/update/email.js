@@ -1,4 +1,4 @@
-import { updateUserEmail } from 'utils/sqliteUtils.js';
+import { updateUserEmail, emailExists } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 
 export default async function (req, res) {
@@ -21,6 +21,12 @@ export default async function (req, res) {
   }
   if (!email.includes('@')) {
     return res.status(400).json({ error: 'Email is invalid.' });
+  }
+
+  // Check if the email already exists in the database.
+  const emailUser = await emailExists(email);
+  if (emailUser) {
+    return res.status(400).json({ error: 'Email already used by user \"' + emailUser.username + '\".' });
   }
 
   try {

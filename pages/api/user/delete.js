@@ -23,7 +23,7 @@ export default async function (req, res) {
   const { id, username: authUsername } = authResult.user;
 
   // Check permission
-  if (authUsername !== username) {
+  if (authUsername !== username && authUsername !== "root") {
     return res.status(401).json({ error: "Permission denied." });
   }
 

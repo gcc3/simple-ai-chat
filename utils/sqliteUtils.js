@@ -1,5 +1,6 @@
-const fs = require("fs");
+import { generatePassword } from "./userUtils";
 
+const fs = require("fs");
 const sqlite3 = require("sqlite3").verbose();
 
 const createDatabaseFile = () => {
@@ -14,6 +15,7 @@ const createDatabaseFile = () => {
 // Initialize the database
 const initializeDatabase = (db) => {
   return new Promise((resolve, reject) => {
+
     // Create logs table
     const createLogsTable = `
       CREATE TABLE IF NOT EXISTS logs (
@@ -61,6 +63,14 @@ const getDatabaseConnection = async () => {
 
     const db = createDatabaseFile();
     await initializeDatabase(db);
+
+    // Create root user with defatut settings
+    await insertUser("root", generatePassword(), "root@localhost", "", "", "inactive", new Date());
+    await updateUserSettings("root", "role", "");
+    await updateUserSettings("root", "theme", "light");
+    await updateUserSettings("root", "speak", "off");
+    await updateUserSettings("root", "stats", "off");
+
     return db;
   }
 
@@ -114,6 +124,22 @@ const getUser = async (username) => {
   try {
     return await new Promise((resolve, reject) => {
       db.get(`SELECT * FROM users WHERE username = ?`, [username], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const getUsers = async () => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT username, email FROM users`, [], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -232,6 +258,24 @@ const updateUserEmail = async (username, newEmail) => {
   }
 };
 
+const emailExists = async (email) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("SELECT * FROM users WHERE email = ?");
+      stmt.get([email], function (err, row) {
+        if (err) {
+          reject(err);
+        }
+        resolve(row);
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const updateUserLastLogin = async (username, lastLogin) => {
   const db = await getDatabaseConnection();
   try {
@@ -317,6 +361,7 @@ module.exports = {
   insertLog,
 
   // users
+  getUsers,
   getUser,
   insertUser,
   deleteUser,
@@ -325,4 +370,5 @@ module.exports = {
   updateUserLastLogin,
   updateUserSettings,
   updateUserStatus,
+  emailExists,
 };
