@@ -53,8 +53,6 @@ const initializeDatabase = (db) => {
       });
     });
 
-    // Create root user
-    insertUser("root", generatePassword(), "root@localhost", "{}", "", "inactive", new Date());
     console.log("Database created.");
   });
 };
@@ -65,6 +63,9 @@ const getDatabaseConnection = async () => {
 
     const db = createDatabaseFile();
     await initializeDatabase(db);
+
+    // Create root user
+    insertUser("root", generatePassword(), "root@localhost", "{}", "", "inactive", new Date());
     return db;
   }
 
