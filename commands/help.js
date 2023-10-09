@@ -26,8 +26,8 @@ export default function help(args) {
     ":user [ls|list] - List all users.\n" +
     ":user [add|delete| [username] - Create or delete a user.\n" +
     ":user set [pass/email] [value] - Change password, set Email.\n" +
-    ":user set [key] [value] - Set user config.\n" +
-    ":user info - Get logged-in user info and config.\n" +
+    ":user set [key] [value] - Set user settings.\n" +
+    ":user info - Get logged-in user info and settings.\n" +
     ":login [username] [password] - Login user.\n" +
     ":logout - Logout user.\n" +
     ":info - Show local config.\n" +
