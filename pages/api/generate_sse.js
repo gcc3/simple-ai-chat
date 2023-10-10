@@ -165,8 +165,8 @@ export default async function (req, res) {
       }
 
       if (use_node_ai && force_node_ai_query) {
-        console.log("--- core ai query ---");
-        // Feed message with core AI query result
+        console.log("--- node ai query ---");
+        // Feed message with AI node query result
         const nodeAiQueryResult = await executeFunction("query_node_ai", "query=" + input);
         if (nodeAiQueryResult === undefined) {
           console.log("response: undefined.\n");
@@ -185,7 +185,7 @@ export default async function (req, res) {
       let refer_doc = "none";
       if (use_vector && force_vector_query) {
         console.log("--- vector query ---");
-        // Feed message with core AI query result
+        // Feed message with AI node query result
         const vectorQueryResult = await executeFunction("query_vector", "query=" + input);
         if (vectorQueryResult === undefined) {
           console.log("response: undefined.\n");
