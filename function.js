@@ -64,7 +64,7 @@ export function getFunctions() {
   // get weather
   functions.push({
     name: 'get_weather',
-    description: 'Get weather for a given location or city.',
+    description: 'Get weather for a given location or city, e.g. San Francisco, CA. Do not use it except user asks for it.',
     parameters: {
       type: "object",
       properties: {
