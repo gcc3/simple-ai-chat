@@ -11,7 +11,10 @@ export function markdownFormatter() {
         const pattern = new RegExp(`#{${i}}([^#]+)#{${i}}`, 'g');
         output = output.replace(pattern, `<h${i}>$1</h${i}>`);
       }
-    
+
+      // Replace the ```code_language_name to ```code to remove the language name
+      output = output.replace(/```(\w+)/g, '```');
+      
       // Replace markdown and other patterns
       output = output
         .replace(/```([^`]+)```/g, '<pre>$1</pre>')                   // Multi-line code blocks
