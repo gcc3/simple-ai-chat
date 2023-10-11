@@ -27,9 +27,9 @@ export function executeFunction(functionName, functionArgs) {
     return getWeather(args.location);
   }
   
-  // call core AI to get help
+  // call other AI node to get help
   if (functionName === "query_node_ai") {
-    if (process.env.USE_NODE_AI !== "true") return "Core AI is not enabled.";
+    if (process.env.USE_NODE_AI !== "true") return "AI Node is not enabled.";
     return queryNodeAi(args.query);
   }
 
@@ -77,12 +77,12 @@ export function getFunctions() {
     }
   });
 
-  // query core AI
-  // only if core AI is enabled
+  // query AI node
+  // only if AI node is enabled
   if (process.env.USE_NODE_AI === "true") {
     functions.push({
       name: 'query_node_ai',
-      description: 'Get support or data or assistant from another AI.',
+      description: 'Get support or data or assistant from another AI if you totally do not know the answer.',
       parameters: {
         type: "object",
         properties: {

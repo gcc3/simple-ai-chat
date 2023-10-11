@@ -97,6 +97,11 @@ The API response format:
 Also, 2 projects [simple-ai-node](https://github.com/gcc3/simple-ai-node) and [simple-ai-hub](https://github.com/gcc3/simple-ai-hub) are provided.  
 To use multiple AI node, a AI hub is suggested, it can send query to multipe node simultaneously.  
 
+To use AI links:  
+
+1. Set `USE_NODE_AI` to `true`.  
+2. Set `NODE_AI_URL` to the AI node.  
+
 
 Shortcuts
 ---------
@@ -201,10 +206,10 @@ To use multiple node, consider use [Simple AI Hub](https://github.com/gcc3/simpl
 Function calling: `query_node_ai(query)`  
 
 * NODE_AI_URL  
-To set up the core AI API url.  
+To set up the node AI API url.  
 
 * FORCE_NODE_AI_QUERY  
-Force to query core AI for every query.  
+Force to query node AI for every query.  
 
 * USE_VECTOR  
 Control enable vectara (vector database), value should be `true` or `false`.  
