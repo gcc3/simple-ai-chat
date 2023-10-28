@@ -8,7 +8,7 @@ import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen, reverseFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
-import { urlFormatter, passwordFormatter } from "utils/textUtils.js";
+import { urlFormatter, passwordFormatter, maskPassword } from "utils/textUtils.js";
 import ReactDOMServer from 'react-dom/server';
 
 // Status control
@@ -20,7 +20,8 @@ global.STATE = STATES.IDLE;  // a global state
 global.inputMutationObserver = null;
 global.outputMutationObserver = null;
 
-// Raw output buffer
+// Raw input/output buffer
+global.rawInput = "";
 global.rawOutput = "";
 
 // Print output
@@ -177,9 +178,16 @@ export default function Home() {
       for (let mutation of mutationsList)
         if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
           let input = mutation.target.value;
-          if (input.startsWith(':login')) {
-            //passwordFormatter();
+
+          // Password input
+          if (input.startsWith(':login') || input.startsWith(':user set pass')) {
+            global.rawInput = input.replace(/\*/g, (match, index) => global.rawInput[index] || '');  // store real password
+            passwordFormatter();
+            return;
           }
+          
+          // General input
+          global.rawInput = input;
         }
     });
 
@@ -188,8 +196,11 @@ export default function Home() {
       for (let mutation of mutationsList)
         if (mutation.type === 'childList' || mutation.type === 'characterData')
           // Formatter should only works when generating
-          if (global.STATE === STATES.DOING) 
+          if (global.STATE === STATES.DOING) {
+
+            // Markdown formatter
             markdownFormatter();
+          }
     });
 
     // Start observing
@@ -210,13 +221,17 @@ export default function Home() {
     }
 
     // Pre-process the input
-    const input = userInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+    const input = global.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
     if (input.length == 0) return;
 
-    // Clear input
-    setPlaceholder(userInput);
+    // Clear input and put it to placeholder
+    let placeholder = userInput;
+    if (userInput.startsWith(":login") || userInput.startsWith(":user set pass")) {
+      placeholder = maskPassword(placeholder);  // make sure the password is masked
+    }
+    setPlaceholder(placeholder);
     setUserInput("");
 
     // Command input
@@ -350,7 +365,7 @@ export default function Home() {
         return;
       }
 
-      // Evaluation
+      // Evaluation result
       if (event.data.startsWith("###EVAL###")) {
         const evaluation = event.data.replace("###EVAL###", "");
         const val = parseInt(evaluation);
@@ -367,6 +382,7 @@ export default function Home() {
         return;
       }
 
+      // Stats
       if (event.data.startsWith("###STATS###")) {
         if (localStorage.getItem('useStats') === "true") {
           const stats = event.data.replace("###STATS###", "").split(',');
@@ -445,7 +461,7 @@ export default function Home() {
         return;
       }
 
-      // Handle the stream output
+      // Stream output
       let output = event.data;
       output = output.replaceAll("###RETURN###", '<br>');
       

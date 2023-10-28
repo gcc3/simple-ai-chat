@@ -1,4 +1,3 @@
-
 import { updateUserStatus } from "utils/sqliteUtils.js";
 
 export default (req, res) => {
