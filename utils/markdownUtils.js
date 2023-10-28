@@ -13,9 +13,6 @@ export function markdownFormatter() {
       output = output
         .replace(/```([^`]+)```/g, '<pre>$1</pre>')              // Multi-line code blocks
         .replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>')     // Inline code
-        .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')      // Bold
-        .replace(/\*([^*]+)\*/g, '<em>$1</em>')                  // Italic
-        .replace(/~~([^~]+)~~/g, '<del>$1</del>')                // Strikethrough
 
         // Clean up <pre> tags
         .replace(/<pre>\s*(\w+)?\s*<br>/g, '<pre>')              // Remove language name followed by <br> after <pre>
