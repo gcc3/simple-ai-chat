@@ -180,7 +180,7 @@ export default function Home() {
           let input = mutation.target.value;
 
           // Password input
-          if (input.startsWith(':login')) {
+          if (input.startsWith(':login') || input.startsWith(':user set pass')) {
             global.rawInput = input.replace(/\*/g, (match, index) => global.rawInput[index] || '');  // store real password
             passwordFormatter();
             return;
@@ -228,8 +228,8 @@ export default function Home() {
 
     // Clear input and put it to placeholder
     let placeholder = userInput;
-    if (userInput.startsWith(":login")) {
-      placeholder = maskPassword(placeholder);
+    if (userInput.startsWith(":login") || userInput.startsWith(":user set pass")) {
+      placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     setPlaceholder(placeholder);
     setUserInput("");
