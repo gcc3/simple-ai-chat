@@ -20,7 +20,8 @@ global.STATE = STATES.IDLE;  // a global state
 global.inputMutationObserver = null;
 global.outputMutationObserver = null;
 
-// Raw output buffer
+// Raw input/output buffer
+global.rawInput = "";
 global.rawOutput = "";
 
 // Print output
@@ -177,9 +178,16 @@ export default function Home() {
       for (let mutation of mutationsList)
         if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
           let input = mutation.target.value;
+
+          // Password input
           if (input.startsWith(':login')) {
-            //passwordFormatter();
+            global.rawInput = input.replace(/\*/g, (match, index) => global.rawInput[index] || '');  // store real password
+            passwordFormatter();
+            return;
           }
+          
+          // General input
+          global.rawInput = input;
         }
     });
 
@@ -188,8 +196,11 @@ export default function Home() {
       for (let mutation of mutationsList)
         if (mutation.type === 'childList' || mutation.type === 'characterData')
           // Formatter should only works when generating
-          if (global.STATE === STATES.DOING) 
+          if (global.STATE === STATES.DOING) {
+
+            // Markdown formatter
             markdownFormatter();
+          }
     });
 
     // Start observing
