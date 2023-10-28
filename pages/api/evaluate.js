@@ -55,10 +55,6 @@ export default async function (req, res) {
 }
 
 export async function evaluate(input, definitions, additionalInfo, result_text) {
-  if (!configuration.apiKey) {
-    return "error";
-  }
-
   // Create evaluation message
   const eval_message = [];
   let dictionary_message = "";

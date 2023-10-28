@@ -123,13 +123,17 @@ export default async function (req, res) {
                                   // IMPORTANT! without this the stream not working on remote server
     });
 
+    // Message base
     const generateMessagesResult = await generateMessages(input, queryId, role, tokenizer);
     definitions = generateMessagesResult.definitions;
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
 
+    // Additional information
     let additionalInfo = "";
+
+    // 1. Location info
     if (use_location === "true" && location) {
       // localtion example: (40.7128, -74.0060)
       const lat = location.slice(1, -1).split(",")[0];
@@ -148,6 +152,7 @@ export default async function (req, res) {
       additionalInfo += locationMessage;
     }
 
+    // 2. Function calling result
     if (do_function_calling) {
       // Feed message with function calling result
       messages.push({
@@ -158,6 +163,7 @@ export default async function (req, res) {
       additionalInfo += functionResult;
     }
 
+    // 3. Node AI response
     if (use_node_ai && force_node_ai_query) {
       console.log("--- node ai query ---");
       // Feed message with AI node query result
@@ -176,6 +182,7 @@ export default async function (req, res) {
       }
     }
 
+    // 4. Vector database query result
     let refer_doc = "none";
     if (use_vector && force_vector_query) {
       console.log("--- vector query ---");
@@ -205,117 +212,62 @@ export default async function (req, res) {
     console.log(JSON.stringify(messages) + "\n");
 
     // endpoint: /v1/chat/completions
-    let chatCompletion;
-    if (use_function_calling) {
-      chatCompletion = openai.chat.completions.create({
-        model: process.env.MODEL,
-        messages: messages,
-        temperature: temperature,
-        top_p: top_p,
-        max_tokens: max_tokens,
-        stream: true,
-        functions: getFunctions(),  // function calling
+    const chatCompletion = await openai.chat.completions.create({
+      model: process.env.MODEL,
+      messages,
+      temperature,
+      top_p,
+      max_tokens,
+      stream: true,
+      ...(use_function_calling && {
+        functions: getFunctions(),
         function_call: "auto"
-      }, { responseType: "stream" });
-    } else {
-      chatCompletion = openai.chat.completions.create({
-        model: process.env.MODEL,
-        messages: messages,
-        temperature: temperature,
-        top_p: top_p,
-        max_tokens: max_tokens,
-        stream: true,
-      }, { responseType: "stream" });
-    }
+      })
+    });
 
     res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
     res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName},${refer_doc}\n\n`);
+    res.flush();
 
-    chatCompletion.then(resp => {
-      resp.data.on('data', data => {
-        const lines = data.toString().split('\n').filter(line => line.trim() !== '');
-        for (const line of lines) {
-          const chunkData = line.replace(/^data: /, '');
-          
-          // handle the DONE signal
-          if (chunkData === '[DONE]') {
+    for await (const part of chatCompletion) {
+      // handle function calling
+      const function_call = part.choices[0].delta.function_call;
+      if (function_call) {
+        res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`);
+        res.flush();
+      }
 
-            // Evaluate result
-            if (use_eval && use_stats === "true" && result_text.trim().length > 0) {
-              evaluate(input, definitions, additionalInfo, result_text).then((eval_result) => {
-                res.write(`data: ###EVAL###${eval_result}\n\n`);
-                console.log("eval: " + eval_result + "\n");
+      // handle message
+      const content = part.choices[0].delta.content;
+      if (content) {
+        result_text += content;
+        let message = content.replaceAll("\n", "###RETURN###");
+        res.write(`data: ${message}\n\n`);
+        res.flush();
+      }
+    }
 
-                // Done message
-                res.write(`data: [DONE]\n\n`)
-
-                if (result_text.trim().length === 0) result_text = "(null)";
-                console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
-                console.log(result_text + "\n");
-                logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
-                res.flush();
-                res.end();
-                return
-              });
-              return;
-            }
-
-            // Done message
-            res.write(`data: [DONE]\n\n`)
-
-            if (result_text.trim().length === 0) result_text = "(null)";
-            console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
-            console.log(result_text + "\n");
-            logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
-            res.flush();
-            res.end();
-            return
-          }
-
-          // convert to JSON
-          const jsonChunk = tryParseJSON(chunkData);
-          if (jsonChunk === null || !jsonChunk.choices) {
-            res.write(`data: ###ERR###\n\n`)
-            res.flush();
-            res.end();
-            return;
-          }
-
-          // get the choices
-          const choices = jsonChunk.choices;
-          if (!choices || choices.length === 0) {
-            console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
-            console.error("No choices\n");
-            res.write(`data: Silent...\n\n`)
-            res.flush();
-            res.end();
-            return;
-          }
-
-          // handle function calling
-          const function_call = choices[0].delta.function_call;
-          if (function_call) {
-            res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`)
-          }
-          
-          // handle the message
-          const content = choices[0].delta.content;
-          if (content) {
-            let message = "";
-            message = content.replaceAll("\n", "###RETURN###");
-            res.write(`data: ${message}\n\n`)
-          }
-          res.flush();
-        }
+    // Evaluate result
+    if (use_eval && use_stats === "true" && result_text.trim().length > 0) {
+      await evaluate(input, definitions, additionalInfo, result_text).then((eval_result) => {
+        res.write(`data: ###EVAL###${eval_result}\n\n`);
+        res.flush();
+        console.log("eval: " + eval_result + "\n");
       });
-    }).catch(error => {
-      console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
-      console.error(error.message + "\n");
-      console.log("--- query detail ---");
-      console.log("message: " + JSON.stringify(messages) + "\n");
-      res.write(`data: [ERR] ${error}\n\n`)
-      res.end();
-    });
+    }
+
+    // Done message
+    res.write(`data: [DONE]\n\n`)
+    res.flush();
+
+    // Log
+    if (result_text.trim().length === 0) result_text = "(null)";
+    console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
+    console.log(result_text + "\n");
+    logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+
+    res.end();
+    return
   } catch (error) {
     console.log("Error:");
     if (error.response) {
