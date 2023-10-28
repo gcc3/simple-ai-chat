@@ -276,7 +276,6 @@ export default async function (req, res) {
           }
 
           // convert to JSON
-          console.log("chunkData00000: " + chunkData);
           const jsonChunk = tryParseJSON(chunkData);
           if (jsonChunk === null || !jsonChunk.choices) {
             res.write(`data: ###ERR###\n\n`)
