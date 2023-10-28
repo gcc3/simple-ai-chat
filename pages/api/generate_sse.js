@@ -24,7 +24,6 @@ const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
-const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 const use_eval = process.env.USE_EVAL == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
@@ -236,8 +235,6 @@ export default async function (req, res) {
     res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName},${refer_doc}\n\n`);
 
     chatCompletion.then(resp => {
-      if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
-
       resp.data.on('data', data => {
         const lines = data.toString().split('\n').filter(line => line.trim() !== '');
         for (const line of lines) {
@@ -254,14 +251,10 @@ export default async function (req, res) {
 
                 // Done message
                 res.write(`data: [DONE]\n\n`)
-                if (stream_console) {
-                  process.stdout.write("\n\n");
-                } else {
-                  if (result_text.trim().length === 0) result_text = "(null)";
-                  console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
-                  console.log(result_text + "\n");
-                }
 
+                if (result_text.trim().length === 0) result_text = "(null)";
+                console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
+                console.log(result_text + "\n");
                 logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
                 res.flush();
                 res.end();
@@ -272,13 +265,10 @@ export default async function (req, res) {
 
             // Done message
             res.write(`data: [DONE]\n\n`)
-            if (stream_console) {
-              process.stdout.write("\n\n");
-            } else {
-              if (result_text.trim().length === 0) result_text = "(null)";
-              console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
-              console.log(result_text + "\n");
-            }
+
+            if (result_text.trim().length === 0) result_text = "(null)";
+            console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
+            console.log(result_text + "\n");
             logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
             res.flush();
             res.end();
@@ -286,6 +276,7 @@ export default async function (req, res) {
           }
 
           // convert to JSON
+          console.log("chunkData00000: " + chunkData);
           const jsonChunk = tryParseJSON(chunkData);
           if (jsonChunk === null || !jsonChunk.choices) {
             res.write(`data: ###ERR###\n\n`)
@@ -316,7 +307,6 @@ export default async function (req, res) {
           if (content) {
             let message = "";
             message = content.replaceAll("\n", "###RETURN###");
-            if (stream_console) process.stdout.write(content); else result_text += content;
             res.write(`data: ${message}\n\n`)
           }
           res.flush();

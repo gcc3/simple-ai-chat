@@ -13,7 +13,6 @@ export default async function (req, res) {
     const querying = process.env.QUERYING ? process.env.QUERYING : "...";
     const enter = process.env.ENTER ? process.env.ENTER : "";
     const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
-    const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
     const use_eval = process.env.USE_EVAL == "true" ? true : false;
     const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
     const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
@@ -36,7 +35,6 @@ export default async function (req, res) {
         querying: querying,
         enter: enter,
         max_tokens: max_tokens,
-        stream_console: stream_console,
         use_eval: use_eval,
         use_function_calling: use_function_calling,
         use_node_ai: use_node_ai,

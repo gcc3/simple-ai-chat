@@ -22,7 +22,6 @@ const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
-const stream_console = process.env.STREAM_CONSOLE == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 
 export default async function (req, res) {

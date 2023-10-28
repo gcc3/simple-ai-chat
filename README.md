@@ -183,10 +183,6 @@ To use this feature, GOO_API_APP_ID must be set.
 Text extraction API  
 Get from https://labs.goo.ne.jp/apiusage/  
 
-* STREAM_CONSOLE  
-Control the stream in console or not, value should be `true` or `false`  
-If set to true then it will only support single session, for multiple session the text will be distort.  
-
 * USE_EVAL  
 Use AI to evaluate the result, value should be `true` or `false`.  
 
