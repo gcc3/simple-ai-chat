@@ -8,7 +8,7 @@ import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen, reverseFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
-import { urlFormatter, passwordFormatter } from "utils/textUtils.js";
+import { urlFormatter, passwordFormatter, maskPassword } from "utils/textUtils.js";
 import ReactDOMServer from 'react-dom/server';
 
 // Status control
@@ -227,7 +227,11 @@ export default function Home() {
     if (input.length == 0) return;
 
     // Clear input and put it to placeholder
-    setPlaceholder(userInput);
+    let placeholder = userInput;
+    if (userInput.startsWith(":login")) {
+      placeholder = maskPassword(placeholder);
+    }
+    setPlaceholder(placeholder);
     setUserInput("");
 
     // Command input

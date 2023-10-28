@@ -36,7 +36,7 @@ export function passwordFormatter() {
   }
 }
 
-function maskPassword(input) {
+export function maskPassword(input) {
   const pattern = /^:login (\w+) (\S+)$/; // matches ':login user_name password'
   const match = input.match(pattern);
 
