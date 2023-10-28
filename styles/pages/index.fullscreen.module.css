@@ -72,8 +72,8 @@
   white-space: pre-wrap;
   color: var(--text-color);
 }
-.main .evaluation
-.main .stats
+.main .evaluation,
+.main .stats,
 .main .info {
   margin-left: 10px;
   margin-right: 10px;

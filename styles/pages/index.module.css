@@ -53,8 +53,8 @@
   white-space: pre-wrap;
   color: var(--text-color);
 }
-.main .evaluation
-.main .stats
+.main .evaluation,
+.main .stats,
 .main .info {
   margin-left: 4px;
   margin-right: 4px;
