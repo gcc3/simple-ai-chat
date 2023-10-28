@@ -226,7 +226,7 @@ export default function Home() {
     });
     if (input.length == 0) return;
 
-    // Clear input
+    // Clear input and put it to placeholder
     setPlaceholder(userInput);
     setUserInput("");
 
