@@ -78,6 +78,7 @@ function logfilter(line, indicater) {
     if (rule.startsWith(indicater)) {
       const ruleValue = rule.substring(indicater.length + 1).trim();
       if (line.includes(ruleValue)) {
+        console.log("Log ignored (" + indicater + " = " + ruleValue + ").\n");
         return true;
       }
     }
