@@ -11,6 +11,7 @@ Dependencies
 ------------
 
 OpenAI API https://platform.openai.com/docs/api-reference  
+openai-node https://github.com/openai/openai-node  
 React https://reactjs.org/  
 Redux https://redux.js.org/  
 Next.js https://nextjs.org/  
