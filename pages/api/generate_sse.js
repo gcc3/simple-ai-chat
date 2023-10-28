@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { generatePrompt } from "utils/promptUtils";
@@ -9,10 +9,7 @@ import { evaluate } from './evaluate';
 import { getFunctions, executeFunction } from "function.js";
 
 // OpenAI
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+const openai = new OpenAI();
 const tokenizer = encoding_for_model(process.env.MODEL);
 
 // configurations
@@ -32,7 +29,7 @@ const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
 
 export default async function (req, res) {
-  if (!configuration.apiKey) {
+  if (!process.env.OPENAI_API_KEY) {
     res.status(500).json({
       error: {
         message: "OpenAI API key not configured",
@@ -210,7 +207,7 @@ export default async function (req, res) {
     // endpoint: /v1/chat/completions
     let chatCompletion;
     if (use_function_calling) {
-      chatCompletion = openai.createChatCompletion({
+      chatCompletion = openai.chat.completions.create({
         model: process.env.MODEL,
         messages: messages,
         temperature: temperature,
@@ -221,7 +218,7 @@ export default async function (req, res) {
         function_call: "auto"
       }, { responseType: "stream" });
     } else {
-      chatCompletion = openai.createChatCompletion({
+      chatCompletion = openai.chat.completions.create({
         model: process.env.MODEL,
         messages: messages,
         temperature: temperature,

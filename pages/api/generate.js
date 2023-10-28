@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { generatePrompt } from "utils/promptUtils";
@@ -7,10 +7,7 @@ import { get_encoding, encoding_for_model } from "tiktoken";
 import { getFunctions, executeFunction } from "function.js";
 
 // OpenAI
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+const openai = new OpenAI();
 const tokenizer = encoding_for_model(process.env.MODEL);
 
 // configurations
@@ -25,7 +22,7 @@ const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 
 export default async function (req, res) {
-  if (!configuration.apiKey) {
+  if (!process.env.OPENAI_API_KEY) {
     res.status(500).json({
       error: {
         message: "OpenAI API key not configured",
@@ -75,7 +72,7 @@ export default async function (req, res) {
     // endpoint: /v1/chat/completions
     let chatCompletion;
     if (use_function_calling) {
-      chatCompletion = await openai.createChatCompletion({
+      chatCompletion = await openai.chat.completions.create({
         model: process.env.MODEL,
         messages: generateMessagesResult.messages,
         temperature: temperature,
@@ -85,7 +82,7 @@ export default async function (req, res) {
         function_call: "auto"
       });
     } else {
-      chatCompletion = await openai.createChatCompletion({
+      chatCompletion = await openai.chat.completions.create({
         model: process.env.MODEL,
         messages: generateMessagesResult.messages,
         temperature: temperature,
@@ -138,7 +135,7 @@ export default async function (req, res) {
           "content": functionResult,
         });
 
-        const functionChatCompletion = await openai.createChatCompletion({
+        const functionChatCompletion = await openai.chat.completions.create({
             model: process.env.MODEL,
             messages: functionMessages,
             temperature: temperature,
@@ -151,7 +148,7 @@ export default async function (req, res) {
           console.error("No choice\n");
           result_text = "Silent...";
         } else {
-          const functionResult = functionChatCompletion.data.choices[0].message.content;
+          const functionResult = functionChatCompletion.choices[0].message.content;
           result_text = functionResult;
         }
       }

@@ -1,4 +1,4 @@
-import { Configuration, OpenAIApi } from "openai";
+import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { generatePrompt } from "utils/promptUtils";
@@ -6,10 +6,7 @@ import { logadd } from "utils/logUtils.js";
 import { get_encoding, encoding_for_model } from "tiktoken";
 
 // OpenAI
-const configuration = new Configuration({
-  apiKey: process.env.OPENAI_API_KEY,
-});
-const openai = new OpenAIApi(configuration);
+const openai = new OpenAI();
 const tokenizer = encoding_for_model(process.env.MODEL);  // TODO, check token
 
 // configurations
@@ -18,7 +15,7 @@ const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
 
 export default async function (req, res) {
-  if (!configuration.apiKey) {
+  if (!process.env.OPENAI_API_KEY) {
     res.status(500).json({
       error: {
         message: "OpenAI API key not configured",
@@ -98,7 +95,7 @@ export async function evaluate(input, definitions, additionalInfo, result_text) 
 
     // endpoint: /v1/chat/completions
     // /v1/completions are not supported
-    const chatCompletion = await openai.createChatCompletion({
+    const chatCompletion = await openai.chat.completions.create({
       model: process.env.MODEL,
       messages: eval_message,
       temperature: temperature,
@@ -107,7 +104,7 @@ export async function evaluate(input, definitions, additionalInfo, result_text) 
     });
 
     // Get result
-    const choices = chatCompletion.data.choices;
+    const choices = chatCompletion.choices;
     if (!choices || choices.length === 0) {
       result_text = "result error";
     } else {
