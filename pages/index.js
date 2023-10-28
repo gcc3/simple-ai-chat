@@ -350,7 +350,7 @@ export default function Home() {
         return;
       }
 
-      // Evaluation
+      // Evaluation result
       if (event.data.startsWith("###EVAL###")) {
         const evaluation = event.data.replace("###EVAL###", "");
         const val = parseInt(evaluation);
@@ -367,6 +367,7 @@ export default function Home() {
         return;
       }
 
+      // Stats
       if (event.data.startsWith("###STATS###")) {
         if (localStorage.getItem('useStats') === "true") {
           const stats = event.data.replace("###STATS###", "").split(',');
@@ -445,7 +446,7 @@ export default function Home() {
         return;
       }
 
-      // Handle the stream output
+      // Stream output
       let output = event.data;
       output = output.replaceAll("###RETURN###", '<br>');
       
