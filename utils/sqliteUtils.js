@@ -53,7 +53,7 @@ const initializeDatabase = (db) => {
       });
     });
 
-    console.log("Database created.");
+    console.log("Database created.\n");
   });
 };
 
