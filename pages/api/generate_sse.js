@@ -64,7 +64,6 @@ export default async function (req, res) {
     + "model: " + process.env.MODEL + "\n"
     + "temperature: " + process.env.TEMPERATURE + "\n"
     + "top_p: " + process.env.TOP_P + "\n"
-    + "endpoint: " + process.env.END_POINT + "\n"
     + "fine_tune_prompt_end (text): " + process.env.FINE_TUNE_PROMPT_END + "\n"
     + "fine_tune_stop (text): " + process.env.FINE_TUNE_STOP + "\n"
     + "role_content_system (chat): " + process.env.ROLE_CONTENT_SYSTEM + "\n"
@@ -128,290 +127,209 @@ export default async function (req, res) {
                                   // IMPORTANT! without this the stream not working on remote server
     });
 
-    if (process.env.END_POINT === "chat_completion") {
-      const generateMessagesResult = await generateMessages(input, queryId, role, tokenizer);
-      definitions = generateMessagesResult.definitions;
-      score = generateMessagesResult.score;
-      token_ct = generateMessagesResult.token_ct;
-      messages = generateMessagesResult.messages;
+    const generateMessagesResult = await generateMessages(input, queryId, role, tokenizer);
+    definitions = generateMessagesResult.definitions;
+    score = generateMessagesResult.score;
+    token_ct = generateMessagesResult.token_ct;
+    messages = generateMessagesResult.messages;
 
-      let additionalInfo = "";
-      if (use_location === "true" && location) {
-        // localtion example: (40.7128, -74.0060)
-        const lat = location.slice(1, -1).split(",")[0];
-        const lng = location.slice(1, -1).split(",")[1];
-        const nearbyCities = require("nearby-cities")
-        const query = {latitude: lat, longitude: lng}
-        const cities = nearbyCities(query)
-        const city = cities[0]
-        const locationMessage = "User is currently near city " + city.name + ", " + city.country + ".";
+    let additionalInfo = "";
+    if (use_location === "true" && location) {
+      // localtion example: (40.7128, -74.0060)
+      const lat = location.slice(1, -1).split(",")[0];
+      const lng = location.slice(1, -1).split(",")[1];
+      const nearbyCities = require("nearby-cities")
+      const query = {latitude: lat, longitude: lng}
+      const cities = nearbyCities(query)
+      const city = cities[0]
+      const locationMessage = "User is currently near city " + city.name + ", " + city.country + ".";
 
-        // Feed with location message
-        messages.push({
-          "role": "system",
-          "content": locationMessage
-        });
-        additionalInfo += locationMessage;
-      }
-
-      if (do_function_calling) {
-        // Feed message with function calling result
-        messages.push({
-          "role": "function",
-          "name": functionName,
-          "content": functionResult,
-        });
-        additionalInfo += functionResult;
-      }
-
-      if (use_node_ai && force_node_ai_query) {
-        console.log("--- node ai query ---");
-        // Feed message with AI node query result
-        const nodeAiQueryResult = await executeFunction("query_node_ai", "query=" + input);
-        if (nodeAiQueryResult === undefined) {
-          console.log("response: undefined.\n");
-        } else {
-          console.log("response: " + nodeAiQueryResult);
-          messages.push({
-            "role": "function",
-            "name": "query_node_ai",
-            "content": "After calling another AI, its response as: " + nodeAiQueryResult,
-          });
-          additionalInfo += nodeAiQueryResult;
-          logadd("T=" + Date.now() + " S=" + queryId + " F(f)=query_node_ai(query=" + input + ") A=" + nodeAiQueryResult, req);
-        }
-      }
-
-      let refer_doc = "none";
-      if (use_vector && force_vector_query) {
-        console.log("--- vector query ---");
-        // Feed message with AI node query result
-        const vectorQueryResult = await executeFunction("query_vector", "query=" + input);
-        if (vectorQueryResult === undefined) {
-          console.log("response: undefined.\n");
-        } else {
-          console.log("response: " + vectorQueryResult.replaceAll("\n", "\\n") + "\n");
-          messages.push({
-            "role": "function",
-            "name": "query_vector",
-            "content": "Retrieved context: " + vectorQueryResult,
-          });
-          additionalInfo += vectorQueryResult;
-          logadd("T=" + Date.now() + " S=" + queryId + " F(f)=query_vector(query=" + input + ") A=" + vectorQueryResult, req);
-
-          // Get vector score and refer doc info
-          if (vectorQueryResult.includes("###VECTOR###")) {
-            const vector_stats = vectorQueryResult.substring(vectorQueryResult.indexOf("###VECTOR###") + 12).trim();
-            refer_doc = vector_stats;
-          }
-        }
-      }
-
-      console.log("--- messages ---");
-      console.log(JSON.stringify(messages) + "\n");
-
-      // endpoint: /v1/chat/completions
-      let chatCompletion;
-      if (use_function_calling) {
-        chatCompletion = openai.createChatCompletion({
-          model: process.env.MODEL,
-          messages: messages,
-          temperature: temperature,
-          top_p: top_p,
-          max_tokens: max_tokens,
-          stream: true,
-          functions: getFunctions(),  // function calling
-          function_call: "auto"
-        }, { responseType: "stream" });
-      } else {
-        chatCompletion = openai.createChatCompletion({
-          model: process.env.MODEL,
-          messages: messages,
-          temperature: temperature,
-          top_p: top_p,
-          max_tokens: max_tokens,
-          stream: true,
-        }, { responseType: "stream" });
-      }
-
-      res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName},${refer_doc}\n\n`);
-
-      chatCompletion.then(resp => {
-        if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
-
-        resp.data.on('data', data => {
-          const lines = data.toString().split('\n').filter(line => line.trim() !== '');
-          for (const line of lines) {
-            const chunkData = line.replace(/^data: /, '');
-            
-            // handle the DONE signal
-            if (chunkData === '[DONE]') {
-
-              // Evaluate result
-              if (use_eval && use_stats === "true" && result_text.trim().length > 0) {
-                evaluate(input, definitions, additionalInfo, result_text).then((eval_result) => {
-                  res.write(`data: ###EVAL###${eval_result}\n\n`);
-                  console.log("eval: " + eval_result + "\n");
-
-                  // Done message
-                  res.write(`data: [DONE]\n\n`)
-                  if (stream_console) {
-                    process.stdout.write("\n\n");
-                  } else {
-                    if (result_text.trim().length === 0) result_text = "(null)";
-                    console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
-                    console.log(result_text + "\n");
-                  }
-
-                  logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
-                  res.flush();
-                  res.end();
-                  return
-                });
-                return;
-              }
-
-              // Done message
-              res.write(`data: [DONE]\n\n`)
-              if (stream_console) {
-                process.stdout.write("\n\n");
-              } else {
-                if (result_text.trim().length === 0) result_text = "(null)";
-                console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
-                console.log(result_text + "\n");
-              }
-              logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
-              res.flush();
-              res.end();
-              return
-            }
-
-            // convert to JSON
-            const jsonChunk = tryParseJSON(chunkData);
-            if (jsonChunk === null || !jsonChunk.choices) {
-              res.write(`data: ###ERR###\n\n`)
-              res.flush();
-              res.end();
-              return;
-            }
-
-            // get the choices
-            const choices = jsonChunk.choices;
-            if (!choices || choices.length === 0) {
-              console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
-              console.error("No choices\n");
-              res.write(`data: Silent...\n\n`)
-              res.flush();
-              res.end();
-              return;
-            }
-
-            // handle function calling
-            const function_call = choices[0].delta.function_call;
-            if (function_call) {
-              res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`)
-            }
-            
-            // handle the message
-            const content = choices[0].delta.content;
-            if (content) {
-              let message = "";
-              message = content.replaceAll("\n", "###RETURN###");
-              if (stream_console) process.stdout.write(content); else result_text += content;
-              res.write(`data: ${message}\n\n`)
-            }
-            res.flush();
-          }
-        });
-      }).catch(error => {
-        console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
-        console.error(error.message + "\n");
-        console.log("--- query detail ---");
-        console.log("message: " + JSON.stringify(messages) + "\n");
-        res.write(`data: [ERR] ${error}\n\n`)
-        res.end();
+      // Feed with location message
+      messages.push({
+        "role": "system",
+        "content": locationMessage
       });
+      additionalInfo += locationMessage;
     }
 
-    if (process.env.END_POINT === "text_completion") {
-      const prompt = generatePrompt(input);
+    if (do_function_calling) {
+      // Feed message with function calling result
+      messages.push({
+        "role": "function",
+        "name": functionName,
+        "content": functionResult,
+      });
+      additionalInfo += functionResult;
+    }
 
-      // endpoint: /v1/completions
-      const completion = openai.createCompletion({
+    if (use_node_ai && force_node_ai_query) {
+      console.log("--- node ai query ---");
+      // Feed message with AI node query result
+      const nodeAiQueryResult = await executeFunction("query_node_ai", "query=" + input);
+      if (nodeAiQueryResult === undefined) {
+        console.log("response: undefined.\n");
+      } else {
+        console.log("response: " + nodeAiQueryResult);
+        messages.push({
+          "role": "function",
+          "name": "query_node_ai",
+          "content": "After calling another AI, its response as: " + nodeAiQueryResult,
+        });
+        additionalInfo += nodeAiQueryResult;
+        logadd("T=" + Date.now() + " S=" + queryId + " F(f)=query_node_ai(query=" + input + ") A=" + nodeAiQueryResult, req);
+      }
+    }
+
+    let refer_doc = "none";
+    if (use_vector && force_vector_query) {
+      console.log("--- vector query ---");
+      // Feed message with AI node query result
+      const vectorQueryResult = await executeFunction("query_vector", "query=" + input);
+      if (vectorQueryResult === undefined) {
+        console.log("response: undefined.\n");
+      } else {
+        console.log("response: " + vectorQueryResult.replaceAll("\n", "\\n") + "\n");
+        messages.push({
+          "role": "function",
+          "name": "query_vector",
+          "content": "Retrieved context: " + vectorQueryResult,
+        });
+        additionalInfo += vectorQueryResult;
+        logadd("T=" + Date.now() + " S=" + queryId + " F(f)=query_vector(query=" + input + ") A=" + vectorQueryResult, req);
+
+        // Get vector score and refer doc info
+        if (vectorQueryResult.includes("###VECTOR###")) {
+          const vector_stats = vectorQueryResult.substring(vectorQueryResult.indexOf("###VECTOR###") + 12).trim();
+          refer_doc = vector_stats;
+        }
+      }
+    }
+
+    console.log("--- messages ---");
+    console.log(JSON.stringify(messages) + "\n");
+
+    // endpoint: /v1/chat/completions
+    let chatCompletion;
+    if (use_function_calling) {
+      chatCompletion = openai.createChatCompletion({
         model: process.env.MODEL,
-        prompt: prompt,
+        messages: messages,
         temperature: temperature,
         top_p: top_p,
-        stop: fine_tune_stop,
+        max_tokens: max_tokens,
+        stream: true,
+        functions: getFunctions(),  // function calling
+        function_call: "auto"
+      }, { responseType: "stream" });
+    } else {
+      chatCompletion = openai.createChatCompletion({
+        model: process.env.MODEL,
+        messages: messages,
+        temperature: temperature,
+        top_p: top_p,
         max_tokens: max_tokens,
         stream: true,
       }, { responseType: "stream" });
-
-      res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-      res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct}}\n\n`);
-
-      completion.then(resp => {
-        if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
-
-        resp.data.on('data', data => {
-          const lines = data.toString().split('\n').filter(line => line.trim() !== '');
-          for (const line of lines) {
-            const chunkData = line.replace(/^data: /, '');
-
-            // handle the DONE signal
-            if (chunkData === '[DONE]') {
-              res.write(`data: [DONE]\n\n`)
-              if (stream_console) {
-                process.stdout.write("\n\n");
-              } else {
-                if (result_text.trim().length === 0) result_text = "(null)";
-                console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
-                console.log(result_text + "\n");
-              }
-              logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
-              res.flush();
-              res.end();
-              return
-            }
-
-            // handle the message
-            const jsonChunk = tryParseJSON(chunkData);
-            if (jsonChunk === null || !jsonChunk.choices) {
-              res.write(`data: ###ERR###\n\n`)
-              res.flush();
-              res.end();
-              return;
-            }
-
-            const choices = jsonChunk.choices;
-            if (!choices || choices.length === 0) {
-              console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
-              console.error("No choice\n");
-              res.write(`data: Silent...\n\n`)
-              res.flush();
-              res.end();
-              return;
-            }
-            const text = choices[0].text;
-            if (text) {
-              let message = "";
-              message = text.replaceAll("\n", "###RETURN###");
-              if (stream_console) process.stdout.write(text); else result_text += text;
-              res.write(`data: ${message}\n\n`)
-            }
-            res.flush();
-          }
-        });
-      }).catch(error => {
-        console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
-        console.error(error.message);
-        console.log("--- query detail ---");
-        console.log("prompt: " +JSON.stringify(prompt) + "\n");
-        res.write(`data: [ERR] ${error}\n\n`)
-        res.end();
-      });
     }
+
+    res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
+    res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName},${refer_doc}\n\n`);
+
+    chatCompletion.then(resp => {
+      if (stream_console) process.stdout.write(chalk.blueBright("Output (query_id = "+ queryId + "):\n"));
+
+      resp.data.on('data', data => {
+        const lines = data.toString().split('\n').filter(line => line.trim() !== '');
+        for (const line of lines) {
+          const chunkData = line.replace(/^data: /, '');
+          
+          // handle the DONE signal
+          if (chunkData === '[DONE]') {
+
+            // Evaluate result
+            if (use_eval && use_stats === "true" && result_text.trim().length > 0) {
+              evaluate(input, definitions, additionalInfo, result_text).then((eval_result) => {
+                res.write(`data: ###EVAL###${eval_result}\n\n`);
+                console.log("eval: " + eval_result + "\n");
+
+                // Done message
+                res.write(`data: [DONE]\n\n`)
+                if (stream_console) {
+                  process.stdout.write("\n\n");
+                } else {
+                  if (result_text.trim().length === 0) result_text = "(null)";
+                  console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
+                  console.log(result_text + "\n");
+                }
+
+                logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+                res.flush();
+                res.end();
+                return
+              });
+              return;
+            }
+
+            // Done message
+            res.write(`data: [DONE]\n\n`)
+            if (stream_console) {
+              process.stdout.write("\n\n");
+            } else {
+              if (result_text.trim().length === 0) result_text = "(null)";
+              console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
+              console.log(result_text + "\n");
+            }
+            logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+            res.flush();
+            res.end();
+            return
+          }
+
+          // convert to JSON
+          const jsonChunk = tryParseJSON(chunkData);
+          if (jsonChunk === null || !jsonChunk.choices) {
+            res.write(`data: ###ERR###\n\n`)
+            res.flush();
+            res.end();
+            return;
+          }
+
+          // get the choices
+          const choices = jsonChunk.choices;
+          if (!choices || choices.length === 0) {
+            console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
+            console.error("No choices\n");
+            res.write(`data: Silent...\n\n`)
+            res.flush();
+            res.end();
+            return;
+          }
+
+          // handle function calling
+          const function_call = choices[0].delta.function_call;
+          if (function_call) {
+            res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`)
+          }
+          
+          // handle the message
+          const content = choices[0].delta.content;
+          if (content) {
+            let message = "";
+            message = content.replaceAll("\n", "###RETURN###");
+            if (stream_console) process.stdout.write(content); else result_text += content;
+            res.write(`data: ${message}\n\n`)
+          }
+          res.flush();
+        }
+      });
+    }).catch(error => {
+      console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
+      console.error(error.message + "\n");
+      console.log("--- query detail ---");
+      console.log("message: " + JSON.stringify(messages) + "\n");
+      res.write(`data: [ERR] ${error}\n\n`)
+      res.end();
+    });
   } catch (error) {
     console.log("Error:");
     if (error.response) {

@@ -96,27 +96,22 @@ export async function evaluate(input, definitions, additionalInfo, result_text) 
   try {
     let result_text = "";
 
-    if (process.env.END_POINT === "chat_completion") {
-      // endpoint: /v1/chat/completions
-      const chatCompletion = await openai.createChatCompletion({
-        model: process.env.MODEL,
-        messages: eval_message,
-        temperature: temperature,
-        top_p: top_p,
-        max_tokens: max_tokens,
-      });
+    // endpoint: /v1/chat/completions
+    // /v1/completions are not supported
+    const chatCompletion = await openai.createChatCompletion({
+      model: process.env.MODEL,
+      messages: eval_message,
+      temperature: temperature,
+      top_p: top_p,
+      max_tokens: max_tokens,
+    });
 
-      // Get result
-      const choices = chatCompletion.data.choices;
-      if (!choices || choices.length === 0) {
-        result_text = "result error";
-      } else {
-        result_text = choices[0].message.content;
-      }
-    }
-
-    if (process.env.END_POINT === "text_completion") {
-      return "model unsupported"
+    // Get result
+    const choices = chatCompletion.data.choices;
+    if (!choices || choices.length === 0) {
+      result_text = "result error";
+    } else {
+      result_text = choices[0].message.content;
     }
 
     // Output the result
