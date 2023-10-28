@@ -1,9 +1,10 @@
 .main {
+  max-width: 100%;  /* prevents the main div from overflowing */
+  height: 100vh;  /* make the main div fill the entire screen */
   font-size: 16px;
   font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
   line-height: 24px;
   color: #353740;
-  max-width: 100%;  /* prevents the main div from overflowing */
   overflow-x: hidden;  /* prevent horizontal scroll */
   display: flex;
   flex-direction: column;
@@ -53,15 +54,16 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  padding-left: 3px;
+  padding-right: 3px;
 }
 .main .submit:hover {
   background-color: var(--button-hover-color);  /* darken the button color on hover */
 }
 .main .wrapper {
   width: 100%;
-  height: calc(100vh - 100px);
+  height: calc(100vh - 60px);
   padding: 10px;
-  margin-bottom: 60px;
   overflow-y: auto;
 }
 .main .output {

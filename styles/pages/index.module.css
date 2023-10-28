@@ -1,4 +1,5 @@
 .main {
+  height: 100vh;  /* make the main div fill the entire screen */
   font-size: 16px;
   font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
   line-height: 24px;
