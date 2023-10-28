@@ -1,7 +1,6 @@
 import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
-import { generatePrompt } from "utils/promptUtils";
 import { logadd } from "utils/logUtils.js";
 import { get_encoding, encoding_for_model } from "tiktoken";
 

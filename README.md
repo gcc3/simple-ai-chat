@@ -155,11 +155,6 @@ Range 0 ~ 1, 0.1 means only the tokens comprising the top 10% probability mass a
 * N  
 How many completions to generate for each prompt.
 
-* FINE_TUNE_PROMPT_END and FINE_TUNE_STOP  
-For fine-tuned model,  
-The prompt end will be added to the prompt  
-Stop will be used to end the completion
-
 * ROLE_CONTENT_SYSTEM  
 Set the role system's content to role play.  
 

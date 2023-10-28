@@ -1,7 +1,6 @@
 import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
-import { generatePrompt } from "utils/promptUtils";
 import { logadd } from "utils/logUtils";
 import { tryParseJSON } from "utils/jsonUtils"
 import { get_encoding, encoding_for_model } from "tiktoken";
@@ -16,8 +15,6 @@ const tokenizer = encoding_for_model(process.env.MODEL);
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
-const fine_tune_stop = process.env.FINE_TUNE_STOP ? process.env.FINE_TUNE_STOP : "";
-const fine_tune_prompt_end = process.env.FINE_TUNE_PROMPT_END ? process.env.FINE_TUNE_PROMPT_END : "";
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
@@ -51,8 +48,6 @@ export default async function (req, res) {
     + "model: " + process.env.MODEL + "\n"
     + "temperature: " + process.env.TEMPERATURE + "\n"
     + "top_p: " + process.env.TOP_P + "\n"
-    + "fine_tune_prompt_end (text): " + process.env.FINE_TUNE_PROMPT_END + "\n"
-    + "fine_tune_stop (text): " + process.env.FINE_TUNE_STOP + "\n"
     + "role_content_system (chat): " + process.env.ROLE_CONTENT_SYSTEM + "\n"
     + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
     + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
