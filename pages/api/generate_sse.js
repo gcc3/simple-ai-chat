@@ -29,15 +29,6 @@ const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
 
 export default async function (req, res) {
-  if (!process.env.OPENAI_API_KEY) {
-    res.status(500).json({
-      error: {
-        message: "OpenAI API key not configured",
-      },
-    });
-    return;
-  }
-
   const queryId = req.query.query_id || "";
   const role = req.query.role || "default";
   const use_stats = req.query.use_stats || "false";

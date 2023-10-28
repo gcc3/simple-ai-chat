@@ -15,15 +15,6 @@ const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
 
 export default async function (req, res) {
-  if (!process.env.OPENAI_API_KEY) {
-    res.status(500).json({
-      error: {
-        message: "OpenAI API key not configured",
-      },
-    });
-    return;
-  }
-
   const input = req.body.input || "";
   const definitions = req.body.definitions || "";
   const functionResult = req.body.functionResult || "";
