@@ -17,6 +17,7 @@ Redux https://redux.js.org/
 Next.js https://nextjs.org/  
 WolframAlpha APIs https://products.wolframalpha.com/api  
 Vectara https://vectara.com/  
+tailwind https://tailwindcss.com/docs/
 
 
 Main Features
