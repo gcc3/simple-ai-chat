@@ -83,6 +83,19 @@
   margin-bottom: 35px;
   text-align: right;
 }
+.main .dot {
+  display: block;
+  font-size: 20px;
+  text-align: center;
+  position: fixed;
+  bottom: 10px;
+  right: 10px;
+  width: 10px;
+  color: var(--dot-color);
+}
+.main .dot:hover {
+  cursor: pointer;
+}
 
 /* Styles for differnt window sizes */
 @media screen and (max-width: 649px) {

@@ -592,6 +592,7 @@ export default function Home() {
           {stats && <div className={styles.stats}>{stats}</div>}
           <div className={styles.info}>{info}</div>
         </div>
+        <div id="btn-collapse-out" className={styles.dot}>•</div>
       </main>
     </div>
   );
