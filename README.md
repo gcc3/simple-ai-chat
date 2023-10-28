@@ -11,6 +11,7 @@ Dependencies
 ------------
 
 OpenAI API https://platform.openai.com/docs/api-reference  
+openai-node https://github.com/openai/openai-node  
 React https://reactjs.org/  
 Redux https://redux.js.org/  
 Next.js https://nextjs.org/  
@@ -144,9 +145,6 @@ Get from https://platform.openai.com/account/api-keys
 * MODEL  
 `gpt-4`, `gpt-3.5-turbo`, etc...
 
-* END_POINT  
-Now support chat_completion, text_completion  
-
 * TEMPERATURE  
 What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random  
 lower values like 0.2 will make it more focused and deterministic.  
@@ -185,10 +183,6 @@ To use this feature, GOO_API_APP_ID must be set.
 * GOO_API_APP_ID  
 Text extraction API  
 Get from https://labs.goo.ne.jp/apiusage/  
-
-* STREAM_CONSOLE  
-Control the stream in console or not, value should be `true` or `false`  
-If set to true then it will only support single session, for multiple session the text will be distort.  
 
 * USE_EVAL  
 Use AI to evaluate the result, value should be `true` or `false`.  
