@@ -1,11 +1,8 @@
-.main,
-.main input {
+.main {
   font-size: 16px;
+  font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
   line-height: 24px;
   color: #353740;
-  font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
-}
-.main {
   display: flex;
   flex-direction: column;
   align-items: center;
