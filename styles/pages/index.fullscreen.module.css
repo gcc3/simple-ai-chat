@@ -102,7 +102,7 @@
   position: fixed;
   top: 5px;
   right: 10px;
-  width: 10px;
+  width: 15px;
   color: var(--dot-color);
 }
 .main .dot:hover {
