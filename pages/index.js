@@ -573,24 +573,26 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <form onSubmit={onSubmit}>
-          <input
-            id="input"
-            type="text"
-            placeholder={placeholder}
-            value={userInput}
-            onChange={(e) => setUserInput(e.target.value)}
-            autoFocus
-            onKeyDown={handleInputKeyDown}
-            autoComplete="off"
-          />
-          <input className={styles.submit} type="submit" value={enter} />
-        </form>
-        <div id="wrapper" className={styles.wrapper}>
-          <div id="output" className={styles.output}></div>
-          {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
-          {stats && <div className={styles.stats}>{stats}</div>}
-          <div className={styles.info}>{info}</div>
+        <div className={styles.front}>
+          <form onSubmit={onSubmit}>
+            <input
+              id="input"
+              type="text"
+              placeholder={placeholder}
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              autoFocus
+              onKeyDown={handleInputKeyDown}
+              autoComplete="off"
+            />
+            <input className={styles.submit} type="submit" value={enter} />
+          </form>
+          <div id="wrapper" className={styles.wrapper}>
+            <div id="output" className={styles.output}></div>
+            {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
+            {stats && <div className={styles.stats}>{stats}</div>}
+            <div className={styles.info}>{info}</div>
+          </div>
         </div>
         <div id="btn-collapse-out" className={styles.dot}>•</div>
       </main>
