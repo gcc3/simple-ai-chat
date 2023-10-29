@@ -623,7 +623,6 @@ export default function Home() {
             <Setting label="Use location" type="toggle"></Setting>
             <Setting label="Email" type="text"></Setting>
             <br></br>
-            <div className="ml-2">The setting view is building in progress...</div>
           </div>
         </div>
       </main>
