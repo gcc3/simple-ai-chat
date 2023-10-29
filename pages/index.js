@@ -584,35 +584,31 @@ export default function Home() {
       <main className={styles.main}>
         <div id="btn-dot" onClick={toggleDisplay} className={styles.dot}>•</div>
 
-        {display === DISPLAY.FRONT && (
-          <div className={styles.front}>
-            <form onSubmit={onSubmit}>
-              <input
-                id="input"
-                type="text"
-                placeholder={placeholder}
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                autoFocus
-                onKeyDown={handleInputKeyDown}
-                autoComplete="off"
-              />
-              <input className={styles.submit} type="submit" value={enter} />
-            </form>
-            <div id="wrapper" className={styles.wrapper}>
-              <div id="output" className={styles.output}></div>
-              {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
-              {stats && <div className={styles.stats}>{stats}</div>}
-              <div className={styles.info}>{info}</div>
-            </div>
+        <div className={display===DISPLAY.FRONT ? styles.front : `collapse`}>
+          <form onSubmit={onSubmit}>
+            <input
+              id="input"
+              type="text"
+              placeholder={placeholder}
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              autoFocus
+              onKeyDown={handleInputKeyDown}
+              autoComplete="off"
+            />
+            <input className={styles.submit} type="submit" value={enter} />
+          </form>
+          <div id="wrapper" className={styles.wrapper}>
+            <div id="output" className={styles.output}></div>
+            {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
+            {stats && <div className={styles.stats}>{stats}</div>}
+            <div className={styles.info}>{info}</div>
           </div>
-        )}
-        
-        {display === DISPLAY.BACK && (
-          <div className={styles.back}>
-            <div className={styles.settings}>Building in progress...</div>
-          </div>
-        )}
+        </div>
+      
+        <div className={display===DISPLAY.BACK ? styles.back : `collapse`}>
+          <div className={styles.settings}>Building in progress...</div>
+        </div>
       </main>
     </div>
   );
