@@ -583,6 +583,7 @@ export default function Home() {
 
       <main className={styles.main}>
         <div id="btn-dot" onClick={toggleDisplay} className={styles.dot}>•</div>
+
         {display === DISPLAY.FRONT && (
           <div className={styles.front}>
             <form onSubmit={onSubmit}>
@@ -606,6 +607,7 @@ export default function Home() {
             </div>
           </div>
         )}
+        
         {display === DISPLAY.BACK && (
           <div className={styles.back}>
             <div className={styles.settings}>Building in progress...</div>
