@@ -8,7 +8,8 @@
   flex-direction: column;
   align-items: center;
 }
-.main .front {
+.main .front,
+.main .back {
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -84,6 +85,9 @@
   margin-top: 5px;
   margin-bottom: 35px;
 }
+.main .front {
+  display: flex;
+}
 .main .dot {
   display: block;
   font-size: 20px;
@@ -96,6 +100,14 @@
 }
 .main .dot:hover {
   cursor: pointer;
+}
+.main .back {
+  display: none;
+}
+.main .settings {
+  width: 100%;
+  max-width: 600px;
+  height: 100vh;
 }
 
 /* Styles for differnt window sizes */

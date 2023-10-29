@@ -11,8 +11,8 @@
   align-items: center;
   overflow: hidden;
 }
-.main .front {
-  display: flex;
+.main .front,
+.main .back {
   flex-direction: column;
   width: 100%;
   height: 100vh;
@@ -102,6 +102,9 @@
   color: var(--info-text-color);;
   text-align: right;
 }
+.main .front {
+  display: flex;
+}
 .main .dot {
   display: block;
   font-size: 20px;
@@ -114,6 +117,16 @@
 }
 .main .dot:hover {
   cursor: pointer;
+}
+.main .back {
+  display: none;
+}
+.main .settings {
+  width: 100%;
+  height: 100vh;
+  padding: 10px;
+  padding-top: 12px;
+  overflow-y: auto;
 }
 
 /* Styles for differnt window sizes */

@@ -594,6 +594,9 @@ export default function Home() {
             <div className={styles.info}>{info}</div>
           </div>
         </div>
+        <div className={styles.back}>
+          <div className={styles.settings}>Building in progress...</div>
+        </div>
         <div id="btn-collapse-out" className={styles.dot}>•</div>
       </main>
     </div>
