@@ -1,16 +1,14 @@
 export function urlFormatter() {
   const outputElement = document.getElementById("output");
   if (outputElement) {
-    // Temproary stop observing
+    // Temporary stop observing
     global.outputMutationObserver.disconnect();
 
     // Format the output
     const output = outputElement.innerHTML;
-    outputElement.innerHTML = output.replace(/(https?:\/\/[^\s]+|www\.[^\s]+)/g, function(match) {
-                                // If the URL starts with www., prepend http:// to it
-                                var link = match.startsWith('www.') ? 'http://' + match : match;
-                                return '<a href="' + link + '" target="_blank">' + match + '</a>';
-                              });
+    const pattern = /((?:https?|ftp):\/\/[^\s/$)]*[^\s/$)])/g;  // matches URLs
+    const replacement = '<a href="$1" target="_blank">$1</a>';
+    outputElement.innerHTML = output.replace(pattern, replacement);
 
     // Resume observing
     const observingConfig = { childList: true, attributes: true, subtree: true, characterData: true };
