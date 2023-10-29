@@ -584,7 +584,7 @@ export default function Home() {
       <main className={styles.main}>
         <div id="btn-dot" onClick={toggleDisplay} className={styles.dot}>•</div>
 
-        <div className={`${styles.front} ${display === DISPLAY.FRONT ? '' : 'collapse'}`}>
+        <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'}`}>
           <form onSubmit={onSubmit}>
             <input
               id="input"
@@ -606,7 +606,7 @@ export default function Home() {
           </div>
         </div>
       
-        <div className={`${styles.back} ${display === DISPLAY.BACK ? '' : 'collapse'}`}>
+        <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'}`}>
           <div className={styles.settings}>Building in progress...</div>
         </div>
       </main>
