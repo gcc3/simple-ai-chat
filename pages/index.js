@@ -73,8 +73,8 @@ export default function Home() {
   // States
   const [userInput, setUserInput] = useState("");
   const [placeholder, setPlaceholder] = useState("");
-  const [waiting, setWaiting] = useState("...");
-  const [querying, setQuerying] = useState("...");
+  const [waiting, setWaiting] = useState("");
+  const [querying, setQuerying] = useState("Querying...");
   const [enter, setEnter] = useState("enter");
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
@@ -583,34 +583,32 @@ export default function Home() {
 
       <main className={styles.main}>
         <div id="btn-dot" onClick={toggleDisplay} className={styles.dot}>•</div>
-        {display === DISPLAY.FRONT && (
-          <div className={styles.front}>
-            <form onSubmit={onSubmit}>
-              <input
-                id="input"
-                type="text"
-                placeholder={placeholder}
-                value={userInput}
-                onChange={(e) => setUserInput(e.target.value)}
-                autoFocus
-                onKeyDown={handleInputKeyDown}
-                autoComplete="off"
-              />
-              <input className={styles.submit} type="submit" value={enter} />
-            </form>
-            <div id="wrapper" className={styles.wrapper}>
-              <div id="output" className={styles.output}></div>
-              {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
-              {stats && <div className={styles.stats}>{stats}</div>}
-              <div className={styles.info}>{info}</div>
-            </div>
+
+        <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'}`}>
+          <form onSubmit={onSubmit}>
+            <input
+              id="input"
+              type="text"
+              placeholder={placeholder}
+              value={userInput}
+              onChange={(e) => setUserInput(e.target.value)}
+              autoFocus
+              onKeyDown={handleInputKeyDown}
+              autoComplete="off"
+            />
+            <input className={styles.submit} type="submit" value={enter} />
+          </form>
+          <div id="wrapper" className={styles.wrapper}>
+            <div id="output" className={styles.output}></div>
+            {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
+            {stats && <div className={styles.stats}>{stats}</div>}
+            <div className={styles.info}>{info}</div>
           </div>
-        )}
-        {display === DISPLAY.BACK && (
-          <div className={styles.back}>
-            <div className={styles.settings}>Building in progress...</div>
-          </div>
-        )}
+        </div>
+      
+        <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'}`}>
+          <div className={styles.settings}>Building in progress...</div>
+        </div>
       </main>
     </div>
   );

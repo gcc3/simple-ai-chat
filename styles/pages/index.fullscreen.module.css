@@ -1,6 +1,4 @@
 .main {
-  max-width: 100%;  /* prevents the main div from overflowing */
-  height: 100vh;  /* make the main div fill the entire screen */
   font-size: 16px;
   font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
   line-height: 24px;
@@ -13,10 +11,8 @@
 }
 .main .front,
 .main .back {
-  display: flex;
   flex-direction: column;
   width: 100%;
-  height: 100vh;
 }
 .main form {
   position: fixed;

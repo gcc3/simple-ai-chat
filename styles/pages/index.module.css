@@ -1,5 +1,4 @@
 .main {
-  height: 100vh;  /* make the main div fill the entire screen */
   font-size: 16px;
   font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
   line-height: 24px;
@@ -10,11 +9,9 @@
 }
 .main .front,
 .main .back {
-  display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 625px;
-  height: 100vh;
 }
 .main form {
   display: flex;
@@ -52,7 +49,7 @@
 .main .wrapper {
   padding: 10px;
   width: 100%;
-  max-width: 600px;
+  height: 100%;
 }
 .main .output {
   font-weight: normal;
@@ -83,8 +80,6 @@
 .main .info {
   text-align: right;
   color: var(--info-text-color);
-  margin-top: 5px;
-  margin-bottom: 35px;
 }
 .main .dot {
   display: block;
