@@ -10,7 +10,7 @@ import { toggleFullscreen, reverseFullscreen } from "../states/fullscreenSlice.j
 import { markdownFormatter } from "utils/markdownUtils.js";
 import { urlFormatter, passwordFormatter, maskPassword } from "utils/textUtils.js";
 import ReactDOMServer from 'react-dom/server';
-import ToggleButton from '../components/ToggleButton';
+import Setting from '../components/Setting';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -586,8 +586,9 @@ export default function Home() {
         <div id="btn-dot" onClick={toggleDisplay} className={styles.dot}>•</div>
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'}`}>
-          <form onSubmit={onSubmit}>
+          <form className={styles.inputform} onSubmit={onSubmit}>
             <input
+              className={styles.input}
               id="input"
               type="text"
               placeholder={placeholder}
@@ -597,7 +598,11 @@ export default function Home() {
               onKeyDown={handleInputKeyDown}
               autoComplete="off"
             />
-            <input className={styles.submit} type="submit" value={enter} />
+            <input 
+              className={styles.submit} 
+              type="submit" 
+              value={enter}
+            />
           </form>
           <div id="wrapper" className={styles.wrapper}>
             <div id="output" className={styles.output}></div>
@@ -609,21 +614,16 @@ export default function Home() {
       
         <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'}`}>
           <div className={styles.settings}>
-            Building in progress...<br></br>
+            <Setting label="Fullscreen" type="toggle" initialState="true"></Setting>
+            <Setting label="Theme (light/dark)" type="toggle" initialState="true"></Setting>
+            <Setting label="Speak" type="toggle" initialState="true"></Setting>
+            <Setting label="Voice" type="dropdown" initialState="true"></Setting>
+            <Setting label="Lang" type="dropdown" initialState="true"></Setting>
+            <Setting label="File upload" type="file"></Setting>
+            <Setting label="Use location" type="toggle"></Setting>
+            <Setting label="Email" type="text"></Setting>
             <br></br>
-            <div className="">Settings</div>
-            <div className="flex mt-2">Use fullscreen:<ToggleButton /><br></br></div>
-            <div className="flex mt-2">Use location:<ToggleButton /><br></br></div>
-            <div className="flex mt-2">Use stats:<ToggleButton /><br></br></div>
-            <div className="flex mt-2">Use speak:<ToggleButton /><br></br></div>
-            <div className="flex mt-2">Use stream:<ToggleButton /><br></br></div>
-            <br></br>
-            User settings<br></br>
-            Please login...<br></br>
-            <br></br>
-            Files<br></br>
-            Building in progress...<br></br>
-            <br></br>
+            <div className="ml-2">The setting view is building in progress...</div>
           </div>
         </div>
       </main>

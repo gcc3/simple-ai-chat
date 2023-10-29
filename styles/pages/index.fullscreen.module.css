@@ -14,7 +14,7 @@
   flex-direction: column;
   width: 100%;
 }
-.main form {
+.main .inputform {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -27,7 +27,7 @@
   display: flex;  /* use flexbox to align the input and button */
   align-items: center;  /* vertically center the items */
 }
-.main input[type="text"] {
+.main .input {
   width: 100%;
   padding: 10px;
   font-size: 16px;
