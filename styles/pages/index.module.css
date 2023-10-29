@@ -50,6 +50,7 @@
   display: none;
 }
 .main .wrapper {
+  padding: 10px;
   width: 100%;
   max-width: 600px;
 }
@@ -101,7 +102,7 @@
 .main .settings {
   width: 100%;
   max-width: 600px;
-  height: 100vh;
+  color: var(--text-color);
 }
 
 /* Styles for differnt window sizes */
