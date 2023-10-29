@@ -10,6 +10,7 @@ import { toggleFullscreen, reverseFullscreen } from "../states/fullscreenSlice.j
 import { markdownFormatter } from "utils/markdownUtils.js";
 import { urlFormatter, passwordFormatter, maskPassword } from "utils/textUtils.js";
 import ReactDOMServer from 'react-dom/server';
+import ToggleButton from '../components/ToggleButton';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -607,7 +608,23 @@ export default function Home() {
         </div>
       
         <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'}`}>
-          <div className={styles.settings}>Building in progress...</div>
+          <div className={styles.settings}>
+            Building in progress...<br></br>
+            <br></br>
+            <div className="">Settings</div>
+            <div className="flex mt-2">Use fullscreen:<ToggleButton /><br></br></div>
+            <div className="flex mt-2">Use location:<ToggleButton /><br></br></div>
+            <div className="flex mt-2">Use stats:<ToggleButton /><br></br></div>
+            <div className="flex mt-2">Use speak:<ToggleButton /><br></br></div>
+            <div className="flex mt-2">Use stream:<ToggleButton /><br></br></div>
+            <br></br>
+            User settings<br></br>
+            Please login...<br></br>
+            <br></br>
+            Files<br></br>
+            Building in progress...<br></br>
+            <br></br>
+          </div>
         </div>
       </main>
     </div>
