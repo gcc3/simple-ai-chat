@@ -70,6 +70,7 @@
   width: 100%;
   height: calc(100vh - 60px);
   padding: 10px;
+  padding-top: 15px;
   overflow-y: auto;
 }
 .main .output {
