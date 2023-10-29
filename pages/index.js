@@ -15,6 +15,9 @@ import ReactDOMServer from 'react-dom/server';
 const STATES = { IDLE: 0, DOING: 1 };
 global.STATE = STATES.IDLE;  // a global state
 
+// Front or back display
+const DISPLAY = { FRONT: 0, BACK: 1 };
+
 // Mutation observer
 // will setup in useEffect
 global.inputMutationObserver = null;
@@ -76,10 +79,16 @@ export default function Home() {
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
+  const [display, setDisplay] = useState(DISPLAY.FRONT);
 
   // Global states with Redux
   const dispatch = useDispatch();
   const isFullscreen = useSelector(state => state.isFullscreen);
+
+  // Toggle display
+  const toggleDisplay = () => {
+    setDisplay(display === DISPLAY.FRONT ? DISPLAY.BACK : DISPLAY.FRONT);
+  };
 
   // Initializing
   useEffect(() => {
@@ -573,31 +582,35 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <div className={styles.front}>
-          <form onSubmit={onSubmit}>
-            <input
-              id="input"
-              type="text"
-              placeholder={placeholder}
-              value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
-              autoFocus
-              onKeyDown={handleInputKeyDown}
-              autoComplete="off"
-            />
-            <input className={styles.submit} type="submit" value={enter} />
-          </form>
-          <div id="wrapper" className={styles.wrapper}>
-            <div id="output" className={styles.output}></div>
-            {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
-            {stats && <div className={styles.stats}>{stats}</div>}
-            <div className={styles.info}>{info}</div>
+        <div id="btn-dot" onClick={toggleDisplay} className={styles.dot}>•</div>
+        {display === DISPLAY.FRONT && (
+          <div className={styles.front}>
+            <form onSubmit={onSubmit}>
+              <input
+                id="input"
+                type="text"
+                placeholder={placeholder}
+                value={userInput}
+                onChange={(e) => setUserInput(e.target.value)}
+                autoFocus
+                onKeyDown={handleInputKeyDown}
+                autoComplete="off"
+              />
+              <input className={styles.submit} type="submit" value={enter} />
+            </form>
+            <div id="wrapper" className={styles.wrapper}>
+              <div id="output" className={styles.output}></div>
+              {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
+              {stats && <div className={styles.stats}>{stats}</div>}
+              <div className={styles.info}>{info}</div>
+            </div>
           </div>
-        </div>
-        <div className={styles.back}>
-          <div className={styles.settings}>Building in progress...</div>
-        </div>
-        <div id="btn-collapse-out" className={styles.dot}>•</div>
+        )}
+        {display === DISPLAY.BACK && (
+          <div className={styles.back}>
+            <div className={styles.settings}>Building in progress...</div>
+          </div>
+        )}
       </main>
     </div>
   );

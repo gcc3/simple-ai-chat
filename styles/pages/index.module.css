@@ -85,9 +85,6 @@
   margin-top: 5px;
   margin-bottom: 35px;
 }
-.main .front {
-  display: flex;
-}
 .main .dot {
   display: block;
   font-size: 20px;
@@ -100,9 +97,6 @@
 }
 .main .dot:hover {
   cursor: pointer;
-}
-.main .back {
-  display: none;
 }
 .main .settings {
   width: 100%;
