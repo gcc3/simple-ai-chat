@@ -14,7 +14,6 @@
   flex-direction: column;
   width: 100%;
   max-width: 625px;
-  height: 100vh;
 }
 .main form {
   display: flex;
