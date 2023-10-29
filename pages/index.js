@@ -73,8 +73,8 @@ export default function Home() {
   // States
   const [userInput, setUserInput] = useState("");
   const [placeholder, setPlaceholder] = useState("");
-  const [waiting, setWaiting] = useState("...");
-  const [querying, setQuerying] = useState("...");
+  const [waiting, setWaiting] = useState("");
+  const [querying, setQuerying] = useState("Querying...");
   const [enter, setEnter] = useState("enter");
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
