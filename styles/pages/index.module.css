@@ -50,6 +50,7 @@
   display: none;
 }
 .main .wrapper {
+  padding: 10px;
   width: 100%;
   max-width: 600px;
 }
