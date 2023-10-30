@@ -12,7 +12,7 @@ jobs:
     - name: Execute SSH commands
       uses: appleboy/ssh-action@v0.1.3
       with:
-        host: ${{ secrets.SERVER_HOST }}
+        host: simple-ai.io
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
