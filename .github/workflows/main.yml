@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  deploy:
+  simple-ai-dot-io:
     runs-on: ubuntu-latest
     steps:
     - name: Execute SSH commands
