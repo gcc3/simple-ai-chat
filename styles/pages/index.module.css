@@ -93,6 +93,7 @@
 }
 .main .dot:hover {
   cursor: pointer;
+  color: var(--dot-hover-color);
 }
 .main .settings {
   width: 100%;
