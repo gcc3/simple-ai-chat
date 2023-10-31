@@ -10,6 +10,8 @@ import { toggleFullscreen, reverseFullscreen } from "../states/fullscreenSlice.j
 import { markdownFormatter } from "utils/markdownUtils.js";
 import { urlFormatter, passwordFormatter, maskPassword } from "utils/textUtils.js";
 import ReactDOMServer from 'react-dom/server';
+import UserDataPrivacy from "components/UserDataPrivacy";
+import Copyrights from "components/Copyrights";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -80,6 +82,7 @@ export default function Home() {
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
+  const [userDataPrivacy, setUserDataPrivacy] = useState();
 
   // Global states with Redux
   const dispatch = useDispatch();
@@ -613,7 +616,8 @@ export default function Home() {
       
         <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'}`}>
           <div className={styles.wrapper}>
-            © 2023 SIMPLE-AI.IO
+            <UserDataPrivacy />
+            <Copyrights />
           </div>
         </div>
       </main>

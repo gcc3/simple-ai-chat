@@ -1,3 +1,9 @@
+import ReactMarkdown from 'react-markdown';
+
+function UserDataPrivacy() {
+  return (
+    <div className="UserDataPrivacy">
+      <ReactMarkdown>
 **Privacy Policy for SimpleAI**
 
 **1. Introduction**
@@ -30,3 +36,9 @@ We may modify this privacy policy at any time, so please review it frequently. C
 **7. Contact Us**
 
 If you have any questions or concerns about this privacy policy, please contact us at soft@gochaichai.com.
+      </ReactMarkdown>
+    </div>
+  );
+}
+
+export default UserDataPrivacy;
