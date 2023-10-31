@@ -617,8 +617,12 @@ export default function Home() {
       
         <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'}`}>
           <div className={styles.wrapper}>
-            <UserDataPrivacy className={styles.privacy} />
-            <Copyrights className={styles.copyrights} />
+            <div className={styles.privacy}>
+              <UserDataPrivacy />
+            </div>
+            <div className={styles.copyrights}>
+              <Copyrights />
+            </div>
           </div>
         </div>
       </main>
