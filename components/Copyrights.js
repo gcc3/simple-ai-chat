@@ -1,11 +1,11 @@
-import ReactMarkdown from 'react-markdown';
+import Markdown from 'react-markdown';
 
 function Copyrights() {
   return (
     <div className="Copyrights">
-      <ReactMarkdown>
+      <Markdown>
 © 2023 SIMPLE-AI.IO
-      </ReactMarkdown>
+      </Markdown>
     </div>
   );
 }
