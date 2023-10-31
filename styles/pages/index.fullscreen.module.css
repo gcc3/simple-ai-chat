@@ -112,12 +112,6 @@
 .main .dot:hover {
   cursor: pointer;
 }
-.main .settings {
-  width: 100%;
-  padding: 10px;
-  padding-top: 12px;
-  color: var(--text-color);
-}
 
 /* Styles for differnt window sizes */
 @media screen and (max-width: 649px) {
