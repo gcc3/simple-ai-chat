@@ -14,7 +14,7 @@
   flex-direction: column;
   width: 100%;
 }
-.main form {
+.main .inputform {
   position: fixed;
   bottom: 0;
   left: 0;
@@ -27,7 +27,7 @@
   display: flex;  /* use flexbox to align the input and button */
   align-items: center;  /* vertically center the items */
 }
-.main input[type="text"] {
+.main .input {
   width: 100%;
   padding: 10px;
   font-size: 16px;
@@ -72,6 +72,7 @@
 }
 .main .output {
   font-weight: normal;
+  margin-top: 5px;
   margin-bottom: 30px;
   margin-left: 10px;
   margin-right: 10px;
@@ -87,7 +88,7 @@
   font-size: 12px;
 }
 .main .evaluation {
-  color: var(--stats-text-color);;
+  color: var(--stats-text-color);
   text-align: left;
 }
 .main .stats {
@@ -101,22 +102,22 @@
 }
 .main .dot {
   display: block;
-  font-size: 20px;
+  font-size: 22px;
   text-align: center;
   position: fixed;
   top: 5px;
-  right: 10px;
+  right: 5px;
   width: 15px;
   color: var(--dot-color);
 }
 .main .dot:hover {
   cursor: pointer;
 }
-.main .settings {
-  width: 100%;
-  padding: 10px;
-  padding-top: 12px;
+.main .privacy {
   color: var(--text-color);
+}
+.main .copyrights {
+  color: var(--sub-text-color);
 }
 
 /* Styles for differnt window sizes */

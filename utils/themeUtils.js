@@ -13,6 +13,8 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty('--border-shadow-color', 'rgba(139, 139, 139, 0.4)');
     document.documentElement.style.setProperty('--code-block-background-color', '#f6f6f6');  // GitHub is using #f6f8fa, #f6f6f6 is warmer.
     document.documentElement.style.setProperty('--dot-color', '#8e8ea0');
+    document.documentElement.style.setProperty('--dot-hover-color', '#000000');
+    document.documentElement.style.setProperty('--sub-text-color', '#767676');
   }
   
   if (theme == "dark") {
@@ -28,5 +30,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty('--border-shadow-color', 'rgba(0, 112, 0, 0.5)');
     document.documentElement.style.setProperty('--code-block-background-color', '#001f00');
     document.documentElement.style.setProperty('--dot-color', '#007000');
+    document.documentElement.style.setProperty('--dot-hover-color', '#00f700');
+    document.documentElement.style.setProperty('--sub-text-color', '#007000');
   }
 }

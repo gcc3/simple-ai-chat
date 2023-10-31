@@ -13,14 +13,14 @@
   width: 100%;
   max-width: 625px;
 }
-.main form {
+.main .inputform {
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 625px;
   background-color: transparent;  /* input area background color */
 }
-.main input[type="text"] {
+.main .input {
   padding: 10px 14px;
   margin-bottom: 24px;
   outline: 0;
@@ -36,7 +36,7 @@
   color: var(--placeholder-color);
   opacity: 1;
 }
-.main input[type="submit"] {
+.main .submit {
   padding: 12px 0;
   color: var(--button-text-color);
   background-color: var(--button-color);
@@ -93,11 +93,13 @@
 }
 .main .dot:hover {
   cursor: pointer;
+  color: var(--dot-hover-color);
 }
-.main .settings {
-  width: 100%;
-  max-width: 600px;
+.main .privacy {
   color: var(--text-color);
+}
+.main .copyrights {
+  color: var(--sub-text-color);
 }
 
 /* Styles for differnt window sizes */

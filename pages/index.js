@@ -8,8 +8,11 @@ import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen, reverseFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
-import { urlFormatter, passwordFormatter, maskPassword } from "utils/textUtils.js";
+import { urlFormatter } from "utils/textUtils";
+import { passwordFormatter, maskPassword } from "utils/passwordUtils";
 import ReactDOMServer from 'react-dom/server';
+import UserDataPrivacy from "components/UserDataPrivacy";
+import Copyrights from "components/Copyrights";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -80,6 +83,7 @@ export default function Home() {
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
+  const [userDataPrivacy, setUserDataPrivacy] = useState();
 
   // Global states with Redux
   const dispatch = useDispatch();
@@ -585,8 +589,9 @@ export default function Home() {
         <div id="btn-dot" onClick={toggleDisplay} className={styles.dot}>•</div>
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'}`}>
-          <form onSubmit={onSubmit}>
+          <form className={styles.inputform} onSubmit={onSubmit}>
             <input
+              className={styles.input}
               id="input"
               type="text"
               placeholder={placeholder}
@@ -596,7 +601,11 @@ export default function Home() {
               onKeyDown={handleInputKeyDown}
               autoComplete="off"
             />
-            <input className={styles.submit} type="submit" value={enter} />
+            <input 
+              className={styles.submit} 
+              type="submit" 
+              value={enter}
+            />
           </form>
           <div id="wrapper" className={styles.wrapper}>
             <div id="output" className={styles.output}></div>
@@ -607,7 +616,14 @@ export default function Home() {
         </div>
       
         <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'}`}>
-          <div className={styles.settings}>Building in progress...</div>
+          <div className={styles.wrapper}>
+            <div className={styles.privacy}>
+              <UserDataPrivacy />
+            </div>
+            <div className={styles.copyrights}>
+              <Copyrights />
+            </div>
+          </div>
         </div>
       </main>
     </div>
