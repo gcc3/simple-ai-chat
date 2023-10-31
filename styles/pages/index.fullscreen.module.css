@@ -88,7 +88,7 @@
   font-size: 12px;
 }
 .main .evaluation {
-  color: var(--stats-text-color);;
+  color: var(--stats-text-color);
   text-align: left;
 }
 .main .stats {
@@ -112,6 +112,12 @@
 }
 .main .dot:hover {
   cursor: pointer;
+}
+.main .privacy {
+  color: var(--text-color);
+}
+.main .copyrights {
+  color: var(--sub-text-color);
 }
 
 /* Styles for differnt window sizes */

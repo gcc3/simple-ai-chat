@@ -5,7 +5,7 @@ function UserDataPrivacy() {
   const markdown = `
   **Introduction**
   
-  Welcome to [SimpleAI](simple-ai.io). We are committed to protecting your personal information and your right to privacy.
+  Welcome to [simple-ai.io](simple-ai.io). We are committed to protecting your personal information and your right to privacy.
   
   **What Information We Collect**
   
@@ -37,7 +37,7 @@ function UserDataPrivacy() {
 
   return (
     <div className="UserDataPrivacy">
-      <div className="text-center">
+      <div className="text-center text-lg mb-3">
         <Markdown>
           **Privacy Policy**
         </Markdown>

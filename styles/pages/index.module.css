@@ -95,6 +95,12 @@
   cursor: pointer;
   color: var(--dot-hover-color);
 }
+.main .privacy {
+  color: var(--text-color);
+}
+.main .copyrights {
+  color: var(--sub-text-color);
+}
 
 /* Styles for differnt window sizes */
 @media screen and (max-width: 649px) {
