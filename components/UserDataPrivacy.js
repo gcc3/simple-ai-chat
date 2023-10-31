@@ -3,8 +3,6 @@ import remarkGfm from 'remark-gfm'
 
 function UserDataPrivacy() {
   const markdown = `
-  **Privacy Policy for SimpleAI**
-
   **1. Introduction**
   
   Welcome to [SimpleAI](simple-ai.io). We are committed to protecting your personal information and your right to privacy.
@@ -39,6 +37,11 @@ function UserDataPrivacy() {
 
   return (
     <div className="UserDataPrivacy">
+      <div align="center">
+        <Markdown>
+          **Privacy Policy**
+        </Markdown>
+      </div>
       <Markdown remarkPlugins={[remarkGfm]} children={markdown} />
     </div>
   );
