@@ -11,8 +11,8 @@ function UserDataPrivacy() {
   
   We collect minimal user information strictly necessary to provide and improve our services. This information may include:
   
-  - Basic account information: e.g. email address for account creation.
-  - Usage data: e.g. how you interact with our services.
+  - Basic account information: Email address for account creation.
+  - Usage data: Email address will be used for account registeration, password recovery and service updates notification.
   
   **3. How We Use Your Information**
   
