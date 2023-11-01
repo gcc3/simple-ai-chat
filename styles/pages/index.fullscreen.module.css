@@ -112,6 +112,7 @@
 }
 .main .dot:hover {
   cursor: pointer;
+  color: var(--dot-hover-color);
 }
 .main .container {
   background-color: var(--container-background-color);
