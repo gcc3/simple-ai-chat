@@ -95,6 +95,11 @@
   cursor: pointer;
   color: var(--dot-hover-color);
 }
+.main .container {
+  padding: 10px;
+  width: 100%;
+  height: 100%;
+}
 .main .privacy {
   color: var(--text-color);
 }
