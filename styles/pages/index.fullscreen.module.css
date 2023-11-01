@@ -113,6 +113,13 @@
 .main .dot:hover {
   cursor: pointer;
 }
+.main .container {
+  background-color: var(--container-background-color);
+  width: 100%;
+  padding: 10px;
+  padding-top: 15px;
+  overflow-y: auto;
+}
 .main .privacy {
   color: var(--text-color);
 }
