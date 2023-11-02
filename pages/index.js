@@ -13,6 +13,7 @@ import { passwordFormatter, maskPassword } from "utils/passwordUtils";
 import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
 import Copyrights from "components/Copyrights";
+import { checkLoginStatus } from "utils/userUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -108,6 +109,10 @@ export default function Home() {
     // Set styles and themes
     dispatch(toggleFullscreen(localStorage.getItem("useFullscreen") === "true"));
     setTheme(localStorage.getItem("theme"))
+
+    // Check login status
+    // If authentication failed, clear local user data
+    checkLoginStatus();
 
     // Global shortcut keys
     window.addEventListener("keydown", (event) => {
