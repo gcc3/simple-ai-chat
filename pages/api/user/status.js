@@ -10,7 +10,7 @@ export default async function (req, res) {
   // Authentication
   const authResult = authenticate(req, res);
   if (!authResult.success) {
-    return res.status(401).json({ error: authResult.error });
+    return res.status(200).json({ user: null });
   }
   const { id, username } = authResult.user;
 
