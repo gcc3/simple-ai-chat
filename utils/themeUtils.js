@@ -15,7 +15,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty('--dot-color', '#8e8ea0');
     document.documentElement.style.setProperty('--dot-hover-color', '#000000');
     document.documentElement.style.setProperty('--sub-text-color', '#767676');
-    document.documentElement.style.setProperty('--container-background-color', 'rgba(220, 220, 220, 0.4)');
+    document.documentElement.style.setProperty('--container-background-color', 'rgba(235, 235, 235, 0.4)');
   }
   
   if (theme == "dark") {
