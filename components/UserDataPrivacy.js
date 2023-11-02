@@ -1,5 +1,5 @@
 function UserDataPrivacy() {
-  const markdown = (
+  const content = (
     <div>
       * Introduction<br></br>
       
@@ -40,7 +40,7 @@ function UserDataPrivacy() {
       <div className="text-center mt-2 mb-3">
           Privacy Policy
       </div>
-      <div>{markdown}</div>
+      <div>{content}</div>
     </div>
   );
 }
