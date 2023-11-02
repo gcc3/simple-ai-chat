@@ -1,6 +1,7 @@
 import { getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 
+// Modified from info.js
 export default async function (req, res) {
   // Method Not Allowed if not GET
   if (req.method !== 'GET') {
