@@ -160,7 +160,11 @@ export default function Home() {
         case "l":  // control + l to clear output and reset session
           if (event.ctrlKey && global.STATE === STATES.IDLE) {
             event.preventDefault();
-            location.reload();
+            clearOutput();
+            setInfo();
+            setStats();
+            setEvaluation();
+            command(":clear");
           }
           break;
       }
