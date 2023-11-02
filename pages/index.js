@@ -83,7 +83,6 @@ export default function Home() {
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
-  const [userDataPrivacy, setUserDataPrivacy] = useState();
 
   // Global states with Redux
   const dispatch = useDispatch();
