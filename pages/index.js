@@ -587,7 +587,7 @@ export default function Home() {
       <main className={styles.main}>
         <div id="btn-dot" onClick={toggleDisplay} className={styles.dot}>•</div>
 
-        <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'}`}>
+        <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>
             <input
               className={styles.input}
@@ -614,7 +614,7 @@ export default function Home() {
           </div>
         </div>
       
-        <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'}`}>
+        <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
           <div className={styles.container}>
             <div className={styles.privacy}>
               <UserDataPrivacy />
