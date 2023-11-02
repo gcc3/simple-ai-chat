@@ -83,7 +83,6 @@ export default function Home() {
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
-  const [userDataPrivacy, setUserDataPrivacy] = useState();
 
   // Global states with Redux
   const dispatch = useDispatch();
@@ -588,7 +587,7 @@ export default function Home() {
       <main className={styles.main}>
         <div id="btn-dot" onClick={toggleDisplay} className={styles.dot}>•</div>
 
-        <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'}`}>
+        <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>
             <input
               className={styles.input}
@@ -615,7 +614,7 @@ export default function Home() {
           </div>
         </div>
       
-        <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'}`}>
+        <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
           <div className={styles.container}>
             <div className={styles.privacy}>
               <UserDataPrivacy />
