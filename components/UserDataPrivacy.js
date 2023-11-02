@@ -5,7 +5,7 @@ function UserDataPrivacy() {
   const markdown = `
   **Introduction**
   
-  Welcome to [simple-ai.io](simple-ai.io). We are committed to protecting your personal information and your right to privacy.
+  Welcome to [simple-ai.io](https://simple-ai.io). We are committed to protecting your personal information and your right to privacy.
   
   **What Information We Collect**
   
