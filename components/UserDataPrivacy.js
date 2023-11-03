@@ -37,8 +37,8 @@ function UserDataPrivacy() {
 
   return (
     <div className="UserDataPrivacy">
-      <div className="text-center mt-2 mb-3">
-          Privacy Policy
+      <div className="text-center mt-2 mb-4">
+         - Privacy Policy -
       </div>
       <div>{content}</div>
     </div>

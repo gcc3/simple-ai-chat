@@ -13,6 +13,7 @@ import { passwordFormatter, maskPassword } from "utils/passwordUtils";
 import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
 import Copyrights from "components/Copyrights";
+import { checkLoginStatus } from "utils/userUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -83,7 +84,6 @@ export default function Home() {
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
-  const [userDataPrivacy, setUserDataPrivacy] = useState();
 
   // Global states with Redux
   const dispatch = useDispatch();
@@ -110,6 +110,10 @@ export default function Home() {
     dispatch(toggleFullscreen(localStorage.getItem("useFullscreen") === "true"));
     setTheme(localStorage.getItem("theme"))
 
+    // Check login status
+    // If authentication failed, clear local user data
+    checkLoginStatus();
+
     // Global shortcut keys
     window.addEventListener("keydown", (event) => {
       switch (event.key) {
@@ -118,54 +122,54 @@ export default function Home() {
             // If there is input, ECS to clear input
             // userInput.length not work
             if (document.getElementById("input").value.length > 0) {
-              setUserInput("");
               event.preventDefault();
+              setUserInput("");
             } else {
               // ESC to unfocus input
-              document.getElementById("input").blur();
               event.preventDefault();
+              document.getElementById("input").blur();
             }
           }
           break;
     
         case "Tab":  // TAB to focus on input
           if (document.activeElement.id !== "input") {
-            document.getElementById("input").focus();
             event.preventDefault();
+            document.getElementById("input").focus();
           }
           break;
     
         case "/":  // Press / to focus on input
           if (document.activeElement.id !== "input") {
-            document.getElementById("input").focus();
             event.preventDefault();
+            document.getElementById("input").focus();
           }
           break;
     
         case "f":  // toggle fullscreen on/off
           if (event.ctrlKey) {
-            dispatch(reverseFullscreen());
             event.preventDefault();
+            dispatch(reverseFullscreen());
           }
           break;
 
         case "c":  // stop generating
           if (event.ctrlKey) {
-            command(":stop");
             if (global.STATE === STATES.DOING) {
               event.preventDefault();
             }
+            command(":stop");
           }
           break;
 
         case "r":  // clear output and reset session
           if (event.ctrlKey && global.STATE === STATES.IDLE) {
+            event.preventDefault();
             clearOutput();
             setInfo();
             setStats();
             setEvaluation();
             command(":clear");
-            event.preventDefault();
           }
           break;
       }
@@ -588,7 +592,7 @@ export default function Home() {
       <main className={styles.main}>
         <div id="btn-dot" onClick={toggleDisplay} className={styles.dot}>•</div>
 
-        <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'}`}>
+        <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>
             <input
               className={styles.input}
@@ -615,7 +619,7 @@ export default function Home() {
           </div>
         </div>
       
-        <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'}`}>
+        <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
           <div className={styles.container}>
             <div className={styles.privacy}>
               <UserDataPrivacy />
