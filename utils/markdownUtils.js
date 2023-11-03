@@ -11,19 +11,19 @@ export function markdownFormatter() {
 
       // Replace markdown and other patterns
       output = output
-        .replace(/```([^`]+)```/g, '<pre><code>$1</code></pre>')              // Multi-line code blocks
-        .replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>')     // Inline code
+        .replace(/```([^`]+)```/g, '<pre>$1</pre>')           // Multi-line code blocks
+        .replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>')  // Inline code
 
       // Clean up <pre> tags
       output = output
-        .replace(/<pre><code>\s*(\w+)?\s*<br>/g, '<pre><code>')              // Remove language name followed by <br> after <pre>
-        .replace(/<\/pre><br><br>/g, '</pre><br>')               // Avoid consecutive breaks after </pre>
-        .replace(/<br> ?<\/code><\/pre>/g, '</code></pre>')                     // Remove <br> before </pre>
+        .replace(/<pre>\s*(\w+)?\s*<br>/g, '<pre>')  // Remove language name followed by <br> after <pre>
+        .replace(/<\/pre><br><br>/g, '</pre><br>')   // Avoid consecutive breaks after </pre>
+        .replace(/<br> ?<\/pre>/g, '</pre>')         // Remove <br> before </pre>
 
       // Line replacer
       const lines = output.split('<br>');
       output = lines.map((line, i) => {
-        if (line.includes('**')) return line.replace(/\*\*(.*)\*\*/g, '$1');  // Replace **text** with text only
+        if (line.includes('**')) return line.replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>');  // Replace **text** with text only
         return line;
       }).join('<br>');
 
