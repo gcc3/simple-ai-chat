@@ -569,14 +569,22 @@ export default function Home() {
       alert(error.message);
     }
   }
-
-  // Input from placeholder when pressing tab
+  
+  // Handle input key down
   const handleInputKeyDown = (event) => {
+    // Enter to submit
+    if (event.keyCode === 13 || event.which === 13) {
+      event.preventDefault();
+      if (event.ctrlKey || event.shiftKey) return;  // Ignore ctrl/shift + enter
+      onSubmit(event);
+    }
+
+    // Input from placeholder when pressing tab
     if (event.keyCode === 9 || event.which === 9) {
-        if (userInput.length === 0) {
-          setUserInput(placeholder);
-        }
-        event.preventDefault();
+      event.preventDefault();
+      if (userInput.length === 0) {
+        setUserInput(placeholder);
+      }
     }
   };
 
