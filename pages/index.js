@@ -146,14 +146,14 @@ export default function Home() {
           }
           break;
     
-        case "f":  // control + f to toggle fullscreen on/off
+        case "f":  // toggle fullscreen on/off
           if (event.ctrlKey) {
             event.preventDefault();
             dispatch(reverseFullscreen());
           }
           break;
 
-        case "c":  // control + c to stop generating
+        case "c":  // stop generating
           if (event.ctrlKey) {
             if (global.STATE === STATES.DOING) {
               event.preventDefault();
@@ -162,7 +162,7 @@ export default function Home() {
           }
           break;
 
-        case "l":  // control + l to clear output and reset session
+        case "r":  // clear output and reset session
           if (event.ctrlKey && global.STATE === STATES.IDLE) {
             event.preventDefault();
             clearOutput();
