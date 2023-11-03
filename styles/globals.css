@@ -35,6 +35,11 @@ pre {
   overflow-x: auto;
   font-family: "Fira Code", monospace;
   font-size: 16px !important;
+  scrollbar-width: none; /* Hide the scroll bar for Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+pre::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
 }
 strong {
   background: var(--strong-text-background-color);
