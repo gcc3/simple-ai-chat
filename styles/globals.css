@@ -32,9 +32,6 @@ pre {
   border-radius: .5rem;
   padding: .5rem;
   overflow-x: auto;
-  font-family: "Fira Code", monospace;
-  font-size: 94%;
-  margin: 0px;
 }
 strong {
   font-weight: 570;
