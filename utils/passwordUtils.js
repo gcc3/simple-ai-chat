@@ -1,15 +1,8 @@
 export function passwordFormatter(elInput) {
   if (elInput) {
-    // Temproary stop observing
-    global.inputMutationObserver.disconnect();
-
     // Format the output
     const input = elInput.value;
     elInput.value = maskPassword(input);
-
-    // Resume observing
-    const observingConfig = { childList: true, attributes: true, subtree: true, characterData: true };
-    global.inputMutationObserver.observe(elInput, observingConfig);
   }
 }
 
