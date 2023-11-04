@@ -577,11 +577,20 @@ export default function Home() {
   
   // Handle input key down
   const handleInputKeyDown = (event) => {
-    // Enter to submit
+    // Enter to submit, or insert new line
     if (event.keyCode === 13 || event.which === 13) {
       event.preventDefault();
-      if (event.ctrlKey || event.shiftKey) return;  // Ignore ctrl/shift + enter
-      onSubmit(event);
+      if (event.ctrlKey || event.shiftKey) {
+        // Insert a line break
+        const pCursor = event.target.selectionStart;
+        setUserInput(userInput.substring(0, pCursor) + '\n' + userInput.substring(pCursor));
+
+        // TODO, why this now work?
+        reAdjustInputHeight();
+      } else {
+        // Submit
+        onSubmit(event);
+      }
     }
 
     // Input from placeholder when pressing tab
