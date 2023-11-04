@@ -191,9 +191,9 @@ export default function Home() {
     getSystemInfo();
 
     // Initialize global input mutation observer
-    global.inputMutationObserver = new MutationObserver(mutationsList => {
-      for (let mutation of mutationsList)
-        if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+    global.inputMutationObserver = new MutationObserver(mutationList => {
+      for (let mutation of mutationList)
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
           let input = mutation.target.value;
 
           // Password input
@@ -221,7 +221,7 @@ export default function Home() {
     });
 
     // Start observing
-    const observingConfig = { childList: true, attributes: true, subtree: true, characterData: true };
+    const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
     global.inputMutationObserver.observe(document.getElementById("input"), observingConfig);
     global.outputMutationObserver.observe(document.getElementById("output"), observingConfig);
   }, []);
@@ -598,14 +598,13 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <div id="btn-dot" onClick={toggleDisplay} className={styles.dot}>•</div>
+        <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>•</div>
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>
-            <input
-              className={styles.input}
+            <textarea
               id="input"
-              type="text"
+              className={styles.input}
               placeholder={placeholder}
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}

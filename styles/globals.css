@@ -22,7 +22,7 @@ code {
   background: var(--code-block-background-color);
   word-wrap: break-word;
   box-decoration-break: clone;
-  padding: .1rem .3rem .1rem;
+  padding: .1rem .0rem .1rem;
   border-radius: .4rem;
   font-family: "Fira Code", monospace;
   color: var(--code-block-text-color);
@@ -34,13 +34,18 @@ pre {
   border-radius: .5rem;
   overflow-x: auto;
   font-family: "Fira Code", monospace;
-  font-size: 16px !important;
+  font-size: 15px !important;
+  scrollbar-width: none; /* Hide the scroll bar for Firefox */
+  -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+pre::-webkit-scrollbar {
+  display: none; /* For Chrome, Safari, and Opera */
 }
 strong {
   background: var(--strong-text-background-color);
   font-weight: normal !important;
-  padding: .1rem .3rem .1rem;
-  border-radius: .4rem;
+  padding: .2rem .0rem .2rem;
+  border-radius: .3rem;
 }
 a {
   color: var(--text-color);

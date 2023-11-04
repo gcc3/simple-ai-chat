@@ -21,6 +21,7 @@
   background-color: transparent;  /* input area background color */
 }
 .main .input {
+  height: 46px;
   padding: 10px 14px;
   margin-bottom: 24px;
   outline: 0;
