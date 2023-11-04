@@ -602,6 +602,7 @@ export default function Home() {
       event.preventDefault();
       if (elInput.value.length === 0) {
         setInput(placeholder);
+        reAdjustInputHeight();
       }
     }
   };
