@@ -81,6 +81,13 @@ User settings will be applied after login.
 Support code block display with a markdown formatter.  
 Support URL formatter to add href.  
 
+* Multiple Lines Input  
+It's possible to input multiple lines. Use `crtl` or `alt` with `enter` key to break new line.
+
+* Placeholder  
+Use placeholder to store and show the last input.  
+Use `tab` key to restore input from the placehodler.  
+
 
 AI Links
 --------
@@ -108,7 +115,7 @@ Shortcuts
 ---------
 
 `/` or `TAB` to jump to input box.  
-`TAB` key to auto input the placeholder text.  
+`TAB` key to restore the placeholder text which is the last input.  
 `ESC` to clear input.  
 `control + C` to stop generating.  
 `control + F` to toggle fullscreen mode on/off.  
