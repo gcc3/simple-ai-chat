@@ -14,7 +14,6 @@ import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
 import Copyrights from "components/Copyrights";
 import { checkLoginStatus } from "utils/userUtils";
-import clear from "commands/clear";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -630,8 +629,8 @@ export default function Home() {
     }
   }
 
-  // Styles and themes
-  let styles = isFullscreen ? fullscreenStyles : defaultStyles;
+  // Themes
+  const styles = isFullscreen ? fullscreenStyles : defaultStyles;
   
   return (
     <div>
