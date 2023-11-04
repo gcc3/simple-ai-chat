@@ -608,7 +608,7 @@ export default function Home() {
   };
 
   const reAdjustInputHeight = () => {
-    let elInput = document.getElementById('input');
+    const elInput = document.getElementById('input');
     if (elInput) {
       elInput.style.height = "auto";
       elInput.style.height = (elInput.scrollHeight + 1) + "px";
