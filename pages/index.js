@@ -590,12 +590,16 @@ export default function Home() {
 
   const handleInputChange = (event) => {
     setUserInput(event.target.value);
+    adjustInputHeight();
+  };
+
+  const adjustInputHeight = () => {
     let elInput = document.getElementById('input');
     if (elInput) {
       elInput.style.height = "auto";
       elInput.style.height = (elInput.scrollHeight + 1) + "px";
     }
-  };
+  }
 
   // Styles and themes
   let styles = isFullscreen ? fullscreenStyles : defaultStyles;
