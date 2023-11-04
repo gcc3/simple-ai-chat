@@ -133,7 +133,7 @@
   .main .submit {
     visibility: hidden;
   }
-  .main input[type="text"] {
+  .main .input {
     padding-right: 10px;
   }
 }
