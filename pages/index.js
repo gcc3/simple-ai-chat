@@ -30,7 +30,6 @@ global.outputMutationObserver = null;
 // Global raw input/output buffer
 global.rawInput = "";
 global.rawOutput = "";
-global.rawPlasholder = "";
 
 export default function Home() {
   // States
@@ -251,10 +250,8 @@ export default function Home() {
     if (elInput.value.startsWith(":login") || elInput.value.startsWith(":user set pass")) {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
-    setPlaceholder(placeholder.substring(0, 58) + "...");
-    global.rawPlasholder = placeholder;
+    setPlaceholder(placeholder);
     clearInput();
-    reAdjustInputHeight();
 
     // Command input
     if (input.startsWith(":")) {
@@ -604,7 +601,7 @@ export default function Home() {
     if (event.keyCode === 9 || event.which === 9) {
       event.preventDefault();
       if (elInput.value.length === 0) {
-        setInput(global.rawPlasholder);
+        setInput(placeholder);
         reAdjustInputHeight();
       }
     }
