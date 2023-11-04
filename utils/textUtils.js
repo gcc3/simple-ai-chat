@@ -6,7 +6,7 @@ export function urlFormatter(elOutput) {
     // Format the output
     const output = elOutput.innerHTML;
     const pattern = /((?:https?|ftp):\/\/[^\s/$)]*[^\s/$)])/g;  // matches URLs
-    const replacement = '<a href="$1" target="_blank">$1</a>';
+    const replacement = '<code><a href="$1" target="_blank">$1</a></code>';
     elOutput.innerHTML = output.replace(pattern, replacement);
 
     // Resume observing
