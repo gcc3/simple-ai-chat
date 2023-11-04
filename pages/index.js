@@ -588,6 +588,15 @@ export default function Home() {
     }
   };
 
+  const handleInputChange = (event) => {
+    setUserInput(event.target.value);
+    let elInput = document.getElementById('input');
+    if (elInput) {
+      elInput.style.height = "auto";
+      elInput.style.height = (elInput.scrollHeight + 1) + "px";
+    }
+  };
+
   // Styles and themes
   let styles = isFullscreen ? fullscreenStyles : defaultStyles;
   
@@ -604,10 +613,11 @@ export default function Home() {
           <form className={styles.inputform} onSubmit={onSubmit}>
             <textarea
               id="input"
+              rows="1"
               className={styles.input}
               placeholder={placeholder}
               value={userInput}
-              onChange={(e) => setUserInput(e.target.value)}
+              onChange={handleInputChange}
               autoFocus
               onKeyDown={handleInputKeyDown}
               autoComplete="off"
