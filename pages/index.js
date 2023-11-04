@@ -211,15 +211,16 @@ export default function Home() {
 
     // Initialize global output mutation observer
     global.outputMutationObserver = new MutationObserver(mutationsList => {
-      console.log("Output changed.");
-      for (let mutation of mutationsList)
-        if (mutation.type === 'childList' || mutation.type === 'characterData')
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
           // Formatter should only works when generating
           if (global.STATE === STATES.DOING) {
 
             // Markdown formatter
             markdownFormatter(elOutputRef.current);
           }
+        }
+      }
     });
 
     // Start observing
