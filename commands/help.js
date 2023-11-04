@@ -3,7 +3,7 @@ export default function help(args) {
     ":help - Show this help message.\n" +
     ":stop - Stop generating. (⌃c)\n" +
     ":clear - Clear output and reset session. (⌃r)\n" +
-    ":fullscreen [on/off] - Use fullscreen mode. (⌃f)\n" +
+    ":fullscreen [on/off] - Use fullscreen mode.\n" +
     ":theme [light/dark] - Change color theme.\n" +
     ":entry [ls|list|add] - Manage dictionary entries.\n" +
     ":ls - List all entries, same as :entry ls.\n" +

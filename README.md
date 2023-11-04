@@ -71,7 +71,6 @@ Use `:theme [light/dark]` to change color theme.
 
 * Full Screen Mode  
 Use `:fullscreen on` to turn on fullscreen mode.  
-Or use shortcut `control + F`.  
 
 * User  
 Use `:user` command to add new user, set user settings, password, Email.  

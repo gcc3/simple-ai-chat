@@ -158,14 +158,6 @@ export default function Home() {
             elInput.focus();
           }
           break;
-    
-        case "f":  // toggle fullscreen on/off
-          if (event.ctrlKey) {
-            console.log("Shortcut: ⌃f");
-            event.preventDefault();
-            dispatch(reverseFullscreen());
-          }
-          break;
 
         case "c":  // stop generating
           if (event.ctrlKey) {
