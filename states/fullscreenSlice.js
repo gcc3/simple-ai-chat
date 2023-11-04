@@ -18,4 +18,4 @@ const fullscreenSlice = createSlice({
 });
 
 export const { toggleFullscreen, reverseFullscreen } = fullscreenSlice.actions;
-export default fullscreenSlice.reducer;
+export default fullscreenSlice.reducer;  // fullscreenReducer

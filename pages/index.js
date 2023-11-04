@@ -148,6 +148,7 @@ export default function Home() {
     
         case "f":  // toggle fullscreen on/off
           if (event.ctrlKey) {
+            console.log("Shortcut: ⌃f");
             event.preventDefault();
             dispatch(reverseFullscreen());
           }
@@ -155,6 +156,7 @@ export default function Home() {
 
         case "c":  // stop generating
           if (event.ctrlKey) {
+            console.log("Shortcut: ⌃c");
             if (global.STATE === STATES.DOING) {
               event.preventDefault();
             }
@@ -163,13 +165,16 @@ export default function Home() {
           break;
 
         case "r":  // clear output and reset session
-          if (event.ctrlKey && global.STATE === STATES.IDLE) {
-            event.preventDefault();
-            clearOutput();
-            setInfo();
-            setStats();
-            setEvaluation();
-            command(":clear");
+          if (event.ctrlKey) {
+            console.log("Shortcut: ⌃r");
+            if (global.STATE === STATES.IDLE) {
+              event.preventDefault();
+              clearOutput();
+              setInfo();
+              setStats();
+              setEvaluation();
+              command(":clear");
+            }
           }
           break;
       }
@@ -572,11 +577,20 @@ export default function Home() {
   
   // Handle input key down
   const handleInputKeyDown = (event) => {
-    // Enter to submit
+    // Enter to submit, or insert new line
     if (event.keyCode === 13 || event.which === 13) {
       event.preventDefault();
-      if (event.ctrlKey || event.shiftKey) return;  // Ignore ctrl/shift + enter
-      onSubmit(event);
+      if (event.ctrlKey || event.shiftKey) {
+        // Insert a line break
+        const pCursor = event.target.selectionStart;
+        setUserInput(userInput.substring(0, pCursor) + '\n' + userInput.substring(pCursor));
+
+        // TODO, why this now work?
+        reAdjustInputHeight();
+      } else {
+        // Submit
+        onSubmit(event);
+      }
     }
 
     // Input from placeholder when pressing tab
@@ -590,12 +604,16 @@ export default function Home() {
 
   const handleInputChange = (event) => {
     setUserInput(event.target.value);
-    let elInput = document.getElementById('input');
+    reAdjustInputHeight();
+  };
+
+  const reAdjustInputHeight = () => {
+    const elInput = document.getElementById('input');
     if (elInput) {
       elInput.style.height = "auto";
       elInput.style.height = (elInput.scrollHeight + 1) + "px";
     }
-  };
+  }
 
   // Styles and themes
   let styles = isFullscreen ? fullscreenStyles : defaultStyles;
