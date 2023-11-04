@@ -5,8 +5,8 @@ export function urlFormatter(elOutput) {
 
     // Format the output
     const output = elOutput.innerHTML;
-    const pattern = /((?:https?|ftp):\/\/[^\s/$)]*[^\s/$)])/g;  // matches URLs
-    const replacement = '<code><a href="$1" target="_blank">$1</a></code>';
+    const pattern = /((?:https?|ftp):\/\/[^\s/$)]*[^\s/$)]\/?)/g;  // matches URLs
+    const replacement = '<u><a href="$1" target="_blank">$1</a></u>';
     elOutput.innerHTML = output.replace(pattern, replacement);
 
     // Resume observing
