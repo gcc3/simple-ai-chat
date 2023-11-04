@@ -22,7 +22,7 @@ code {
   background: var(--code-block-background-color);
   word-wrap: break-word;
   box-decoration-break: clone;
-  padding: .1rem .3rem .1rem;
+  padding: .1rem .0rem .1rem;
   border-radius: .4rem;
   font-family: "Fira Code", monospace;
   color: var(--code-block-text-color);
@@ -44,8 +44,8 @@ pre::-webkit-scrollbar {
 strong {
   background: var(--strong-text-background-color);
   font-weight: normal !important;
-  padding: .1rem .3rem .1rem;
-  border-radius: .4rem;
+  padding: .2rem .0rem .2rem;
+  border-radius: .3rem;
 }
 a {
   color: var(--text-color);
