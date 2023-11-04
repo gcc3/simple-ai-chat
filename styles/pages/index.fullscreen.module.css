@@ -28,6 +28,7 @@
   align-items: center;  /* vertically center the items */
 }
 .main .input {
+  height: 46px;
   width: 100%;
   padding: 10px;
   font-size: 16px;
