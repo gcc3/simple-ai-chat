@@ -191,9 +191,9 @@ export default function Home() {
     getSystemInfo();
 
     // Initialize global input mutation observer
-    global.inputMutationObserver = new MutationObserver(mutationsList => {
-      for (let mutation of mutationsList)
-        if (mutation.type === 'attributes' && mutation.attributeName === 'value') {
+    global.inputMutationObserver = new MutationObserver(mutationList => {
+      for (let mutation of mutationList)
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
           let input = mutation.target.value;
 
           // Password input
@@ -221,7 +221,7 @@ export default function Home() {
     });
 
     // Start observing
-    const observingConfig = { childList: true, attributes: true, subtree: true, characterData: true };
+    const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
     global.inputMutationObserver.observe(document.getElementById("input"), observingConfig);
     global.outputMutationObserver.observe(document.getElementById("output"), observingConfig);
   }, []);
@@ -572,8 +572,6 @@ export default function Home() {
   
   // Handle input key down
   const handleInputKeyDown = (event) => {
-    console.log("Key down: " + event.key + " " + event.keyCode);
-
     // Enter to submit
     if (event.keyCode === 13 || event.which === 13) {
       event.preventDefault();
