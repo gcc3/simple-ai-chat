@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import command from "command.js";
@@ -31,48 +31,6 @@ global.outputMutationObserver = null;
 global.rawInput = "";
 global.rawOutput = "";
 
-// Print output
-function printOutput(text, ignoreFormatter=true, append=false) {
-  const outputElement = document.getElementById("output");
-
-  if (outputElement) {
-    if (ignoreFormatter) {
-      // Temproary stop observing
-      // For some output, we don't want to format it
-      global.outputMutationObserver.disconnect();
-    }
-
-    // Print the output
-    if (append) {
-      outputElement.innerHTML += text;
-      global.rawOutput += text;
-    } else {
-      outputElement.innerHTML = text;
-      global.rawOutput = text;
-    }
-
-    if (ignoreFormatter) {
-      // Resume observing
-      global.outputMutationObserver.observe((outputElement), { 
-        childList: true, 
-        attributes: false, 
-        subtree: true,
-        characterData: true
-      });
-    }
-  }
-};
-
-// Clear output
-function clearOutput() {
-  printOutput("");
-}
-
-// Get output
-function getOutput() {
-  return document.getElementById("output").innerHTML;
-}
-
 export default function Home() {
   // States
   const [userInput, setUserInput] = useState("");
@@ -85,6 +43,10 @@ export default function Home() {
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
 
+  // Refs
+  const elInputRef = useRef(null);
+  const elOutputRef = useRef(null);
+
   // Global states with Redux
   const dispatch = useDispatch();
   const isFullscreen = useSelector(state => state.isFullscreen);
@@ -92,6 +54,47 @@ export default function Home() {
   // Toggle display
   const toggleDisplay = () => {
     setDisplay(display === DISPLAY.FRONT ? DISPLAY.BACK : DISPLAY.FRONT);
+  };
+
+  // Print output
+  const printOutput = (text, ignoreFormatter=true, append=false) => {
+    const elOutput = elOutputRef.current;
+    if (elOutput) {
+      if (ignoreFormatter) {
+        // Temproary stop observing
+        // For some output, we don't want to format it
+        global.outputMutationObserver.disconnect();
+      }
+
+      // Print the output
+      if (append) {
+        elOutput.innerHTML += text;
+        global.rawOutput += text;
+      } else {
+        elOutput.innerHTML = text;
+        global.rawOutput = text;
+      }
+
+      if (ignoreFormatter) {
+        // Resume observing
+        global.outputMutationObserver.observe((elOutput), { 
+          childList: true, 
+          attributes: false, 
+          subtree: true,
+          characterData: true
+        });
+      }
+    }
+  };
+
+  // Clear output
+  const clearOutput = () => {
+    printOutput("");
+  };
+
+  // Get output
+  const getOutput = () => {
+    return elOutputRef.current.innerHTML;
   };
 
   // Initializing
@@ -116,18 +119,20 @@ export default function Home() {
 
     // Global shortcut keys
     window.addEventListener("keydown", (event) => {
+      const elInput = elInputRef.current;
+
       switch (event.key) {
         case "Escape":
           if (document.activeElement.id === "input") {
             // If there is input, ECS to clear input
             // userInput.length not work
-            if (document.getElementById("input").value.length > 0) {
+            if (elInput.value.length > 0) {
               event.preventDefault();
               setUserInput("");
             } else {
               // ESC to unfocus input
               event.preventDefault();
-              document.getElementById("input").blur();
+              elInput.blur();
             }
           }
           break;
@@ -135,14 +140,14 @@ export default function Home() {
         case "Tab":  // TAB to focus on input
           if (document.activeElement.id !== "input") {
             event.preventDefault();
-            document.getElementById("input").focus();
+            elInput.focus();
           }
           break;
     
         case "/":  // Press / to focus on input
           if (document.activeElement.id !== "input") {
             event.preventDefault();
-            document.getElementById("input").focus();
+            elInput.focus();
           }
           break;
     
@@ -227,8 +232,8 @@ export default function Home() {
 
     // Start observing
     const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
-    global.inputMutationObserver.observe(document.getElementById("input"), observingConfig);
-    global.outputMutationObserver.observe(document.getElementById("output"), observingConfig);
+    global.inputMutationObserver.observe(elInputRef.current, observingConfig);
+    global.outputMutationObserver.observe(elOutputRef.current, observingConfig);
   }, []);
 
   // On submit input
@@ -605,10 +610,10 @@ export default function Home() {
   };
 
   const reAdjustInputHeight = () => {
-    const elInput = document.getElementById('input');
+    const elInput = elInputRef.current;
     if (elInput) {
       elInput.style.height = "auto";
-      elInput.style.height = (elInput.scrollHeight + 1) + "px";
+      elInput.style.height = (elInputRef.current.scrollHeight + 1) + "px";
     }
   }
 
@@ -628,6 +633,7 @@ export default function Home() {
           <form className={styles.inputform} onSubmit={onSubmit}>
             <textarea
               id="input"
+              ref={elInputRef}
               rows="1"
               className={styles.input}
               placeholder={placeholder}
@@ -644,7 +650,10 @@ export default function Home() {
             />
           </form>
           <div id="wrapper" className={styles.wrapper}>
-            <div id="output" className={styles.output}></div>
+            <div id="output" 
+              ref={elOutputRef}
+              className={styles.output}>
+            </div>
             {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
             {stats && <div className={styles.stats}>{stats}</div>}
             <div className={styles.info}>{info}</div>
