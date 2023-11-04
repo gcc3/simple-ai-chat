@@ -14,6 +14,7 @@ import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
 import Copyrights from "components/Copyrights";
 import { checkLoginStatus } from "utils/userUtils";
+import { useHotkeys } from 'react-hotkeys-hook';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -49,6 +50,13 @@ export default function Home() {
   // Global states with Redux
   const dispatch = useDispatch();
   const isFullscreen = useSelector(state => state.isFullscreen);
+
+  // Hotkeys
+  useHotkeys('ctrl+f', (event) => {
+    console.log("Shortcut: ⌃f");
+    event.preventDefault();
+    dispatch(reverseFullscreen());
+  });
 
   // Toggle display
   const toggleDisplay = () => {
@@ -156,14 +164,6 @@ export default function Home() {
           if (document.activeElement.id !== "input") {
             event.preventDefault();
             elInput.focus();
-          }
-          break;
-    
-        case "f":  // toggle fullscreen on/off
-          if (event.ctrlKey) {
-            console.log("Shortcut: ⌃f");
-            event.preventDefault();
-            dispatch(reverseFullscreen());
           }
           break;
 
