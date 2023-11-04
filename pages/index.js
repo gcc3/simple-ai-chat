@@ -585,6 +585,13 @@ export default function Home() {
         // Insert a line break
         const pCursor = event.target.selectionStart;
         setInput(elInput.value.substring(0, pCursor) + '\n' + elInput.value.substring(pCursor));
+
+        // Move cursor
+        elInput.selectionStart = pCursor + 1;
+        elInput.selectionEnd = pCursor + 1;
+
+        // Re-adjust input height
+        reAdjustInputHeight();
       } else {
         // Submit
         onSubmit(event);
@@ -611,6 +618,7 @@ export default function Home() {
       global.rawInput = elInput.value;
     }
     
+    // Re-adjust input height
     reAdjustInputHeight();
   };
 
