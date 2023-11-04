@@ -87,6 +87,7 @@
   margin-right: 10px;
   font-weight: normal;
   font-size: 12px;
+  user-select: none;
 }
 .main .evaluation {
   color: var(--stats-text-color);

@@ -68,6 +68,7 @@
   margin-right: 4px;
   font-weight: normal;
   font-size: 12px;
+  user-select: none;
 }
 .main .evaluation {
   text-align: left;

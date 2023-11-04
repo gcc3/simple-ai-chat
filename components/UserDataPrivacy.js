@@ -24,7 +24,7 @@ function UserDataPrivacy() {
       We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.<br></br>
       <br></br>
       <strong>Contact Us</strong><br></br>
-      If you have any questions or concerns about this privacy policy, please contact us at <code>soft@gochaichai.com.</code><br></br>
+      If you have any questions or concerns about this privacy policy, please contact us at <code>soft@gochaichai.com</code>.<br></br>
     </div>
   )
 
