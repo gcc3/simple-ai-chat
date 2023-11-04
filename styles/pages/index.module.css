@@ -114,8 +114,7 @@
 /* Styles for differnt window sizes */
 @media screen and (max-width: 649px) {
   .main {
-    padding-top: 0px;
-    padding-bottom: 0px;
+    padding: 8px;
   }
 }
 @media screen and (min-width: 650px) and (max-width: 800px) {
