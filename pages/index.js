@@ -126,8 +126,8 @@ export default function Home() {
     // If authentication failed, clear local user data
     checkLoginStatus();
 
-    // Global shortcut keys
-    window.addEventListener("keydown", (event) => {
+    // Handle global shortcut keys
+    const handleKeyDown = (event) => {
       const elInput = elInputRef.current;
 
       switch (event.key) {
@@ -191,7 +191,8 @@ export default function Home() {
           }
           break;
       }
-    });
+    };
+    window.addEventListener("keydown", handleKeyDown, true);
 
     // Get system configurations
     const getSystemInfo = async () => {
@@ -225,6 +226,12 @@ export default function Home() {
     // Start observing
     const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
     global.outputMutationObserver.observe(elOutputRef.current, observingConfig);
+
+    // Cleanup
+    return () => {
+      // Remove event listener, this is necessary
+      window.removeEventListener("keydown", handleKeyDown, true);
+    }
   }, []);
 
   // On submit input
