@@ -584,9 +584,6 @@ export default function Home() {
         // Insert a line break
         const pCursor = event.target.selectionStart;
         setUserInput(userInput.substring(0, pCursor) + '\n' + userInput.substring(pCursor));
-
-        // TODO, why this now work?
-        reAdjustInputHeight();
       } else {
         // Submit
         onSubmit(event);
