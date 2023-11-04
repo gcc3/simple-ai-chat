@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import command from "command.js";
@@ -24,58 +24,15 @@ const DISPLAY = { FRONT: 0, BACK: 1 };
 
 // Mutation observer
 // will setup in useEffect
-global.inputMutationObserver = null;
+// For input change can handle by onChange
 global.outputMutationObserver = null;
 
-// Raw input/output buffer
+// Global raw input/output buffer
 global.rawInput = "";
 global.rawOutput = "";
 
-// Print output
-function printOutput(text, ignoreFormatter=true, append=false) {
-  const outputElement = document.getElementById("output");
-
-  if (outputElement) {
-    if (ignoreFormatter) {
-      // Temproary stop observing
-      // For some output, we don't want to format it
-      global.outputMutationObserver.disconnect();
-    }
-
-    // Print the output
-    if (append) {
-      outputElement.innerHTML += text;
-      global.rawOutput += text;
-    } else {
-      outputElement.innerHTML = text;
-      global.rawOutput = text;
-    }
-
-    if (ignoreFormatter) {
-      // Resume observing
-      global.outputMutationObserver.observe((outputElement), { 
-        childList: true, 
-        attributes: false, 
-        subtree: true,
-        characterData: true
-      });
-    }
-  }
-};
-
-// Clear output
-function clearOutput() {
-  printOutput("");
-}
-
-// Get output
-function getOutput() {
-  return document.getElementById("output").innerHTML;
-}
-
 export default function Home() {
   // States
-  const [userInput, setUserInput] = useState("");
   const [placeholder, setPlaceholder] = useState("");
   const [waiting, setWaiting] = useState("");
   const [querying, setQuerying] = useState("Querying...");
@@ -85,6 +42,10 @@ export default function Home() {
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
 
+  // Refs
+  const elInputRef = useRef(null);
+  const elOutputRef = useRef(null);
+
   // Global states with Redux
   const dispatch = useDispatch();
   const isFullscreen = useSelector(state => state.isFullscreen);
@@ -93,6 +54,57 @@ export default function Home() {
   const toggleDisplay = () => {
     setDisplay(display === DISPLAY.FRONT ? DISPLAY.BACK : DISPLAY.FRONT);
   };
+
+  // Print output
+  const printOutput = (text, ignoreFormatter=true, append=false) => {
+    const elOutput = elOutputRef.current;
+    if (elOutput) {
+      if (ignoreFormatter) {
+        // Temproary stop observing
+        // For some output, we don't want to format it
+        global.outputMutationObserver.disconnect();
+      }
+
+      // Print the output
+      if (append) {
+        elOutput.innerHTML += text;
+        global.rawOutput += text;
+      } else {
+        elOutput.innerHTML = text;
+        global.rawOutput = text;
+      }
+
+      if (ignoreFormatter) {
+        // Resume observing
+        global.outputMutationObserver.observe((elOutput), { 
+          childList: true, 
+          attributes: false, 
+          subtree: true,
+          characterData: true
+        });
+      }
+    }
+  };
+
+  // Clear output
+  const clearOutput = () => {
+    printOutput("");
+  };
+
+  // Get output
+  const getOutput = () => {
+    return elOutputRef.current.innerHTML;
+  };
+
+  // Set input
+  const setInput = (text) => {
+    elInputRef.current.value = text;
+  }
+
+  // Clear input
+  const clearInput = () => {
+    elInputRef.current.value = "";
+  }
 
   // Initializing
   useEffect(() => {
@@ -116,18 +128,19 @@ export default function Home() {
 
     // Global shortcut keys
     window.addEventListener("keydown", (event) => {
+      const elInput = elInputRef.current;
+
       switch (event.key) {
         case "Escape":
           if (document.activeElement.id === "input") {
-            // If there is input, ECS to clear input
-            // userInput.length not work
-            if (document.getElementById("input").value.length > 0) {
+            // If there is input, use ESC to clear input
+            if (elInput.value.length > 0) {
               event.preventDefault();
-              setUserInput("");
+              clearInput("");
             } else {
               // ESC to unfocus input
               event.preventDefault();
-              document.getElementById("input").blur();
+              elInput.blur();
             }
           }
           break;
@@ -135,14 +148,14 @@ export default function Home() {
         case "Tab":  // TAB to focus on input
           if (document.activeElement.id !== "input") {
             event.preventDefault();
-            document.getElementById("input").focus();
+            elInput.focus();
           }
           break;
     
         case "/":  // Press / to focus on input
           if (document.activeElement.id !== "input") {
             event.preventDefault();
-            document.getElementById("input").focus();
+            elInput.focus();
           }
           break;
     
@@ -195,40 +208,23 @@ export default function Home() {
     }
     getSystemInfo();
 
-    // Initialize global input mutation observer
-    global.inputMutationObserver = new MutationObserver(mutationList => {
-      for (let mutation of mutationList)
-        if (mutation.type === 'childList' || mutation.type === 'characterData') {
-          let input = mutation.target.value;
-
-          // Password input
-          if (input.startsWith(':login') || input.startsWith(':user set pass')) {
-            global.rawInput = input.replace(/\*/g, (match, index) => global.rawInput[index] || '');  // store real password
-            passwordFormatter();
-            return;
-          }
-          
-          // General input
-          global.rawInput = input;
-        }
-    });
-
     // Initialize global output mutation observer
     global.outputMutationObserver = new MutationObserver(mutationsList => {
-      for (let mutation of mutationsList)
-        if (mutation.type === 'childList' || mutation.type === 'characterData')
+      for (let mutation of mutationsList) {
+        if (mutation.type === 'childList' || mutation.type === 'characterData') {
           // Formatter should only works when generating
           if (global.STATE === STATES.DOING) {
 
             // Markdown formatter
-            markdownFormatter();
+            markdownFormatter(elOutputRef.current);
           }
+        }
+      }
     });
 
     // Start observing
     const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
-    global.inputMutationObserver.observe(document.getElementById("input"), observingConfig);
-    global.outputMutationObserver.observe(document.getElementById("output"), observingConfig);
+    global.outputMutationObserver.observe(elOutputRef.current, observingConfig);
   }, []);
 
   // On submit input
@@ -249,12 +245,13 @@ export default function Home() {
     if (input.length == 0) return;
 
     // Clear input and put it to placeholder
-    let placeholder = userInput;
-    if (userInput.startsWith(":login") || userInput.startsWith(":user set pass")) {
+    const elInput = elInputRef.current;
+    let placeholder = elInput.value;
+    if (elInput.value.startsWith(":login") || elInput.value.startsWith(":user set pass")) {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     setPlaceholder(placeholder);
-    setUserInput("");
+    clearInput();
 
     // Command input
     if (input.startsWith(":")) {
@@ -463,7 +460,7 @@ export default function Home() {
         }
 
         // URL formatter
-        urlFormatter();
+        urlFormatter(elOutputRef.current);
 
         // Try speak some rest text
         if (localStorage.getItem("useSpeak") === "true") {
@@ -577,15 +574,22 @@ export default function Home() {
   
   // Handle input key down
   const handleInputKeyDown = (event) => {
-    // Enter to submit, or insert new line
+    const elInput = elInputRef.current;
+
+    // Enter key event
+    // 1. Submit 2. Insert new line break if use ctrl/shift
     if (event.keyCode === 13 || event.which === 13) {
       event.preventDefault();
       if (event.ctrlKey || event.shiftKey) {
         // Insert a line break
         const pCursor = event.target.selectionStart;
-        setUserInput(userInput.substring(0, pCursor) + '\n' + userInput.substring(pCursor));
+        setInput(elInput.value.substring(0, pCursor) + '\n' + elInput.value.substring(pCursor));
 
-        // TODO, why this now work?
+        // Move cursor
+        elInput.selectionStart = pCursor + 1;
+        elInput.selectionEnd = pCursor + 1;
+
+        // Re-adjust input height
         reAdjustInputHeight();
       } else {
         // Submit
@@ -596,27 +600,37 @@ export default function Home() {
     // Input from placeholder when pressing tab
     if (event.keyCode === 9 || event.which === 9) {
       event.preventDefault();
-      if (userInput.length === 0) {
-        setUserInput(placeholder);
+      if (elInput.value.length === 0) {
+        setInput(placeholder);
       }
     }
   };
 
   const handleInputChange = (event) => {
-    setUserInput(event.target.value);
+    const elInput = elInputRef.current;
+    if (elInput.value.startsWith(':login') || elInput.value.startsWith(':user set pass')) {
+      // Password input
+      global.rawInput = elInput.value.replace(/\*/g, (match, index) => global.rawInput[index] || '');  // store real password
+      passwordFormatter(elInputRef.current);
+    } else {
+      // General input
+      global.rawInput = elInput.value;
+    }
+    
+    // Re-adjust input height
     reAdjustInputHeight();
   };
 
   const reAdjustInputHeight = () => {
-    const elInput = document.getElementById('input');
+    const elInput = elInputRef.current;
     if (elInput) {
       elInput.style.height = "auto";
-      elInput.style.height = (elInput.scrollHeight + 1) + "px";
+      elInput.style.height = (elInputRef.current.scrollHeight + 1) + "px";
     }
   }
 
-  // Styles and themes
-  let styles = isFullscreen ? fullscreenStyles : defaultStyles;
+  // Themes
+  const styles = isFullscreen ? fullscreenStyles : defaultStyles;
   
   return (
     <div>
@@ -631,23 +645,27 @@ export default function Home() {
           <form className={styles.inputform} onSubmit={onSubmit}>
             <textarea
               id="input"
+              ref={elInputRef}
               rows="1"
               className={styles.input}
               placeholder={placeholder}
-              value={userInput}
               onChange={handleInputChange}
               autoFocus
               onKeyDown={handleInputKeyDown}
               autoComplete="off"
             />
-            <input 
+            <input
               className={styles.submit} 
               type="submit" 
               value={enter}
             />
           </form>
           <div id="wrapper" className={styles.wrapper}>
-            <div id="output" className={styles.output}></div>
+            <div 
+              id="output" 
+              ref={elOutputRef}
+              className={styles.output}>
+            </div>
             {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
             {stats && <div className={styles.stats}>{stats}</div>}
             <div className={styles.info}>{info}</div>

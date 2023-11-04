@@ -2,7 +2,7 @@ function UserDataPrivacy() {
   const content = (
     <div>
       <strong>Introduction</strong><br></br>
-      Welcome to <code><a href="https://simple-ai.io">simple-ai.io</a></code>. We are committed to protecting your personal information and your right to privacy.<br></br>
+      Welcome to <u><a href="https://simple-ai.io">simple-ai.io</a></u>. We are committed to protecting your personal information and your right to privacy.<br></br>
       <br></br>
       <strong>What Information We Collect</strong><br></br>
       We collect minimal user information strictly necessary to provide and improve our services.<br></br>

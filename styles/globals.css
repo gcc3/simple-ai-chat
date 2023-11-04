@@ -52,6 +52,18 @@ strong {
   padding: .2rem .0rem .2rem;
   border-radius: .3rem;
 }
+u {
+  background: var(--underline-text-background-color);
+  color: var(--underline-text-color);
+  text-decoration: underline !important;
+  padding: .2rem .0rem .2rem;
+  border-radius: .3rem;
+  font-size: 15px !important;
+}
+u:hover {
+  background: var(--underline-text-hover-background-color);
+  text-decoration: none !important;
+}
 a {
   color: var(--text-color);
   text-decoration: none;
