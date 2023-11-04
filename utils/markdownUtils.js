@@ -1,6 +1,5 @@
-export function markdownFormatter() {
-  const outputElement = document.getElementById("output");
-  if (outputElement) {
+export function markdownFormatter(elOutput) {
+  if (elOutput) {
     // Temproary stop observing
     global.outputMutationObserver.disconnect();
 
@@ -30,11 +29,11 @@ export function markdownFormatter() {
       return output;
     }
 
-    const output = outputElement.innerHTML;
-    outputElement.innerHTML = formatOutput(output);
+    const output = elOutput.innerHTML;
+    elOutput.innerHTML = formatOutput(output);
 
     // Resume observing
-    global.outputMutationObserver.observe(outputElement, { 
+    global.outputMutationObserver.observe(elOutput, { 
       childList: true, 
       attributes: false, 
       subtree: true, 

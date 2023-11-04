@@ -1,16 +1,15 @@
-export function passwordFormatter() {
-  const inputElement = document.getElementById("input");
-  if (inputElement) {
+export function passwordFormatter(elInput) {
+  if (elInput) {
     // Temproary stop observing
     global.inputMutationObserver.disconnect();
 
     // Format the output
-    const input = inputElement.value;
-    inputElement.value = maskPassword(input);
+    const input = elInput.value;
+    elInput.value = maskPassword(input);
 
     // Resume observing
     const observingConfig = { childList: true, attributes: true, subtree: true, characterData: true };
-    global.inputMutationObserver.observe(inputElement, observingConfig);
+    global.inputMutationObserver.observe(elInput, observingConfig);
   }
 }
 

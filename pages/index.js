@@ -209,7 +209,7 @@ export default function Home() {
           // Password input
           if (input.startsWith(':login') || input.startsWith(':user set pass')) {
             global.rawInput = input.replace(/\*/g, (match, index) => global.rawInput[index] || '');  // store real password
-            passwordFormatter();
+            passwordFormatter(elInputRef.current);
             return;
           }
           
@@ -226,7 +226,7 @@ export default function Home() {
           if (global.STATE === STATES.DOING) {
 
             // Markdown formatter
-            markdownFormatter();
+            markdownFormatter(elOutputRef.current);
           }
     });
 
@@ -468,7 +468,7 @@ export default function Home() {
         }
 
         // URL formatter
-        urlFormatter();
+        urlFormatter(elOutputRef.current);
 
         // Try speak some rest text
         if (localStorage.getItem("useSpeak") === "true") {
