@@ -99,6 +99,7 @@ export default function Home() {
   // Set input
   const setInput = (text) => {
     elInputRef.current.value = text;
+    global.rawInput = text;
   }
 
   // Clear input
@@ -126,8 +127,8 @@ export default function Home() {
     // If authentication failed, clear local user data
     checkLoginStatus();
 
-    // Global shortcut keys
-    window.addEventListener("keydown", (event) => {
+    // Handle global shortcut keys
+    const handleKeyDown = (event) => {
       const elInput = elInputRef.current;
 
       switch (event.key) {
@@ -158,14 +159,6 @@ export default function Home() {
             elInput.focus();
           }
           break;
-    
-        case "f":  // toggle fullscreen on/off
-          if (event.ctrlKey) {
-            console.log("Shortcut: ⌃f");
-            event.preventDefault();
-            dispatch(reverseFullscreen());
-          }
-          break;
 
         case "c":  // stop generating
           if (event.ctrlKey) {
@@ -191,7 +184,8 @@ export default function Home() {
           }
           break;
       }
-    });
+    };
+    window.addEventListener("keydown", handleKeyDown, true);
 
     // Get system configurations
     const getSystemInfo = async () => {
@@ -225,6 +219,12 @@ export default function Home() {
     // Start observing
     const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
     global.outputMutationObserver.observe(elOutputRef.current, observingConfig);
+
+    // Cleanup
+    return () => {
+      // Remove event listener, this is necessary
+      window.removeEventListener("keydown", handleKeyDown, true);
+    }
   }, []);
 
   // On submit input
@@ -606,6 +606,8 @@ export default function Home() {
     }
   };
 
+  // Handle input change
+  // Only for general input
   const handleInputChange = (event) => {
     const elInput = elInputRef.current;
     if (elInput.value.startsWith(':login') || elInput.value.startsWith(':user set pass')) {
