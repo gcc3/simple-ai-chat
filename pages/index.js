@@ -595,10 +595,10 @@ export default function Home() {
 
   const handleInputChange = (event) => {
     setUserInput(event.target.value);
-    adjustInputHeight();
+    reAdjustInputHeight();
   };
 
-  const adjustInputHeight = () => {
+  const reAdjustInputHeight = () => {
     let elInput = document.getElementById('input');
     if (elInput) {
       elInput.style.height = "auto";
