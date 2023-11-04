@@ -99,6 +99,7 @@ export default function Home() {
   // Set input
   const setInput = (text) => {
     elInputRef.current.value = text;
+    global.rawInput = text;
   }
 
   // Clear input
@@ -605,6 +606,8 @@ export default function Home() {
     }
   };
 
+  // Handle input change
+  // Only for general input
   const handleInputChange = (event) => {
     const elInput = elInputRef.current;
     if (elInput.value.startsWith(':login') || elInput.value.startsWith(':user set pass')) {
