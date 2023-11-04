@@ -148,6 +148,7 @@ export default function Home() {
     
         case "f":  // toggle fullscreen on/off
           if (event.ctrlKey) {
+            console.log("Shortcut: ⌃f");
             event.preventDefault();
             dispatch(reverseFullscreen());
           }
@@ -155,6 +156,7 @@ export default function Home() {
 
         case "c":  // stop generating
           if (event.ctrlKey) {
+            console.log("Shortcut: ⌃c");
             if (global.STATE === STATES.DOING) {
               event.preventDefault();
             }
@@ -163,13 +165,16 @@ export default function Home() {
           break;
 
         case "r":  // clear output and reset session
-          if (event.ctrlKey && global.STATE === STATES.IDLE) {
-            event.preventDefault();
-            clearOutput();
-            setInfo();
-            setStats();
-            setEvaluation();
-            command(":clear");
+          if (event.ctrlKey) {
+            console.log("Shortcut: ⌃r");
+            if (global.STATE === STATES.IDLE) {
+              event.preventDefault();
+              clearOutput();
+              setInfo();
+              setStats();
+              setEvaluation();
+              command(":clear");
+            }
           }
           break;
       }
