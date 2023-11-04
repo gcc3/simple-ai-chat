@@ -572,6 +572,8 @@ export default function Home() {
   
   // Handle input key down
   const handleInputKeyDown = (event) => {
+    console.log("Key down: " + event.key + " " + event.keyCode);
+
     // Enter to submit
     if (event.keyCode === 13 || event.which === 13) {
       event.preventDefault();
@@ -602,10 +604,9 @@ export default function Home() {
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>
-            <input
-              className={styles.input}
+            <textarea
               id="input"
-              type="text"
+              className={styles.input}
               placeholder={placeholder}
               value={userInput}
               onChange={(e) => setUserInput(e.target.value)}

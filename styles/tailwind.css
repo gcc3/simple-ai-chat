@@ -6,3 +6,6 @@ p {
   margin-bottom:0.5em !important;
   margin-top:0.5em !important;
 }
+textarea {
+  resize: none;
+}
