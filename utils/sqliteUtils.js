@@ -1,3 +1,4 @@
+import { formatUnixTimestamp } from "./timeUtils";
 import { generatePassword } from "./userUtils";
 
 const fs = require("fs");
@@ -21,8 +22,11 @@ const initializeDatabase = (db) => {
       CREATE TABLE IF NOT EXISTS logs (
           id INTEGER PRIMARY KEY,
           time INTEGER NOT NULL,
+          time_h TEXT,
           session INTEGER NOT NULL,
-          user TEXT NOT NULL,
+          user TEXT,
+          ip_addr TEXT,
+          browser TEXT,
           log TEXT NOT NULL
       );`;
 
@@ -99,12 +103,14 @@ const getLogs = async (session) => {
   }
 };
 
-const insertLog = async (time, session, username, log) => {
+const insertLog = async (time, session, username, ip, browser, log) => {
   const db = await getDatabaseConnection();
+  const time_h = formatUnixTimestamp(time);
+
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("INSERT INTO logs (time, session, user, log) VALUES (?, ?, ?, ?)");
-      stmt.run([time, session, username, log], function (err) {
+      const stmt = db.prepare("INSERT INTO logs (time, time_h, session, user, ip_addr, browser, log) VALUES (?, ?, ?, ?, ?, ?, ?)");
+      stmt.run([time, time_h, session, username, ip, browser, log], function (err) {
         if (err) {
           reject(err);
         }
