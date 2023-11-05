@@ -192,7 +192,7 @@ export default function Home() {
       try {
           const response = await fetch('/api/info/list');
           const result = (await response.json()).result;
-          if (result.init_placeholder) setPlaceholder(result.init_placeholder);  // Set placeholder text
+          if (result.init_placeholder) setPlaceholder({ text: result.init_placeholder, height: null });  // Set placeholder text
           if (result.enter) setEnter(result.enter);                              // Set enter key text
           if (result.waiting) setWaiting(result.waiting);                        // Set waiting text
           if (result.querying) setQuerying(result.querying);                     // Set querying text
@@ -250,7 +250,7 @@ export default function Home() {
     if (elInput.value.startsWith(":login") || elInput.value.startsWith(":user set pass")) {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
-    setPlaceholder(placeholder);
+    setPlaceholder({ text: placeholder, height: elInput.style.height });
     clearInput();
 
     // Command input
@@ -601,7 +601,7 @@ export default function Home() {
     if (event.keyCode === 9 || event.which === 9) {
       event.preventDefault();
       if (elInput.value.length === 0) {
-        setInput(placeholder);
+        setInput(placeholder.text);
         reAdjustInputHeight();
       }
     }
@@ -627,8 +627,13 @@ export default function Home() {
   const reAdjustInputHeight = () => {
     const elInput = elInputRef.current;
     if (elInput) {
-      elInput.style.height = "auto";
-      elInput.style.height = (elInputRef.current.scrollHeight + 1) + "px";
+      if (elInput.value) {
+        elInput.style.height = "auto";
+        elInput.style.height = `${elInput.scrollHeight + 1}px`;
+      } else {
+        if (placeholder.height)
+          elInput.style.height = placeholder.height;
+      }
     }
   }
 
@@ -651,7 +656,7 @@ export default function Home() {
               ref={elInputRef}
               rows="1"
               className={styles.input}
-              placeholder={placeholder}
+              placeholder={placeholder.text}
               onChange={handleInputChange}
               autoFocus
               onKeyDown={handleInputKeyDown}
