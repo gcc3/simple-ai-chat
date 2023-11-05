@@ -634,6 +634,12 @@ export default function Home() {
         if (placeholder.height)
           elInput.style.height = placeholder.height;
       }
+
+      // Store input height in fullscreen mode
+      // To calculate the height of output
+      if (isFullscreen) {
+        document.documentElement.style.setProperty("--input-height", elInput.style.height);
+      }
     }
   }
 

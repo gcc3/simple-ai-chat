@@ -67,7 +67,7 @@
 }
 .main .wrapper {
   width: 100%;
-  height: calc(100vh - 60px);
+  height: calc(100vh - var(--input-height) - 15px);
   padding: 10px;
   padding-top: 12px;
   overflow-y: auto;
