@@ -634,6 +634,7 @@ export default function Home() {
         if (placeholder.height)
           elInput.style.height = placeholder.height;
       }
+      document.documentElement.style.setProperty("--input-height", elInput.style.height);
     }
   }
 
