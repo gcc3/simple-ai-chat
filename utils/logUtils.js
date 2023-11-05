@@ -30,7 +30,7 @@ export function logadd(log, req) {
     const mSession = log.match(/S=(\d+)/);
     const time = mTime ? mTime[1] : null;
     const session = mSession ? mSession[1] : null;
-    insertLog(time, session, username, log);
+    insertLog(time, session, username, ip, browser, log);
   }
 }
 
