@@ -70,7 +70,7 @@ A terminal style dark theme.
 Use `:theme [light/dark]` to change color theme.
 
 * Full Screen Mode  
-Use `:fullscreen on` to turn on fullscreen mode.  
+Use `:fullscreen` to turn on fullscreen mode.  
 
 * User  
 Use `:user` command to add new user, set user settings, password, Email.  
@@ -118,8 +118,7 @@ Shortcuts
 `TAB` key to restore the placeholder text which is the last input.  
 `ESC` to clear input.  
 `control + C` to stop generating.  
-`control + F` to toggle fullscreen mode on/off.  
-`control + L` to clear output and reset.  
+`control + R` to reset session.  
 
 
 Setup
