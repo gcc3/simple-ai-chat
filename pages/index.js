@@ -49,7 +49,7 @@ export default function Home() {
 
   // Global states with Redux
   const dispatch = useDispatch();
-  const isFullscreen = useSelector(state => state.isFullscreen);
+  const fullscreen = useSelector(state => state.fullscreen);
 
   // Toggle display
   const toggleDisplay = () => {
@@ -267,7 +267,7 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     global.rawPlaceholder = placeholder;
-    const placeholderText = (isFullscreen === "on" && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
+    const placeholderText = (fullscreen === "on" && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
     setPlaceholder({ text: placeholderText, height: elInput.style.height });
     clearInput();
     reAdjustInputHeight();
@@ -648,7 +648,7 @@ export default function Home() {
     if (elInput) {
 
       // Fullscreen
-      if (isFullscreen === "on") {
+      if (fullscreen === "on") {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
@@ -670,7 +670,7 @@ export default function Home() {
       }
 
       // Non-fullscreen
-      if (!isFullscreen === "on") {
+      if (!fullscreen === "on") {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
@@ -686,7 +686,7 @@ export default function Home() {
   }
 
   // Themes
-  const styles = isFullscreen === "on" ? fullscreenStyles : defaultStyles;
+  const styles = fullscreen === "on" ? fullscreenStyles : defaultStyles;
   
   return (
     <div>
