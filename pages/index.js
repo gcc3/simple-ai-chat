@@ -671,7 +671,7 @@ export default function Home() {
       }
 
       // Non-fullscreen
-      if (!fullscreen === "default") {
+      if (fullscreen === "off") {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";

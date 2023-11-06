@@ -5,10 +5,11 @@
   color: #353740;
   overflow-x: hidden;  /* prevent horizontal scroll */
   display: flex;
-  flex-direction: column;
   align-items: center;
   overflow: hidden;
 }
+
+/* container */
 .main .front,
 .main .back {
   flex-direction: column;

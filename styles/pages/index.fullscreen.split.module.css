@@ -5,23 +5,22 @@
   color: #353740;
   overflow-x: hidden;  /* prevent horizontal scroll */
   display: flex;
-  flex-direction: column;
+  height: 100vh;
   align-items: center;
-  overflow: hidden;
 }
+
+/* container */
 .main .front,
 .main .back {
-  flex-direction: column;
+  overflow: hidden;
+  flex-direction: rows;
   width: 100%;
 }
 
 /* input area */
 .main .inputform {
-  position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  width: 100%;
+  width: 50%;
+  height: 100vh;
   background-color: transparent;  /* input area background color */
   padding: 10px;
   z-index: 10;  /* ensure it's always on top */
@@ -30,7 +29,7 @@
   align-items: center;  /* vertically center the items */
 }
 .main .input {
-  height: 45px;
+  height: calc(100% - 20px);
   overflow-y: auto;
   width: 100%;
   padding: 10px;
@@ -52,8 +51,8 @@
 .main .submit {
   font-size: 14px;
   position: absolute;
-  right: 22px;  /* adjust as needed */
-  top: 50%;
+  right: calc(50% + 22px);  /* adjust as needed */
+  bottom: 20px;
   transform: translateY(-50%);  /* vertically center the button */
   background-color: var(--button-color);
   color: var(--button-text-color);
@@ -70,8 +69,8 @@
 
 /* output area */
 .main .wrapper {
-  width: 100%;
-  height: calc(100vh - var(--input-height) - 15px);
+  width: 50%;
+  height: 100vh;
   padding: 10px;
   padding-top: 12px;
   overflow-y: auto;
