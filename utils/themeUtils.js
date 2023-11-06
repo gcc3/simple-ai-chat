@@ -38,7 +38,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--dot-hover-color", "#00f700");
     document.documentElement.style.setProperty("--sub-text-color", "#007000");
     document.documentElement.style.setProperty("--container-background-color", "rgba(0, 70, 0, 0.3)");
-    document.documentElement.style.setProperty("--strong-text-background-color", "transparent");
+    document.documentElement.style.setProperty("--strong-text-background-color", "rgba(0, 112, 0, 0.5)");
     document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
     document.documentElement.style.setProperty("--underline-text-color", "#00f700");
   }
