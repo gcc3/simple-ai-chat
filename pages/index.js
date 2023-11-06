@@ -255,7 +255,7 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     global.rawPlaceholder = placeholder;
-    const placeholderText = isFullscreen && placeholder.length >= 45 ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
+    const placeholderText = (isFullscreen && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
     setPlaceholder({ text: placeholderText, height: elInput.style.height });
     clearInput();
     reAdjustInputHeight();
@@ -697,6 +697,7 @@ export default function Home() {
               autoFocus
               onKeyDown={handleInputKeyDown}
               autoComplete="off"
+              spellCheck="false"
             />
             <input
               className={styles.submit} 
