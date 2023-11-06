@@ -646,11 +646,8 @@ export default function Home() {
         }
 
         // Store input height in fullscreen mode
-        // To calculate the height of output
-        if (isFullscreen) {
-          // Use for set the wrapper height
-          document.documentElement.style.setProperty("--input-height", elInput.style.height);
-        }
+        // To calculate the height of output wrapper
+        document.documentElement.style.setProperty("--input-height", elInput.style.height);
       }
 
       // Non-fullscreen
