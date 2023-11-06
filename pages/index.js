@@ -2,6 +2,7 @@ import Head from "next/head";
 import { useState, useEffect, useRef } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
+import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
 import command from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
@@ -685,8 +686,10 @@ export default function Home() {
     }
   }
 
-  // Themes
-  const styles = fullscreen === "default" ? fullscreenStyles : defaultStyles;
+  // Styles
+  let styles = defaultStyles;
+  if (fullscreen === "default") styles = fullscreenStyles;
+  if (fullscreen === "split") styles = fullscreenSplitStyles;
   
   return (
     <div>
