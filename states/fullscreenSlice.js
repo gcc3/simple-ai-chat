@@ -9,13 +9,9 @@ const fullscreenSlice = createSlice({
     toggleFullscreen: (state, action) => {
       localStorage.setItem('fullscreen', action.payload);
       return action.payload;
-    },
-    reverseFullscreen: (state, action) => {
-      localStorage.setItem('fullscreen', !state);
-      return !state;
     }
   }
 });
 
-export const { toggleFullscreen, reverseFullscreen } = fullscreenSlice.actions;
+export const { toggleFullscreen } = fullscreenSlice.actions;
 export default fullscreenSlice.reducer;  // fullscreenReducer
