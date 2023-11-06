@@ -29,7 +29,7 @@ export default function fullscreen(args) {
     if (config === "split") {
       localStorage.setItem('fullscreen', "split");
       store.dispatch(toggleFullscreen("split"));
-      return "Fullscreen split enabled.";
+      return "Fullscreen split vertically.";
     }
 
     return "Usage: :fullscreen [default/split/off]";
