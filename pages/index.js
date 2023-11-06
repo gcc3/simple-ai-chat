@@ -697,6 +697,7 @@ export default function Home() {
               autoFocus
               onKeyDown={handleInputKeyDown}
               autoComplete="off"
+              spellCheck="false"
             />
             <input
               className={styles.submit} 
