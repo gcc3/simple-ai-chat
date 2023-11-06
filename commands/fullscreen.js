@@ -26,10 +26,16 @@ export default function fullscreen(args) {
       return "Fullscreen enabled.";
     }
 
-    return "Usage: :fullscreen [default/off]";
+    if (config === "split") {
+      localStorage.setItem('fullscreen', "split");
+      store.dispatch(toggleFullscreen("split"));
+      return "Fullscreen split enabled.";
+    }
+
+    return "Usage: :fullscreen [default/split/off]";
   }
 
   if (args.length > 1) {
-    return "Usage: :fullscreen [default/off]";
+    return "Usage: :fullscreen [default/split/off]";
   }
 }
