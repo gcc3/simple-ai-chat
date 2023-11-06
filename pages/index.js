@@ -30,6 +30,7 @@ global.outputMutationObserver = null;
 // Global raw input/output buffer
 global.rawInput = "";
 global.rawOutput = "";
+global.rawPlaceholder = "";
 
 export default function Home() {
   // States
@@ -250,8 +251,11 @@ export default function Home() {
     if (elInput.value.startsWith(":login") || elInput.value.startsWith(":user set pass")) {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
-    setPlaceholder({ text: placeholder, height: elInput.style.height });
+    global.rawPlaceholder = placeholder;
+    const placeholderText = isFullscreen ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
+    setPlaceholder({ text: placeholderText, height: elInput.style.height });
     clearInput();
+    reAdjustInputHeight();
 
     // Command input
     if (input.startsWith(":")) {
@@ -323,7 +327,7 @@ export default function Home() {
     if (global.STATE === STATES.DOING) return;
     global.STATE = STATES.DOING;
 
-    // Add a placeholder
+    // Add a waiting text
     if (getOutput() !== querying) printOutput(waiting);
 
     // preapre speech
@@ -601,7 +605,7 @@ export default function Home() {
     if (event.keyCode === 9 || event.which === 9) {
       event.preventDefault();
       if (elInput.value.length === 0) {
-        setInput(placeholder.text);
+        setInput(global.rawPlaceholder);
         reAdjustInputHeight();
       }
     }
@@ -638,6 +642,7 @@ export default function Home() {
       // Store input height in fullscreen mode
       // To calculate the height of output
       if (isFullscreen) {
+        // Use for set the wrapper height
         document.documentElement.style.setProperty("--input-height", elInput.style.height);
       }
     }
