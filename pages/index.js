@@ -121,7 +121,7 @@ export default function Home() {
     if (localStorage.getItem("role") === null) localStorage.setItem("role", "");
 
     // Set styles and themes
-    dispatch(toggleFullscreen(localStorage.getItem("fullscreen") === "on"));
+    dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
     setTheme(localStorage.getItem("theme"))
 
     // Check login status
@@ -267,7 +267,7 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     global.rawPlaceholder = placeholder;
-    const placeholderText = (isFullscreen && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
+    const placeholderText = (isFullscreen === "on" && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
     setPlaceholder({ text: placeholderText, height: elInput.style.height });
     clearInput();
     reAdjustInputHeight();
@@ -648,7 +648,7 @@ export default function Home() {
     if (elInput) {
 
       // Fullscreen
-      if (isFullscreen) {
+      if (isFullscreen === "on") {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
@@ -670,7 +670,7 @@ export default function Home() {
       }
 
       // Non-fullscreen
-      if (!isFullscreen) {
+      if (!isFullscreen === "on") {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
@@ -686,7 +686,7 @@ export default function Home() {
   }
 
   // Themes
-  const styles = isFullscreen ? fullscreenStyles : defaultStyles;
+  const styles = isFullscreen === "on" ? fullscreenStyles : defaultStyles;
   
   return (
     <div>

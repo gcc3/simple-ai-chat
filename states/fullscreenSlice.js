@@ -1,6 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-const initialState = false;
+const initialState = "off";
 
 const fullscreenSlice = createSlice({
   name: 'fullscreen',
