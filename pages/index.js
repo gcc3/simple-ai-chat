@@ -641,7 +641,14 @@ export default function Home() {
           // Has input
           elInput.style.height = "auto";
           elInput.style.height = `${elInput.scrollHeight + 1}px`;
+
+          // If input height is larger than the window height
+          // then set it to window height
+          if (elInput.scrollHeight > window.innerHeight / 2) {
+            elInput.style.height = `${window.innerHeight / 2}px`;
+          }
         } else {
+          // No input
           elInput.style.height = "45px";
         }
 
