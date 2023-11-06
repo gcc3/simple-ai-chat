@@ -14,12 +14,6 @@ export default function fullscreen(args) {
   if (args.length === 1) {
     const config = args[0];
 
-    if (config === "off") {
-      localStorage.setItem('fullscreen', "off");
-      store.dispatch(toggleFullscreen("off"));
-      return "Fullscreen disabled.";
-    }
-
     if (config === "default") {
       localStorage.setItem('fullscreen', "default");
       store.dispatch(toggleFullscreen("default"));
@@ -32,12 +26,18 @@ export default function fullscreen(args) {
       return "Fullscreen split vertically.";
     }
 
+    if (config === "off") {
+      localStorage.setItem('fullscreen', "off");
+      store.dispatch(toggleFullscreen("off"));
+      return "Fullscreen disabled.";
+    }
+
     return "Usage: :fullscreen" + 
            "       :fullscreen [default/split/off]"
   }
 
   if (args.length > 1) {
     return "Usage: :fullscreen" + 
-    "       :fullscreen [default/split/off]"
+           "       :fullscreen [default/split/off]"
   }
 }
