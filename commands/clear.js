@@ -1,4 +1,4 @@
 export default async function clear(args) {
-  localStorage.setItem("queryId", Date.now());  // reset query id
+  // No need to do anything here
   return "";
 }

@@ -172,7 +172,7 @@ export default function Home() {
           break;
 
         case "r":  // clear output and reset session
-          if (event.ctrlKey) {
+          if (event.ctrlKey && !event.shiftKey) {
             console.log("Shortcut: ⌃r");
             if (global.STATE === STATES.IDLE) {
               event.preventDefault();
@@ -181,6 +181,18 @@ export default function Home() {
               setStats();
               setEvaluation();
               command(":clear");
+            }
+          }
+
+          if (event.ctrlKey && event.shiftKey) {
+            console.log("Shortcut: ⇧⌃r");
+            if (global.STATE === STATES.IDLE) {
+              event.preventDefault();
+              clearOutput();
+              setInfo();
+              setStats();
+              setEvaluation();
+              command(":reset");
             }
           }
           break;
