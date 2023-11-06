@@ -52,7 +52,7 @@
   font-size: 14px;
   position: absolute;
   right: calc(50% + 22px);  /* adjust as needed */
-  bottom: 20px;
+  bottom: 10px;
   transform: translateY(-50%);  /* vertically center the button */
   background-color: var(--button-color);
   color: var(--button-text-color);

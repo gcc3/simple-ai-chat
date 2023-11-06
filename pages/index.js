@@ -670,6 +670,11 @@ export default function Home() {
         document.documentElement.style.setProperty("--input-height", elInput.style.height);
       }
 
+      // Fullscreen split
+      if (fullscreen === "split") {
+        elInput.style.height = "100%";
+      }
+
       // Non-fullscreen
       if (fullscreen === "off") {
         if (elInput.value) {
