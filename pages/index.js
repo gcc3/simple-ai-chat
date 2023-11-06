@@ -193,7 +193,10 @@ export default function Home() {
       try {
           const response = await fetch('/api/info/list');
           const result = (await response.json()).result;
-          if (result.init_placeholder) setPlaceholder({ text: result.init_placeholder, height: null });  // Set placeholder text
+          if (result.init_placeholder) {
+            global.rawPlaceholder = result.init_placeholder;
+            setPlaceholder({ text: result.init_placeholder, height: null });  // Set placeholder text
+          }
           if (result.enter) setEnter(result.enter);                              // Set enter key text
           if (result.waiting) setWaiting(result.waiting);                        // Set waiting text
           if (result.querying) setQuerying(result.querying);                     // Set querying text
