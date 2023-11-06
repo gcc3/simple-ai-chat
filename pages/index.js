@@ -210,7 +210,14 @@ export default function Home() {
             global.rawPlaceholder = result.init_placeholder;
             setPlaceholder({ text: result.init_placeholder, height: null });  // Set placeholder text
           }
-          if (result.enter) setEnter(result.enter);                              // Set enter key text
+          if (result.enter) {
+            setEnter(result.enter);  // Set enter key text from .env
+
+            // For fullscreen split mode, use ⌃enter to submit
+            if (result.enter === "enter" && fullscreen === "split") {
+              setEnter("⌃enter");
+            }
+          }
           if (result.waiting) setWaiting(result.waiting);                        // Set waiting text
           if (result.querying) setQuerying(result.querying);                     // Set querying text
       } catch (error) {
@@ -600,20 +607,43 @@ export default function Home() {
     // 1. Submit 2. Insert new line break if use ctrl/shift
     if (event.keyCode === 13 || event.which === 13) {
       event.preventDefault();
-      if (event.ctrlKey || event.shiftKey) {
-        // Insert a line break
-        const pCursor = event.target.selectionStart;
-        setInput(elInput.value.substring(0, pCursor) + '\n' + elInput.value.substring(pCursor));
 
-        // Move cursor
-        elInput.selectionStart = pCursor + 1;
-        elInput.selectionEnd = pCursor + 1;
+      if (fullscreen === "default" || fullscreen === "off") {
+        if (event.ctrlKey || event.shiftKey) {
+          // Insert a line break
+          const pCursor = event.target.selectionStart;
+          setInput(elInput.value.substring(0, pCursor) + '\n' + elInput.value.substring(pCursor));
 
-        // Re-adjust input height
-        reAdjustInputHeight();
-      } else {
-        // Submit
-        onSubmit(event);
+          // Move cursor
+          elInput.selectionStart = pCursor + 1;
+          elInput.selectionEnd = pCursor + 1;
+
+          // Re-adjust input height
+          reAdjustInputHeight();
+        } else {
+          // Submit
+          onSubmit(event);
+        }
+      }
+
+      // Split fullscreen use ctrl/shift to submit
+      // Use enter to insert a line break
+      if (fullscreen === "split") {
+        if (event.ctrlKey || event.shiftKey) {
+          // Submit
+          onSubmit(event);
+        } else {
+          // Insert a line break
+          const pCursor = event.target.selectionStart;
+          setInput(elInput.value.substring(0, pCursor) + '\n' + elInput.value.substring(pCursor));
+
+          // Move cursor
+          elInput.selectionStart = pCursor + 1;
+          elInput.selectionEnd = pCursor + 1;
+
+          // Re-adjust input height
+          reAdjustInputHeight();
+        }
       }
     }
 
