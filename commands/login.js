@@ -51,6 +51,10 @@ export default async function login(args) {
       if (settings.stats) {
         localStorage.setItem("useStats", settings.stats == "on" ? "true" : "false");
       }
+
+      if (settings.fullscreen) {
+        localStorage.setItem("fullscreen", settings.fullscreen);
+      }
     }
 
     return "Login successful.";

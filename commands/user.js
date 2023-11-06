@@ -1,5 +1,3 @@
-import { setTheme } from "utils/themeUtils.js";
-
 export default async function entry(args) {
   const command = args[0];
 
@@ -77,10 +75,11 @@ export default async function entry(args) {
         body: JSON.stringify({
           username: username,
           settings: JSON.stringify({
-            role:  localStorage.getItem("role") || "",
-            theme: localStorage.getItem("theme") || "light",
-            speak: localStorage.getItem("speak") || "off",
-            stats: localStorage.getItem("stats") || "on",
+            role:       localStorage.getItem("role") || "",
+            theme:      localStorage.getItem("theme") || "light",
+            speak:      localStorage.getItem("speak") || "off",
+            stats:      localStorage.getItem("stats") || "on",
+            fullscreen: localStorage.getItem("fullscreen") || "off",
           }),
         }),
       });
