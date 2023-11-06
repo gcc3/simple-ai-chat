@@ -137,7 +137,7 @@
 }
 
 /* Styles for differnt window sizes */
-@media screen and (max-width: 649px) {
+@media screen and (max-width: 1299px) {
   .main .submit {
     visibility: hidden;
   }
@@ -145,9 +145,9 @@
     padding-right: 10px;
   }
 }
-@media screen and (min-width: 650px) and (max-width: 800px) {
+@media screen and (min-width: 1300px) and (max-width: 1919px) {
   
 }
-@media screen and (min-width: 801px) {
+@media screen and (min-width: 1920px) {
   
 }
