@@ -32,10 +32,12 @@ export default function fullscreen(args) {
       return "Fullscreen split vertically.";
     }
 
-    return "Usage: :fullscreen [default/split/off]";
+    return "Usage: :fullscreen" + 
+           "       :fullscreen [default/split/off]"
   }
 
   if (args.length > 1) {
-    return "Usage: :fullscreen [default/split/off]";
+    return "Usage: :fullscreen" + 
+    "       :fullscreen [default/split/off]"
   }
 }
