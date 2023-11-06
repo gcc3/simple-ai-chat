@@ -255,7 +255,7 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     global.rawPlaceholder = placeholder;
-    const placeholderText = isFullscreen ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
+    const placeholderText = isFullscreen && placeholder.length >= 45 ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
     setPlaceholder({ text: placeholderText, height: elInput.style.height });
     clearInput();
     reAdjustInputHeight();
@@ -634,19 +634,37 @@ export default function Home() {
   const reAdjustInputHeight = () => {
     const elInput = elInputRef.current;
     if (elInput) {
-      if (elInput.value) {
-        elInput.style.height = "auto";
-        elInput.style.height = `${elInput.scrollHeight + 1}px`;
-      } else {
-        if (placeholder.height)
-          elInput.style.height = placeholder.height;
+
+      // Fullscreen
+      if (isFullscreen) {
+        if (elInput.value) {
+          // Has input
+          elInput.style.height = "auto";
+          elInput.style.height = `${elInput.scrollHeight + 1}px`;
+        } else {
+          elInput.style.height = "45px";
+        }
+
+        // Store input height in fullscreen mode
+        // To calculate the height of output
+        if (isFullscreen) {
+          // Use for set the wrapper height
+          document.documentElement.style.setProperty("--input-height", elInput.style.height);
+        }
       }
 
-      // Store input height in fullscreen mode
-      // To calculate the height of output
-      if (isFullscreen) {
-        // Use for set the wrapper height
-        document.documentElement.style.setProperty("--input-height", elInput.style.height);
+      // Non-fullscreen
+      if (!isFullscreen) {
+        if (elInput.value) {
+          // Has input
+          elInput.style.height = "auto";
+          elInput.style.height = `${elInput.scrollHeight + 1}px`;
+        } else {
+          // No input
+          if (placeholder.height) {
+            elInput.style.height = placeholder.height;
+          }
+        }
       }
     }
   }
