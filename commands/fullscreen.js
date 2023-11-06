@@ -1,5 +1,6 @@
 import store from '../store.js';
 import { toggleFullscreen } from '../states/fullscreenSlice.js';
+import { updateUserSetting } from 'utils/userUtils.js';
 
 export default function fullscreen(args) {
 
@@ -7,6 +8,7 @@ export default function fullscreen(args) {
   if (args.length === 0) {
     localStorage.setItem('fullscreen', "default");
     store.dispatch(toggleFullscreen("default"));
+    updateUserSetting("fullscreen", "default");
     return "Fullscreen enabled.";
   }
 
@@ -17,18 +19,21 @@ export default function fullscreen(args) {
     if (config === "default") {
       localStorage.setItem('fullscreen', "default");
       store.dispatch(toggleFullscreen("default"));
+      updateUserSetting("fullscreen", "default");
       return "Fullscreen enabled.";
     }
 
     if (config === "split") {
       localStorage.setItem('fullscreen', "split");
       store.dispatch(toggleFullscreen("split"));
+      updateUserSetting("fullscreen", "split");
       return "Fullscreen split vertically.";
     }
 
     if (config === "off") {
       localStorage.setItem('fullscreen', "off");
       store.dispatch(toggleFullscreen("off"));
+      updateUserSetting("fullscreen", "off");
       return "Fullscreen disabled.";
     }
 
@@ -41,3 +46,4 @@ export default function fullscreen(args) {
            "       :fullscreen [default/split/off]"
   }
 }
+
