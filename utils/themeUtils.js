@@ -30,8 +30,8 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--button-text-color", "#007000");
     document.documentElement.style.setProperty("--stats-text-color", "#007000");
     document.documentElement.style.setProperty("--info-text-color", "#007000");
-    document.documentElement.style.setProperty("--border-color", "rgba(0, 112, 0, 0.3)");
-    document.documentElement.style.setProperty("--border-shadow-color", "rgba(0, 112, 0, 0.5)");
+    document.documentElement.style.setProperty("--border-color", "rgba(0, 112, 0, 0.4)");
+    document.documentElement.style.setProperty("--border-shadow-color", "rgba(0, 112, 0, 0.6)");
     document.documentElement.style.setProperty("--code-block-background-color", "#001f00");
     document.documentElement.style.setProperty("--code-block-text-color", "#00f700");
     document.documentElement.style.setProperty("--dot-color", "#007000");
