@@ -123,7 +123,6 @@ export default function Home() {
 
     // Set styles and themes
     dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
-    console.log(enter);
     if (enter === "enter" && localStorage.getItem("fullscreen") === "split") setEnter("⌃enter");  // For fullscreen split mode, use ⌃enter to submit
     setTheme(localStorage.getItem("theme"))
 
