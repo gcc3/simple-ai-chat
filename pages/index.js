@@ -2,11 +2,12 @@ import Head from "next/head";
 import { useState, useEffect, useRef } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
+import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
 import command from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleFullscreen, reverseFullscreen } from "../states/fullscreenSlice.js";
+import { toggleFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
 import { urlFormatter } from "utils/textUtils";
 import { passwordFormatter, maskPassword } from "utils/passwordUtils";
@@ -49,7 +50,7 @@ export default function Home() {
 
   // Global states with Redux
   const dispatch = useDispatch();
-  const isFullscreen = useSelector(state => state.isFullscreen);
+  const fullscreen = useSelector(state => state.fullscreen);
 
   // Toggle display
   const toggleDisplay = () => {
@@ -116,12 +117,12 @@ export default function Home() {
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
     if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
-    if (localStorage.getItem("useFullscreen") === null) localStorage.setItem("useFullscreen", "false");
+    if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
     if (localStorage.getItem("role") === null) localStorage.setItem("role", "");
 
     // Set styles and themes
-    dispatch(toggleFullscreen(localStorage.getItem("useFullscreen") === "true"));
+    dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
     setTheme(localStorage.getItem("theme"))
 
     // Check login status
@@ -267,7 +268,7 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     global.rawPlaceholder = placeholder;
-    const placeholderText = (isFullscreen && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
+    const placeholderText = (fullscreen === "default" && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
     setPlaceholder({ text: placeholderText, height: elInput.style.height });
     clearInput();
     reAdjustInputHeight();
@@ -648,7 +649,7 @@ export default function Home() {
     if (elInput) {
 
       // Fullscreen
-      if (isFullscreen) {
+      if (fullscreen === "default") {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
@@ -669,8 +670,13 @@ export default function Home() {
         document.documentElement.style.setProperty("--input-height", elInput.style.height);
       }
 
+      // Fullscreen split
+      if (fullscreen === "split") {
+        elInput.style.height = "100%";
+      }
+
       // Non-fullscreen
-      if (!isFullscreen) {
+      if (fullscreen === "off") {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
@@ -685,8 +691,10 @@ export default function Home() {
     }
   }
 
-  // Themes
-  const styles = isFullscreen ? fullscreenStyles : defaultStyles;
+  // Styles
+  let styles = defaultStyles;
+  if (fullscreen === "default") styles = fullscreenStyles;
+  if (fullscreen === "split") styles = fullscreenSplitStyles;
   
   return (
     <div>

@@ -5,7 +5,7 @@ import fullscreenReducer from './states/fullscreenSlice';
 // redux-thunk is already set up by default with Redux Toolkit
 const store = configureStore({
   reducer: {
-    isFullscreen: fullscreenReducer
+    fullscreen: fullscreenReducer
   }
 });
 
