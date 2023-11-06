@@ -5,7 +5,7 @@ export default function fullscreen(args) {
 
   // If no argument is provided
   if (args.length === 0) {
-    localStorage.setItem('useFullscreen', "true");
+    localStorage.setItem('fullscreen', "on");
     store.dispatch(toggleFullscreen(true));
     return "Fullscreen enabled.";
   }
@@ -14,7 +14,7 @@ export default function fullscreen(args) {
   if (args.length === 1) {
     const config = args[0];
     if (config === "off") {
-      localStorage.setItem('useFullscreen', "false");
+      localStorage.setItem('fullscreen', "off");
       store.dispatch(toggleFullscreen(false));
       return "Fullscreen disabled.";
     } else {
