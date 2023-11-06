@@ -123,6 +123,8 @@ export default function Home() {
 
     // Set styles and themes
     dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
+    console.log(enter);
+    if (enter === "enter" && localStorage.getItem("fullscreen") === "split") setEnter("⌃enter");  // For fullscreen split mode, use ⌃enter to submit
     setTheme(localStorage.getItem("theme"))
 
     // Check login status
@@ -212,7 +214,6 @@ export default function Home() {
             setPlaceholder({ text: result.init_placeholder, height: null });  // Set placeholder text
           }
           if (result.enter) setEnter(result.enter);  // Set submit button text
-          if (enter === "enter" && localStorage.getItem("fullscreen") === "split") setEnter("⌃enter");  // For fullscreen split mode, use ⌃enter to submit
           if (result.waiting) setWaiting(result.waiting);                        // Set waiting text
           if (result.querying) setQuerying(result.querying);                     // Set querying text
       } catch (error) {
