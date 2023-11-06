@@ -4,7 +4,8 @@ export default function help(args) {
     ":stop - Stop generating. (⌃c)\n" +
     ":clear - Clear output. (⌃r)\n" +
     ":reset - Clear output and reset session. (⇧⌃r)\n" +
-    ":fullscreen [on/off] - Use fullscreen mode.\n" +
+    ":fullscreen - Use fullscreen mode.\n" +
+    ":fullscreen [off] - Turn fullscreen mode off.\n" +
     ":theme [light/dark] - Change color theme.\n" +
     ":entry [ls|list|add] - Manage dictionary entries.\n" +
     ":ls - List all entries, same as :entry ls.\n" +
