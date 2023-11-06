@@ -71,6 +71,7 @@ Use `:theme [light/dark]` to change color theme.
 
 * Full Screen Mode  
 Use `:fullscreen` to turn on fullscreen mode.  
+Use `:fullscreen split` to use a vertically splited screen.  
 
 * User  
 Use `:user` command to add new user, set user settings, password, Email.  
