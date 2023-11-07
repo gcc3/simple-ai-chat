@@ -2,14 +2,16 @@ import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils.js";
+import { getMaxTokens } from "utils/tokenUtils.js";
 
 // OpenAI
 const openai = new OpenAI();
 
 // configurations
+const model = process.env.MODEL ? process.env.MODEL : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
-const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
+const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
 
 export default async function (req, res) {
   const input = req.body.input || "";
@@ -80,7 +82,7 @@ export async function evaluate(input, definitions, additionalInfo, result_text) 
     // endpoint: /v1/chat/completions
     // /v1/completions are not supported
     const chatCompletion = await openai.chat.completions.create({
-      model: process.env.MODEL,
+      model: model,
       messages: eval_message,
       temperature: temperature,
       top_p: top_p,

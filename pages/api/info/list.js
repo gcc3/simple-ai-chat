@@ -1,3 +1,5 @@
+import { getMaxTokens } from "utils/tokenUtils";
+
 export default async function (req, res) {
   try {
     // configurations
@@ -10,7 +12,7 @@ export default async function (req, res) {
     const waiting = process.env.WAITING ? process.env.WAITING : "";
     const querying = process.env.QUERYING ? process.env.QUERYING : "Querying...";
     const enter = process.env.ENTER ? process.env.ENTER : "";
-    const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
+    const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
     const use_eval = process.env.USE_EVAL == "true" ? true : false;
     const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
     const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;

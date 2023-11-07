@@ -5,17 +5,20 @@ import { logadd } from "utils/logUtils";
 import { tryParseJSON } from "utils/jsonUtils"
 import { evaluate } from './evaluate';
 import { getFunctions, executeFunction } from "function.js";
+import { getMaxTokens } from "utils/tokenUtils";
 
 // OpenAI
 const openai = new OpenAI();
 
 // configurations
+const model = process.env.MODEL ? process.env.MODEL : "";
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
-const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 500;
+const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
+const dict_search = process.env.DICT_SEARCH == "true" ? true : false;
 const use_eval = process.env.USE_EVAL == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
@@ -43,20 +46,20 @@ export default async function (req, res) {
 
     // Configuration info
     console.log("--- configuration info ---\n" 
-    + "model: " + process.env.MODEL + "\n"
-    + "temperature: " + process.env.TEMPERATURE + "\n"
-    + "top_p: " + process.env.TOP_P + "\n"
-    + "role_content_system (chat): " + process.env.ROLE_CONTENT_SYSTEM + "\n"
-    + "prompt_prefix: " + process.env.PROMPT_PREFIX + "\n"
-    + "prompt_suffix: " + process.env.PROMPT_SUFFIX + "\n"
-    + "max_tokens: " + process.env.MAX_TOKENS + "\n"
-    + "dict_search: " + process.env.DICT_SEARCH + "\n"
-    + "use_eval: " + process.env.USE_EVAL + "\n"
-    + "use_function_calling: " + process.env.USE_FUNCTION_CALLING + "\n"
-    + "use_node_ai: " + process.env.USE_NODE_AI + "\n"
-    + "force_node_ai_query: " + process.env.FORCE_NODE_AI_QUERY + "\n"
-    + "use_vector: " + process.env.USE_VECTOR + "\n"
-    + "force_vector_query: " + process.env.FORCE_VECTOR_QUERY + "\n"
+    + "model: " + model + "\n"
+    + "temperature: " + temperature + "\n"
+    + "top_p: " + top_p + "\n"
+    + "role_content_system (chat): " + role_content_system + "\n"
+    + "prompt_prefix: " + prompt_prefix + "\n"
+    + "prompt_suffix: " + prompt_suffix + "\n"
+    + "max_tokens: " + max_tokens + "\n"
+    + "dict_search: " + dict_search + "\n"
+    + "use_eval: " + use_eval + "\n"
+    + "use_function_calling: " + use_function_calling + "\n"
+    + "use_node_ai: " + use_node_ai + "\n"
+    + "force_node_ai_query: " + force_node_ai_query + "\n"
+    + "use_vector: " + use_vector + "\n"
+    + "force_vector_query: " + force_vector_query + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + location + "\n"
     + "role: " + role + "\n");
@@ -197,7 +200,7 @@ export default async function (req, res) {
 
     // endpoint: /v1/chat/completions
     const chatCompletion = await openai.chat.completions.create({
-      model: process.env.MODEL,
+      model,
       messages,
       temperature,
       top_p,
