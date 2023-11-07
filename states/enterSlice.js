@@ -2,6 +2,7 @@ import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = "enter";
 
+// enter key text
 const enterSlice = createSlice({
   name: 'enter',
   initialState,
