@@ -7,12 +7,13 @@ import { loglist } from './logUtils.js';
 import { rolePrompt } from './roleUtils.js';
 
 // configurations
+const model = process.env.MODEL ? process.env.MODEL : "";
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
-const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 700;
+const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
 
 // Generate messages for chatCompletion
 export async function generateMessages(input, queryId, role) {
