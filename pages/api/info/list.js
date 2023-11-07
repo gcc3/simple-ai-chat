@@ -3,6 +3,7 @@ import { getMaxTokens } from "utils/tokenUtils";
 export default async function (req, res) {
   try {
     // configurations
+    const model = process.env.MODEL ? process.env.MODEL : "";
     const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
     const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
     const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1

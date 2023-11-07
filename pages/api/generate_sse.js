@@ -207,8 +207,8 @@ export default async function (req, res) {
       max_tokens,
       stream: true,
       ...(use_function_calling && {
-        functions: getFunctions(),
-        function_call: "auto"
+        tools: getFunctions(),
+        tool_choice: "auto"
       })
     });
 
