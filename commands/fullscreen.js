@@ -10,7 +10,7 @@ export default function fullscreen(args) {
     localStorage.setItem('fullscreen', "default");
     store.dispatch(toggleFullscreen("default"));
     updateUserSetting("fullscreen", "default");
-    return "Fullscreen enabled.";
+    return "Fullscreen default enabled.";
   }
 
   // Configure
@@ -25,7 +25,7 @@ export default function fullscreen(args) {
       localStorage.setItem('fullscreen', "default");
       store.dispatch(toggleFullscreen("default"));
       updateUserSetting("fullscreen", "default");
-      return "Fullscreen enabled.";
+      return "Fullscreen default enabled.";
     }
 
     if (config === "split") {
