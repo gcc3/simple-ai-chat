@@ -2,12 +2,10 @@ import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils.js";
-import { get_encoding, encoding_for_model } from "tiktoken";
 import { getFunctions, executeFunction } from "function.js";
 
 // OpenAI
 const openai = new OpenAI();
-const tokenizer = encoding_for_model(process.env.MODEL);
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -51,7 +49,7 @@ export default async function (req, res) {
     let do_function_calling = false;
     let function_name = "";
 
-    const generateMessagesResult = await generateMessages(input, queryId, role, tokenizer);
+    const generateMessagesResult = await generateMessages(input, queryId, role);
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
 

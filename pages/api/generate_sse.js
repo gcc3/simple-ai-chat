@@ -3,13 +3,11 @@ import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils";
 import { tryParseJSON } from "utils/jsonUtils"
-import { get_encoding, encoding_for_model } from "tiktoken";
 import { evaluate } from './evaluate';
 import { getFunctions, executeFunction } from "function.js";
 
 // OpenAI
 const openai = new OpenAI();
-const tokenizer = encoding_for_model(process.env.MODEL);
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -110,7 +108,7 @@ export default async function (req, res) {
     });
 
     // Message base
-    const generateMessagesResult = await generateMessages(input, queryId, role, tokenizer);
+    const generateMessagesResult = await generateMessages(input, queryId, role);
     definitions = generateMessagesResult.definitions;
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
