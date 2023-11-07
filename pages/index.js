@@ -15,6 +15,7 @@ import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
 import Copyrights from "components/Copyrights";
 import { checkLoginStatus } from "utils/userUtils";
+import { toggleEnterChange } from "states/enterSlice";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -38,7 +39,6 @@ export default function Home() {
   const [placeholder, setPlaceholder] = useState("");
   const [waiting, setWaiting] = useState("");
   const [querying, setQuerying] = useState("Querying...");
-  const [enter, setEnter] = useState("enter");
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
@@ -51,6 +51,7 @@ export default function Home() {
   // Global states with Redux
   const dispatch = useDispatch();
   const fullscreen = useSelector(state => state.fullscreen);
+  const enter = useSelector(state => state.enter);
 
   // Toggle display
   const toggleDisplay = () => {
@@ -123,7 +124,9 @@ export default function Home() {
 
     // Set styles and themes
     dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
-    if (enter === "enter" && localStorage.getItem("fullscreen") === "split") setEnter("⌃enter");  // For fullscreen split mode, use ⌃enter to submit
+    if (enter === "enter" && localStorage.getItem("fullscreen") === "split") {
+      dispatch(toggleEnterChange("⌃enter"));  // For fullscreen split mode, use ⌃enter to submit
+    }
     setTheme(localStorage.getItem("theme"))
 
     // Check login status
@@ -212,7 +215,9 @@ export default function Home() {
             global.rawPlaceholder = result.init_placeholder;
             setPlaceholder({ text: result.init_placeholder, height: null });  // Set placeholder text
           }
-          if (result.enter) setEnter(result.enter);  // Set submit button text
+          if (result.enter) {
+            dispatch(toggleEnterChange(result.enter));
+          }
           if (result.waiting) setWaiting(result.waiting);                        // Set waiting text
           if (result.querying) setQuerying(result.querying);                     // Set querying text
       } catch (error) {
