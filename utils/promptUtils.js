@@ -13,24 +13,20 @@ const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : 700;
-const token_limit = 4000;
 
 // Generate messages for chatCompletion
-export async function generateMessages(input, queryId, role, tokenizer) {
+export async function generateMessages(input, queryId, role) {
   let messages = [];
   let token_ct = 0;
-  token_ct += tokenizer.encode(input).length;
   
   // System message, important
   if (role_content_system !== "") {
     messages.push({ role: "system", content: role_content_system });
-    token_ct += tokenizer.encode(role_content_system).length;
   }
 
   // Roleplay role prompt
   if (role !== "" && role !== "default") {
     messages.push({ role: "system", content: await rolePrompt(role) });
-    token_ct += tokenizer.encode(role).length;
   }
 
   // Dictionary search
@@ -50,10 +46,7 @@ export async function generateMessages(input, queryId, role, tokenizer) {
       // At most push 5 definitions
       if (messages.length < 6) {
         const message = "The explanation for \"" + entry[0] + "\" is as follows\n\n\"\"\"\n" + entry[1] + "\n\"\"\"";
-        if (token_ct + tokenizer.encode(message).length < token_limit - max_tokens) {
-          messages.push({ role: "system", content: message });
-          token_ct += tokenizer.encode(message).length;
-        }
+        messages.push({ role: "system", content: message });
       }
     });
   }
@@ -65,12 +58,7 @@ export async function generateMessages(input, queryId, role, tokenizer) {
     for (const line of loglistForSession.split("\n")) {
       const question = line.substring(line.search("Q=") + 2, line.search(" A=")).trim();
       const answer = line.substring(line.search("A=") + 2).trim();
-      if (token_ct + tokenizer.encode(question + answer).length < token_limit - max_tokens) {
-        chatSets.push({ question: question, answer: answer });
-        token_ct += tokenizer.encode(question + answer).length;
-      } else {
-        break;
-      }
+      chatSets.push({ question: question, answer: answer });
     }
 
     // Add chat history to messages
@@ -174,8 +162,4 @@ async function keywordExtraction(userInput) {
     keywords: keywords,
     sub: ner.concat(morph)
   };
-}
-
-function tokenizer(model, messages) {
-  const enc = get_encoding("gpt2");
 }

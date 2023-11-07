@@ -2,11 +2,9 @@ import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils.js";
-import { get_encoding, encoding_for_model } from "tiktoken";
 
 // OpenAI
 const openai = new OpenAI();
-const tokenizer = encoding_for_model(process.env.MODEL);  // TODO, check token
 
 // configurations
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
