@@ -82,7 +82,7 @@ export async function evaluate(input, definitions, additionalInfo, result_text) 
     // endpoint: /v1/chat/completions
     // /v1/completions are not supported
     const chatCompletion = await openai.chat.completions.create({
-      model: process.env.MODEL,
+      model: model,
       messages: eval_message,
       temperature: temperature,
       top_p: top_p,
