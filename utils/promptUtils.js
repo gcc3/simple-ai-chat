@@ -5,6 +5,7 @@
 import { dictionarySearch } from './dictionaryUtils.js';
 import { loglist } from './logUtils.js';
 import { rolePrompt } from './roleUtils.js';
+import { getMaxTokens } from './tokenUtils.js';
 
 // configurations
 const model = process.env.MODEL ? process.env.MODEL : "";

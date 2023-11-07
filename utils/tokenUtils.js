@@ -9,5 +9,6 @@ const max_tokens_dict = {
 };
 
 export function getMaxTokens(model) {
-  return max_tokens_dict[model];
+  // only use halp of the max tokens to avoid exceeding the limit
+  return max_tokens_dict[model] / 2;
 }
