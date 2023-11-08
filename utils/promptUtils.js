@@ -17,7 +17,7 @@ const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : ""
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
 
 // Generate messages for chatCompletion
-export async function generateMessages(input, image_url, queryId, role) {
+export async function generateMessages(input, images, queryId, role) {
   let messages = [];
   let token_ct = 0;
   
@@ -94,13 +94,17 @@ export async function generateMessages(input, image_url, queryId, role) {
           text: input
       });
 
-      // Vision
-      // If image_url is not empty, add image to content
-      if (image_url && image_url !== "") {
-        c.push({
-          type: "image",
-          image: {
-            url: image_url
+      // Vision model
+      // If images is not empty, add image to content
+      if (images) {
+        images.split(",").map(image => {
+          if (image !== "") {
+            c.push({
+              type: "image",
+              image: {
+                url: image
+              }
+            });
           }
         });
       }
