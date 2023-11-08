@@ -42,12 +42,12 @@ export default function fullscreen(args) {
       return "Fullscreen disabled.";
     }
 
-    return "Usage: :fullscreen" + 
+    return "Usage: :fullscreen" + "\n" +
            "       :fullscreen [default/split/off]"
   }
 
   if (args.length > 1) {
-    return "Usage: :fullscreen" + 
+    return "Usage: :fullscreen" + "\n" +
            "       :fullscreen [default/split/off]"
   }
 }
