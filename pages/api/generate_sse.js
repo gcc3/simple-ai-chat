@@ -38,7 +38,7 @@ export default async function (req, res) {
   let input = decodeURIComponent(user_input_escape) || "";
   if (input.trim().length === 0) return;
 
-  // Normal input
+  // I. Normal input
   if (!input.startsWith("!")) {
     input = prompt_prefix + input + prompt_suffix;
     console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
@@ -65,7 +65,7 @@ export default async function (req, res) {
     + "role: " + role + "\n");
   }
 
-  // Function calling input
+  // II. Function calling input
   let do_function_calling = false;
   let functionName = "";
   let functionArgs = "";
