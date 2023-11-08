@@ -220,8 +220,8 @@ export default async function (req, res) {
       })
     });
 
-    res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-    res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName},${refer_doc}\n\n`);
+    res.write(`data: ###ENV###${model_switch}\n\n`);
+    res.write(`data: ###STATS###${score},${temperature},${top_p},${token_ct},${use_eval},${functionName},${refer_doc}\n\n`);
     res.flush();
 
     for await (const part of chatCompletion) {
