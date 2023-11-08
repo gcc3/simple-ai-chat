@@ -108,9 +108,6 @@ export async function generateMessages(input, image_url, queryId, role) {
     })()  // Immediately-invoked function expression (IIFE)
   });
 
-  console.log("--- messages32 ---");
-  console.log(messages);
-
   return {
     messages: messages,
     definitions: definitions,
