@@ -269,6 +269,11 @@ export default function Home() {
     });
     if (input.length == 0) return;
 
+    // Pre-process the images
+    const images = [
+      "", ""  // TODO: add image support, these should be the image urls
+    ];
+
     // Clear input and put it to placeholder
     const elInput = elInputRef.current;
     let placeholder = elInput.value;
@@ -337,7 +342,7 @@ export default function Home() {
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
-      generate_sse(input);
+      generate_sse(input, images);
     } else {
       // Use general simple API request
       printOutput(waiting);
@@ -346,7 +351,7 @@ export default function Home() {
   }
 
   // I. SSE generate
-  function generate_sse(input) {
+  function generate_sse(input, images) {
     // If already doing, return
     if (global.STATE === STATES.DOING) return;
     global.STATE = STATES.DOING;
@@ -369,7 +374,8 @@ export default function Home() {
                                                            + "&use_stats=" + use_stats
                                                            + "&use_location=" + use_location
                                                            + "&location=" + location
-                                                           + "&use_vision=" + use_vision);
+                                                           + "&use_vision=" + use_vision
+                                                           + "&images=" + images.join(","));
 
     let do_function_calling = false;
     let functionName = "";

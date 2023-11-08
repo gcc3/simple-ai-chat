@@ -34,7 +34,7 @@ export default async function (req, res) {
   const use_location = req.query.use_location === "true" ? true : false;
   const location = req.query.location || "";
   const use_vision = req.query.use_vision === "true" ? true : false;
-  const image_url = req.query.image_url || "";
+  const images = req.query.images || "";
 
   // Input
   let user_input_escape = req.query.user_input.replaceAll("%", "％").trim();  // escape %
@@ -118,7 +118,7 @@ export default async function (req, res) {
     });
 
     // Message base
-    const generateMessagesResult = await generateMessages(input, image_url, queryId, role);
+    const generateMessagesResult = await generateMessages(input, images, queryId, role);
     definitions = generateMessagesResult.definitions;
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
