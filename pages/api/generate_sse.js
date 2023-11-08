@@ -12,6 +12,7 @@ const openai = new OpenAI();
 
 // configurations
 const model = process.env.MODEL ? process.env.MODEL : "";
+const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
@@ -29,16 +30,21 @@ const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : fal
 export default async function (req, res) {
   const queryId = req.query.query_id || "";
   const role = req.query.role || "default";
-  const use_stats = req.query.use_stats || "false";
-  const use_location = req.query.use_location || "false";
+  const use_stats = req.query.use_stats === "true" ? true : false;
+  const use_location = req.query.use_location === "true" ? true : false;
   const location = req.query.location || "";
+  const use_vision = req.query.use_vision === "true" ? true : false;
+  const images = req.query.images || "";
 
   // Input
   let user_input_escape = req.query.user_input.replaceAll("%", "％").trim();  // escape %
   let input = decodeURIComponent(user_input_escape) || "";
   if (input.trim().length === 0) return;
 
-  // Normal input
+  // Model switch
+  const model_switch = use_vision ? model_v : model;
+
+  // I. Normal input
   if (!input.startsWith("!")) {
     input = prompt_prefix + input + prompt_suffix;
     console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
@@ -46,7 +52,7 @@ export default async function (req, res) {
 
     // Configuration info
     console.log("--- configuration info ---\n" 
-    + "model: " + model + "\n"
+    + "model: " + model_switch + "\n"
     + "temperature: " + temperature + "\n"
     + "top_p: " + top_p + "\n"
     + "role_content_system (chat): " + role_content_system + "\n"
@@ -54,6 +60,7 @@ export default async function (req, res) {
     + "prompt_suffix: " + prompt_suffix + "\n"
     + "max_tokens: " + max_tokens + "\n"
     + "dict_search: " + dict_search + "\n"
+    + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + use_function_calling + "\n"
     + "use_node_ai: " + use_node_ai + "\n"
@@ -65,7 +72,7 @@ export default async function (req, res) {
     + "role: " + role + "\n");
   }
 
-  // Function calling input
+  // II. Function calling input
   let do_function_calling = false;
   let functionName = "";
   let functionArgs = "";
@@ -111,7 +118,7 @@ export default async function (req, res) {
     });
 
     // Message base
-    const generateMessagesResult = await generateMessages(input, queryId, role);
+    const generateMessagesResult = await generateMessages(input, images, queryId, role);
     definitions = generateMessagesResult.definitions;
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
@@ -121,7 +128,7 @@ export default async function (req, res) {
     let additionalInfo = "";
 
     // 1. Location info
-    if (use_location === "true" && location) {
+    if (use_location && location) {
       // localtion example: (40.7128, -74.0060)
       const lat = location.slice(1, -1).split(",")[0];
       const lng = location.slice(1, -1).split(",")[1];
@@ -200,20 +207,21 @@ export default async function (req, res) {
 
     // endpoint: /v1/chat/completions
     const chatCompletion = await openai.chat.completions.create({
-      model,
+      model: model_switch,
       messages,
       temperature,
       top_p,
       max_tokens,
       stream: true,
-      ...(use_function_calling && {
+      // vision does not support function calling
+      ...(use_function_calling && !use_vision && {
         tools: getFunctions(),
         tool_choice: "auto"
       })
     });
 
-    res.write(`data: ###ENV###${process.env.MODEL}\n\n`);
-    res.write(`data: ###STATS###${score},${process.env.TEMPERATURE},${process.env.TOP_P},${token_ct},${process.env.USE_EVAL},${functionName},${refer_doc}\n\n`);
+    res.write(`data: ###ENV###${model_switch}\n\n`);
+    res.write(`data: ###STATS###${score},${temperature},${top_p},${token_ct},${use_eval},${functionName},${refer_doc}\n\n`);
     res.flush();
 
     for await (const part of chatCompletion) {
@@ -235,7 +243,7 @@ export default async function (req, res) {
     }
 
     // Evaluate result
-    if (use_eval && use_stats === "true" && result_text.trim().length > 0) {
+    if (use_eval && use_stats && result_text.trim().length > 0) {
       await evaluate(input, definitions, additionalInfo, result_text).then((eval_result) => {
         res.write(`data: ###EVAL###${eval_result}\n\n`);
         res.flush();

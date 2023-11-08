@@ -65,7 +65,7 @@ export default async function (req, res) {
     let do_function_calling = false;
     let function_name = "";
 
-    const generateMessagesResult = await generateMessages(input, queryId, role);
+    const generateMessagesResult = await generateMessages(input, null, queryId, role);  // image_url not supported yet
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
 

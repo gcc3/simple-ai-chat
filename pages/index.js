@@ -121,6 +121,7 @@ export default function Home() {
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
     if (localStorage.getItem("role") === null) localStorage.setItem("role", "");
+    if (localStorage.getItem("useVision") === null) localStorage.setItem("useVision", "false");
 
     // Set styles and themes
     dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
@@ -268,6 +269,11 @@ export default function Home() {
     });
     if (input.length == 0) return;
 
+    // Pre-process the images
+    const images = [
+      "", ""  // TODO: add image support, these should be the image urls
+    ];
+
     // Clear input and put it to placeholder
     const elInput = elInputRef.current;
     let placeholder = elInput.value;
@@ -336,7 +342,7 @@ export default function Home() {
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
-      generate_sse(input);
+      generate_sse(input, images);
     } else {
       // Use general simple API request
       printOutput(waiting);
@@ -345,7 +351,7 @@ export default function Home() {
   }
 
   // I. SSE generate
-  function generate_sse(input) {
+  function generate_sse(input, images) {
     // If already doing, return
     if (global.STATE === STATES.DOING) return;
     global.STATE = STATES.DOING;
@@ -361,12 +367,15 @@ export default function Home() {
     const use_stats = localStorage.getItem("useStats");
     const use_location = localStorage.getItem("useLocation");
     const location = localStorage.getItem("location");
+    const use_vision = localStorage.getItem("useVision");
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
                                                            + "&query_id=" + query_id
                                                            + "&role=" + role
                                                            + "&use_stats=" + use_stats
                                                            + "&use_location=" + use_location
-                                                           + "&location=" + location);
+                                                           + "&location=" + location
+                                                           + "&use_vision=" + use_vision
+                                                           + "&images=" + images.join(","));
 
     let do_function_calling = false;
     let functionName = "";
