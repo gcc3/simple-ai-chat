@@ -17,7 +17,7 @@ const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : ""
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
 
 // Generate messages for chatCompletion
-export async function generateMessages(input, queryId, role) {
+export async function generateMessages(input, image_url, queryId, role) {
   let messages = [];
   let token_ct = 0;
   
@@ -67,11 +67,12 @@ export async function generateMessages(input, queryId, role) {
     chatSets.reverse().map(chatSet => {
       messages.push({ 
         role: "user",
-        content: 
-        {
-          type: "text",
-          text: chatSet.question
-        }
+        content: [
+          {
+            type: "text",
+            text: chatSet.question
+          }
+        ]
       });
       
       messages.push({ 
@@ -84,12 +85,31 @@ export async function generateMessages(input, queryId, role) {
   // Finally, insert user input
   messages.push({ 
     role: "user", 
-    content: [
-    {
-      type: "text",
-      text: input
-    },
-  ]});
+    content: (() => {
+      let c = [];
+
+      // Text
+      c.push({
+          type: "text",
+          text: input
+      });
+
+      // Vision
+      // If image_url is not empty, add image to content
+      if (image_url && image_url !== "") {
+        c.push({
+          type: "image",
+          image: {
+            url: image_url
+          }
+        });
+      }
+      return c;
+    })()  // Immediately-invoked function expression (IIFE)
+  });
+
+  console.log("--- messages32 ---");
+  console.log(messages);
 
   return {
     messages: messages,

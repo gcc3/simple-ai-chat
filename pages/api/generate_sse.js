@@ -33,10 +33,17 @@ export default async function (req, res) {
   const use_location = req.query.use_location || "false";
   const location = req.query.location || "";
 
-  // Input
+  // Input - Text
   let user_input_escape = req.query.user_input.replaceAll("%", "％").trim();  // escape %
   let input = decodeURIComponent(user_input_escape) || "";
   if (input.trim().length === 0) return;
+
+  // Input - Vision
+  let use_vision = model.includes("vision");  // detect vision model
+  let image_url = "";
+  if (use_vision && req.query.image_url) {
+    image_url = req.query.image_url;
+  }
 
   // I. Normal input
   if (!input.startsWith("!")) {
@@ -54,6 +61,7 @@ export default async function (req, res) {
     + "prompt_suffix: " + prompt_suffix + "\n"
     + "max_tokens: " + max_tokens + "\n"
     + "dict_search: " + dict_search + "\n"
+    + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + use_function_calling + "\n"
     + "use_node_ai: " + use_node_ai + "\n"
@@ -111,7 +119,7 @@ export default async function (req, res) {
     });
 
     // Message base
-    const generateMessagesResult = await generateMessages(input, queryId, role);
+    const generateMessagesResult = await generateMessages(input, image_url, queryId, role);
     definitions = generateMessagesResult.definitions;
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
@@ -206,7 +214,8 @@ export default async function (req, res) {
       top_p,
       max_tokens,
       stream: true,
-      ...(use_function_calling && {
+      // vision does not support function calling
+      ...(use_function_calling && !use_vision && {
         tools: getFunctions(),
         tool_choice: "auto"
       })
