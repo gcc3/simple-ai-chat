@@ -25,7 +25,7 @@ export function logadd(log, req) {
   insertLog(time, session, username, ip, browser, log);
 }
 
-export async function loglist(session, maxLogCount = 30) {
+export async function loglist(session) {
   let loglines = "";
   if (!session) return loglines;  // don't show anything if no queryId is given
 

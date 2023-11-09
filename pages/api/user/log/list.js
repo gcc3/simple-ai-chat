@@ -14,7 +14,8 @@ export default async function (req, res) {
   const { id, username } = authResult.user;
 
   try {
-    const logs = await loglist(req.query.query_id);
+    const session = req.query.query_id;
+    const logs = await loglist(session);
 
     // Output the result
     res.status(200).json({
