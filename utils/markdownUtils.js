@@ -32,8 +32,23 @@ export function markdownFormatter(elOutput) {
       return codeBlocks[p1];
     });
 
+    // Replace the ```code_language_name to ```code to remove the language name
+    output = output.replace(/```(\w+)/g, '```');
+
     // Multi-line code blocks
-    output = output.replace(/```([^`]+)```/g, `<pre>$1</pre>`);
+    let codeBlockOpen = false;
+    output = output.split('<br>').map((line, i) => {
+      if (line.trim().startsWith('```')) {
+        if (!codeBlockOpen) {
+          codeBlockOpen = true;
+          return line.replace(/```/g, '<pre>');
+        } else if (codeBlockOpen) {
+          codeBlockOpen = false;
+          return line.replace(/```/g, '</pre>');
+        }
+      }
+      return line;
+    }).join('<br>');
 
     // Clean up <pre> tags
     output = output
