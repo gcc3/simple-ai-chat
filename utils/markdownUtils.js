@@ -26,7 +26,9 @@ export function markdownFormatter(elOutput) {
 
     // Replace `text` with <code>text</code>
     output = output.split('<br>').map((line, i) => {
-      return line.replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>');  // Inline code
+      if (line.includes('`')) line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>');  // Inline code
+      if (line.includes('**')) line = line.replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>');     // Replace **text** with text only
+      return line;
     }).join('<br>');
 
     // Restore multi-line code blocks from placeholders
@@ -54,12 +56,6 @@ export function markdownFormatter(elOutput) {
       .replace(/<pre>\s*(\w+)?\s*<br>/g, '<pre>')  // Remove language name followed by <br> after <pre>
       .replace(/<\/pre><br><br>/g, '</pre><br>')   // Avoid consecutive breaks after </pre>
       .replace(/<br> ?<\/pre>/g, '</pre>')         // Remove <br> before </pre>
-
-    // Replace **text** with <strong>text</strong>
-    output = output.split('<br>').map((line, i) => {
-      if (line.includes('**')) return line.replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>');  // Replace **text** with text only
-      return line;
-    }).join('<br>');
 
     return output;
   })(output);
