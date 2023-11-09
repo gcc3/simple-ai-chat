@@ -2,7 +2,7 @@ import fs from 'fs';
 import { getLogs, insertLog } from "./sqliteUtils.js"
 import { authenticate } from './authUtils.js';
 
-export function logadd(log, req) {
+export function logadd(session, log, req) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
 
@@ -12,17 +12,14 @@ export function logadd(log, req) {
   if (success) username = user.username;
 
   // Create log
-  log = log.replaceAll("\n", "###RETURN###") + " USER=" + username + " IP=" + ip + " BSR=" + browser;
+  log = log.replaceAll("\n", "###RETURN###");
 
-  // Filter log
+  // Filter out logs
   if (logfilter(log, "USER")) return;
   if (logfilter(log, "IP")) return;
 
-  const mTime = log.match(/T=(\d+)/);
-  const mSession = log.match(/S=(\d+)/);
-  const time = mTime ? mTime[1] : null;
-  const session = mSession ? mSession[1] : null;
-  insertLog(time, session, username, ip, browser, log);
+  // Insert log
+  insertLog(session, username, ip, browser, log);
 }
 
 export async function loglist(session) {
@@ -30,12 +27,8 @@ export async function loglist(session) {
   if (!session) return loglines;  // don't show anything if no queryId is given
 
   const logs = await getLogs(session);
-  loglines = logs.map(e => {
-    const line = e.log.replaceAll("###RETURN###", " ");
-
-    // remove USER, IP and BSR (browser) info in the log output
-    if (!line.includes("USER=")) return line;
-    else return line.substring(0, line.search("USER="))
+  loglines = logs.map(l => {
+    return "T=" + l.time + " " + "S=" + l.session + " " + l.log.replaceAll("###RETURN###", " ");
   }).join('\n');
   
   return loglines;

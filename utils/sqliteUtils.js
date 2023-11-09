@@ -91,7 +91,7 @@ const getLogs = async (session) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT log FROM logs WHERE session = ? ORDER BY time DESC`, [session], (err, rows) => {
+      db.all(`SELECT * FROM logs WHERE session = ? ORDER BY time DESC`, [session], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -103,7 +103,8 @@ const getLogs = async (session) => {
   }
 };
 
-const insertLog = async (time, session, username, ip, browser, log) => {
+const insertLog = async (session, username, ip, browser, log) => {
+  const time = Date.now();
   const db = await getDatabaseConnection();
   const time_h = formatUnixTimestamp(time);
 

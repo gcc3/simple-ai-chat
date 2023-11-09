@@ -132,7 +132,9 @@ export default function Home() {
 
     // Check login user credential
     // If authentication failed, clear local user data
-    checkCredential();
+    if (localStorage.getItem("user") !== null) {
+      checkCredential();
+    }
 
     // Handle global shortcut keys
     const handleKeyDown = (event) => {
