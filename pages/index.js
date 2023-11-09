@@ -480,6 +480,9 @@ export default function Home() {
         openaiEssSrouce.close();
         console.log("Session closed.")
 
+        // Print raw output
+        console.log(global.rawOutput);
+
         // Reset state
         global.STATE = STATES.IDLE;
 
