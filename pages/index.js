@@ -396,7 +396,7 @@ export default function Home() {
         return;
       }
 
-      // Handle the environment info
+      // I. Handle the environment info
       if (event.data.startsWith("###ENV###")) {
         const env = event.data.replace("###ENV###", "").split(',');
         const model = env[0];
@@ -408,7 +408,7 @@ export default function Home() {
         return;
       }
 
-      // Handle the function calling
+      // II. Handle the function calling
       if (event.data.startsWith("###FUNC###")) {
         do_function_calling = true;
         printOutput(querying);
@@ -424,7 +424,7 @@ export default function Home() {
         return;
       }
 
-      // Evaluation result
+      // III. Evaluation result
       if (event.data.startsWith("###EVAL###")) {
         const evaluation = event.data.replace("###EVAL###", "");
         const val = parseInt(evaluation);
@@ -441,7 +441,7 @@ export default function Home() {
         return;
       }
 
-      // Stats
+      // IV. Stats
       if (event.data.startsWith("###STATS###")) {
         if (localStorage.getItem('useStats') === "true") {
           const stats = event.data.replace("###STATS###", "").split(',');
@@ -475,7 +475,7 @@ export default function Home() {
         return;
       }
 
-      // Handle the DONE signal
+      // V. Handle the DONE signal
       if (event.data === '[DONE]') {
         openaiEssSrouce.close();
         console.log("Session closed.")
@@ -512,7 +512,7 @@ export default function Home() {
         return;
       }
 
-      // Handle error
+      // VI. Handle error
       if (event.data.startsWith("###ERR###") || event.data.startsWith('[ERR]')) {
         openaiEssSrouce.close();
         printOutput("Server error.");
@@ -520,30 +520,34 @@ export default function Home() {
         return;
       }
 
-      // Stream output
-      let output = event.data;
-      
       // Clear the waiting or querying text
       if (getOutput() === waiting || getOutput() === querying) {
         clearOutput();
       }
 
+      // Stream output
+      let output = event.data;
       if (global.STATE === STATES.DOING) {
         // Print output
         printOutput(output, false, true);
+        console.log(event.data);
 
         // Try speak
         if (localStorage.getItem("useSpeak") === "true") {
           textSpoken = trySpeak(global.rawOutput, textSpoken);
         }
+      } else {
+        // If not doing, close the stream
+        console.log("Session closed by state control.")
+        openaiEssSrouce.close();
+        return;
       }
-
-      console.log(event.data);
     };
 
     openaiEssSrouce.onerror = function(error) {
       console.log("Other Stream Error: " + JSON.stringify(error));
       openaiEssSrouce.close();
+      return;
     };
   }
 
