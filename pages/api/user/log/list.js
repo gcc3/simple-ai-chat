@@ -1,6 +1,18 @@
 import { loglist } from "utils/logUtils";
 
 export default async function (req, res) {
+  // Check if the method is GET.
+  if (req.method !== 'GET') {
+    return res.status(405).end();
+  }
+
+  // Authentication
+  const authResult = authenticate(req, res);
+  if (!authResult.success) {
+    return res.status(401).json({ error: authResult.error });
+  }
+  const { id, username } = authResult.user;
+
   try {
     const session = req.query.query_id;
     const logs = await loglist(session);

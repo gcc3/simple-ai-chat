@@ -134,7 +134,6 @@ Setup
 
 2. Create necessary files.  
    Create `log.config`  
-   Create `log.txt`  
    Create `.env` from `.env.example`  
    Create `dict.csv` from `dict.csv.example` (required if turn on the dictionary search.)  
    Create `role.csv` from `role.csv.example` (optional)  
@@ -226,8 +225,8 @@ The indice id.
 Force query from the vectara vector database.  
 
 * DB  
-Use database to store logs, use `DB=sqlite`.  
-Use file to store logs, use `DB=file`.  
+Database engline, example `DB=sqlite`.  
+Supported engine: `sqlite`.  
 
 * JWT_SECRET  
 Secret for user authentication.  
