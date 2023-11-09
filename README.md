@@ -40,7 +40,7 @@ to continue the previous talk, use `:session attach [session_id]` to attach to a
 Use `:info` to check the current session ID.
 
 * Logs
-Use `:log` to show the current conversation history.  
+Use `:log` to show the current conversation(session) history.  
 
 * Roleplay  
 To use roleplay, simply type `:role use [role_name]`.  
