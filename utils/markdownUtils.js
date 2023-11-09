@@ -5,13 +5,6 @@ export function markdownFormatter(elOutput) {
 
     // Format the output
     const formatOutput = (output) => {
-      // // Temporarily replace multi-line code blocks with placeholders
-      // const codeBlocks = [];
-      // output = output.replace(/```([^`]+)```/g, (match, p1, offset, string) => {
-      //   codeBlocks.push(<pre>${p1}</pre>);
-      //   return `###CODE###${codeBlocks.length - 1}`;
-      // });
-
       // Replace the ```code_language_name to ```code to remove the language name
       output = output.replace(/```(\w+)/g, '```');
 
@@ -19,11 +12,6 @@ export function markdownFormatter(elOutput) {
       output = output
         .replace(/```([^`]+)```/g, '<pre>$1</pre>')           // Multi-line code blocks
         .replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>')  // Inline code
-
-      // // Restore multi-line code blocks from placeholders
-      // output = output.replace(/###CODE###(\d+)/g, (match, p1) => {
-      //   return codeBlocks[p1];
-      // });
 
       // Clean up <pre> tags
       output = output
