@@ -1,7 +1,7 @@
 export function markdownFormatter(elOutput) {
   if (!elOutput) return;
   
-  const output = elOutput.innerHTML;
+  let output = elOutput.innerHTML;
   
   // Check the code black is closed or not
   let codeBlockOpen = false;
@@ -12,7 +12,7 @@ export function markdownFormatter(elOutput) {
   });
   if (codeBlockOpen) return;
 
-  // Temproary stop observing
+  // Temporarily stop observing
   global.outputMutationObserver.disconnect();
 
   // Format the output
