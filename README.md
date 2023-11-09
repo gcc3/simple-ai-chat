@@ -36,7 +36,10 @@ To execute a function from input, use `!function_name(argument=value)`
 Example: `!get_weather(location=Tokyo)`  
 
 * Session  
-Use `:info` to check the current session ID, and attach the session with `:session [session_id]` to continue the previous talk.  
+to continue the previous talk, use `:session attach [session_id]` to attach to a session.  
+Use `:info` to check the current session ID.
+
+* Logs
 Use `:log` to show the current conversation history.  
 
 * Roleplay  

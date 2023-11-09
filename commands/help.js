@@ -22,7 +22,7 @@ export default function help(args) {
     ":voice use [voice_name] - Set voice.\n" + 
     ":lang [ls|list] - List all languages.\n" +
     ":lang use [language_code] - Set language.\n" +
-    ":session [session_id] - Attach to session.\n" +
+    ":session attach [session_id] - Attach to session.\n" +
     ":role [ls|list|reset] - List all roles, reset role.\n" +
     ":role use [role_name] - Use role.\n" +
     ":user [ls|list] - List all users.\n" +
