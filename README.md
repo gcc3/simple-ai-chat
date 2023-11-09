@@ -224,6 +224,10 @@ The indice id.
 * FORCE_VECTOR_QUERY  
 Force query from the vectara vector database.  
 
+* DB  
+Database engline, example `DB=sqlite`.  
+Supported engine: `sqlite`.  
+
 * JWT_SECRET  
 Secret for user authentication.  
 Generate with `openssl rand -hex 16`.  
