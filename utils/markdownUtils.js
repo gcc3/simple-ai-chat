@@ -32,9 +32,6 @@ export function markdownFormatter(elOutput) {
       return codeBlocks[p1];
     });
 
-    // Replace the ```code_language_name to ```code to remove the language name
-    output = output.replace(/```(\w+)/g, '```');
-
     // Multi-line code blocks
     let codeBlockOpen = false;
     output = output.split('<br>').map((line, i) => {
