@@ -69,12 +69,14 @@ export default function Home() {
       }
 
       // Print the output
+      const textHtml = text.replaceAll("###RETURN###", '<br>');
+      const textRaw = text.replaceAll("###RETURN###", '\n');
       if (append) {
-        elOutput.innerHTML += text;
-        global.rawOutput += text;
+        elOutput.innerHTML += textHtml;
+        global.rawOutput += textRaw;
       } else {
-        elOutput.innerHTML = text;
-        global.rawOutput = text;
+        elOutput.innerHTML = textHtml;
+        global.rawOutput = textRaw;
       }
 
       if (ignoreFormatter) {
@@ -520,7 +522,6 @@ export default function Home() {
 
       // Stream output
       let output = event.data;
-      output = output.replaceAll("###RETURN###", '<br>');
       
       // Clear the waiting or querying text
       if (getOutput() === waiting || getOutput() === querying) {
