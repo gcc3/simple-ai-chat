@@ -230,6 +230,9 @@ Use file to store logs, use `DB=file`.
 Secret for user authentication.  
 Generate with `openssl rand -hex 16`.  
 
+* AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY  
+Config to use AWS service, eg, S3 Bucket.  
+
 
 log.config
 ----------
