@@ -24,8 +24,10 @@ export function markdownFormatter(elOutput) {
       return `###CODE###${codeBlocks.length - 1}`;
     });
 
-    // Replace markdown and other patterns
-    output = output.replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>')  // Inline code
+    // Replace `text` with <code>text</code>
+    output = output.split('<br>').map((line, i) => {
+      return line.replace(/(?<!`)`([^`]+)`(?!`)/g, '<code>$1</code>');  // Inline code
+    }).join('<br>');
 
     // Restore multi-line code blocks from placeholders
     output = output.replace(/###CODE###(\d+)/g, (match, p1) => {
@@ -38,10 +40,10 @@ export function markdownFormatter(elOutput) {
       if (line.trim().startsWith('```')) {
         if (!codeBlockOpen) {
           codeBlockOpen = true;
-          return line.replace(/```/g, '<pre>');
+          return line.trim().replace(/```/g, '<pre>');
         } else if (codeBlockOpen) {
           codeBlockOpen = false;
-          return line.replace(/```/g, '</pre>');
+          return line.trim().replace(/```/g, '</pre>');
         }
       }
       return line;
