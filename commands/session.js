@@ -1,17 +1,19 @@
+import { attachSession } from "../utils/sessionUtils.js";
+
 export default function session(args) {
   if (args.length === 0) {
-    return "Usage: :session [session_id]\n"
+    return "Usage: :session attach [session_id]\n"
   }
 
-  const sessionId = args[0];
-  if (sessionId != null && containsOnlyNumbers(sessionId) && sessionId.length === 13) {
-    localStorage.setItem("queryId", sessionId);
-    return "Attached.";
-  } else {
-    return "Invalid session ID.";
+  if (args.length === 1) {
+    return "Usage: :session attach [session_id]\n"
   }
-}
 
-function containsOnlyNumbers(str) {
-  return /^\d+$/.test(str);
+  if (args.length === 2) {
+    if (args[0] === "attach") {
+      return attachSession(args[1]);
+    } else {
+      return "Usage: :session attach [session_id]\n"
+    }
+  }
 }

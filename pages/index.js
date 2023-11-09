@@ -14,7 +14,7 @@ import { passwordFormatter, maskPassword } from "utils/passwordUtils";
 import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
 import Copyrights from "components/Copyrights";
-import { checkLoginStatus } from "utils/userUtils";
+import { checkCredential } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 
 // Status control
@@ -130,9 +130,9 @@ export default function Home() {
     }
     setTheme(localStorage.getItem("theme"))
 
-    // Check login status
+    // Check login user credential
     // If authentication failed, clear local user data
-    checkLoginStatus();
+    checkCredential();
 
     // Handle global shortcut keys
     const handleKeyDown = (event) => {
