@@ -45,12 +45,10 @@ export function setTheme(theme) {
 
   // Code highlighting styles
   if (theme == "light") {
-    delete require.cache['highlight.js/styles/nnfx-dark.css'];
     require('highlight.js/styles/github.css');
   }
   
   if (theme == "dark") {
     delete require.cache['highlight.js/styles/github.css'];
-    require('highlight.js/styles/nnfx-dark.css');
   }
 }
