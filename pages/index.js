@@ -243,9 +243,6 @@ export default function Home() {
 
             // Markdown formatter
             markdownFormatter(elOutputRef.current);
-
-            // Trigger re-render for highlight.js
-            hljs.highlightAll();
           }
         }
       }
@@ -510,6 +507,9 @@ export default function Home() {
 
         // URL formatter
         urlFormatter(elOutputRef.current);
+
+        // highlight.js
+        hljs.highlightAll();
 
         // Try speak some rest text
         if (localStorage.getItem("useSpeak") === "true") {
