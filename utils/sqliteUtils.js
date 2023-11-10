@@ -86,7 +86,7 @@ const getDatabaseConnection = async () => {
 
 // I. logs
 // Get logs by session
-export const getLogs = async (session) => {
+const getLogs = async (session) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -102,7 +102,7 @@ export const getLogs = async (session) => {
   }
 };
 
-export const insertLog = async (session, username, ip, browser, log) => {
+const insertLog = async (session, username, ip, browser, log) => {
   const time = Date.now();
   const db = await getDatabaseConnection();
   const time_h = formatUnixTimestamp(time);
@@ -125,7 +125,7 @@ export const insertLog = async (session, username, ip, browser, log) => {
 };
 
 // II. users
-export const getUser = async (username) => {
+const getUser = async (username) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -141,7 +141,7 @@ export const getUser = async (username) => {
   }
 };
 
-export const getUsers = async () => {
+const getUsers = async () => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -157,7 +157,7 @@ export const getUsers = async () => {
   }
 };
 
-export const insertUser = async (username, password, email, settings, last_login, status, created_at) => {
+const insertUser = async (username, password, email, settings, last_login, status, created_at) => {
   const db = await getDatabaseConnection();
 
   // Check if the username adheres to Unix naming conventions
@@ -198,7 +198,7 @@ export const insertUser = async (username, password, email, settings, last_login
   }
 };
 
-export const deleteUser = async (username) => {
+const deleteUser = async (username) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -220,7 +220,7 @@ export const deleteUser = async (username) => {
   }
 };
 
-export const updateUserPassword = async (username, newPassword) => {
+const updateUserPassword = async (username, newPassword) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -242,7 +242,7 @@ export const updateUserPassword = async (username, newPassword) => {
   }
 };
 
-export const updateUserEmail = async (username, newEmail) => {
+const updateUserEmail = async (username, newEmail) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -264,7 +264,7 @@ export const updateUserEmail = async (username, newEmail) => {
   }
 };
 
-export const emailExists = async (email) => {
+const emailExists = async (email) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -282,7 +282,7 @@ export const emailExists = async (email) => {
   }
 };
 
-export const updateUserLastLogin = async (username, lastLogin) => {
+const updateUserLastLogin = async (username, lastLogin) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -304,7 +304,7 @@ export const updateUserLastLogin = async (username, lastLogin) => {
   }
 };
 
-export const updateUserSettings = async (username, key, value) => {
+const updateUserSettings = async (username, key, value) => {
   const db = await getDatabaseConnection();
   const user = await getUser(username);
 
@@ -339,7 +339,7 @@ export const updateUserSettings = async (username, key, value) => {
   }
 };
 
-export const updateUserStatus = async (username, status) => {
+const updateUserStatus = async (username, status) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -359,4 +359,22 @@ export const updateUserStatus = async (username, status) => {
   } finally {
     db.close();
   }
+};
+
+module.exports = {
+  // logs
+  getLogs,
+  insertLog,
+
+  // users
+  getUsers,
+  getUser,
+  insertUser,
+  deleteUser,
+  updateUserPassword,
+  updateUserEmail,
+  updateUserLastLogin,
+  updateUserSettings,
+  updateUserStatus,
+  emailExists,
 };
