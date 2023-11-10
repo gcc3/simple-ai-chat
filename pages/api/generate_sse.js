@@ -215,8 +215,10 @@ export default async function (req, res) {
       stream: true,
       // vision does not support function calling
       ...(use_function_calling && !use_vision && {
-        tools: getFunctions(),
-        tool_choice: "auto"
+        functions: getFunctions(),
+        function_call: "auto",
+        // tools: getFunctions(),
+        // tool_choice: "auto"
       })
     });
 
@@ -226,9 +228,14 @@ export default async function (req, res) {
 
     for await (const part of chatCompletion) {
       // handle function calling
-      const tool_call = part.choices[0].delta.tool_calls[0];
-      if (tool_call) {
-        res.write(`data: ###FUNC###${JSON.stringify(tool_call)}\n\n`);
+      // const tool_call = part.choices[0].delta.tool_calls[0];
+      // if (tool_call) {
+      //   res.write(`data: ###FUNC###${JSON.stringify(tool_call)}\n\n`);
+      //   res.flush();
+      // }
+      const function_call = part.choices[0].delta.function_call;
+      if (function_call) {
+        res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`);
         res.flush();
       }
 

@@ -500,7 +500,7 @@ export default function Home() {
           console.log("Function calling: " + functionName + "(" + argsString + ")");
           
           // Generate with function calling
-          generate_sse("!" + functionName + "(" + argsString + ")" + " Q=" + input);
+          generate_sse("!" + functionName + "(" + argsString + ")" + " Q=" + input, []);
           return;
         }
 
