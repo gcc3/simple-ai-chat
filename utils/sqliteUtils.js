@@ -1,8 +1,7 @@
 import { formatUnixTimestamp } from "./timeUtils";
 import { generatePassword } from "./userUtils";
-
-const fs = require("fs");
-const sqlite3 = require("sqlite3").verbose();
+import fs from "fs";
+import sqlite3 from "sqlite3";
 
 const createDatabaseFile = () => {
   return new sqlite3.Database("./db.sqlite", sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
