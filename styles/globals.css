@@ -20,10 +20,15 @@ body {
   background-color: var(--background-color);
 }
 code {
+  background: var(--code-block-background-color) !important;
   font-family: "Fira Code", monospace;
+}
+.code-block {
   font-size: 15px !important;
+  padding: .6rem !important;
 }
 .inline-code {
+  font-size: 15px !important;
   background: var(--code-block-background-color);
   word-wrap: break-word;
   box-decoration-break: clone;
@@ -32,8 +37,7 @@ code {
   color: var(--code-block-text-color);
 }
 pre {
-  background: var(--code-block-background-color);
-  padding: .5rem;
+  background: var(--code-block-background-color) !important;
   border-radius: .5rem;
   overflow-x: auto;
 }

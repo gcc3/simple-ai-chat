@@ -51,11 +51,22 @@ export function markdownFormatter(elOutput) {
       return line;
     }).join('<br>');
 
+    // Remove <br> in <pre> tags
+    output = output.replace(/<pre><code>([^`]+)<\/code><\/pre>/g, (match, p1) => {
+      return `<pre><code>${p1.replaceAll('<br>', '\n')}</code></pre>`;
+    });
+
+    // Set language name and highlight code blocks
+    output = output.replace(/<pre><code>([^`]+)<\/code><\/pre>/g, (match, p1) => {
+      const languageName = p1.split('\n')[0].trim();
+      const code = p1.split('\n').slice(1).join('\n').trim();
+      return `<pre><code class="code-block !whitespace-pre hljs language-${languageName}">${code}</code></pre>`;
+    });
+
     // Clean up <pre> tags
     output = output
-      .replace(/<pre><code>\s*(\w+)?\s*<br>/g, '<pre><code>')  // Remove language name followed by <br> after <pre>
-      .replace(/<\/pre><code><br><br>/g, '</code></pre><br>')   // Avoid consecutive breaks after </pre>
-      .replace(/<br> ?<\/code><\/pre>/g, '</code></pre>')         // Remove <br> before </pre>
+      .replace(/<\/pre><br><br>/g, '</pre><br>')  // Avoid consecutive breaks after </pre>
+      .replace(/<br> ?<\/code><\/pre>/g, '</code></pre>')  // Remove <br> before </pre>
 
     return output;
   })(output);
