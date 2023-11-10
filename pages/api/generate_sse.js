@@ -5,6 +5,7 @@ import { logadd } from "utils/logUtils";
 import { tryParseJSON } from "utils/jsonUtils"
 import { evaluate } from './evaluate';
 import { getFunctions, executeFunction } from "function.js";
+import { getTools } from "tools.js";
 import { getMaxTokens } from "utils/tokenUtils";
 
 // OpenAI
@@ -217,7 +218,7 @@ export default async function (req, res) {
       ...(use_function_calling && !use_vision && {
         functions: getFunctions(),
         function_call: "auto",
-        // tools: getFunctions(),
+        // tools: getTools(),
         // tool_choice: "auto"
       })
     });
