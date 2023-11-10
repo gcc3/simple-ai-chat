@@ -47,8 +47,8 @@ export function getFunctions() {
 
   // get time
   functions.push({
-    description: 'Provide the current time.',
     name: 'get_time',
+    description: 'Provide the current time.',
     parameters: {
       type: "object",
       properties: {
@@ -63,8 +63,8 @@ export function getFunctions() {
 
   // get weather
   functions.push({
-    description: 'Get weather for a given location or city, e.g. San Francisco, CA. Do not use it except user asks for it.',
     name: 'get_weather',
+    description: 'Get weather for a given location or city, e.g. San Francisco, CA. Do not use it except user asks for it.',
     parameters: {
       type: "object",
       properties: {
@@ -81,8 +81,8 @@ export function getFunctions() {
   // only if AI node is enabled
   if (process.env.USE_NODE_AI === "true") {
     functions.push({
-      description: 'Get support or data or assistant from another AI if you totally do not know the answer.',
       name: 'query_node_ai',
+      description: 'Get support or data or assistant from another AI if you totally do not know the answer.',
       parameters: {
         type: "object",
         properties: {
@@ -100,8 +100,8 @@ export function getFunctions() {
   // only if Vectara is enabled
   if (process.env.USE_VECTOR === "true") {
     functions.push({
-      description: 'Get support data from vector database.',
       name: 'query_vector',
+      description: 'Get support data from vector database.',
       parameters: {
         type: "object",
         properties: {
