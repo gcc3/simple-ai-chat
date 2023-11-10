@@ -16,6 +16,8 @@ import UserDataPrivacy from "components/UserDataPrivacy";
 import Copyrights from "components/Copyrights";
 import { checkCredential } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
+import hljs from 'highlight.js';
+import 'highlight.js/styles/github.css';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -131,6 +133,7 @@ export default function Home() {
       dispatch(toggleEnterChange("⌃enter"));  // For fullscreen split mode, use ⌃enter to submit
     }
     setTheme(localStorage.getItem("theme"))
+    hljs.highlightAll();  // highlight.js
 
     // Check login user credential
     // If authentication failed, clear local user data
@@ -240,6 +243,9 @@ export default function Home() {
 
             // Markdown formatter
             markdownFormatter(elOutputRef.current);
+
+            // Trigger re-render for highlight.js
+            hljs.highlightAll();
           }
         }
       }
