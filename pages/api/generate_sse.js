@@ -209,6 +209,7 @@ export default async function (req, res) {
     // endpoint: /v1/chat/completions
     const chatCompletion = await openai.chat.completions.create({
       model: model_switch,
+      // response_format: { type: "json_object" },
       messages,
       temperature,
       top_p,
