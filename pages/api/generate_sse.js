@@ -226,9 +226,9 @@ export default async function (req, res) {
 
     for await (const part of chatCompletion) {
       // handle function calling
-      const function_call = part.choices[0].delta.function_call;
-      if (function_call) {
-        res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`);
+      const tool_call = part.choices[0].delta.tool_calls[0];
+      if (tool_call) {
+        res.write(`data: ###FUNC###${JSON.stringify(tool_call)}\n\n`);
         res.flush();
       }
 

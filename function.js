@@ -49,14 +49,14 @@ export function getFunctions() {
   functions.push({
     type: "function",
     function: {
-      name: 'get_time',
       description: 'Provide the current time.',
+      name: 'get_time',
       parameters: {
         type: "object",
         properties: {
             timezone: {
               type: "string",
-              description: "The timezone to get the time for. If not provided, the time will be in UTC.",
+              description: "The timezone to get the time for. Use tz database timezone names. If unknown, the time will be in UTC.",
             }
         },
         required: ["timezone"],
@@ -68,8 +68,8 @@ export function getFunctions() {
   functions.push({
     type: "function",
     function: {
-      name: 'get_weather',
       description: 'Get weather for a given location or city, e.g. San Francisco, CA. Do not use it except user asks for it.',
+      name: 'get_weather',
       parameters: {
         type: "object",
         properties: {
@@ -89,8 +89,8 @@ export function getFunctions() {
     functions.push({
       type: "function",
       function: {
-        name: 'query_node_ai',
         description: 'Get support or data or assistant from another AI if you totally do not know the answer.',
+        name: 'query_node_ai',
         parameters: {
           type: "object",
           properties: {
@@ -111,8 +111,8 @@ export function getFunctions() {
     functions.push({
       type: "function",
       function: {
-        name: 'query_vector',
         description: 'Get support data from vector database.',
+        name: 'query_vector',
         parameters: {
           type: "object",
           properties: {
