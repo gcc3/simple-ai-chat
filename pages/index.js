@@ -17,7 +17,6 @@ import Copyrights from "components/Copyrights";
 import { checkCredential } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
-import codeStyles from 'highlight.js/styles/github.css';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -59,6 +58,18 @@ export default function Home() {
   const toggleDisplay = () => {
     setDisplay(display === DISPLAY.FRONT ? DISPLAY.BACK : DISPLAY.FRONT);
   };
+
+  // Toggle refresh highlight.js
+  const refreshTheme = () => {
+    if (localStorage.getItem("theme") === "light") {
+      delete require.cache['highlight.js/styles/nnfx-dark.css'];
+      require('highlight.js/styles/github.css');
+    }
+    if (localStorage.getItem("theme") === "dark") {
+      delete require.cache['highlight.js/styles/github.css'];
+      require('highlight.js/styles/nnfx-dark.css');
+    }
+  }
 
   // Print output
   const printOutput = (text, ignoreFormatter=true, append=false) => {
