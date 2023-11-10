@@ -1,12 +1,14 @@
 {
-  "name": "simple-ai-chat",
-  "version": "0.1.1",
-  "type": "module",
+  "name": "openai-quickstart-node",
+  "version": "0.1.0",
   "private": true,
   "scripts": {
     "build": "next build",
     "dev": "next dev",
-    "start": "next start"
+    "start": "next start",
+    "start-1": "cross-env PORT=3001 next start",
+    "start-2": "cross-env PORT=3002 next start",
+    "start-3": "cross-env PORT=3003 next start"
   },
   "dependencies": {
     "@reduxjs/toolkit": "^1.9.7",

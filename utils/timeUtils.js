@@ -1,4 +1,4 @@
-import moment from 'moment';
+const moment = require('moment');
 
 export function formatUnixTimestamp(unixTime) {
   // If unixTime is a string, convert it to a number
