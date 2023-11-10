@@ -17,7 +17,6 @@ import Copyrights from "components/Copyrights";
 import { checkCredential } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
-import codeStyles from 'highlight.js/styles/github.css';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -243,9 +242,6 @@ export default function Home() {
 
             // Markdown formatter
             markdownFormatter(elOutputRef.current);
-
-            // Trigger re-render for highlight.js
-            hljs.highlightAll();
           }
         }
       }
@@ -510,6 +506,9 @@ export default function Home() {
 
         // URL formatter
         urlFormatter(elOutputRef.current);
+
+        // highlight.js
+        hljs.highlightAll();
 
         // Try speak some rest text
         if (localStorage.getItem("useSpeak") === "true") {

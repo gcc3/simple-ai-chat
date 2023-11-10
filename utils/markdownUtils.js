@@ -58,7 +58,8 @@ export function markdownFormatter(elOutput) {
 
     // Set language name and highlight code blocks
     output = output.replace(/<pre><code>([^`]+)<\/code><\/pre>/g, (match, p1) => {
-      const languageName = p1.split('\n')[0].trim();
+      let languageName = p1.split('\n')[0].trim();
+      if (!languageName) languageName = 'plaintext';
       const code = p1.split('\n').slice(1).join('\n').trim();
       return `<pre><code class="code-block !whitespace-pre hljs language-${languageName}">${code}</code></pre>`;
     });
