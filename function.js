@@ -52,10 +52,10 @@ export function getFunctions() {
     parameters: {
       type: "object",
       properties: {
-          timezone: {
-            type: "string",
-            description: "The timezone to get the time for. Use tz database timezone names. If unknown, the time will be in UTC.",
-          }
+        timezone: {
+          type: "string",
+          description: "The timezone to get the time for. Use tz database timezone names. If unknown, the time will be in UTC.",
+        }
       },
       required: ["timezone"],
     }
