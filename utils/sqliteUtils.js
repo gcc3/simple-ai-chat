@@ -86,7 +86,7 @@ const getDatabaseConnection = async () => {
 
 // I. logs
 // Get logs by session
-const getLogs = async (session) => {
+export const getLogs = async (session) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -102,7 +102,7 @@ const getLogs = async (session) => {
   }
 };
 
-const insertLog = async (session, username, ip, browser, log) => {
+export const insertLog = async (session, username, ip, browser, log) => {
   const time = Date.now();
   const db = await getDatabaseConnection();
   const time_h = formatUnixTimestamp(time);
@@ -125,7 +125,7 @@ const insertLog = async (session, username, ip, browser, log) => {
 };
 
 // II. users
-const getUser = async (username) => {
+export const getUser = async (username) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -141,7 +141,7 @@ const getUser = async (username) => {
   }
 };
 
-const getUsers = async () => {
+export const getUsers = async () => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -157,7 +157,7 @@ const getUsers = async () => {
   }
 };
 
-const insertUser = async (username, password, email, settings, last_login, status, created_at) => {
+export const insertUser = async (username, password, email, settings, last_login, status, created_at) => {
   const db = await getDatabaseConnection();
 
   // Check if the username adheres to Unix naming conventions
@@ -198,7 +198,7 @@ const insertUser = async (username, password, email, settings, last_login, statu
   }
 };
 
-const deleteUser = async (username) => {
+export const deleteUser = async (username) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -220,7 +220,7 @@ const deleteUser = async (username) => {
   }
 };
 
-const updateUserPassword = async (username, newPassword) => {
+export const updateUserPassword = async (username, newPassword) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -242,7 +242,7 @@ const updateUserPassword = async (username, newPassword) => {
   }
 };
 
-const updateUserEmail = async (username, newEmail) => {
+export const updateUserEmail = async (username, newEmail) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -264,7 +264,7 @@ const updateUserEmail = async (username, newEmail) => {
   }
 };
 
-const emailExists = async (email) => {
+export const emailExists = async (email) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -282,7 +282,7 @@ const emailExists = async (email) => {
   }
 };
 
-const updateUserLastLogin = async (username, lastLogin) => {
+export const updateUserLastLogin = async (username, lastLogin) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -304,7 +304,7 @@ const updateUserLastLogin = async (username, lastLogin) => {
   }
 };
 
-const updateUserSettings = async (username, key, value) => {
+export const updateUserSettings = async (username, key, value) => {
   const db = await getDatabaseConnection();
   const user = await getUser(username);
 
@@ -339,7 +339,7 @@ const updateUserSettings = async (username, key, value) => {
   }
 };
 
-const updateUserStatus = async (username, status) => {
+export const updateUserStatus = async (username, status) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -359,22 +359,4 @@ const updateUserStatus = async (username, status) => {
   } finally {
     db.close();
   }
-};
-
-module.exports = {
-  // logs
-  getLogs,
-  insertLog,
-
-  // users
-  getUsers,
-  getUser,
-  insertUser,
-  deleteUser,
-  updateUserPassword,
-  updateUserEmail,
-  updateUserLastLogin,
-  updateUserSettings,
-  updateUserStatus,
-  emailExists,
 };
