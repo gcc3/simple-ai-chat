@@ -54,7 +54,9 @@ export async function generateMessages(input, images, queryId, role) {
   }
 
   // Chat history
-  const loglistForSession = await loglist(queryId, 35);
+  const session = queryId;
+  const loglistForSession = await loglist(session);
+
   if (loglistForSession !== "") {
     let chatSets = [];
     for (const line of loglistForSession.split("\n")) {

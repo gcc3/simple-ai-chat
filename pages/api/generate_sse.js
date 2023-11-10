@@ -95,7 +95,7 @@ export default async function (req, res) {
       functionResult += "\n";
     }
     console.log("Result: " + functionResult.replace(/\n/g, "\\n") + "\n");
-    logadd("T=" + Date.now() + " S=" + queryId + " F=" + function_input + " A=" + functionResult, req);
+    logadd(queryId, "F=" + function_input + " A=" + functionResult, req);
 
     // Replace input with original
     original_input = input.split("Q=")[1];
@@ -172,7 +172,7 @@ export default async function (req, res) {
           "content": "After calling another AI, its response as: " + nodeAiQueryResult,
         });
         additionalInfo += nodeAiQueryResult;
-        logadd("T=" + Date.now() + " S=" + queryId + " F(f)=query_node_ai(query=" + input + ") A=" + nodeAiQueryResult, req);
+        logadd(queryId, "F(f)=query_node_ai(query=" + input + ") A=" + nodeAiQueryResult, req);
       }
     }
 
@@ -192,7 +192,7 @@ export default async function (req, res) {
           "content": "Retrieved context: " + vectorQueryResult,
         });
         additionalInfo += vectorQueryResult;
-        logadd("T=" + Date.now() + " S=" + queryId + " F(f)=query_vector(query=" + input + ") A=" + vectorQueryResult, req);
+        logadd(queryId, "F(f)=query_vector(query=" + input + ") A=" + vectorQueryResult, req);
 
         // Get vector score and refer doc info
         if (vectorQueryResult.includes("###VECTOR###")) {
@@ -259,7 +259,7 @@ export default async function (req, res) {
     if (result_text.trim().length === 0) result_text = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(result_text + "\n");
-    logadd("T=" + Date.now() + " S=" + queryId + " Q=" + input + " A=" + result_text, req);
+    logadd(queryId, "Q=" + input + " A=" + result_text, req);
 
     res.end();
     return

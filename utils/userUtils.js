@@ -8,10 +8,10 @@ export function generatePassword(length=8) {
   return result;
 }
 
-// Check user login status
-export async function checkLoginStatus() {
+// User get user info to check user credential
+export async function checkCredential() {
   let user = null;
-  const response = await fetch(`/api/user/status`, {
+  const response = await fetch(`/api/user/info`, {
     method: "GET",
     credentials: 'include',
   });
@@ -19,8 +19,10 @@ export async function checkLoginStatus() {
   user = data.user;
 
   if (user) {
+    // Refresh local user data
     localStorage.setItem("user", user.username);
     localStorage.setItem("userSettings", user.settings);
+    return true;
   } else {
     if (localStorage.getItem("user")) {
       localStorage.removeItem("user");
@@ -30,6 +32,7 @@ export async function checkLoginStatus() {
       document.cookie = "auth=; Path=/;";
       console.log("User authentication failed, local user data cleared.");
     }
+    return false;
   }
 }
 

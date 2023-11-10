@@ -36,8 +36,11 @@ To execute a function from input, use `!function_name(argument=value)`
 Example: `!get_weather(location=Tokyo)`  
 
 * Session  
-Use `:info` to check the current session ID, and attach the session with `:session [session_id]` to continue the previous talk.  
-Use `:log` to show the current conversation history.  
+to continue the previous talk, use `:session attach [session_id]` to attach to a session.  
+Use `:info` to check the current session ID.
+
+* Logs
+Use `:log` to show the current conversation(session) history.  
 
 * Roleplay  
 To use roleplay, simply type `:role use [role_name]`.  
@@ -131,7 +134,6 @@ Setup
 
 2. Create necessary files.  
    Create `log.config`  
-   Create `log.txt`  
    Create `.env` from `.env.example`  
    Create `dict.csv` from `dict.csv.example` (required if turn on the dictionary search.)  
    Create `role.csv` from `role.csv.example` (optional)  
@@ -223,12 +225,15 @@ The indice id.
 Force query from the vectara vector database.  
 
 * DB  
-Use database to store logs, use `DB=sqlite`.  
-Use file to store logs, use `DB=file`.  
+Database engline, example `DB=sqlite`.  
+Supported engine: `sqlite`.  
 
 * JWT_SECRET  
 Secret for user authentication.  
 Generate with `openssl rand -hex 16`.  
+
+* AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY  
+Config to use AWS service, eg, S3 Bucket.  
 
 
 log.config

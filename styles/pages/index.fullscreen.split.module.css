@@ -72,7 +72,8 @@
   width: 50%;
   height: 100vh;
   padding: 10px;
-  padding-top: 12px;
+  padding-top: 15px;
+  padding-bottom: 15px;
   overflow-y: auto;
 }
 .main .output {

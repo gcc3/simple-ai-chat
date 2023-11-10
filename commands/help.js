@@ -13,8 +13,8 @@ export default function help(args) {
     ":search [keyword] - Search dictionary.\n" +
     ":function [ls|list] - List all supported functions.\n" +
     ":location [on|off] - Switch on/off location service.\n" +
+    ":session attach [session_id] - Attach to session.\n" +
     ":log - Show current session log.\n" +
-    ":log [session_id] - Show session logs.\n" +
     ":stats [on|off] - Show/hide stats info and scores.\n" +
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":speak [on|off] - Switch on/off auto speak.\n" +
@@ -22,7 +22,6 @@ export default function help(args) {
     ":voice use [voice_name] - Set voice.\n" + 
     ":lang [ls|list] - List all languages.\n" +
     ":lang use [language_code] - Set language.\n" +
-    ":session [session_id] - Attach to session.\n" +
     ":role [ls|list|reset] - List all roles, reset role.\n" +
     ":role use [role_name] - Use role.\n" +
     ":user [ls|list] - List all users.\n" +
