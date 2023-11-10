@@ -20,26 +20,27 @@ body {
   background-color: var(--background-color);
 }
 code {
+  font-family: "Fira Code", monospace;
+  font-size: 15px !important;
+}
+.inline-code {
   background: var(--code-block-background-color);
   word-wrap: break-word;
   box-decoration-break: clone;
   padding: .1rem .0rem .1rem;
   border-radius: .4rem;
-  font-family: "Fira Code", monospace;
   color: var(--code-block-text-color);
-  font-size: 15px !important;
 }
 pre {
   background: var(--code-block-background-color);
   padding: .5rem;
   border-radius: .5rem;
   overflow-x: auto;
-  font-family: "Fira Code", monospace;
-  font-size: 15px !important;
 }
 
+/* Hide the scroll bar */
 pre, textarea {
-  scrollbar-width: none; /* Hide the scroll bar for Firefox */
+  scrollbar-width: none; /* For Firefox */
   -ms-overflow-style: none; /* For Internet Explorer and Edge */
 }
 pre::-webkit-scrollbar, textarea::-webkit-scrollbar {
