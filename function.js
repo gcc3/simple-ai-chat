@@ -8,31 +8,8 @@ export function executeFunction(functionName, functionArgs) {
     return "function calling is not enabled.\n";
   }
   
-  // here functionArgs is a string
-  // format: param1=value1, param2="value2", ...
-  // Convert the string to an object with keys and values
-  const paramObject = functionArgs.split(/,\s*/).reduce((acc, param) => {
-    let [key, value] = param.split('=');
-
-    // Trim any whitespace
-    key = key.trim();
-    value = value.trim();
-
-    // Remove quotes from strings and convert "true" and "false" to booleans
-    if (value.startsWith('"') && value.endsWith('"')) {
-      value = value.slice(1, -1);
-    } else if (value === 'true') {
-      value = true;
-    } else if (value === 'false') {
-      value = false;
-    } else if (!isNaN(value)) {
-      // If it's a number, convert it
-      value = Number(value);
-    }
-
-    acc[key] = value;
-    return acc;
-  }, {});
+  // functionArgs is a json string
+  const paramObject = JSON.parse(functionArgs);
 
   // Functions
   if (functionName === "get_time") {
