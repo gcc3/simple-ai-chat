@@ -27,7 +27,7 @@ export async function loglist(session) {
   let loglines = "";
   if (!session) return loglines;  // don't show anything if no queryId is given
 
-  const logs = await getLogs(session);
+  const logs = await getLogs(session, 7);  // get last 7 logs
   loglines = logs.map(l => {
     return "T=" + l.time + " " + "S=" + l.session + " " + l.log.replaceAll("###RETURN###", " ");
   }).join('\n');
