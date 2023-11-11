@@ -6,6 +6,9 @@ export default function session(args) {
   }
 
   if (args.length === 1) {
+    if (args[0] === "list" || args[0] === "ls") {
+      return "Not implemented yet.\n";
+    }
     return "Usage: :session attach [session_id]\n"
   }
 
