@@ -55,7 +55,7 @@ export async function generateMessages(input, images, queryId, role) {
 
   // Chat history
   const session = queryId;
-  const loglistForSession = await loglist(session);
+  const loglistForSession = await loglist(session, 7);  // limit the memory length to 7 logs
 
   if (loglistForSession !== "") {
     let chatSets = [];

@@ -23,11 +23,11 @@ export function logadd(session, log, req) {
   insertLog(session, username, ip, browser, log);
 }
 
-export async function loglist(session) {
+export async function loglist(session, limit = 50) {
   let loglines = "";
   if (!session) return loglines;  // don't show anything if no queryId is given
 
-  const logs = await getLogs(session);
+  const logs = await getLogs(session, limit);
   loglines = logs.map(l => {
     return "T=" + l.time + " " + "S=" + l.session + " " + l.log.replaceAll("###RETURN###", " ");
   }).join('\n');

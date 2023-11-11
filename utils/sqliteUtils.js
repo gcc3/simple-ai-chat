@@ -102,11 +102,11 @@ const getDatabaseConnection = async () => {
 
 // I. logs
 // Get logs by session
-const getLogs = async (session) => {
+const getLogs = async (session, limit=50) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT * FROM logs WHERE session = ? ORDER BY time DESC`, [session], (err, rows) => {
+      db.all(`SELECT * FROM logs WHERE session = ? ORDER BY time DESC LIMIT ?`, [session, limit], (err, rows) => {
         if (err) {
           reject(err);
         }
