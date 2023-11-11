@@ -156,6 +156,22 @@ const getSessions = async () => {
   }
 }
 
+const getUserSessions = async (username) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT DISTINCT session WHERE username = ? FROM logs ORDER BY session DESC`, [username], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
 // II. users
 const getUser = async (username) => {
   const db = await getDatabaseConnection();
@@ -397,6 +413,7 @@ export {
   getLogs,
   insertLog,
   getSessions,
+  getUserSessions,
   getUsers,
   getUser,
   insertUser,
