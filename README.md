@@ -148,6 +148,9 @@ Setup
 .env
 ----
 
+* ROOT_PASS  
+System root password, will be set when database initialized.
+
 * OPENAI_API_KEY  
 Get from https://platform.openai.com/account/api-keys  
 
