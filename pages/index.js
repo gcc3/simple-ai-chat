@@ -386,7 +386,7 @@ export default function Home() {
 
     let do_function_calling = false;
     let functionName = "";
-    let functionArguements = "";
+    let functionArgsString = "";
     let do_tool_calls = false;
     let tools;
 
@@ -425,7 +425,7 @@ export default function Home() {
           functionName = funcObject.name;
         }
         if (funcObject.arguments) {
-          functionArguements += funcObject.arguments;
+          functionArgsString += funcObject.arguments;
         }
         return;
       }
@@ -441,7 +441,7 @@ export default function Home() {
           if (tool.id) {
             functionName = tool.name;
             if (tool.arguments) {
-              functionArguements += tool.arguments;
+              functionArgsString += tool.arguments;
             }
           }
         });
@@ -512,7 +512,7 @@ export default function Home() {
 
         // Function calling
         if (do_function_calling) {
-          const args = functionArguements;
+          const args = functionArgsString;
           console.log("Function calling: " + functionName + "(" + args + ")");
           
           // Generate with function calling
