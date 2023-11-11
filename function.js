@@ -9,34 +9,50 @@ export function executeFunction(functionName, functionArgs) {
   }
   
   // here functionArgs is a string
-  // format: param1=value1, param2=value2, ...
-  // convert to array of objects
-  let args = {};
-  functionArgs.split(",").map((functionArg) => {
-    functionArg = functionArg.trim();
-    const [key, value] = functionArg.split("=");
-    args[key] = value;
-  });
+  // format: param1=value1, param2="value2", ...
+  // Convert the string to an object with keys and values
+  const paramObject = paramString.split(/,\s*/).reduce((acc, param) => {
+    let [key, value] = param.split('=');
+
+    // Trim any whitespace
+    key = key.trim();
+    value = value.trim();
+
+    // Remove quotes from strings and convert "true" and "false" to booleans
+    if (value.startsWith('"') && value.endsWith('"')) {
+      value = value.slice(1, -1);
+    } else if (value === 'true') {
+      value = true;
+    } else if (value === 'false') {
+      value = false;
+    } else if (!isNaN(value)) {
+      // If it's a number, convert it
+      value = Number(value);
+    }
+
+    acc[key] = value;
+    return acc;
+  }, {});
 
   // Functions
   if (functionName === "get_time") {
-    return getTime(args.timezone);
+    return getTime(paramObject);
   }
   
   if (functionName === "get_weather") {
-    return getWeather(args.location);
+    return getWeather(paramObject);
   }
   
   // call other AI node to get help
   if (functionName === "query_node_ai") {
     if (process.env.USE_NODE_AI !== "true") return "AI Node is not enabled.";
-    return queryNodeAi(args.query);
+    return queryNodeAi(paramObject);
   }
 
   // call vector database to get support data
   if (functionName === "query_vector") {
     if (process.env.USE_VECTOR !== "true") return "Vector database is not enabled.";
-    return queryVector(args.query);
+    return queryVector(paramObject);
   }
 
   return "No such function.";

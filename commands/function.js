@@ -10,7 +10,16 @@ export default async function function_(args) {
       return "No entry found.";
     } else {
       return functions.map((f) => {
-        return `!${f.name}(${Object.keys(f.parameters.properties).join("=___,")}=___)`;
+        // If properties type is string, add double quotes
+        const args =(() => Object.keys(f.parameters.properties).map((p) => {
+          if (f.parameters.properties[p].type === "string") {
+            return `${p}="..."`;
+          } else {
+            return `${p}=...`;
+          }
+        }).join(", "))();
+
+        return `!${f.name}(${args})`;
       }).join(" ");
     }
   }
