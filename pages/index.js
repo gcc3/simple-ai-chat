@@ -388,7 +388,7 @@ export default function Home() {
     let functionName = "";
     let functionArgsString = "";
     let do_tool_calls = false;
-    let tools;
+    let toolsObjectString = "";
 
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
@@ -512,21 +512,19 @@ export default function Home() {
 
         // Function calling
         if (do_function_calling) {
-          const args = functionArgsString;
-          console.log("Function calling: " + functionName + "(" + args + ")");
+          console.log("Function calling: " + functionName + "(" + functionArgsString + ")");
           
           // Generate with function calling
-          generate_sse("!" + functionName + "(" + args + ")" + " Q=" + input, []);
+          generate_sse("!" + functionName + "(" + functionArgsString + ")" + " Q=" + input, []);
           return;
         }
 
         // Tool calls
         if (do_tool_calls) {
-          const args = JSON.stringify(tools);
-          console.log("Tool calls: " + args);
+          console.log("Tool calls: " + toolsObjectString);
           
           // Generate with tool calls
-          generate_sse("!call_tools(" + args + ")" + " Q=" + input, []);
+          generate_sse("!call_tools(" + toolsObjectString + ")" + " Q=" + input, []);
           return;
         }
 
