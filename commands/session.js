@@ -53,13 +53,15 @@ export default async function session(args) {
     // :session [del|delete] [session_id]
     if (args[0] === "del" || args[0] === "delete") {
       if (localStorage.getItem("user") === "root" || localStorage.getItem("user")) {
-        const response = await fetch("/api/session/delete/" + args[1], {
+        const sessionId = args[1];
+
+        const response = await fetch("/api/session/delete/" + sessionId, {
           method: "DELETE",
           headers: {
             "Content-Type": "application/json",
           },
         });
-  
+
         const data = await response.json();
         if (response.status !== 200) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
