@@ -520,6 +520,16 @@ export default function Home() {
           return;
         }
 
+        // Tool calls
+        if (do_tool_calls) {
+          const args = JSON.stringify(tools);
+          console.log("Tool calls: " + args);
+          
+          // Generate with tool calls
+          generate_sse("!call_tools(" + args + ")" + " Q=" + input, []);
+          return;
+        }
+
         // URL formatter
         urlFormatter(elOutputRef.current);
 
