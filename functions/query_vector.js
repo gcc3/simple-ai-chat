@@ -1,4 +1,7 @@
-export default async function queryVector(query) {
+export default async function queryVector(paramObject) {
+  const query = paramObject.query;
+  if (!query) return "Invalid query.";
+
   const response = await fetch("https://api.vectara.io/v1/query"
   , {
       method: "POST",

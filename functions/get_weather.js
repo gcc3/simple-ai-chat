@@ -1,6 +1,9 @@
 import parseStringPromise from 'xml2js';
 
-export default async function getWeather(location) {
+export default async function getWeather(paramObject) {
+  const location = paramObject.location;
+  if (!location) return "Invalid location.";
+
   const response = await fetch("http://api.wolframalpha.com/v2/query?" + new URLSearchParams({
       appid: process.env.WOLFRAM_ALPHA_APPID,
       input: "What's the weather in " + location,
