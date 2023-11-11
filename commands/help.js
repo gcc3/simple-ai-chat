@@ -13,9 +13,10 @@ export default function help(args) {
     ":search [keyword] - Search dictionary.\n" +
     ":function [ls|list] - List all supported functions.\n" +
     ":location [on|off] - Switch on/off location service.\n" +
-    ":log - Show current session log.\n" +
+    ":log - Show logs for current session.\n" +
     ":session [ls|list] - List sessions.\n" +
-    ":session attach [session_id] - Attach to session.\n" +
+    ":session attach [session_id] - Attach to a session.\n" +
+    ":session [del|delete] [session_id] - Delete a session.\n" +
     ":stats [on|off] - Show/hide stats info and scores.\n" +
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":speak [on|off] - Switch on/off auto speak.\n" +

@@ -156,6 +156,25 @@ const getSessions = async () => {
   }
 }
 
+const deleteSession = async (session) => {
+  const db = await getDatabaseConnection();
+  return new Promise((resolve, reject) => {
+    db.run(`DELETE FROM logs WHERE session = ?`, [session], function (err) {
+      db.close();
+      if (err) {
+        reject(err);
+      } else {
+        // this.changes holds the number of rows affected
+        if (this.changes > 0) {
+          resolve(`Successfully deleted session: ${session}`);
+        } else {
+          reject(`No session deleted with id: ${session}`);
+        }
+      }
+    });
+  });
+}
+
 const getUserSessions = async (user) => {
   const db = await getDatabaseConnection();
   try {
@@ -413,6 +432,7 @@ export {
   getLogs,
   insertLog,
   getSessions,
+  deleteSession,
   getUserSessions,
   getUsers,
   getUser,
