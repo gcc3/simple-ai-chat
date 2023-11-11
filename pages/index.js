@@ -386,9 +386,9 @@ export default function Home() {
 
     let do_function_calling = false;
     let functionName = "";
-    let functionArguements = "";
+    let functionArgsString = "";
     let do_tool_calls = false;
-    let tools;
+    let toolsObjectString = "";
 
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
@@ -425,7 +425,7 @@ export default function Home() {
           functionName = funcObject.name;
         }
         if (funcObject.arguments) {
-          functionArguements += funcObject.arguments;
+          functionArgsString += funcObject.arguments;
         }
         return;
       }
@@ -441,7 +441,7 @@ export default function Home() {
           if (tool.id) {
             functionName = tool.name;
             if (tool.arguments) {
-              functionArguements += tool.arguments;
+              functionArgsString += tool.arguments;
             }
           }
         });
@@ -512,11 +512,19 @@ export default function Home() {
 
         // Function calling
         if (do_function_calling) {
-          const args = JSON.stringify(functionArguements);
-          console.log("Function calling: " + functionName + "(" + args + ")");
+          console.log("Function calling: " + functionName + "(" + functionArgsString + ")");
           
           // Generate with function calling
-          generate_sse("!" + functionName + "(" + args + ")" + " Q=" + input, []);
+          generate_sse("!" + functionName + "(" + functionArgsString + ")" + " Q=" + input, []);
+          return;
+        }
+
+        // Tool calls
+        if (do_tool_calls) {
+          console.log("Tool calls: " + toolsObjectString);
+          
+          // Generate with tool calls
+          generate_sse("!call_tools(" + toolsObjectString + ")" + " Q=" + input, []);
           return;
         }
 

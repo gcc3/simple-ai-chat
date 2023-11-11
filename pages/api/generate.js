@@ -77,7 +77,7 @@ export default async function (req, res) {
     });
 
     // Get result
-    const choices = chatCompletion.data.choices;
+    const choices = chatCompletion.choices;
     if (!choices || choices.length === 0) {
       console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
       console.error("No choice\n");
