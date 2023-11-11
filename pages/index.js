@@ -314,8 +314,8 @@ export default function Home() {
     }
 
     // Function CLI
-    // Format: !function_name(arg1=value1, arg2=value2, ...)
-    // Example: !get_weather(location=Tokyo)
+    // Format: !function_name({ "arg1":"value1", "arg2":"value2", ... })
+    // Example: !get_weather({ "location":"Tokyo" })
     if (input.startsWith("!")) {
       const function_input = input.substring(1);
       const funcName = function_input.split("(")[0];
@@ -323,6 +323,7 @@ export default function Home() {
       console.log("Function Input: " + input.substring(1));
       console.log("Function Name: " + funcName);
       console.log("Function Args: " + funcArgs);
+
       try {
         const response = await fetch("/api/function/exec?func=" + funcName + "&args=" + funcArgs, {
           method: "GET",
@@ -511,17 +512,11 @@ export default function Home() {
 
         // Function calling
         if (do_function_calling) {
-          const args = JSON.parse(functionArguements);
-          let argsStrings = [];
-          for (const [key, value] of Object.entries(args)) {
-            console.log(key, value);
-            argsStrings.push(key + "=" + value);
-          }
-          const argsString = argsStrings.join(", ");
-          console.log("Function calling: " + functionName + "(" + argsString + ")");
+          const args = JSON.stringify(functionArguements);
+          console.log("Function calling: " + functionName + "(" + args + ")");
           
           // Generate with function calling
-          generate_sse("!" + functionName + "(" + argsString + ")" + " Q=" + input, []);
+          generate_sse("!" + functionName + "(" + args + ")" + " Q=" + input, []);
           return;
         }
 
