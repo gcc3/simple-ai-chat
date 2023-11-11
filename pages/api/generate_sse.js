@@ -76,7 +76,7 @@ export default async function (req, res) {
   // II. Tool calls (function calling) input
   let do_function_tool_calls = false;
   let functionName = "";
-  let functionArgs = "";
+  let functionArgsString = "";
   let functionResult = "";
   let original_input = "";
   if (input.startsWith("!")) {
@@ -86,18 +86,26 @@ export default async function (req, res) {
     // Function name and arguments
     const function_input = input.split("Q=")[0].substring(1);
     functionName = function_input.split("(")[0];
-    functionArgs = function_input.split("(")[1].split(")")[0];
+    functionArgsString = function_input.split("(")[1].split(")")[0];
     console.log("Function input: " + function_input);
     console.log("Function name: " + functionName);
-    console.log("Arguments: " + functionArgs);
+    console.log("Arguments: " + functionArgsString);
 
-    // Execute function
-    functionResult = await executeFunction(functionName, functionArgs);
-    if (!functionResult.endsWith("\n")) {
-      functionResult += "\n";
+    if (functionName === "call_tools") {
+      // Execute tool calls
+      const tools = tryParseJSON(functionArgsString);
+      if (tools) {
+        console.log("Tool calls: " + JSON.stringify(tools) + "\n");
+      }
+    } else {
+      // Execute function
+      functionResult = await executeFunction(functionName, functionArgsString);
+      if (!functionResult.endsWith("\n")) {
+        functionResult += "\n";
+      }
+      console.log("Result: " + functionResult.replace(/\n/g, "\\n") + "\n");
+      logadd(queryId, "F=" + function_input + " A=" + functionResult, req);
     }
-    console.log("Result: " + functionResult.replace(/\n/g, "\\n") + "\n");
-    logadd(queryId, "F=" + function_input + " A=" + functionResult, req);
 
     // Replace input with original
     original_input = input.split("Q=")[1];
@@ -163,7 +171,7 @@ export default async function (req, res) {
     if (use_node_ai && force_node_ai_query) {
       console.log("--- node ai query ---");
       // Feed message with AI node query result
-      const nodeAiQueryResult = await executeFunction("query_node_ai", "query=" + input);
+      const nodeAiQueryResult = await executeFunction("query_node_ai", "{ query: " + input + " }");
       if (nodeAiQueryResult === undefined) {
         console.log("response: undefined.\n");
       } else {
@@ -183,7 +191,7 @@ export default async function (req, res) {
     if (use_vector && force_vector_query) {
       console.log("--- vector query ---");
       // Feed message with AI node query result
-      const vectorQueryResult = await executeFunction("query_vector", "query=" + input);
+      const vectorQueryResult = await executeFunction("query_vector", "{ query: " + input + " }");
       if (vectorQueryResult === undefined) {
         console.log("response: undefined.\n");
       } else {

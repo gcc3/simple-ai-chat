@@ -3,13 +3,13 @@ import getTime from "./functions/get_time.js";
 import queryNodeAi from "./functions/query_node_ai.js";
 import queryVector from "./functions/query_vector.js";
 
-export function executeFunction(functionName, functionArgs) {
+export function executeFunction(functionName, argsString) {
   if (process.env.USE_FUNCTION_CALLING !== "true") {
     return "function calling is not enabled.\n";
   }
   
   // functionArgs is a json string
-  const paramObject = JSON.parse(functionArgs);
+  const paramObject = JSON.parse(argsString);
 
   // Functions
   if (functionName === "get_time") {
