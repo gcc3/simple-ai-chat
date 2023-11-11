@@ -37,6 +37,15 @@ export default async function (req, res) {
   const use_vision = req.query.use_vision === "true" ? true : false;
   const images = req.query.images || "";
 
+  // Query ID, same as session ID
+  if (!queryId) {
+    res.status(400).send("\"query_id\" is required.");
+    return;
+  } else if (queryId.length != 13) {
+    res.status(400).send("Time traveler detected.");
+    return;
+  }
+
   // Input
   let user_input_escape = req.query.user_input.replaceAll("%", "％").trim();  // escape %
   let input = decodeURIComponent(user_input_escape) || "";
