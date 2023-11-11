@@ -1,15 +1,21 @@
-import { formatUnixTimestamp } from "./timeUtils";
-import { generatePassword } from "./userUtils";
+import sqlite3 from 'sqlite3';
+import { promises as fs } from 'fs';
+import { formatUnixTimestamp } from './timeUtils.js';
+import { generatePassword } from './userUtils.js';
 
-const fs = require("fs");
-const sqlite3 = require("sqlite3").verbose();
+const { verbose } = sqlite3;
+const dbMode = sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE;
 
 const createDatabaseFile = () => {
-  return new sqlite3.Database("./db.sqlite", sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
-    if (err) {
-      console.error(err.message);
-      return null;
-    }
+  return new Promise((resolve, reject) => {
+    const db = new verbose.Database("./db.sqlite", dbMode, (err) => {
+      if (err) {
+        console.error(err.message);
+        reject(err);
+      } else {
+        resolve(db);
+      }
+    });
   });
 };
 
@@ -62,22 +68,31 @@ const initializeDatabase = (db) => {
 };
 
 const getDatabaseConnection = async () => {
-  if (!fs.existsSync("./db.sqlite")) {
-    console.log("Database not exist, trying to create...");
+  try {
+    await fs.access("./db.sqlite");
+    // If the file exists, the above line won't throw an error
+  } catch (err) {
+    // If the error is because the file doesn't exist, create it
+    if (err.code === 'ENOENT') {
+      console.log("Database not exist, trying to create...");
+      const db = await createDatabaseFile();
+      await initializeDatabase(db);
 
-    const db = createDatabaseFile();
-    await initializeDatabase(db);
+      // Create root user with defatut settings
+      await insertUser("root", generatePassword(), "root@localhost", "", "", "inactive", new Date());
+      await updateUserSettings("root", "role", "");
+      await updateUserSettings("root", "theme", "light");
+      await updateUserSettings("root", "speak", "off");
+      await updateUserSettings("root", "stats", "off");
 
-    // Create root user with defatut settings
-    await insertUser("root", generatePassword(), "root@localhost", "", "", "inactive", new Date());
-    await updateUserSettings("root", "role", "");
-    await updateUserSettings("root", "theme", "light");
-    await updateUserSettings("root", "speak", "off");
-    await updateUserSettings("root", "stats", "off");
-
-    return db;
+      return db;
+    } else {
+      // If it's some other error, throw it
+      throw err;
+    }
   }
 
+  // If the file exists, open the database
   return new sqlite3.Database("./db.sqlite", sqlite3.OPEN_READWRITE, (err) => {
     if (err) {
       console.error(err.message);
@@ -378,13 +393,10 @@ const updateUserStatus = async (username, status) => {
   }
 };
 
-module.exports = {
-  // logs
+export {
   getLogs,
   insertLog,
   getSessions,
-
-  // users
   getUsers,
   getUser,
   insertUser,
@@ -395,4 +407,7 @@ module.exports = {
   updateUserSettings,
   updateUserStatus,
   emailExists,
+  createDatabaseFile,
+  initializeDatabase,
+  getDatabaseConnection
 };
