@@ -314,8 +314,8 @@ export default function Home() {
     }
 
     // Function CLI
-    // Format: !function_name(arg1=value1, arg2=value2, ...)
-    // Example: !get_weather(location=Tokyo)
+    // Format: !function_name({ "arg1":"value1", "arg2":"value2", ... })
+    // Example: !get_weather({ "location":"Tokyo" })
     if (input.startsWith("!")) {
       const function_input = input.substring(1);
       const funcName = function_input.split("(")[0];
@@ -323,6 +323,7 @@ export default function Home() {
       console.log("Function Input: " + input.substring(1));
       console.log("Function Name: " + funcName);
       console.log("Function Args: " + funcArgs);
+
       try {
         const response = await fetch("/api/function/exec?func=" + funcName + "&args=" + funcArgs, {
           method: "GET",
@@ -387,6 +388,7 @@ export default function Home() {
     let functionName = "";
     let functionArguements = "";
     let do_tool_calls = false;
+    let tools;
 
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
@@ -401,8 +403,8 @@ export default function Home() {
 
       // I. Handle the environment info
       if (event.data.startsWith("###ENV###")) {
-        const env = event.data.replace("###ENV###", "").split(',');
-        const model = env[0];
+        const _env_ = event.data.replace("###ENV###", "").split(',');
+        const model = _env_[0];
         setInfo((
           <div>
             model: {model}<br></br>
@@ -417,8 +419,8 @@ export default function Home() {
         do_function_calling = true;
         printOutput(querying);
 
-        const func = event.data.replace("###FUNC###", "");
-        const funcObject = JSON.parse(func);
+        const _func_ = event.data.replace("###FUNC###", "");
+        const funcObject = JSON.parse(_func_);
         if (funcObject.name) {
           functionName = funcObject.name;
         }
@@ -433,21 +435,23 @@ export default function Home() {
         do_tool_calls = true;
         printOutput(querying);
 
-        const tools = event.data.replace("###TOOL###", "");
-        const toolsObject = JSON.parse(tools);
-        if (toolsObject.name) {
-          functionName = toolsObject.name;
-        }
-        if (toolsObject.arguments) {
-          functionArguements += toolsObject.arguments;
-        }
+        const _tool_ = event.data.replace("###TOOL###", "");
+        const toolsObject = JSON.parse(_tool_);
+        toolsObject.map((tool) => {
+          if (tool.id) {
+            functionName = tool.name;
+            if (tool.arguments) {
+              functionArguements += tool.arguments;
+            }
+          }
+        });
         return;
       }
 
       // III. Evaluation result
       if (event.data.startsWith("###EVAL###")) {
-        const evaluation = event.data.replace("###EVAL###", "");
-        const val = parseInt(evaluation);
+        const _eval_ = event.data.replace("###EVAL###", "");
+        const val = parseInt(_eval_);
 
         let valColor = "#767676";                // default
         if (val >= 7)      valColor = "green";   // green
@@ -455,7 +459,7 @@ export default function Home() {
         else if (val >= 0) valColor = "#DE3163"; // red
         setEvaluation(
           <div>
-            self_eval_score: <span style={{color: valColor}}>{evaluation}</span><br></br>
+            self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
           </div>
         );
         return;
@@ -464,14 +468,14 @@ export default function Home() {
       // IV. Stats
       if (event.data.startsWith("###STATS###")) {
         if (localStorage.getItem('useStats') === "true") {
-          const stats = event.data.replace("###STATS###", "").split(',');
-          const score = stats[0];
-          const temperature = stats[1];
-          const top_p = stats[2];
-          const token_ct = stats[3];
-          const use_eval = stats[4];
-          const func = stats[5];
-          const refer_doc = stats[6];
+          const _stats_ = event.data.replace("###STATS###", "").split(',');
+          const score = _stats_[0];
+          const temperature = _stats_[1];
+          const top_p = _stats_[2];
+          const token_ct = _stats_[3];
+          const use_eval = _stats_[4];
+          const func = _stats_[5];
+          const refer_doc = _stats_[6];
 
           if (use_eval === "true") {
             setEvaluation(
@@ -508,17 +512,11 @@ export default function Home() {
 
         // Function calling
         if (do_function_calling) {
-          const args = JSON.parse(functionArguements);
-          let argsStrings = [];
-          for (const [key, value] of Object.entries(args)) {
-            console.log(key, value);
-            argsStrings.push(key + "=" + value);
-          }
-          const argsString = argsStrings.join(", ");
-          console.log("Function calling: " + functionName + "(" + argsString + ")");
+          const args = JSON.stringify(functionArguements);
+          console.log("Function calling: " + functionName + "(" + args + ")");
           
           // Generate with function calling
-          generate_sse("!" + functionName + "(" + argsString + ")" + " Q=" + input, []);
+          generate_sse("!" + functionName + "(" + args + ")" + " Q=" + input, []);
           return;
         }
 
