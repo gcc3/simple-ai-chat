@@ -156,11 +156,11 @@ const getSessions = async () => {
   }
 }
 
-const getUserSessions = async (username) => {
+const getUserSessions = async (user) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT DISTINCT session WHERE username = ? FROM logs ORDER BY session DESC`, [username], (err, rows) => {
+      db.all(`SELECT DISTINCT session FROM logs WHERE user = ? ORDER BY session DESC`, [user], (err, rows) => {
         if (err) {
           reject(err);
         }

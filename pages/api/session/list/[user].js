@@ -1,11 +1,11 @@
 import { getUserSessions } from "utils/sqliteUtils";
 
 export default async function (req, res) {
-  const { username } = req.query;
+  const { user } = req.query;
 
   try {
     let sessionlines = "";
-    const sessions = await getUserSessions(username);
+    const sessions = await getUserSessions(user);
     sessionlines = sessions.map(l => {
       return "S=" + l.session;
     }).join('\n');
