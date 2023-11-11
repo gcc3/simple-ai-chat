@@ -1,5 +1,5 @@
 export function attachSession(sessionId) {
-  if (sessionId != null && containsOnlyNumbers(sessionId) && sessionId.length === 13) {
+  if (sessionId != null && containsOnlyNumbers(sessionId)) {
     localStorage.setItem("queryId", sessionId);
     return "Attached.";
   } else {
