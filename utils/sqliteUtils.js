@@ -125,6 +125,22 @@ const insertLog = async (session, username, ip, browser, log) => {
   }
 };
 
+const getSessions = async () => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT DISTINCT session FROM logs ORDER BY session DESC`, [], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
 // II. users
 const getUser = async (username) => {
   const db = await getDatabaseConnection();
@@ -366,6 +382,7 @@ module.exports = {
   // logs
   getLogs,
   insertLog,
+  getSessions,
 
   // users
   getUsers,

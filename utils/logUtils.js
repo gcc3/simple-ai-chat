@@ -1,6 +1,7 @@
-import fs from 'fs';
 import { getLogs, insertLog } from "./sqliteUtils.js"
 import { authenticate } from './authUtils.js';
+
+const fs = require('fs');
 
 export function logadd(session, log, req) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
