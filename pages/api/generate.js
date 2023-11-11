@@ -30,6 +30,15 @@ export default async function (req, res) {
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
 
+  // Query ID, same as session ID
+  if (!queryId) {
+    res.status(400).send("\"query_id\" is required.");
+    return;
+  } else if (queryId.length != 13) {
+    res.status(400).send("Time traveler detected.");
+    return;
+  }
+
   // Input
   let input = req.body.user_input || "";
   if (input.trim().length === 0) return;
