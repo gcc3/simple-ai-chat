@@ -512,7 +512,7 @@ export default function Home() {
 
         // Function calling
         if (do_function_calling) {
-          const args = JSON.stringify(functionArguements);
+          const args = functionArguements;
           console.log("Function calling: " + functionName + "(" + args + ")");
           
           // Generate with function calling
