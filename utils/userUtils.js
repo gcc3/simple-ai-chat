@@ -9,7 +9,7 @@ export function generatePassword(length=8) {
 }
 
 // User get user info to check user credential
-export async function checkCredential() {
+export async function refreshUserInfo() {
   let user = null;
   const response = await fetch(`/api/user/info`, {
     method: "GET",
@@ -22,7 +22,6 @@ export async function checkCredential() {
     // Refresh local user data
     localStorage.setItem("user", user.username);
     localStorage.setItem("userSettings", user.settings);
-    return true;
   } else {
     if (localStorage.getItem("user")) {
       localStorage.removeItem("user");
@@ -32,7 +31,6 @@ export async function checkCredential() {
       document.cookie = "auth=; Path=/;";
       console.log("User authentication failed, local user data cleared.");
     }
-    return false;
   }
 }
 

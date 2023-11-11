@@ -14,7 +14,7 @@ import { passwordFormatter, maskPassword } from "utils/passwordUtils";
 import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
 import Copyrights from "components/Copyrights";
-import { checkCredential } from "utils/userUtils";
+import { refreshUserInfo } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
 
@@ -137,7 +137,7 @@ export default function Home() {
     // Check login user credential
     // If authentication failed, clear local user data
     if (localStorage.getItem("user") !== null) {
-      checkCredential();
+      refreshUserInfo();
     }
 
     // Handle global shortcut keys
