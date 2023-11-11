@@ -5,6 +5,7 @@ import { logadd } from "utils/logUtils";
 import { tryParseJSON } from "utils/jsonUtils"
 import { evaluate } from './evaluate';
 import { getFunctions, executeFunction } from "function.js";
+import { getTools } from "tools.js";
 import { getMaxTokens } from "utils/tokenUtils";
 
 // OpenAI
@@ -208,6 +209,7 @@ export default async function (req, res) {
     // endpoint: /v1/chat/completions
     const chatCompletion = await openai.chat.completions.create({
       model: model_switch,
+      // response_format: { type: "json_object" },
       messages,
       temperature,
       top_p,
@@ -217,7 +219,7 @@ export default async function (req, res) {
       ...(use_function_calling && !use_vision && {
         functions: getFunctions(),
         function_call: "auto",
-        // tools: getFunctions(),
+        // tools: getTools(),
         // tool_choice: "auto"
       })
     });
@@ -227,16 +229,22 @@ export default async function (req, res) {
     res.flush();
 
     for await (const part of chatCompletion) {
-      // handle function calling
-      // const tool_call = part.choices[0].delta.tool_calls[0];
-      // if (tool_call) {
-      //   res.write(`data: ###FUNC###${JSON.stringify(tool_call)}\n\n`);
-      //   res.flush();
-      // }
-      const function_call = part.choices[0].delta.function_call;
-      if (function_call) {
-        res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`);
-        res.flush();
+      // handle function call
+      if (part.choices[0].delta.function_call) {
+        const function_call = part.choices[0].delta.function_call;
+        if (function_call) {
+          res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`);
+          res.flush();
+        }
+      }
+
+      // handle tool calls
+      if (part.choices[0].delta.tool_calls) {
+        const tool_call = part.choices[0].delta.tool_calls[0];
+        if (tool_call) {
+          res.write(`data: ###TOOL###${JSON.stringify(tool_call)}\n\n`);
+          res.flush();
+        }
       }
 
       // handle message

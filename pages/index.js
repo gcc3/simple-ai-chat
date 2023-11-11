@@ -386,6 +386,7 @@ export default function Home() {
     let do_function_calling = false;
     let functionName = "";
     let functionArguements = "";
+    let do_tool_calls = false;
 
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
@@ -410,7 +411,8 @@ export default function Home() {
         return;
       }
 
-      // II. Handle the function calling
+      // II. Handle the callings
+      // 1. Function call
       if (event.data.startsWith("###FUNC###")) {
         do_function_calling = true;
         printOutput(querying);
@@ -422,6 +424,22 @@ export default function Home() {
         }
         if (funcObject.arguments) {
           functionArguements += funcObject.arguments;
+        }
+        return;
+      }
+
+      // 2. Tool calls
+      if (event.data.startsWith("###TOOL###")) {
+        do_tool_calls = true;
+        printOutput(querying);
+
+        const tools = event.data.replace("###TOOL###", "");
+        const toolsObject = JSON.parse(tools);
+        if (toolsObject.name) {
+          functionName = toolsObject.name;
+        }
+        if (toolsObject.arguments) {
+          functionArguements += toolsObject.arguments;
         }
         return;
       }
