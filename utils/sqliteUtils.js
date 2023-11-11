@@ -1,14 +1,10 @@
 import sqlite3 from 'sqlite3';
 import { promises as fs } from 'fs';
 import { formatUnixTimestamp } from './timeUtils.js';
-import { generatePassword } from './userUtils.js';
-
-const { verbose } = sqlite3;
-const dbMode = sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE;
 
 const createDatabaseFile = () => {
   return new Promise((resolve, reject) => {
-    const db = new verbose.Database("./db.sqlite", dbMode, (err) => {
+    const db = new sqlite3.Database("./db.sqlite", sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE, (err) => {
       if (err) {
         console.error(err.message);
         reject(err);
@@ -79,7 +75,7 @@ const getDatabaseConnection = async () => {
       await initializeDatabase(db);
 
       // Create root user with defatut settings
-      await insertUser("root", generatePassword(), "root@localhost", "", "", "inactive", new Date());
+      await insertUser("root", process.env.ROOT_PASS, "root@localhost", "", "", "inactive", new Date());
       await updateUserSettings("root", "role", "");
       await updateUserSettings("root", "theme", "light");
       await updateUserSettings("root", "speak", "off");
