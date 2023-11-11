@@ -294,12 +294,12 @@ export default function Home() {
 
     // Command input
     if (input.startsWith(":")) {
-      console.log("Command Input: " + input.substring(1));
+      console.log("Command Input:\n" + input.substring(1));
       const commandResult = await command(input);
 
       // Use command return to bypass reset output and info
       if (commandResult !== null) {
-        console.log("Command Output: " + commandResult);
+        console.log("Command Output:\n" + commandResult);
 
         // Print the output
         printOutput(commandResult);
