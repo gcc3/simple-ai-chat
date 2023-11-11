@@ -1,13 +1,17 @@
-import { listSessions } from "utils/sessionUtils";
+import { getSessions } from "utils/sqliteUtils";
 
 export default async function (req, res) {
   try {
-    const sessions = await listSessions();
+    let sessionlines = "";
+    const sessions = await getSessions();
+    sessionlines = sessions.map(l => {
+      return "S=" + l.session;
+    }).join('\n');
 
     // Output the result
     res.status(200).json({
       result: {
-        sessions,
+        sessions: sessionlines,
       },
     });
   } catch (error) {
