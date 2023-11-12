@@ -7,6 +7,7 @@ import { evaluate } from './evaluate';
 import { getFunctions, executeFunction } from "function.js";
 import { getTools } from "tools.js";
 import { getMaxTokens } from "utils/tokenUtils";
+import { verifySessionId } from "utils/sessionUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -38,11 +39,9 @@ export default async function (req, res) {
   const images = req.query.images || "";
 
   // Query ID, same as session ID
-  if (!queryId) {
-    res.status(400).send("\"query_id\" is required.");
-    return;
-  } else if (queryId.length != 13) {
-    res.status(400).send("Time traveler detected.");
+  const verifyResult = verifySessionId(queryId);
+  if (!verifyResult.success) {
+    res.status(400).send(verifyResult.message);
     return;
   }
 

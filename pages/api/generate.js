@@ -31,11 +31,9 @@ export default async function (req, res) {
   const location = req.body.location || "";
 
   // Query ID, same as session ID
-  if (!queryId) {
-    res.status(400).send("\"query_id\" is required.");
-    return;
-  } else if (queryId.length != 13) {
-    res.status(400).send("Time traveler detected.");
+  const verifyResult = verifySessionId(queryId);
+  if (!verifyResult.success) {
+    res.status(400).send(verifyResult.message);
     return;
   }
 

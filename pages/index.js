@@ -270,6 +270,12 @@ export default function Home() {
     }
 
     // Pre-process the input
+    // 1. Extract the files/images if there is any
+    if (global.rawInput.startsWith("+")) {
+      
+    }
+
+    // 2. Replace the full-width characters
     const input = global.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
