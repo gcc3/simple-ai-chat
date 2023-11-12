@@ -114,9 +114,9 @@ export default async function entry(args) {
   }
 
   // Set password
-  if (command === "set" && args[1] === "pass") {
+  if (command === "set" && (args[1] === "pass" || args[1] === "password")) {
     if (args.length != 3) {
-      return "Usage: :user set pass [password]";
+      return "Usage: :user set [pass|password] [password]";
     }
 
     try {
