@@ -1,35 +1,21 @@
 export default async function entry(args) {
   try {
-    let response;
-    if (localStorage.getItem("user") === "root") {
-      response = await fetch("/api/session/list", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } else if (localStorage.getItem("user")) {
-      response = await fetch("/api/session/list/" + localStorage.getItem("user"), {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-    } else {
-      return "Login required.";
-    }
+    const response = await fetch("/api/entry/list", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
 
     const data = await response.json();
     if (response.status !== 200) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    if (data.result.sessions === "") {
-      return "No session found.";
+    if (data.result.entries.length === 0) {
+      return "No entry found.";
     } else {
-      // Add new line for each log
-      const sessions = data.result.sessions;
-      return sessions;
+      return "\\" + data.result.entries.join(" \\");
     }
   } catch (error) {
     console.error(error);

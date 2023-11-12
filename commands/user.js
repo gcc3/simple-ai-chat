@@ -66,12 +66,11 @@ export default async function entry(args) {
 
   // Add user
   if (command === "add") {
-    if (args.length != 2 && args.length != 3) {
-      return "Usage: :user add [username] [email?]";
+    if (args.length != 2) {
+      return "Usage: :user add [username]";
     }
 
     const username = args[1];
-    const email = args[2] || "";
     try {
       const response = await fetch("/api/user/add", {
         method: "POST",
@@ -80,7 +79,6 @@ export default async function entry(args) {
         },
         body: JSON.stringify({
           username: username,
-          email:    email,
           settings: JSON.stringify({
             role:       localStorage.getItem("role") || "",
             theme:      localStorage.getItem("theme") || "light",
