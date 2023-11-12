@@ -859,13 +859,17 @@ export default function Home() {
   const imagePlus = async (blob) => {
     // Insert placeholder text for the image
     const file_id = Date.now().toString();
-    const imagePlaceholder = " +img[file_id:" + file_id +"] ";
+    const imagePlaceholder = "+img[file_id:" + file_id +"] ";
 
     // Insert the placeholder text at the cursor position or text selection
     const text = elInputRef.current.value;
     const cursorPos = event.target.selectionStart;
     const textBefore = text.substring(0, cursorPos);
     const textAfter = text.substring(cursorPos);
+    if (!textBefore.endsWith(" ") && !textBefore.endsWith("\n") && textBefore.length > 0) {
+      // avoid attaching to the previous word
+      textBefore += " ";
+    }
 
     // Update the textarea value with the placeholder text
     setInput(textBefore + imagePlaceholder + textAfter);
