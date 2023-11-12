@@ -22,7 +22,6 @@ const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : ""
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
 const dict_search = process.env.DICT_SEARCH == "true" ? true : false;
-const use_eval = process.env.USE_EVAL == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
 const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
@@ -71,6 +70,7 @@ export default async function (req, res) {
   // Model switch
   const use_vision = images.length > 0;
   const model_switch = use_vision ? model_v : model;
+  const use_eval = use_stats && !use_vision;
 
   // I. Normal input
   if (!input.startsWith("!")) {
@@ -305,12 +305,14 @@ export default async function (req, res) {
 
     // Evaluate result
     // vision models not support evaluation
-    if (use_eval && use_stats && result_text.trim().length > 0 && !use_vision) {
-      await evaluate(input, definitions, additionalInfo, result_text).then((eval_result) => {
-        res.write(`data: ###EVAL###${eval_result}\n\n`);
-        res.flush();
-        console.log("eval: " + eval_result + "\n");
-      });
+    if (use_eval) {
+      if (result_text.trim().length > 0) {
+        await evaluate(input, definitions, additionalInfo, result_text).then((eval_result) => {
+          res.write(`data: ###EVAL###${eval_result}\n\n`);
+          res.flush();
+          console.log("eval: " + eval_result + "\n");
+        });
+      }
     }
 
     // Done message
