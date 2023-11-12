@@ -1,31 +1,8 @@
 export default async function entry(args) {
   const command = args[0];
-
-  // List users
-  if (command === "list" || command === "ls") {
-    try {
-      const response = await fetch("/api/user/list", {
-        method: "GET",
-        credentials: 'include',
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      const users = data.users;
-      let output = "";
-      for (let i = 0; i < users.length; i++) {
-        const user = users[i];
-        output += user.username + " ";
-      }
-      return output;
-    } catch (error) {
-      console.error(error);
-      return error;
-    }
-  }
+  const usage = "Usage: :user add [username]" + "\n" +
+                "       :user set [pass/email] [value]" + "\n" +
+                "       :user info" + "\n";
 
   // Get user info, configurations
   if (command === "info") {
@@ -137,9 +114,9 @@ export default async function entry(args) {
   }
 
   // Set password
-  if (command === "set" && args[1] === "pass") {
+  if (command === "set" && (args[1] === "pass" || args[1] === "password")) {
     if (args.length != 3) {
-      return "Usage: :user set pass [password]";
+      return "Usage: :user set [pass|password] [password]";
     }
 
     try {
@@ -197,9 +174,5 @@ export default async function entry(args) {
     }
   }
 
-  return (
-    "Usage: :user add [username]" + "\n" +
-    "       :user set [pass/email] [value]" + "\n" +
-    "       :user info" + "\n"
-  );
+  return usage;
 }

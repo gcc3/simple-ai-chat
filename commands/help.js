@@ -1,5 +1,5 @@
 export default function help(args) {
-  const commands = "Commands: \n" +
+  const commands = "Commands:\n" +
     ":help - Show this help message.\n" +
     ":stop - Stop generating. (⌃c)\n" +
     ":clear - Clear output. (⌃r)\n" +
@@ -26,9 +26,10 @@ export default function help(args) {
     ":lang use [language_code] - Set language.\n" +
     ":role [ls|list|reset] - List all roles, reset role.\n" +
     ":role use [role_name] - Use role.\n" +
-    ":user [ls|list] - List all users.\n" +
-    ":user [add|delete| [username] - Create or delete a user.\n" +
-    ":user set [pass/email] [value] - Change password, set Email.\n" +
+    ":user add [username] - Create a user.\n" +
+    ":user delete [username] - Delete user, remove all user's data.\n" +
+    ":user set [pass|password] [value] - Change password.\n" +
+    ":user set [email] [value] - Change Email address.\n" +
     ":user info - Get logged-in user info and settings.\n" +
     ":login [username] [password] - Login user.\n" +
     ":logout - Logout user.\n" +
