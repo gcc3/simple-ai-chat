@@ -864,7 +864,7 @@ export default function Home() {
     // Insert the placeholder text at the cursor position or text selection
     const text = elInputRef.current.value;
     const cursorPos = event.target.selectionStart;
-    const textBefore = text.substring(0, cursorPos);
+    let textBefore = text.substring(0, cursorPos);
     const textAfter = text.substring(cursorPos);
     if (!textBefore.endsWith(" ") && !textBefore.endsWith("\n") && textBefore.length > 0) {
       // avoid attaching to the previous word
