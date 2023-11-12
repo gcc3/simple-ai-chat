@@ -8,6 +8,8 @@ import { getFunctions, executeFunction } from "function.js";
 import { getTools } from "tools.js";
 import { getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
+import { countChatsForIP } from "utils/sqliteUtils";
+import { authenticate } from "utils/authUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -36,11 +38,37 @@ export default async function (req, res) {
   const location = req.query.location || "";
   const images_ = req.query.images || "";
   const files_ = req.query.files || "";
+
+  res.writeHead(200, {
+    'connection': 'keep-alive',
+    'Cache-Control': 'no-cache',
+    'Content-Type': 'text/event-stream',
+    'X-Accel-Buffering': 'no',  // disables proxy buffering for NGINX
+                                // IMPORTANT! without this the stream not working on remote server
+  });
+
+  // Verfiy user access
+  // Authentication
+  const authResult = authenticate(req);
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  if (!authResult.success) {
+    const chatCount = await countChatsForIP(ip, Date.now() - (3600 * 24 * 1000), Date.now());
+    if (chatCount > 10) {
+      res.write(`data: Usage exceeded, please login/create user to continue.\n\n`); res.flush();
+      res.write(`data: [DONE]\n\n`); res.flush();
+      res.end();
+      return;
+    }
+  } else {
+    console.log("Authentication success: " + authResult.user.username);
+  }
   
   // Query ID, same as session ID
   const verifyResult = verifySessionId(queryId);
   if (!verifyResult.success) {
-    res.status(400).send(verifyResult.message);
+    res.write(`data: ${verifyResult.message}\n\n`); res.flush();
+    res.write(`data: [DONE]\n\n`); res.flush();
+    res.end();
     return;
   }
 
@@ -155,14 +183,6 @@ export default async function (req, res) {
     let score = 0;
     let token_ct = 0;
     let messages = [];
-
-    res.writeHead(200, {
-      'connection': 'keep-alive',
-      'Cache-Control': 'no-cache',
-      'Content-Type': 'text/event-stream',
-      'X-Accel-Buffering': 'no',  // disables proxy buffering for NGINX
-                                  // IMPORTANT! without this the stream not working on remote server
-    });
 
     // Message base
     const generateMessagesResult = await generateMessages(input, images, queryId, role);
@@ -279,8 +299,7 @@ export default async function (req, res) {
       if (part.choices[0].delta.function_call) {
         const function_call = part.choices[0].delta.function_call;
         if (function_call) {
-          res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`);
-          res.flush();
+          res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`); res.flush();
         }
       }
 
@@ -288,8 +307,7 @@ export default async function (req, res) {
       if (part.choices[0].delta.tool_calls) {
         const tool_call = part.choices[0].delta.tool_calls[0];
         if (tool_call) {
-          res.write(`data: ###TOOL###${JSON.stringify(tool_call)}\n\n`);
-          res.flush();
+          res.write(`data: ###TOOL###${JSON.stringify(tool_call)}\n\n`); res.flush();
         }
       }
 
@@ -298,8 +316,7 @@ export default async function (req, res) {
       if (content) {
         result_text += content;
         let message = content.replaceAll("\n", "###RETURN###");
-        res.write(`data: ${message}\n\n`);
-        res.flush();
+        res.write(`data: ${message}\n\n`); res.flush();
       }
     }
 
@@ -308,16 +325,14 @@ export default async function (req, res) {
     if (use_eval) {
       if (result_text.trim().length > 0) {
         await evaluate(input, definitions, additionalInfo, result_text).then((eval_result) => {
-          res.write(`data: ###EVAL###${eval_result}\n\n`);
-          res.flush();
+          res.write(`data: ###EVAL###${eval_result}\n\n`); res.flush();
           console.log("eval: " + eval_result + "\n");
         });
       }
     }
 
     // Done message
-    res.write(`data: [DONE]\n\n`)
-    res.flush();
+    res.write(`data: [DONE]\n\n`); res.flush();
 
     // Log
     if (result_text.trim().length === 0) result_text = "(null)";
@@ -326,7 +341,7 @@ export default async function (req, res) {
     logadd(queryId, "Q=" + input + " A=" + result_text, req);
 
     res.end();
-    return
+    return;
   } catch (error) {
     console.log("Error:");
     if (error.response) {
