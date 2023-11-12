@@ -40,11 +40,16 @@ export default async function entry(args) {
 
   // Add user
   if (command === "add") {
-    if (args.length != 2) {
-      return "Usage: :user add [username]";
+    if (args.length != 2 && args.length != 3) {
+      return "Usage: :user add [username] [email?]";
     }
 
     const username = args[1];
+    const email = args[2] || "";
+    if (!username) {
+      return "Username is required.";
+    }
+
     try {
       const response = await fetch("/api/user/add", {
         method: "POST",
@@ -52,7 +57,8 @@ export default async function entry(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          username: username,
+          username,
+          email,
           settings: JSON.stringify({
             role:       localStorage.getItem("role") || "",
             theme:      localStorage.getItem("theme") || "light",
@@ -80,9 +86,9 @@ export default async function entry(args) {
   }
 
   // Delete user
-  if (command === "delete") {
+  if (command === "delete" || command === "del") {
     if (args.length != 2) {
-      return "Usage: :user delete [username]";
+      return "Usage: :user [del|delete] [username]";
     }
 
     const username = args[1];
