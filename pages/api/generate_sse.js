@@ -304,7 +304,8 @@ export default async function (req, res) {
     }
 
     // Evaluate result
-    if (use_eval && use_stats && result_text.trim().length > 0) {
+    // vision models not support evaluation
+    if (use_eval && use_stats && result_text.trim().length > 0 && !use_vision) {
       await evaluate(input, definitions, additionalInfo, result_text).then((eval_result) => {
         res.write(`data: ###EVAL###${eval_result}\n\n`);
         res.flush();
