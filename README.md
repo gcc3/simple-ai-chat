@@ -195,9 +195,6 @@ To use this feature, GOO_API_APP_ID must be set.
 Text extraction API  
 Get from https://labs.goo.ne.jp/apiusage/  
 
-* USE_EVAL  
-Use AI to evaluate the result, value should be `true` or `false`.  
-
 * USE_FUNCTION_CALLING  
 Use function calling feature, value should be `true` or `false`.  
 
