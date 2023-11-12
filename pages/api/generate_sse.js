@@ -35,7 +35,6 @@ export default async function (req, res) {
   const use_stats = req.query.use_stats === "true" ? true : false;
   const use_location = req.query.use_location === "true" ? true : false;
   const location = req.query.location || "";
-  const use_vision = req.query.use_vision === "true" ? true : false;
   const images_ = req.query.images || "";
   const files_ = req.query.files || "";
   
@@ -54,6 +53,7 @@ export default async function (req, res) {
   const files = decodeURIComponent(files_).split("###") || "";
 
   // Model switch
+  const use_vision = images.length > 0;
   const model_switch = use_vision ? model_v : model;
 
   // I. Normal input
