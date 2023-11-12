@@ -271,9 +271,27 @@ export default function Home() {
 
     // Pre-process the input
     // 1. Extract the files/images if there is any
-    // files starts with +file[url] or +image[url]
+    // files starts with +file[url] or +image[url] or +img[url]
     let images = [];
+    let files = [];
     const inputBlocks = global.rawInput.split(/[\s\n]+/);
+    for (let i = 0; i < inputBlocks.length; i++) {
+      if (inputBlocks[i].startsWith("+image[") || inputBlocks[i].startsWith("+img[")) {
+        const block = inputBlocks[i];
+        const url = block.replaceAll("+image[", "").replaceAll("+img[", "").replaceAll("]", "");
+        images.push(url);
+        global.rawInput = global.rawInput.replace(inputBlocks[i], "");
+      }
+
+      if (inputBlocks[i].startsWith("+file[")) {
+        const block = inputBlocks[i];
+        const url = block.replaceAll("+file[", "").replaceAll("]", "");
+        files.push(url);
+        global.rawInput = global.rawInput.replace(inputBlocks[i], "");
+      }
+    }
+    if (images.length > 0) console.log("Images:\n" + images.join("\n"));
+    if (files.length > 0) console.log("Files:" + files.join("\n"));
 
     // 2. Replace the full-width characters
     const input = global.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
@@ -356,7 +374,7 @@ export default function Home() {
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
-      generate_sse(input, images);
+      generate_sse(input, images, files);
     } else {
       // Use general simple API request
       printOutput(waiting);
@@ -365,7 +383,7 @@ export default function Home() {
   }
 
   // I. SSE generate
-  function generate_sse(input, images) {
+  function generate_sse(input, images, files) {
     // If already doing, return
     if (global.STATE === STATES.DOING) return;
     global.STATE = STATES.DOING;
@@ -389,7 +407,8 @@ export default function Home() {
                                                            + "&use_location=" + use_location
                                                            + "&location=" + location
                                                            + "&use_vision=" + use_vision
-                                                           + "&images=" + images.join(","));
+                                                           + "&images=" + images.join(",")
+                                                           + "&files=" + files.join(","));
 
     let do_function_calling = false;
     let functionName = "";
@@ -522,7 +541,7 @@ export default function Home() {
           console.log("Function calling: " + functionName + "(" + functionArgsString + ")");
           
           // Generate with function calling
-          generate_sse("!" + functionName + "(" + functionArgsString + ")" + " Q=" + input, []);
+          generate_sse("!" + functionName + "(" + functionArgsString + ")" + " Q=" + input, [], []);
           return;
         }
 
@@ -531,7 +550,7 @@ export default function Home() {
           console.log("Tool calls: " + toolsObjectString);
           
           // Generate with tool calls
-          generate_sse("!call_tools(" + toolsObjectString + ")" + " Q=" + input, []);
+          generate_sse("!call_tools(" + toolsObjectString + ")" + " Q=" + input, [], []);
           return;
         }
 
