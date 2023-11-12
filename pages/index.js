@@ -277,14 +277,24 @@ export default function Home() {
     for (let i = 0; i < inputBlocks.length; i++) {
       if (inputBlocks[i].startsWith("+image[") || inputBlocks[i].startsWith("+img[")) {
         const block = inputBlocks[i];
-        const url = block.replaceAll("+image[", "").replaceAll("+img[", "").replaceAll("]", "");
+        const url = block.replace("+image[", "").replace("+img[", "").replace("]", "");
+        if (!url.startsWith("http")) {
+          console.error("Invalid URL: " + url);
+          printOutput("URL must start with http or https.");
+          return;
+        }
         images.push(encodeURIComponent(url));
         global.rawInput = global.rawInput.replace(inputBlocks[i], "");
       }
 
       if (inputBlocks[i].startsWith("+file[")) {
         const block = inputBlocks[i];
-        const url = block.replaceAll("+file[", "").replaceAll("]", "");
+        const url = block.replace("+file[", "").replace("]", "");
+        if (!url.startsWith("http")) {
+          console.error("Invalid URL: " + url);
+          printOutput("URL must start with http or https.");
+          return;
+        }
         files.push(encodeURIComponent(url));
         global.rawInput = global.rawInput.replace(inputBlocks[i], "");
       }
