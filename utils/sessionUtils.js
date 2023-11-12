@@ -29,7 +29,7 @@ export function verifySessionId(queryId) {
     };
   }
 
-  if (queryId.length != 13 || queryId <= 1701302400 || queryId >= 2016921600) {
+  if (queryId.length != 13 || queryId <= 1669766400000 || queryId >= 2016921600000) {
     return {
       success: false,
       message: "Time traveler detected."
