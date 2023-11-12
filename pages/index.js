@@ -48,6 +48,7 @@ export default function Home() {
   // Refs
   const elInputRef = useRef(null);
   const elOutputRef = useRef(null);
+  const elWrapperRef = useRef(null);
 
   // Global states with Redux
   const dispatch = useDispatch();
@@ -89,6 +90,24 @@ export default function Home() {
           characterData: true
         });
       }
+    }
+  };
+
+  // Print output
+  const printImage = (image_url) => {
+    const elWrapper = elWrapperRef.current;
+    if (elWrapper) {
+      const imageDiv = document.createElement('div');
+      imageDiv.className = "p-1 image-preview";
+
+      const img = document.createElement('img');
+      img.className = "rounded-md";
+      img.src = image_url;  // The URL of the image
+      img.alt = image_url;  // Alternative text for the image
+      imageDiv.appendChild(img);
+
+      // Append the image to the div with the ref
+      elWrapperRef.current.insertBefore(imageDiv, elWrapperRef.current.firstChild);
     }
   };
 
@@ -271,8 +290,10 @@ export default function Home() {
     // Pre-process the input
     // 1. Extract the files/images if there is any
     // files starts with +file[url] or +image[url] or +img[url]
-    let images = [];
-    let files = [];
+    let image_urls = [];
+    let image_urls_encoded = [];
+    let file_urls = [];
+    let file_urls_encoded = [];
     const inputBlocks = global.rawInput.split(/[\s\n]+/);
     for (let i = 0; i < inputBlocks.length; i++) {
       if (inputBlocks[i].startsWith("+image[") || inputBlocks[i].startsWith("+img[")) {
@@ -283,7 +304,8 @@ export default function Home() {
           printOutput("URL must start with http or https.");
           return;
         }
-        images.push(encodeURIComponent(url));
+        image_urls.push(url);
+        image_urls_encoded.push(encodeURIComponent(url));
         global.rawInput = global.rawInput.replace(inputBlocks[i], "");
       }
 
@@ -295,12 +317,18 @@ export default function Home() {
           printOutput("URL must start with http or https.");
           return;
         }
-        files.push(encodeURIComponent(url));
+        file_urls.push(url);
+        file_urls_encoded.push(encodeURIComponent(url));
         global.rawInput = global.rawInput.replace(inputBlocks[i], "");
       }
     }
-    if (images.length > 0) console.log("Images:\n" + images.join("\n"));
-    if (files.length > 0) console.log("Files:" + files.join("\n"));
+    if (image_urls.length > 0) {
+      console.log("Images:\n" + image_urls.join("\n"));
+      image_urls.map((image_url) => {
+        printImage(image_url);
+      });
+    }
+    if (file_urls_encoded.length > 0) console.log("Files:" + file_urls_encoded.join("\n"));
 
     // 2. Replace the full-width characters
     const input = global.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
@@ -383,7 +411,7 @@ export default function Home() {
     resetInfo();
     if (localStorage.getItem('useStream') === "true") {
       // Use SSE request
-      generate_sse(input, images, files);
+      generate_sse(input, image_urls_encoded, file_urls_encoded);
     } else {
       // Use general simple API request
       printOutput(waiting);
@@ -839,7 +867,7 @@ export default function Home() {
               value={enter}
             />
           </form>
-          <div id="wrapper" className={styles.wrapper}>
+          <div id="wrapper" ref={elWrapperRef} className={styles.wrapper}>
             <div 
               id="output" 
               ref={elOutputRef}
