@@ -279,14 +279,14 @@ export default function Home() {
       if (inputBlocks[i].startsWith("+image[") || inputBlocks[i].startsWith("+img[")) {
         const block = inputBlocks[i];
         const url = block.replaceAll("+image[", "").replaceAll("+img[", "").replaceAll("]", "");
-        images.push(url);
+        images.push(encodeURIComponent(url));
         global.rawInput = global.rawInput.replace(inputBlocks[i], "");
       }
 
       if (inputBlocks[i].startsWith("+file[")) {
         const block = inputBlocks[i];
         const url = block.replaceAll("+file[", "").replaceAll("]", "");
-        files.push(url);
+        files.push(encodeURIComponent(url));
         global.rawInput = global.rawInput.replace(inputBlocks[i], "");
       }
     }
@@ -407,8 +407,8 @@ export default function Home() {
                                                            + "&use_location=" + use_location
                                                            + "&location=" + location
                                                            + "&use_vision=" + use_vision
-                                                           + "&images=" + images.join(",")
-                                                           + "&files=" + files.join(","));
+                                                           + "&images=" + images.join(encodeURIComponent("###"))
+                                                           + "&files=" + files.join(encodeURIComponent("###")));
 
     let do_function_calling = false;
     let functionName = "";
