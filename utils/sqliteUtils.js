@@ -187,6 +187,40 @@ const getUserSessions = async (user) => {
   }
 }
 
+// Count how many chats for a IP address for a date range
+const countChatsForIP = async (ip, start, end) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT COUNT(*) AS count FROM logs WHERE ip_addr = ? AND time >= ? AND time <= ?`, [ip, start, end], (err, row) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(row.count);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+// Count how many chats for a user for a date range
+const countChatsForUser = async (user, start, end) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT COUNT(*) AS count FROM logs WHERE user = ? AND time >= ? AND time <= ?`, [user, start, end], (err, row) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(row.count);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
 // II. users
 const getUser = async (username) => {
   const db = await getDatabaseConnection();
@@ -430,6 +464,8 @@ export {
   getSessions,
   deleteSession,
   getUserSessions,
+  countChatsForIP,
+  countChatsForUser,
   getUsers,
   getUser,
   insertUser,
