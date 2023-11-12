@@ -270,6 +270,12 @@ export default function Home() {
     }
 
     // Pre-process the input
+    // 1. Extract the files/images if there is any
+    if (global.rawInput.startsWith("+")) {
+      
+    }
+
+    // 2. Replace the full-width characters
     const input = global.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
@@ -318,6 +324,12 @@ export default function Home() {
     // Example: !get_weather({ "location":"Tokyo" })
     if (input.startsWith("!")) {
       const function_input = input.substring(1);
+      if (!function_input.includes("(") || !function_input.includes(")")) {
+        console.error("Invalid function input: " + function_input);
+        printOutput("Invalid function input.");
+        return;
+      }
+
       const funcName = function_input.split("(")[0];
       const funcArgs = function_input.split("(")[1].split(")")[0];
       console.log("Function Input: " + input.substring(1));
