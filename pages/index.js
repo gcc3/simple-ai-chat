@@ -17,7 +17,7 @@ import Copyrights from "components/Copyrights";
 import { refreshUserInfo } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
-import clear from "commands/clear";
+import { generateFileURl } from "utils/awsUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -883,50 +883,15 @@ export default function Home() {
         // Grab the file
         const blob = items[i].getAsFile();
         console.log('Image pasted: ' + blob.name);
-        
-        // Image type
-        let contentType = 'image/jpeg';
-        if (blob.name.endsWith('.jpeg') || blob.name.endsWith('.jpg')) {
-          contentType = 'image/jpeg';
-        } else if (blob.name.endsWith('.png')) {
-          contentType = 'image/png';
-        }
 
-        // Upload the image
-        console.log('Getting pre-signed URL...');
-        const response = await fetch("/api/file/generate-presigned-url?fileId=" + file_id + "&fileName=" + blob.name + "&contentType=" + contentType.replaceAll("/", "%2F"), {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        const data = await response.json();
-        const presignedUrl = data.url;
-        const objectUrl = data.object_url;
-        console.log('Pre-signed URL: ' + presignedUrl);
-        console.log('Object URL: ' + objectUrl);
-
-        // Upload the file directly to S3 using the pre-signed URL
-        if (presignedUrl) {
-          console.log('Uploading image...');
-          const uploadResult = await fetch(presignedUrl, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': contentType,
-            },
-            body: blob,
-          });
-
-          if (uploadResult.ok) {
-            console.log('File successfully uploaded to S3');
-
-            // Replace the placeholder text with the image URL
-            setInput(elInputRef.current.value.replaceAll("file_id:" + file_id, objectUrl));
-          } else {
-            console.error('Upload failed:', await uploadResult.text());
-          }
+        // Upload the image to S3
+        const uploadResult = await generateFileURl(blob, file_id);
+        if (!uploadResult.success) {
+          console.error(uploadResult.message);
+          setInput(elInputRef.current.value.replaceAll("file_id:" + file_id, uploadResult.message));
         } else {
-          console.error('Pre-signed URL invalid.');
+          // Replace the placeholder text with the image URL
+          setInput(elInputRef.current.value.replaceAll("file_id:" + file_id, uploadResult.objectUrl));
         }
       }
     }
