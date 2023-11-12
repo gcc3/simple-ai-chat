@@ -35,9 +35,9 @@ export default async function (req, res) {
   const use_stats = req.query.use_stats === "true" ? true : false;
   const use_location = req.query.use_location === "true" ? true : false;
   const location = req.query.location || "";
-  const use_vision = req.query.use_vision === "true" ? true : false;
-  const images = req.query.images || "";
-
+  const images_ = req.query.images || "";
+  const files_ = req.query.files || "";
+  
   // Query ID, same as session ID
   const verifyResult = verifySessionId(queryId);
   if (!verifyResult.success) {
@@ -49,8 +49,27 @@ export default async function (req, res) {
   let user_input_escape = req.query.user_input.replaceAll("%", "％").trim();  // escape %
   let input = decodeURIComponent(user_input_escape) || "";
   if (input.trim().length === 0) return;
+  const decodedImages = decodeURIComponent(images_) || "";
+  const decodedFiles = decodeURIComponent(files_) || "";
+  let images = [];
+  let files = [];
+  if (decodedImages) {
+    if (decodedImages.includes("###")) {
+      images = decodedImages.split("###");
+    } else {
+      images.push(decodedImages);
+    }
+  }
+  if (decodedFiles) {
+    if (decodedFiles.includes("###")) {
+      files = decodedFiles.split("###");
+    } else {
+      files.push(decodedFiles);
+    }
+  }
 
   // Model switch
+  const use_vision = images.length > 0;
   const model_switch = use_vision ? model_v : model;
 
   // I. Normal input
@@ -58,6 +77,16 @@ export default async function (req, res) {
     input = prompt_prefix + input + prompt_suffix;
     console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
     console.log(input + "\n");
+
+    // Images & files
+    if (images.length > 0) {
+      console.log("--- images ---");
+      console.log(images.join("\n") + "\n");
+    }
+    if (files.length > 0) {
+      console.log("--- files ---");
+      console.log(files.join("\n") + "\n");
+    }
 
     // Configuration info
     console.log("--- configuration info ---\n" 
