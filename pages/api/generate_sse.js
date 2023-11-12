@@ -49,8 +49,24 @@ export default async function (req, res) {
   let user_input_escape = req.query.user_input.replaceAll("%", "％").trim();  // escape %
   let input = decodeURIComponent(user_input_escape) || "";
   if (input.trim().length === 0) return;
-  const images = decodeURIComponent(images_).split("###") || "";
-  const files = decodeURIComponent(files_).split("###") || "";
+  const decodedImages = decodeURIComponent(images_) || "";
+  const decodedFiles = decodeURIComponent(files_) || "";
+  let images = [];
+  let files = [];
+  if (decodedImages) {
+    if (decodedImages.includes("###")) {
+      images = decodedImages.split("###");
+    } else {
+      images.push(decodedImages);
+    }
+  }
+  if (decodedFiles) {
+    if (decodedFiles.includes("###")) {
+      files = decodedFiles.split("###");
+    } else {
+      files.push(decodedFiles);
+    }
+  }
 
   // Model switch
   const use_vision = images.length > 0;
