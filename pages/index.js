@@ -855,6 +855,35 @@ export default function Home() {
     }
   }
 
+  // +img[] or +image[]
+  const imagePlus = async (blob) => {
+    // Insert placeholder text for the image
+    const file_id = Date.now().toString();
+    const imagePlaceholder = " +img[file_id:" + file_id +"] ";
+
+    // Insert the placeholder text at the cursor position or text selection
+    const text = elInputRef.current.value;
+    const cursorPos = event.target.selectionStart;
+    const textBefore = text.substring(0, cursorPos);
+    const textAfter = text.substring(cursorPos);
+
+    // Update the textarea value with the placeholder text
+    setInput(textBefore + imagePlaceholder + textAfter);
+
+    // Grab the file
+    console.log('Image pasted: ' + blob.name);
+
+    // Upload the image to S3
+    const uploadResult = await generateFileURl(blob, file_id);
+    if (!uploadResult.success) {
+      console.error(uploadResult.message);
+      setInput(elInputRef.current.value.replaceAll("file_id:" + file_id, uploadResult.message));
+    } else {
+      // Replace the placeholder text with the image URL
+      setInput(elInputRef.current.value.replaceAll("file_id:" + file_id, uploadResult.objectUrl));
+    }
+  }
+
   // Handle paste event on input textarea
   const handlePaste = async (event) => {
     // Get the clipboard data
@@ -867,35 +896,33 @@ export default function Home() {
         // prevent the default behavior
         event.preventDefault();
 
-        // Insert placeholder text for the image
-        const file_id = Date.now().toString();
-        const imagePlaceholder = "+img[file_id:" + file_id +"]";
-
-        // Insert the placeholder text at the cursor position or text selection
-        const text = elInputRef.current.value;
-        const cursorPos = event.target.selectionStart;
-        const textBefore = text.substring(0, cursorPos);
-        const textAfter = text.substring(cursorPos);
-
-        // Update the textarea value with the placeholder text
-        setInput(textBefore + imagePlaceholder + textAfter);
-
-        // Grab the file
-        const blob = items[i].getAsFile();
-        console.log('Image pasted: ' + blob.name);
-
-        // Upload the image to S3
-        const uploadResult = await generateFileURl(blob, file_id);
-        if (!uploadResult.success) {
-          console.error(uploadResult.message);
-          setInput(elInputRef.current.value.replaceAll("file_id:" + file_id, uploadResult.message));
-        } else {
-          // Replace the placeholder text with the image URL
-          setInput(elInputRef.current.value.replaceAll("file_id:" + file_id, uploadResult.objectUrl));
-        }
+        // Generate +image
+        imagePlus(items[i].getAsFile());
       }
     }
   };
+
+  // Handle drag over event on input textarea
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
+  // Handle drop event on input textarea
+  const handleDrop = async (event) => {
+    // Get the dropped data
+    const droppedFiles = event.dataTransfer.files;
+
+    // Look for any images in the dropped data
+    for (let i = 0; i < droppedFiles.length; i++) {
+      if (droppedFiles[i].type.indexOf('image') === 0) {
+        // prevent the default behavior
+        event.preventDefault();
+
+        // Generate +image
+        imagePlus(droppedFiles[i]);
+      }
+    }
+  }
 
   // Styles
   let styles = defaultStyles;
@@ -921,6 +948,8 @@ export default function Home() {
               placeholder={placeholder.text}
               onChange={handleInputChange}
               onPaste={handlePaste}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
               autoFocus
               onKeyDown={handleInputKeyDown}
               autoComplete="off"
