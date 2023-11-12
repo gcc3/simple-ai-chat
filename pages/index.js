@@ -17,6 +17,7 @@ import Copyrights from "components/Copyrights";
 import { refreshUserInfo } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
+import clear from "commands/clear";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -94,12 +95,13 @@ export default function Home() {
   };
 
   // Print output
-  const printImage = (image_url) => {
-    const elWrapper = elWrapperRef.current;
-    if (elWrapper) {
+  const printImage = (image_url, targetRef, beforeOrAfter = "after") => {
+    if (targetRef.current && elWrapperRef.current) {
+      // Create a div to hold the image
       const imageDiv = document.createElement('div');
       imageDiv.className = "p-1 image-preview";
 
+      // Create an image and append it to div
       const img = document.createElement('img');
       img.className = "rounded-md";
       img.src = image_url;  // The URL of the image
@@ -107,9 +109,25 @@ export default function Home() {
       imageDiv.appendChild(img);
 
       // Append the image to the div with the ref
-      elWrapperRef.current.insertBefore(imageDiv, elWrapperRef.current.firstChild);
+      if (beforeOrAfter === "after") {
+        elWrapperRef.current.appendChild(imageDiv);
+      } else if (beforeOrAfter === "before") {
+        elWrapperRef.current.insertBefore(imageDiv, targetRef.current);
+      }
+    } else {
+      console.error("Target ref is null.");
     }
   };
+
+  // Clear preview images
+  const clearPreviewImages = () => {
+    if (elWrapperRef.current) {
+      const imageDivs = elWrapperRef.current.getElementsByClassName("image-preview");
+      while (imageDivs.length > 0) {
+        imageDivs[0].remove();
+      }
+    }
+  }
 
   // Clear output
   const clearOutput = () => {
@@ -280,6 +298,10 @@ export default function Home() {
   async function onSubmit(event) {
     event.preventDefault();
 
+    // Clear output and preview images
+    clearOutput();
+    clearPreviewImages();
+
     // Clear info, stats, evaluation
     const resetInfo = () => {
       setInfo();
@@ -325,7 +347,7 @@ export default function Home() {
     if (image_urls.length > 0) {
       console.log("Images:\n" + image_urls.join("\n"));
       image_urls.map((image_url) => {
-        printImage(image_url);
+        printImage(image_url, elOutputRef, "before");
       });
     }
     if (file_urls_encoded.length > 0) console.log("Files:" + file_urls_encoded.join("\n"));
