@@ -271,20 +271,15 @@ export default function Home() {
 
     // Pre-process the input
     // 1. Extract the files/images if there is any
-    if (global.rawInput.startsWith("+")) {
-      
-    }
+    // files starts with +file[url] or +image[url]
+    let images = [];
+    const inputBlocks = global.rawInput.split(/[\s\n]+/);
 
     // 2. Replace the full-width characters
     const input = global.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
     if (input.length == 0) return;
-
-    // Pre-process the images
-    const images = [
-      "", ""  // TODO: add image support, these should be the image urls
-    ];
 
     // Clear input and put it to placeholder
     const elInput = elInputRef.current;
