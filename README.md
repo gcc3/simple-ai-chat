@@ -25,6 +25,10 @@ Main Features
 
 Commands are supported, use `:help` to show commands.  
 
+* Vision  
+Vision models, or called GPT-4V is now supported.  
+Use `+img[https://image_url]` to ask question about an image/multiple images.  
+
 * Dictionary search  
 A local dictionary will be used as messages to let AI reference to enhance the AI response quality.  
 To check/add entry use `:entry list`, `:search [keyword]`, and `:entry add`. 
