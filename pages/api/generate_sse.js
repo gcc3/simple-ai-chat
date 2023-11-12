@@ -52,7 +52,7 @@ export default async function (req, res) {
   const authResult = authenticate(req);
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   if (!authResult.success) {
-    const chatCount = await countChatsForIP(ip, Date.now() - (3600 * 24 * 1000), Date.now());
+    const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());  // daily usage
     if (chatCount > 10) {
       res.write(`data: Usage exceeded, please login/create user to continue.\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
