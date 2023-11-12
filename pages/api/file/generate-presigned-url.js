@@ -6,13 +6,17 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
+  const { fileId, fileName, contentType } = req.query;
+  const key = fileId + "_" + fileName;
+  const bucket = process.env.AWS_S3_BUCKET_NAME;
+
   try {
     // Set params for S3.getSignedUrl()
     const params = {
-      Bucket: 'simpleaibucket',
-      Key: req.query.fileId,
+      Bucket: bucket,
+      Key: key,
       Expires: 60,
-      ContentType: req.query.contentType,
+      ContentType: decodeURIComponent(contentType),
     };
 
     // Initialize AWS
@@ -31,7 +35,10 @@ export default async function (req, res) {
         console.log(err);
         res.status(500).json({ error: "Error creating pre-signed URL" });
       } else {
-        res.status(200).json({ url });
+        res.status(200).json({ 
+          url,
+          object_url: `https://${bucket}.s3.amazonaws.com/${key}`
+        });
       }
     });
   } catch (error) {

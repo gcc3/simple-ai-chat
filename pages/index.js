@@ -894,7 +894,7 @@ export default function Home() {
 
         // Upload the image
         console.log('Getting pre-signed URL...');
-        const response = await fetch("/api/file/generate-presigned-url?fileId=" + file_id + "&contentType=" + contentType, {
+        const response = await fetch("/api/file/generate-presigned-url?fileId=" + file_id + "&fileName=" + blob.name + "&contentType=" + contentType.replaceAll("/", "%2F"), {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -902,22 +902,31 @@ export default function Home() {
         });
         const data = await response.json();
         const presignedUrl = data.url;
+        const objectUrl = data.object_url;
         console.log('Pre-signed URL: ' + presignedUrl);
+        console.log('Object URL: ' + objectUrl);
 
         // Upload the file directly to S3 using the pre-signed URL
-        console.log('Uploading image...');
-        const uploadResult = await fetch(presignedUrl, {
-          method: 'PUT',
-          headers: {
-            'Content-Type': contentType,
-          },
-          body: blob,
-        });
+        if (presignedUrl) {
+          console.log('Uploading image...');
+          const uploadResult = await fetch(presignedUrl, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': contentType,
+            },
+            body: blob,
+          });
 
-        if (uploadResult.ok) {
-          console.log('File successfully uploaded to S3');
+          if (uploadResult.ok) {
+            console.log('File successfully uploaded to S3');
+
+            // Replace the placeholder text with the image URL
+            setInput(elInputRef.current.value.replaceAll("file_id:" + file_id, objectUrl));
+          } else {
+            console.error('Upload failed:', await uploadResult.text());
+          }
         } else {
-          console.error('Upload failed:', await uploadResult.text());
+          console.error('Pre-signed URL invalid.');
         }
       }
     }
