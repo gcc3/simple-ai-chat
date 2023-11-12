@@ -1,4 +1,4 @@
-import { getUser } from 'utils/sqliteUtils.js';
+import { getUser, countChatsForUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 
 export default async function (req, res) {
@@ -14,6 +14,11 @@ export default async function (req, res) {
   }
   const { id, username } = authResult.user;
 
+  // Count usages
+  const daily = await countChatsForUser(username, Date.now() - 86400000, Date.now());
+  const weekly = await countChatsForUser(username, Date.now() - 604800000, Date.now());
+  const monthly = await countChatsForUser(username, Date.now() - 2592000000, Date.now());
+
   try {
     const user = await getUser(username);
     if (user) {
@@ -22,7 +27,8 @@ export default async function (req, res) {
           id: user.id, 
           username: user.username,
           email: user.email,
-          settings: user.settings
+          settings: user.settings,
+          usage: JSON.stringify({ daily, weekly, monthly }),
         }
       });
     } else {

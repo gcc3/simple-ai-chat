@@ -50,10 +50,12 @@ export default async function entry(args) {
     if (user) {
       localStorage.setItem("user", user.username);
       localStorage.setItem("userSettings", user.settings);
+      console.log(user.usage);
 
       return "User: " + user.username + "\n" +
              "Email: " + user.email + "\n" +
-             "Settings: " + JSON.stringify(JSON.parse(user.settings), null, 2) + "\n"
+             "Settings: " + JSON.stringify(JSON.parse(user.settings), null, 2) + "\n" +
+             "Usage: " + JSON.stringify(JSON.parse(user.usage), null, 2) + "\n";
     } else {
       return "User removed.";
     }
