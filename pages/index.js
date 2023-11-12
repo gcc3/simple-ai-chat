@@ -855,6 +855,83 @@ export default function Home() {
     }
   }
 
+  // Handle paste event on input textarea
+  const handlePaste = async (event) => {
+    // Get the clipboard data
+    const clipboardData = event.clipboardData;
+
+    // Look for any images in the pasted data
+    const items = clipboardData.items;
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf('image') === 0) {
+        // prevent the default behavior
+        event.preventDefault();
+
+        // Insert placeholder text for the image
+        const file_id = Date.now().toString();
+        const imagePlaceholder = "+img[file_id:" + file_id +"]";
+
+        // Insert the placeholder text at the cursor position or text selection
+        const text = elInputRef.current.value;
+        const cursorPos = event.target.selectionStart;
+        const textBefore = text.substring(0, cursorPos);
+        const textAfter = text.substring(cursorPos);
+
+        // Update the textarea value with the placeholder text
+        setInput(textBefore + imagePlaceholder + textAfter);
+
+        // Grab the file
+        const blob = items[i].getAsFile();
+        console.log('Image pasted: ' + blob.name);
+        
+        // Image type
+        let contentType = 'image/jpeg';
+        if (blob.name.endsWith('.jpeg') || blob.name.endsWith('.jpg')) {
+          contentType = 'image/jpeg';
+        } else if (blob.name.endsWith('.png')) {
+          contentType = 'image/png';
+        }
+
+        // Upload the image
+        console.log('Getting pre-signed URL...');
+        const response = await fetch("/api/file/generate-presigned-url?fileId=" + file_id + "&fileName=" + blob.name + "&contentType=" + contentType.replaceAll("/", "%2F"), {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+        const data = await response.json();
+        const presignedUrl = data.url;
+        const objectUrl = data.object_url;
+        console.log('Pre-signed URL: ' + presignedUrl);
+        console.log('Object URL: ' + objectUrl);
+
+        // Upload the file directly to S3 using the pre-signed URL
+        if (presignedUrl) {
+          console.log('Uploading image...');
+          const uploadResult = await fetch(presignedUrl, {
+            method: 'PUT',
+            headers: {
+              'Content-Type': contentType,
+            },
+            body: blob,
+          });
+
+          if (uploadResult.ok) {
+            console.log('File successfully uploaded to S3');
+
+            // Replace the placeholder text with the image URL
+            setInput(elInputRef.current.value.replaceAll("file_id:" + file_id, objectUrl));
+          } else {
+            console.error('Upload failed:', await uploadResult.text());
+          }
+        } else {
+          console.error('Pre-signed URL invalid.');
+        }
+      }
+    }
+  };
+
   // Styles
   let styles = defaultStyles;
   if (fullscreen === "default") styles = fullscreenStyles;
@@ -878,6 +955,7 @@ export default function Home() {
               className={styles.input}
               placeholder={placeholder.text}
               onChange={handleInputChange}
+              onPaste={handlePaste}
               autoFocus
               onKeyDown={handleInputKeyDown}
               autoComplete="off"
