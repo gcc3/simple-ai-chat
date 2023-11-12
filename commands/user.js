@@ -80,9 +80,9 @@ export default async function entry(args) {
   }
 
   // Delete user
-  if (command === "delete") {
+  if (command === "delete" || command === "del") {
     if (args.length != 2) {
-      return "Usage: :user delete [username]";
+      return "Usage: :user [del|delete] [username]";
     }
 
     const username = args[1];
