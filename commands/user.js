@@ -1,5 +1,8 @@
 export default async function entry(args) {
   const command = args[0];
+  const usage = "Usage: :user add [username]" + "\n" +
+                "       :user set [pass/email] [value]" + "\n" +
+                "       :user info" + "\n"
 
   // List users
   if (command === "list" || command === "ls") {
@@ -197,9 +200,5 @@ export default async function entry(args) {
     }
   }
 
-  return (
-    "Usage: :user add [username]" + "\n" +
-    "       :user set [pass/email] [value]" + "\n" +
-    "       :user info" + "\n"
-  );
+  return usage;
 }
