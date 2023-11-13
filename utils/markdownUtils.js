@@ -27,7 +27,7 @@ export function markdownFormatter(elOutput) {
     // Replace `text` with <code>text</code>
     output = output.split('<br>').map((line, i) => {
       if (line.includes('`')) line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, '<code class="inline-code">$1</code>');  // Inline code
-      if (line.includes('**')) line = line.replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>');     // Replace **text** with text only
+      if (line.includes('**')) line = line.replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>');  // Replace **text** with text only
       return line;
     }).join('<br>');
 
