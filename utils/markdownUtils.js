@@ -16,6 +16,7 @@ export function markdownFormatter(elOutput) {
   global.outputMutationObserver.disconnect();
 
   // Format the output
+  // To test: Repeat me *text* **text** `text` ```text``` **test`test`** *test`test`*
   elOutput.innerHTML = ((output) => {
     // Temporarily replace multi-line code blocks with placeholders
     const codeBlocks = [];
@@ -24,10 +25,28 @@ export function markdownFormatter(elOutput) {
       return `###CODE###${codeBlocks.length - 1}`;
     });
 
-    // Replace `text` with <code>text</code>
     output = output.split('<br>').map((line, i) => {
-      if (line.includes('`')) line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, '<code class="inline-code">$1</code>');  // Inline code
-      if (line.includes('**')) line = line.replace(/\*\*(.*)\*\*/g, '<strong>$1</strong>');     // Replace **text** with text only
+      // Replace `text` with <code>text</code>
+      if (line.includes('`')) line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, function(match, p1) {
+        return `<code class="inline-code">${p1}</code>`;  // Inline code
+      });
+
+      // Temporarily replace text with a placeholder to avoid conflicts
+      let placeholders = [];
+      line = line.replace(/\*\*(.*?)\*\*/g, function(match, p1) {
+          placeholders.push('<strong>' + p1 + '</strong>');
+          return '\x00'; // Use a null character as a placeholder
+      });
+
+      // Replace *text* with <em>text</em>
+      if (line.includes('*')) {
+          line = line.replace(/\*([^*]+?)\*/g, '<em>$1</em>');  // Emphasis
+      }
+
+      // Restore text from placeholders
+      placeholders.forEach(function(placeholder) {
+          line = line.replace('\x00', placeholder);
+      });
       return line;
     }).join('<br>');
 
