@@ -1,4 +1,5 @@
 FROM node:18
+RUN apt update && apt install -y curl vim
 
 WORKDIR /usr/src/app
 COPY package*.json .
