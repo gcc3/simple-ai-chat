@@ -937,6 +937,7 @@ export default function Home() {
     <div>
       <Head>
         <title>simple ai - chat</title>
+        <link rel="manifest" href="/manifest.json"></link> {/* Android Icon */}
       </Head>
 
       <main className={styles.main}>
