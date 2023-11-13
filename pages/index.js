@@ -859,7 +859,7 @@ export default function Home() {
   const imagePlus = async (blob) => {
     // Insert placeholder text for the image
     const file_id = Date.now().toString();
-    const imagePlaceholder = "+img[file_id:" + file_id +"] ";
+    const imagePlaceholder = "+img[file_id:" + file_id +"(uploading...)] ";
 
     // Insert the placeholder text at the cursor position or text selection
     const text = elInputRef.current.value;
@@ -881,10 +881,10 @@ export default function Home() {
     const uploadResult = await generateFileURl(blob, file_id);
     if (!uploadResult.success) {
       console.error(uploadResult.message);
-      setInput(elInputRef.current.value.replaceAll("file_id:" + file_id, uploadResult.message));
+      setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", "file_id:" + file_id + "(failed:" + uploadResult.message + ")"));
     } else {
       // Replace the placeholder text with the image URL
-      setInput(elInputRef.current.value.replaceAll("file_id:" + file_id, uploadResult.objectUrl));
+      setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", uploadResult.objectUrl));
     }
   }
 
