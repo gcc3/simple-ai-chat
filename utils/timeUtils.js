@@ -7,5 +7,5 @@ export function formatUnixTimestamp(unixTime) {
   }
 
   // Use moment.utc() to create a moment in UTC with the Unix timestamp (in seconds)
-  return moment.utc(unixTime).format('MM/DD/YYYY HH:mm:ss');
+  return moment.utc(unixTime).format('HH:mm:ss MM/DD/YYYY');
 }
