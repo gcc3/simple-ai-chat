@@ -54,7 +54,7 @@ export default async function (req, res) {
   if (!authResult.success) {
     const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());  // daily usage
     if (chatCount > 10) {
-      res.write(`data: Usage exceeded, please login to continue.\n\n`); res.flush();
+      res.write(`data: Usage exceeded. Please log in to continue. To create an account, use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
       res.end();
       return;
