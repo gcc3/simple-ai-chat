@@ -2,14 +2,14 @@ import { updateUserEmail, emailExists } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 import { verifiyEmailAddress } from 'utils/emailUtils.js';
 import AWS from 'aws-sdk';
-import generate from 'pages/api/generate';
+import { encode } from 'utils/authUtils.js';
 
 export default async function (req, res) {
   // Check if the method is POST.
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
-  
+
   const { email } = req.body;
 
   // Authentication
@@ -24,7 +24,7 @@ export default async function (req, res) {
   const { id, username } = authResult.user;
 
   // Generate a jwt token contains id, username, and email
-  const jwtToken = generate(id, username, email);
+  const token = encode(id, username, email);
 
   // Input and validation
   if (!email) {
@@ -62,7 +62,7 @@ export default async function (req, res) {
   const from = 'support@simple-ai.io';
   const to = email;
   const subject = 'Email verification';
-  const body = `Please click the following link to verify your email: <a href="https://simple-ai.io/${jwtToken}">https://simple-ai.io/${jwtToken}</a>`;
+  const body = `Please click the following link to verify your email: <a href="https://simple-ai.io/${token}">https://simple-ai.io/${token}</a>`;
   const emailParams = {
     Source: from,
     Destination: {
