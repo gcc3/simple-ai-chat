@@ -35,34 +35,37 @@ export default async function handler(req, res) {
   const from = 'support@simple-ai.io';
   const to = email;
   const subject = 'Password reset';
-  try {
-    const data = await ses.sendEmail({
-      Source: from,
-      Destination: {
-        ToAddresses: [to],
+  const emailParams = {
+    Source: from,
+    Destination: {
+      ToAddresses: [to],
+    },
+    Message: {
+      Subject: {
+        Data: subject,
       },
-      Message: {
-        Subject: {
-          Data: subject,
-        },
-        Body: {
-          Html: {
-            Data: "Your new password is reset to " + generatePassword(),
-          },
+      Body: {
+        Html: {
+          Data: "Your new password is reset to " + generatePassword(),
         },
       },
-    }).promise();
-    res.status(200).json({ 
-      success: true, 
-      message: 'New password is sent to your email', 
-      data 
+    },
+  };
+
+  ses.sendEmail(emailParams).promise()
+    .then((data) => {
+      console.log('Email sent');
+      res.status(200).json({ 
+        success: true, 
+        message: 'New password is sent to your email', 
+        data 
+      });
+    }).catch((err) => {
+      console.error(err, err.stack);
+      res.status(500).json({ 
+        success: false, 
+        message: 'Failed to send email', 
+        error: err 
+      });
     });
-  } catch (err) {
-    console.error('Email sending failed:', err);
-    res.status(500).json({ 
-      success: false, 
-      message: 'Failed to send email', 
-      error: err 
-    });
-  }
 }
