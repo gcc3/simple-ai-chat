@@ -1,6 +1,5 @@
 import AWS from 'aws-sdk';
-import { getUser } from 'utils/sqliteUtils';
-import generate from '../generate';
+import { getUser, updateUserPassword } from 'utils/sqliteUtils';
 import { generatePassword } from 'utils/userUtils';
 
 export default async function handler(req, res) {
@@ -23,7 +22,10 @@ export default async function handler(req, res) {
     }
   }
 
-  // Username and Email match, send email
+  // Username and Email match, reset password and send email
+  const newPassword = generatePassword();
+  await updateUserPassword(username, newPassword);
+
   // Configure AWS SES
   AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -46,7 +48,7 @@ export default async function handler(req, res) {
       },
       Body: {
         Html: {
-          Data: "Your new password is reset to " + generatePassword(),
+          Data: "Your new password has been reset to " + newPassword,
         },
       },
     },
@@ -57,7 +59,7 @@ export default async function handler(req, res) {
       console.log('Email sent');
       res.status(200).json({ 
         success: true, 
-        message: 'New password is sent to your email', 
+        message: 'Your new password is sent to your Email.', 
         data 
       });
     }).catch((err) => {
