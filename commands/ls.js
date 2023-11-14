@@ -19,7 +19,6 @@ export default async function entry(args) {
     }
   } catch (error) {
     console.error(error);
-    alert(error.message);
   }
 
   return "Error.";

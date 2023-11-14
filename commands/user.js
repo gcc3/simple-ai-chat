@@ -1,3 +1,5 @@
+import { verifiyEmailAddress } from "utils/emailUtils";
+
 export default async function entry(args) {
   const command = args[0];
   const usage = "Usage: :user add [username]" + "\n" +
@@ -174,6 +176,44 @@ export default async function entry(args) {
       }
 
       return "Email updated.";
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Reset password
+  if (command === "reset" && (args[1] === "pass" || args[1] === "password")) {
+    if (args.length != 4) {
+      return "Usage: :user reset password [username] [email]";
+    }
+
+    const username = args[2];
+    const email = args[3];
+
+    // Check if the email is valid.
+    if (!verifiyEmailAddress(email)) {
+      return "Email is invalid.";
+    }
+
+    try {
+      const response = await fetch("/api/user/reset-password", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          username: username,
+          email: email,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
     } catch (error) {
       console.error(error);
       return error;
