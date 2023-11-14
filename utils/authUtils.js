@@ -26,7 +26,7 @@ export const createToken = (payload) => {
 
 // Also use JWK to generate token for id and username
 // Function to generate a token
-function generateToken(id, username, email) {
+export function encode(id, username, email) {
   // Create a payload with the id and username
   const payload = {
     id: id,
@@ -44,7 +44,7 @@ function generateToken(id, username, email) {
 }
 
 // Function to verify and decode the token
-function decodeToken(token) {
+export function decode(token) {
   try {
     // Verify and decode the token with the secret key
     const decoded = jwt.verify(token, process.env.JWT_SECRET, {
