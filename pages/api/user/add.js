@@ -77,7 +77,7 @@ export default async function (req, res) {
         success: true,
         username,
         password,
-        message: "User \"" + username + "\"" + " is created, initial password is sent to your Email." + 
+        message: "User \"" + username + "\"" + " is created, initial password is sent to your Email."
                + "You can change if after login. Command \':user set pass [password]\'.",
         data
       });
