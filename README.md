@@ -81,8 +81,12 @@ Use `:fullscreen` to turn on fullscreen mode.
 Use `:fullscreen split` to use a vertically splited screen.  
 
 * User  
-Use `:user` command to add new user, set user settings, password, email.  
-Use `:login`, `:logout` to login and logout user.  
+User `:user add [username] [email?]` to create a new user, email is optional.  
+If set will send the initial password to email.  
+Use `:user set pass [password]` to change password.  
+`:user set email [email]` will send a verification email to user, after verified, email will be updated.  
+Use `:login [username]`, `:logout` to login and logout user.  
+Use `:user reset pass [username] [email]` to reset user password.  
 User settings will be applied after login.  
 
 * Formatters  
@@ -236,8 +240,8 @@ Supported engine: `sqlite`.
 Secret for user authentication.  
 Generate with `openssl rand -hex 16`.  
 
-* AWS_ACCESS_KEY_ID and AWS_SECRET_ACCESS_KEY  
-Config to use AWS service, eg, S3 Bucket.  
+* AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY  
+Config to use AWS service, eg, S3 Bucket, SES.  
 
 
 log.config
