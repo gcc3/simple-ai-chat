@@ -54,7 +54,7 @@ export default async function handler(req, res) {
     }).promise();
     res.status(200).json({ 
       success: true, 
-      message: 'Email sent', 
+      message: 'New password is sent to your email', 
       data 
     });
   } catch (err) {
