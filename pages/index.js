@@ -211,17 +211,16 @@ export default function Home() {
 
         case "c":  // stop generating
           if (event.ctrlKey) {
-            console.log("Shortcut: ⌃c");
             if (global.STATE === STATES.DOING) {
               event.preventDefault();
+              command(":stop");
+              console.log("Shortcut: ⌃c");
             }
-            command(":stop");
           }
           break;
 
         case "r":  // clear output and reset session
           if (event.ctrlKey && !event.shiftKey) {
-            console.log("Shortcut: ⌃r");
             if (global.STATE === STATES.IDLE) {
               event.preventDefault();
               clearOutput();
@@ -229,11 +228,11 @@ export default function Home() {
               setStats();
               setEvaluation();
               command(":clear");
+              console.log("Shortcut: ⌃r");
             }
           }
 
           if (event.ctrlKey && event.shiftKey) {
-            console.log("Shortcut: ⇧⌃r");
             if (global.STATE === STATES.IDLE) {
               event.preventDefault();
               clearOutput();
@@ -241,6 +240,7 @@ export default function Home() {
               setStats();
               setEvaluation();
               command(":reset");
+              console.log("Shortcut: ⇧⌃r");
             }
           }
           break;
