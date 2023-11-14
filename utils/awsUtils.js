@@ -20,6 +20,7 @@ export async function generateFileURl(blob, file_id) {
       "Content-Type": "application/json",
     },
   });
+  
   const data = await response.json();
   const presignedUrl = data.url;
   const objectUrl = data.object_url;

@@ -1,3 +1,4 @@
+import { verifiyEmailAddress } from "utils/emailUtils";
 import { insertUser, getUser, emailExists } from "utils/sqliteUtils.js";
 import { generatePassword } from "utils/userUtils.js";
 
@@ -25,11 +26,7 @@ export default async function (req, res) {
   // Email validation
   if (email) {
     // Check if the email is valid.
-    if (!email.includes('@')) {
-      return res.status(400).json({ error: 'Email is invalid.' });
-    }
-    const emailParts = email.split('@');
-    if (emailParts.length !== 2 || emailParts[0].length === 0 || emailParts[1].length === 0) {
+    if (!verifiyEmailAddress(email)) {
       return res.status(400).json({ error: 'Email is invalid.' });
     }
     

@@ -21,16 +21,17 @@ export default function help(args) {
     ":stream [on|off] - Switch on/off stream mode.\n" +
     ":speak [on|off] - Switch on/off auto speak.\n" +
     ":voice [ls|list] - List all supported voices.\n" +
-    ":voice use [voice_name] - Set voice.\n" + 
+    ":voice use [voice_name] - Set voice.\n" +
     ":lang [ls|list] - List all languages.\n" +
     ":lang use [language_code] - Set language.\n" +
     ":role [ls|list|reset] - List all roles, reset role.\n" +
     ":role use [role_name] - Use role.\n" +
     ":user add [username] [email?] - Create a user, with Email set.\n" +
-    ":user [del|delete] [username] - Delete user with data.\n" +
     ":user set [pass|password] [value] - Change password.\n" +
+    ":user reset [pass|password] [username] [email] - Reset password via Email.\n" +
     ":user set [email] [value] - Change Email address.\n" +
     ":user info - Get logged-in user info and settings.\n" +
+    ":user [del|delete] [username] - Delete user with data.\n" +
     ":login [username] [password] - Login user.\n" +
     ":logout - Logout user.\n" +
     ":info - Show local config.\n" +
