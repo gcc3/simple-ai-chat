@@ -26,7 +26,7 @@ export default async function handler(req, res) {
   const newPassword = generatePassword();
   await updateUserPassword(username, newPassword);
 
-  // Configure AWS SES
+  // Send reset password to Email
   AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -56,7 +56,6 @@ export default async function handler(req, res) {
 
   ses.sendEmail(emailParams).promise()
     .then((data) => {
-      console.log('Email sent');
       res.status(200).json({ 
         success: true, 
         message: 'Your new password is sent to your Email.', 
