@@ -81,7 +81,7 @@ Use `:fullscreen` to turn on fullscreen mode.
 Use `:fullscreen split` to use a vertically splited screen.  
 
 * User  
-Use `:user` command to add new user, set user settings, password, Email.  
+Use `:user` command to add new user, set user settings, password, email.  
 Use `:login`, `:logout` to login and logout user.  
 User settings will be applied after login.  
 

@@ -22,11 +22,11 @@ export default async function handler(req, res) {
     }
   }
 
-  // Username and Email match, reset password and send email
+  // Username and email match, reset password and send email
   const newPassword = generatePassword();
   await updateUserPassword(username, newPassword);
 
-  // Send reset password to Email
+  // Send reset password to email
   AWS.config.update({
     accessKeyId: process.env.AWS_ACCESS_KEY_ID,
     secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -58,7 +58,7 @@ export default async function handler(req, res) {
     .then((data) => {
       res.status(200).json({ 
         success: true, 
-        message: 'Your new password is sent to your Email.', 
+        message: 'Your new password is sent to your email.', 
         data 
       });
     }).catch((err) => {

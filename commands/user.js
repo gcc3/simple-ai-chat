@@ -151,7 +151,7 @@ export default async function entry(args) {
     }
   }
 
-  // Set Email
+  // Set email
   if (command === "set" && args[1] === "email") {
     if (args.length != 3) {
       return "Usage: :user set email [email]";
@@ -172,10 +172,10 @@ export default async function entry(args) {
 
       const data = await response.json();
       if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
+        throw data.message || new Error(`Request failed with status ${response.status}`);
       }
 
-      return "Email updated.";
+      return data.message;
     } catch (error) {
       console.error(error);
       return error;
