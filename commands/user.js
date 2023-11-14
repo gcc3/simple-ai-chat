@@ -122,7 +122,7 @@ export default async function entry(args) {
   }
 
   // Set password
-  if (command === "set" && (args[1] === "pass" || args[1] === "password")) {
+  if (command === "set" && args[1] === "password") {
     if (args.length != 3) {
       return "Usage: :user set [pass|password] [password]";
     }
@@ -183,7 +183,7 @@ export default async function entry(args) {
   }
 
   // Reset password
-  if (command === "reset" && (args[1] === "pass" || args[1] === "password")) {
+  if (command === "reset" && args[1] === "pass") {
     if (args.length != 4) {
       return "Usage: :user reset password [username] [email]";
     }
