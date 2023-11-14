@@ -10,33 +10,22 @@ export default async function (req, res) {
   const { token } = req.query;
 
   try {
-    data = decode(token);
+    const data = decode(token);
     if (!data) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Verification failed.',
-      });
+      return res.status(400).send("Verification failed.");
     }
 
     // Get user
     const user = await getUser(data.username);
     if (user.id !== data.id) {
-      return res.status(400).json({ 
-        success: false,
-        message: 'Verification failed.',
-      });
+      return res.status(400).send("Verification failed.");
     }
 
     // Update email
     await updateUserEmail(data.username, data.email);
 
     // Output the result
-    res.status(200).json({
-      result: {
-        success: true,
-        message: "Email verified and updated."
-      },
-    });
+    res.status(200).send("Email verified and updated.");
   } catch (error) {
     console.error(error);
     res.status(500).json({
