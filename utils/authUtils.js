@@ -23,3 +23,37 @@ export const createToken = (payload) => {
     return null;
   }
 }
+
+// Also use JWK to generate token for id and username
+// Function to generate a token
+function generateToken(id, username, email) {
+  // Create a payload with the id and username
+  const payload = {
+    id: id,
+    username: username,
+    email: email,
+  };
+
+  // Sign the token with the secret key
+  const token = jwt.sign(payload, process.env.JWT_SECRET, {
+    algorithm: jwkSecret.alg,
+    expiresIn: '1h', // Token expires in 1 hour
+  });
+
+  return token;
+}
+
+// Function to verify and decode the token
+function decodeToken(token) {
+  try {
+    // Verify and decode the token with the secret key
+    const decoded = jwt.verify(token, process.env.JWT_SECRET, {
+      algorithms: [jwkSecret.alg],
+    });
+
+    return decoded;
+  } catch (error) {
+    console.error('Token verification failed:', error);
+    return null;
+  }
+}

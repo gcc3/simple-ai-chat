@@ -39,7 +39,7 @@ export default async function (req, res) {
       return res.status(400).json({ error: 'Email already used by user \"' + emailUser.username + '\".' });
     }
 
-    // Send password to Email
+    // Send password to email
     AWS.config.update({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -77,14 +77,14 @@ export default async function (req, res) {
         success: true,
         username,
         password,
-        message: "User \"" + username + "\"" + " is created, initial password is sent to your Email. You can change if after login with command \`:user set pass [password]\`.",
+        message: "User \"" + username + "\"" + " is created, initial password is sent to your email. You can change if after login with command \`:user set pass [password]\`.",
         data
       });
     }).catch((err) => {
       console.error(err, err.stack);
       res.status(500).json({ 
         success: false, 
-        message: 'Failed to send Email.', 
+        message: 'Failed to send email.', 
         error: err 
       });
     });
