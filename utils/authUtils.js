@@ -36,7 +36,6 @@ export function encode(id, username, email) {
 
   // Sign the token with the secret key
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    algorithm: jwkSecret.alg,
     expiresIn: '1h', // Token expires in 1 hour
   });
 
@@ -47,9 +46,7 @@ export function encode(id, username, email) {
 export function decode(token) {
   try {
     // Verify and decode the token with the secret key
-    const decoded = jwt.verify(token, process.env.JWT_SECRET, {
-      algorithms: [jwkSecret.alg],
-    });
+    const decoded = jwt.verify(token, process.env.JWT_SECRET);
 
     return decoded;
   } catch (error) {
