@@ -78,7 +78,7 @@ export default async function (req, res) {
         username,
         password,
         message: "User \"" + username + "\"" + " is created, initial password is sent to your Email."
-               + "You can change if after login. Command \':user set pass [password]\'.",
+               + "You can change if after login with command \`:user set pass [password]\`.",
         data
       });
     }).catch((err) => {
@@ -100,7 +100,7 @@ export default async function (req, res) {
       username,
       password,
       message: "User \"" + username + "\" is created with initial password \"" + password + "\"." 
-             + "You can change it after login. Command \':user set pass [password]\'.",
+             + "You can change it after login with command \`:user set pass [password]\`.",
     });
   }
 }
