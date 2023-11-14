@@ -17,6 +17,7 @@
 
 # misc
 .DS_Store
+*.swp
 
 # debug
 npm-debug.log*
