@@ -774,13 +774,11 @@ export default function Home() {
           // Move cursor
           elInput.selectionStart = pCursor + 1;
           elInput.selectionEnd = pCursor + 1;
-
-          // Re-adjust input height
-          reAdjustInputHeight();
         }
       }
     }
 
+    // Tab key event
     // Input from placeholder when pressing tab
     if (event.keyCode === 9 || event.which === 9) {
       event.preventDefault();
