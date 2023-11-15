@@ -869,6 +869,7 @@ export default function Home() {
 
     // Update the textarea value with the placeholder text
     setInput(textBefore + imagePlaceholder + textAfter);
+    reAdjustInputHeight();  // Re-adjust input height as input changed
 
     // Grab the file
     console.log('Image pasted: ' + blob.name);
@@ -882,6 +883,9 @@ export default function Home() {
       // Replace the placeholder text with the image URL
       setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", uploadResult.objectUrl));
     }
+
+    // Re-adjust input height as input changed
+    reAdjustInputHeight();
   }
 
   // Handle paste event on input textarea
