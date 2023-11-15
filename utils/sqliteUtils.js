@@ -42,6 +42,7 @@ const initializeDatabase = (db) => {
         CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY,
             username TEXT NOT NULL,
+            role TEXT NOT NULL,
             password TEXT NOT NULL,
             email TEXT,
             settings TEXT,
@@ -76,7 +77,6 @@ const getDatabaseConnection = async () => {
 
       // Create root user with defatut settings
       await insertUser("root", process.env.ROOT_PASS, "root@localhost", "", "", "inactive", new Date());
-      await updateUserSettings("root", "role", "");
       await updateUserSettings("root", "theme", "light");
       await updateUserSettings("root", "speak", "off");
       await updateUserSettings("root", "stats", "off");
