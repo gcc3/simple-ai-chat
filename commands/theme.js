@@ -34,5 +34,5 @@ export default async function theme(args) {
     }
   }
 
-  return null;  // this won't make the output change
+  return "\`" + value + "\` theme applied.";
 }
