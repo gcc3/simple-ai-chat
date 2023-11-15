@@ -72,9 +72,9 @@ Refer AI Links below.
 Query data from vector database engine.  
 Currently support [Vectara](https://vectara.com/).  
 
-* Dark Mode  
-A terminal style dark theme.  
-Use `:theme [light/dark]` to change color theme.
+* Themes  
+Provide light theme by default, a dark theme, and a terminal style theme.  
+Use `:theme [light/dark/terminal]` to change color theme.
 
 * Full Screen Mode  
 Use `:fullscreen` to turn on fullscreen mode.  

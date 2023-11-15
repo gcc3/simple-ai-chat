@@ -26,6 +26,30 @@ export function setTheme(theme) {
   }
 
   if (theme == "dark") {
+    document.documentElement.style.setProperty("--background-color", "#1e1e1e");
+    document.documentElement.style.setProperty("--text-color", "#c7c7c7");
+    document.documentElement.style.setProperty("--placeholder-color", "#5c5c5c");
+    document.documentElement.style.setProperty("--button-color", "#333333");
+    document.documentElement.style.setProperty("--button-hover-color", "#444444");
+    document.documentElement.style.setProperty("--button-text-color", "#ffffff");
+    document.documentElement.style.setProperty("--stats-text-color", "#9a9a9a");
+    document.documentElement.style.setProperty("--info-text-color", "#a1a1a1");
+    document.documentElement.style.setProperty("--border-color", "#2c2c2c");
+    document.documentElement.style.setProperty("--border-shadow-color", "rgba(50, 50, 50, 0.4)");
+    document.documentElement.style.setProperty("--code-block-background-color", "#2c2c2c");
+    document.documentElement.style.setProperty("--code-block-text-color", "#c7c7c7");
+    document.documentElement.style.setProperty("--inline-code-background-color", "#2e2e2e");
+    document.documentElement.style.setProperty("--inline-code-text-color", "#bd93f9");
+    document.documentElement.style.setProperty("--dot-color", "#5c5c5c");
+    document.documentElement.style.setProperty("--dot-hover-color", "#c7c7c7");
+    document.documentElement.style.setProperty("--sub-text-color", "#9a9a9a");
+    document.documentElement.style.setProperty("--container-background-color", "rgba(45, 45, 45, 0.4)");
+    document.documentElement.style.setProperty("--strong-text-background-color", "rgba(99, 99, 99, 0.4)");
+    document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
+    document.documentElement.style.setProperty("--underline-text-color", "#9a9a9a");
+  }
+
+  if (theme == "terminal") {
     document.documentElement.style.setProperty("--background-color", "#000000");
     document.documentElement.style.setProperty("--text-color", "#00f700");
     document.documentElement.style.setProperty("--placeholder-color", "#007000");
@@ -54,8 +78,13 @@ export function setTheme(theme) {
     require('highlight.js/styles/github.css');
     enableCSSRulesBySelector('.hljs');
   }
-  
+
   if (theme == "dark") {
+    require('highlight.js/styles/monokai-sublime.css');
+    enableCSSRulesBySelector('.hljs');
+  }
+  
+  if (theme == "terminal") {
     disableCSSRulesBySelector('.hljs');
   }
 }
