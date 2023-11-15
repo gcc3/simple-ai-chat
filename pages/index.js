@@ -774,13 +774,11 @@ export default function Home() {
           // Move cursor
           elInput.selectionStart = pCursor + 1;
           elInput.selectionEnd = pCursor + 1;
-
-          // Re-adjust input height
-          reAdjustInputHeight();
         }
       }
     }
 
+    // Tab key event
     // Input from placeholder when pressing tab
     if (event.keyCode === 9 || event.which === 9) {
       event.preventDefault();
@@ -847,9 +845,7 @@ export default function Home() {
           elInput.style.height = `${elInput.scrollHeight + 1}px`;
         } else {
           // No input
-          if (placeholder.height) {
-            elInput.style.height = placeholder.height;
-          }
+          elInput.style.height = "45px";
         }
       }
     }
