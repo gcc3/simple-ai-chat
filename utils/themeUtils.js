@@ -31,7 +31,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--placeholder-color", "#5c5c5c");
     document.documentElement.style.setProperty("--button-color", "#333333");
     document.documentElement.style.setProperty("--button-hover-color", "#444444");
-    document.documentElement.style.setProperty("--button-text-color", "#ffffff");
+    document.documentElement.style.setProperty("--button-text-color", "#A9A9A9");
     document.documentElement.style.setProperty("--stats-text-color", "#9a9a9a");
     document.documentElement.style.setProperty("--info-text-color", "#a1a1a1");
     document.documentElement.style.setProperty("--border-color", "#2c2c2c");
