@@ -26,7 +26,7 @@ export function setTheme(theme) {
   }
 
   if (theme == "dark") {
-    document.documentElement.style.setProperty("--background-color", "#1e1e1e");
+    document.documentElement.style.setProperty("--background-color", "#111111");
     document.documentElement.style.setProperty("--text-color", "#c7c7c7");
     document.documentElement.style.setProperty("--placeholder-color", "#5c5c5c");
     document.documentElement.style.setProperty("--button-color", "#333333");
