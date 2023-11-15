@@ -36,9 +36,9 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--info-text-color", "#a1a1a1");
     document.documentElement.style.setProperty("--border-color", "#2c2c2c");
     document.documentElement.style.setProperty("--border-shadow-color", "rgba(50, 50, 50, 0.4)");
-    document.documentElement.style.setProperty("--code-block-background-color", "#2c2c2c");
+    document.documentElement.style.setProperty("--code-block-background-color", "#212121");
     document.documentElement.style.setProperty("--code-block-text-color", "#c7c7c7");
-    document.documentElement.style.setProperty("--inline-code-background-color", "#2e2e2e");
+    document.documentElement.style.setProperty("--inline-code-background-color", "#212121");
     document.documentElement.style.setProperty("--inline-code-text-color", "#bd93f9");
     document.documentElement.style.setProperty("--dot-color", "#5c5c5c");
     document.documentElement.style.setProperty("--dot-hover-color", "#c7c7c7");
@@ -80,7 +80,7 @@ export function setTheme(theme) {
   }
 
   if (theme == "dark") {
-    require('highlight.js/styles/monokai-sublime.css');
+    require('highlight.js/styles/github-dark.css');
     enableCSSRulesBySelector('.hljs');
   }
   
