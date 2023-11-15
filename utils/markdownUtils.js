@@ -70,7 +70,7 @@ export function markdownFormatter(elOutput) {
       return line;
     }).join('<br>');
 
-    // Remove <br> in <pre> tags
+    // In <pre><code> tags replace <br> with \n
     output = output.replace(/<pre><code>([^`]+)<\/code><\/pre>/g, (match, p1) => {
       return `<pre><code>${p1.replaceAll('<br>', '\n')}</code></pre>`;
     });
