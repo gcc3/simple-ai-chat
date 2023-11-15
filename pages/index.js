@@ -845,9 +845,7 @@ export default function Home() {
           elInput.style.height = `${elInput.scrollHeight + 1}px`;
         } else {
           // No input
-          if (placeholder.height) {
-            elInput.style.height = placeholder.height;
-          }
+          elInput.style.height = "45px";
         }
       }
     }
