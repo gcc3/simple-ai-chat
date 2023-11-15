@@ -176,6 +176,13 @@ export default function Home() {
       refreshUserInfo();
     }
 
+    // Handle window resize
+    const handleResize = () => {
+      reAdjustInputHeight();
+    };
+    window.addEventListener('resize', handleResize);
+    handleResize();
+
     // Handle global shortcut keys
     const handleKeyDown = (event) => {
       const elInput = elInputRef.current;
@@ -291,6 +298,7 @@ export default function Home() {
     return () => {
       // Remove event listener, this is necessary
       window.removeEventListener("keydown", handleKeyDown, true);
+      window.removeEventListener('resize', handleResize);
     }
   }, []);
 
