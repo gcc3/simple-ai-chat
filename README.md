@@ -243,7 +243,7 @@ Supported engine: `sqlite`.
 Secret for user authentication.  
 Generate with `openssl rand -hex 16`.  
 
-* AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY  
+* AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_S3_BUCKET_NAME  
 Config to use AWS service, eg, S3 Bucket, SES.  
 
 
