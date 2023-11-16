@@ -165,6 +165,9 @@ Get from https://platform.openai.com/account/api-keys
 * MODEL  
 `gpt-4`, `gpt-3.5-turbo`, etc...
 
+* MODEL_V  
+Vision models.  
+
 * TEMPERATURE  
 What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random  
 lower values like 0.2 will make it more focused and deterministic.  
