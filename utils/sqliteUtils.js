@@ -76,7 +76,7 @@ const getDatabaseConnection = async () => {
       await initializeDatabase(db);
 
       // Create root user with defatut settings
-      await insertUser("root", process.env.ROOT_PASS, "root@localhost", "", "", "inactive", new Date());
+      await insertUser("root", process.env.ROOT_PASS, "root_user", "root@localhost", "", "", "inactive", new Date());
       await updateUserSettings("root", "theme", "light");
       await updateUserSettings("root", "speak", "off");
       await updateUserSettings("root", "stats", "off");
@@ -238,7 +238,7 @@ const getUser = async (username) => {
   }
 };
 
-const insertUser = async (username, password, email, settings, last_login, status, created_at) => {
+const insertUser = async (username, password, role, email, settings, last_login, status, created_at) => {
   const db = await getDatabaseConnection();
 
   // Check if the username adheres to Unix naming conventions
@@ -262,8 +262,8 @@ const insertUser = async (username, password, email, settings, last_login, statu
         }
 
         // If the username doesn't exist, proceed with the insertion
-        const stmt = db.prepare("INSERT INTO users (username, password, email, settings, last_login, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)");
-        stmt.run([username, password, email, settings, last_login, status, created_at], function (err) {
+        const stmt = db.prepare("INSERT INTO users (username, password, role, email, settings, last_login, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        stmt.run([username, password, role, email, settings, last_login, status, created_at], function (err) {
           if (err) {
             reject(err);
             return;

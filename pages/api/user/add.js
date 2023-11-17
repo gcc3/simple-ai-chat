@@ -70,8 +70,8 @@ export default async function (req, res) {
 
     ses.sendEmail(emailParams).promise()
     .then((data) => {
-      insertUser(username, password, email, settings,         "", "active", new Date());
-              // username, password, email, settings, last_login,   status, created_at
+      insertUser(username, password, "user", email, settings,         "", "active", new Date());
+              // username, password,   role, email, settings, last_login,   status, created_at
 
       res.status(200).json({ 
         success: true,
@@ -90,8 +90,8 @@ export default async function (req, res) {
     });
   } else {
     // No email provided, send password to console
-    insertUser(username, password,    "", settings,         "", "active", new Date());
-            // username, password, email, settings, last_login,   status, created_at
+    insertUser(username, password, "user",    "", settings,         "", "active", new Date());
+            // username, password,   role, email, settings, last_login,   status, created_at
 
     // No error
     return res.status(200).json({ 

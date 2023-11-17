@@ -61,8 +61,8 @@ export default async function entry(args) {
         body: JSON.stringify({
           username,
           email,
+          role: "user",
           settings: JSON.stringify({
-            role:       localStorage.getItem("role") || "",
             theme:      localStorage.getItem("theme") || "light",
             speak:      localStorage.getItem("speak") || "off",
             stats:      localStorage.getItem("stats") || "on",
