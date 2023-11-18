@@ -32,6 +32,7 @@ export default async function entry(args) {
       console.log(user.usage);
 
       return "User: " + user.username + "\n" +
+             "Role: " + user.role + "\n" +
              "Email: " + user.email + "\n" +
              "Settings: " + JSON.stringify(JSON.parse(user.settings), null, 2) + "\n" +
              "Usage: " + JSON.stringify(JSON.parse(user.usage), null, 2) + "\n";
@@ -61,8 +62,8 @@ export default async function entry(args) {
         body: JSON.stringify({
           username,
           email,
+          role: "user",
           settings: JSON.stringify({
-            role:       localStorage.getItem("role") || "",
             theme:      localStorage.getItem("theme") || "light",
             speak:      localStorage.getItem("speak") || "off",
             stats:      localStorage.getItem("stats") || "on",

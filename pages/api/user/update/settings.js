@@ -1,4 +1,4 @@
-import { updateUserSettings } from 'utils/sqliteUtils.js';
+import { updateUserSettings, getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 
 export default async function (req, res) {
@@ -21,14 +21,32 @@ export default async function (req, res) {
   }
 
   try {
+    // Check if the user exists
+    const user = await getUser(username);
+    if (!user) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'User not found.' 
+      });
+    }
+
     const wasSuccessful = await updateUserSettings(username, key, value);
     if (wasSuccessful) {
-      return res.status(200).json({ success: true, message: "Settings updated successfully" });
+      return res.status(200).json({ 
+        success: true, 
+        message: "Settings updated successfully" 
+      });
     } else {
-      return res.status(400).json({ error: 'Failed to update settings or user not found.' });
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Failed to update settings or user not found.'
+       });
     }
   } catch (error) {
     console.error('Error:', error);
-    return res.status(500).json({ error: 'Error occurred while updating the user settings.' });
+    return res.status(500).json({ 
+      success: false,
+      error: 'Error occurred while updating the user settings.'
+    });
   }
 }
