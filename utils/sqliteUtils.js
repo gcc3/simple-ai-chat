@@ -390,7 +390,8 @@ const updateUserSettings = async (username, key, value) => {
   const user = await getUser(username);
 
   if (!user) {
-    throw new Error("User not found.");
+    console.error("User not found.");
+    return;
   }
 
   let newSettings = {};
