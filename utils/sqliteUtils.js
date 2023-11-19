@@ -263,7 +263,7 @@ const insertUser = async (username, role, password, email, settings, last_login,
 
         // If the username doesn't exist, proceed with the insertion
         const stmt = db.prepare("INSERT INTO users (username, role, password, email, settings, last_login, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-        stmt.run([role, username, password, email, settings, last_login, status, created_at], function (err) {
+        stmt.run([username, role, password, email, settings, last_login, status, created_at], function (err) {
           if (err) {
             reject(err);
             return;
