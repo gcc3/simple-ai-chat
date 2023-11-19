@@ -9,9 +9,15 @@ export const authenticate = (req) => {
 
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    return { success: true, user: decoded };
+    return { 
+      success: true, 
+      user: decoded 
+    };
   } catch (error) {
-    return { success: false, error: 'Authentication decoed failed.' };
+    return { 
+      success: false, 
+      error: 'Authentication decoed failed.'
+     };
   }
 };
 
