@@ -26,7 +26,13 @@ export default async (req, res) => {
   }
 
   // Create JWT token
-  const payload = { id: user.id, username: user.username };
+  const payload = { 
+    id: user.id, 
+    username: user.username,
+    role: user.role,
+    email: user.email,
+  };
+
   const token = createToken(payload);
   if (!token) {
     return res.status(500).json({ error: 'Failed to create token.' });
@@ -46,6 +52,7 @@ export default async (req, res) => {
     success: true, 
     user: { 
       username: user.username, 
+      role: user.role,
       email: user.email, 
       settings: user.settings } 
   });
