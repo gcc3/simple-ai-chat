@@ -8,7 +8,7 @@ import { getFunctions, executeFunction } from "function.js";
 import { getTools } from "tools.js";
 import { getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
-import { countChatsForIP } from "utils/sqliteUtils";
+import { countChatsForIP, countChatsForUser } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 
 // OpenAI
@@ -52,6 +52,7 @@ export default async function (req, res) {
   const authResult = authenticate(req);
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   if (!authResult.success) {
+    // Not a user
     const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());  // daily usage
     if (chatCount > 10) {
       res.write(`data: Usage exceeded. Please log in to continue. To register a user, use the command \`:user add [username] [email?]\`, where the email is optional.\n\n`); res.flush();
@@ -60,7 +61,17 @@ export default async function (req, res) {
       return;
     }
   } else {
-    console.log("Authentication success: " + authResult.user.username);
+    // User
+    const user = authResult.user;
+    if (!user.email) {
+      const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
+      if (chatCount > 30) {
+        res.write(`data: Email verification is required, please add a email address to continue. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+    }
   }
   
   // Query ID, same as session ID
