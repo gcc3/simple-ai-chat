@@ -71,6 +71,15 @@ export default async function (req, res) {
         res.end();
         return;
       }
+    } else {
+      // Pro user
+      const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
+      if (chatCount > 60) {
+        res.write(`data: Usage exceeded. Please upgrade your account to continue. To upgrade your account, please contact support@simple-io.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
     }
   }
   
