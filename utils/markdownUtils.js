@@ -43,6 +43,11 @@ export function markdownFormatter(elOutput) {
           line = line.replace(/\*([^*]+?)\*/g, '<em>$1</em>');  // Emphasis
       }
 
+      // Remove the ### at first
+      if (line.startsWith('### ')) {
+        line = line.slice(4);
+      }
+
       // Restore text from placeholders
       placeholders.forEach(function(placeholder) {
           line = line.replace('\x00', placeholder);
