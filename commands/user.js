@@ -236,10 +236,15 @@ export default async function entry(args) {
 
       const data = await response.json();
       if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
+        console.log(data.error);
+        throw data.message || new Error(`Request failed with status ${response.status}`);
       }
 
-      return data.message;
+      if (data.success) {
+        return "Subscribed.";
+      } else {
+        return data.message;
+      }
     } catch (error) {
       console.error(error);
       return error;
@@ -261,10 +266,15 @@ export default async function entry(args) {
 
       const data = await response.json();
       if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
+        console.log(data.error);
+        throw data.message || new Error(`Request failed with status ${response.status}`);
       }
 
-      return data.message;
+      if (data.success) {
+        return "Unsubscribed.";
+      } else {
+        return data.message;
+      }
     } catch (error) {
       console.error(error);
       return error;
