@@ -271,7 +271,7 @@ export default async function entry(args) {
       }
 
       if (data.success) {
-        return "Unsubscribed.";
+        return "Unsubscribed, will be effective next month.";
       } else {
         return data.message;
       }
