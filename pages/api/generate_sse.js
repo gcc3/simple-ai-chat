@@ -54,7 +54,7 @@ export default async function (req, res) {
   if (!authResult.success) {
     // Not a user
     const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());  // daily usage
-    if (chatCount > 10) {
+    if (chatCount >= 10) {
       res.write(`data: Usage exceeded. Please log in to continue. To register a user, use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
       res.end();
@@ -65,7 +65,7 @@ export default async function (req, res) {
     const user = authResult.user;
     if (!user.email) {
       const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
-      if (chatCount > 10) {
+      if (chatCount >= 10) {
         res.write(`data: Email verification is required, please add a email address to continue. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
@@ -74,7 +74,7 @@ export default async function (req, res) {
     } else {
       // Pro user
       const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
-      if (chatCount > 30) {
+      if (chatCount >= 30) {
         res.write(`data: Usage exceeded. Please upgrade your account to continue. To upgrade your account, please contact support@simple-io.\n\n`); res.flush();
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();

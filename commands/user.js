@@ -186,7 +186,7 @@ export default async function entry(args) {
   // Reset password
   if (command === "reset" && args[1] === "pass") {
     if (args.length != 4) {
-      return "Usage: :user reset password [username] [email]";
+      return "Usage: :user reset pass [username] [email]";
     }
 
     const username = args[2];
@@ -217,7 +217,67 @@ export default async function entry(args) {
       return data.message;
     } catch (error) {
       console.error(error);
-      return data.message;
+      return error;
+    }
+  }
+
+  // Subscribe
+  if (command === "subscribe") {
+    try {
+      const response = await fetch("/api/user/update/role", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          role: "pro_user",
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        console.log(data.error);
+        throw data.message || new Error(`Request failed with status ${response.status}`);
+      }
+
+      if (data.success) {
+        return "Subscribed.";
+      } else {
+        return data.message;
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Unsubscribe
+  if (command === "unsubscribe") {
+    try {
+      const response = await fetch("/api/user/update/role", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          role: "user",
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        console.log(data.error);
+        throw data.message || new Error(`Request failed with status ${response.status}`);
+      }
+
+      if (data.success) {
+        return "Unsubscribed, will be effective next month.";
+      } else {
+        return data.message;
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
     }
   }
 

@@ -345,6 +345,28 @@ const updateUserEmail = async (username, newEmail) => {
   }
 };
 
+const updateUserRole = async (username, newRole) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET role = ? WHERE username = ?");
+      stmt.run([newRole, username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const emailExists = async (email) => {
   const db = await getDatabaseConnection();
   try {
@@ -456,6 +478,7 @@ export {
   deleteUser,
   updateUserPassword,
   updateUserEmail,
+  updateUserRole,
   updateUserLastLogin,
   updateUserSettings,
   updateUserStatus,
