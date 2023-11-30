@@ -29,6 +29,7 @@ const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
 const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
+const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
 
 export default async function (req, res) {
   const queryId = req.query.query_id || "";
@@ -47,39 +48,40 @@ export default async function (req, res) {
                                 // IMPORTANT! without this the stream not working on remote server
   });
 
-  // Verfiy user access
-  // Authentication
-  const authResult = authenticate(req);
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  if (!authResult.success) {
-    // Not a user
-    const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());  // daily usage
-    if (chatCount >= 10) {
-      res.write(`data: Usage exceeded. Please log in to continue. To register a user, use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
-      res.write(`data: [DONE]\n\n`); res.flush();
-      res.end();
-      return;
-    }
-  } else {
-    // User
-    const user = authResult.user;
-    if (user.role !== "root_user" && user.role !== "pro_user") {
-      if (!user.email) {
-        const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
-        if (chatCount >= 10) {
-          res.write(`data: Email verification is required, please add a email address to continue. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
-          res.write(`data: [DONE]\n\n`); res.flush();
-          res.end();
-          return;
-        }
-      } else {
-        // Pro user
-        const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
-        if (chatCount >= 30) {
-          res.write(`data: Usage exceeded. Please upgrade your account to continue. To upgrade your account, please contact support@simple-io.\n\n`); res.flush();
-          res.write(`data: [DONE]\n\n`); res.flush();
-          res.end();
-          return;
+  // Verfiy user access control
+  if (use_access_control) {
+    const authResult = authenticate(req);
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (!authResult.success) {
+      // Not a user
+      const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());  // daily usage
+      if (chatCount >= 10) {
+        res.write(`data: Usage exceeded. Please log in to continue. To register a user, use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+    } else {
+      // User
+      const user = authResult.user;
+      if (user.role !== "root_user" && user.role !== "pro_user") {
+        if (!user.email) {
+          const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
+          if (chatCount >= 10) {
+            res.write(`data: Email verification is required, please add a email address to continue. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
+            res.write(`data: [DONE]\n\n`); res.flush();
+            res.end();
+            return;
+          }
+        } else {
+          // Pro user
+          const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
+          if (chatCount >= 30) {
+            res.write(`data: Usage exceeded. Please upgrade your account to continue. To upgrade your account, please contact support@simple-io.\n\n`); res.flush();
+            res.write(`data: [DONE]\n\n`); res.flush();
+            res.end();
+            return;
+          }
         }
       }
     }
