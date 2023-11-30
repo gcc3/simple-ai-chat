@@ -433,7 +433,7 @@ export default function Home() {
         // Handle event
         if (functionResult.event) {
           const _event = functionResult.event;
-          console.log("Event: " + JSON.stringify(_event));
+          console.log("Event(Function CLI): " + JSON.stringify(_event));
 
           // Handle redirect event
           if (_event.name === "redirect") {
@@ -672,10 +672,10 @@ export default function Home() {
       // VII. Handle event
       if (event.data.startsWith("###EVENT###")) {
         const _event = JSON.parse(event.data.replace("###EVENT###", ""));
-        console.log("Event: " + JSON.stringify(_event));
+        console.log("Event(SSE): " + JSON.stringify(_event));
 
         if (_event.name === "redirect") {
-          console.log("Redirecting to \"" + _event.parameters.url + "\"...");
+          console.log("Redirecting to " + _event.parameters.url + "...");
 
           // Redirect to URL
           if (!_event.parameters.url.startsWith("http")) {
@@ -689,6 +689,7 @@ export default function Home() {
             }
           }
         }
+        return;
       }
 
       // Clear the waiting or querying text
