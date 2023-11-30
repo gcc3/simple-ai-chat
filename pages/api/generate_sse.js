@@ -162,7 +162,7 @@ export default async function (req, res) {
   let do_function_tool_calls = false;
   let functionName = "";
   let functionArgsString = "";
-  let functionResult = "";
+  let functionMessage = "";
   let original_input = "";
   if (input.startsWith("!")) {
     do_function_tool_calls = true;
@@ -184,12 +184,13 @@ export default async function (req, res) {
       }
     } else {
       // Execute function
-      functionResult = await executeFunction(functionName, functionArgsString);
-      if (!functionResult.endsWith("\n")) {
-        functionResult += "\n";
+      const functionResult = await executeFunction(functionName, functionArgsString);
+      functionMessage = functionResult.message;
+      if (!functionMessage.endsWith("\n")) {
+        functionMessage += "\n";
       }
-      console.log("Result: " + functionResult.replace(/\n/g, "\\n") + "\n");
-      logadd(queryId, "F=" + function_input + " A=" + functionResult, req);
+      console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
+      logadd(queryId, "F=" + function_input + " A=" + functionMessage, req);
     }
 
     // Replace input with original
@@ -239,9 +240,9 @@ export default async function (req, res) {
       messages.push({
         "role": "function",
         "name": functionName,
-        "content": functionResult,
+        "content": functionMessage,
       });
-      additionalInfo += functionResult;
+      additionalInfo += functionMessage;
     }
 
     // 3. Node AI response
