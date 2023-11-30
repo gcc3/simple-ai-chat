@@ -63,22 +63,24 @@ export default async function (req, res) {
   } else {
     // User
     const user = authResult.user;
-    if (!user.email) {
-      const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
-      if (chatCount >= 10) {
-        res.write(`data: Email verification is required, please add a email address to continue. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-    } else {
-      // Pro user
-      const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
-      if (chatCount >= 30) {
-        res.write(`data: Usage exceeded. Please upgrade your account to continue. To upgrade your account, please contact support@simple-io.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
+    if (user.role !== "root_user" && user.role !== "pro_user") {
+      if (!user.email) {
+        const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
+        if (chatCount >= 10) {
+          res.write(`data: Email verification is required, please add a email address to continue. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
+          res.write(`data: [DONE]\n\n`); res.flush();
+          res.end();
+          return;
+        }
+      } else {
+        // Pro user
+        const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
+        if (chatCount >= 30) {
+          res.write(`data: Usage exceeded. Please upgrade your account to continue. To upgrade your account, please contact support@simple-io.\n\n`); res.flush();
+          res.write(`data: [DONE]\n\n`); res.flush();
+          res.end();
+          return;
+        }
       }
     }
   }
@@ -185,6 +187,10 @@ export default async function (req, res) {
     } else {
       // Execute function
       const functionResult = await executeFunction(functionName, functionArgsString);
+      if (functionResult.event) {
+        const event = JSON.stringify(functionResult.event);
+        res.write(`data: ###EVENT###${event}\n\n`);
+      }
       functionMessage = functionResult.message;
       if (!functionMessage.endsWith("\n")) {
         functionMessage += "\n";

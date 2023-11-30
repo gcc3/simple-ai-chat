@@ -85,6 +85,10 @@ export function getFunctions() {
         url: {
           type: "string",
           description: "The URL to redirect to.",
+        },
+        blank: {
+          type: "boolean",
+          description: "Whether to open the URL in a new tab.",
         }
       },
       required: ["url"],

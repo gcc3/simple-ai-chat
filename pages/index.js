@@ -423,34 +423,37 @@ export default function Home() {
             "Content-Type": "application/json",
           },
         });
-    
-        const functionResult = await response.text();
+        const functionResult = JSON.parse(await response.text()).result;
+
         console.log("Function Output: " + functionResult);
         if (response.status !== 200) {
-          throw data.error || new Error(`Request failed with status ${response.status}`);
+          throw response.error || new Error(`Request failed with status ${response.status}`);
         }
 
         // Handle event
-        const data = JSON.parse(functionResult);
-        if (data.result.event) {
-          const event = data.result.event;
+        if (functionResult.event) {
+          const _event = functionResult.event;
+          console.log("Event: " + JSON.stringify(_event));
 
           // Handle redirect event
-          if (event.name === "redirect") {
-            console.log("Redirecting to \"" + event.parameters.url + "\"...");
+          if (_event.name === "redirect") {
+            console.log("Redirecting to \"" + _event.parameters.url + "\"...");
 
             // Redirect to URL
-            if (!event.parameters.url.startsWith("http")) {
-              console.error("Invalid URL: " + event.parameters.url);
-              printOutput("URL must start with http or https.");
-              return;
+            if (!_event.parameters.url.startsWith("http")) {
+              console.error("URL must start with http or https.");
+            } else {
+              // Redirect to URL
+              if (_event.parameters.blank == true) {
+                window.open(_event.parameters.url, '_blank');  // open with new tab
+              } else {
+                window.location = _event.parameters.url;
+              }
             }
-            window.location = event.parameters.url;
-            return;
           }
         }
 
-        printOutput(functionResult);
+        printOutput(functionResult.message);
       } catch (error) {
         console.error(error);
       }
@@ -469,7 +472,7 @@ export default function Home() {
     }
   }
 
-  // I. SSE generate
+  // SSE
   function generate_sse(input, images, files) {
     // If already doing, return
     if (global.STATE === STATES.DOING) return;
@@ -527,7 +530,7 @@ export default function Home() {
         return;
       }
 
-      // II. Handle the callings
+      // II. Handle the callings (function or tool)
       // 1. Function call
       if (event.data.startsWith("###FUNC###")) {
         do_function_calling = true;
@@ -666,6 +669,28 @@ export default function Home() {
         return;
       }
 
+      // VII. Handle event
+      if (event.data.startsWith("###EVENT###")) {
+        const _event = JSON.parse(event.data.replace("###EVENT###", ""));
+        console.log("Event: " + JSON.stringify(_event));
+
+        if (_event.name === "redirect") {
+          console.log("Redirecting to \"" + _event.parameters.url + "\"...");
+
+          // Redirect to URL
+          if (!_event.parameters.url.startsWith("http")) {
+            console.error("URL must start with http or https.");
+          } else {
+            // Redirect to URL
+            if (_event.parameters.blank == true) {
+              window.open(_event.parameters.url, '_blank');  // open with new tab
+            } else {
+              window.location = _event.parameters.url;
+            }
+          }
+        }
+      }
+
       // Clear the waiting or querying text
       if (getOutput() === waiting || getOutput() === querying) {
         clearOutput();
@@ -697,7 +722,7 @@ export default function Home() {
     };
   }
 
-  // II. Normal generate
+  // Normal generate
   async function generate(input) {    
     try {
       const response = await fetch("/api/generate", {
