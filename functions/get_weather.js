@@ -35,6 +35,6 @@ export default async function getWeather(paramObject) {
         });
       }
     });
-    return  weathers;
+    return weathers;
   }
 }

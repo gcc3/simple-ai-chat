@@ -2,6 +2,7 @@ import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import queryNodeAi from "./functions/query_node_ai.js";
 import queryVector from "./functions/query_vector.js";
+import redirectToUrl from "./functions/redirect_to_url.js";
 
 export function executeFunction(functionName, argsString) {
   if (process.env.USE_FUNCTION_CALLING !== "true") {
@@ -18,6 +19,10 @@ export function executeFunction(functionName, argsString) {
   
   if (functionName === "get_weather") {
     return getWeather(paramObject);
+  }
+
+  if (functionName === "redirect_to_url") {
+    return redirectToUrl(paramObject);
   }
   
   // call other AI node to get help
@@ -67,6 +72,22 @@ export function getFunctions() {
         }
       },
       required: ["location"],
+    }
+  });
+
+  // redirect to url
+  functions.push({
+    name: 'redirect_to_url',
+    description: 'Redirect to a URL.',
+    parameters: {
+      type: "object",
+      properties: {
+        url: {
+          type: "string",
+          description: "The URL to redirect to.",
+        }
+      },
+      required: ["url"],
     }
   });
 

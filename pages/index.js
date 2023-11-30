@@ -430,6 +430,26 @@ export default function Home() {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
 
+        // Handle event
+        const data = JSON.parse(functionResult);
+        if (data.result.event) {
+          const event = data.result.event;
+
+          // Handle redirect event
+          if (event.name === "redirect") {
+            console.log("Redirecting to \"" + event.parameters.url + "\"...");
+
+            // Redirect to URL
+            if (!event.parameters.url.startsWith("http")) {
+              console.error("Invalid URL: " + event.parameters.url);
+              printOutput("URL must start with http or https.");
+              return;
+            }
+            window.location = event.parameters.url;
+            return;
+          }
+        }
+
         printOutput(functionResult);
       } catch (error) {
         console.error(error);
