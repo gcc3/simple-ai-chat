@@ -14,5 +14,7 @@ export default async function queryNodeAi(paramObject) {
   });
 
   const data = await response.json();
-  return data.result;
+  return {
+    message: data.result
+  };
 }

@@ -29,6 +29,7 @@ const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
 const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
+const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
 
 export default async function (req, res) {
   const queryId = req.query.query_id || "";
@@ -47,38 +48,41 @@ export default async function (req, res) {
                                 // IMPORTANT! without this the stream not working on remote server
   });
 
-  // Verfiy user access
-  // Authentication
-  const authResult = authenticate(req);
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  if (!authResult.success) {
-    // Not a user
-    const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());  // daily usage
-    if (chatCount >= 10) {
-      res.write(`data: Usage exceeded. Please log in to continue. To register a user, use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
-      res.write(`data: [DONE]\n\n`); res.flush();
-      res.end();
-      return;
-    }
-  } else {
-    // User
-    const user = authResult.user;
-    if (!user.email) {
-      const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
+  // Verfiy user access control
+  if (use_access_control) {
+    const authResult = authenticate(req);
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (!authResult.success) {
+      // Not a user
+      const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());  // daily usage
       if (chatCount >= 10) {
-        res.write(`data: Email verification is required, please add a email address to continue. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
+        res.write(`data: Usage exceeded. Please log in to continue. To register a user, use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
         return;
       }
     } else {
-      // Pro user
-      const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
-      if (chatCount >= 30) {
-        res.write(`data: Usage exceeded. Please upgrade your account to continue. To upgrade your account, please contact support@simple-io.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
+      // User
+      const user = authResult.user;
+      if (user.role !== "root_user" && user.role !== "pro_user") {
+        if (!user.email) {
+          const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
+          if (chatCount >= 10) {
+            res.write(`data: Email verification is required, please add a email address to continue. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
+            res.write(`data: [DONE]\n\n`); res.flush();
+            res.end();
+            return;
+          }
+        } else {
+          // Pro user
+          const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
+          if (chatCount >= 30) {
+            res.write(`data: Usage exceeded. Please upgrade your account to continue. To upgrade your account, please contact support@simple-io.\n\n`); res.flush();
+            res.write(`data: [DONE]\n\n`); res.flush();
+            res.end();
+            return;
+          }
+        }
       }
     }
   }
@@ -162,7 +166,7 @@ export default async function (req, res) {
   let do_function_tool_calls = false;
   let functionName = "";
   let functionArgsString = "";
-  let functionResult = "";
+  let functionMessage = "";
   let original_input = "";
   if (input.startsWith("!")) {
     do_function_tool_calls = true;
@@ -184,12 +188,17 @@ export default async function (req, res) {
       }
     } else {
       // Execute function
-      functionResult = await executeFunction(functionName, functionArgsString);
-      if (!functionResult.endsWith("\n")) {
-        functionResult += "\n";
+      const functionResult = await executeFunction(functionName, functionArgsString);
+      if (functionResult.event) {
+        const event = JSON.stringify(functionResult.event);
+        res.write(`data: ###EVENT###${event}\n\n`);
       }
-      console.log("Result: " + functionResult.replace(/\n/g, "\\n") + "\n");
-      logadd(queryId, "F=" + function_input + " A=" + functionResult, req);
+      functionMessage = functionResult.message;
+      if (!functionMessage.endsWith("\n")) {
+        functionMessage += "\n";
+      }
+      console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
+      logadd(queryId, "F=" + function_input + " A=" + functionMessage, req);
     }
 
     // Replace input with original
@@ -239,9 +248,9 @@ export default async function (req, res) {
       messages.push({
         "role": "function",
         "name": functionName,
-        "content": functionResult,
+        "content": functionMessage,
       });
-      additionalInfo += functionResult;
+      additionalInfo += functionMessage;
     }
 
     // 3. Node AI response

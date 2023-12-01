@@ -67,5 +67,7 @@ export default async function queryVector(paramObject) {
     result += " ###VECTOR###" + documents.join(" ");
   }
 
-  return result;
+  return {
+    message: result
+  };
 }
