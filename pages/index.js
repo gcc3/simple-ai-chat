@@ -447,7 +447,7 @@ export default function Home() {
               if (_event.parameters.blank == true) {
                 window.open(_event.parameters.url, '_blank');  // open with new tab
               } else {
-                window.location = _event.parameters.url;
+                window.top.location.href = _event.parameters.url;
               }
             }
           }
@@ -685,7 +685,7 @@ export default function Home() {
             if (_event.parameters.blank == true) {
               window.open(_event.parameters.url, '_blank');  // open with new tab
             } else {
-              window.location = _event.parameters.url;
+              window.top.location.href = _event.parameters.url;
             }
           }
         }
