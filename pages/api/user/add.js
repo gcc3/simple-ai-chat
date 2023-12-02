@@ -50,7 +50,7 @@ export default async function (req, res) {
     const from = 'support@simple-ai.io';
     const to = email;
     const subject = 'Password reset';
-    const body = "Your initial password is \"" + password + "\", you can change it after login.";
+    const body = "Your password is reset to \"" + password + "\"";
     const emailParams = {
       Source: from,
       Destination: {
@@ -77,7 +77,7 @@ export default async function (req, res) {
         success: true,
         username,
         password,
-        message: "User \"" + username + "\"" + " is created, initial password is sent to your email. You can change if after login with command \`:user set pass [password]\`.",
+        message: "User \"" + username + "\"" + " is created, initial password is sent to your email.",
         data
       });
     }).catch((err) => {
@@ -98,7 +98,7 @@ export default async function (req, res) {
       success: true,
       username,
       password,
-      message: "User \"" + username + "\" is created with initial password \"" + password + "\". You can change it after login with command \`:user set pass [password]\`.",
+      message: "User \"" + username + "\" is created with initial password \"" + password + "\"",
     });
   }
 }
