@@ -64,7 +64,7 @@ export default async function (req, res) {
     } else {
       // User
       const user = authResult.user;
-      if (user.role !== "root_user" && user.role !== "pro_user") {
+      if (user.role !== "root_user" && user.role !== "super_user") {
         if (!user.email) {
           const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage
           if (chatCount >= 10) {
