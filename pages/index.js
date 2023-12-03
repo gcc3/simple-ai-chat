@@ -1034,11 +1034,16 @@ export default function Home() {
       
         <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
           <div className={styles.container}>
-            <div className={styles.privacy}>
-              <UserDataPrivacy />
+            <div className={styles.nav}>
+              <div>Privacy Policy</div>
             </div>
-            <div className={styles.copyrights}>
-              <Copyrights />
+            <div className={styles.content}>
+              <div className={styles.privacy}>
+                <UserDataPrivacy />
+              </div>
+              <div className={styles.copyrights}>
+                <Copyrights />
+              </div>
             </div>
           </div>
         </div>

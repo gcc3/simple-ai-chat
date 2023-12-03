@@ -125,14 +125,29 @@
   color: var(--dot-hover-color);
 }
 .main .container {
-  background-color: var(--container-background-color);
   width: 100%;
   height: 100vh;
-  padding: 10px;
+  padding: 15px;
   overflow-y: auto;
+  display: flex;
+  align-items: flex-start;
+}
+.main .nav {
+  padding-top: 10px;
+  padding-bottom: 10px;
+  width: 220px;
+}
+.main .content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
 }
 .main .privacy {
+  padding: 10px;
+  padding-bottom: 18px;
   color: var(--text-color);
+  background: var(--dot-content-background-color);
+  border-radius: 6px;
 }
 .main .copyrights {
   color: var(--sub-text-color);
