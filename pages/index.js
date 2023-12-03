@@ -796,6 +796,12 @@ export default function Home() {
     if (event.keyCode === 13 || event.which === 13) {
       event.preventDefault();
 
+      // For command always submit with enter
+      if (elInput.value.startsWith(":")) {
+        onSubmit(event);
+        return;
+      }
+
       if (fullscreen === "default" || fullscreen === "off") {
         if (event.ctrlKey || event.shiftKey) {
           // Insert a line break
