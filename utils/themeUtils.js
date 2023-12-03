@@ -19,7 +19,9 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--dot-color", "#8e8ea0");
     document.documentElement.style.setProperty("--dot-hover-color", "#000000");
     document.documentElement.style.setProperty("--sub-text-color", "#767676");
-    document.documentElement.style.setProperty("--container-background-color", "rgba(235, 235, 235, 0.4)");
+    document.documentElement.style.setProperty("--dot-content-background-color", "rgba(235, 235, 235, 0.4)");
+    document.documentElement.style.setProperty("--dot-nav-background-color", "rgba(235, 235, 235, 0.4)");
+    document.documentElement.style.setProperty("--dot-nav-hover-background-color", "rgba(215, 215, 215, 0.4)");
     document.documentElement.style.setProperty("--strong-text-background-color", "rgba(255, 255, 51, 0.4)");
     document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
     document.documentElement.style.setProperty("--underline-text-color", "#0645AD");
@@ -43,7 +45,9 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--dot-color", "#5c5c5c");
     document.documentElement.style.setProperty("--dot-hover-color", "#c7c7c7");
     document.documentElement.style.setProperty("--sub-text-color", "#9a9a9a");
-    document.documentElement.style.setProperty("--container-background-color", "rgba(45, 45, 45, 0.4)");
+    document.documentElement.style.setProperty("--dot-content-background-color", "rgba(45, 45, 45, 0.4)");
+    document.documentElement.style.setProperty("--dot-nav-background-color", "rgba(45, 45, 45, 0.4)");
+    document.documentElement.style.setProperty("--dot-nav-hover-background-color", "rgba(65, 65, 65, 0.4)");
     document.documentElement.style.setProperty("--strong-text-background-color", "rgba(99, 99, 99, 0.4)");
     document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
     document.documentElement.style.setProperty("--underline-text-color", "#9a9a9a");
@@ -67,7 +71,9 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--dot-color", "#007000");
     document.documentElement.style.setProperty("--dot-hover-color", "#00f700");
     document.documentElement.style.setProperty("--sub-text-color", "#007000");
-    document.documentElement.style.setProperty("--container-background-color", "rgba(0, 70, 0, 0.3)");
+    document.documentElement.style.setProperty("--dot-content-background-color", "rgba(0, 70, 0, 0.3)");
+    document.documentElement.style.setProperty("--dot-nav-background-color", "rgba(0, 70, 0, 0.3)");
+    document.documentElement.style.setProperty("--dot-nav-hover-background-color", "rgba(0, 100, 0, 0.3)");
     document.documentElement.style.setProperty("--strong-text-background-color", "rgba(0, 112, 0, 0.5)");
     document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
     document.documentElement.style.setProperty("--underline-text-color", "#00f700");

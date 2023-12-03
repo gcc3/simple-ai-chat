@@ -796,6 +796,12 @@ export default function Home() {
     if (event.keyCode === 13 || event.which === 13) {
       event.preventDefault();
 
+      // For command always submit with enter
+      if (elInput.value.startsWith(":")) {
+        onSubmit(event);
+        return;
+      }
+
       if (fullscreen === "default" || fullscreen === "off") {
         if (event.ctrlKey || event.shiftKey) {
           // Insert a line break
@@ -995,7 +1001,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>•</div>
+        <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "x"}</div>
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>
@@ -1034,11 +1040,17 @@ export default function Home() {
       
         <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
           <div className={styles.container}>
-            <div className={styles.privacy}>
-              <UserDataPrivacy />
+            <div className={styles.nav}>
+              <div className={styles.navitem}>Subscription</div>
+              <div className={styles.navitem}>Privacy Policy</div>
             </div>
-            <div className={styles.copyrights}>
-              <Copyrights />
+            <div className={styles.content}>
+              <div className={styles.privacy}>
+                <UserDataPrivacy />
+              </div>
+              <div className={styles.copyrights}>
+                <Copyrights />
+              </div>
             </div>
           </div>
         </div>
