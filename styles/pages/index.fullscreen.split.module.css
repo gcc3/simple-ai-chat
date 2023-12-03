@@ -116,7 +116,7 @@
   text-align: center;
   position: fixed;
   top: 6px;
-  right: 6px;
+  right: 10px;
   width: 15px;
   color: var(--dot-color);
 }
