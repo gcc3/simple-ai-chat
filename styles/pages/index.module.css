@@ -93,10 +93,10 @@
 /* back */
 .main .dot {
   display: block;
-  font-size: 20px;
+  font-size: 22px;
   text-align: center;
   position: fixed;
-  bottom: 5px;
+  bottom: 6px;
   right: 10px;
   width: 15px;
   color: var(--dot-color);

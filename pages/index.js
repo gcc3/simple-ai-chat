@@ -995,7 +995,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>•</div>
+        <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "x"}</div>
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>

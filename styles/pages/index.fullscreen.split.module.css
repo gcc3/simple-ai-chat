@@ -112,11 +112,11 @@
 /* back */
 .main .dot {
   display: block;
-  font-size: 22px;
+  font-size: 20px;
   text-align: center;
   position: fixed;
-  top: 5px;
-  right: 5px;
+  top: 6px;
+  right: 6px;
   width: 15px;
   color: var(--dot-color);
 }
