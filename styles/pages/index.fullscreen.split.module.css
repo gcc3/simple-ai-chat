@@ -144,7 +144,7 @@
 }
 .main .privacy {
   padding: 10px;
-  padding-bottom: 18px;
+  padding-bottom: 16px;
   color: var(--text-color);
   background: var(--dot-content-background-color);
   border-radius: 6px;
