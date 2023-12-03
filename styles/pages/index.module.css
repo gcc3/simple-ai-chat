@@ -107,12 +107,22 @@
 }
 .main .container {
   border-radius: 10px;
-  padding: 10px;
   width: 100%;
   height: 100%;
 }
 .main .nav {
-  display: none;
+  
+}
+.main .navitem {
+  margin-bottom: 10px;
+  padding: 10px;
+  border-radius: 6px;
+  color: var(--text-color);
+  background: var(--dot-nav-background-color);
+}
+.main .navitem:hover {
+  cursor: pointer;
+  background: var(--dot-nav-hover-background-color);
 }
 .main .content {
   /* no change */
