@@ -1,15 +1,18 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
-const PayPalButton = ({ amount, onSuccess, currency = 'USD' }) => {
+const PayPalButton = ({ onSuccess }) => {
+  const [amount, setAmount] = useState(0);
+
   useEffect(() => {
     let scriptAdded = false;
     const loadPayPalScript = async () => {
       try {
-        const response = await fetch('/api/payment/client-id');
-        const { client_id: paypalClientId } = await response.json();
+        const response = await fetch('/api/payment/info');
+        const { client_id, amount, currency } = await response.json();
+        setAmount(amount);
 
         const script = document.createElement('script');
-        script.src = `https://www.paypal.com/sdk/js?client-id=${paypalClientId}&currency=${currency}`;
+        script.src = `https://www.paypal.com/sdk/js?client-id=${client_id}&currency=${currency}`;
         script.addEventListener('load', setupPayPalButton);
         document.body.appendChild(script);
         scriptAdded = true;
@@ -34,7 +37,7 @@ const PayPalButton = ({ amount, onSuccess, currency = 'USD' }) => {
                 {
                   amount: {
                     currency_code: currency,
-                    value: amount, // Can reference variables or use hard-coded values
+                    value: amount,
                   },
                 },
               ],
@@ -42,7 +45,7 @@ const PayPalButton = ({ amount, onSuccess, currency = 'USD' }) => {
           },
           onApprove: async (data, actions) => {
             const order = await actions.order.capture();
-            onSuccess(order); // This function should be passed as a prop
+            onSuccess(order); // passed as a prop
           },
           onError: (err) => {
             console.error('PayPal Checkout onError', err);

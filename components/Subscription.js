@@ -5,9 +5,9 @@ function Subscription() {
     <div>
       <div>Subscribe to become a pro/super user, $5/momth.</div>
       <div className="mt-3 max-w-md">
-        <PayPalButton amount={5} onSuccess={(details) => {
+        <PayPalButton onSuccess={(details) => {
           console.log("Transaction completed by " + details.payer.name);
-          console.log(details);
+          console.log("Detail: ", details);
         }} />
       </div>
     </div>
