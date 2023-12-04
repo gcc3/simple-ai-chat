@@ -1,7 +1,15 @@
+import PayPalButton from "./PayPalButton";
+
 function Subscription() {
   const content = (
     <div>
-      <div>Subscribe to a pro user.</div>
+      <div>Subscribe to become a pro/super user, $5/momth.</div>
+      <div className="mt-3 max-w-md">
+        <PayPalButton amount={10} onSuccess={(details) => {
+          console.log("Transaction completed by " + details.payer.name);
+          console.log(details);
+        }} />
+      </div>
     </div>
   )
 
