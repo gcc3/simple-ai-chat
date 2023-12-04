@@ -1053,8 +1053,12 @@ export default function Home() {
               <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>Privacy Policy</div>
             </div>
             <div className={styles.content}>
-              {content === CONTENT.SUBSCRIPTION && <Subscription />}
-              {content === CONTENT.PRIVACY && <UserDataPrivacy />}
+              {content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}>
+                <Subscription />
+              </div>}
+              {content === CONTENT.PRIVACY && <div className={styles.contentitem}>
+                <UserDataPrivacy />
+              </div>}
               <div className={styles.copyrights}>
                 <Copyrights />
               </div>

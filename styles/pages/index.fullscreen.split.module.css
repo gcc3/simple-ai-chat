@@ -151,9 +151,14 @@
   width: 100%;
   display: flex;
   flex-direction: column;
+}
+.main .contentitem {
   padding: 10px;
   border-radius: 6px;
   background: var(--content-background-color);
+}
+.main .copyrights {
+  color: var(--sub-text-color);
 }
 
 /* Styles for differnt window sizes */

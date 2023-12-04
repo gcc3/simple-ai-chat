@@ -111,7 +111,7 @@
   height: 100%;
 }
 .main .nav {
-  
+  /* nothing */
 }
 .main .navitem {
   margin-bottom: 10px;
@@ -125,9 +125,15 @@
   background: var(--nav-hover-background-color);
 }
 .main .content {
+  /* nothing */
+}
+.main .contentitem {
   padding: 10px;
   background: var(--content-background-color);
   border-radius: 6px;
+}
+.main .copyrights {
+  color: var(--sub-text-color);
 }
 
 /* Styles for differnt window sizes */

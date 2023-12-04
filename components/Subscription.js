@@ -7,7 +7,7 @@ function Subscription() {
 
   return (
     <div className="Subcription">
-      <div className="text-center mt-2 mb-4">
+      <div className="text-center mb-4">
          <div>Subscription</div>
       </div>
       <div>{content}</div>

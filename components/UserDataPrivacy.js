@@ -30,7 +30,7 @@ function UserDataPrivacy() {
 
   return (
     <div className="UserDataPrivacy">
-      <div className="text-center mt-2 mb-4">
+      <div className="text-center mb-4">
          <div>Privacy Policy</div>
       </div>
       <div>{content}</div>
