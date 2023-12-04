@@ -13,6 +13,7 @@ import { urlFormatter } from "utils/textUtils";
 import { passwordFormatter, maskPassword } from "utils/passwordUtils";
 import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
+import Subscription from "components/Subscription";
 import Copyrights from "components/Copyrights";
 import { refreshUserInfo } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
@@ -25,6 +26,12 @@ global.STATE = STATES.IDLE;  // a global state
 
 // Front or back display
 const DISPLAY = { FRONT: 0, BACK: 1 };
+
+// Back display content
+const CONTENT = {
+  SUBSCRIPTION: 0,
+  PRIVACY: 1,
+};
 
 // Mutation observer
 // will setup in useEffect
@@ -45,6 +52,7 @@ export default function Home() {
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
+  const [content, setContent] = useState(CONTENT.SUBSCRIPTION);
 
   // Refs
   const elInputRef = useRef(null);
@@ -1041,13 +1049,12 @@ export default function Home() {
         <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
           <div className={styles.container}>
             <div className={styles.nav}>
-              <div className={styles.navitem}>Subscription</div>
-              <div className={styles.navitem}>Privacy Policy</div>
+              <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>Subscription</div>
+              <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>Privacy Policy</div>
             </div>
             <div className={styles.content}>
-              <div className={styles.privacy}>
-                <UserDataPrivacy />
-              </div>
+              {content === CONTENT.SUBSCRIPTION && <Subscription />}
+              {content === CONTENT.PRIVACY && <UserDataPrivacy />}
               <div className={styles.copyrights}>
                 <Copyrights />
               </div>

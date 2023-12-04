@@ -141,26 +141,19 @@
   padding: 10px;
   border-radius: 6px;
   color: var(--text-color);
-  background: var(--dot-nav-background-color);
+  background: var(--nav-background-color);
 }
 .main .navitem:hover {
   cursor: pointer;
-  background: var(--dot-nav-hover-background-color);
+  background: var(--nav-hover-background-color);
 }
 .main .content {
   width: 100%;
   display: flex;
   flex-direction: column;
-}
-.main .privacy {
   padding: 10px;
-  padding-bottom: 16px;
-  background: var(--dot-content-background-color);
   border-radius: 6px;
-  color: var(--text-color);
-}
-.main .copyrights {
-  color: var(--sub-text-color);
+  background: var(--content-background-color);
 }
 
 /* Styles for differnt window sizes */
