@@ -111,27 +111,25 @@
   height: 100%;
 }
 .main .nav {
-  
+  /* nothing */
 }
 .main .navitem {
   margin-bottom: 10px;
   padding: 10px;
   border-radius: 6px;
   color: var(--text-color);
-  background: var(--dot-nav-background-color);
+  background: var(--nav-background-color);
 }
 .main .navitem:hover {
   cursor: pointer;
-  background: var(--dot-nav-hover-background-color);
+  background: var(--nav-hover-background-color);
 }
 .main .content {
-  /* no change */
+  /* nothing */
 }
-.main .privacy {
+.main .contentitem {
   padding: 10px;
-  padding-bottom: 18px;
-  color: var(--text-color);
-  background: var(--dot-content-background-color);
+  background: var(--content-background-color);
   border-radius: 6px;
 }
 .main .copyrights {
