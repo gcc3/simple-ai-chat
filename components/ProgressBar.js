@@ -1,21 +1,19 @@
 import React from 'react';
 
 const ProgressBar = ({ label, progress }) => {
-  const newProgress = progress.split('/')[0];
+  const nowProgress = progress.split('/')[0];
   const maxProgress = progress.split('/')[1];
-  const width = newProgress / maxProgress * 100 + '%';
+  const width = nowProgress / maxProgress * 100 + '%';
 
   return (<>
-    <div className="mt-3">{label} ({progress}):</div>
-    <div style={{ width: '100%', backgroundColor: '#e0e0e0', borderRadius: '0px' }}>
+    <div className="mt-3">{label}({progress}):</div>
+    <div className="progressbar mt-1">
       <div
+        className="progressbar-fill"
         style={{
           width: width,
-          backgroundColor: 'gray',
-          height: '20px',
-          borderRadius: '0px',
         }}
-        aria-valuenow={newProgress}
+        aria-valuenow={nowProgress}
         aria-valuemin={0}
         aria-valuemax={maxProgress}
       />
