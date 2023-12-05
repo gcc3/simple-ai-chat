@@ -76,12 +76,6 @@ export default async function entry(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (data.success) {
-        localStorage.setItem("user", username);
-        localStorage.setItem("userEmail", email);
-        localStorage.setItem("userRole", "user");
-        localStorage.setItem("userSettings", "");
-      }
       return data.message;
     } catch (error) {
       console.error(error);

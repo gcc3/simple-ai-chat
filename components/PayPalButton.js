@@ -78,7 +78,7 @@ const PayPalButton = ({ onSuccess }) => {
     <table>
       <thead>
         <tr>
-          <th>Paypal</th>
+          <th>Payment Method</th>
         </tr>
       </thead>
       <tbody>
