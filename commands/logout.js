@@ -1,3 +1,5 @@
+import { clearUserLocalStorage } from "utils/userUtils";
+
 export default async function logout(args) {
   const username = localStorage.getItem("user");
   if (!username) {
@@ -22,9 +24,7 @@ export default async function logout(args) {
     }
 
     // Clear user info
-    localStorage.removeItem("user");
-    localStorage.removeItem("userEmail");
-    localStorage.removeItem("userSettings");
+    clearUserLocalStorage();
 
     // Reset query id to forget previous memory
     localStorage.setItem("queryId", Date.now());

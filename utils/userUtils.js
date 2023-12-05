@@ -1,3 +1,44 @@
+import { setTheme } from "./themeUtils";
+
+export function setUserLocalStorage(user) {
+  localStorage.setItem("user", user.username);
+  localStorage.setItem("userEmail", user.email);
+  localStorage.setItem("userRole", user.role);
+  localStorage.setItem("userSettings", user.settings);
+
+  if (user.settings) {
+    const settings = JSON.parse(user.settings);
+
+    if (settings.theme) {
+      localStorage.setItem("theme", settings.theme);
+      setTheme(localStorage.getItem("theme"));
+    }
+
+    if (settings.role) {
+      localStorage.setItem("role", settings.role);
+    }
+
+    if (settings.speak) {
+      localStorage.setItem("useSpeak", settings.speak == "on" ? "true" : "false");
+    }
+
+    if (settings.stats) {
+      localStorage.setItem("useStats", settings.stats == "on" ? "true" : "false");
+    }
+
+    if (settings.fullscreen) {
+      localStorage.setItem("fullscreen", settings.fullscreen);
+    }
+  }
+}
+
+export function clearUserLocalStorage() {
+  localStorage.removeItem("user");
+  localStorage.removeItem("userEmail");
+  localStorage.removeItem("userRole");
+  localStorage.removeItem("userSettings");
+}
+
 export function generatePassword(length=8) {
   var result = "";
   var characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -20,14 +61,10 @@ export async function refreshUserInfo() {
 
   if (user) {
     // Refresh local user data
-    localStorage.setItem("user", user.username);
-    localStorage.setItem("userEmail", user.email);
-    localStorage.setItem("userSettings", user.settings);
+    setUserLocalStorage(user);
   } else {
     if (localStorage.getItem("user")) {
-      localStorage.removeItem("user");
-      localStorage.removeItem("userEmail");
-      localStorage.removeItem("userSettings");
+      clearUserLocalStorage();
 
       // Clear auth cookie
       document.cookie = "auth=; Path=/;";
