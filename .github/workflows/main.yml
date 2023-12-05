@@ -14,7 +14,7 @@ jobs:
       with:
         host: simple-ai.io
         username: ${{ secrets.USERNAME }}
-        password: ${{ secrets.KEY }}
+        key: ${{ secrets.KEY }}
         script: |
           cd /var/www/simple-ai.io
           git checkout master
