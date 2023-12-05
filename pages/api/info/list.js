@@ -20,6 +20,7 @@ export default async function (req, res) {
     const use_vector = process.env.USE_VECTOR == "true" ? true : false;
     const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
     const use_payment = process.env.USE_PAYMENT == "true" ? true : false;
+    const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
     // Output the result
     res.status(200).json({
@@ -42,6 +43,7 @@ export default async function (req, res) {
         use_vector: use_vector,
         force_vector_query: force_vector_query,
         use_payment: use_payment,
+        use_email: use_email,
       },
     });
   } catch (error) {

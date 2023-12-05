@@ -27,7 +27,7 @@ function Subscription() {
             console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
             console.log("Detail: ", details);
 
-            // Update user role and send email
+            // Update user role
             const response = await fetch("/api/user/update/role", {
               method: "POST",
               headers: {

@@ -4,7 +4,6 @@ import { refreshUserInfo } from "utils/userUtils";
 function Usage() {
   const [user, setUser] = useState(null);
   const [usage, setUsage] = useState(null);
-  const [message, setMessage] = useState(null);
 
   useEffect(() => {
     // Get user info
@@ -22,10 +21,6 @@ function Usage() {
       const user = data.user;
       setUser(user);
       setUsage(user.usage);
-
-      if (localStorage.getItem("userRole") === "super_user") {
-        setMessage("You are already a super user.");
-      }
     }
     if (!user) getUserInfo();
   });
@@ -33,13 +28,12 @@ function Usage() {
   const content = (
     <>
       {user && <div>
-        {message && <div>{message}</div>}
-        {!message && <div>
+        <div>
           <div>User: {localStorage.getItem("user")}</div>
           <div>Email: {localStorage.getItem("userEmail")}</div>
           <div>Role: {localStorage.getItem("userRole")}</div>
           <div>Usage: {usage}</div>
-        </div>}
+        </div>
       </div>}
       {!user && <div>Please login.</div>}
     </>

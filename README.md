@@ -269,6 +269,10 @@ When using paypal as a payment method.
 * SAME_SITE_COOKIE  
 In production set to `SameSite=Lax; Secure`
 
+* USE_EMAIL  
+Use email to reset password or notifications.  
+The value should be `true` or `false`.  
+
 
 log.config
 ----------

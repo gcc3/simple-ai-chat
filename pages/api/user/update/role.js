@@ -47,6 +47,13 @@ export default async function (req, res) {
 
     const wasSuccessful = await updateUserRole(username, role);
     if (wasSuccessful) {
+      if (process.env.USE_EMAIL === "false") {
+        return res.status(200).json({ 
+          success: true, 
+          message: 'Subscription updated.', 
+        });
+      }
+
       // Send email to user
       AWS.config.update({
         accessKeyId: process.env.AWS_ACCESS_KEY_ID,
@@ -79,14 +86,14 @@ export default async function (req, res) {
         .then((data) => {
           return res.status(200).json({ 
             success: true, 
-            message: 'Subscription updated.', 
+            message: 'Subscription updated, an email is sent to user.', 
             data 
           });
         }).catch((err) => {
           console.error(err, err.stack);
           return res.status(500).json({ 
             success: false, 
-            message: 'Failed to update subscription.', 
+            message: 'Subscription updated, failed to send email to user.', 
             error: err
           });
         });
