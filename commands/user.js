@@ -65,7 +65,7 @@ export default async function entry(args) {
           settings: JSON.stringify({
             theme:      localStorage.getItem("theme") || "light",
             speak:      localStorage.getItem("speak") || "off",
-            stats:      localStorage.getItem("stats") || "on",
+            stats:      localStorage.getItem("stats") || "off",
             fullscreen: localStorage.getItem("fullscreen") || "off",
           }),
         }),
