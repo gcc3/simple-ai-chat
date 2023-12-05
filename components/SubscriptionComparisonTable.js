@@ -8,12 +8,12 @@ const FeatureComparisonTable = () => {
   ];
 
   return (
-    <div class="mt-5 mb-8">
+    <div className="mt-5 mb-8">
       <table>
         <thead>
           <tr>
-            <th rowspan="2">Feature</th>
-            <th colspan="2">Roles</th>
+            <th rowSpan="2">Feature</th>
+            <th colSpan="2">Roles</th>
           </tr>
           <tr>
             <th>`user`</th>
