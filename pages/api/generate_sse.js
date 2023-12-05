@@ -49,44 +49,6 @@ export default async function (req, res) {
     'X-Accel-Buffering': 'no',  // disables proxy buffering for NGINX
                                 // IMPORTANT! without this the stream not working on remote server
   });
-
-  // User access control
-  if (use_access_control) {
-    const authResult = authenticate(req);
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    if (!authResult.success) {
-      // Not a user, urge register a user
-      const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());
-      if (chatCount >= 5) {
-        res.write(`data: Usage exceeded. Please register a user to continue, use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-    } else {
-      // User
-      const user = authResult.user;
-      if (!user.email) {
-        // No email, urge adding an email
-        res.write(`data: Email verification is required, please add a email address. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-      
-      // Check usage exceeded or not
-      const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
-      const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
-      const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
-      const limit = getUsageLimit(user.role);
-      if (daily >= limit.daily || weekly >= limit.weekly || monthly >= limit.monthly) {
-        res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-    }
-  }
   
   // Query ID, same as session ID
   const verifyResult = verifySessionId(queryId);
@@ -124,6 +86,55 @@ export default async function (req, res) {
   const use_vision = images.length > 0;
   const model_switch = use_vision ? model_v : model;
   const use_eval = use_stats && !use_vision;
+
+  // User access control
+  if (use_access_control) {
+    const authResult = authenticate(req);
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (!authResult.success) {
+      // Not a user, urge register a user
+      const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());
+      if (chatCount >= 5) {
+        res.write(`data: Usage exceeded. Please register a user to continue, use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+    } else {
+      // User
+      const user = authResult.user;
+      if (!user.email) {
+        // No email, urge adding an email
+        res.write(`data: Email verification is required, please add a email address. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+
+      // Trial user, only allow 5 chats per day and not allow vision models
+      if (user.role === "trial") {
+        const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
+        if (chatCount >= 5 || model_switch.includes("vision")) {
+          res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
+          res.write(`data: [DONE]\n\n`); res.flush();
+          res.end();
+          return;
+        }
+      }
+      
+      // Check usage exceeded or not
+      const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
+      const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
+      const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
+      const limit = getUsageLimit(user.role);
+      if (daily >= limit.daily || weekly >= limit.weekly || monthly >= limit.monthly) {
+        res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+    }
+  }
 
   // I. Normal input
   if (!input.startsWith("!")) {
