@@ -11,7 +11,7 @@ function Subscription() {
     refreshUserInfo();
     setUser(localStorage.getItem("user"));
     if (localStorage.getItem("userRole") === "super_user") {
-      setMessage("You are already a super user.");
+      setMessage("You are already a super_user.");
     }
   });
 
