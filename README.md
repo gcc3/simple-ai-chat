@@ -256,7 +256,18 @@ Generate with `openssl rand -hex 16`.
 Config to use AWS service, eg, S3 Bucket, SES.  
 
 * USE_ACCESS_CONTROL  
-Enable control user access for different roles.  
+When it enabled, will count user usage and limit access for normal `user`.
+The value should be `true` or `false`.
+
+* USE_PAYMENT  
+Enabel payment for upgrading user account.  
+The value should be `true` or `false`.  
+
+* PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET
+When using paypal as a payment method.
+
+* SAME_SITE_COOKIE
+In production set to `SameSite=Lax; Secure`
 
 
 log.config

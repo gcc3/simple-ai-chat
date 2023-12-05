@@ -52,7 +52,8 @@ export default function Home() {
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
-  const [content, setContent] = useState(CONTENT.SUBSCRIPTION);
+  const [content, setContent] = useState(CONTENT.PRIVACY);
+  const [subscriptionDisplay, setSubscriptionDisplay] = useState(false);
 
   // Refs
   const elInputRef = useRef(null);
@@ -276,8 +277,9 @@ export default function Home() {
           if (result.enter) {
             dispatch(toggleEnterChange(result.enter));
           }
-          if (result.waiting) setWaiting(result.waiting);                        // Set waiting text
-          if (result.querying) setQuerying(result.querying);                     // Set querying text
+          if (result.waiting) setWaiting(result.waiting);                     // Set waiting text
+          if (result.querying) setQuerying(result.querying);                  // Set querying text
+          if (result.use_payment) setSubscriptionDisplay(true);              // Set use payment
       } catch (error) {
         console.error("There was an error fetching the data:", error);
       }
@@ -1049,15 +1051,15 @@ export default function Home() {
         <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
           <div className={styles.container}>
             <div className={styles.nav}>
-              <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>Subscription</div>
-              <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>Privacy Policy</div>
+              <div className={styles.navitem} onClick={() => setContent(content === CONTENT.PRIVACY ? null : CONTENT.PRIVACY)}>Privacy Policy</div>
+              {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(content === CONTENT.SUBSCRIPTION ? null : CONTENT.SUBSCRIPTION)}>Subscription</div>}
             </div>
             <div className={styles.content}>
-              {content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}>
-                <Subscription />
-              </div>}
               {content === CONTENT.PRIVACY && <div className={styles.contentitem}>
                 <UserDataPrivacy />
+              </div>}
+              {subscriptionDisplay && content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}>
+                <Subscription />
               </div>}
               <div className={styles.copyrights}>
                 <Copyrights />
