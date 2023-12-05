@@ -273,6 +273,11 @@ In production set to `SameSite=Lax; Secure`
 Use email to reset password or notifications.  
 The value should be `true` or `false`.  
 
+* USAGE_LIMIT  
+Set limit for different roles.  
+Roles and limitations are separated by `;`.
+Format: `role:daily_limit,weekly_limit,monthly_limit`.  
+
 
 log.config
 ----------

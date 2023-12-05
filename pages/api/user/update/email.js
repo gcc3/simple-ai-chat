@@ -21,10 +21,10 @@ export default async function (req, res) {
       error: authResult.error
     });
   }
-  const { id, username } = authResult.user;
+  const { id, username, role } = authResult.user;
 
-  // Generate a jwt token contains id, username, and email
-  const token = encode(id, username, email);
+  // Generate a jwt token contains id, username, role, and email
+  const token = encode(id, username, email, role);
 
   // Input and validation
   if (!email) {
