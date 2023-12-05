@@ -55,7 +55,7 @@ export default async function (req, res) {
     if (!authResult.success) {
       // Not a user, urge register a user
       const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());  // daily usage > 10
-      if (chatCount >= 5) {
+      if (chatCount >= 10) {
         res.write(`data: Usage exceeded. Please login to continue. To register a user, use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
@@ -74,7 +74,7 @@ export default async function (req, res) {
         } else {
           // Require upgrade
           const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());  // daily usage > 10
-          if (chatCount >= 10) {
+          if (chatCount >= 30) {
             res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
             res.write(`data: [DONE]\n\n`); res.flush();
             res.end();
