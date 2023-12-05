@@ -11,7 +11,7 @@ export const authenticate = (req) => {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return { 
       success: true, 
-      user: decoded 
+      user: decoded
     };
   } catch (error) {
     return { 
@@ -30,14 +30,15 @@ export const createToken = (payload) => {
   }
 }
 
-// Also use JWK to generate token for id and username
+// Also use JWK to generate token for id, username, email, role
 // Function to generate a token
-export function encode(id, username, email) {
+export function encode(id, username, email, role) {
   // Create a payload with the id and username
   const payload = {
     id: id,
     username: username,
     email: email,
+    role: role,
   };
 
   // Sign the token with the secret key

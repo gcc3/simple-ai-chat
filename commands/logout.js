@@ -1,3 +1,5 @@
+import { clearUserLocalStorage } from "utils/userUtils";
+
 export default async function logout(args) {
   const username = localStorage.getItem("user");
   if (!username) {
@@ -21,17 +23,8 @@ export default async function logout(args) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    // Clear user info
-    localStorage.removeItem("user");
-    localStorage.removeItem("userSettings");
-
-    // Reset query id to forget previous memory
-    localStorage.setItem("queryId", Date.now());
-
-    // Reset role
-    if (localStorage.getItem("role")) {
-      localStorage.setItem("role", "");
-    }
+    // Clear user data
+    clearUserLocalStorage();
 
     return "Logout successful.";
   } catch (error) {

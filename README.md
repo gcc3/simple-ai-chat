@@ -263,11 +263,20 @@ The value should be `true` or `false`.
 Enabel payment for upgrading user account.  
 The value should be `true` or `false`.  
 
-* PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET
+* PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET  
 When using paypal as a payment method.
 
-* SAME_SITE_COOKIE
+* SAME_SITE_COOKIE  
 In production set to `SameSite=Lax; Secure`
+
+* USE_EMAIL  
+Use email to reset password or notifications.  
+The value should be `true` or `false`.  
+
+* USAGE_LIMIT  
+Set limit for different roles.  
+Roles and limitations are separated by `;`.
+Format: `role:daily_limit,weekly_limit,monthly_limit`.  
 
 
 log.config

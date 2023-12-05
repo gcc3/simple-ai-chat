@@ -13,6 +13,7 @@ import { urlFormatter } from "utils/textUtils";
 import { passwordFormatter, maskPassword } from "utils/passwordUtils";
 import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
+import Usage from "components/Usage";
 import Subscription from "components/Subscription";
 import Copyrights from "components/Copyrights";
 import { refreshUserInfo } from "utils/userUtils";
@@ -52,7 +53,7 @@ export default function Home() {
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
-  const [content, setContent] = useState(CONTENT.PRIVACY);
+  const [content, setContent] = useState(CONTENT.USAGE);
   const [subscriptionDisplay, setSubscriptionDisplay] = useState(false);
 
   // Refs
@@ -1048,25 +1049,30 @@ export default function Home() {
           </div>
         </div>
       
-        <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
-          <div className={styles.container}>
-            <div className={styles.nav}>
-              <div className={styles.navitem} onClick={() => setContent(content === CONTENT.PRIVACY ? null : CONTENT.PRIVACY)}>Privacy Policy</div>
-              {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(content === CONTENT.SUBSCRIPTION ? null : CONTENT.SUBSCRIPTION)}>Subscription</div>}
-            </div>
-            <div className={styles.content}>
-              {content === CONTENT.PRIVACY && <div className={styles.contentitem}>
-                <UserDataPrivacy />
-              </div>}
-              {subscriptionDisplay && content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}>
-                <Subscription />
-              </div>}
-              <div className={styles.copyrights}>
-                <Copyrights />
+        {display === DISPLAY.BACK &&
+          <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
+            <div className={styles.container}>
+              <div className={styles.nav}>
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>Usage</div>
+                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>Subscription</div>}
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>Privacy Policy</div>
+              </div>
+              <div className={styles.content}>
+                {content === CONTENT.USAGE && <div className={styles.contentitem}>
+                  <Usage />
+                </div>}
+                {subscriptionDisplay && content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}>
+                  <Subscription />
+                </div>}
+                {content === CONTENT.PRIVACY && <div className={styles.contentitem}>
+                  <UserDataPrivacy />
+                </div>}
+                <div className={styles.copyrights}>
+                  <Copyrights />
+                </div>
               </div>
             </div>
-          </div>
-        </div>
+          </div>}
       </main>
     </div>
   );

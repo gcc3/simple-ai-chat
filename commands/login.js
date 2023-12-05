@@ -1,4 +1,5 @@
 import { setTheme } from "utils/themeUtils.js";
+import { setUserLocalStorage } from "utils/userUtils.js";
 
 export default async function login(args) {
   if (args.length != 2) {
@@ -27,36 +28,9 @@ export default async function login(args) {
     }
 
     user = data.user;
-    localStorage.setItem("user", user.username);
-    localStorage.setItem("userSettings", user.settings);
+    setUserLocalStorage(user);
+
     console.log("User is set to \"" + localStorage.getItem("user") + "\".");
-
-    // Settings
-    if (user.settings) {
-      const settings = JSON.parse(user.settings);
-
-      if (settings.theme) {
-        localStorage.setItem("theme", settings.theme);
-        setTheme(localStorage.getItem("theme"));
-      }
-
-      if (settings.role) {
-        localStorage.setItem("role", settings.role);
-      }
-
-      if (settings.speak) {
-        localStorage.setItem("useSpeak", settings.speak == "on" ? "true" : "false");
-      }
-
-      if (settings.stats) {
-        localStorage.setItem("useStats", settings.stats == "on" ? "true" : "false");
-      }
-
-      if (settings.fullscreen) {
-        localStorage.setItem("fullscreen", settings.fullscreen);
-      }
-    }
-
     return "Login successful.";
   } catch (error) {
 

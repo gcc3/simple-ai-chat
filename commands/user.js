@@ -1,4 +1,5 @@
 import { verifiyEmailAddress } from "utils/emailUtils";
+import { setUserLocalStorage } from "utils/userUtils";
 
 export default async function entry(args) {
   const command = args[0];
@@ -27,9 +28,7 @@ export default async function entry(args) {
     }
 
     if (user) {
-      localStorage.setItem("user", user.username);
-      localStorage.setItem("userSettings", user.settings);
-      console.log(user.usage);
+      setUserLocalStorage(user);
 
       return "User: " + user.username + "\n" +
              "Role: " + user.role + "\n" +
@@ -79,6 +78,8 @@ export default async function entry(args) {
 
       if (data.success) {
         localStorage.setItem("user", username);
+        localStorage.setItem("userEmail", email);
+        localStorage.setItem("userRole", "user");
         localStorage.setItem("userSettings", "");
       }
       return data.message;
@@ -113,6 +114,8 @@ export default async function entry(args) {
 
       if (data.success) {
         localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
+        localStorage.removeItem("userRole");
         localStorage.removeItem("userSettings");
       }
       return data.message;
