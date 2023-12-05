@@ -26,6 +26,8 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
     document.documentElement.style.setProperty("--underline-text-color", "#0645AD");
     document.documentElement.style.setProperty("--table-border-color", "#AEAEAE");
+    document.documentElement.style.setProperty("--progressbar-background-color", "#e0e0e0");
+    document.documentElement.style.setProperty("--progressbar-fill-background-color", "#AEAEAE");
   }
 
   if (theme == "dark") {
@@ -53,6 +55,8 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
     document.documentElement.style.setProperty("--underline-text-color", "#9a9a9a");
     document.documentElement.style.setProperty("--table-border-color", "#9a9a9a");
+    document.documentElement.style.setProperty("--progressbar-background-color", "#5c5c5c");
+    document.documentElement.style.setProperty("--progressbar-fill-background-color", "#c7c7c7");
   }
 
   if (theme == "terminal") {
@@ -80,6 +84,8 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
     document.documentElement.style.setProperty("--underline-text-color", "#00f700");
     document.documentElement.style.setProperty("--table-border-color", "#007000");
+    document.documentElement.style.setProperty("--progressbar-background-color", "#007000");
+    document.documentElement.style.setProperty("--progressbar-fill-background-color", "#00f700");
   }
 
   // Code highlighting styles
