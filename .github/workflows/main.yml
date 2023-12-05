@@ -10,7 +10,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Execute SSH commands
-      uses: appleboy/ssh-action@v0.1.3
+      uses: appleboy/ssh-action@v1.0.0
       with:
         host: simple-ai.io
         username: ${{ secrets.USERNAME }}
