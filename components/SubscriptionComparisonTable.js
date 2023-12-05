@@ -8,7 +8,7 @@ const FeatureComparisonTable = () => {
   ];
 
   return (
-    <div className="mt-5 mb-8">
+    <div className="mt-3 mb-5">
       <table>
         <thead>
           <tr>
