@@ -6,11 +6,18 @@ on:
       - master
 
 jobs:
-  simple-ai-dot-io:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
-    - name: Node Js
+    - name: Set up Node.js
       uses: actions/setup-node@v1
+      with:
+        node-version: '21'
+
+    - name: Checkout Repository
+      uses: actions/checkout@v2
+
     - name: Execute SSH commands
       uses: appleboy/ssh-action@v1.0.0
       with:
@@ -21,7 +28,6 @@ jobs:
           cd /var/www/simple-ai.io
           git checkout master
           git pull
-          export PATH=$PATH:~/.nvm/versions/node/v18.16.0/bin/
           npm install
           npm run build
           pm2 restart simple-ai.io
