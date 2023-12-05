@@ -4,7 +4,7 @@ function Subscription() {
   const content = (
     <div>
       <div>Subscribe to become a pro/super user.</div>
-      <PayPalButton className="mt-3 max-w-md" onSuccess={(details) => {
+      <PayPalButton onSuccess={(details) => {
         console.log("Transaction completed by " + details.payer.name);
         console.log("Detail: ", details);
 
