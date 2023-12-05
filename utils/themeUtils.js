@@ -25,6 +25,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--strong-text-background-color", "rgba(255, 255, 51, 0.4)");
     document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
     document.documentElement.style.setProperty("--underline-text-color", "#0645AD");
+    document.documentElement.style.setProperty("--table-border-color", "#AEAEAE");
   }
 
   if (theme == "dark") {
@@ -51,6 +52,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--strong-text-background-color", "rgba(99, 99, 99, 0.4)");
     document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
     document.documentElement.style.setProperty("--underline-text-color", "#9a9a9a");
+    document.documentElement.style.setProperty("--table-border-color", "#9a9a9a");
   }
 
   if (theme == "terminal") {
@@ -77,6 +79,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--strong-text-background-color", "rgba(0, 112, 0, 0.5)");
     document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
     document.documentElement.style.setProperty("--underline-text-color", "#00f700");
+    document.documentElement.style.setProperty("--table-border-color", "#007000");
   }
 
   // Code highlighting styles
