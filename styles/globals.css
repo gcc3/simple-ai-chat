@@ -89,7 +89,7 @@ table {
 }
 th, td {
   font-size: 15px;
-  border: 1.5px solid var(--sub-text-color);
+  border: 1.5px solid var(--table-border-color);
 }
 th {
   font-weight: normal;

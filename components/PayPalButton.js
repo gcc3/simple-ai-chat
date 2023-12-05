@@ -75,9 +75,23 @@ const PayPalButton = ({ onSuccess }) => {
   }, [amount, currency, onSuccess]);
 
   return (
-    <div className="mt-5 w-full p-3 m-auto bg-gray-300 rounded-lg">
-      <div className="mt-4 max-w-md m-auto" id="paypal-button-container"></div>
-    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>Paypal</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>
+            <div className="w-full p-3 m-auto bg-gray-200 rounded-sm">
+              <div className="mt-4 max-w-md m-auto" id="paypal-button-container"></div>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+      
+    </table>
   );
 };
 
