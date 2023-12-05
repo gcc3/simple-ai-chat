@@ -9,6 +9,8 @@ jobs:
   simple-ai-dot-io:
     runs-on: ubuntu-latest
     steps:
+    - name: Node Js
+      uses: actions/setup-node@v1
     - name: Execute SSH commands
       uses: appleboy/ssh-action@v1.0.0
       with:
