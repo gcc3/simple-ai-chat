@@ -23,16 +23,8 @@ export default async function logout(args) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    // Clear user info
+    // Clear user data
     clearUserLocalStorage();
-
-    // Reset query id to forget previous memory
-    localStorage.setItem("queryId", Date.now());
-
-    // Reset role
-    if (localStorage.getItem("role")) {
-      localStorage.setItem("role", "");
-    }
 
     return "Logout successful.";
   } catch (error) {

@@ -37,6 +37,14 @@ export function clearUserLocalStorage() {
   localStorage.removeItem("userEmail");
   localStorage.removeItem("userRole");
   localStorage.removeItem("userSettings");
+  
+  // Reset query id to forget previous memory
+  localStorage.setItem("queryId", Date.now());
+
+  // Reset role
+  if (localStorage.getItem("role")) {
+    localStorage.setItem("role", "");
+  }
 }
 
 export function generatePassword(length=8) {
