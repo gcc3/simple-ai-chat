@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 const PayPalButton = ({ onSuccess }) => {
   const [amount, setAmount] = useState(0);
+  const [currency, setCurrency] = useState('USD');
 
   useEffect(() => {
     let scriptAdded = false;
@@ -10,6 +11,7 @@ const PayPalButton = ({ onSuccess }) => {
         const response = await fetch('/api/payment/info');
         const { client_id, amount, currency } = await response.json();
         setAmount(amount);
+        setCurrency(currency);
 
         const script = document.createElement('script');
         script.src = `https://www.paypal.com/sdk/js?client-id=${client_id}&currency=${currency}`;
