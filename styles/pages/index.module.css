@@ -125,7 +125,7 @@
   background: var(--nav-hover-background-color);
 }
 .main .content {
-  /* nothing */
+  color: var(--text-color);
 }
 .main .contentitem {
   padding: 10px;

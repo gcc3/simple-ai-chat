@@ -80,6 +80,7 @@ const getDatabaseConnection = async () => {
       await updateUserSettings("root", "theme", "light");
       await updateUserSettings("root", "speak", "off");
       await updateUserSettings("root", "stats", "off");
+      await updateUserSettings("root", "fullscreen", "off");
 
       return db;
     } else {

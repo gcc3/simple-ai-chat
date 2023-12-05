@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import PayPalButton from "./PayPalButton";
 import { refreshUserInfo } from "utils/userUtils";
+import FeatureComparisonTable from "./SubscriptionComparisonTable";
 
 function Subscription() {
   const [user, setUser] = useState(null);
@@ -23,6 +24,7 @@ function Subscription() {
           <div>User: {localStorage.getItem("user")}</div>
           <div>Email: {localStorage.getItem("userEmail")}</div>
           <div>Role: {localStorage.getItem("userRole")}</div>
+          <FeatureComparisonTable />
           <PayPalButton onSuccess={async (details) => {
             console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
             console.log("Detail: ", details);
