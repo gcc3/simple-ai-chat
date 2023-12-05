@@ -16,7 +16,7 @@ jobs:
         username: ${{ secrets.SERVER_USERNAME }}
         password: ${{ secrets.SERVER_PASSWORD }}
         script: |
-          cd /var/www/simple-ai.io/simple-ai-chat
+          cd /var/www/simple-ai.io
           git checkout master
           git pull
           export PATH=$PATH:~/.nvm/versions/node/v18.16.0/bin/
