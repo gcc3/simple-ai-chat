@@ -115,8 +115,8 @@
   font-size: 20px;
   text-align: center;
   position: fixed;
-  top: 6px;
-  right: 10px;
+  top: 4px;
+  right: 8px;
   width: 15px;
   color: var(--dot-color);
 }
