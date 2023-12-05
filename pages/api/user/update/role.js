@@ -31,23 +31,10 @@ export default async function (req, res) {
       });
     }
 
-    if (user.role === role && role === "super_user") {
-      return res.status(400).json({ 
-        success: false,
-        message: 'User is already subscribed.',
-      });
-    }
-
-    if (user.role === role && role === "user") {
-      return res.status(400).json({ 
-        success: false,
-        message: 'User is already unsubscribed.',
-      });
-    }
-
+    // Update user role
     const wasSuccessful = await updateUserRole(username, role);
     if (wasSuccessful) {
-      if (process.env.USE_EMAIL === "false") {
+      if (process.env.USE_EMAIL === "false" || user.email === "") {
         return res.status(200).json({ 
           success: true, 
           message: 'Subscription updated.', 
