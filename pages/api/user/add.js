@@ -52,7 +52,7 @@ export default async function (req, res) {
     const subject = 'Password reset';
     const body = "Your password is reset to \"" + password + "\"";
     const emailParams = {
-      Source: from,
+      Source: 'Simple AI <' + from + '>',
       Destination: {
         ToAddresses: [to],
       },

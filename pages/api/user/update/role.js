@@ -66,7 +66,7 @@ export default async function (req, res) {
       const to = user.email;
       const subject = "Super User Subscription";
       const emailParams = {
-        Source: from,
+        Source: 'Simple AI <' + from + '>',
         Destination: {
           ToAddresses: [to],
         },

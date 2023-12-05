@@ -38,7 +38,7 @@ export default async function handler(req, res) {
   const to = email;
   const subject = 'Password reset';
   const emailParams = {
-    Source: from,
+    Source: 'Simple AI <' + from + '>',
     Destination: {
       ToAddresses: [to],
     },

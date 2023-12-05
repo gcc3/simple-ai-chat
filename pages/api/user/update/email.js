@@ -64,7 +64,7 @@ export default async function (req, res) {
   const subject = 'Email verification';
   const body = `Please click the following link to verify your email: <a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>`;
   const emailParams = {
-    Source: from,
+    Source: 'Simple AI <' + from + '>',
     Destination: {
       ToAddresses: [to],
     },
