@@ -263,10 +263,10 @@ The value should be `true` or `false`.
 Enabel payment for upgrading user account.  
 The value should be `true` or `false`.  
 
-* PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET
+* PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET  
 When using paypal as a payment method.
 
-* SAME_SITE_COOKIE
+* SAME_SITE_COOKIE  
 In production set to `SameSite=Lax; Secure`
 
 
