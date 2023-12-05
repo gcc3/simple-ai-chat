@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { refreshUserInfo } from "utils/userUtils";
+import ProgressBar from "./ProgressBar";
 
 function Usage() {
   const [user, setUser] = useState(null);
@@ -20,7 +20,7 @@ function Usage() {
 
       const user = data.user;
       setUser(user);
-      setUsage(user.usage);
+      setUsage(JSON.parse(user.usage));
     }
     if (!user) getUserInfo();
   });
@@ -32,7 +32,10 @@ function Usage() {
           <div>User: {localStorage.getItem("user")}</div>
           <div>Email: {localStorage.getItem("userEmail")}</div>
           <div>Role: {localStorage.getItem("userRole")}</div>
-          <div>Usage: {usage}</div>
+          <div>Usage exceeded: {usage.exceeded ? "true" : "false"}</div>
+          <ProgressBar label={"Daily usage"} progress={usage.daily} />
+          <ProgressBar label={"Weekly usage"} progress={usage.weekly} />
+          <ProgressBar label={"Monthly usage"} progress={usage.monthly} />
         </div>
       </div>}
       {!user && <div>Please login.</div>}

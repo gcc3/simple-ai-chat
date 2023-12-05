@@ -44,16 +44,16 @@ async function getUserUsageWithLimit(username, role) {
   const { daily, weekly, monthly } = await getUserUsage(username);
   const { daily_limit, weekly_limit, monthly_limit } = getUsageLimit(role);
 
-  let exceedLimit = false;
+  let exceeded = false;
   if (daily >= daily_limit || weekly >= weekly_limit || monthly >= monthly_limit) {
-    exceedLimit = true;
+    exceeded = true;
   }
 
   return {
     daily: daily + "/" + daily_limit,
     weekly: weekly + "/" + weekly_limit,
     monthly: monthly + "/" + monthly_limit,
-    exceedLimit,
+    exceeded,
   }
 }
 
