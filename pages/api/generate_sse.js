@@ -80,7 +80,7 @@ export default async function (req, res) {
       const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
       const limit = getUsageLimit(user.role);
       if (daily >= limit.daily || weekly >= limit.weekly || monthly >= limit.monthly) {
-        res.write(`data: Usage exceeded. Please upgrade/subscribe to continue. You can contact \`support@simple-ai.io\` for help.\n\n`); res.flush();
+        res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
         return;
