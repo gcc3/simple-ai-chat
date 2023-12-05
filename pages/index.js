@@ -52,7 +52,7 @@ export default function Home() {
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
-  const [content, setContent] = useState();
+  const [content, setContent] = useState(CONTENT.PRIVACY);
   const [subscriptionDisplay, setSubscriptionDisplay] = useState(false);
 
   // Refs
