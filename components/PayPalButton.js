@@ -1,20 +1,15 @@
 import React, { useEffect, useState } from "react";
 
-const PayPalButton = ({ onSuccess }) => {
-  const [amount, setAmount] = useState(0);
-  const [currency, setCurrency] = useState("USD");
-
+const PayPalButton = ({ targetRole, onSuccess }) => {
   useEffect(() => {
     let scriptAdded = false;
     const loadPayPalScript = async () => {
       try {
         const response = await fetch("/api/payment/info");
-        const { client_id, amount, currency } = await response.json();
-        setAmount(amount);
-        setCurrency(currency);
+        const { client_id } = await response.json();
 
         const script = document.createElement("script");
-        script.src = `https://www.paypal.com/sdk/js?client-id=${client_id}&currency=${currency}`;
+        script.src = `https://www.paypal.com/sdk/js?client-id=${client_id}&currency=USD`;
         script.addEventListener("load", setupPayPalButton);
         document.body.appendChild(script);
         scriptAdded = true;
@@ -39,8 +34,8 @@ const PayPalButton = ({ onSuccess }) => {
                 purchase_units: [
                   {
                     amount: {
-                      currency_code: currency,
-                      value: amount,
+                      currency_code: "USD",
+                      value: targetRole === "user" ? "1.00" : "10.00",
                     },
                   },
                 ],
@@ -72,13 +67,13 @@ const PayPalButton = ({ onSuccess }) => {
         window.paypal.Buttons().close();
       }
     };
-  }, [amount, currency, onSuccess]);
+  }, [onSuccess]);
 
   return (
     <table>
       <thead>
         <tr>
-          <th>Paypal</th>
+          <th>Upgrade to `{targetRole}`</th>
         </tr>
       </thead>
       <tbody>

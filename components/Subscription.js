@@ -6,6 +6,7 @@ import FeatureComparisonTable from "./SubscriptionComparisonTable";
 function Subscription() {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
+  const [targetRole, setTargetRole] = useState(null);
 
   useEffect(() => {
     // Verify user login status
@@ -14,18 +15,22 @@ function Subscription() {
     if (localStorage.getItem("userRole") === "super_user") {
       setMessage("You are already a super_user.");
     }
+
+    if (localStorage.getItem("userRole") === "trial") {
+      setTargetRole("user");
+    }
+    if (localStorage.getItem("userRole") === "user") {
+      setTargetRole("super_user");
+    }
   });
 
   const content = (
     <>
       {user && <div>
+        <FeatureComparisonTable />
         {message && <div>{message}</div>}
         {!message && <div>
-          <div>User: {localStorage.getItem("user")}</div>
-          <div>Email: {localStorage.getItem("userEmail")}</div>
-          <div>Role: {localStorage.getItem("userRole")}</div>
-          <FeatureComparisonTable />
-          <PayPalButton onSuccess={async (details) => {
+          <PayPalButton targetRole={targetRole} onSuccess={async (details) => {
             console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
             console.log("Detail: ", details);
 
@@ -36,7 +41,7 @@ function Subscription() {
                 "Content-Type": "application/json",
               },
               body: JSON.stringify({
-                role: "super_user",
+                role: targetRole,
               }),
             });
       
@@ -55,7 +60,7 @@ function Subscription() {
           }} />
         </div>}
       </div>}
-      {!user && <div>Please login to subscribe.</div>}
+      {!user && <div>Please login.</div>}
     </>
   )
 
