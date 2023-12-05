@@ -21,7 +21,6 @@ function Usage() {
       const user = data.user;
       setUser(user);
       setUsage(JSON.parse(user.usage));
-      console.log(user.usage)
     }
     if (!user) getUserInfo();
   });
