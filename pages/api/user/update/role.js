@@ -31,7 +31,7 @@ export default async function (req, res) {
       });
     }
 
-    if (user.role === role && role === "pro_user") {
+    if (user.role === role && role === "super_user") {
       return res.status(400).json({ 
         success: false,
         message: 'User is already subscribed.',
@@ -64,7 +64,7 @@ export default async function (req, res) {
       const ses = new AWS.SES();
       const from = 'support@simple-ai.io';
       const to = user.email;
-      const subject = role === "pro_user" ? "Subscription" : "Unsubscription";
+      const subject = "Super User Subscription";
       const emailParams = {
         Source: from,
         Destination: {
@@ -76,7 +76,7 @@ export default async function (req, res) {
           },
           Body: {
             Html: {
-              Data: role === "pro_user" ? "You have subscribed to Simple AI." : "You have unsubscribed to Simple AI.",
+              Data: "You have subscribed to `simple-ai.io` and become a `super_user`.",
             },
           },
         },
