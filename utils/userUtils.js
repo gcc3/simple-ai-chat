@@ -21,10 +21,12 @@ export async function refreshUserInfo() {
   if (user) {
     // Refresh local user data
     localStorage.setItem("user", user.username);
+    localStorage.setItem("userEmail", user.email);
     localStorage.setItem("userSettings", user.settings);
   } else {
     if (localStorage.getItem("user")) {
       localStorage.removeItem("user");
+      localStorage.removeItem("userEmail");
       localStorage.removeItem("userSettings");
 
       // Clear auth cookie

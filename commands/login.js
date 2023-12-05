@@ -28,6 +28,7 @@ export default async function login(args) {
 
     user = data.user;
     localStorage.setItem("user", user.username);
+    localStorage.setItem("userEmail", user.email);
     localStorage.setItem("userSettings", user.settings);
     console.log("User is set to \"" + localStorage.getItem("user") + "\".");
 

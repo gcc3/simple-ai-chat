@@ -28,6 +28,7 @@ export default async function entry(args) {
 
     if (user) {
       localStorage.setItem("user", user.username);
+      localStorage.setItem("userEmail", user.email);
       localStorage.setItem("userSettings", user.settings);
       console.log(user.usage);
 
@@ -79,6 +80,7 @@ export default async function entry(args) {
 
       if (data.success) {
         localStorage.setItem("user", username);
+        localStorage.setItem("userEmail", email);
         localStorage.setItem("userSettings", "");
       }
       return data.message;
@@ -113,6 +115,7 @@ export default async function entry(args) {
 
       if (data.success) {
         localStorage.removeItem("user");
+        localStorage.removeItem("userEmail");
         localStorage.removeItem("userSettings");
       }
       return data.message;
