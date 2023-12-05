@@ -1051,15 +1051,15 @@ export default function Home() {
         <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
           <div className={styles.container}>
             <div className={styles.nav}>
-              {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(content === CONTENT.SUBSCRIPTION ? null : CONTENT.SUBSCRIPTION)}>Subscription</div>}
               <div className={styles.navitem} onClick={() => setContent(content === CONTENT.PRIVACY ? null : CONTENT.PRIVACY)}>Privacy Policy</div>
+              {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(content === CONTENT.SUBSCRIPTION ? null : CONTENT.SUBSCRIPTION)}>Subscription</div>}
             </div>
             <div className={styles.content}>
-              {subscriptionDisplay && content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}>
-                <Subscription />
-              </div>}
               {content === CONTENT.PRIVACY && <div className={styles.contentitem}>
                 <UserDataPrivacy />
+              </div>}
+              {subscriptionDisplay && content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}>
+                <Subscription />
               </div>}
               <div className={styles.copyrights}>
                 <Copyrights />
