@@ -3,8 +3,6 @@ export default async function (req, res) {
     const client_id = process.env.PAYPAL_CLIENT_ID;
     res.status(200).json({
       client_id: client_id,
-      amount: 5,
-      currency: "USD",
     });
   } catch (error) {
     console.error(error);
