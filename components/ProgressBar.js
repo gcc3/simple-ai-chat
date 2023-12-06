@@ -1,7 +1,7 @@
 import React from 'react';
 
 const ProgressBar = ({ label, progress, progressMax }) => {
-  const percentage = Math.min(Math.round(progress / progressMax), 1) * 100 + '%';
+  const percentage = Math.min(Math.round(progress / progressMax * 100), 100) + '%';
 
   return (<>
     <div className="mt-2">{label} ({progress}/{progressMax}, {percentage}):</div>
