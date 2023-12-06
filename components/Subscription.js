@@ -27,6 +27,7 @@ function Subscription() {
   const content = (
     <>
       {user && <div>
+        <div>Your current role/subscription: `{localStorage.getItem("userRole")}`</div>
         <FeatureComparisonTable />
         {message && <div>{message}</div>}
         {!message && <div>

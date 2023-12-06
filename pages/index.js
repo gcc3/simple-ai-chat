@@ -15,6 +15,7 @@ import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
 import Usage from "components/Usage";
 import Subscription from "components/Subscription";
+import Documentation from "components/Documentation";
 import Copyrights from "components/Copyrights";
 import { refreshUserInfo } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
@@ -30,8 +31,10 @@ const DISPLAY = { FRONT: 0, BACK: 1 };
 
 // Back display content
 const CONTENT = {
-  SUBSCRIPTION: 0,
-  PRIVACY: 1,
+  DOCUMENTATION: 0,
+  USAGE: 1,
+  SUBSCRIPTION: 2,
+  PRIVACY: 3,
 };
 
 // Mutation observer
@@ -53,7 +56,7 @@ export default function Home() {
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
-  const [content, setContent] = useState(CONTENT.USAGE);
+  const [content, setContent] = useState(CONTENT.DOCUMENTATION);
   const [subscriptionDisplay, setSubscriptionDisplay] = useState(false);
 
   // Refs
@@ -1053,11 +1056,15 @@ export default function Home() {
           <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
             <div className={styles.container}>
               <div className={styles.nav}>
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>Documentation</div>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>Usage</div>
                 {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>Subscription</div>}
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>Privacy Policy</div>
               </div>
               <div className={styles.content}>
+                {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
+                  <Documentation />
+                </div>}
                 {content === CONTENT.USAGE && <div className={styles.contentitem}>
                   <Usage />
                 </div>}

@@ -2,8 +2,8 @@ import React from "react";
 
 const FeatureComparisonTable = () => {
   const features = [
-    { name: "GPT-4", trial: "daily:5", user: "daily:50 weekly:70 monthly:300", superUser: "daily:500 weekly:700 monthly:3000" },
-    { name: "GPT-4V", trial: "Not available", user: "daily:5 weekly:7 monthly:30", superUser: "daily:500 weekly:700 monthly:3000" },
+    { name: "GPT-4", trial: "daily:5", user: "monthly:300", superUser: "monthly:3000" },
+    { name: "GPT-4V", trial: "Not available", user: "monthly:30", superUser: "monthly:3000" },
     { name: "Pricing", trial: "Free" ,user: "$1", superUser: "$10/month" },
   ];
 
@@ -13,7 +13,7 @@ const FeatureComparisonTable = () => {
         <thead>
           <tr>
             <th rowSpan="2">Feature</th>
-            <th colSpan="3">Roles</th>
+            <th colSpan="3">Roles/subcriptions</th>
           </tr>
           <tr>
             <th>`trial`</th>
