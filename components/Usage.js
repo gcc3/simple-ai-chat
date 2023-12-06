@@ -33,9 +33,9 @@ function Usage() {
           <div>Email: {localStorage.getItem("userEmail")}</div>
           <div>Role: {localStorage.getItem("userRole")}</div>
           <div>Usage exceeded: {usage.exceeded ? "true" : "false"}</div>
-          <ProgressBar label={"Daily usage"} progress={usage.daily} />
-          <ProgressBar label={"Weekly usage"} progress={usage.weekly} />
-          <ProgressBar label={"Monthly usage"} progress={usage.monthly} />
+          {usage.daily_limit < Number.MAX_VALUE - 1 && <ProgressBar label={"Daily usage"} progress={usage.daily} progressMax={usage.daily_limit} />}
+          {usage.weekly_limit < Number.MAX_VALUE - 1 && <ProgressBar label={"Weekly usage"} progress={usage.weekly} progressMax={usage.weekly_limit} />}
+          {usage.monthly_limit < Number.MAX_VALUE - 1 && <ProgressBar label={"Monthly usage"} progress={usage.monthly} progressMax={usage.monthly_limit} />}
         </div>
       </div>}
       {!user && <div>Please login.</div>}

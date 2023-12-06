@@ -53,9 +53,12 @@ async function getUserUsageWithLimit(username, role) {
   }
 
   return {
-    daily: daily + "/" + daily_limit,
-    weekly: weekly + "/" + weekly_limit,
-    monthly: monthly + "/" + monthly_limit,
+    daily,
+    daily_limit,
+    weekly,
+    weekly_limit,
+    monthly,
+    monthly_limit,
     exceeded,
   }
 }
