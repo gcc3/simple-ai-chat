@@ -49,8 +49,8 @@ export default async function (req, res) {
     const ses = new AWS.SES();
     const from = 'support@simple-ai.io';
     const to = email;
-    const subject = 'Password reset';
-    const body = "Your password is reset to \"" + password + "\"";
+    const subject = 'Welcome to simple-ai.io';
+    const body = "Your account is created successfully, initial password is \"" + password + "\"";
     const emailParams = {
       Source: 'Simple AI <' + from + '>',
       Destination: {
