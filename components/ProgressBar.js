@@ -5,7 +5,7 @@ const ProgressBar = ({ label, progress, progressMax }) => {
 
   return (<>
     <div className="mt-2">{label} ({progress}/{progressMax}, {percentage}):</div>
-    <div className="progressbar mt-1">
+    <div className="progressbar">
       <div
         className="progressbar-fill"
         style={{

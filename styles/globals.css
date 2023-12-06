@@ -105,6 +105,17 @@ th {
   border-radius: 1px;
 }
 
+button {
+  padding: 3px 5px 3px 5px !important;
+  background-color: var(--button-background-color);
+  border: 1.5px solid var(--button-border-color);
+  border-radius: 6px;
+  cursor: pointer;
+}
+button:hover {
+  background-color: var(--button-hover-background-color);
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
