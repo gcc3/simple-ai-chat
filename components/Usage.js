@@ -35,7 +35,7 @@ function Usage() {
           {usage.daily_limit < Number.MAX_VALUE - 1 && <ProgressBar label={"Daily usage"} progress={usage.daily} progressMax={usage.daily_limit} />}
           {usage.weekly_limit < Number.MAX_VALUE - 1 && <ProgressBar label={"Weekly usage"} progress={usage.weekly} progressMax={usage.weekly_limit} />}
           {usage.monthly_limit < Number.MAX_VALUE - 1 && <ProgressBar label={"Monthly usage"} progress={usage.monthly} progressMax={usage.monthly_limit} />}
-          {usage.exceeded === true && <div>The usage limitation has been reached. You can extend it by upgrading or subscribing.</div>}
+          {usage.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
         </div>
       </div>}
       {!user && <div>Please login.</div>}

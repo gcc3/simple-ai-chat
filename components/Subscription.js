@@ -12,10 +12,11 @@ function Subscription() {
   useEffect(() => {
     const loadUserInfo = async () => {
       const user = await refreshUserInfo();
-      setUser(user);
-
-      if (user.role === "super_user") {
-        setMessage("You are already a super_user, for further upgrade please contact `support@simple-ai.io`.");
+      if (user) {
+        setUser(user);
+        if (user.role === "super_user") {
+          setMessage("You are already a super_user, for further upgrade please contact `support@simple-ai.io`.");
+        }
       }
     }
     loadUserInfo();

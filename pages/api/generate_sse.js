@@ -8,10 +8,11 @@ import { getFunctions, executeFunction } from "function.js";
 import { getTools } from "tools.js";
 import { getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
-import { countChatsForIP } from "utils/sqliteUtils";
+import { countChatsForIP, getUser } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 import { countChatsForUser } from "utils/sqliteUtils";
 import { getUsageLimit } from "utils/envUtils";
+import { refreshUserInfo } from "utils/userUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -102,7 +103,7 @@ export default async function (req, res) {
       }
     } else {
       // User
-      const user = authResult.user;
+      const user = await getUser(authResult.user.username);
       if (!user.email) {
         // No email, urge adding an email
         res.write(`data: Email verification is required, please add a email address. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
