@@ -5,20 +5,20 @@ import FeatureComparisonTable from "./SubscriptionComparisonTable";
 
 function Subscription() {
   const [user, setUser] = useState(null);
-  const [subscription, setSubscription] = useState(null);  // "user", "pro_user", "super_user"
   const [message, setMessage] = useState(null);
   const [targetRole, setTargetRole] = useState(null);
   const [amount, setAmount] = useState(null);
 
   useEffect(() => {
-    // Verify user login status
-    refreshUserInfo();
-    setUser(localStorage.getItem("user"));
-    setSubscription(localStorage.getItem("userRole"));
-    
-    if (localStorage.getItem("userRole") === "super_user") {
-      setMessage("You are already a super_user, for further upgrade contact `support@simple-ai.io`.");
+    const loadUserInfo = async () => {
+      const user = await refreshUserInfo();
+      setUser(user);
+
+      if (user.role === "super_user") {
+        setMessage("You are already a super_user, for further upgrade contact `support@simple-ai.io`.");
+      }
     }
+    loadUserInfo();
   }, []);
 
   function handleSetTargetRole(role) {
@@ -34,9 +34,9 @@ function Subscription() {
   const content = (
     <>
       {user && <div>
-        <div>User: {localStorage.getItem("user")}</div>
-        <div>Email: {localStorage.getItem("userEmail")}</div>
-        <div>Subscription: `{subscription}`</div>
+        <div>User: {user.username}</div>
+        <div>Email: {user.email}</div>
+        <div>Subscription: `{user.role}`</div>
         <FeatureComparisonTable />
         {message && <div>{message}</div>}
         {!message && <div>
@@ -48,10 +48,10 @@ function Subscription() {
           {targetRole && <div>
             <div className="mt-1">Target role: `{targetRole}`</div>
             <div>Price: {amount === 0 ? "Free" : "$" + amount}</div>
-            {targetRole === localStorage.getItem("userRole") && <div className="mt-3">
+            {targetRole === user.role && <div className="mt-3">
               You are already a `{targetRole}`.
               </div>}
-            {amount > 0 && targetRole !== localStorage.getItem("userRole") && <div className="mt-1">
+            {amount > 0 && targetRole !== user.role && <div className="mt-1">
               <div className="mt-3">Payment methods:</div>
               <div className="mt-1">
                 <table>
@@ -88,8 +88,8 @@ function Subscription() {
                           setMessage(data.message);
 
                           // Refresh user info
-                          refreshUserInfo();
-                          setSubscription(localStorage.getItem("userRole"));
+                          const user = await refreshUserInfo();
+                          setUser(user);
                         } else {
                           setMessage(data.message);
                           if (data.error) console.log(data.error);

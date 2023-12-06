@@ -97,7 +97,6 @@ th {
   height: 20px;
   background-color: var(--progressbar-background-color);
   border-radius: 1px;
-  margin-bottom: 10px;
 }
 .progressbar-fill {
   height: 100%;
