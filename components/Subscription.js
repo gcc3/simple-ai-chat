@@ -15,6 +15,7 @@ function Subscription() {
     refreshUserInfo();
     setUser(localStorage.getItem("user"));
     setSubscription(localStorage.getItem("userRole"));
+    
     if (localStorage.getItem("userRole") === "super_user") {
       setMessage("You are already a super_user, for further upgrade contact `support@simple-ai.io`.");
     }
@@ -85,7 +86,10 @@ function Subscription() {
                   
                         if (data.success) {
                           setMessage(data.message);
+
+                          // Refresh user info
                           refreshUserInfo();
+                          setUser(localStorage.getItem("user"));
                           setSubscription(localStorage.getItem("userRole"));
                         } else {
                           setMessage(data.message);
