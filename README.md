@@ -104,10 +104,11 @@ Use `tab` key to restore input from the placehodler.
 Roles
 -----
 
-System has 3 kinds of rols.
+System has 4 kinds of rols.
 1. root_user
 2. super_user
-3. user
+3. pro_user
+4. user
 
 
 AI Links
