@@ -1,4 +1,6 @@
 import { setTheme } from "./themeUtils";
+import store from '../store.js';
+import { toggleFullscreen } from '../states/fullscreenSlice.js';
 
 export function setUserLocalStorage(user) {
   localStorage.setItem("user", user.username);
@@ -28,6 +30,7 @@ export function setUserLocalStorage(user) {
 
     if (settings.fullscreen) {
       localStorage.setItem("fullscreen", settings.fullscreen);
+      store.dispatch(toggleFullscreen(settings.fullscreen));
     }
   }
 }
