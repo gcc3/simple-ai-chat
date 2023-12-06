@@ -5,30 +5,30 @@ export function getUsageLimit (role) {
   // If role is not found, return 0
   if (!role_usage_limit) {
     return {
-      usage_limit_daily: 0,
-      usage_limit_weekly: 0,
-      usage_limit_monthly: 0,
+      daily_limit: 0,
+      weekly_limit: 0,
+      monthly_limit: 0,
     };
   }
 
-  let daily = role_usage_limit.split(",")[0];
-  if (daily === "") {
-    daily = Number.MAX_VALUE;
+  let daily_limit = role_usage_limit.split(",")[0];
+  if (daily_limit === "") {
+    daily_limit = Number.MAX_VALUE;
   }
 
-  let weekly = role_usage_limit.split(",")[1];
-  if (weekly === "") {
-    weekly = Number.MAX_VALUE;
+  let weekly_limit = role_usage_limit.split(",")[1];
+  if (weekly_limit === "") {
+    weekly_limit = Number.MAX_VALUE;
   }
 
-  let monthly = role_usage_limit.split(",")[2];
-  if (monthly === "") {
-    monthly = Number.MAX_VALUE;
+  let monthly_limit = role_usage_limit.split(",")[2];
+  if (monthly_limit === "") {
+    monthly_limit = Number.MAX_VALUE;
   }
   
   return {
-    daily,
-    weekly,
-    monthly,
+    daily_limit,
+    weekly_limit,
+    monthly_limit,
   }
 }
