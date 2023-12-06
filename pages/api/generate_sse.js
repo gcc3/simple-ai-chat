@@ -33,6 +33,7 @@ const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : f
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
 const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
+const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
 export default async function (req, res) {
   const queryId = req.query.query_id || "";
@@ -104,7 +105,7 @@ export default async function (req, res) {
     } else {
       // User
       const user = await getUser(authResult.user.username);
-      if (!user.email) {
+      if (use_email && !user.email) {
         // No email, urge adding an email
         res.write(`data: Email verification is required, please add a email address. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
         res.write(`data: [DONE]\n\n`); res.flush();
