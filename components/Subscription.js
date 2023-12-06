@@ -5,6 +5,7 @@ import FeatureComparisonTable from "./SubscriptionComparisonTable";
 
 function Subscription() {
   const [user, setUser] = useState(null);
+  const [subscription, setSubscription] = useState(null);  // "user", "pro_user", "super_user"
   const [message, setMessage] = useState(null);
   const [targetRole, setTargetRole] = useState(null);
   const [amount, setAmount] = useState(null);
@@ -13,6 +14,7 @@ function Subscription() {
     // Verify user login status
     refreshUserInfo();
     setUser(localStorage.getItem("user"));
+    setSubscription(localStorage.getItem("userRole"));
     if (localStorage.getItem("userRole") === "super_user") {
       setMessage("You are already a super_user, for further upgrade contact `support@simple-ai.io`.");
     }
@@ -33,7 +35,7 @@ function Subscription() {
       {user && <div>
         <div>User: {localStorage.getItem("user")}</div>
         <div>Email: {localStorage.getItem("userEmail")}</div>
-        <div>Subscription: `{localStorage.getItem("userRole")}`</div>
+        <div>Subscription: `{subscription}`</div>
         <FeatureComparisonTable />
         {message && <div>{message}</div>}
         {!message && <div>
@@ -83,6 +85,8 @@ function Subscription() {
                   
                         if (data.success) {
                           setMessage(data.message);
+                          refreshUserInfo();
+                          setSubscription(localStorage.getItem("userRole"));
                         } else {
                           setMessage(data.message);
                           if (data.error) console.log(data.error);
