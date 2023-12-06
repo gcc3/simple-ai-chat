@@ -99,7 +99,7 @@ export function setTheme(theme) {
 
   // Code highlighting styles
   if (theme == "light") {
-    require('highlight.js/styles/github.css');
+    require('highlight.js/styles/atom-one-light.css');
     enableCSSRulesBySelector('.hljs');
   }
 
