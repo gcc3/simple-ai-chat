@@ -24,8 +24,8 @@ export default async function (req, res) {
     // Update email
     await updateUserEmail(data.username, data.email);
 
-    // Output the result
-    res.status(200).send("Email verified and updated.");
+    // Redirect to the home page
+    res.redirect(301, "/");
   } catch (error) {
     console.error(error);
     res.status(500).json({
