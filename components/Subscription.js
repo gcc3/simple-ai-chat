@@ -27,38 +27,56 @@ function Subscription() {
   const content = (
     <>
       {user && <div>
-        <div>Your current role/subscription: `{localStorage.getItem("userRole")}`</div>
+        <div>User: {localStorage.getItem("user")}</div>
+        <div>Email: {localStorage.getItem("userEmail")}</div>
+        <div>Subscription: `{localStorage.getItem("userRole")}`</div>
         <FeatureComparisonTable />
         {message && <div>{message}</div>}
         {!message && <div>
-          <PayPalButton targetRole={targetRole} onSuccess={async (details) => {
-            console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
-            console.log("Detail: ", details);
+          <div>Payment methods:</div>
+          <div className="mt-1">
+            <table>
+              <thead>
+                <tr>
+                  <th>Paypal or Credit Card</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="p-1">
+                  <PayPalButton targetRole={targetRole} onSuccess={async (details) => {
+                    console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
+                    console.log("Detail: ", details);
 
-            // Update user role
-            const response = await fetch("/api/user/update/role", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                role: targetRole,
-              }),
-            });
-      
-            const data = await response.json();
-            if (response.status !== 200) {
-              console.log(data.error);
-              throw data.message || new Error(`Request failed with status ${response.status}`);
-            }
-      
-            if (data.success) {
-              setMessage(data.message);
-            } else {
-              setMessage(data.message);
-              if (data.error) console.log(data.error);
-            }
-          }} />
+                    // Update user role
+                    const response = await fetch("/api/user/update/role", {
+                      method: "POST",
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
+                      body: JSON.stringify({
+                        role: targetRole,
+                      }),
+                    });
+              
+                    const data = await response.json();
+                    if (response.status !== 200) {
+                      console.log(data.error);
+                      throw data.message || new Error(`Request failed with status ${response.status}`);
+                    }
+              
+                    if (data.success) {
+                      setMessage(data.message);
+                    } else {
+                      setMessage(data.message);
+                      if (data.error) console.log(data.error);
+                    }
+                  }} />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>}
       </div>}
       {!user && <div>Please login.</div>}
