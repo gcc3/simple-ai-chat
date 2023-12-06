@@ -78,8 +78,8 @@ const PayPalButton = ({ targetRole, onSuccess }) => {
       </thead>
       <tbody>
         <tr>
-          <td>
-            <div className="w-full p-3 m-auto bg-gray-200 rounded-sm">
+          <td className="p-1">
+            <div className="w-full p-3 m-auto bg-gray-100 rounded-sm">
               <div className="mt-4 max-w-md m-auto" id="paypal-button-container"></div>
             </div>
           </td>
