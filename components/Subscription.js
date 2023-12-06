@@ -16,10 +16,10 @@ function Subscription() {
       setMessage("You are already a super_user.");
     }
 
-    if (localStorage.getItem("userRole") === "trial") {
-      setTargetRole("user");
-    }
     if (localStorage.getItem("userRole") === "user") {
+      setTargetRole("pro_user");
+    }
+    if (localStorage.getItem("userRole") === "pro_user") {
       setTargetRole("super_user");
     }
   });

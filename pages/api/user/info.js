@@ -46,7 +46,6 @@ async function getUserUsageWithLimit(username, role) {
   const weekly = await countChatsForUser(username, Date.now() - 604800000, Date.now());
   const monthly = await countChatsForUser(username, Date.now() - 2592000000, Date.now());
   const { daily_limit, weekly_limit, monthly_limit } = getUsageLimit(role);
-  console.log(daily, weekly, monthly, daily_limit, weekly_limit, monthly_limit);
 
   let exceeded = false;
   if (daily >= daily_limit || weekly >= weekly_limit || monthly >= monthly_limit) {

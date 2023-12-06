@@ -111,27 +111,30 @@ export default async function (req, res) {
         return;
       }
 
-      // Trial user, only allow 5 chats per day and not allow vision models
-      if (user.role === "trial") {
+      // Trial user, only allow 10 chats per day
+      if (user.role === "user") {
         const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
-        if (chatCount >= 5 || model_switch.includes("vision")) {
+        if (chatCount >= 10) {
           res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
           res.write(`data: [DONE]\n\n`); res.flush();
           res.end();
           return;
         }
       }
-      
-      // Check usage exceeded or not
-      const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
-      const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
-      const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
-      const usageLimit = getUsageLimit(user.role);
-      if (daily >= usageLimit.daily_limit || weekly >= usageLimit.weekly_limit || monthly >= usageLimit.monthly_limit) {
-        res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
+
+      // Pro user or super user, check usage limit
+      if (user.role === "pro_user" || user.role === "super_user") {
+        // Check usage exceeded or not
+        const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
+        const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
+        const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
+        const usageLimit = getUsageLimit(user.role);
+        if (daily >= usageLimit.daily_limit || weekly >= usageLimit.weekly_limit || monthly >= usageLimit.monthly_limit) {
+          res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
+          res.write(`data: [DONE]\n\n`); res.flush();
+          res.end();
+          return;
+        }
       }
     }
   }
