@@ -1,6 +1,7 @@
 import { getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 import { countChatsForUser } from 'utils/sqliteUtils.js';
+import { getUsageLimit } from 'utils/envUtils.js';
 
 export default async function (req, res) {
   // Method Not Allowed if not GET
@@ -41,7 +42,9 @@ export default async function (req, res) {
 }
 
 async function getUserUsageWithLimit(username, role) {
-  const { daily, weekly, monthly } = await getUserUsage(username);
+  const daily = await countChatsForUser(username, Date.now() - 86400000, Date.now());
+  const weekly = await countChatsForUser(username, Date.now() - 604800000, Date.now());
+  const monthly = await countChatsForUser(username, Date.now() - 2592000000, Date.now());
   const { daily_limit, weekly_limit, monthly_limit } = getUsageLimit(role);
 
   let exceeded = false;
@@ -54,35 +57,5 @@ async function getUserUsageWithLimit(username, role) {
     weekly: weekly + "/" + weekly_limit,
     monthly: monthly + "/" + monthly_limit,
     exceeded,
-  }
-}
-
-function getUsageLimit(role) {
-  const usage_limit = process.env.USAGE_LIMIT ? process.env.USAGE_LIMIT : "";
-  const role_usage_limit = usage_limit.split(";").find((item) => item.split(":")[0] === role).split(":")[1];
-  if (!role_usage_limit) return {
-    usage_limit_daily: 0,
-    usage_limit_weekly: 0,
-    usage_limit_monthly: 0,
-  };
-
-  const daily_limit = role_usage_limit.split(",")[0];
-  const weekly_limit = role_usage_limit.split(",")[1];
-  const monthly_limit = role_usage_limit.split(",")[2];
-  return {
-    daily_limit,
-    weekly_limit,
-    monthly_limit,
-  }
-}
-
-async function getUserUsage(username) {
-  const dailyChatCount = await countChatsForUser(username, Date.now() - 86400000, Date.now());
-  const weeklyChatCount = await countChatsForUser(username, Date.now() - 604800000, Date.now());
-  const monthlyChatCount = await countChatsForUser(username, Date.now() - 2592000000, Date.now());
-  return {
-    daily: dailyChatCount,
-    weekly: weeklyChatCount,
-    monthly: monthlyChatCount,
   }
 }
