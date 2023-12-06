@@ -19,12 +19,12 @@ body {
   background-color: var(--background-color);
 }
 code {
-  font-family: "Fira Code", monospace;
+  font-family: "Fira Code", monospace !important;
 }
 
 /* Inline code */
 .inline-code {
-  font-size: 15px !important;
+  font-size: 14px !important;
   color: var(--inline-code-text-color);
   background: var(--inline-code-background-color);
   word-wrap: break-word;
@@ -41,7 +41,7 @@ pre {
   padding: .6rem;  /* actual padding */
 }
 .code-block {
-  font-size: 15px !important;
+  font-size: 14px !important;
   color: var(--code-block-text-color) !important;
   background: transparent !important;
   padding: .0rem !important;  /* override the highlight.js padding */
