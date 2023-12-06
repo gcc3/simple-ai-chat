@@ -2,6 +2,7 @@ import { getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 import { countChatsForUser } from 'utils/sqliteUtils.js';
 import { getUsageLimit } from 'utils/envUtils.js';
+import { createToken } from 'utils/authUtils.js';
 
 export default async function (req, res) {
   // Method Not Allowed if not GET
