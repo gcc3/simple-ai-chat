@@ -19,7 +19,7 @@ body {
   background-color: var(--background-color);
 }
 code {
-  font-family: "Fira Code", monospace;
+  font-family: "Fira Code", monospace !important;
 }
 
 /* Inline code */
