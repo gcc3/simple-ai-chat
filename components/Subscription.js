@@ -15,7 +15,7 @@ function Subscription() {
       setUser(user);
 
       if (user.role === "super_user") {
-        setMessage("You are already a super_user, for further upgrade contact `support@simple-ai.io`.");
+        setMessage("You are already a super_user, for further upgrade please contact `support@simple-ai.io`.");
       }
     }
     loadUserInfo();
