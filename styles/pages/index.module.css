@@ -129,8 +129,8 @@
 }
 .main .contentitem {
   padding: 10px;
-  background: var(--content-background-color);
   border-radius: 6px;
+  background: var(--content-background-color);
 }
 .main .copyrights {
   color: var(--sub-text-color);
