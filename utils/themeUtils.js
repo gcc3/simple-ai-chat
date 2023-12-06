@@ -1,4 +1,4 @@
-import { enableCSSRulesBySelector, disableCSSRulesBySelector } from './cssUtils.js';
+import { enableCSSRulesBySelector, disableCSSRulesBySelector, setHighlightjsTheme } from './cssUtils.js';
 
 export function setTheme(theme) {
   if (theme == "light") {
@@ -99,12 +99,12 @@ export function setTheme(theme) {
 
   // Code highlighting styles
   if (theme == "light") {
-    require('highlight.js/styles/atom-one-light.css');
+    setHighlightjsTheme("css/highlight.js/atom-one-light.css");
     enableCSSRulesBySelector('.hljs');
   }
 
   if (theme == "dark") {
-    require('highlight.js/styles/github-dark.css');
+    setHighlightjsTheme("css/highlight.js/github-dark.css");
     enableCSSRulesBySelector('.hljs');
   }
   
