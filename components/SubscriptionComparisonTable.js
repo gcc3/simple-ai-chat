@@ -13,7 +13,7 @@ const FeatureComparisonTable = () => {
         <thead>
           <tr>
             <th rowSpan="2">Feature</th>
-            <th colSpan="3">Roles</th>
+            <th colSpan="3">Roles/subcriptions</th>
           </tr>
           <tr>
             <th>`trial`</th>
