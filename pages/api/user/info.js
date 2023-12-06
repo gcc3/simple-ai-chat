@@ -19,6 +19,23 @@ export default async function (req, res) {
   try {
     const user = await getUser(username);
     if (user) {
+      // Refresh user auth token
+      // Create JWT token
+      const payload = { 
+        id: user.id, 
+        username: user.username,
+        role: user.role,
+        email: user.email,
+      };
+      const token = createToken(payload);
+      if (!token) {
+        return res.status(500).json({ error: 'Failed to create token.' });
+      }
+
+      // Set the token as a cookie
+      const sameSiteCookie = process.env.SAME_SITE_COOKIE;
+      res.setHeader('Set-Cookie', `auth=${token}; HttpOnly; Path=/; Max-Age=86400; ${sameSiteCookie}`);
+
       res.status(200).json({ 
         user: {
           id: user.id, 
