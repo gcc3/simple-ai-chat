@@ -2,8 +2,8 @@ import React from "react";
 
 const FeatureComparisonTable = () => {
   const features = [
-    { name: "GPT-4", trial: "daily:5", user: "monthly:300", superUser: "monthly:3000" },
-    { name: "GPT-4V", trial: "Not available", user: "monthly:30", superUser: "monthly:3000" },
+    { name: "GPT-4", trial: "5/day", user: "300/month", superUser: "3000/month" },
+    { name: "GPT-4V", trial: "Not available", user: "30/month", superUser: "3000/month" },
     { name: "Pricing", trial: "Free" ,user: "$1", superUser: "$10/month" },
   ];
 
