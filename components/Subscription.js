@@ -89,7 +89,6 @@ function Subscription() {
 
                           // Refresh user info
                           refreshUserInfo();
-                          setUser(localStorage.getItem("user"));
                           setSubscription(localStorage.getItem("userRole"));
                         } else {
                           setMessage(data.message);
