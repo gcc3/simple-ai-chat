@@ -1,5 +1,6 @@
 import { decode } from "utils/authUtils"
 import { getUser, updateUserEmail } from "utils/sqliteUtils"
+import { createToken } from "utils/authUtils"
 
 export default async function (req, res) {
   // Check if the method is GET
