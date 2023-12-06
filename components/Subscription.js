@@ -10,12 +10,15 @@ function Subscription() {
   const [amount, setAmount] = useState(null);
 
   useEffect(() => {
-    // Verify user login status
-    refreshUserInfo();
-    setUser(localStorage.getItem("user"));
-    if (localStorage.getItem("userRole") === "super_user") {
-      setMessage("You are already a super_user, for further upgrade contact `support@simple-ai.io`.");
+    const loadUserInfo = async () => {
+      const user = await refreshUserInfo();
+      setUser(user);
+
+      if (user.role === "super_user") {
+        setMessage("You are already a super_user, for further upgrade contact `support@simple-ai.io`.");
+      }
     }
+    loadUserInfo();
   }, []);
 
   function handleSetTargetRole(role) {
@@ -31,9 +34,9 @@ function Subscription() {
   const content = (
     <>
       {user && <div>
-        <div>User: {localStorage.getItem("user")}</div>
-        <div>Email: {localStorage.getItem("userEmail")}</div>
-        <div>Subscription: `{localStorage.getItem("userRole")}`</div>
+        <div>User: {user.username}</div>
+        <div>Email: {user.email}</div>
+        <div>Subscription: `{user.role}`</div>
         <FeatureComparisonTable />
         {message && <div>{message}</div>}
         {!message && <div>
@@ -45,10 +48,10 @@ function Subscription() {
           {targetRole && <div>
             <div className="mt-1">Target role: `{targetRole}`</div>
             <div>Price: {amount === 0 ? "Free" : "$" + amount}</div>
-            {targetRole === localStorage.getItem("userRole") && <div className="mt-3">
+            {targetRole === user.role && <div className="mt-3">
               You are already a `{targetRole}`.
               </div>}
-            {amount > 0 && targetRole !== localStorage.getItem("userRole") && <div className="mt-1">
+            {amount > 0 && targetRole !== user.role && <div className="mt-1">
               <div className="mt-3">Payment methods:</div>
               <div className="mt-1">
                 <table>
@@ -83,6 +86,10 @@ function Subscription() {
                   
                         if (data.success) {
                           setMessage(data.message);
+
+                          // Refresh user info
+                          const user = await refreshUserInfo();
+                          setUser(user);
                         } else {
                           setMessage(data.message);
                           if (data.error) console.log(data.error);

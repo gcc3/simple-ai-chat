@@ -49,12 +49,14 @@ export default async (req, res) => {
   // Set the token as a cookie
   const sameSiteCookie = process.env.SAME_SITE_COOKIE;
   res.setHeader('Set-Cookie', `auth=${token}; HttpOnly; Path=/; Max-Age=86400; ${sameSiteCookie}`);
+  
   res.status(200).json({ 
     success: true, 
     user: { 
       username: user.username, 
       role: user.role,
       email: user.email, 
-      settings: user.settings } 
+      settings: user.settings 
+    } 
   });
 };

@@ -79,6 +79,7 @@ export async function refreshUserInfo() {
       console.log("User authentication failed, local user data cleared.");
     }
   }
+  return user;
 }
 
 export async function updateUserSetting(key, value) {
