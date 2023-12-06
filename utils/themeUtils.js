@@ -94,7 +94,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--progressbar-fill-background-color", "#00f700");
     document.documentElement.style.setProperty("--button-background-color", "rgba(235, 235, 235, 0.4)");
     document.documentElement.style.setProperty("--button-border-color", "#007000");
-    document.documentElement.style.setProperty("--button-hover-background-color", "rgba(215, 215, 215, 0.4)");
+    document.documentElement.style.setProperty("--button-hover-background-color", "rgba(0, 100, 0, 0.3)");
   }
 
   // Code highlighting styles

@@ -109,7 +109,7 @@ button {
   padding: 3px 5px 3px 5px !important;
   background-color: var(--button-background-color);
   border: 1.5px solid var(--button-border-color);
-  border-radius: 3px;
+  border-radius: 6px;
   cursor: pointer;
 }
 button:hover {
