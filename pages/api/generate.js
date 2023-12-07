@@ -22,7 +22,7 @@ const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : f
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
 
-export default async function (req, res) {
+export default async function(req, res) {
   const queryId = req.body.query_id || "";
   const role = req.body.role || "";
   const use_stats = req.body.use_stats || false;

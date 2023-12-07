@@ -1,21 +1,21 @@
-import { getUsageLimit } from "utils/envUtils";
+import { getUsageLimit, getAmount } from "utils/envUtils";
 
-export default async function (req, res) {
+export default async function(req, res) {
   try {
     res.status(200).json({
       user: {
         name: "User",
-        princing: "Free",
+        price: getAmount("user"),
         usage_limit: getUsageLimit("user"),
       },
       pro_user: {
         name: "Pro User",
-        pricing: "$10/month",
+        price: getAmount("pro_user"),
         usage_limit: getUsageLimit("pro_user"),
       },
       super_user: {
         name: "Super User",
-        pricing : "$30/month",
+        price : getAmount("super_user"),
         usage_limit: getUsageLimit("super_user"),
       }
     });
