@@ -1,14 +1,12 @@
+// To test: Repeat me *text* **text** `text` ```text``` **test`test`** *test`test`*
 export function markdownFormatter(elOutput) {
   if (!elOutput) return;
-  
-  let output = elOutput.innerHTML;
+  let output = global.rawOutput;
   
   // Check the code black is closed or not
   let codeBlockOpen = false;
-  output.split('<br>').forEach((line, i) => {
-    if (line.trim().startsWith('```')) {
-      codeBlockOpen = !codeBlockOpen;
-    }
+  output.split('\n').forEach((line, i) => {
+    if (line.trim().startsWith('```')) codeBlockOpen = !codeBlockOpen;
   });
   if (codeBlockOpen) return;
 
@@ -16,16 +14,17 @@ export function markdownFormatter(elOutput) {
   global.outputMutationObserver.disconnect();
 
   // Format the output
-  // To test: Repeat me *text* **text** `text` ```text``` **test`test`** *test`test`*
   elOutput.innerHTML = ((output) => {
-    // Temporarily replace multi-line code blocks with placeholders
-    const codeBlocks = [];
-    output = output.replace(/<pre><code>([^`]+)<\/code><\/pre>/g, (match, p1, offset, string) => {
-      codeBlocks.push(`<pre><code>${p1}</code></pre>`);
-      return `###CODE###${codeBlocks.length - 1}`;
+    let result = "";
+
+    // Replace ```text``` with <pre><code>text</code></pre>
+    let codeBlocks = [];
+    result = output.replace(/```([^`]+)```/g, function(match, p1) {
+      codeBlocks.push(p1);
+      return '\x00'; // Use a null character as a placeholder
     });
 
-    output = output.split('<br>').map((line, i) => {
+    result = result.split('\n').map((line, i) => {
       // Replace `text` with <code>text</code>
       if (line.includes('`')) line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, function(match, p1) {
         return `<code class="inline-code">${p1}</code>`;  // Inline code
@@ -55,50 +54,23 @@ export function markdownFormatter(elOutput) {
       return line;
     }).join('<br>');
 
-    // Restore multi-line code blocks from placeholders
-    output = output.replace(/###CODE###(\d+)/g, (match, p1) => {
-      return codeBlocks[p1];
-    });
-
-    // Multi-line code blocks
-    let codeBlockOpen = false;
-    output = output.split('<br>').map((line, i) => {
-      if (line.trim().startsWith('```')) {
-        if (!codeBlockOpen) {
-          codeBlockOpen = true;
-          return line.trim().replace(/```/g, '<pre><code>');
-        } else if (codeBlockOpen) {
-          codeBlockOpen = false;
-          return line.trim().replace(/```/g, '</code></pre>');
-        }
-      }
-      return line;
-    }).join('<br>');
-
-    // In <pre><code> tags replace <br> with \n
-    output = output.replace(/<pre><code>([^`]+)<\/code><\/pre>/g, (match, p1) => {
-      return `<pre><code>${p1.replaceAll('<br>', '\n')}</code></pre>`;
-    });
-
+    // Restore code blocks
     // Set language name and highlight code blocks
-    output = output.replace(/<pre><code>([^`]+)<\/code><\/pre>/g, (match, p1) => {
-      let codeLines = p1.split('\n');
-
-      // Get the language name and code
-      let languageName = codeLines[0].trim();
-      if (!languageName) languageName = 'plaintext';
-      const code = codeLines.slice(1).join('\n');
-
-      // Highlight the code
-      return `<pre><code class="code-block !whitespace-pre hljs language-${languageName}">${code}</code></pre>`;
+    result = result.replace(/\x00/g, function(match, p1) {
+      const codeBlock = codeBlocks.shift();
+      let codeLines = codeBlock.split('\n');
+      let language = codeLines.shift().trim();
+      if (!language) language = 'plaintext';
+      const code = codeLines.join('\n');
+      return `<pre><code class="code-block !whitespace-pre hljs language-${language}">${code}</code></pre>`;
     });
 
-    // Clean up <pre> tags
-    output = output
+    // Clean up <br> tags before and after <pre> and <code>
+    result = result
       .replace(/<\/pre><br><br>/g, '</pre><br>')  // Avoid consecutive breaks after </pre>
       .replace(/<br> ?<\/code><\/pre>/g, '</code></pre>')  // Remove <br> before </pre>
 
-    return output;
+    return result;
   })(output);
 
   // Resume observing
