@@ -44,6 +44,13 @@ export default async function (req, res) {
   const images_ = req.query.images || "";
   const files_ = req.query.files || "";
 
+  // Authentication
+  const authResult = authenticate(req);
+  let authUser = null;
+  if (authResult.success) {
+    authUser = authResult.user;
+  }
+
   res.writeHead(200, {
     'connection': 'keep-alive',
     'Cache-Control': 'no-cache',
@@ -91,7 +98,6 @@ export default async function (req, res) {
 
   // User access control
   if (use_access_control) {
-    const authResult = authenticate(req);
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     if (!authResult.success) {
       // Not a user, urge register a user
@@ -103,7 +109,7 @@ export default async function (req, res) {
         return;
       }
     } else {
-      // User
+      // User (the latest get from db)
       const user = await getUser(authResult.user.username);
       if (use_email && !user.email) {
         // No email, urge adding an email
@@ -231,7 +237,7 @@ export default async function (req, res) {
     let messages = [];
 
     // Message base
-    const generateMessagesResult = await generateMessages(input, images, queryId, role);
+    const generateMessagesResult = await generateMessages(authUser, input, images, queryId, role);
     definitions = generateMessagesResult.definitions;
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;

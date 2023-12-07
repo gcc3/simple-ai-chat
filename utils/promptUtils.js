@@ -6,6 +6,7 @@ import { dictionarySearch } from './dictionaryUtils.js';
 import { loglist } from './logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
 import { getMaxTokens } from './tokenUtils.js';
+import { getRole } from './sqliteUtils.js';
 
 // configurations
 const model = process.env.MODEL ? process.env.MODEL : "";
@@ -17,7 +18,7 @@ const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : ""
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
 
 // Generate messages for chatCompletion
-export async function generateMessages(input, images, queryId, role) {
+export async function generateMessages(authUser, input, images, queryId, role) {
   let messages = [];
   let token_ct = 0;
   
@@ -28,7 +29,15 @@ export async function generateMessages(input, images, queryId, role) {
 
   // Roleplay role prompt
   if (role !== "" && role !== "default") {
-    messages.push({ role: "system", content: await getRolePrompt(role) });
+    // Default role prompt
+    let rolePrompt = await getRolePrompt(role);
+
+    // User role prompt
+    if (authUser) {
+      const userRole = await getRole(role, authUser.username);
+      if (userRole) rolePrompt = userRole.prompt;
+    }
+    messages.push({ role: "system", content: rolePrompt });
   }
 
   // Dictionary search prompt
