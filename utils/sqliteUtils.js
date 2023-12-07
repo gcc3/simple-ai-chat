@@ -189,7 +189,23 @@ const getUserSessions = async (user) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT DISTINCT session FROM logs WHERE user = ? ORDER BY session DESC`, [user], (err, rows) => {
+      db.all(`SELECT DISTINCT session FROM logs WHERE user = ? ORDER BY session DESC LIMIT ?`, [user, 20], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
+const getSessionLog = async (sessionId) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT log FROM logs WHERE session = ?`, [sessionId], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -597,6 +613,7 @@ export {
   getSessions,
   deleteSession,
   getUserSessions,
+  getSessionLog,
   countChatsForIP,
   countChatsForUser,
   getUser,
