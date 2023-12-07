@@ -12,9 +12,6 @@ export function logadd(session, input, output, req) {
   let { success, user } = authenticate(req);
   if (success) username = user.username;
 
-  // Create log
-  output = output.replaceAll("\n", "###RETURN###");
-
   // Filter out logs
   if (logfilter(output, "USER")) return;
   if (logfilter(output, "IP")) return;
@@ -30,8 +27,8 @@ export async function loglist(session, limit = 50) {
   const logs = await getLogs(session, limit);
   loglines = logs.map(l => {
     return "T=" + l.time + " " + "S=" + l.session 
-    + " I=" + l.input.replaceAll("###RETURN###", " ") 
-    + " O=" + l.output.replaceAll("###RETURN###", " ");
+    + " I=" + l.input.replaceAll("\n", " ") 
+    + " O=" + l.output.replaceAll("\n", " ");
   }).join('\n');
   
   return loglines;
