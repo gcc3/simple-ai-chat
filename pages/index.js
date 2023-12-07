@@ -9,7 +9,6 @@ import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
-import { urlFormatter } from "utils/textUtils";
 import { passwordFormatter, maskPassword } from "utils/passwordUtils";
 import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
@@ -659,10 +658,7 @@ export default function Home() {
           return;
         }
 
-        // URL formatter
-        urlFormatter(elOutputRef.current);
-
-        // highlight.js
+        // Trigger highlight.js
         hljs.highlightAll();
 
         // Try speak some rest text
@@ -739,6 +735,8 @@ export default function Home() {
 
   // Normal generate
   async function generate(input) {    
+    console.log("Input:\n" + input);
+
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -761,19 +759,17 @@ export default function Home() {
       }
 
       // Render output
-      const output = data.result.text.split("\n").map((line, line_number) => {
-        console.log(line);
-        return (
-          <div key={line_number}>
-            {line}
-            <br></br>
-          </div>
-        );
-      });
-      const outputHtml = ReactDOMServer.renderToStaticMarkup(output);
+      const output = data.result.text
+      console.log("Output: \n" + output);
 
       // Print output
-      printOutput(outputHtml);
+      printOutput(output);
+
+      // Formatter
+      markdownFormatter(elOutputRef.current);
+
+      // Trigger highlight.js
+      hljs.highlightAll();
 
       if (localStorage.getItem('useStats') === "true") {
         const score = data.result.stats.score;
