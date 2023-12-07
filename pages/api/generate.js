@@ -45,6 +45,57 @@ export default async function(req, res) {
     return;
   }
 
+  // User access control
+  if (use_access_control) {
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (!authResult.success) {
+      // Not a user, urge register a user
+      const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());
+      if (chatCount >= 5) {
+        res.write(`data: Please register a user to continue, you can use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+    } else {
+      // User (the latest get from db)
+      const user = await getUser(authResult.user.username);
+      if (use_email && !user.email) {
+        // No email, urge adding an email
+        res.write(`data: Email verification is required, please add a email address. To add email address, you can use the command \`:user set email [email]\`.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+
+      // Trial user, only allow 15 chats per day
+      if (user.role === "user") {
+        const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
+        if (chatCount >= 15) {
+          res.write(`data: Daily usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
+          res.write(`data: [DONE]\n\n`); res.flush();
+          res.end();
+          return;
+        }
+      }
+
+      // Pro user or super user, check usage limit
+      if (user.role === "pro_user" || user.role === "super_user") {
+        // Check usage exceeded or not
+        const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
+        const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
+        const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
+        const usageLimit = getUsageLimit(user.role);
+        if (daily >= usageLimit.daily_limit || weekly >= usageLimit.weekly_limit || monthly >= usageLimit.monthly_limit) {
+          res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
+          res.write(`data: [DONE]\n\n`); res.flush();
+          res.end();
+          return;
+        }
+      }
+    }
+  }
+
   // Input
   let input = req.body.user_input || "";
   if (input.trim().length === 0) return;
