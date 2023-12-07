@@ -3,6 +3,16 @@ import PayPalButton from "./PayPalButton";
 import { refreshUserInfo } from "utils/userUtils";
 import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
 
+// Get amount
+function getPrice(subscriptions, role) {
+  if (subscriptions.hasOwnProperty(role)) {
+    if (subscriptions[role].price == 0) {
+      return "Free";
+    }
+    return subscriptions[role].price;
+  }
+}
+
 function Subscription() {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
@@ -39,21 +49,20 @@ function Subscription() {
       console.log("Target role set to:", role);
 
       // Set amount
-      subscriptions.forEach(subscription => {
-        if (subscription.role === role) {
-          setAmount(subscription.amount);
-        }
-      });
+      setAmount(getPrice(subscriptions, role));
     };
   }
 
   const content = (
     <>
+      {!user && <div>Please login. To register a user, use the command `:user add [username] [email?]`</div>}
       {user && <div>
         <div>User: {user.username}</div>
         <div>Email: {user.email}</div>
         <div>Subscription: `{user.role}`</div>
-        {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
+      </div>}
+      {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
+      {user && <div className="mt-3">
         {message && <div>{message}</div>}
         {!message && <div>
           <div>Select upgrade subscription:
@@ -120,7 +129,6 @@ function Subscription() {
           </div>}
         </div>}
       </div>}
-      {!user && <div>Please login.</div>}
     </>
   )
 
