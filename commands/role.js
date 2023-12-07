@@ -98,7 +98,8 @@ export default async function role(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (!data.result.roles.includes(roleName)) {
+      if (!data.result.roles.includes(roleName) 
+      && (!data.result.user_roles || !Object.entries(data.result.user_roles).some(([key, value]) => value.role === roleName))) {
         return "Role \"" + roleName + "\" does not exist.";
       }
     } catch (error) {
