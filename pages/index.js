@@ -739,6 +739,8 @@ export default function Home() {
 
   // Normal generate
   async function generate(input) {    
+    console.log("Input:\n" + input);
+
     try {
       const response = await fetch("/api/generate", {
         method: "POST",
@@ -761,19 +763,11 @@ export default function Home() {
       }
 
       // Render output
-      const output = data.result.text.split("\n").map((line, line_number) => {
-        console.log(line);
-        return (
-          <div key={line_number}>
-            {line}
-            <br></br>
-          </div>
-        );
-      });
-      const outputHtml = ReactDOMServer.renderToStaticMarkup(output);
+      const output = data.result.text
+      console.log("Output: \n" + output);
 
       // Print output
-      printOutput(outputHtml);
+      printOutput(output);
 
       if (localStorage.getItem('useStats') === "true") {
         const score = data.result.stats.score;
