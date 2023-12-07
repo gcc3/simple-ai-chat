@@ -658,7 +658,7 @@ export default function Home() {
           return;
         }
 
-        // highlight.js
+        // Trigger highlight.js
         hljs.highlightAll();
 
         // Try speak some rest text
@@ -765,8 +765,11 @@ export default function Home() {
       // Print output
       printOutput(output);
 
-      // formatter
+      // Formatter
       markdownFormatter(elOutputRef.current);
+
+      // Trigger highlight.js
+      hljs.highlightAll();
 
       if (localStorage.getItem('useStats') === "true") {
         const score = data.result.stats.score;
