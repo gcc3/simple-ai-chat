@@ -56,25 +56,28 @@ export default async function role(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (data.result.roles.length === 0) {
+      if (data.result.roles.length === 0 && (!data.result.user_roles || Object.entries(data.result.user_roles).length === 0)) {
         return "No role found.";
       } else {
         let userRoles = "";
-        if (data.result.user_roles && Object.entries(data.result.user_roles).length > 0) {
-          let roles = [];
-          Object.entries(data.result.user_roles).forEach(([key, value]) => {
-            roles.push(value.role);
-          });
-          userRoles = "\\" + roles.join(" \\");
-        } else {
-          userRoles = "No user role found.";
+        if (localStorage.getItem("user")) {
+          if (data.result.user_roles && Object.entries(data.result.user_roles).length > 0) {
+            let roles = [];
+            Object.entries(data.result.user_roles).forEach(([key, value]) => {
+              roles.push(value.role);
+            });
+            userRoles = "User roles: \n" 
+                + "\\" + roles.join(" \\") + "\n\n"; 
+          } else {
+            userRoles = "User roles: \n" 
+                      + "No user role found." + "\n\n";
+          }
         }
 
-        const defaultRoles = "\\" + data.result.roles.join(" \\")
-        return "User roles: \n" 
-              + userRoles + "\n\n" 
-             + "Default roles: \n" 
-              + defaultRoles;
+        const defaultRoles = "Default roles: \n" 
+                     + "\\" + data.result.roles.join(" \\");
+
+        return userRoles + defaultRoles;
       }
     } catch (error) {
       console.error(error);
