@@ -59,16 +59,22 @@ export default async function role(args) {
       if (data.result.roles.length === 0) {
         return "No role found.";
       } else {
-        let roles = "";
+        let userRoles = "";
         if (data.result.user_roles && Object.entries(data.result.user_roles).length > 0) {
-          let userRoles = [];
+          let roles = [];
           Object.entries(data.result.user_roles).forEach(([key, value]) => {
-            userRoles.push(value.role);
+            roles.push(value.role);
           });
-          roles += "User roles: \n" + "\\" + userRoles.join(" \\") + "\n\n";
+          userRoles = "\\" + roles.join(" \\");
+        } else {
+          userRoles = "No user role found.";
         }
-        roles += "Default roles: \n" + "\\" + data.result.roles.join(" \\");
-        return roles;
+
+        const defaultRoles = "\\" + data.result.roles.join(" \\")
+        return "User roles: \n" 
+              + userRoles + "\n\n" 
+             + "Default roles: \n" 
+              + defaultRoles;
       }
     } catch (error) {
       console.error(error);
