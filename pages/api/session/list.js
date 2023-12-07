@@ -1,22 +1,25 @@
-import { getSessions } from "utils/sqliteUtils";
+import { getSessions, getSessionLog } from "utils/sqliteUtils";
 
 export default async function (req, res) {
   try {
-    let sessionlines = "";
-    const sessions = await getSessions();
-    sessionlines = sessions.map(l => {
-      return "S=" + l.session;
-    }).join('\n');
+    let sessions = {};
+    const sessionIds = await getSessions();
+    await Promise.all(sessionIds.map(async (s) => {
+      const l = await getSessionLog(s.session);
+      sessions[s.session] = "U=" + l.user + " I=" + l.input.substring(0, Math.min(l.input.length, 30));
+    }));
 
     // Output the result
     res.status(200).json({
+      success: true,
       result: {
-        sessions: sessionlines,
+        sessions,
       },
     });
   } catch (error) {
     console.error(error);
     res.status(500).json({
+      success: false,
       error: {
         message: "An error occurred during your request.",
       },

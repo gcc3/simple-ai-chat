@@ -3,7 +3,7 @@ import { authenticate } from './authUtils.js';
 
 const fs = require('fs');
 
-export function logadd(session, log, req) {
+export function logadd(session, input, output, req) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
 
@@ -12,27 +12,18 @@ export function logadd(session, log, req) {
   let { success, user } = authenticate(req);
   if (success) username = user.username;
 
-  // Create log
-  log = log.replaceAll("\n", "###RETURN###");
-
   // Filter out logs
-  if (logfilter(log, "USER")) return;
-  if (logfilter(log, "IP")) return;
+  if (logfilter(output, "USER")) return;
+  if (logfilter(output, "IP")) return;
 
   // Insert log
-  insertLog(session, username, ip, browser, log);
+  insertLog(session, username, input, output, ip, browser);
 }
 
 export async function loglist(session, limit = 50) {
   let loglines = "";
   if (!session) return loglines;  // don't show anything if no queryId is given
-
-  const logs = await getLogs(session, limit);
-  loglines = logs.map(l => {
-    return "T=" + l.time + " " + "S=" + l.session + " " + l.log.replaceAll("###RETURN###", " ");
-  }).join('\n');
-  
-  return loglines;
+  return await getLogs(session, limit);
 }
 
 function logfilter(line, indicater) {

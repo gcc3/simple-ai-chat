@@ -27,9 +27,12 @@ const initializeDatabase = (db) => {
         time_h TEXT,
         session INTEGER NOT NULL,
         user TEXT,
+        input_l INTEGER,
+        input TEXT,
+        output_l INTEGER,
+        output TEXT,
         ip_addr TEXT,
-        browser TEXT,
-        log TEXT NOT NULL
+        browser TEXT
       );`, (err) => {
 
       if (err) {
@@ -116,7 +119,7 @@ const getLogs = async (session, limit=50) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT * FROM logs WHERE session = ? ORDER BY time DESC LIMIT ?`, [session, limit], (err, rows) => {
+      db.all(`SELECT time_h, user, input, output FROM logs WHERE session = ? ORDER BY time DESC LIMIT ?`, [session, limit], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -128,15 +131,17 @@ const getLogs = async (session, limit=50) => {
   }
 };
 
-const insertLog = async (session, username, ip, browser, log) => {
-  const time = Date.now();
+const insertLog = async (session, username, input, output, ip, browser) => {
   const db = await getDatabaseConnection();
+  const time = Date.now();
   const time_h = formatUnixTimestamp(time);
+  const input_l = input.length;
+  const output_l = output.length;
 
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("INSERT INTO logs (time, time_h, session, user, ip_addr, browser, log) VALUES (?, ?, ?, ?, ?, ?, ?)");
-      stmt.run([time, time_h, session, username, ip, browser, log], function (err) {
+      const stmt = db.prepare("INSERT INTO logs (time, time_h, session, user, input_l, input, output_l, output, ip_addr, browser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      stmt.run([time, time_h, session, username, input_l, input, output_l, output, ip, browser], function (err) {
         if (err) {
           reject(err);
         }
@@ -154,7 +159,7 @@ const getSessions = async () => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT DISTINCT session FROM logs ORDER BY session DESC`, [], (err, rows) => {
+      db.all(`SELECT DISTINCT session FROM logs ORDER BY session DESC LIMIT ?`, [20], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -205,7 +210,7 @@ const getSessionLog = async (sessionId) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT log FROM logs WHERE session = ?`, [sessionId], (err, rows) => {
+      db.get(`SELECT * FROM logs WHERE session = ?`, [sessionId], (err, rows) => {
         if (err) {
           reject(err);
         }
