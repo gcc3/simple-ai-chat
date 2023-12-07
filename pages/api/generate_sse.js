@@ -12,7 +12,6 @@ import { countChatsForIP, getUser } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 import { countChatsForUser } from "utils/sqliteUtils";
 import { getUsageLimit } from "utils/envUtils";
-import { refreshUserInfo } from "utils/userUtils";
 
 // OpenAI
 const openai = new OpenAI();
