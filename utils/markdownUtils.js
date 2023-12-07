@@ -61,6 +61,20 @@ export function markdownFormatter(elOutput) {
       let codeLines = codeBlock.split('\n');
       let language = codeLines.shift().trim();
       if (!language) language = 'plaintext';
+
+      // indent code blocks
+      let indent = 0;
+      codeLines.forEach((line, i) => {
+        if (line.trim()) {
+          indent = line.search(/\S|$/);
+          codeLines[i] = line.slice(indent);
+        }
+      });
+
+      // Remove empty lines at the beginning and the end
+      while (codeLines[0].trim() === '') codeLines.shift();
+      while (codeLines[codeLines.length - 1].trim() === '') codeLines.pop();
+
       const code = codeLines.join('\n');
       return `<pre><code class="code-block !whitespace-pre hljs language-${language}">${code}</code></pre>`;
     });
