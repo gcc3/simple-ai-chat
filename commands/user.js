@@ -218,5 +218,42 @@ export default async function entry(args) {
     }
   }
 
+  // Add custom role
+  if (command === "set" && args[1] === "role") {
+    if (args.length != 3) {
+      return "Usage: :user add role [role_name] [role_description]";
+    }
+
+    if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
+      return "Role description must be quoted with double quotes.";
+    }
+
+    const roleDescription = args[1].slice(1, -1);
+
+    try {
+      const response = await fetch("/api/user/update/settings", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          key: "role",
+          value: roleDescription,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.message || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
   return usage;
 }

@@ -4,7 +4,7 @@
 // extracting keywords, and searching dictionary
 import { dictionarySearch } from './dictionaryUtils.js';
 import { loglist } from './logUtils.js';
-import { rolePrompt } from './roleUtils.js';
+import { getRolePrompt } from './roleUtils.js';
 import { getMaxTokens } from './tokenUtils.js';
 
 // configurations
@@ -28,7 +28,7 @@ export async function generateMessages(input, images, queryId, role) {
 
   // Roleplay role prompt
   if (role !== "" && role !== "default") {
-    messages.push({ role: "system", content: await rolePrompt(role) });
+    messages.push({ role: "system", content: await getRolePrompt(role) });
   }
 
   // Dictionary search prompt

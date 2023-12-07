@@ -7,10 +7,10 @@ export default function help(args) {
     ":fullscreen - Use fullscreen, same as `:fullscreen default`.\n" +
     ":fullscreen [default/split/off] - Config fullscreen mode.\n" +
     ":theme [light/dark/terminal] - Change color theme.\n" +
-    // ":entry [ls|list|add] - Manage dictionary entries.\n" +
-    // ":ls - List all entries, same as `:entry ls`.\n" +
-    // ":add [word] [definition] - Same as `:entry add`.\n" +
-    // ":search [keyword] - Search dictionary.\n" +
+    ":entry [ls|list|add] - Manage dictionary entries.\n" +
+    ":ls - List all entries, same as `:entry ls`.\n" +
+    ":add [word] [definition] - Same as `:entry add`.\n" +
+    ":search [keyword] - Search dictionary.\n" +
     ":function [ls|list] - List all supported functions.\n" +
     ":location [on|off] - Switch on/off location service.\n" +
     ":log - Show logs for current session.\n" +
@@ -24,12 +24,18 @@ export default function help(args) {
     ":voice use [voice_name] - Set voice.\n" +
     ":lang [ls|list] - List all languages.\n" +
     ":lang use [language_code] - Set language.\n" +
-    ":role [ls|list|reset] - List all roles, reset role.\n" +
+    ":role - Show current roleplay role prompt.\n" +
     ":role use [role_name] - Use role.\n" +
+    ":role [ls|list] - List default roles.\n" +
+    ":role [reset] - Reset role to empty.\n" +
     ":user add [username] [email?] - Create a user.\n" +
     ":user set pass [value] - Change password.\n" +
     ":user reset pass [username] [email] - Reset password.\n" +
     ":user set [email] [value] - Change email address.\n" +
+    ":user role ls - List custom roleplay roles.\n" +
+    ":user role add [role_name] [prompt] - Custom roleplay role.\n" +
+    ":user role set [role_name] [prompt] - Modify role prompt.\n" +
+    ":user role del [role_name] - Delete custom roleplay role.\n" +
     ":user info - Get logged-in user info and settings.\n" +
     ":user [del|delete] [username] - Delete user with data.\n" +
     ":login [username] [password] - Login user.\n" +

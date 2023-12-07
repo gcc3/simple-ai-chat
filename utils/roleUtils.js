@@ -16,7 +16,7 @@ export async function roleListing() {
   return roles;
 }
 
-export async function rolePrompt(roleName) {
+export async function getRolePrompt(roleName) {
   fixLastRowNotEmpty('role.csv');
 
   const csvRows = fs.createReadStream("./role.csv", { encoding: "utf8" })
