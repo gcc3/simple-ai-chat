@@ -319,8 +319,8 @@ const updateUserPassword = async (username, newPassword) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET password = ? WHERE username = ?");
-      stmt.run([newPassword, username], function (err) {
+      const stmt = db.prepare("UPDATE users SET password = ?, updated_at = ? WHERE username = ?");
+      stmt.run([newPassword, new Date(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -341,8 +341,8 @@ const updateUserEmail = async (username, newEmail) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET email = ? WHERE username = ?");
-      stmt.run([newEmail, username], function (err) {
+      const stmt = db.prepare("UPDATE users SET email = ?, updated_at = ? WHERE username = ?");
+      stmt.run([newEmail, new Date(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -363,8 +363,8 @@ const updateUserRole = async (username, newRole) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET role = ? WHERE username = ?");
-      stmt.run([newRole, username], function (err) {
+      const stmt = db.prepare("UPDATE users SET role = ?, updated_at = ? WHERE username = ?");
+      stmt.run([newRole, new Date(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -439,8 +439,8 @@ const updateUserSettings = async (username, key, value) => {
 
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET settings = ? WHERE username = ?");
-      stmt.run([settings, username], function (err) {
+      const stmt = db.prepare("UPDATE users SET settings = ?, updated_at = ? WHERE username = ?");
+      stmt.run([settings, new Date(), username], function (err) {
         if (err) {
           reject(err);
         }
