@@ -481,7 +481,7 @@ export default function Home() {
       generate_sse(input, image_urls_encoded, file_urls_encoded);
     } else {
       // Use general simple API request
-      printOutput(waiting);
+      printOutput(waiting === "" ? "Generating..." : waiting);
       generate(input);
     }
   }

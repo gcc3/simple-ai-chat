@@ -3,6 +3,8 @@ import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils.js";
 import { getMaxTokens } from "utils/tokenUtils";
+import { authenticate } from "utils/authUtils";
+import { verifySessionId } from "utils/sessionUtils";
 
 // OpenAI
 const openai = new OpenAI();
