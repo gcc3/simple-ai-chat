@@ -514,11 +514,10 @@ const getUserRoles = async (createdBy) => {
 
 const insertRole = async (roleName, prompt, createdBy) => {
   const db = await getDatabaseConnection();
-
   try {
     return await new Promise((resolve, reject) => {
       // First, check if the username already exists
-      db.get("SELECT id FROM roles WHERE role = ?", [roleName], (err, row) => {
+      db.get("SELECT id FROM roles WHERE role = ? AND created_by = ?", [roleName, createdBy], (err, row) => {
         if (err) {
           reject(err);
           return;
