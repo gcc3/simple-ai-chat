@@ -500,7 +500,7 @@ const getUserRoles = async (createdBy) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM roles WHERE created_by = ?`, [createdBy], (err, rows) => {
+      db.all(`SELECT * FROM roles WHERE created_by = ?`, [createdBy], (err, rows) => {
         if (err) {
           reject(err);
         }
