@@ -84,8 +84,12 @@ export default function Home() {
       }
 
       // Print the output
-      const textHtml = text.replaceAll("###RETURN###", '<br>');
+      const textHtml = text.replaceAll(/&/g, "&amp;")
+                           .replaceAll(/</g, "&lt;").replace(/>/g, "&gt;")
+                           .replaceAll(/"/g, "&quot;").replace(/'/g, "&#039;")
+                           .replaceAll("###RETURN###", '<br>');
       const textRaw = text.replaceAll("###RETURN###", '\n');
+
       if (append) {
         elOutput.innerHTML += textHtml;
         global.rawOutput += textRaw;
