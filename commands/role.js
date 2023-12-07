@@ -4,6 +4,10 @@ export default async function role(args) {
   // Get role prompt
   if (!command) {
     const role = localStorage.getItem("role");
+    if (role === "") {
+      return "No role is set. Use command \`:role use [role_name]\` to set a role.";
+    }
+
     try {
       const response = await fetch("/api/role/" + role, {
         method: "GET",
