@@ -11,6 +11,7 @@ const openai = new OpenAI();
 
 // configurations
 const model = process.env.MODEL ? process.env.MODEL : "";
+const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
@@ -23,6 +24,8 @@ const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
 const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
+const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
+const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
 export default async function(req, res) {
   const queryId = req.body.query_id || "";
