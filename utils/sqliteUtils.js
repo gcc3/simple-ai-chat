@@ -20,43 +20,56 @@ const initializeDatabase = (db) => {
   return new Promise((resolve, reject) => {
 
     // Create logs table
-    const createLogsTable = `
+    db.run(`
       CREATE TABLE IF NOT EXISTS logs (
-          id INTEGER PRIMARY KEY,
-          time INTEGER NOT NULL,
-          time_h TEXT,
-          session INTEGER NOT NULL,
-          user TEXT,
-          ip_addr TEXT,
-          browser TEXT,
-          log TEXT NOT NULL
-      );`;
+        id INTEGER PRIMARY KEY,
+        time INTEGER NOT NULL,
+        time_h TEXT,
+        session INTEGER NOT NULL,
+        user TEXT,
+        ip_addr TEXT,
+        browser TEXT,
+        log TEXT NOT NULL
+      );`, (err) => {
 
-    db.run(createLogsTable, (err) => {
       if (err) {
         return reject(err);
       }
 
       // Create users table
-      const createUsersTable = `
-        CREATE TABLE IF NOT EXISTS users (
-            id INTEGER PRIMARY KEY,
-            username TEXT NOT NULL,
-            role TEXT NOT NULL,
-            password TEXT NOT NULL,
-            email TEXT,
-            settings TEXT,
-            last_login TEXT,
-            status TEXT NOT NULL,
-            created_at TEXT NOT NULL
-        );`;
+      db.run(`CREATE TABLE IF NOT EXISTS users (
+        id INTEGER PRIMARY KEY,
+        username TEXT NOT NULL,
+        role TEXT NOT NULL,
+        password TEXT NOT NULL,
+        email TEXT,
+        settings TEXT,
+        last_login TEXT,
+        status TEXT NOT NULL,
+        created_at TEXT NOT NULL,
+        updated_at TEXT
+      );`, (err) => {
 
-      db.run(createUsersTable, (err) => {
         if (err) {
           return reject(err);
         }
-        
-        resolve();
+
+        // Create roles table
+        db.run(`CREATE TABLE IF NOT EXISTS roles (
+          id INTEGER PRIMARY KEY,
+          role TEXT NOT NULL,
+          prompt TEXT NOT NULL,
+          created_by TEXT NOT NULL,
+          created_at TEXT NOT NULL,
+          updated_at TEXT
+        );`, (err) => {
+
+          if (err) {
+            return reject(err);
+          }
+
+          resolve();
+        });
       });
     });
 
@@ -466,6 +479,103 @@ const updateUserStatus = async (username, status) => {
   }
 };
 
+// III. roles
+const getRole = async (roleName) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM roles WHERE role = ?`, [roleName], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const insertRole = async (roleName, prompt, createdBy, createdAt) => {
+  const db = await getDatabaseConnection();
+
+  try {
+    return await new Promise((resolve, reject) => {
+      // First, check if the username already exists
+      db.get("SELECT id FROM roles WHERE role = ?", [roleName], (err, row) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        // If the username already exists, reject the promise
+        if (row) {
+          reject(new Error("Role name already exists."));
+          return;
+        }
+
+        // If the username doesn't exist, proceed with the insertion
+        const stmt = db.prepare("INSERT INTO roles (role, prompt, created_by, created_at) VALUES (?, ?, ?, ?)");
+        stmt.run([roleName, prompt, createdBy, createdAt], function (err) {
+          if (err) {
+            reject(err);
+            return;
+          }
+          // This `this.lastID` provides the ID of the last inserted row.
+          resolve(this.lastID);
+        });
+        stmt.finalize();
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const deleteRole = async (roleName, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("DELETE FROM roles WHERE role = ? AND created_by = ?");
+      stmt.run([roleName, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateRolePrompt = async (roleName, newPrompt, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE roles SET prompt = ?, updated_at = ? WHERE role = ? AND created_by = ?");
+      stmt.run([newPrompt, new Date(), roleName, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 export {
   getLogs,
   insertLog,
@@ -486,5 +596,9 @@ export {
   emailExists,
   createDatabaseFile,
   initializeDatabase,
-  getDatabaseConnection
+  getDatabaseConnection,
+  getRole,
+  insertRole,
+  deleteRole,
+  updateRolePrompt,
 };
