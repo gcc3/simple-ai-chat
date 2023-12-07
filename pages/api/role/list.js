@@ -20,7 +20,7 @@ export default async function (req, res) {
     res.status(200).json({
       result: {
         roles : roles,
-        custom_roles: userRoles
+        user_roles: userRoles
       },
     });
   } catch (error) {
