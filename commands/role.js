@@ -55,7 +55,7 @@ export default async function role(args) {
       if (data.result.roles.length === 0) {
         return "No role found.";
       } else {
-        return "\\" + data.result.roles.join(" \\");
+        return "Default roles: \n" + "\\" + data.result.roles.join(" \\");
       }
     } catch (error) {
       console.error(error);
@@ -103,14 +103,14 @@ export default async function role(args) {
       // Reset query id to forget previous memory
       localStorage.setItem("queryId", Date.now());
 
-      return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show role prompt";
+      return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show current role and prompt";
     } else {
       return "Invalid role name.";
     }
   }
 
   return "Usage: :role\n" + 
-         "       :role [ls|list]]\n";
-         "       :role [reset]]\n";
+         "       :role [ls|list]]\n" +
+         "       :role [reset]]\n" +
          "       :role use [role_name]\n";
 }
