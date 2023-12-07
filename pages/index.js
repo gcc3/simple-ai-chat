@@ -9,7 +9,6 @@ import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
-import { urlFormatter } from "utils/textUtils";
 import { passwordFormatter, maskPassword } from "utils/passwordUtils";
 import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
@@ -659,9 +658,6 @@ export default function Home() {
           return;
         }
 
-        // URL formatter
-        urlFormatter(elOutputRef.current);
-
         // highlight.js
         hljs.highlightAll();
 
@@ -768,6 +764,9 @@ export default function Home() {
 
       // Print output
       printOutput(output);
+
+      // formatter
+      markdownFormatter(elOutputRef.current);
 
       if (localStorage.getItem('useStats') === "true") {
         const score = data.result.stats.score;
