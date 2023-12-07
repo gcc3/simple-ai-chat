@@ -159,7 +159,7 @@ const getSessions = async () => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT DISTINCT session FROM logs ORDER BY session DESC`, [], (err, rows) => {
+      db.all(`SELECT DISTINCT session FROM logs ORDER BY session DESC LIMIT ?`, [20], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -210,7 +210,7 @@ const getSessionLog = async (sessionId) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT log FROM logs WHERE session = ?`, [sessionId], (err, rows) => {
+      db.get(`SELECT * FROM logs WHERE session = ?`, [sessionId], (err, rows) => {
         if (err) {
           reject(err);
         }
