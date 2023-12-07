@@ -97,7 +97,7 @@ export default async function (req, res) {
       // Not a user, urge register a user
       const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());
       if (chatCount >= 5) {
-        res.write(`data: Usage exceeded. Please register a user to continue, use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
+        res.write(`data: Please register a user to continue, you can use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
         return;
@@ -107,17 +107,17 @@ export default async function (req, res) {
       const user = await getUser(authResult.user.username);
       if (use_email && !user.email) {
         // No email, urge adding an email
-        res.write(`data: Email verification is required, please add a email address. To add email address, use the command \`:user set email [email]\`.\n\n`); res.flush();
+        res.write(`data: Email verification is required, please add a email address. To add email address, you can use the command \`:user set email [email]\`.\n\n`); res.flush();
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
         return;
       }
 
-      // Trial user, only allow 10 chats per day
+      // Trial user, only allow 15 chats per day
       if (user.role === "user") {
         const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
-        if (chatCount >= 10) {
-          res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
+        if (chatCount >= 15) {
+          res.write(`data: Daily usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
           res.write(`data: [DONE]\n\n`); res.flush();
           res.end();
           return;

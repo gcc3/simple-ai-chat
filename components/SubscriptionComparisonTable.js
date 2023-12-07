@@ -2,12 +2,12 @@ import React from "react";
 
 const FeatureComparisonTable = () => {
   const features = [
-    { name: "GPT-4", user: "10/day", pro_user: "2000/month", super_user: "5000/month" },
+    { name: "GPT-4", user: "24/day", pro_user: "2400/month", super_user: "7200/month" },
     { name: "GPT-4V", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "De-hallucination", user: "Yes", pro_user: "Yes", super_user: "Yes" },
+    { name: "De-hallucination", user: "24/day", pro_user: "Yes", super_user: "Yes" },
     { name: "Custom Roleplay", user: "╳", pro_user: "Yes", super_user: "Yes" },
     { name: "Personal Database", user: "╳", pro_user: "╳", super_user: "Yes" },
-    { name: "Pricing", user: "Free" , pro_user: "$10/month", super_user: "$30/month" },
+    { name: "Pricing", user: "Free" , pro_user: "$5/month", super_user: "$15/month" },
   ];
 
   return (

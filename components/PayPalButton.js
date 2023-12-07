@@ -4,8 +4,8 @@ const PayPalButton = ({ targetRole, onSuccess }) => {
   useEffect(() => {
     // Set amount
     let amount = "0.00";
-    if (targetRole === "pro_user") amount = "10.00";
-    if (targetRole === "super_user") amount = "30.00";
+    if (targetRole === "pro_user") amount = "5.00";
+    if (targetRole === "super_user") amount = "15.00";
 
     let scriptAdded = false;
     const loadPayPalScript = async () => {
