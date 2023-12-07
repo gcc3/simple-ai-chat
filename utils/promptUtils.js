@@ -64,31 +64,22 @@ export async function generateMessages(authUser, input, images, queryId, role) {
 
   // Chat history
   const session = queryId;
-  const loglistForSession = await loglist(session, 7);  // limit the memory length to 7 logs
-
-  if (loglistForSession !== "") {
-    let chatSets = [];
-    for (const line of loglistForSession.split("\n")) {
-      const question = line.substring(line.search("Q=") + 2, line.search(" A=")).trim();
-      const answer = line.substring(line.search("A=") + 2).trim();
-      chatSets.push({ question: question, answer: answer });
-    }
-
-    // Add chat history to messages
-    chatSets.reverse().map(chatSet => {
+  const sessionLogs = await loglist(session, 7);  // limit the memory length to 7 logs
+  if (sessionLogs && session.length > 0) {
+    sessionLogs.reverse().map(log => {
       messages.push({ 
         role: "user",
         content: [
           {
             type: "text",
-            text: chatSet.question
+            text: log.input
           }
         ]
       });
       
       messages.push({ 
         role: "assistant", 
-        content: chatSet.answer 
+        content: log.output 
       });
     });
   }

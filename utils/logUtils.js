@@ -23,15 +23,7 @@ export function logadd(session, input, output, req) {
 export async function loglist(session, limit = 50) {
   let loglines = "";
   if (!session) return loglines;  // don't show anything if no queryId is given
-
-  const logs = await getLogs(session, limit);
-  loglines = logs.map(l => {
-    return "T=" + l.time + " " + "S=" + l.session 
-    + " I=" + l.input.replaceAll("\n", " ") 
-    + " O=" + l.output.replaceAll("\n", " ");
-  }).join('\n');
-  
-  return loglines;
+  return await getLogs(session, limit);
 }
 
 function logfilter(line, indicater) {
