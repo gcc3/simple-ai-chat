@@ -107,7 +107,7 @@ export async function generateMessages(authUser, input, images, queryId, role) {
 
       // Vision model
       // If images is not empty, add image to content
-      if (images.length > 0) {
+      if (images && images.length > 0) {
         images.map(i => {
           if (i !== "") {
             c.push({
