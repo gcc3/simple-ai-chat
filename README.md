@@ -43,7 +43,7 @@ Example: `!get_weather(location=Tokyo)`
 to continue the previous talk, use `:session attach [session_id]` to attach to a session.  
 Use `:info` to check the current session ID.
 
-* Logs
+* Logs  
 Use `:log` to show the current conversation(session) history.  
 
 * Roleplay  
@@ -76,7 +76,7 @@ Currently support [Vectara](https://vectara.com/).
 Provide light theme by default, a dark theme, and a terminal style theme.  
 Use `:theme [light/dark/terminal]` to change color theme.
 
-* Full Screen Mode  
+* Fullscreen Mode  
 Use `:fullscreen` to turn on fullscreen mode.  
 Use `:fullscreen split` to use a vertically splited screen.  
 

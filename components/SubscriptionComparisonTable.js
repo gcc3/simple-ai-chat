@@ -23,7 +23,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
   return (
     <div className="mt-3 mb-5">
       <div className="mb-1">
-        <div>Feature comparison</div>
+        <div>Comparison</div>
       </div>
       <table className="table-fixed">
         <thead>
