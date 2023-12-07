@@ -67,7 +67,7 @@ export default async function role(args) {
           });
           userRoles = "\\" + roles.join(" \\");
         } else {
-          userRoles = "No user role found.\n\n";
+          userRoles = "No user role found.";
         }
 
         const defaultRoles = "\\" + data.result.roles.join(" \\")
