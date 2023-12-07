@@ -32,7 +32,7 @@ export default function help(args) {
     ":user set pass [value] - Change password.\n" +
     ":user reset pass [username] [email] - Reset password.\n" +
     ":user set [email] [value] - Change email address.\n" +
-    ":user role [add|set] [role_name] [prompt] - Custom roleplay role.\n" +
+    ":user role [add|set] [role_name] [prompt] - Custom role.\n" +
     ":user role [del|delete] [role_name] - Delete a custom role.\n" +
     ":user info - Get logged-in user info and settings.\n" +
     ":user [del|delete] [username] - Delete user with data.\n" +
