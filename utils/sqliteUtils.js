@@ -27,9 +27,12 @@ const initializeDatabase = (db) => {
         time_h TEXT,
         session INTEGER NOT NULL,
         user TEXT,
+        input_l INTEGER,
+        input TEXT,
+        output_l INTEGER,
+        output TEXT,
         ip_addr TEXT,
-        browser TEXT,
-        log TEXT NOT NULL
+        browser TEXT
       );`, (err) => {
 
       if (err) {
@@ -128,15 +131,17 @@ const getLogs = async (session, limit=50) => {
   }
 };
 
-const insertLog = async (session, username, ip, browser, log) => {
-  const time = Date.now();
+const insertLog = async (session, username, input, output, ip, browser) => {
   const db = await getDatabaseConnection();
+  const time = Date.now();
   const time_h = formatUnixTimestamp(time);
+  const input_l = input.length;
+  const output_l = output.length;
 
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("INSERT INTO logs (time, time_h, session, user, ip_addr, browser, log) VALUES (?, ?, ?, ?, ?, ?, ?)");
-      stmt.run([time, time_h, session, username, ip, browser, log], function (err) {
+      const stmt = db.prepare("INSERT INTO logs (time, time_h, session, user, input_l, input, output_l, output, ip_addr, browser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      stmt.run([time, time_h, session, username, input_l, input, output_l, output, ip, browser], function (err) {
         if (err) {
           reject(err);
         }

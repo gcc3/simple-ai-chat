@@ -3,7 +3,7 @@ import { authenticate } from './authUtils.js';
 
 const fs = require('fs');
 
-export function logadd(session, log, req) {
+export function logadd(session, input, output, req) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
 
@@ -13,14 +13,14 @@ export function logadd(session, log, req) {
   if (success) username = user.username;
 
   // Create log
-  log = log.replaceAll("\n", "###RETURN###");
+  output = output.replaceAll("\n", "###RETURN###");
 
   // Filter out logs
-  if (logfilter(log, "USER")) return;
-  if (logfilter(log, "IP")) return;
+  if (logfilter(output, "USER")) return;
+  if (logfilter(output, "IP")) return;
 
   // Insert log
-  insertLog(session, username, ip, browser, log);
+  insertLog(session, username, input, output, ip, browser);
 }
 
 export async function loglist(session, limit = 50) {
@@ -29,7 +29,9 @@ export async function loglist(session, limit = 50) {
 
   const logs = await getLogs(session, limit);
   loglines = logs.map(l => {
-    return "T=" + l.time + " " + "S=" + l.session + " " + l.log.replaceAll("###RETURN###", " ");
+    return "T=" + l.time + " " + "S=" + l.session 
+    + " I=" + l.input.replaceAll("###RETURN###", " ") 
+    + " O=" + l.output.replaceAll("###RETURN###", " ");
   }).join('\n');
   
   return loglines;
