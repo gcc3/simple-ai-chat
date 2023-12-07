@@ -1,4 +1,12 @@
 export function getUsageLimit(role) {
+  if (role === "root_user") {
+    return {
+      daily_limit: Number.MAX_VALUE,
+      weekly_limit: Number.MAX_VALUE,
+      monthly_limit: Number.MAX_VALUE,
+    };
+  }
+
   const role_usage_limit = process.env.ROLE_USAGE_LIMIT ? process.env.ROLE_USAGE_LIMIT : "";
   const usage_limit = role_usage_limit.split(";").find((item) => item.split(":")[0] === role).split(":")[1];
 
