@@ -1,13 +1,14 @@
 import React, { useEffect, useState } from "react";
 import PayPalButton from "./PayPalButton";
 import { refreshUserInfo } from "utils/userUtils";
-import FeatureComparisonTable from "./SubscriptionComparisonTable";
+import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
 
 function Subscription() {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
   const [targetRole, setTargetRole] = useState(null);
   const [amount, setAmount] = useState(null);
+  const [subscriptions, setSubscriptions] = useState(null);
 
   useEffect(() => {
     const loadUserInfo = async () => {
@@ -18,6 +19,16 @@ function Subscription() {
           setMessage("You are already a super_user, for further upgrade please contact `support@simple-ai.io`.");
         }
       }
+
+      // Fetch subscription list
+      const response = await fetch("/api/subscription/list", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      const subcriptions = await response.json();
+      setSubscriptions(subcriptions);
     }
     loadUserInfo();
   }, []);
@@ -26,9 +37,13 @@ function Subscription() {
     return () => {
       setTargetRole(role);
       console.log("Target role set to:", role);
-      if (role === "user") setAmount(0);
-      if (role === "pro_user") setAmount(10);
-      if (role === "super_user") setAmount(30);
+
+      // Set amount
+      subscriptions.forEach(subscription => {
+        if (subscription.role === role) {
+          setAmount(subscription.amount);
+        }
+      });
     };
   }
 
@@ -38,7 +53,7 @@ function Subscription() {
         <div>User: {user.username}</div>
         <div>Email: {user.email}</div>
         <div>Subscription: `{user.role}`</div>
-        <FeatureComparisonTable />
+        {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
         {message && <div>{message}</div>}
         {!message && <div>
           <div>Select upgrade subscription:
