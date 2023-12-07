@@ -12,7 +12,7 @@ const Documentation = () => {
 
   const content = (
     <>
-      <div>Features</div>
+      <div>Features:</div>
       <div>
         {features.map((item, index) => (
           <div key={index} className="mt-3">

@@ -218,5 +218,137 @@ export default async function entry(args) {
     }
   }
 
+  // Add a custom roleplay role
+  if (command === "role" && args[1] === "add") {
+    if (args.length != 4) {
+      return "Usage: :user role add [role_name] [prompt]";
+    }
+
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
+    if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
+      return "Role name must be quoted with double quotes.";
+    }
+
+    if (!args[3].startsWith("\"") || !args[3].endsWith("\"")) {
+      return "Prompt must be quoted with double quotes.";
+    }
+
+    const roleName = args[2].slice(1, -1);
+    const prompt = args[3].slice(1, -1);
+
+    try {
+      const response = await fetch("/api/role/add", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          roleName,
+          prompt,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.message || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Delete a custom roleplay role
+  if (command === "role" && (args[1] === "delete" || args[1] === "del")) {
+    if (args.length != 3) {
+      return "Usage: :user role [del|delete] [role_name]";
+    }
+
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
+    if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
+      return "Role name must be quoted with double quotes.";
+    }
+
+    const roleName = args[2].slice(1, -1);
+
+    try {
+      const response = await fetch("/api/role/delete", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          roleName,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.message || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Add a custom roleplay role
+  if (command === "role" && args[1] === "set") {
+    if (args.length != 4) {
+      return "Usage: :user role set [role_name] [prompt]";
+    }
+
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
+    if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
+      return "Role name must be quoted with double quotes.";
+    }
+
+    if (!args[3].startsWith("\"") || !args[3].endsWith("\"")) {
+      return "Prompt must be quoted with double quotes.";
+    }
+
+    const roleName = args[2].slice(1, -1);
+    const prompt = args[3].slice(1, -1);
+
+    try {
+      const response = await fetch("/api/role/update", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          roleName,
+          prompt,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.message || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
   return usage;
 }

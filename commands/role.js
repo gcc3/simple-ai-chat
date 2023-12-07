@@ -1,6 +1,34 @@
 export default async function role(args) {
   const command = args[0];
 
+  // Get role prompt
+  if (!command) {
+    const role = localStorage.getItem("role");
+    if (role === "") {
+      return "No role is set. Use command \`:role use [role_name]\` to set a role.";
+    }
+
+    try {
+      const response = await fetch("/api/role/" + role, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return "Role: " + role 
+         + "\nPrompt: " + data.result.prompt;
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  }
+
   if (command === "reset") {
     if (localStorage.getItem("role") === "") {
       return "Role is already empty.";
@@ -31,7 +59,16 @@ export default async function role(args) {
       if (data.result.roles.length === 0) {
         return "No role found.";
       } else {
-        return "\\" + data.result.roles.join(" \\");
+        let roles = "";
+        if (data.result.user_roles && Object.entries(data.result.user_roles).length > 0) {
+          let userRoles = [];
+          Object.entries(data.result.user_roles).forEach(([key, value]) => {
+            userRoles.push(value.role);
+          });
+          roles += "User roles: \n" + "\\" + userRoles.join(" \\") + "\n\n";
+        }
+        roles += "Default roles: \n" + "\\" + data.result.roles.join(" \\");
+        return roles;
       }
     } catch (error) {
       console.error(error);
@@ -65,7 +102,8 @@ export default async function role(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (!data.result.roles.includes(roleName)) {
+      if (!data.result.roles.includes(roleName) 
+      && (!data.result.user_roles || !Object.entries(data.result.user_roles).some(([key, value]) => value.role === roleName))) {
         return "Role \"" + roleName + "\" does not exist.";
       }
     } catch (error) {
@@ -79,12 +117,14 @@ export default async function role(args) {
       // Reset query id to forget previous memory
       localStorage.setItem("queryId", Date.now());
 
-      return "Role set to " + roleName + ".";
+      return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show current role and prompt";
     } else {
       return "Invalid role name.";
     }
   }
 
-  return "Usage: :role [ls|list|reset]\n" + 
+  return "Usage: :role\n" + 
+         "       :role [ls|list]]\n" +
+         "       :role [reset]]\n" +
          "       :role use [role_name]\n";
 }

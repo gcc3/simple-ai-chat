@@ -29,6 +29,13 @@ export default async function(req, res) {
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
 
+  // Authentication
+  const authResult = authenticate(req);
+  let authUser = null;
+  if (authResult.success) {
+    authUser = authResult.user;
+  }
+
   // Query ID, same as session ID
   const verifyResult = verifySessionId(queryId);
   if (!verifyResult.success) {
@@ -67,7 +74,7 @@ export default async function(req, res) {
     let score = 0;
     let token_ct = 0;
 
-    const generateMessagesResult = await generateMessages(input, null, queryId, role);  // image_url not supported yet
+    const generateMessagesResult = await generateMessages(authUser, input, null, queryId, role);  // image_url not supported yet
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
 

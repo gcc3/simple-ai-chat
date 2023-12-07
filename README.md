@@ -36,8 +36,9 @@ To check/add entry use `:entry list`, `:search [keyword]`, and `:entry add`.
 * Function calling  
 Support for [function calling](https://openai.com/blog/function-calling-and-other-api-updates), the AI can call the function itself, and with the description it can know when to use the function. Amazing!  
 To list available functions, use `:function ls`  
-To execute a function from input, use `!function_name(argument=value)`  
-Example: `!get_weather(location=Tokyo)`  
+To execute a function from input, use `!function_name({ "argument": "value" })`  
+Example: `!get_time({ "timezone": "UTC" })`  
+!get_weather({ "location": "kyoto" })
 
 * Session  
 to continue the previous talk, use `:session attach [session_id]` to attach to a session.  
@@ -50,6 +51,9 @@ Use `:log` to show the current conversation(session) history.
 To use roleplay, simply type `:role use [role_name]`.  
 Use `:role list` to check current available roles.  
 Prompts provided by the Awesome ChatGPT Prompts  
+
+* Custom Roleplay Role  
+Use `:user role` command to add, set, delete custom roleplay roles.  
 
 * Self Result Evaluation  
 I found that the AI can evaluate the result of itself very well.  

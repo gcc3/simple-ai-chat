@@ -55,7 +55,13 @@ export default async function (req, res) {
       res.status(404).json({ error: 'User has been removed.' });
     }
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    console.error(error);
+
+    res.status(500).json({
+      success: false,
+      message: 'Internal Server Error',
+      error: error
+    });
   }
 }
 
