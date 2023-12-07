@@ -36,7 +36,7 @@ export default async function session(args) {
         return "No session found.";
       } else {
         // Add new line for each log
-        const sessions = data.result.sessions;
+        const sessions = JSON.stringify(data.result.sessions, null, 2);
         return sessions;
       }
     }
