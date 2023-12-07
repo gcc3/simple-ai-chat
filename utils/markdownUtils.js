@@ -79,7 +79,14 @@ export function markdownFormatter(elOutput) {
         codeLines = codeLines.map(line => line.slice(indent));
       }
 
-      const code = codeLines.join('\n');
+      let code = codeLines.join('\n');
+
+      // Escape HTML special characters
+      // Important, if don't escape, the code will be highlighted incorrectly, especially for "html" language
+      code = code.replace(/&/g, "&amp;")
+                 .replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                 .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+
       return `<pre><code class="code-block !whitespace-pre hljs language-${language}">${code}</code></pre>`;
     });
 
