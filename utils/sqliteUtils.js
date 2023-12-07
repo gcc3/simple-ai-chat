@@ -480,11 +480,11 @@ const updateUserStatus = async (username, status) => {
 };
 
 // III. roles
-const getRole = async (roleName) => {
+const getRole = async (roleName, createdBy) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM roles WHERE role = ?`, [roleName], (err, rows) => {
+      db.get(`SELECT * FROM roles WHERE role = ? AND created_by`, [roleName, createdBy], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -496,7 +496,23 @@ const getRole = async (roleName) => {
   }
 };
 
-const insertRole = async (roleName, prompt, createdBy, createdAt) => {
+const getUserRoles = async (createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM roles WHERE created_by = ?`, [createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const insertRole = async (roleName, prompt, createdBy) => {
   const db = await getDatabaseConnection();
 
   try {
@@ -516,7 +532,7 @@ const insertRole = async (roleName, prompt, createdBy, createdAt) => {
 
         // If the username doesn't exist, proceed with the insertion
         const stmt = db.prepare("INSERT INTO roles (role, prompt, created_by, created_at) VALUES (?, ?, ?, ?)");
-        stmt.run([roleName, prompt, createdBy, createdAt], function (err) {
+        stmt.run([roleName, prompt, createdBy, new Date()], function (err) {
           if (err) {
             reject(err);
             return;
@@ -598,6 +614,7 @@ export {
   initializeDatabase,
   getDatabaseConnection,
   getRole,
+  getUserRoles,
   insertRole,
   deleteRole,
   updateRolePrompt,

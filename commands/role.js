@@ -55,7 +55,12 @@ export default async function role(args) {
       if (data.result.roles.length === 0) {
         return "No role found.";
       } else {
-        return "Default roles: \n" + "\\" + data.result.roles.join(" \\");
+        let roles = "";
+        if (data.result.custom_roles && data.result.custom_roles.length > 0) {
+          roles += "User roles: \n" + "\\" + data.result.custom_roles.join(" \\") + "\n";
+        }
+        roles += "Default roles: \n" + "\\" + data.result.roles.join(" \\");
+        return roles;
       }
     } catch (error) {
       console.error(error);

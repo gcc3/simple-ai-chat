@@ -9,6 +9,15 @@ export default async function (req, res) {
 
   const { roleName, prompt } = req.body;
 
+  // Check role existance
+  const role = await getRole(roleName, username);
+  if (!role) {
+    return res.status(200).json({ 
+        success: false, 
+        message: "Role not exists." 
+      });
+  }
+
   // Authentication
   const authResult = authenticate(req);
   if (!authResult.success) {
@@ -20,16 +29,7 @@ export default async function (req, res) {
   }
   const { id, username } = authResult.user;
 
-  // Check role existance
-  const role = await getRole(roleName, username);
-  if (!role) {
-    return res.status(200).json({ 
-        success: false, 
-        message: "Role not exists." 
-      });
-  }
-
-  updateRolePrompt(roleName, prompt, username, new Date());
+  updateRolePrompt(roleName, prompt, username);
 
   // No error
   return res.status(200).json({ 
