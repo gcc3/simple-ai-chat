@@ -27,6 +27,7 @@ function Usage() {
 
   const content = (
     <>
+      {!user && <div>Please login. To register a user, use the command `:user add [username] [email?]`</div>}
       {user && <div>
         <div>
           <div>User: {localStorage.getItem("user")}</div>
@@ -38,7 +39,6 @@ function Usage() {
           {usage.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
         </div>
       </div>}
-      {!user && <div>Please login.</div>}
     </>
   )
 
