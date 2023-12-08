@@ -227,7 +227,7 @@ const getSessionLog = async (sessionId, time = null) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM logs WHERE session = ? AND time >= ?`, [sessionId, time], (err, rows) => {
+      db.get(`SELECT * FROM logs WHERE session = ? AND time > ?`, [sessionId, time], (err, rows) => {
         if (err) {
           reject(err);
         }
