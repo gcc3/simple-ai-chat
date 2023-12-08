@@ -388,6 +388,7 @@ export default function Home() {
   // On submit input
   async function onSubmit(event) {
     event.preventDefault();
+    localStorage.setItem("time", Date.now());  // update time
 
     // Clear output and preview images
     clearOutput();
