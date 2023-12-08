@@ -156,7 +156,15 @@ export default function Home() {
     console.log("Session log:", JSON.stringify(log));
 
     // Print the log
+    clearPreviewImages();
+    const resetInfo = () => {
+      setInfo();
+      setStats();
+      setEvaluation();
+    }
+    resetInfo();
     clearOutput();
+
     printOutput(log["output"]);
     markdownFormatter(elOutputRef.current);
     hljs.highlightAll();
