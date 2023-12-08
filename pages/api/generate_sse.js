@@ -178,13 +178,13 @@ export default async function (req, res) {
   }
 
   // II. Tool calls (function calling) input
-  let do_function_tool_calls = false;
+  let do_function_calling = false;
   let functionName = "";
   let functionArgsString = "";
   let functionMessage = "";
   let original_input = "";
   if (input.startsWith("!")) {
-    do_function_tool_calls = true;
+    do_function_calling = true;
     console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
 
     // Function name and arguments
@@ -234,7 +234,7 @@ export default async function (req, res) {
     let messages = [];
 
     // Message base
-    const generateMessagesResult = await generateMessages(authUser, input, images, queryId, role);
+    const generateMessagesResult = await generateMessages(authUser, input, images, queryId, role, do_function_calling);
     definitions = generateMessagesResult.definitions;
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
@@ -263,7 +263,7 @@ export default async function (req, res) {
     }
 
     // 2. Function calling result
-    if (do_function_tool_calls) {
+    if (do_function_calling) {
       // Feed message with function calling result
       messages.push({
         "role": "function",
