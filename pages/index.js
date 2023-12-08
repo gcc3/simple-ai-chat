@@ -135,6 +135,33 @@ export default function Home() {
     }
   };
 
+  // Get session log
+  const getSessionLog = async function(direction = "prev", session, time) {
+    let log = null;
+    const response = await fetch("/api/log/" + direction + "?session=" + session + "&time=" + time, {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    })
+    .catch(error => {
+      console.error('Error:', error);
+    });
+    log = await response.json()
+    return log;
+  }
+
+  // Print session log
+  const printSessionLog = async function(log) {
+    console.log("Time set to log time: " + log["time"])
+    localStorage.setItem("time",log["time"]);
+    console.log("Session log:", JSON.stringify(log));
+
+    // Print the log
+    clearOutput();
+    printOutput(log["output"]);
+    markdownFormatter(elOutputRef.current);
+    hljs.highlightAll();
+  }
+
   // Clear preview images
   const clearPreviewImages = () => {
     if (elWrapperRef.current) {
@@ -273,6 +300,18 @@ export default function Home() {
           if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ←");
+
+            // Print session log (previous)
+            getSessionLog("prev", localStorage.getItem("queryId"), localStorage.getItem("time"))
+              .then((r) => {
+                if (Object.entries(r.result).length === 0) {
+                  console.log("No previous log.");
+                  return;
+                } else {
+                  const log = r.result["log"];
+                  printSessionLog(log);
+                }
+              });
           }
           break;
 
@@ -280,6 +319,18 @@ export default function Home() {
           if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: →");
+
+            // Print session log (next)
+            getSessionLog("next", localStorage.getItem("queryId"), localStorage.getItem("time"))
+            .then((r) => {
+              if (Object.entries(r.result).length === 0) {
+                console.log("No next log.");
+                return;
+              } else {
+                const log = r.result["log"];
+                printSessionLog(log);
+              }
+            });
           }
           break;
       }
