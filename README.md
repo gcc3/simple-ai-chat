@@ -90,12 +90,12 @@ Use `:fullscreen` to turn on fullscreen mode.
 Use `:fullscreen split` to use a vertically splited screen.  
 
 * User  
-User `:user add [username] [email?]` to create a new user, email is optional.  
-If set will send the initial password to email.  
+User `:user add [username] [email] [password?]` to create a new user.  
+If no password set, it will send the initial password to email.  
 Use `:user set pass [password]` to change password.  
 `:user set email [email]` will send a verification email to user, after verified, email will be updated.  
-Use `:login [username]`, `:logout` to login and logout user.  
-Use `:user reset pass [username] [email]` to reset user password.  
+Use `:login [username] [password]`, `:logout` to login and logout user.  
+Use `:user reset pass [username] [email]` to recover user password.  
 User settings will be applied after login.  
 
 * Formatters  

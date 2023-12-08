@@ -3,9 +3,12 @@ import { setUserLocalStorage } from "utils/userUtils";
 
 export default async function entry(args) {
   const command = args[0];
-  const usage = "Usage: :user add [username]" + "\n" +
-                "       :user set [pass/email] [value]" + "\n" +
-                "       :user info" + "\n";
+  const usage = "Usage: :user add [username] [email] [password]" + "\n" +
+                "       :user set pass [value]" + "\n" +
+                "       :user set email [value]" + "\n" +
+                "       :user reset pass [username] [email]" + "\n" +
+                "       :user role [add|set] [role_name] [prompt]" + "\n" +
+                "       :user role [del|delete] [role_name]" + "\n";
 
   // Get user info, configurations
   if (command === "info") {
@@ -42,15 +45,13 @@ export default async function entry(args) {
 
   // Add user
   if (command === "add") {
-    if (args.length != 2 && args.length != 3) {
-      return "Usage: :user add [username] [email?]";
+    if (args.length != 3 && args.length != 4) {
+      return "Usage: :user add [username] [email] [password?]";
     }
 
     const username = args[1];
-    const email = args[2] || "";
-    if (!username) {
-      return "Username is required.";
-    }
+    const email = args[2];
+    const password = args[3] || "";
 
     try {
       const response = await fetch("/api/user/add", {
@@ -61,7 +62,7 @@ export default async function entry(args) {
         body: JSON.stringify({
           username,
           email,
-          role: "user",
+          password,
           settings: JSON.stringify({
             theme:      localStorage.getItem("theme") || "light",
             speak:      localStorage.getItem("speak") || "off",

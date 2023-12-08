@@ -28,10 +28,10 @@ export default function help(args) {
     ":role use [role_name] - Use role.\n" +
     ":role [ls|list] - List default roles.\n" +
     ":role [reset] - Reset role to empty.\n" +
-    ":user add [username] [email?] - Create a user.\n" +
+    ":user add [username] [email] [password] - Create a user.\n" +
     ":user set pass [value] - Change password.\n" +
-    ":user reset pass [username] [email] - Reset password.\n" +
-    ":user set [email] [value] - Change email address.\n" +
+    ":user set email [value] - Change email address.\n" +
+    ":user reset pass [username] [email] - Recover password.\n" +
     ":user role [add|set] [role_name] [prompt] - Custom role.\n" +
     ":user role [del|delete] [role_name] - Delete a custom role.\n" +
     ":user info - Get logged-in user info and settings.\n" +
