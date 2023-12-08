@@ -773,9 +773,16 @@ export default function Home() {
             console.error("URL must start with http or https.");
           } else {
             // Redirect to URL
-            if (_event.parameters.blank == true) {
-              window.open(_event.parameters.url, '_blank');  // open with new tab
+            if (_event.parameters.blank == true) {    
+              // Open with new tab
+              window.open(_event.parameters.url, '_blank');
             } else {
+              // Stop generating as it will be redirected.
+              global.STATE = STATES.IDLE;
+              window.speechSynthesis.cancel();
+              openaiEssSrouce.close();
+
+              // Redirect to URL
               window.top.location.href = _event.parameters.url;
             }
           }

@@ -204,14 +204,19 @@ export default async function (req, res) {
     } else {
       // Execute function
       const functionResult = await executeFunction(functionName, functionArgsString);
+
+      // Event
       if (functionResult.event) {
         const event = JSON.stringify(functionResult.event);
         res.write(`data: ###EVENT###${event}\n\n`);
       }
+
+      // Message
       functionMessage = functionResult.message;
       if (!functionMessage.endsWith("\n")) {
         functionMessage += "\n";
       }
+      
       console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
       logadd(queryId, "F=" + function_input, "F=" + functionMessage, req);
     }
