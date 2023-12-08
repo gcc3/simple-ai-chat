@@ -168,6 +168,7 @@ export default function Home() {
 
   // Initializing
   useEffect(() => {
+    localStorage.setItem("time", Date.now());
     localStorage.setItem("queryId", Date.now());
     if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
     if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");

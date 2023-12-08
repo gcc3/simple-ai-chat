@@ -42,6 +42,7 @@ export function clearUserLocalStorage() {
   localStorage.removeItem("userSettings");
   
   // Reset query id to forget previous memory
+  localStorage.setItem("time", Date.now());
   localStorage.setItem("queryId", Date.now());
 
   // Reset role
