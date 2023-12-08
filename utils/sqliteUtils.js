@@ -220,15 +220,15 @@ const getUserSessions = async (user) => {
 // Get a single log by session (queryId)
 // only get the first log that is newer than the given time
 // if time is null, get first log of the session
-const getSessionLog = async (sessionId, time = null, direction = ">") => {
+const getSessionLog = async (session, time = null, direction = ">") => {
   if (!time) {
-    time = sessionId;
+    time = session;
   }
   const order = direction === ">" ? "ASC" : "DESC";
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM logs WHERE session = ? AND time ${direction} ? ORDER BY time ${order}`, [sessionId, time], (err, rows) => {
+      db.get(`SELECT * FROM logs WHERE session = ? AND time ${direction} ? ORDER BY time ${order}`, [session, time], (err, rows) => {
         if (err) {
           reject(err);
         }
