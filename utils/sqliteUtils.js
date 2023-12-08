@@ -217,7 +217,7 @@ const getUserSessions = async (user) => {
   }
 };
 
-// Get logs by session (queryId)
+// Get a single log by session (queryId)
 // only get the first log that is newer than the given time
 // if time is null, get first log of the session
 const getSessionLog = async (sessionId, time = null) => {
