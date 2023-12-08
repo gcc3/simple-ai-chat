@@ -110,13 +110,6 @@ export default async function (req, res) {
     } else {
       // User (the latest get from db)
       const user = await getUser(authResult.user.username);
-      if (use_email && !user.email) {
-        // No email, urge adding an email
-        res.write(`data: Email verification is required, please add a email address. To add email address, you can use the command \`:user set email [email]\`.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
 
       // Trial user, only allow 15 chats per day
       if (user.role === "user") {
