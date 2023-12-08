@@ -42,10 +42,15 @@ Example: `!get_time({ "timezone": "UTC" })`
 
 * Session  
 to continue the previous talk, use `:session attach [session_id]` to attach to a session.  
-Use `:info` to check the current session ID.
+Use `:info` to check the current session ID.  
 
 * Logs  
 Use `:log` to show the current conversation(session) history.  
+
+* Session log  
+Use arrow key "←", and "→" to check and print previous or next session log.  
+Before switching log, unfocusing input box is required.
+Use "ESC" key to unfocus, or just click somewhere else.  
 
 * Roleplay  
 To use roleplay, simply type `:role use [role_name]`.  
