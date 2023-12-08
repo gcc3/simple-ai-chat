@@ -24,7 +24,7 @@ export default async function (req, res) {
     let sessions = {};
     const sessionIds = await getUserSessions(username);  // max 20 sessions
     await Promise.all(sessionIds.map(async (s) => {
-      const l = await getSessionLog(s.session);
+      const l = await getSessionLog(s.session, s.session);
       sessions[s.session] = "I=" + l.input.substring(0, Math.min(l.input.length, 30));
     }));
 
