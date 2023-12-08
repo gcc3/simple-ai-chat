@@ -25,6 +25,11 @@ function Subscription() {
       const user = await refreshUserInfo();
       if (user) {
         setUser(user);
+        
+        if (user.role === "root_user") {
+          setMessage("You are the root_user.");
+        }
+
         if (user.role === "super_user") {
           setMessage("You are already a super_user, for further upgrade please contact `support@simple-ai.io`.");
         }
