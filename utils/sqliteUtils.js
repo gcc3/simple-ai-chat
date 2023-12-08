@@ -1,6 +1,6 @@
-import sqlite3 from 'sqlite3';
-import { promises as fs } from 'fs';
-import { formatUnixTimestamp } from './timeUtils.js';
+import sqlite3 from "sqlite3";
+import { promises as fs } from "fs";
+import { formatUnixTimestamp } from "./timeUtils.js";
 
 const createDatabaseFile = () => {
   return new Promise((resolve, reject) => {
@@ -18,9 +18,9 @@ const createDatabaseFile = () => {
 // Initialize the database
 const initializeDatabase = (db) => {
   return new Promise((resolve, reject) => {
-
     // Create logs table
-    db.run(`
+    db.run(
+      `
       CREATE TABLE IF NOT EXISTS logs (
         id INTEGER PRIMARY KEY,
         time INTEGER NOT NULL,
@@ -33,14 +33,15 @@ const initializeDatabase = (db) => {
         output TEXT,
         ip_addr TEXT,
         browser TEXT
-      );`, (err) => {
+      );`,
+      (err) => {
+        if (err) {
+          return reject(err);
+        }
 
-      if (err) {
-        return reject(err);
-      }
-
-      // Create users table
-      db.run(`CREATE TABLE IF NOT EXISTS users (
+        // Create users table
+        db.run(
+          `CREATE TABLE IF NOT EXISTS users (
         id INTEGER PRIMARY KEY,
         username TEXT NOT NULL,
         role TEXT NOT NULL,
@@ -51,30 +52,34 @@ const initializeDatabase = (db) => {
         status TEXT NOT NULL,
         created_at TEXT NOT NULL,
         updated_at TEXT
-      );`, (err) => {
+      );`,
+          (err) => {
+            if (err) {
+              return reject(err);
+            }
 
-        if (err) {
-          return reject(err);
-        }
-
-        // Create roles table
-        db.run(`CREATE TABLE IF NOT EXISTS roles (
+            // Create roles table
+            db.run(
+              `CREATE TABLE IF NOT EXISTS roles (
           id INTEGER PRIMARY KEY,
           role TEXT NOT NULL,
           prompt TEXT NOT NULL,
           created_by TEXT NOT NULL,
           created_at TEXT NOT NULL,
           updated_at TEXT
-        );`, (err) => {
+        );`,
+              (err) => {
+                if (err) {
+                  return reject(err);
+                }
 
-          if (err) {
-            return reject(err);
+                resolve();
+              }
+            );
           }
-
-          resolve();
-        });
-      });
-    });
+        );
+      }
+    );
 
     console.log("Database created.\n");
   });
@@ -86,7 +91,7 @@ const getDatabaseConnection = async () => {
     // If the file exists, the above line won't throw an error
   } catch (err) {
     // If the error is because the file doesn't exist, create it
-    if (err.code === 'ENOENT') {
+    if (err.code === "ENOENT") {
       console.log("Database not exist, trying to create...");
       const db = await createDatabaseFile();
       await initializeDatabase(db);
@@ -115,16 +120,20 @@ const getDatabaseConnection = async () => {
 
 // I. logs
 // Get logs by session
-const getLogs = async (session, limit=50) => {
+const getLogs = async (session, limit = 50) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT time_h, user, input, output FROM logs WHERE session = ? ORDER BY time DESC LIMIT ?`, [session, limit], (err, rows) => {
-        if (err) {
-          reject(err);
+      db.all(
+        `SELECT time_h, user, input, output FROM logs WHERE session = ? ORDER BY time DESC LIMIT ?`,
+        [session, limit],
+        (err, rows) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(rows);
         }
-        resolve(rows);
-      });
+      );
     });
   } finally {
     db.close();
@@ -140,7 +149,9 @@ const insertLog = async (session, username, input, output, ip, browser) => {
 
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("INSERT INTO logs (time, time_h, session, user, input_l, input, output_l, output, ip_addr, browser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
+      const stmt = db.prepare(
+        "INSERT INTO logs (time, time_h, session, user, input_l, input, output_l, output, ip_addr, browser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+      );
       stmt.run([time, time_h, session, username, input_l, input, output_l, output, ip, browser], function (err) {
         if (err) {
           reject(err);
@@ -169,7 +180,7 @@ const getSessions = async () => {
   } finally {
     db.close();
   }
-}
+};
 
 const deleteSession = async (session) => {
   const db = await getDatabaseConnection();
@@ -188,7 +199,7 @@ const deleteSession = async (session) => {
       }
     });
   });
-}
+};
 
 const getUserSessions = async (user) => {
   const db = await getDatabaseConnection();
@@ -204,11 +215,14 @@ const getUserSessions = async (user) => {
   } finally {
     db.close();
   }
-}
+};
 
 // Get logs by session (queryId)
 // only get the first log that is newer than the given time
-const getSessionLog = async (sessionId, time) => {
+const getSessionLog = async (sessionId, time = null) => {
+  if (!time) {
+    time = sessionId;
+  }
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -222,7 +236,7 @@ const getSessionLog = async (sessionId, time) => {
   } finally {
     db.close();
   }
-}
+};
 
 // Count how many chats for a IP address for a date range
 const countChatsForIP = async (ip, start, end) => {
@@ -256,7 +270,7 @@ const countChatsForUser = async (user, start, end) => {
   } finally {
     db.close();
   }
-}
+};
 
 // II. users
 const getUser = async (username) => {
@@ -280,7 +294,7 @@ const insertUser = async (username, role, password, email, settings, last_login,
 
   // Check if the username adheres to Unix naming conventions
   if (!/^[a-z][a-z0-9_-]*$/.test(username)) {
-    throw new Error("Invalid username.");  // the username must adhere to Unix naming conventions.
+    throw new Error("Invalid username."); // the username must adhere to Unix naming conventions.
   }
 
   try {
@@ -299,7 +313,9 @@ const insertUser = async (username, role, password, email, settings, last_login,
         }
 
         // If the username doesn't exist, proceed with the insertion
-        const stmt = db.prepare("INSERT INTO users (username, role, password, email, settings, last_login, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+        const stmt = db.prepare(
+          "INSERT INTO users (username, role, password, email, settings, last_login, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+        );
         stmt.run([username, role, password, email, settings, last_login, status, created_at], function (err) {
           if (err) {
             reject(err);
