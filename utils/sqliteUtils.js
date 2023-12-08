@@ -125,7 +125,7 @@ const getLogs = async (session, limit = 50) => {
   try {
     return await new Promise((resolve, reject) => {
       db.all(
-        `SELECT time_h, user, input, output FROM logs WHERE session = ? ORDER BY time DESC LIMIT ?`,
+        `SELECT time, time_h, user, input, output FROM logs WHERE session = ? ORDER BY time DESC LIMIT ?`,
         [session, limit],
         (err, rows) => {
           if (err) {
@@ -224,10 +224,11 @@ const getSessionLog = async (sessionId, time = null, direction = ">") => {
   if (!time) {
     time = sessionId;
   }
+  const order = direction === ">" ? "ASC" : "DESC";
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM logs WHERE session = ? AND time ${direction} ?`, [sessionId, time], (err, rows) => {
+      db.get(`SELECT * FROM logs WHERE session = ? AND time ${direction} ? ORDER BY time ${order}`, [sessionId, time], (err, rows) => {
         if (err) {
           reject(err);
         }
