@@ -1,5 +1,4 @@
 import { getSessionLog } from "utils/sqliteUtils";
-import { authenticate } from "utils/authUtils";
 
 export default async function (req, res) {
   try {
