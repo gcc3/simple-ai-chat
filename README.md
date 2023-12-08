@@ -52,6 +52,9 @@ To use roleplay, simply type `:role use [role_name]`.
 Use `:role list` to check current available roles.  
 Prompts provided by the Awesome ChatGPT Prompts  
 
+* Custom Roleplay Role  
+Use `:user role` command to add, set, delete custom roleplay roles.  
+
 * Self Result Evaluation  
 I found that the AI can evaluate the result of itself very well.  
 And this can solve the credibility problem in dictionary searches.  

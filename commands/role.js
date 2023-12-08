@@ -4,6 +4,10 @@ export default async function role(args) {
   // Get role prompt
   if (!command) {
     const role = localStorage.getItem("role");
+    if (role === "") {
+      return "No role is set. Use command \`:role use [role_name]\` to set a role.";
+    }
+
     try {
       const response = await fetch("/api/role/" + role, {
         method: "GET",
@@ -52,15 +56,28 @@ export default async function role(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (data.result.roles.length === 0) {
+      if (data.result.roles.length === 0 && (!data.result.user_roles || Object.entries(data.result.user_roles).length === 0)) {
         return "No role found.";
       } else {
-        let roles = "";
-        if (data.result.user_roles && data.result.user_roles.length > 0) {
-          roles += "User roles: \n" + "\\" + data.result.user_roles.join(" \\") + "\n";
+        let userRoles = "";
+        if (localStorage.getItem("user")) {
+          if (data.result.user_roles && Object.entries(data.result.user_roles).length > 0) {
+            let roles = [];
+            Object.entries(data.result.user_roles).forEach(([key, value]) => {
+              roles.push(value.role);
+            });
+            userRoles = "User roles: \n" 
+                + "\\" + roles.join(" \\") + "\n\n"; 
+          } else {
+            userRoles = "User roles: \n" 
+                      + "No user role found." + "\n\n";
+          }
         }
-        roles += "Default roles: \n" + "\\" + data.result.roles.join(" \\");
-        return roles;
+
+        const defaultRoles = "Default roles: \n" 
+                     + "\\" + data.result.roles.join(" \\");
+
+        return userRoles + defaultRoles;
       }
     } catch (error) {
       console.error(error);
@@ -94,7 +111,8 @@ export default async function role(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (!data.result.roles.includes(roleName)) {
+      if (!data.result.roles.includes(roleName) 
+      && (!data.result.user_roles || !Object.entries(data.result.user_roles).some(([key, value]) => value.role === roleName))) {
         return "Role \"" + roleName + "\" does not exist.";
       }
     } catch (error) {

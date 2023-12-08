@@ -12,7 +12,6 @@ import { countChatsForIP, getUser } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 import { countChatsForUser } from "utils/sqliteUtils";
 import { getUsageLimit } from "utils/envUtils";
-import { refreshUserInfo } from "utils/userUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -43,6 +42,13 @@ export default async function (req, res) {
   const location = req.query.location || "";
   const images_ = req.query.images || "";
   const files_ = req.query.files || "";
+
+  // Authentication
+  const authResult = authenticate(req);
+  let authUser = null;
+  if (authResult.success) {
+    authUser = authResult.user;
+  }
 
   res.writeHead(200, {
     'connection': 'keep-alive',
@@ -91,7 +97,6 @@ export default async function (req, res) {
 
   // User access control
   if (use_access_control) {
-    const authResult = authenticate(req);
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     if (!authResult.success) {
       // Not a user, urge register a user
@@ -103,7 +108,7 @@ export default async function (req, res) {
         return;
       }
     } else {
-      // User
+      // User (the latest get from db)
       const user = await getUser(authResult.user.username);
       if (use_email && !user.email) {
         // No email, urge adding an email
@@ -215,7 +220,7 @@ export default async function (req, res) {
         functionMessage += "\n";
       }
       console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
-      logadd(queryId, "F=" + function_input + " A=" + functionMessage, req);
+      logadd(queryId, "F=" + function_input, "F=" + functionMessage, req);
     }
 
     // Replace input with original
@@ -231,7 +236,7 @@ export default async function (req, res) {
     let messages = [];
 
     // Message base
-    const generateMessagesResult = await generateMessages(input, images, queryId, role);
+    const generateMessagesResult = await generateMessages(authUser, input, images, queryId, role);
     definitions = generateMessagesResult.definitions;
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
@@ -285,7 +290,7 @@ export default async function (req, res) {
           "content": "After calling another AI, its response as: " + nodeAiQueryResult,
         });
         additionalInfo += nodeAiQueryResult;
-        logadd(queryId, "F(f)=query_node_ai(query=" + input + ") A=" + nodeAiQueryResult, req);
+        logadd(queryId, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, req);
       }
     }
 
@@ -305,7 +310,7 @@ export default async function (req, res) {
           "content": "Retrieved context: " + vectorQueryResult,
         });
         additionalInfo += vectorQueryResult;
-        logadd(queryId, "F(f)=query_vector(query=" + input + ") A=" + vectorQueryResult, req);
+        logadd(queryId, "D=query_vector(query=" + input + ")", "D=" + vectorQueryResult, req);
 
         // Get vector score and refer doc info
         if (vectorQueryResult.includes("###VECTOR###")) {
@@ -384,7 +389,7 @@ export default async function (req, res) {
     if (result_text.trim().length === 0) result_text = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(result_text + "\n");
-    logadd(queryId, "Q=" + input + " A=" + result_text, req);
+    logadd(queryId, input, result_text, req);
 
     res.end();
     return;

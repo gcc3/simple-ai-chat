@@ -4,9 +4,7 @@ import { getUserRoles } from 'utils/sqliteUtils';
 
 export default async function (req, res) {
   try {
-    const roles = await roleListing();
-
-    // Custom roles
+    // User roles
     let userRoles = [];
     const authResult = authenticate(req);
     if (authResult.success) {
@@ -16,11 +14,14 @@ export default async function (req, res) {
       userRoles = await getUserRoles(username);
     }
 
+    // Default roles
+    const roles = await roleListing();
+
     // Output the result
     res.status(200).json({
       result: {
+        user_roles: userRoles,
         roles : roles,
-        user_roles: userRoles
       },
     });
   } catch (error) {

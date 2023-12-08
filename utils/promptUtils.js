@@ -6,6 +6,7 @@ import { dictionarySearch } from './dictionaryUtils.js';
 import { loglist } from './logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
 import { getMaxTokens } from './tokenUtils.js';
+import { getRole } from './sqliteUtils.js';
 
 // configurations
 const model = process.env.MODEL ? process.env.MODEL : "";
@@ -17,7 +18,7 @@ const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : ""
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
 
 // Generate messages for chatCompletion
-export async function generateMessages(input, images, queryId, role) {
+export async function generateMessages(authUser, input, images, queryId, role) {
   let messages = [];
   let token_ct = 0;
   
@@ -28,7 +29,15 @@ export async function generateMessages(input, images, queryId, role) {
 
   // Roleplay role prompt
   if (role !== "" && role !== "default") {
-    messages.push({ role: "system", content: await getRolePrompt(role) });
+    // Default role prompt
+    let rolePrompt = await getRolePrompt(role);
+
+    // User role prompt
+    if (authUser) {
+      const userRole = await getRole(role, authUser.username);
+      if (userRole) rolePrompt = userRole.prompt;
+    }
+    messages.push({ role: "system", content: rolePrompt });
   }
 
   // Dictionary search prompt
@@ -55,31 +64,22 @@ export async function generateMessages(input, images, queryId, role) {
 
   // Chat history
   const session = queryId;
-  const loglistForSession = await loglist(session, 7);  // limit the memory length to 7 logs
-
-  if (loglistForSession !== "") {
-    let chatSets = [];
-    for (const line of loglistForSession.split("\n")) {
-      const question = line.substring(line.search("Q=") + 2, line.search(" A=")).trim();
-      const answer = line.substring(line.search("A=") + 2).trim();
-      chatSets.push({ question: question, answer: answer });
-    }
-
-    // Add chat history to messages
-    chatSets.reverse().map(chatSet => {
+  const sessionLogs = await loglist(session, 7);  // limit the memory length to 7 logs
+  if (sessionLogs && session.length > 0) {
+    sessionLogs.reverse().map(log => {
       messages.push({ 
         role: "user",
         content: [
           {
             type: "text",
-            text: chatSet.question
+            text: log.input
           }
         ]
       });
       
       messages.push({ 
         role: "assistant", 
-        content: chatSet.answer 
+        content: log.output 
       });
     });
   }
@@ -98,7 +98,7 @@ export async function generateMessages(input, images, queryId, role) {
 
       // Vision model
       // If images is not empty, add image to content
-      if (images.length > 0) {
+      if (images && images.length > 0) {
         images.map(i => {
           if (i !== "") {
             c.push({

@@ -8,7 +8,7 @@ export default async function (req, res) {
     // Output the result
     res.status(200).json({
       result: {
-        logs: logs,
+        logs: logs.length > 0 ? JSON.stringify(logs, null, 2) : "No logs found.",
       },
     });
   } catch (error) {

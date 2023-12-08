@@ -29,7 +29,7 @@ export default async function (req, res) {
       });
     });
   } catch (error) {
-    console.log("Error:");
+    console.log("Error (evaluate):");
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json(error.response.data);
@@ -100,7 +100,7 @@ export async function evaluate(input, definitions, additionalInfo, result_text) 
     if (result_text.trim().length === 0) result_text = "null";
     return result_text;
   } catch (error) {
-    console.log("Error:");
+    console.log("Error (evaluate):");
     if (error.response) {
       console.error(error.response.status, error.response.data);
     } else {

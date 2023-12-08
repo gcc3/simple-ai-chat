@@ -4,7 +4,6 @@ import { fixLastRowNotEmpty } from './fileUtils';
 
 export async function roleListing() {
   fixLastRowNotEmpty('role.csv');
-
   let roles = [];
 
   // Default roles
@@ -20,7 +19,6 @@ export async function roleListing() {
 
 export async function getRolePrompt(roleName) {
   fixLastRowNotEmpty('role.csv');
-
   const csvRows = fs.createReadStream("./role.csv", { encoding: "utf8" })
                     .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 

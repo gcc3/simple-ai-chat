@@ -3,12 +3,15 @@ import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils.js";
 import { getMaxTokens } from "utils/tokenUtils";
+import { authenticate } from "utils/authUtils";
+import { verifySessionId } from "utils/sessionUtils";
 
 // OpenAI
 const openai = new OpenAI();
 
 // configurations
 const model = process.env.MODEL ? process.env.MODEL : "";
+const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
@@ -21,6 +24,8 @@ const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
 const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
+const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
+const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
 export default async function(req, res) {
   const queryId = req.body.query_id || "";
@@ -29,11 +34,69 @@ export default async function(req, res) {
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
 
+  // Authentication
+  const authResult = authenticate(req);
+  let authUser = null;
+  if (authResult.success) {
+    authUser = authResult.user;
+  }
+
   // Query ID, same as session ID
   const verifyResult = verifySessionId(queryId);
   if (!verifyResult.success) {
     res.status(400).send(verifyResult.message);
     return;
+  }
+
+  // User access control
+  if (use_access_control) {
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    if (!authResult.success) {
+      // Not a user, urge register a user
+      const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());
+      if (chatCount >= 5) {
+        res.write(`data: Please register a user to continue, you can use the command \`:user add [username] [email?]\`.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+    } else {
+      // User (the latest get from db)
+      const user = await getUser(authResult.user.username);
+      if (use_email && !user.email) {
+        // No email, urge adding an email
+        res.write(`data: Email verification is required, please add a email address. To add email address, you can use the command \`:user set email [email]\`.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+
+      // Trial user, only allow 15 chats per day
+      if (user.role === "user") {
+        const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
+        if (chatCount >= 15) {
+          res.write(`data: Daily usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
+          res.write(`data: [DONE]\n\n`); res.flush();
+          res.end();
+          return;
+        }
+      }
+
+      // Pro user or super user, check usage limit
+      if (user.role === "pro_user" || user.role === "super_user") {
+        // Check usage exceeded or not
+        const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
+        const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
+        const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
+        const usageLimit = getUsageLimit(user.role);
+        if (daily >= usageLimit.daily_limit || weekly >= usageLimit.weekly_limit || monthly >= usageLimit.monthly_limit) {
+          res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
+          res.write(`data: [DONE]\n\n`); res.flush();
+          res.end();
+          return;
+        }
+      }
+    }
   }
 
   // Input
@@ -67,7 +130,7 @@ export default async function(req, res) {
     let score = 0;
     let token_ct = 0;
 
-    const generateMessagesResult = await generateMessages(input, null, queryId, role);  // image_url not supported yet
+    const generateMessagesResult = await generateMessages(authUser, input, null, queryId, role);  // image_url not supported yet
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
 
@@ -95,7 +158,7 @@ export default async function(req, res) {
     if (result_text.trim().length === 0) result_text = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(result_text + "\n");
-    logadd(queryId, "Q=" + input + " A=" + result_text, req);
+    logadd(queryId, input, result_text, req);
 
     res.status(200).json({
       result: {
