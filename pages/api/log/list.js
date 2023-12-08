@@ -18,9 +18,7 @@ export default async function (req, res) {
     }
     
     // Verify user's permission for the log
-    console.log(authResult.user.role);
     if (authResult.user.role !== "root_user") {
-      console.log(session);
       const sessionLog = await getSessionLog(session);
       if (sessionLog && sessionLog.user !== authResult.user.username) {
         res.status(401).json({
