@@ -141,9 +141,9 @@ export default function Home() {
     const response = await fetch("/api/log/" + direction + "?session=" + session + "&time=" + time, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-    })
-    .catch(error => {
+    }).catch(error => {
       console.error('Error:', error);
+      return null;
     });
     log = await response.json()
     return log;

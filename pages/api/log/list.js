@@ -1,8 +1,36 @@
 import { loglist } from "utils/logUtils";
+import { authenticate } from "utils/authUtils";
+import { getSessionLog } from "utils/sqliteUtils";
 
 export default async function (req, res) {
   try {
     const session = req.query.query_id;
+
+    // Authenticate user
+    const authResult = authenticate(req);
+    if (!authResult.success) {
+      res.status(401).json({
+        success: false,
+        message: "Authentication failed.",
+        error: authResult.error,
+      });
+      return;
+    }
+    
+    // Verify user's permission for the log
+    if (authResult.user.role !== "root_user") {
+      const sessionLog = await getSessionLog(session);
+      if (sessionLog && sessionLog.user !== authResult.user.username) {
+        res.status(401).json({
+          success: false,
+          message: "Permission denied.",
+          error: "Permission denied."
+        });
+        return;
+      }
+    }
+
+    // Get the logs
     const logs = await loglist(session);
 
     // Output the result
@@ -14,9 +42,9 @@ export default async function (req, res) {
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      error: {
-        message: "An error occurred during your request.",
-      },
+      success: false,
+      message: "An error occurred during your request.",
+      error: error,
     });
   }
 }

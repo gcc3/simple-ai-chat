@@ -8,6 +8,8 @@ export default async function (req, res) {
     }
 
     const { session, time } = req.query;
+    
+    // Get the log
     const log = await getSessionLog(session, time, ">");
 
     // Output the result

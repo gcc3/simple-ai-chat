@@ -4,7 +4,10 @@ export const authenticate = (req) => {
   const token = req.cookies && req.cookies.auth;
 
   if (!token) { 
-    return { success: false, error: 'Please login.' };  // Token not provided
+    return { 
+      success: false,
+      error: 'Please login.'
+    };  // Token not provided
   }
 
   try {

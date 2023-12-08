@@ -21,7 +21,6 @@ export default async function log(args) {
     }
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    return error;
   }
-  return "";
 }
