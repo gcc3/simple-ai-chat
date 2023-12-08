@@ -28,7 +28,7 @@ export default function help(args) {
     ":role use [role_name] - Use role.\n" +
     ":role [ls|list] - List default roles.\n" +
     ":role [reset] - Reset role to empty.\n" +
-    ":user add [username] [email] [password] - Create a user.\n" +
+    ":user add [username] [email] [password?] - Create a user.\n" +
     ":user set pass [value] - Change password.\n" +
     ":user set email [value] - Change email address.\n" +
     ":user reset pass [username] [email] - Recover password.\n" +
