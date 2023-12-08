@@ -27,7 +27,7 @@ function Usage() {
 
   const content = (
     <>
-      {!user && <div>Please login. To register a user, use the command `:user add [username] [email?]`</div>}
+      {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]`</div>}
       {user && <div>
         <div>
           <div>User: {localStorage.getItem("user")}</div>
