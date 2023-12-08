@@ -10,12 +10,29 @@ const Documentation = () => {
     { name: "Personal Database (In progress)", description: "Utilize an advanced vector database engine for powerful data searches. (super_user)" },
   ];
 
+  const shortcuts = [
+    { name: "Stop the generation", description: "`Control + C`." },
+    { name: "Clear the output", description: "`Control + R`." },
+    { name: "Reset session", description: "`Control + Shift + R`." },
+    { name: "Clear the input/Unfocus input box", description: "`ESC`." },
+    { name: "Navigate session logs", description: "Arrow keys \"←\", and \"→\". Note: before navigating unfocus from the input box is required." },
+  ];
+
   const content = (
     <>
-      <div>Features:</div>
+      <div>Shurtcuts:</div>
+      <div>
+        {shortcuts.map((item, index) => (
+          <div key={index} className="mt-2">
+            <div>- {item.name}</div>
+            <div>{item.description}</div>
+          </div>
+        ))}
+      </div>
+      <div className="mt-5">Features:</div>
       <div>
         {features.map((item, index) => (
-          <div key={index} className="mt-3">
+          <div key={index} className="mt-2">
             <div>- {item.name}</div>
             <div>{item.description}</div>
           </div>
