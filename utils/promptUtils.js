@@ -18,7 +18,7 @@ const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : ""
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
 
 // Generate messages for chatCompletion
-export async function generateMessages(authUser, input, images, queryId, role) {
+export async function generateMessages(authUser, input, images, queryId, role, do_functioin_calling = false) {
   let messages = [];
   let token_ct = 0;
   
@@ -85,34 +85,36 @@ export async function generateMessages(authUser, input, images, queryId, role) {
   }
 
   // Finally, insert user input
-  messages.push({ 
-    role: "user", 
-    content: (() => {
-      let c = [];
+  if (!do_functioin_calling) {
+    messages.push({ 
+      role: "user", 
+      content: (() => {
+        let c = [];
 
-      // Text
-      c.push({
-          type: "text",
-          text: input
-      });
-
-      // Vision model
-      // If images is not empty, add image to content
-      if (images && images.length > 0) {
-        images.map(i => {
-          if (i !== "") {
-            c.push({
-              type: "image",
-              image_url: {
-                url: i
-              }
-            });
-          }
+        // Text
+        c.push({
+            type: "text",
+            text: input
         });
-      }
-      return c;
-    })()  // Immediately-invoked function expression (IIFE)
-  });
+
+        // Vision model
+        // If images is not empty, add image to content
+        if (images && images.length > 0) {
+          images.map(i => {
+            if (i !== "") {
+              c.push({
+                type: "image",
+                image_url: {
+                  url: i
+                }
+              });
+            }
+          });
+        }
+        return c;
+      })()  // Immediately-invoked function expression (IIFE)
+    });
+  }
 
   return {
     messages: messages,

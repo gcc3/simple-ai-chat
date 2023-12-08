@@ -120,8 +120,24 @@ System has 4 kinds of rols.
 4. user
 
 
-AI Links
+Messages
 --------
+
+| # | Part                         | Role            | Description                              |
+|---|------------------------------|-----------------|------------------------------------------|
+| 1 | System master message        | system          | set with `ROLE_CONTENT_SYSTEM`           |
+| 2 | Roleplay message             | system          | Message generated for roleplaying        |
+| 3 | Dictionary search result     | system          | Result of a dictionary search            |
+| 4 | Chat history                 | user, assistant | Chat history from user and assistant     |
+| 5 | User input                   | user            | Direct input provided by the user,       |
+| 6 | Location info                | system          | Add when location service is enabled     |
+| 7 | Function calling result      | function        | Result of function calling (tool calls)  |
+| 8 | AI links response            | function        | Response from AI node or hub             |
+| 9 | Vector database query result | function        | Result from a query to a vector database |
+
+
+AI Links (AI Node)
+------------------
 
 Simple AI is able to link to another support AI by function calling.  
 

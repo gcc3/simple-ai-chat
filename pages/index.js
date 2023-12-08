@@ -721,19 +721,21 @@ export default function Home() {
 
         // Function calling
         if (do_function_calling) {
-          console.log("Function calling: " + functionName + "(" + functionArgsString + ")");
+          const funcInput = "!" + functionName + "(" + functionArgsString + ")";
           
           // Generate with function calling
-          generate_sse("!" + functionName + "(" + functionArgsString + ")" + " Q=" + input, [], []);
+          console.log("Function calling: " + funcInput);
+          generate_sse(funcInput + " Q=" + input, [], []);
           return;
         }
 
         // Tool calls
         if (do_tool_calls) {
-          console.log("Tool calls: " + toolsObjectString);
+          const toolInput = "!call_tools(" + toolsObjectString + ")";
           
           // Generate with tool calls
-          generate_sse("!call_tools(" + toolsObjectString + ")" + " Q=" + input, [], []);
+          console.log("Tool calls: " + toolInput);
+          generate_sse(toolInput + " Q=" + input, [], []);
           return;
         }
 
@@ -771,9 +773,16 @@ export default function Home() {
             console.error("URL must start with http or https.");
           } else {
             // Redirect to URL
-            if (_event.parameters.blank == true) {
-              window.open(_event.parameters.url, '_blank');  // open with new tab
+            if (_event.parameters.blank == true) {    
+              // Open with new tab
+              window.open(_event.parameters.url, '_blank');
             } else {
+              // Stop generating as it will be redirected.
+              global.STATE = STATES.IDLE;
+              window.speechSynthesis.cancel();
+              openaiEssSrouce.close();
+
+              // Redirect to URL
               window.top.location.href = _event.parameters.url;
             }
           }
