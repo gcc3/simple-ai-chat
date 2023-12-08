@@ -267,6 +267,20 @@ export default function Home() {
             }
           }
           break;
+
+        case "ArrowLeft":
+          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: ←");
+          }
+          break;
+
+        case "ArrowRight":
+          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: →");
+          }
+          break;
       }
     };
     window.addEventListener("keydown", handleKeyDown, true);
