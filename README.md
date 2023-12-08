@@ -132,12 +132,12 @@ Messages
 | 5 | User input                   | user            | Direct input provided by the user,       |
 | 6 | Location info                | system          | Add when location service is enabled     |
 | 7 | Function calling result      | function        | Result of function calling (tool calls)  |
-| 8 | Node AI response             | function        | Response from Node A                     |
+| 8 | AI links response            | function        | Response from AI node or hub             |
 | 9 | Vector database query result | function        | Result from a query to a vector database |
 
 
-AI Links
---------
+AI Links (AI Node)
+------------------
 
 Simple AI is able to link to another support AI by function calling.  
 
