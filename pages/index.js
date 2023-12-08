@@ -141,9 +141,9 @@ export default function Home() {
     const response = await fetch("/api/log/" + direction + "?session=" + session + "&time=" + time, {
       method: 'GET',
       headers: { 'Content-Type': 'application/json' },
-    })
-    .catch(error => {
+    }).catch(error => {
       console.error('Error:', error);
+      return null;
     });
     log = await response.json()
     return log;
@@ -312,6 +312,12 @@ export default function Home() {
             // Print session log (previous)
             getSessionLog("prev", localStorage.getItem("queryId"), localStorage.getItem("time"))
               .then((r) => {
+                if (!r.success) {
+                  console.error(r.error);
+                  printOutput(r.error);
+                  return;
+                }
+
                 if (Object.entries(r.result).length === 0) {
                   console.log("No previous log.");
                   return;
@@ -331,6 +337,12 @@ export default function Home() {
             // Print session log (next)
             getSessionLog("next", localStorage.getItem("queryId"), localStorage.getItem("time"))
             .then((r) => {
+              if (!r.success) {
+                console.error(r.error);
+                printOutput(r.error);
+                return;
+              }
+
               if (Object.entries(r.result).length === 0) {
                 console.log("No next log.");
                 return;
