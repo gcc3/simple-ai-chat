@@ -44,35 +44,39 @@ export default async function session(args) {
     return "Usage: :session attach [session_id]\n"
   }
 
-  if (args.length === 2) {
-    // :session attach [session_id]
-    if (args[0] === "attach") {
-      return attachSession(args[1]);
+  // :session attach [session_id]
+  if (args[0] === "attach") {
+    if (args.length !== 2) {
+      return "Usage: :session attach [session_id]\n"
+    }
+    
+    return attachSession(args[1]);
+  }
+
+  // :session [del|delete] [session_id]
+  if (args[0] === "del" || args[0] === "delete") {
+    if (args.length !== 2) {
+      return "Usage: :session [del|delete] [session_id]\n"
     }
 
-    // :session [del|delete] [session_id]
-    if (args[0] === "del" || args[0] === "delete") {
-      if (localStorage.getItem("user") === "root" || localStorage.getItem("user")) {
-        const sessionId = args[1];
+    if (localStorage.getItem("user") === "root" || localStorage.getItem("user")) {
+      const sessionId = args[1];
 
-        const response = await fetch("/api/session/delete/" + sessionId, {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      const response = await fetch("/api/session/delete/" + sessionId, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-        const data = await response.json();
-        if (response.status !== 200) {
-          throw data.error || new Error(`Request failed with status ${response.status}`);
-        }
-  
-        return data.result.message;
-      } else {
-        return "Permission denied.";
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
       }
-    }
 
-    return "Usage: :session attach [session_id]\n"
+      return data.result.message;
+    } else {
+      return "Permission denied.";
+    }
   }
 }
