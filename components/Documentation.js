@@ -11,10 +11,10 @@ const Documentation = () => {
   ];
 
   const shortcuts = [
-    { name: "Stop the generation", description: "`Control + C`." },
-    { name: "Clear the output", description: "`Control + R`." },
-    { name: "Reset session", description: "`Control + Shift + R`." },
-    { name: "Clear the input/Unfocus input box", description: "`ESC`." },
+    { name: "Stop generating", description: "`Control + C`." },
+    { name: "Clear output", description: "`Control + R`." },
+    { name: "Reset session", description: "`Control + Shift + R`, start a new session" },
+    { name: "Clear the input/unfocus input box", description: "`ESC`." },
     { name: "Navigate session logs", description: "Arrow keys \"←\", and \"→\". Note: before navigating unfocus from the input box is required." },
   ];
 
