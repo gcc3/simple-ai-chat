@@ -312,12 +312,6 @@ export default function Home() {
             // Print session log (previous)
             getSessionLog("prev", localStorage.getItem("queryId"), localStorage.getItem("time"))
               .then((r) => {
-                if (!r.success) {
-                  console.error(r.error);
-                  printOutput(r.error);
-                  return;
-                }
-
                 if (Object.entries(r.result).length === 0) {
                   console.log("No previous log.");
                   return;
@@ -337,12 +331,6 @@ export default function Home() {
             // Print session log (next)
             getSessionLog("next", localStorage.getItem("queryId"), localStorage.getItem("time"))
             .then((r) => {
-              if (!r.success) {
-                console.error(r.error);
-                printOutput(r.error);
-                return;
-              }
-
               if (Object.entries(r.result).length === 0) {
                 console.log("No next log.");
                 return;

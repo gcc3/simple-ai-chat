@@ -9,30 +9,6 @@ export default async function (req, res) {
     }
 
     const { session, time } = req.query;
-
-    // Authenticate user
-    const authResult = authenticate(req);
-    if (!authResult.success) {
-      res.status(401).json({
-        success: false,
-        message: "Authentication failed.",
-        error: authResult.error,
-      });
-      return;
-    }
-
-    // Verify user's permission for the log
-    if (authResult.user.role !== "root_user") {
-      const sessionLog = await getSessionLog(session);
-      if (sessionLog && sessionLog.user !== authResult.user.username) {
-        res.status(401).json({
-          success: false,
-          message: "Permission denied.",
-          error: "Permission denied."
-        });
-        return;
-      }
-    }
     
     // Get the log
     const log = await getSessionLog(session, time, "<");
