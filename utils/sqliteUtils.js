@@ -316,9 +316,9 @@ const insertUser = async (username, role, password, email, settings, last_login,
 
         // If the username doesn't exist, proceed with the insertion
         const stmt = db.prepare(
-          "INSERT INTO users (username, role, password, email, settings, last_login, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+          "INSERT INTO users (username, role, password, email, settings, last_login, status, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
-        stmt.run([username, role, password, email, settings, last_login, status, created_at], function (err) {
+        stmt.run([username, role, password, email, settings, last_login, status, created_at, ""], function (err) {
           if (err) {
             reject(err);
             return;
@@ -571,8 +571,8 @@ const insertRole = async (roleName, prompt, createdBy) => {
         }
 
         // If the username doesn't exist, proceed with the insertion
-        const stmt = db.prepare("INSERT INTO roles (role, prompt, created_by, created_at) VALUES (?, ?, ?, ?)");
-        stmt.run([roleName, prompt, createdBy, new Date()], function (err) {
+        const stmt = db.prepare("INSERT INTO roles (role, prompt, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?)");
+        stmt.run([roleName, prompt, createdBy, new Date(), ""], function (err) {
           if (err) {
             reject(err);
             return;

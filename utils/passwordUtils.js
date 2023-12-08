@@ -27,6 +27,19 @@ export function maskPassword(input) {
         return `:user set pass ${maskedPassword}`; 
     }
   }
+
+  if (input.startsWith(':user add')) {
+    const pattern = /^:user add (\w+) (\S+) (\S+)$/;  // matches ':user add user_name email password'
+
+    if (input.startsWith(':user add')) {
+      const match = input.match(pattern);
+
+      if (match) {
+        const maskedPassword = '*'.repeat(match[3].length);
+        return `:user add ${match[1]} ${match[2]} ${maskedPassword}`; 
+      }
+    }
+  }
   
   // if the input doesn't match the pattern, return it as is
   return input;
