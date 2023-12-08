@@ -63,7 +63,7 @@ export default async function (req, res) {
           },
           Body: {
             Html: {
-              Data: "You have subscribed to `simple-ai.io` and become a `super_user`.",
+              Data: "You have become a `" + role + "`.",
             },
           },
         },
