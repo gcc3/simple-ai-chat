@@ -32,7 +32,7 @@ export default async function session(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
   
-      if (data.result.sessions === "") {
+      if (Object.entries(data.result.sessions).length === 0) {
         return "No session found.";
       } else {
         // Add new line for each log

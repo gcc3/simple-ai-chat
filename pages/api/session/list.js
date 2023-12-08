@@ -6,7 +6,9 @@ export default async function (req, res) {
     const sessionIds = await getSessions();
     await Promise.all(sessionIds.map(async (s) => {
       const l = await getSessionLog(s.session, s.session);
-      sessions[s.session] = "U=" + l.user + " I=" + l.input.substring(0, Math.min(l.input.length, 50));
+      if (l) {
+        sessions[s.session] = "U=" + l.user + " I=" + l.input.substring(0, Math.min(l.input.length, 50));
+      }
     }));
 
     // Sort sessions
