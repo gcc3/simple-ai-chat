@@ -461,7 +461,7 @@ export default function Home() {
     // Clear input and put it to placeholder
     const elInput = elInputRef.current;
     let placeholder = elInput.value;
-    if (elInput.value.startsWith(":login") || elInput.value.startsWith(":user set pass")) {
+    if (elInput.value.startsWith(":login") || elInput.value.startsWith(":user set pass") || elInput.value.startsWith(":user add")) {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     global.rawPlaceholder = placeholder;
@@ -942,7 +942,7 @@ export default function Home() {
   // Only for general input
   const handleInputChange = (event) => {
     const elInput = elInputRef.current;
-    if (elInput.value.startsWith(':login') || elInput.value.startsWith(':user set pass')) {
+    if (elInput.value.startsWith(':login') || elInput.value.startsWith(':user set pass') || elInput.value.startsWith(":user add")) {
       // Password input
       global.rawInput = elInput.value.replace(/\*/g, (match, index) => global.rawInput[index] || '');  // store real password
       passwordFormatter(elInputRef.current);
