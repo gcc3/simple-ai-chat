@@ -6,6 +6,7 @@ export function attachSession(sessionId) {
     return verifyResult.message;
   }
 
+  localStorage.setItem("time", sessionId);
   localStorage.setItem("queryId", sessionId);
   return "Attached.";
 }

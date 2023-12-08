@@ -37,6 +37,7 @@ export default async function role(args) {
     localStorage.setItem("role", "");  // reset role
 
     // Reset query id to forget previous memory
+    localStorage.setItem("time", Date.now());
     localStorage.setItem("queryId", Date.now());
     
     return "Role reset.";
@@ -124,6 +125,7 @@ export default async function role(args) {
       localStorage.setItem("role", roleName);
 
       // Reset query id to forget previous memory
+      localStorage.setItem("time", Date.now());
       localStorage.setItem("queryId", Date.now());
 
       return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show current role and prompt";
