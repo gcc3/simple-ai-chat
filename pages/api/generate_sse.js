@@ -111,10 +111,10 @@ export default async function (req, res) {
       // User (the latest get from db)
       const user = await getUser(authResult.user.username);
 
-      // Trial user, only allow 15 chats per day
+      // Limit `user` chats per day
       if (user.role === "user") {
         const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
-        if (chatCount >= 15) {
+        if (chatCount >= 24) {
           res.write(`data: Daily usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
           res.write(`data: [DONE]\n\n`); res.flush();
           res.end();
