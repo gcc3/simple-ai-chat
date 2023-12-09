@@ -59,6 +59,13 @@ function Subscription() {
     };
   }
 
+  function handleApplyPromotionCode() {
+    return () => {
+      // Set amount
+      setAmount(getPrice(subscriptions, role));
+    };
+  }
+
   const content = (
     <>
       {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]`</div>}
@@ -68,27 +75,30 @@ function Subscription() {
         <div>Subscription: `{user.role}`</div>
       </div>}
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
-      {user && <div className="mt-3">
+      {user && <div className="mt-4">
         {message && <div>{message}</div>}
         {!message && <div>
           <div>Select upgrade subscription:
-            <button className="m-1" onClick={handleSetTargetRole("user")}>`user`</button>
-            <button className="m-1" onClick={handleSetTargetRole("pro_user")}>`pro_user`</button>
-            <button className="m-1" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
+            <button className="ml-2" onClick={handleSetTargetRole("user")}>`user`</button>
+            <button className="ml-2" onClick={handleSetTargetRole("pro_user")}>`pro_user`</button>
+            <button className="ml-2" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
           </div>
           {targetRole && <div>
             {targetRole === user.role && <div className="mt-3">
               You are already a `{targetRole}`.
               </div>}
             {amount > 0 && targetRole !== user.role && <div className="mt-1">
-              <div className="mt-2">Promotion code:
+              <div className="flex">
+                <div className="mt-2">Promotion code:
                 <input
-                  className="ml-1 p-1 pl-2 pr-2 rounded border"
+                  className="ml-1 p-1 pl-2 pr-2 border"
                   id="promotion-code"
                   type="text"
                   value={promotionCode}
                   onChange={(e) => setPromotionCode(e.target.value)}
                 />
+                <button onClick={handleApplyPromotionCode} className="ml-2">Apply</button>
+              </div>
               </div>
               <div className="mt-3">Target role: `{targetRole}`</div>
               <div>Price: {amount === 0 ? "Free" : "$" + amount}</div>

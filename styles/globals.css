@@ -117,6 +117,7 @@ button:hover {
 input {
   background-color: transparent !important;
   border: 1.5px solid var(--input-border-color) !important;
+  border-radius: 6px;
 }
 input:focus {
   outline: none;
