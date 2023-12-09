@@ -113,11 +113,11 @@ Use `tab` key to restore input from the placehodler.
 Roles
 -----
 
-System has 4 kinds of rols.
-1. root_user
-2. super_user
-3. pro_user
-4. user
+System has 4 kinds of roles.
+1. root_user, system management
+2. super_user, personal data
+3. pro_user, all features without limitation
+4. user, basic use
 
 
 Messages
