@@ -61,7 +61,6 @@ function Subscription() {
 
   function handleApplyPromotionCode() {
     return () => {
-      // Set amount
       setAmount(getPrice(subscriptions, role));
     };
   }
