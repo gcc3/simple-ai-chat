@@ -19,6 +19,7 @@ function Subscription() {
   const [targetRole, setTargetRole] = useState(null);
   const [amount, setAmount] = useState(null);
   const [subscriptions, setSubscriptions] = useState(null);
+  const [promotionCode, setPromotionCode] = useState('');
 
   useEffect(() => {
     const loadUserInfo = async () => {
@@ -76,12 +77,21 @@ function Subscription() {
             <button className="m-1" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
           </div>
           {targetRole && <div>
-            <div className="mt-1">Target role: `{targetRole}`</div>
-            <div>Price: {amount === 0 ? "Free" : "$" + amount}</div>
             {targetRole === user.role && <div className="mt-3">
               You are already a `{targetRole}`.
               </div>}
             {amount > 0 && targetRole !== user.role && <div className="mt-1">
+              <div className="mt-2">Promotion code:
+                <input
+                  className="ml-3 p-1 rounded border"
+                  id="promotion-code"
+                  type="text"
+                  value={promotionCode}
+                  onChange={(e) => setPromotionCode(e.target.value)}
+                />
+              </div>
+              <div className="mt-3">Target role: `{targetRole}`</div>
+              <div>Price: {amount === 0 ? "Free" : "$" + amount}</div>
               <div className="mt-3">Payment methods:</div>
               <div className="mt-1">
                 <table>
