@@ -88,17 +88,15 @@ function Subscription() {
               You are already a `{targetRole}`.
               </div>}
             {amount > 0 && targetRole !== user.role && <div className="mt-1">
-              <div className="flex">
-                <div className="mt-2">Promotion code:
+              <div className="mt-2 flex items-center">Promotion code:
                 <input
-                  className="ml-1 p-1 pl-2 pr-2 border"
+                  className="ml-1 pl-2 pr-2 h-8 border"
                   id="promotion-code"
                   type="text"
                   value={promotionCode}
                   onChange={(e) => setPromotionCode(e.target.value)}
                 />
                 <button onClick={handleApplyPromotionCode} className="ml-2">Apply</button>
-              </div>
               </div>
               <div className="mt-3">Target role: `{targetRole}`</div>
               <div>Price: {amount === 0 ? "Free" : "$" + amount}</div>
