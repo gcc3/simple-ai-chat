@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from "react";
 
-const PayPalButton = ({ targetRole, onSuccess }) => {
+const PayPalButton = ({ targetRole, amount, onSuccess }) => {
   useEffect(() => {
     // Set amount
-    let amount = "0.00";
     if (targetRole === "pro_user") amount = "5.00";
     if (targetRole === "super_user") amount = "15.00";
 

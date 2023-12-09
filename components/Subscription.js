@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PayPalButton from "./PayPalButton";
 import { refreshUserInfo } from "utils/userUtils";
 import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
@@ -13,6 +13,28 @@ function getPrice(subscriptions, role) {
   }
 }
 
+function getDiscount(promotionCode) {
+  // fetch("/api/promotion/get", {
+  //   method: "POST",
+  //   headers: {
+  //     "Content-Type": "application/json",
+  //   },
+  //   body: JSON.stringify({
+  //     promotionCode: promotionCode,
+  //   }),
+  // }).then((response) => {
+  //   if (response.status !== 200) {
+  //     console.log("Error: " + response.status);
+  //     return;
+  //   }
+  //   response.json().then((data) => {
+  //     console.log(data);
+  //     return data.discount;
+  //   });
+  // });
+  return 0;
+}
+
 function Subscription() {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
@@ -20,6 +42,39 @@ function Subscription() {
   const [amount, setAmount] = useState(null);
   const [subscriptions, setSubscriptions] = useState(null);
   const [promotionCode, setPromotionCode] = useState('');
+
+  const onSuccess = useCallback(async (details) => {
+    console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
+    console.log("Detail: ", details);
+
+    // Update user role
+    const response = await fetch("/api/user/update/role", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        role: targetRole,
+      }),
+    });
+
+    const data = await response.json();
+    if (response.status !== 200) {
+      console.log(data.error);
+      throw data.message || new Error(`Request failed with status ${response.status}`);
+    }
+
+    if (data.success) {
+      setMessage(data.message);
+
+      // Refresh user info
+      const user = await refreshUserInfo();
+      setUser(user);
+    } else {
+      setMessage(data.message);
+      if (data.error) console.log(data.error);
+    }
+  }, [targetRole, amount]);
 
   useEffect(() => {
     const loadUserInfo = async () => {
@@ -59,10 +114,9 @@ function Subscription() {
     };
   }
 
-  function handleApplyPromotionCode() {
-    return () => {
-      setAmount(getPrice(subscriptions, role));
-    };
+  function handleApplyPromotionCode(e) {
+    const discount = getDiscount(promotionCode);
+    setAmount(Math.max(amount - discount, 0));
   }
 
   const content = (
@@ -110,38 +164,7 @@ function Subscription() {
                   <tbody>
                     <tr>
                       <td className="p-1">
-                      <PayPalButton targetRole={targetRole} onSuccess={async (details) => {
-                        console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
-                        console.log("Detail: ", details);
-
-                        // Update user role
-                        const response = await fetch("/api/user/update/role", {
-                          method: "POST",
-                          headers: {
-                            "Content-Type": "application/json",
-                          },
-                          body: JSON.stringify({
-                            role: targetRole,
-                          }),
-                        });
-                  
-                        const data = await response.json();
-                        if (response.status !== 200) {
-                          console.log(data.error);
-                          throw data.message || new Error(`Request failed with status ${response.status}`);
-                        }
-                  
-                        if (data.success) {
-                          setMessage(data.message);
-
-                          // Refresh user info
-                          const user = await refreshUserInfo();
-                          setUser(user);
-                        } else {
-                          setMessage(data.message);
-                          if (data.error) console.log(data.error);
-                        }
-                      }} />
+                      <PayPalButton targetRole={targetRole} amount={amount} onSuccess={onSuccess} />
                       </td>
                     </tr>
                   </tbody>
