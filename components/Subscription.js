@@ -83,7 +83,7 @@ function Subscription() {
             {amount > 0 && targetRole !== user.role && <div className="mt-1">
               <div className="mt-2">Promotion code:
                 <input
-                  className="ml-3 p-1 rounded border"
+                  className="ml-1 p-1 pl-2 pr-2 rounded border"
                   id="promotion-code"
                   type="text"
                   value={promotionCode}
