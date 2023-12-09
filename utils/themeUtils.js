@@ -28,9 +28,9 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--table-border-color", "#AEAEAE");
     document.documentElement.style.setProperty("--progressbar-background-color", "#e0e0e0");
     document.documentElement.style.setProperty("--progressbar-fill-background-color", "#AEAEAE");
-    document.documentElement.style.setProperty("--button-background-color", "rgba(235, 235, 235, 0.4)");
     document.documentElement.style.setProperty("--button-border-color", "#AEAEAE");
     document.documentElement.style.setProperty("--button-hover-background-color", "rgba(215, 215, 215, 0.4)");
+    document.documentElement.style.setProperty("--input-border-color", "#AEAEAE");
   }
 
   if (theme == "dark") {
@@ -60,9 +60,9 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--table-border-color", "#9a9a9a");
     document.documentElement.style.setProperty("--progressbar-background-color", "#5c5c5c");
     document.documentElement.style.setProperty("--progressbar-fill-background-color", "#c7c7c7");
-    document.documentElement.style.setProperty("--button-background-color", "rgba(235, 235, 235, 0.4)");
     document.documentElement.style.setProperty("--button-border-color", "#9a9a9a");
-    document.documentElement.style.setProperty("--button-hover-background-color", "rgba(215, 215, 215, 0.4)");
+    document.documentElement.style.setProperty("--button-hover-background-color", "rgba(215, 215, 215, 0.2)");
+    document.documentElement.style.setProperty("--input-border-color", "#9a9a9a");
   }
 
   if (theme == "terminal") {
@@ -92,9 +92,9 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--table-border-color", "#007000");
     document.documentElement.style.setProperty("--progressbar-background-color", "#007000");
     document.documentElement.style.setProperty("--progressbar-fill-background-color", "#00f700");
-    document.documentElement.style.setProperty("--button-background-color", "rgba(235, 235, 235, 0.4)");
     document.documentElement.style.setProperty("--button-border-color", "#007000");
     document.documentElement.style.setProperty("--button-hover-background-color", "rgba(0, 100, 0, 0.3)");
+    document.documentElement.style.setProperty("--input-border-color", "#007000");
   }
 
   // Code highlighting styles
