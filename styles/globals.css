@@ -16,7 +16,11 @@
 }
 
 body {
-  background-color: var(--background-color);
+  background-image: url('../public/white-background.png');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 100vh;
 }
 code {
   font-family: "Fira Code", monospace !important;
