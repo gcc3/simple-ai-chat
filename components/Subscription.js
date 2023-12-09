@@ -32,7 +32,7 @@ function getDiscount(promotionCode) {
   //     return data.discount;
   //   });
   // });
-  return 1;
+  return 0;
 }
 
 function Subscription() {
