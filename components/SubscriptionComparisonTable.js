@@ -14,6 +14,8 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
   const comparison = [
     { name: "GPT-4", user: "24/day", pro_user: "2400/month", super_user: "7200/month" },
     { name: "GPT-4V", user: "Yes", pro_user: "Yes", super_user: "Yes" },
+    { name: "I/O limitation", user: "300/300", pro_user: "2000/4000", super_user: "5000/5000" },
+    { name: "Memory length", user: "5", pro_user: "7", super_user: "10" },
     { name: "Fullscreen", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "De-hallucination", user: "24/day", pro_user: "Yes", super_user: "Yes" },
     { name: "Custom Roleplay", user: "24/day", pro_user: "Yes", super_user: "Yes" },
