@@ -42,17 +42,18 @@ const initializeDatabase = (db) => {
         // Create users table
         db.run(
           `CREATE TABLE IF NOT EXISTS users (
-        id INTEGER PRIMARY KEY,
-        username TEXT NOT NULL,
-        role TEXT NOT NULL,
-        password TEXT NOT NULL,
-        email TEXT,
-        settings TEXT,
-        last_login TEXT,
-        status TEXT NOT NULL,
-        created_at TEXT NOT NULL,
-        updated_at TEXT
-      );`,
+            id INTEGER PRIMARY KEY,
+            username TEXT NOT NULL,
+            role TEXT NOT NULL,
+            role_expires_at INTEGER,
+            password TEXT NOT NULL,
+            email TEXT,
+            settings TEXT,
+            last_login TEXT,
+            status TEXT NOT NULL,
+            created_at TEXT NOT NULL,
+            updated_at TEXT
+          );`,
           (err) => {
             if (err) {
               return reject(err);
@@ -61,13 +62,13 @@ const initializeDatabase = (db) => {
             // Create roles table
             db.run(
               `CREATE TABLE IF NOT EXISTS roles (
-          id INTEGER PRIMARY KEY,
-          role TEXT NOT NULL,
-          prompt TEXT NOT NULL,
-          created_by TEXT NOT NULL,
-          created_at TEXT NOT NULL,
-          updated_at TEXT
-        );`,
+                id INTEGER PRIMARY KEY,
+                role TEXT NOT NULL,
+                prompt TEXT NOT NULL,
+                created_by TEXT NOT NULL,
+                created_at TEXT NOT NULL,
+                updated_at TEXT
+              );`,
               (err) => {
                 if (err) {
                   return reject(err);
