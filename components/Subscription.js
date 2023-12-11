@@ -17,6 +17,13 @@ function getDiscount(promotionCode) {
   return 0;
 }
 
+function getRoleLevel(role) {
+  if (role === "user") return 1;
+  if (role === "pro_user") return 2;
+  if (role === "super_user") return 3;
+  if (role === "root_user") return 4;
+}
+
 function Subscription() {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
@@ -67,10 +74,6 @@ function Subscription() {
         if (user.role === "root_user") {
           setMessage("You are the root_user.");
         }
-
-        if (user.role === "super_user") {
-          setMessage("You are already a super_user, for further upgrade please contact `support@simple-ai.io`.");
-        }
       }
 
       // Fetch subscription list
@@ -114,16 +117,19 @@ function Subscription() {
       {user && <div className="mt-4">
         {message && <div>{message}</div>}
         {!message && <div>
-          <div>Select upgrade subscription:
+          {user.role !== "root_user" && <div>Select upgrade subscription:
             <button className="ml-2" onClick={handleSetTargetRole("user")}>`user`</button>
             <button className="ml-2" onClick={handleSetTargetRole("pro_user")}>`pro_user`</button>
             <button className="ml-2" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
-          </div>
+          </div>}
           {targetRole && <div>
-            {targetRole === user.role && <div className="mt-3">
-              You are already a `{targetRole}`.
+            {getRoleLevel(user.role) == getRoleLevel(targetRole) && <div className="mt-3">
+              You are already a `{user.role}`.
               </div>}
-            {amount > 0 && targetRole !== user.role && <div className="mt-1">
+            {getRoleLevel(user.role) > getRoleLevel(targetRole) && <div className="mt-3">
+              You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.
+              </div>}
+            {amount > 0 && getRoleLevel(user.role) < getRoleLevel(targetRole) && <div className="mt-1">
               <div className="mt-3 flex items-center">Promotion code:
                 <input
                   className="ml-1 pl-2 pr-2 h-8 border"
@@ -134,7 +140,7 @@ function Subscription() {
                 />
                 <button onClick={handleApplyPromotionCode} className="ml-2">Apply</button>
               </div>
-              <div className="mt-3">Target role: `{targetRole}`</div>
+              <div className="mt-3">Upgrade to/extend for role: `{targetRole}`</div>
               <div>Price: {amount === 0 ? "Free" : "$" + amount}</div>
               <div className="mt-3">Payment methods:</div>
               <div className="mt-1">

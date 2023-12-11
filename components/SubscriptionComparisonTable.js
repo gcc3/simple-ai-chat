@@ -18,7 +18,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
     { name: "De-hallucination", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Role/Assistant", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Functions", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "Personal Database", user: "╳", pro_user: "Yes (limited)", super_user: "Yes" },
+    { name: "Personal Database", user: "╳", pro_user: "Yes(limited)", super_user: "Yes" },
     { name: "Midjourney", user: "╳", pro_user: "24/day", super_user: "Yes" },
     { name: "Pricing", user: getPrice(subscriptions, "user"), pro_user: getPrice(subscriptions, "pro_user"), super_user: getPrice(subscriptions, "super_user")},
   ];
@@ -32,7 +32,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
         <thead>
           <tr>
             <th rowSpan="2">Features/Price</th>
-            <th colSpan="3">Subcriptions</th>
+            <th colSpan="3">Subcriptions(Roles)</th>
           </tr>
           <tr>
             <th>`user`</th>
@@ -51,8 +51,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
           ))}
         </tbody>
       </table>
-      <div className="mt-2">* All new users (subscription: `user`) get a 3-month free trial.</div>
-      <div>* For enterprise use, please contact us at `<a href="mailto:support@simple-ai.io"><u>support@simple-ai.io</u></a>`.</div>
+      <div className="mt-2">* For enterprise use, please contact us at `<a href="mailto:support@simple-ai.io"><u>support@simple-ai.io</u></a>`.</div>
     </div>
   );
 };
