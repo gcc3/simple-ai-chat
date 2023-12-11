@@ -117,8 +117,8 @@ Roles
 
 System has 4 kinds of roles.
 1. root_user, system management
-2. super_user, personal data
-3. pro_user, all features without limitation
+2. super_user, advanced use
+3. pro_user, professional use
 4. user, basic use
 
 
@@ -307,6 +307,40 @@ Format: `role:daily_limit,weekly_limit,monthly_limit`.
 Role amount is for setting price.  
 Format `role:amount`.  
 Roles are separated by `;`.  
+
+
+Coding rules
+------------
+
+For API response
+Return a RESTful API response, with correct response code.  
+If there is an error, exmple response as below:  
+
+```
+return res.status(400).json({
+   success: false,
+   error: "Error message",
+});
+```
+
+or 
+
+```
+return res.status(400).json({
+   success: false,
+   error: error,  // If there is error handling
+});
+```
+
+If success, example response as below:
+
+```
+res.status(200).json({
+   success: true,
+   message: "Success message.",
+   some_additonal_obj,
+});
+```
 
 
 log.config
