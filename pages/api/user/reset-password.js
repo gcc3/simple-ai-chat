@@ -48,7 +48,7 @@ export default async function handler(req, res) {
       },
       Body: {
         Html: {
-          Data: "Your new password has been reset to " + newPassword,
+          Data: "Your new password has been reset to \"" + newPassword + "\". Please change it after login.",
         },
       },
     },
