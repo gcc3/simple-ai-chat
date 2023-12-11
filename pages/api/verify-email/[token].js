@@ -24,6 +24,11 @@ export default async function (req, res) {
 
     // Update email verified at
     await updateUserEmailVerifiedAt(data.username);
+    
+    // Update user last login
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const browser = req.headers['user-agent'];
+    await updateUserLastLogin(user.username, "T=" + (new Date()) + " IP=" + ip + " BSR=" + browser);
 
     // Redirect and login
     // Create JWT token
