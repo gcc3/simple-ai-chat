@@ -124,13 +124,10 @@ function Subscription() {
             <button className="ml-2" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
           </div>}
           {targetRole && <div>
-            {getRoleLevel(user.role) == getRoleLevel(targetRole) && <div className="mt-3">
-              You are already a `{user.role}`.
-              </div>}
             {getRoleLevel(user.role) > getRoleLevel(targetRole) && <div className="mt-3">
               You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.
               </div>}
-            {amount > 0 && getRoleLevel(user.role) < getRoleLevel(targetRole) && <div className="mt-1">
+            {amount > 0 && <div className="mt-1">
               <div className="mt-3 flex items-center">Promotion code:
                 <input
                   className="ml-1 pl-2 pr-2 h-8 border"
@@ -141,7 +138,7 @@ function Subscription() {
                 />
                 <button onClick={handleApplyPromotionCode} className="ml-2">Apply</button>
               </div>
-              <div className="mt-3">Upgrade to/extend for role: `{targetRole}`</div>
+              <div className="mt-3">{user.role == targetRole ? "Extend for" : "Upgrade to"} role: `{targetRole}`</div>
               <div>Price: {amount === 0 ? "Free" : "$" + amount}</div>
               <div className="mt-3">Payment methods:</div>
               <div className="mt-1">

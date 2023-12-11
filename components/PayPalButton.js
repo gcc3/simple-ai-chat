@@ -58,7 +58,6 @@ const PayPalButton = ({ targetRole, amount, onSuccess }) => {
     };
 
     loadPayPalScript();
-
     return () => {
       if (scriptAdded) {
         const script = document.querySelector(`script[src*="paypal.com/sdk/js"]`);
