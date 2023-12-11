@@ -1,4 +1,4 @@
-import { updateUserEmail, emailExists } from 'utils/sqliteUtils.js';
+import { updateUserEmail, emailExists as getUserByEmail } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 import { verifiyEmailAddress } from 'utils/emailUtils.js';
 import AWS from 'aws-sdk';
@@ -22,28 +22,29 @@ export default async function (req, res) {
     });
   }
   const { id, username, role } = authResult.user;
+  console.log('Set email request for user "' + username + '"' + ', email "' + email + '".');
 
   // Input and validation
   if (!email) {
     return res.status(400).json({ 
       success: false, 
-      message: 'Email is required.'
+      error: 'Email is required.'
     });
   }
 
   if (!verifiyEmailAddress(email)) {
     return res.status(400).json({ 
       success: false, 
-      message: 'Email is invalid.'
+      error: 'Email is invalid.'
     });
   }
 
   // Check if the email already exists in the database.
-  const emailUser = await emailExists(email);
-  if (emailUser) {
+  const emailUser = await getUserByEmail(email);
+  if (emailUser && emailUser.username !== username) {
     return res.status(400).json({ 
       success: false,
-      message: 'Email already used by another user.',
+      error: 'Email already used by another user.',
     });
   }
 

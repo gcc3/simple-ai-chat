@@ -465,7 +465,7 @@ const extendUserRole = async (username, extendTo) => {
   }
 };
 
-const emailExists = async (email) => {
+const getUserByEmail = async (email) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -695,7 +695,7 @@ export {
   updateUserLastLogin,
   updateUserSettings,
   updateUserStatus,
-  emailExists,
+  getUserByEmail as emailExists,
   createDatabaseFile,
   initializeDatabase,
   getDatabaseConnection,
