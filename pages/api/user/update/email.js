@@ -22,6 +22,7 @@ export default async function (req, res) {
     });
   }
   const { id, username, role } = authResult.user;
+  console.log('Set email request for user "' + username + '"' + ', email "' + email + '".');
 
   // Input and validation
   if (!email) {
