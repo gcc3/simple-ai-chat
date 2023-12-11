@@ -111,6 +111,15 @@ export default async function (req, res) {
       // User (the latest get from db)
       const user = await getUser(authResult.user.username);
 
+      // Verify email
+      if (use_email && !user.email_verified_at) {
+        // No email, urge adding an email
+        res.write(`data: Please verify your email to continue. To send verification again, you can use the command \`:user set email [email]\`.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+
       // Limit `user` chats per day
       if (user.role === "user") {
         const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
