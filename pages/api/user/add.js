@@ -26,7 +26,10 @@ export default async function (req, res) {
 
   // Check if the email is valid.
   if (!verifiyEmailAddress(email)) {
-    return res.status(400).json({ error: 'Email is invalid.' });
+    return res.status(400).json({
+      success: false,
+      error: 'Email is invalid.'
+    });
   }
 
   // Check if the email already exists in the database.
@@ -34,6 +37,9 @@ export default async function (req, res) {
   if (emailUser) {
     return res.status(400).json({ error: 'Email already used by user \"' + emailUser.username + '\". If you lost password please reset with command \`:user reset pass [username] [email]\`' });
   }
+
+  // Generate a jwt token
+  const token = encode(username, email);
 
   // Email validation
   if (process.env.USE_EMAIL == "true") {
@@ -47,7 +53,8 @@ export default async function (req, res) {
     const from = 'support@simple-ai.io';
     const to = email;
     const subject = 'Welcome to simple-ai.io';
-    const body = "Your account is created successfully." + (!password ? " Initial password is \"" + generatedPassword + "\", please change it after login." : "");
+    const body = "Your account is created successfully." + (!password ? " Initial password is \"" + generatedPassword + "\", please change it after login." : "") 
+               + `Please click the following link to verify your email: <a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>`;;
     const emailParams = {
       Source: 'Simple AI <' + from + '>',
       Destination: {

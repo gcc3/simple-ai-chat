@@ -23,9 +23,6 @@ export default async function (req, res) {
   }
   const { id, username, role } = authResult.user;
 
-  // Generate a jwt token contains id, username, role, and email
-  const token = encode(id, username, email, role);
-
   // Input and validation
   if (!email) {
     return res.status(400).json({ 
@@ -49,6 +46,9 @@ export default async function (req, res) {
       message: 'Email already used by another user.',
     });
   }
+
+  // Generate a jwt token contains id, username, role, and email
+  const token = encode(username, email);
 
   // Email is valid, verify the email.
   // Send verification email
