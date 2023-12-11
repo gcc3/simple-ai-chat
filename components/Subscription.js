@@ -2,6 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import PayPalButton from "./PayPalButton";
 import { refreshUserInfo } from "utils/userUtils";
 import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
+const moment = require('moment');
 
 // Get amount
 function getPrice(subscriptions, role) {
@@ -111,7 +112,7 @@ function Subscription() {
         <div>User: {user.username}</div>
         <div>Email: {user.email}</div>
         <div>Subscription: `{user.role}`</div>
-        <div>Expire at: -</div>
+        <div>Expire at: {moment.unix(user.role_expires_at).format('MM/DD/YYYY')}</div>
       </div>}
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
       {user && <div className="mt-4">
