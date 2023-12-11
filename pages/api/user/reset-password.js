@@ -1,6 +1,6 @@
-import AWS from 'aws-sdk';
-import { getUser, updateUserPassword } from 'utils/sqliteUtils';
-import { generatePassword } from 'utils/userUtils';
+import AWS from "aws-sdk";
+import { getUser, updateUserPassword } from "utils/sqliteUtils";
+import { generatePassword } from "utils/userUtils";
 
 export default async function handler(req, res) {
   // Check if the method is POST
@@ -9,16 +9,27 @@ export default async function handler(req, res) {
   }
 
   const { username, email } = req.body;
-  console.log("Password reset request: username = \"" + username 
-  + "\"" + ", email = \"" + email + "\".");
+  console.log('Password reset request for user "' + username + '"' + ', email "' + email + '".');
 
   // Check user info
   const user = await getUser(username);
   if (!user) {
-    return res.status(400).json({ success: false, message: 'User not found' });
+    return res.status(400).json({
+      success: false,
+      message: "User not found",
+      error: {
+        message: "User not found",
+      },
+    });
   } else {
     if (user.email !== email) {
-      return res.status(400).json({ success: false, message: 'Email not match' });
+      return res.status(400).json({
+        success: false,
+        message: "Email not match",
+        error: {
+          message: "Email not match",
+        },
+      });
     }
   }
 
@@ -34,11 +45,11 @@ export default async function handler(req, res) {
   });
 
   const ses = new AWS.SES();
-  const from = 'support@simple-ai.io';
+  const from = "support@simple-ai.io";
   const to = email;
-  const subject = 'Password reset';
+  const subject = "Password reset";
   const emailParams = {
-    Source: 'Simple AI <' + from + '>',
+    Source: "Simple AI <" + from + ">",
     Destination: {
       ToAddresses: [to],
     },
@@ -48,25 +59,28 @@ export default async function handler(req, res) {
       },
       Body: {
         Html: {
-          Data: "Your new password has been reset to \"" + newPassword + "\". Please change it after login.",
+          Data: 'Your new password has been reset to "' + newPassword + '". Please change it after login.',
         },
       },
     },
   };
 
-  ses.sendEmail(emailParams).promise()
+  ses
+    .sendEmail(emailParams)
+    .promise()
     .then((data) => {
-      res.status(200).json({ 
-        success: true, 
-        message: 'Your new password is sent to your email.', 
-        data 
+      res.status(200).json({
+        success: true,
+        message: "Your new password is sent to your email.",
+        data,
       });
-    }).catch((err) => {
-      console.error(err, err.stack);
-      res.status(500).json({ 
-        success: false, 
-        message: 'Failed to send email', 
-        error: err 
+    })
+    .catch((error) => {
+      console.error(error, error.stack);
+      res.status(500).json({
+        success: false,
+        message: "Failed to send email",
+        error,
       });
     });
 }
