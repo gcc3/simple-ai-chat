@@ -45,7 +45,7 @@ export default async function (req, res) {
 
   // New user info
   const role = "user";
-  const role_expires_at = moment().add(1, 'months').unix().valueOf();
+  const role_expires_at = moment().add(1, 'months').valueOf();
   const password_ = password ? password : generatedPassword;
 
   // Email validation
