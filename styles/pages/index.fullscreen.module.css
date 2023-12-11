@@ -56,9 +56,9 @@
   right: 22px;  /* adjust as needed */
   top: 50%;
   transform: translateY(-50%);  /* vertically center the button */
-  background-color: var(--button-color);
-  color: var(--button-text-color);
-  border: none;
+  background-color: var(--submit-button-color) !important;  /* submit has a different button color */
+  color: var(--submit-button-text-color) !important;  /* submit has a different button text color */
+  border: none !important;
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
@@ -66,7 +66,7 @@
   padding-right: 3px;
 }
 .main .submit:hover {
-  background-color: var(--button-hover-color);  /* darken the button color on hover */
+  background-color: var(--submit-button-hover-color) !important;  /* darken the button color on hover */
 }
 
 /* output area */
