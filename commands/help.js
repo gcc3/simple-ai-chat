@@ -26,7 +26,7 @@ export default function help(args) {
     ":lang use [language_code] - Set language.\n" +
     ":role - Show current role/assistant prompt.\n" +
     ":role use [role_name] - Use a role/assistant.\n" +
-    ":role [ls|list] - List default roles.\n" +
+    ":role [ls|list] - List available roles/assistants.\n" +
     ":role [reset] - Reset role to empty.\n" +
     ":user add [username] [email] [password?] - Create a user.\n" +
     ":user set pass [value] - Change password.\n" +
