@@ -1,6 +1,7 @@
-import { updateUserRole, getUser } from 'utils/sqliteUtils.js';
+import { updateUserRole, extendUserRole, getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 import AWS from 'aws-sdk';
+const moment = require('moment');
 
 // TODO: add API key authentication
 export default async function (req, res) {
@@ -31,8 +32,22 @@ export default async function (req, res) {
       });
     }
 
-    // Update user role
-    const wasSuccessful = await updateUserRole(username, role);
+    // Extend user subscription
+    let wasSuccessful = false;
+    if (user.role === role) {
+      // Extend user role
+      // Allow user to extend even the role not expired yet
+      const extendTo = Math.max(moment().add(1, 'M').valueOf(), moment(user.role_expires_at).add(1, 'M').valueOf());
+      wasSuccessful = await extendUserRole(username, extendTo);
+    } else {
+      // Update user role
+      wasSuccessful = await updateUserRole(username, role);
+
+      // Extend user role
+      const extendTo = moment().add(1, 'M').valueOf();
+      wasSuccessful = await extendUserRole(username, extendTo);
+    }
+    
     if (wasSuccessful) {
       if (process.env.USE_EMAIL === "false" || user.email === "") {
         return res.status(200).json({ 
@@ -63,7 +78,7 @@ export default async function (req, res) {
           },
           Body: {
             Html: {
-              Data: "You have become a `" + role + "`.",
+              Data: "Your subscription is updated.",
             },
           },
         },
@@ -87,14 +102,14 @@ export default async function (req, res) {
     } else {
       return res.status(400).json({ 
         success: false, 
-        message: 'Failed to update subscription.',
+        message: 'Failed to update subscription, please contact support.',
        });
     }
   } catch (error) {
     console.error('Error:', error);
     return res.status(500).json({ 
       success: false,
-      message: 'Error occurred while updating the user subscription.'
+      message: 'Error occurred while updating the user subscription, please contact support.'
     });
   }
 }

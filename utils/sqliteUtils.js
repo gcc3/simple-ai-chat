@@ -443,6 +443,28 @@ const updateUserRole = async (username, newRole) => {
   }
 };
 
+const extendUserRole = async (username, extendTo) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET role_expires_at = ?, updated_at = ? WHERE username = ?");
+      stmt.run([extendTo, new Date(), username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const emailExists = async (email) => {
   const db = await getDatabaseConnection();
   try {
@@ -669,6 +691,7 @@ export {
   updateUserEmail,
   updateUserEmailVerifiedAt,
   updateUserRole,
+  extendUserRole,
   updateUserLastLogin,
   updateUserSettings,
   updateUserStatus,
