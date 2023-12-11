@@ -24,7 +24,7 @@ function UserDataPrivacy() {
       We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.<br></br>
       <br></br>
       <div>Contact Us</div>
-      If you have any questions or concerns about this privacy policy, please contact us at <u><a href="mailto:support@simple-ai.io">support@simple-ai.io</a></u>.<br></br>
+      If you have any questions or concerns about this privacy policy, please contact us at `<a href="mailto:support@simple-ai.io"><u>support@simple-ai.io</u></a>`.<br></br>
     </div>
   )
 
