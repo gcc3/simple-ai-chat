@@ -25,7 +25,7 @@ export default async function (req, res) {
       const payload = { 
         id: user.id, 
         username: user.username,
-        role: user.role,
+        subscription: user.role,
         email: user.email,
       };
       const token = createToken(payload);
