@@ -3,6 +3,7 @@ import { insertUser, getUser, emailExists } from "utils/sqliteUtils.js";
 import { generatePassword } from "utils/userUtils.js";
 import AWS from 'aws-sdk';
 import { encode } from "utils/authUtils";
+const moment = require('moment');
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -42,6 +43,11 @@ export default async function (req, res) {
   // Generate a jwt token
   const token = encode(username, email);
 
+  // New user info
+  const role = "user";
+  const role_expires_at = moment().add(1, 'months').unix().valueOf();
+  const password_ = password ? password : generatedPassword;
+
   // Email validation
   if (process.env.USE_EMAIL == "true") {
     AWS.config.update({
@@ -75,7 +81,7 @@ export default async function (req, res) {
 
     ses.sendEmail(emailParams).promise()
     .then((data) => {
-      insertUser(username, "user", password ? password : generatedPassword, email, settings,         "", "active", new Date());
+      insertUser(username, role, role_expires_at, password_, email, settings);
 
       res.status(200).json({ 
         success: true,
@@ -93,7 +99,7 @@ export default async function (req, res) {
     });
   } else {
     // No email provided, send password to console
-    insertUser(username, "user", password ? password : generatedPassword, email, settings,         "", "active", new Date());
+    insertUser(username, role, role_expires_at, password_, email, settings);
 
     // No error
     return res.status(200).json({ 
