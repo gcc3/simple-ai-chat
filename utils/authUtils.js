@@ -35,13 +35,11 @@ export const createToken = (payload) => {
 
 // Also use JWK to generate token for id, username, email, role
 // Function to generate a token
-export function encode(id, username, email, role) {
+export function encode(username, email) {
   // Create a payload with the id and username
   const payload = {
-    id: id,
     username: username,
     email: email,
-    role: role,
   };
 
   // Sign the token with the secret key

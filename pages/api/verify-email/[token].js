@@ -18,7 +18,7 @@ export default async function (req, res) {
 
     // Get user
     const user = await getUser(data.username);
-    if (user.id !== data.id) {
+    if (user.email !== data.email) {
       return res.status(400).send("Verification failed.");
     }
 
