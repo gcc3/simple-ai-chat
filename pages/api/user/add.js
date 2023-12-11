@@ -1,5 +1,5 @@
 import { verifiyEmailAddress } from "utils/emailUtils";
-import { insertUser, getUser, emailExists } from "utils/sqliteUtils.js";
+import { insertUser, getUser, getUserByEmail } from "utils/sqliteUtils.js";
 import { generatePassword } from "utils/userUtils.js";
 import AWS from 'aws-sdk';
 import { encode } from "utils/authUtils";
@@ -35,7 +35,7 @@ export default async function (req, res) {
   }
 
   // Check if the email already exists in the database.
-  const emailUser = await emailExists(email);
+  const emailUser = await getUserByEmail(email);
   if (emailUser) {
     return res.status(400).json({ error: 'Email already used by user \"' + emailUser.username + '\". If you lost password please reset with command \`:user reset pass [username] [email]\`' });
   }
