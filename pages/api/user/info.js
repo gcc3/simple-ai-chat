@@ -42,6 +42,7 @@ export default async function (req, res) {
           id: user.id, 
           username: user.username,
           role: user.role,
+          role_expires_at: user.role_expires_at,
           email: user.email,
           settings: user.settings,
           usage: JSON.stringify(await getUserUsageWithLimit(user.username, user.role)),
@@ -72,7 +73,15 @@ async function getUserUsageWithLimit(username, role) {
   const { daily_limit, weekly_limit, monthly_limit } = getUsageLimit(role);
 
   let exceeded = false;
-  if (daily >= daily_limit || weekly >= weekly_limit || monthly >= monthly_limit) {
+  if (daily_limit && daily >= daily_limit) {
+    exceeded = true;
+  }
+
+  if (weekly_limit && weekly >= weekly_limit) {
+    exceeded = true;
+  }
+
+  if (weekly_limit && monthly >= monthly_limit) {
     exceeded = true;
   }
 
