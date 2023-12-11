@@ -138,8 +138,8 @@ function Subscription() {
                 />
                 <button onClick={handleApplyPromotionCode} className="ml-2">Apply</button>
               </div>
-              <div className="mt-3">{user.role == targetRole ? "Extend for" : "Upgrade to"} role: `{targetRole}`</div>
-              <div>Price: {amount === 0 ? "Free" : "$" + amount}</div>
+              <div className="mt-3">{user.role == targetRole ? "Extend 1 month for" : "Upgrade to"} role: `{targetRole}`</div>
+              <div>Price: {amount === 0 ? "Free" : "$" + amount + "/month"}</div>
               <div className="mt-3">Payment methods:</div>
               <div className="mt-1">
                 <table>
