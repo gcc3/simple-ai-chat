@@ -47,8 +47,7 @@ export default async function (req, res) {
     const from = 'support@simple-ai.io';
     const to = email;
     const subject = 'Welcome to simple-ai.io';
-    const body = "Your account is created successfully."
-               + !password ? " Initial password is \"" + generatedPassword + "\", please change it after login." : "";
+    const body = "Your account is created successfully." + (!password ? " Initial password is \"" + generatedPassword + "\", please change it after login." : "");
     const emailParams = {
       Source: 'Simple AI <' + from + '>',
       Destination: {
@@ -73,8 +72,8 @@ export default async function (req, res) {
       res.status(200).json({ 
         success: true,
         username,
-        message: "User \"" + username + "\"" + " is created." + (!password ? " Initial password is sent to your email." : "",
-        data)
+        message: "User \"" + username + "\"" + " is created." + (!password ? " Initial password is sent to your email." : ""),
+        data,
       });
     }).catch((err) => {
       console.error(err, err.stack);
