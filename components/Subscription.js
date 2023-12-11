@@ -112,7 +112,7 @@ function Subscription() {
         <div>User: {user.username}</div>
         <div>Email: {user.email}</div>
         <div>Subscription: `{user.role}`</div>
-        <div>Expire at: {moment.unix(user.role_expires_at).format('MM/DD/YYYY')}</div>
+        <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "-"}</div>
       </div>}
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
       {user && <div className="mt-4">
