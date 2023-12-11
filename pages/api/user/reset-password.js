@@ -16,13 +16,13 @@ export default async function handler(req, res) {
   if (!user) {
     return res.status(400).json({
       success: false,
-      error: "User not found",
+      error: "User not found.",
     });
   } else {
     if (user.email !== email) {
       return res.status(400).json({
         success: false,
-        error: "Email not match",
+        error: "Email not match.",
       });
     }
   }

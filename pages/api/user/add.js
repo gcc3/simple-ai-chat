@@ -2,6 +2,7 @@ import { verifiyEmailAddress } from "utils/emailUtils";
 import { insertUser, getUser, emailExists } from "utils/sqliteUtils.js";
 import { generatePassword } from "utils/userUtils.js";
 import AWS from 'aws-sdk';
+import { encode } from "utils/authUtils";
 
 export default async function (req, res) {
   // Check if the method is POST
