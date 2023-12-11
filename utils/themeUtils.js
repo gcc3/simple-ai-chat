@@ -58,8 +58,8 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--underline-text-background-color", "transparent");
     document.documentElement.style.setProperty("--underline-text-color", "#9a9a9a");
     document.documentElement.style.setProperty("--table-border-color", "#9a9a9a");
-    document.documentElement.style.setProperty("--progressbar-background-color", "#5c5c5c");
-    document.documentElement.style.setProperty("--progressbar-fill-background-color", "#c7c7c7");
+    document.documentElement.style.setProperty("--progressbar-background-color", "#a1a1a1");
+    document.documentElement.style.setProperty("--progressbar-fill-background-color", "#5c5c5c");
     document.documentElement.style.setProperty("--button-border-color", "#9a9a9a");
     document.documentElement.style.setProperty("--button-hover-background-color", "rgba(215, 215, 215, 0.2)");
     document.documentElement.style.setProperty("--input-border-color", "#9a9a9a");
