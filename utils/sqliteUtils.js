@@ -402,6 +402,28 @@ const updateUserEmail = async (username, newEmail) => {
   }
 };
 
+const updateUserEmailVerifiedAt = async (username) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET email_verified_at = ?, updated_at = ? WHERE username = ?");
+      stmt.run([new Date(), new Date(), username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const updateUserRole = async (username, newRole) => {
   const db = await getDatabaseConnection();
   try {
@@ -648,6 +670,7 @@ export {
   deleteUser,
   updateUserPassword,
   updateUserEmail,
+  updateUserEmailVerifiedAt,
   updateUserRole,
   updateUserLastLogin,
   updateUserSettings,

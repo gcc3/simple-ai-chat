@@ -1,5 +1,5 @@
 import { decode } from "utils/authUtils"
-import { getUser, updateUserEmail } from "utils/sqliteUtils"
+import { getUser, updateUserEmailVerifiedAt } from "utils/sqliteUtils"
 import { createToken } from "utils/authUtils"
 
 export default async function (req, res) {
@@ -22,8 +22,8 @@ export default async function (req, res) {
       return res.status(400).send("Verification failed.");
     }
 
-    // Update email
-    await updateUserEmail(data.username, data.email);
+    // Update email verified at
+    await updateUserEmailVerifiedAt(data.username);
 
     // Redirect and login
     // Create JWT token
