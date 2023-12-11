@@ -1,5 +1,5 @@
 import { decode } from "utils/authUtils"
-import { getUser, updateUserEmailVerifiedAt } from "utils/sqliteUtils"
+import { getUser, updateUserLastLogin, updateUserEmailVerifiedAt } from "utils/sqliteUtils"
 import { createToken } from "utils/authUtils"
 
 export default async function (req, res) {
