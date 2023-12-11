@@ -48,6 +48,7 @@ const initializeDatabase = (db) => {
             role_expires_at INTEGER,
             password TEXT NOT NULL,
             email TEXT,
+            email_verified_at INTEGER,
             settings TEXT,
             last_login TEXT,
             status TEXT NOT NULL,
