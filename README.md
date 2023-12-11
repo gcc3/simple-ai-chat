@@ -52,9 +52,11 @@ Use arrow key "←", and "→" to check and print previous or next session log.
 Before switching log, unfocusing input box is required.
 Use "ESC" key to unfocus, or just click somewhere else.  
 
-* Roleplay  
-To use roleplay, simply type `:role use [role_name]`.  
-Use `:role list` to check current available roles.  
+* Role/Assistant  
+Roles and assistants are prompts created for certain purposes.  
+User can custom own role prompt.  
+To use role/assistant, simply type `:role use [role_name]`.  
+Use `:role list` to check current available roles/assistants.  
 Prompts provided by the Awesome ChatGPT Prompts  
 
 * Custom Roleplay Role  

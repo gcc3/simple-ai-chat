@@ -14,24 +14,6 @@ function getPrice(subscriptions, role) {
 }
 
 function getDiscount(promotionCode) {
-  // fetch("/api/promotion/get", {
-  //   method: "POST",
-  //   headers: {
-  //     "Content-Type": "application/json",
-  //   },
-  //   body: JSON.stringify({
-  //     promotionCode: promotionCode,
-  //   }),
-  // }).then((response) => {
-  //   if (response.status !== 200) {
-  //     console.log("Error: " + response.status);
-  //     return;
-  //   }
-  //   response.json().then((data) => {
-  //     console.log(data);
-  //     return data.discount;
-  //   });
-  // });
   return 0;
 }
 
@@ -126,6 +108,7 @@ function Subscription() {
         <div>User: {user.username}</div>
         <div>Email: {user.email}</div>
         <div>Subscription: `{user.role}`</div>
+        <div>Expire at: -</div>
       </div>}
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
       {user && <div className="mt-4">
@@ -141,7 +124,7 @@ function Subscription() {
               You are already a `{targetRole}`.
               </div>}
             {amount > 0 && targetRole !== user.role && <div className="mt-1">
-              <div className="mt-2 flex items-center">Promotion code:
+              <div className="mt-3 flex items-center">Promotion code:
                 <input
                   className="ml-1 pl-2 pr-2 h-8 border"
                   id="promotion-code"

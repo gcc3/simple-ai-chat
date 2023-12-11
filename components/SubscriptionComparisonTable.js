@@ -6,7 +6,7 @@ function getPrice(subscriptions, role) {
     if (subscriptions[role].price == 0) {
       return "Free";
     }
-    return subscriptions[role].price;
+    return "$" + subscriptions[role].price + "/month";
   }
 }
 
@@ -14,13 +14,13 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
   const comparison = [
     { name: "GPT-4", user: "24/day", pro_user: "2400/month", super_user: "7200/month" },
     { name: "GPT-4V", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "I/O limitation", user: "300/300", pro_user: "2000/4000", super_user: "5000/5000" },
-    { name: "Memory length", user: "5", pro_user: "7", super_user: "10" },
     { name: "Fullscreen", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "De-hallucination", user: "24/day", pro_user: "Yes", super_user: "Yes" },
-    { name: "Custom Roleplay", user: "24/day", pro_user: "Yes", super_user: "Yes" },
+    { name: "De-hallucination", user: "Yes", pro_user: "Yes", super_user: "Yes" },
+    { name: "Role/Assistant", user: "Yes", pro_user: "Yes", super_user: "Yes" },
+    { name: "Functions", user: "Yes", pro_user: "Yes", super_user: "Yes" },
+    { name: "Midjourney", user: "╳", pro_user: "Yes", super_user: "Yes" },
     { name: "Personal Database", user: "╳", pro_user: "╳", super_user: "Yes" },
-    { name: "Pricing", user: getPrice(subscriptions, "user") , pro_user: "$" + getPrice(subscriptions, "pro_user") + "/month", super_user: "$" + getPrice(subscriptions, "super_user") + "/month" },
+    { name: "Pricing", user: getPrice(subscriptions, "user"), pro_user: getPrice(subscriptions, "pro_user"), super_user: getPrice(subscriptions, "super_user")},
   ];
 
   return (
@@ -51,6 +51,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
           ))}
         </tbody>
       </table>
+      <div className="mt-1">* New users get a 3-month free trial.</div>
     </div>
   );
 };
