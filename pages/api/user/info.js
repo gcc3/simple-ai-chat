@@ -41,10 +41,10 @@ export default async function (req, res) {
         user: {
           id: user.id, 
           username: user.username,
-          role: user.role,
-          role_expires_at: user.role_expires_at,
           email: user.email,
           settings: user.settings,
+          role: user.role,
+          role_expires_at: user.role_expires_at,
           usage: JSON.stringify(await getUserUsageWithLimit(user.username, user.role)),
         }
       });
