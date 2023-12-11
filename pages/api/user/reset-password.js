@@ -14,21 +14,15 @@ export default async function handler(req, res) {
   // Check user info
   const user = await getUser(username);
   if (!user) {
-    return res.status(400).json({
+    return res.status(200).json({
       success: false,
       message: "User not found",
-      error: {
-        message: "User not found",
-      },
     });
   } else {
     if (user.email !== email) {
-      return res.status(400).json({
+      return res.status(200).json({
         success: false,
         message: "Email not match",
-        error: {
-          message: "Email not match",
-        },
       });
     }
   }

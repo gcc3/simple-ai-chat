@@ -215,7 +215,7 @@ export default async function entry(args) {
       return data.message;
     } catch (error) {
       console.error(error);
-      return error.message;
+      return error;
     }
   }
 
