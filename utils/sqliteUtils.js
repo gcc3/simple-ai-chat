@@ -315,7 +315,7 @@ const insertUser = async (username, role, role_expires_at, password, email, sett
 
         // If the username doesn't exist, proceed with the insertion
         const stmt = db.prepare(
-          "INSERT INTO users (username, role, role_expires_at, password, email, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?)"
+          "INSERT INTO users (username, role, role_expires_at, password, email, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
         );
         stmt.run([username, role, role_expires_at, password, email, settings, "inactive", new Date()], function (err) {
           if (err) {
