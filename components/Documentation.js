@@ -2,8 +2,8 @@ import React from 'react';
 
 const Documentation = () => {
   const features = [
-    { name: "GPT-4 Turbo", description: "Chat with the cutting-edge GPT-4 Turbo model." },
-    { name: "GPT-4 Vision", description: "Interact with powerful vision models, to use Vision model, simply paste the image to the input box." },
+    { name: "GPT-4 Turbo", description: "Chat with the state-of-the-art GPT-4 Turbo." },
+    { name: "GPT-4 Vision", description: "Interact with powerful vision model GPT-4 Vision. To use Vision model, simply paste the image to the input box." },
     { name: "Roles/assistants", description: "Let ChatGPT assume various roles or act as an assistant to provide more satisfactory answers. You can customize your own roles/assistant instructions with a prompt and interact with them." },
     { name: "Personal Database (in progress)", description: "Utilize an advanced vector database engine for powerful data searches." },
     { name: "Midjourney (in progress)", description: "Image generative AI Midjourney support." },
