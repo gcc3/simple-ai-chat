@@ -1,4 +1,4 @@
-import { verifiyEmailAddress } from "utils/emailUtils";
+import { verifiyEmailAddress, evalEmailAddress } from "utils/emailUtils";
 import { insertUser, getUser, getUserByEmail } from "utils/sqliteUtils.js";
 import { generatePassword } from "utils/userUtils.js";
 import AWS from "aws-sdk";
@@ -31,6 +31,15 @@ export default async function (req, res) {
     return res.status(400).json({
       success: false,
       error: "Email is invalid.",
+    });
+  }
+
+  // Evaluate email address
+  const evalResult = await evalEmailAddress(email);
+  if (!evalResult.success) {
+    return res.status(400).json({
+      success: false,
+      error: evalResult.error,
     });
   }
 
