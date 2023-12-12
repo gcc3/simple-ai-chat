@@ -76,7 +76,7 @@ export default async function(req, res) {
       // Subscription expired
       if (user.role_expires_at && user.role_expires_at < Date.now()) {
         // Urge extend subscription
-        res.write(`data: Subscription expired, please extend to continue.\n\n`); res.flush();
+        res.write(`data: Your subscription has expired. Please renew it to continue using our services.\n\n`); res.flush();
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
         return;
