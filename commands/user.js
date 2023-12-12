@@ -1,6 +1,5 @@
 import { verifiyEmailAddress } from "utils/emailUtils";
 import { setUserLocalStorage } from "utils/userUtils";
-const moment = require('moment');
 
 export default async function entry(args) {
   const command = args[0];
@@ -33,13 +32,7 @@ export default async function entry(args) {
 
     if (user) {
       setUserLocalStorage(user);
-
-      return "User: " + user.username + "\n" +
-             "Email: " + user.email + "\n" +
-             "Role: \`" + user.role + "\`\n" +
-             "Role expire at: " + (user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "-") + "\n" +
-             "Settings: " + JSON.stringify(JSON.parse(user.settings), null, 2) + "\n" +
-             "Usage: " + JSON.stringify(JSON.parse(user.usage), null, 2) + "\n";
+      return JSON.stringify(user, null, 2)
     } else {
       return "User removed.";
     }

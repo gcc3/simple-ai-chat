@@ -3,6 +3,7 @@ import { authenticate } from 'utils/authUtils.js';
 import { countChatsForUser } from 'utils/sqliteUtils.js';
 import { getUsageLimit } from 'utils/envUtils.js';
 import { createToken } from 'utils/authUtils.js';
+const moment = require('moment');
 
 export default async function (req, res) {
   // Method Not Allowed if not GET
@@ -22,7 +23,7 @@ export default async function (req, res) {
     if (user) {
       // Refresh user auth token
       // Create JWT token
-      const payload = { 
+      const payload = {
         id: user.id, 
         username: user.username,
         subscription: user.role,
@@ -42,10 +43,11 @@ export default async function (req, res) {
           id: user.id, 
           username: user.username,
           email: user.email,
-          settings: user.settings,
+          settings: JSON.parse(user.settings),
           role: user.role,
           role_expires_at: user.role_expires_at,
-          usage: JSON.stringify(await getUserUsageWithLimit(user.username, user.role)),
+          role_expires_at_h: (user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "-"),
+          usage: await getUserUsageWithLimit(user.username, user.role),
         }
       });
     } else {

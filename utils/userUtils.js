@@ -9,7 +9,7 @@ export function setUserLocalStorage(user) {
   localStorage.setItem("userSettings", user.settings);
 
   if (user.settings) {
-    const settings = JSON.parse(user.settings);
+    const settings = user.settings;
 
     if (settings.theme) {
       localStorage.setItem("theme", settings.theme);

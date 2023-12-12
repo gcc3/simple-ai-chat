@@ -21,7 +21,7 @@ function Usage() {
 
       const user = data.user;
       setUser(user);
-      setUsage(JSON.parse(user.usage));
+      setUsage(user.usage);
     }
 
     if (localStorage.getItem("user") && !user) {

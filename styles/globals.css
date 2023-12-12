@@ -20,6 +20,10 @@ body {
 }
 code {
   font-family: "Fira Code", monospace !important;
+  scrollbar-width: none;  /* For Firefox */
+}
+::-webkit-scrollbar {
+  display: none;  /* For Chrome, Safari, and Opera */
 }
 
 /* Inline code */
