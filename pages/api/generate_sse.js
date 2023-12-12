@@ -17,14 +17,14 @@ import { getUsageLimit } from "utils/envUtils";
 const openai = new OpenAI();
 
 // configurations
-const model = process.env.MODEL ? process.env.MODEL : "";
+const model_ = process.env.MODEL ? process.env.MODEL : "";
 const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
-const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
+const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model_);
 const dict_search = process.env.DICT_SEARCH == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
@@ -92,7 +92,7 @@ export default async function (req, res) {
 
   // Model switch
   const use_vision = images.length > 0;
-  const model_switch = use_vision ? model_v : model;
+  const model = use_vision ? model_v : model_;
   const use_eval = use_stats && !use_vision;
 
   // User access control
@@ -175,7 +175,7 @@ export default async function (req, res) {
 
     // Configuration info
     console.log("--- configuration info ---\n" 
-    + "model: " + model_switch + "\n"
+    + "model: " + model + "\n"
     + "temperature: " + temperature + "\n"
     + "top_p: " + top_p + "\n"
     + "role_content_system (chat): " + role_content_system + "\n"
@@ -236,7 +236,7 @@ export default async function (req, res) {
       }
       
       console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
-      logadd(queryId, "F=" + function_input, "F=" + functionMessage, req);
+      logadd(queryId, model, "F=" + function_input, "F=" + functionMessage, req);
     }
 
     // Replace input with original
@@ -306,7 +306,7 @@ export default async function (req, res) {
           "content": "After calling another AI, its response as: " + nodeAiQueryResult,
         });
         additionalInfo += nodeAiQueryResult;
-        logadd(queryId, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, req);
+        logadd(queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, req);
       }
     }
 
@@ -326,7 +326,7 @@ export default async function (req, res) {
           "content": "Retrieved context: " + vectorQueryResult,
         });
         additionalInfo += vectorQueryResult;
-        logadd(queryId, "D=query_vector(query=" + input + ")", "D=" + vectorQueryResult, req);
+        logadd(queryId, model, "D=query_vector(query=" + input + ")", "D=" + vectorQueryResult, req);
 
         // Get vector score and refer doc info
         if (vectorQueryResult.includes("###VECTOR###")) {
@@ -341,7 +341,7 @@ export default async function (req, res) {
 
     // endpoint: /v1/chat/completions
     const chatCompletion = await openai.chat.completions.create({
-      model: model_switch,
+      model: model,
       // response_format: { type: "json_object" },
       messages,
       temperature,
@@ -357,7 +357,7 @@ export default async function (req, res) {
       })
     });
 
-    res.write(`data: ###ENV###${model_switch}\n\n`);
+    res.write(`data: ###ENV###${model}\n\n`);
     res.write(`data: ###STATS###${score},${temperature},${top_p},${token_ct},${use_eval},${functionName},${refer_doc}\n\n`);
     res.flush();
 
@@ -405,7 +405,7 @@ export default async function (req, res) {
     if (result_text.trim().length === 0) result_text = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(result_text + "\n");
-    logadd(queryId, input, result_text, req);
+    logadd(queryId, model, input, result_text, req);
 
     res.end();
     return;
