@@ -21,13 +21,10 @@ const Documentation = () => {
   ];
 
   const shortcuts = [
-    { function: "Stop generating", shortcut: "Control + C", condition: "" },
-    { function: "Clear output", shortcut: "Control + R", condition: "" },
-    { function: "Reset session", shortcut: "Control + Shift + R", condition: "" },
-    { function: "Clear the input, ", shortcut: "ESC", condition: "Focus on the input area" },
-    { function: "Repeat last input.", shortcut: "Tab", condition: "Focus on the input area" },
+    { function: "Clear the input, ", shortcut: "ESC", condition: "Focused on the input area, input area has content" },
+    { function: "Unfocus from the input box", shortcut: "ESC", condition: "Focused on the input area, input area is cleared" },
+    { function: "Repeat last input.", shortcut: "Tab", condition: "Focused on the input area, input area is cleared" },
     { function: "Navigate session history(logs).", shortcut: "← and →", condition: "Unfocused from the input area." },
-    { function: "Unfocus from the input box", shortcut: "ESC", condition: "" },
     { function: "Change focus to input area", shortcut: "Tab or /", condition: "Unfocused from the input area." },
   ];
 
