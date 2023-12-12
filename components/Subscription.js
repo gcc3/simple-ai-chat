@@ -115,7 +115,7 @@ function Subscription() {
         <div>User: {user.username}</div>
         <div>Email: {user.email}</div>
         <div>Subscription: `{user.role}`</div>
-        <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "unlimit"}</div>
+        <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at !== null && user.role_expires_at < new Date()) && "(Expired)"}</div>
       </div>}
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
       {user && <div className="mt-4">
@@ -127,7 +127,9 @@ function Subscription() {
             <button className="ml-2" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
           </div>}
           {targetRole && <div className="mt-3">
-            {getRoleLevel(user.role) > getRoleLevel(targetRole) && <div>
+            {((user.role_expires_at !== null && getRoleLevel(user.role) > getRoleLevel(targetRole) && user.role_expires_at > new Date()) 
+           || (user.role_expires_at === null && getRoleLevel(user.role) > getRoleLevel(targetRole)))
+            && <div>
               - You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.
               </div>}
             {amount > 0 && <div className="mt-1">
@@ -141,11 +143,14 @@ function Subscription() {
                 />
                 <button onClick={handleApplyPromotionCode} className="ml-2">Apply</button>
               </div>}
-              {!user.role_expires_at && getRoleLevel(user.role) >= getRoleLevel(targetRole) && <div>
+              {user.role_expires_at === null && getRoleLevel(user.role) >= getRoleLevel(targetRole) && <div>
                   - You already have an unlimited expiration date for `{user.role}`.
                 </div>}
-              {user.role_expires_at && getRoleLevel(user.role) <= getRoleLevel(targetRole) && <div>
-                <div>{user.role == targetRole ? "Extend 1 month for" : "Upgrade to"} role: `{targetRole}`</div>
+              {((getRoleLevel(targetRole) > getRoleLevel(user.role))
+               || (targetRole === user.role && user.role_expires_at !== null)
+               || (getRoleLevel(targetRole) < getRoleLevel(user.role) && (user.role_expires_at !== null && user.role_expires_at < new Date())))
+                && <div>
+                <div>{user.role == targetRole ? "Extend 1 month for" : (getRoleLevel(user.role) < getRoleLevel(targetRole) ? "Upgrade" : "Downgrade") + " to"} role: `{targetRole}`</div>
                 <div>Price: {amount === 0 ? "Free" : "$" + amount + "/month"}</div>
                 <div className="mt-3">Payment methods:</div>
                 <div className="mt-1">
@@ -163,6 +168,7 @@ function Subscription() {
                       </tr>
                     </tbody>
                   </table>
+                  <div className="mt-2">* Your payment will be securely handled through the banking system; we do not store or collect your payment details.</div>
                 </div>
               </div>}
             </div>}
