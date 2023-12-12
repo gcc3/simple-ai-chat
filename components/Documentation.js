@@ -21,14 +21,11 @@ const Documentation = () => {
   ];
 
   const shortcuts = [
-    { name: "Stop generating", description: "`Control + C`." },
-    { name: "Clear output", description: "`Control + R`." },
-    { name: "Reset session", description: "`Control + Shift + R`, will reset with a new session." },
-    { name: "Clear the input", description: "`ESC` key." },
-    { name: "Unfocus from the input box", description: "`ESC` key." },
-    { name: "Focus on input", description: "`Tab` or `/` key." },
-    { name: "Repeat last input", description: "`Tab` key" },
-    { name: "Navigate session history(logs)", description: "Arrow keys \"←\", and \"→\". Note: before navigating unfocus from the input area." },
+    { function: "Clear the input, ", shortcut: "ESC", condition: "Focused on the input area, input area has content" },
+    { function: "Unfocus from the input box", shortcut: "ESC", condition: "Focused on the input area, input area is cleared" },
+    { function: "Repeat last input.", shortcut: "Tab", condition: "Focused on the input area, input area is cleared" },
+    { function: "Navigate session history(logs).", shortcut: "← and →", condition: "Unfocused from the input area." },
+    { function: "Change focus to input area", shortcut: "Tab or /", condition: "Unfocused from the input area." },
   ];
 
   const content = (
@@ -57,11 +54,24 @@ const Documentation = () => {
       </div>
       <div className="mt-5">Shurtcuts</div>
       <div className="mt-2">
-        {shortcuts.map((item, index) => (
-          <div key={index}>
-            <div>{item.name} - {item.description}</div>
-          </div>
-        ))}
+        <table>
+          <thead>
+            <tr>
+              <th>Shortcut</th>
+              <th>Description</th>
+              <th>Condition</th>
+            </tr>
+          </thead>
+          <tbody>
+            {shortcuts.map((item, index) => (
+              <tr key={index}>
+                <td>{item.shortcut}</td>
+                <td>{item.function}</td>
+                <td>{item.condition}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   )
