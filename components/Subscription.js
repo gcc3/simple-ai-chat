@@ -87,7 +87,10 @@ function Subscription() {
       const subcriptions = await response.json();
       setSubscriptions(subcriptions);
     }
-    loadUserInfo();
+
+    if (localStorage.getItem("user")) {
+      loadUserInfo();
+    }
   }, []);
 
   function handleSetTargetRole(role) {
