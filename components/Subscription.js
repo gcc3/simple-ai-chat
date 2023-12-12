@@ -119,16 +119,16 @@ function Subscription() {
       </div>}
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
       {user && <div className="mt-4">
-        {message && <div>{message}</div>}
+        {message && <div>- {message}</div>}
         {!message && <div>
           {user.role !== "root_user" && <div>Select upgrade subscription:
             <button className="ml-2" onClick={handleSetTargetRole("user")}>`user`</button>
             <button className="ml-2" onClick={handleSetTargetRole("pro_user")}>`pro_user`</button>
             <button className="ml-2" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
           </div>}
-          {targetRole && <div>
-            {getRoleLevel(user.role) > getRoleLevel(targetRole) && <div className="mt-3">
-              You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.
+          {targetRole && <div className="mt-3">
+            {getRoleLevel(user.role) > getRoleLevel(targetRole) && <div>
+              - You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.
               </div>}
             {amount > 0 && <div className="mt-1">
               {process.env.USE_PROMO_CODE === "true" && <div className="mt-3 flex items-center">Promotion code:
@@ -141,25 +141,30 @@ function Subscription() {
                 />
                 <button onClick={handleApplyPromotionCode} className="ml-2">Apply</button>
               </div>}
-              <div className="mt-3">{user.role == targetRole ? "Extend 1 month for" : "Upgrade to"} role: `{targetRole}`</div>
-              <div>Price: {amount === 0 ? "Free" : "$" + amount + "/month"}</div>
-              <div className="mt-3">Payment methods:</div>
-              <div className="mt-1">
-                <table>
-                  <thead>
-                    <tr>
-                      <th>Paypal or Credit Card</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr>
-                      <td className="p-1">
-                      <PayPalButton targetRole={targetRole} amount={amount} onSuccess={onSuccess} />
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div>
+              {!user.role_expires_at && getRoleLevel(user.role) >= getRoleLevel(targetRole) && <div>
+                  <div>- You already have an unlimited expiration date for `{user.role}`.</div>
+                </div>}
+              {getRoleLevel(user.role) < getRoleLevel(targetRole) && <div>
+                <div>{user.role == targetRole ? "Extend 1 month for" : "Upgrade to"} role: `{targetRole}`</div>
+                <div>Price: {amount === 0 ? "Free" : "$" + amount + "/month"}</div>
+                <div className="mt-3">Payment methods:</div>
+                <div className="mt-1">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Paypal or Credit Card</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr>
+                        <td className="p-1">
+                        <PayPalButton targetRole={targetRole} amount={amount} onSuccess={onSuccess} />
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>}
             </div>}
           </div>}
         </div>}
