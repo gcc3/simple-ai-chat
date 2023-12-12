@@ -120,6 +120,15 @@ export default async function (req, res) {
         return;
       }
 
+      // Subscription expired
+      if (user.role_expires_at && user.role_expires_at < Date.now()) {
+        // Urge extend subscription
+        res.write(`data: Subscription expired, please extend to continue.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+
       // Limit `user` chats per day
       if (user.role === "user") {
         const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
