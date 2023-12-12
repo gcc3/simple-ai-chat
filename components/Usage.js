@@ -34,7 +34,8 @@ function Usage() {
       {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]`</div>}
       {user && <div>
         <div>
-          <div>User: {localStorage.getItem("user")}</div>
+          <div>Subcription Status</div>
+          <div className="mt-1">User: {localStorage.getItem("user")}</div>
           <div>Email: {localStorage.getItem("userEmail")}</div>
           <div>Subscription: `{localStorage.getItem("userRole")}`</div>
           <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at !== null && user.role_expires_at < new Date()) && "(Expired)"}</div>

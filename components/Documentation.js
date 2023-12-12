@@ -28,7 +28,7 @@ const Documentation = () => {
     { name: "Unfocus from the input box", description: "`ESC` key." },
     { name: "Focus on input", description: "`Tab` or `/` key." },
     { name: "Repeat last input", description: "`Tab` key" },
-    { name: "Navigate session history(logs)", description: "Arrow keys \"←\", and \"→\". Note: before navigating please unfocus from the input area." },
+    { name: "Navigate session history(logs)", description: "Arrow keys \"←\", and \"→\". Note: before navigating unfocus from the input area." },
   ];
 
   const content = (
@@ -56,11 +56,10 @@ const Documentation = () => {
         ))}
       </div>
       <div className="mt-5">Shurtcuts</div>
-      <div>
+      <div className="mt-2">
         {shortcuts.map((item, index) => (
-          <div key={index} className="mt-2">
-            <div>- {item.name}</div>
-            <div>{item.description}</div>
+          <div key={index}>
+            <div>{item.name} - {item.description}</div>
           </div>
         ))}
       </div>
