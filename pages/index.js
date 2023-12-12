@@ -166,6 +166,11 @@ export default function Home() {
     clearOutput();
 
     printOutput(log["output"]);
+    setInfo((
+      <div>
+        model: {log["model"]}<br></br>
+      </div>
+    ));
     markdownFormatter(elOutputRef.current);
     hljs.highlightAll();
   }
