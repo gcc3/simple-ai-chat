@@ -131,7 +131,7 @@ function Subscription() {
               You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.
               </div>}
             {amount > 0 && <div className="mt-1">
-              <div className="mt-3 flex items-center">Promotion code:
+              {process.env.USE_PROMO_CODE === "true" && <div className="mt-3 flex items-center">Promotion code:
                 <input
                   className="ml-1 pl-2 pr-2 h-8 border"
                   id="promotion-code"
@@ -140,7 +140,7 @@ function Subscription() {
                   onChange={(e) => setPromotionCode(e.target.value)}
                 />
                 <button onClick={handleApplyPromotionCode} className="ml-2">Apply</button>
-              </div>
+              </div>}
               <div className="mt-3">{user.role == targetRole ? "Extend 1 month for" : "Upgrade to"} role: `{targetRole}`</div>
               <div>Price: {amount === 0 ? "Free" : "$" + amount + "/month"}</div>
               <div className="mt-3">Payment methods:</div>
