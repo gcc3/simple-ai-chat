@@ -312,6 +312,9 @@ Roles are separated by `;`.
 Control use promotion code or not.  
 The value should be `true` or `false`.  
 
+* HUNTER_API_KEY  
+Use hunter API to verify email.  
+
 
 Coding rules
 ------------
