@@ -76,7 +76,13 @@ function Subscription() {
           setMessage("You are the root_user.");
         }
       }
+    }
 
+    if (localStorage.getItem("user")) {
+      loadUserInfo();
+    }
+
+    const loadSubscriptions = async () => {
       // Fetch subscription list
       const response = await fetch("/api/subscription/list", {
         method: "GET",
@@ -88,9 +94,7 @@ function Subscription() {
       setSubscriptions(subcriptions);
     }
 
-    if (localStorage.getItem("user")) {
-      loadUserInfo();
-    }
+    loadSubscriptions();
   }, []);
 
   function handleSetTargetRole(role) {
