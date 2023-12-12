@@ -21,14 +21,14 @@ const Documentation = () => {
   ];
 
   const shortcuts = [
-    { name: "Stop generating", description: "`Control + C`." },
-    { name: "Clear output", description: "`Control + R`." },
-    { name: "Reset session", description: "`Control + Shift + R`, will reset with a new session." },
-    { name: "Clear the input", description: "`ESC` key." },
-    { name: "Unfocus from the input box", description: "`ESC` key." },
-    { name: "Focus on input", description: "`Tab` or `/` key." },
-    { name: "Repeat last input", description: "`Tab` key" },
-    { name: "Navigate session history(logs)", description: "Arrow keys \"←\", and \"→\". Note: before navigating unfocus from the input area." },
+    { function: "Stop generating", shortcut: "Control + C", condition: "" },
+    { function: "Clear output", shortcut: "Control + R", condition: "" },
+    { function: "Reset session", shortcut: "Control + Shift + R", condition: "" },
+    { function: "Clear the input, ", shortcut: "ESC", condition: "Focus on the input area" },
+    { function: "Repeat last input.", shortcut: "Tab", condition: "Focus on the input area" },
+    { function: "Navigate session history(logs).", shortcut: "← and →", condition: "Unfocused from the input area." },
+    { function: "Unfocus from the input box", shortcut: "ESC", condition: "" },
+    { function: "Change focus to input area", shortcut: "Tab or /", condition: "Unfocused from the input area." },
   ];
 
   const content = (
@@ -57,11 +57,24 @@ const Documentation = () => {
       </div>
       <div className="mt-5">Shurtcuts</div>
       <div className="mt-2">
-        {shortcuts.map((item, index) => (
-          <div key={index}>
-            <div>{item.name} - {item.description}</div>
-          </div>
-        ))}
+        <table>
+          <thead>
+            <tr>
+              <th>Shortcut</th>
+              <th>Description</th>
+              <th>Condition</th>
+            </tr>
+          </thead>
+          <tbody>
+            {shortcuts.map((item, index) => (
+              <tr key={index}>
+                <td>{item.shortcut}</td>
+                <td>{item.function}</td>
+                <td>{item.condition}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
     </>
   )
