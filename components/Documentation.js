@@ -7,17 +7,19 @@ const Documentation = () => {
     { name: "Fullscreen mode", description: "A larger input and output area is provided. Use `:fullscreen` to turn on fullscreen mode. Use \`:fullscreen split\` to use a vertically splited screen." },
     { name: "De-hallucination(`self_eval_score`)", description: "Detect hallucinations in chat to provide more trustworthiness, use command \`:stats on\`." },
     { name: "Roles/assistants", description: "Let ChatGPT assume various roles or act as an assistant to provide more satisfactory answers. You can customize your own roles/assistant instructions with a prompt and interact with them." },
-    { name: "Personal Database (In progress)", description: "Utilize an advanced vector database engine for powerful data searches. (super_user)" },
+    { name: "Personal Database", description: "Utilize an advanced vector database engine for powerful data searches." },
+    { name: "Midjourney", description: "Image generative AI Midjourney support." },
   ];
 
   const shortcuts = [
     { name: "Stop generating", description: "`Control + C`." },
     { name: "Clear output", description: "`Control + R`." },
-    { name: "Reset session", description: "`Control + Shift + R`, will start a new session" },
-    { name: "Clear the input/unfocus input box", description: "`ESC`." },
+    { name: "Reset session", description: "`Control + Shift + R`, will reset with a new session." },
+    { name: "Clear the input", description: "`ESC` key." },
+    { name: "Unfocus from the input box", description: "`ESC` key." },
     { name: "Focus on input", description: "`Tab` or `/` key." },
-    { name: "Repeat last input(placeholder text)", description: "`Tab` key" },
-    { name: "Navigate history(session logs)", description: "Arrow keys \"←\", and \"→\". Note: before navigating unfocus from the input box is required." },
+    { name: "Repeat last input", description: "`Tab` key" },
+    { name: "Navigate session history(logs)", description: "Arrow keys \"←\", and \"→\". Note: before navigating please unfocus from the input area." },
   ];
 
   const content = (
