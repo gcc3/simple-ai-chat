@@ -56,7 +56,7 @@ export default async (req, res) => {
       username: user.username, 
       role: user.role,
       email: user.email, 
-      settings: user.settings 
+      settings: JSON.parse(user.settings),
     } 
   });
 };
