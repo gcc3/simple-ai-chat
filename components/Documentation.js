@@ -5,8 +5,8 @@ const Documentation = () => {
     { name: "GPT-4 Turbo", description: "Chat with the cutting-edge GPT-4 Turbo model." },
     { name: "GPT-4 Vision", description: "Interact with powerful vision models, to use Vision model, simply paste the image to the input box." },
     { name: "Roles/assistants", description: "Let ChatGPT assume various roles or act as an assistant to provide more satisfactory answers. You can customize your own roles/assistant instructions with a prompt and interact with them." },
-    { name: "Personal Database", description: "Utilize an advanced vector database engine for powerful data searches." },
-    { name: "Midjourney", description: "Image generative AI Midjourney support." },
+    { name: "Personal Database (in progress)", description: "Utilize an advanced vector database engine for powerful data searches." },
+    { name: "Midjourney (in progress)", description: "Image generative AI Midjourney support." },
   ];
 
   const sub_features = [
@@ -35,7 +35,7 @@ const Documentation = () => {
     <>
       <div>Introduction</div>
       <div className="mt-2">
-        Simple AI (`simple-ai.io`) is a command-based AI chat application that focus on the cutting-edge AI technology. It provides a simple and easy-to-use interface for everyone to interact with the AI models.
+        Simple AI (`simple-ai.io`) is a command-based AI chat application that focus on the cutting-edge AI technology. It provides a simple and easy-to-use interface for everyone to interact with the AI models. Simple AI is open-source; you can visit our GitHub repository (<a href="https://github.com/gcc3/simple-ai-chat"><u>link</u></a>) to report any issues you encounter, share your ideas or contribute to the project.
       </div>
       <div className="mt-5">Main Features</div>
       <div>
@@ -55,15 +55,7 @@ const Documentation = () => {
           </div>
         ))}
       </div>
-      <div className="mt-5">Subscriptions</div>
-      <div className="mt-2">
-        We provide 3 kinds of subscriptions(roles):<br></br>
-        1. `user`: offer a general user package for only $3/month for accessing the most advanced AI.<br></br>
-        2. `pro_user`: provide powerful personal database and Midjourney image generation function for only $18/month.<br></br>
-        3. `super_user`: unlimte, latest technology and a larger personal database, $50/month.<br></br>
-        For new user registered, we offer 1-month free trial for `user` role.
-      </div>
-      <div className="mt-5">Shurtcuts Help</div>
+      <div className="mt-5">Shurtcuts</div>
       <div>
         {shortcuts.map((item, index) => (
           <div key={index} className="mt-2">

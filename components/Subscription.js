@@ -117,6 +117,13 @@ function Subscription() {
         <div>Subscription: `{user.role}`</div>
         <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at !== null && user.role_expires_at < new Date()) && "(Expired)"}</div>
       </div>}
+      <div className="mt-3">
+        Simple AI offers three subscription plans:<br></br>
+        - `user`: offer a general user package for only $3/month for accessing the most advanced AI.<br></br>
+        - `pro_user`: provide powerful personal database and Midjourney image generation function for only $18/month.<br></br>
+        - `super_user`: unlimte, latest technology and a larger personal database, $50/month.<br></br>
+        * For new users who register, we offer a 1-month free trial.
+      </div>
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
       {user && <div className="mt-4">
         {message && <div>- {message}</div>}
