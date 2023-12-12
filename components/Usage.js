@@ -23,7 +23,10 @@ function Usage() {
       setUser(user);
       setUsage(JSON.parse(user.usage));
     }
-    if (!user) getUserInfo();
+
+    if (localStorage.getItem("user") && !user) {
+      getUserInfo();
+    }
   });
 
   const content = (
