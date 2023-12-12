@@ -3,7 +3,7 @@ import { authenticate } from './authUtils.js';
 
 const fs = require('fs');
 
-export function logadd(session, input, output, req) {
+export function logadd(session, model, input, output, req) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
 
@@ -17,7 +17,7 @@ export function logadd(session, input, output, req) {
   if (logfilter(output, "IP")) return;
 
   // Insert log
-  insertLog(session, username, input, output, ip, browser);
+  insertLog(session, username, model, input, output, ip, browser);
 }
 
 export async function loglist(session, limit = 50) {
