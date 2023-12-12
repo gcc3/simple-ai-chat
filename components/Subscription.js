@@ -142,9 +142,9 @@ function Subscription() {
                 <button onClick={handleApplyPromotionCode} className="ml-2">Apply</button>
               </div>}
               {!user.role_expires_at && getRoleLevel(user.role) >= getRoleLevel(targetRole) && <div>
-                  <div>- You already have an unlimited expiration date for `{user.role}`.</div>
+                  - You already have an unlimited expiration date for `{user.role}`.
                 </div>}
-              {getRoleLevel(user.role) <= getRoleLevel(targetRole) && <div>
+              {user.role_expires_at && getRoleLevel(user.role) <= getRoleLevel(targetRole) && <div>
                 <div>{user.role == targetRole ? "Extend 1 month for" : "Upgrade to"} role: `{targetRole}`</div>
                 <div>Price: {amount === 0 ? "Free" : "$" + amount + "/month"}</div>
                 <div className="mt-3">Payment methods:</div>
