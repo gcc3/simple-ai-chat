@@ -100,7 +100,7 @@ export default async function (req, res) {
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     if (!authResult.success) {
       // Not a user, urge register a user
-      const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());
+      const chatCount = await countChatsForIP(ip, Date.now() - 86400000 * 3, Date.now());
       if (chatCount >= 5) {
         res.write(`data: Please register a user to continue, you can use the command \`:user add [username] [email] [password?]\`.\n\n`); res.flush();
         res.write(`data: [DONE]\n\n`); res.flush();
