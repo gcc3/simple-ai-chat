@@ -100,7 +100,7 @@ const getDatabaseConnection = async () => {
       await initializeDatabase(db);
 
       // Create root user with defatut settings
-      await insertUser("root", "root_user", "", process.env.ROOT_PASS, "root@localhost", 
+      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 
         "{\"theme\":\"light\",\"speak\":\"off\",\"stats\":\"off\",\"fullscreen\":\"off\"}");
 
       return db;
