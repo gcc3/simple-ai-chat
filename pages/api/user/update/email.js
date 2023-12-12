@@ -1,4 +1,4 @@
-import { updateUserEmail, emailExists as getUserByEmail } from 'utils/sqliteUtils.js';
+import { getUserByEmail } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 import { verifiyEmailAddress } from 'utils/emailUtils.js';
 import AWS from 'aws-sdk';

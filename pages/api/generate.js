@@ -66,8 +66,17 @@ export default async function(req, res) {
 
       // Verify email
       if (use_email && !user.email_verified_at) {
-        // No email, urge adding an email
+        // Urge verify email address
         res.write(`data: Please verify your email to continue. To send verification again, you can use the command \`:user set email [email]\`.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+
+      // Subscription expired
+      if (user.role_expires_at && user.role_expires_at < Date.now()) {
+        // Urge extend subscription
+        res.write(`data: Your subscription has expired. Please renew it to continue using our services.\n\n`); res.flush();
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
         return;

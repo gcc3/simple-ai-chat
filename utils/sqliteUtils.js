@@ -695,7 +695,7 @@ export {
   updateUserLastLogin,
   updateUserSettings,
   updateUserStatus,
-  getUserByEmail as emailExists,
+  getUserByEmail,
   createDatabaseFile,
   initializeDatabase,
   getDatabaseConnection,
