@@ -34,6 +34,15 @@ export default async function (req, res) {
     });
   }
 
+  // Check if the email already exists in the database.
+  const emailUser = await getUserByEmail(email);
+  if (emailUser && emailUser.username !== username) {
+    return res.status(400).json({ 
+      success: false,
+      error: 'Email already used by another user.',
+    });
+  }
+
   // Evaluate email address
   const evalResult = await evalEmailAddress(email);
   if (!evalResult.success) {
@@ -41,19 +50,6 @@ export default async function (req, res) {
       success: false,
       error: evalResult.error,
     });
-  }
-
-  // Check if the email already exists in the database.
-  const emailUser = await getUserByEmail(email);
-  if (emailUser) {
-    return res
-      .status(400)
-      .json({
-        error:
-          'Email already used by user "' +
-          emailUser.username +
-          '". If you lost password please reset with command `:user reset pass [username] [email]`',
-      });
   }
 
   // Generate a jwt token

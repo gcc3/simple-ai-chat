@@ -32,19 +32,11 @@ export default async function (req, res) {
     });
   }
 
+  // Check if the email is valid.
   if (!verifiyEmailAddress(email)) {
-    return res.status(400).json({ 
-      success: false, 
-      error: 'Email is invalid.'
-    });
-  }
-
-  // Evaluate email address
-  const evalResult = await evalEmailAddress(email);
-  if (!evalResult.success) {
     return res.status(400).json({
       success: false,
-      error: evalResult.error,
+      error: "Email is invalid.",
     });
   }
 
@@ -54,6 +46,15 @@ export default async function (req, res) {
     return res.status(400).json({ 
       success: false,
       error: 'Email already used by another user.',
+    });
+  }
+
+  // Evaluate email address
+  const evalResult = await evalEmailAddress(email);
+  if (!evalResult.success) {
+    return res.status(400).json({
+      success: false,
+      error: evalResult.error,
     });
   }
 
