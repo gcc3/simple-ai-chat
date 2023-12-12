@@ -5,6 +5,9 @@ import { updateUserSetting } from 'utils/userUtils.js';
 
 export default function fullscreen(args) {
 
+  const usage = "Usage: :fullscreen" + "\n" +
+                "       :fullscreen [split/off]";
+
   // If no argument is provided
   if (args.length === 0) {
     localStorage.setItem('fullscreen', "default");
@@ -21,13 +24,6 @@ export default function fullscreen(args) {
     if (config === "split" && store.getState().enter === "enter")  store.dispatch(toggleEnterChange("⌃enter"));
     if (config !== "split" && store.getState().enter === "⌃enter") store.dispatch(toggleEnterChange("enter"));
 
-    if (config === "default") {
-      localStorage.setItem('fullscreen', "default");
-      store.dispatch(toggleFullscreen("default"));
-      updateUserSetting("fullscreen", "default");
-      return "Fullscreen default enabled.";
-    }
-
     if (config === "split") {
       localStorage.setItem('fullscreen', "split");
       store.dispatch(toggleFullscreen("split"));
@@ -42,13 +38,11 @@ export default function fullscreen(args) {
       return "Fullscreen disabled.";
     }
 
-    return "Usage: :fullscreen" + "\n" +
-           "       :fullscreen [default/split/off]"
+    return usage;
   }
 
   if (args.length > 1) {
-    return "Usage: :fullscreen" + "\n" +
-           "       :fullscreen [default/split/off]"
+    return usage;
   }
 }
 
