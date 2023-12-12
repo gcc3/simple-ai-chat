@@ -4,13 +4,13 @@ export default function help(args) {
     ":stop - Stop generating. (⌃c)\n" +
     ":clear - Clear output. (⌃r)\n" +
     ":reset - Clear output and reset session. (⇧⌃r)\n" +
-    ":fullscreen - Use fullscreen, same as `:fullscreen default`.\n" +
-    ":fullscreen [default/split/off] - Config fullscreen mode.\n" +
+    ":fullscreen - Use fullscreen mode.\n" +
+    ":fullscreen [split/off] - Fullscreen split mode or turn off.\n" +
     ":theme [light/dark/terminal] - Change color theme.\n" +
-    ":entry [ls|list|add] - Manage dictionary entries.\n" +
-    ":ls - List all entries, same as `:entry ls`.\n" +
-    ":add [word] [definition] - Same as `:entry add`.\n" +
-    ":search [keyword] - Search dictionary.\n" +
+    // ":entry [ls|list|add] - Manage dictionary entries.\n" +
+    // ":ls - List all entries, same as `:entry ls`.\n" +
+    // ":add [word] [definition] - Same as `:entry add`.\n" +
+    // ":search [keyword] - Search dictionary.\n" +
     ":function [ls|list] - List all supported functions.\n" +
     ":location [on|off] - Switch on/off location service.\n" +
     ":log - Show logs for current session.\n" +
