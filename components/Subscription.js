@@ -144,7 +144,7 @@ function Subscription() {
               {!user.role_expires_at && getRoleLevel(user.role) >= getRoleLevel(targetRole) && <div>
                   <div>- You already have an unlimited expiration date for `{user.role}`.</div>
                 </div>}
-              {getRoleLevel(user.role) < getRoleLevel(targetRole) && <div>
+              {getRoleLevel(user.role) <= getRoleLevel(targetRole) && <div>
                 <div>{user.role == targetRole ? "Extend 1 month for" : "Upgrade to"} role: `{targetRole}`</div>
                 <div>Price: {amount === 0 ? "Free" : "$" + amount + "/month"}</div>
                 <div className="mt-3">Payment methods:</div>
