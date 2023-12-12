@@ -30,7 +30,7 @@ export default async function (req, res) {
   if (!verifiyEmailAddress(email)) {
     return res.status(400).json({
       success: false,
-      error: "Email address is invalid.",
+      error: "Email is invalid.",
     });
   }
 
