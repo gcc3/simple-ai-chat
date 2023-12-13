@@ -316,16 +316,20 @@ export default function Home() {
             console.log("Shortcut: ←");
 
             // Print session log (previous)
-            getSessionLog("prev", localStorage.getItem("queryId"), localStorage.getItem("time"))
-              .then((r) => {
-                if (Object.entries(r.result).length === 0) {
-                  console.log("No previous log.");
-                  return;
-                } else {
-                  const log = r.result["log"];
-                  printSessionLog(log);
-                }
-              });
+            if (global.STATE === STATES.IDLE) {
+              getSessionLog("prev", localStorage.getItem("queryId"), localStorage.getItem("time"))
+                .then((r) => {
+                  if (Object.entries(r.result).length === 0) {
+                    console.log("No previous log.");
+                    return;
+                  } else {
+                    const log = r.result["log"];
+                    printSessionLog(log);
+                  }
+                });
+            } else {
+              console.log("Aborted as generating.");
+            }
           }
           break;
 
@@ -336,16 +340,20 @@ export default function Home() {
             console.log("Shortcut: →");
 
             // Print session log (next)
-            getSessionLog("next", localStorage.getItem("queryId"), localStorage.getItem("time"))
-            .then((r) => {
-              if (Object.entries(r.result).length === 0) {
-                console.log("No next log.");
-                return;
-              } else {
-                const log = r.result["log"];
-                printSessionLog(log);
-              }
-            });
+            if (global.STATE === STATES.IDLE) {
+              getSessionLog("next", localStorage.getItem("queryId"), localStorage.getItem("time"))
+                .then((r) => {
+                  if (Object.entries(r.result).length === 0) {
+                    console.log("No next log.");
+                    return;
+                  } else {
+                    const log = r.result["log"];
+                    printSessionLog(log);
+                  }
+              });
+            } else {
+              console.log("Aborted as generating.");
+            }
           }
           break;
       }
