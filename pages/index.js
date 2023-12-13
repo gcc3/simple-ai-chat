@@ -20,6 +20,7 @@ import { refreshUserInfo } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
 import { generateFileURl } from "utils/awsUtils";
+import { initializeSession } from "utils/sessionUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -208,8 +209,7 @@ export default function Home() {
 
   // Initializing
   useEffect(() => {
-    localStorage.setItem("time", Date.now());
-    localStorage.setItem("queryId", Date.now());
+    initializeSession();
     if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
     if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");

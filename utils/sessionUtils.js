@@ -1,3 +1,8 @@
+export function initializeSession() {
+  localStorage.setItem("time", Date.now());
+  localStorage.setItem("queryId", Date.now());
+}
+
 // Session ID is a string of number.
 export function attachSession(sessionId) {
   const verifyResult = verifySessionId(sessionId);

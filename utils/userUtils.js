@@ -1,6 +1,7 @@
 import { setTheme } from "./themeUtils";
 import store from '../store.js';
 import { toggleFullscreen } from '../states/fullscreenSlice.js';
+import { initializeSession } from "./sessionUtils";
 
 export function setUserLocalStorage(user) {
   localStorage.setItem("user", user.username);
@@ -41,9 +42,8 @@ export function clearUserLocalStorage() {
   localStorage.removeItem("userRole");
   localStorage.removeItem("userSettings");
   
-  // Reset query id to forget previous memory
-  localStorage.setItem("time", Date.now());
-  localStorage.setItem("queryId", Date.now());
+  // Reset session to forget previous memory
+  initializeSession();
 
   // Reset role
   if (localStorage.getItem("role")) {
