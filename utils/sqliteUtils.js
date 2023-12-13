@@ -44,7 +44,7 @@ const initializeDatabase = (db) => {
           `CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY,
             username TEXT NOT NULL,
-            group TEXT,
+            "group" TEXT,
             role TEXT NOT NULL,
             role_expires_at INTEGER,
             password TEXT NOT NULL,
@@ -336,7 +336,7 @@ const insertUser = async (username, role, role_expires_at, password, email, sett
         // If the username doesn't exist, proceed with the insertion
         const group = username;
         const stmt = db.prepare(
-          "INSERT INTO users (username, group, role, role_expires_at, password, email, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
+          "INSERT INTO users (username, \"group\", role, role_expires_at, password, email, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
         stmt.run([username, group, role, role_expires_at, password, email, settings, "inactive", new Date()], function (err) {
           if (err) {
@@ -406,7 +406,7 @@ const userJoinGroup = async (username, groupName) => {
 
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET group = ?, updated_at = ? WHERE username = ?");
+      const stmt = db.prepare("UPDATE users SET \"group\" = ?, updated_at = ? WHERE username = ?");
       stmt.run([newGroups, new Date(), username], function (err) {
         if (err) {
           reject(err);
@@ -432,7 +432,7 @@ const userLeaveGroup = async (username, groupName) => {
 
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET group = ?, updated_at = ? WHERE username = ?");
+      const stmt = db.prepare("UPDATE users SET \"group\" = ?, updated_at = ? WHERE username = ?");
       stmt.run([newGroups, new Date(), username], function (err) {
         if (err) {
           reject(err);
