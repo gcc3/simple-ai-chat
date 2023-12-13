@@ -1,3 +1,5 @@
+import { initializeSession } from "utils/sessionUtils";
+
 export default async function role(args) {
   const command = args[0];
 
@@ -36,10 +38,8 @@ export default async function role(args) {
 
     localStorage.setItem("role", "");  // reset role
 
-    // Reset query id to forget previous memory
-    localStorage.setItem("time", Date.now());
-    localStorage.setItem("queryId", Date.now());
-    
+    // Reset session to forget previous memory
+    initializeSession();
     return "Role reset.";
   }
 
@@ -124,9 +124,8 @@ export default async function role(args) {
     if (roleName != null) {
       localStorage.setItem("role", roleName);
 
-      // Reset query id to forget previous memory
-      localStorage.setItem("time", Date.now());
-      localStorage.setItem("queryId", Date.now());
+      // Reset session to forget previous memory
+      initializeSession();
 
       return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show current role and prompt";
     } else {
