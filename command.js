@@ -24,6 +24,7 @@ import theme from "./commands/theme.js";
 import user from "./commands/user.js";
 import login from "./commands/login.js";
 import logout from "./commands/logout.js";
+import store from "./commands/store.js";
 
 export default function commands(input) {
   let command = input;
@@ -61,6 +62,7 @@ export default function commands(input) {
   if (command.startsWith(":fullscreen")) return fullscreen(args);
   if (command.startsWith(":theme")) return theme(args);
   if (command.startsWith(":user")) return user(args);
+  if (command.startsWith(":store")) return store(args);
   return "Unknown command.";
 }
 

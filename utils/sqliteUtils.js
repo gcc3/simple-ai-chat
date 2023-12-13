@@ -44,6 +44,7 @@ const initializeDatabase = (db) => {
           `CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY,
             username TEXT NOT NULL,
+            group TEXT,
             role TEXT NOT NULL,
             role_expires_at INTEGER,
             password TEXT NOT NULL,
@@ -333,10 +334,11 @@ const insertUser = async (username, role, role_expires_at, password, email, sett
         }
 
         // If the username doesn't exist, proceed with the insertion
+        const group = username;
         const stmt = db.prepare(
-          "INSERT INTO users (username, role, role_expires_at, password, email, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+          "INSERT INTO users (username, group, role, role_expires_at, password, email, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
-        stmt.run([username, role, role_expires_at, password, email, settings, "inactive", new Date()], function (err) {
+        stmt.run([username, group, role, role_expires_at, password, email, settings, "inactive", new Date()], function (err) {
           if (err) {
             reject(err);
             return;
@@ -380,6 +382,58 @@ const softDeleteUser = async (username) => {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET username = ?, updated_at = ? WHERE username = ?");
       stmt.run(["__deleted__", new Date(), username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const userJoinGroup = async (username, groupName) => {
+  const db = await getDatabaseConnection();
+  const user = await getUser(username);
+  const origGroups = user.group ? user.group.split(",") : [];
+  const newGroups = [...new Set([...origGroups, groupName])].join(",");
+
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET group = ?, updated_at = ? WHERE username = ?");
+      stmt.run([newGroups, new Date(), username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const userLeaveGroup = async (username, groupName) => {
+  const db = await getDatabaseConnection();
+  const user = await getUser(username);
+  const origGroups = user.group ? user.group.split(",") : [];
+  const newGroups = origGroups.filter((g) => g !== groupName).join(",");
+
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET group = ?, updated_at = ? WHERE username = ?");
+      stmt.run([newGroups, new Date(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -741,6 +795,7 @@ const updateRolePrompt = async (roleName, newPrompt, createdBy) => {
 };
 
 // IV. stores
+// Get store by name
 const getStore = async (name, createdBy) => {
   const db = await getDatabaseConnection();
   try {
@@ -887,6 +942,8 @@ export {
   insertUser,
   deleteUser,
   softDeleteUser,
+  userJoinGroup,
+  userLeaveGroup,
   updateUsername,
   updateUserPassword,
   updateUserEmail,
@@ -905,4 +962,10 @@ export {
   insertRole,
   deleteRole,
   updateRolePrompt,
+  getStore,
+  getUserStores,
+  insertStore,
+  deleteStore,
+  updateStoreOwner,
+  updateStoreSettings,
 };

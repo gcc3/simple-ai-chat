@@ -33,19 +33,18 @@ export default function help(args) {
     ":store use [name] - Use a data store.\n" +
     ":store add [name] [settings] - Create a store.\n" +
     ":store [del|delete] [name] - Create/delete a store.\n" +
-    ":store set [name] [setting] - Setup a store.\n" +
-    ":store chown [owner] - Change store owner.\n" +
+    ":store set name [name] [setting] - Setup a store.\n" +
+    ":store set owner [owner] - Change store owner.\n" +
     ":user add [username] [email] [password?] - Create a user.\n" +
     ":user set pass [value] - Change password.\n" +
     ":user set email [value] - Change email address.\n" +
     ":user reset pass [username] [email] - Recover password.\n" +
     ":user role [add|set] [role_name] [prompt] - Add an assistant.\n" +
     ":user role [del|delete] [role_name] - Delete a role/assistant.\n" +
+    ":user join [group] [password] - Join a group.\n" +
+    ":user leave [group] - Leave a group.\n" +
     ":user info - Get logged-in user info and settings.\n" +
     ":user [del|delete] [username] - Delete user with data.\n" +
-    ":group [ls|list] - List all groups.\n" +
-    ":group add [group_name] - Create a group.\n" +
-    ":group [del|delete] [group_name] - Delete a group.\n" +
     ":login [username] [password] - Login user.\n" +
     ":logout - Logout user.\n" +
     ":info - Show local config.\n" +
