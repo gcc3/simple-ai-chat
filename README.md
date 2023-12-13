@@ -99,6 +99,8 @@ Use `:user set pass [password]` to change password.
 Use `:login [username] [password]`, `:logout` to login and logout user.  
 Use `:user reset pass [username] [email]` to recover user password.  
 User settings will be applied after login.  
+When user deleted, this is a soft deleted.  
+When user re-add himself use same email address, user subscription will be resumed.  
 
 * Formatters  
 Support code block display with a markdown formatter.  
@@ -168,6 +170,8 @@ Shortcuts
 `ESC` to clear input.  
 `control + C` to stop generating.  
 `control + R` to reset session.  
+`Left arrow` or `k` to navigating to the previous session history/log.  
+`Right arrow` or `j` to navigating to the next session history/log. 
 
 
 Setup

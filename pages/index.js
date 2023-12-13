@@ -310,6 +310,7 @@ export default function Home() {
           break;
 
         case "ArrowLeft":
+        case "k":
           if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ←");
@@ -329,6 +330,7 @@ export default function Home() {
           break;
 
         case "ArrowRight":
+        case "j":
           if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: →");
