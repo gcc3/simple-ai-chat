@@ -1,5 +1,5 @@
-import { verifiyEmailAddress, evalEmailAddress } from "utils/emailUtils";
-import { insertUser, getUser, getUserByEmail } from "utils/sqliteUtils.js";
+import { evalEmailAddress } from "utils/emailUtils";
+import { insertUser, getUser, getUserByEmail, updateUsername } from "utils/sqliteUtils.js";
 import { generatePassword } from "utils/userUtils.js";
 import AWS from "aws-sdk";
 import { encode } from "utils/authUtils";
@@ -26,30 +26,30 @@ export default async function (req, res) {
     });
   }
 
-  // Check if the email is valid.
-  if (!verifiyEmailAddress(email)) {
-    return res.status(400).json({
-      success: false,
-      error: "Email is invalid.",
-    });
-  }
-
   // Check if the email already exists in the database.
-  const emailUser = await getUserByEmail(email);
-  if (emailUser && emailUser.username !== username) {
-    return res.status(400).json({ 
-      success: false,
-      error: 'Email already used by another user.',
-    });
+  let userResume = false;
+  const sameEmailUser = await getUserByEmail(email);
+  if (sameEmailUser && sameEmailUser.username !== username) {
+    if (sameEmailUser.username === "__deleted__") {
+      // Resume the deleted user
+      userResume = true;
+    } else {
+      return res.status(400).json({ 
+        success: false,
+        error: 'Email already used by another user.',
+      });
+    }
   }
 
   // Evaluate email address
-  const evalResult = await evalEmailAddress(email);
-  if (!evalResult.success) {
-    return res.status(400).json({
-      success: false,
-      error: evalResult.error,
-    });
+  if (!userResume) {
+    const evalResult = await evalEmailAddress(email);
+    if (!evalResult.success) {
+      return res.status(400).json({
+        success: false,
+        error: evalResult.error,
+      });
+    }
   }
 
   // Generate a jwt token
@@ -98,12 +98,19 @@ export default async function (req, res) {
       .sendEmail(emailParams)
       .promise()
       .then((data) => {
-        insertUser(username, role, role_expires_at, password_, email, settings);
+        let message = "";
+        if (userResume) {
+          updateUsername(username, email, password_);
+          message = "Welcome back! we've resumed your subscription status." + (!password ? " Initial password is sent to your email." : "");
+        } else {
+          insertUser(username, role, role_expires_at, password_, email, settings);
+          message = 'User "' + username + '"' + " is created." + (!password ? " Initial password is sent to your email." : "");
+        }
 
         res.status(200).json({
           success: true,
           username,
-          message: 'User "' + username + '"' + " is created." + (!password ? " Initial password is sent to your email." : ""),
+          message,
           data,
         });
       })
@@ -116,18 +123,21 @@ export default async function (req, res) {
         });
       });
   } else {
-    // No email provided, send password to console
-    insertUser(username, role, role_expires_at, password_, email, settings);
+    let message = "";
+    if (userResume) {
+      updateUsername(username, email, password_);
+      message = "Welcome back! we've resumed your subscription status." + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "");
+    } else {
+      // No email provided, send password to console
+      insertUser(username, role, role_expires_at, password_, email, settings);
+      message = 'User "' + username + '"' + " is created." + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "");
+    }
 
     // No error
     return res.status(200).json({
       success: true,
       username,
-      message:
-        'User "' +
-        username +
-        '" is created.' +
-        (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : ""),
+      message,
     });
   }
 }

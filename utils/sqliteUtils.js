@@ -20,8 +20,7 @@ const initializeDatabase = (db) => {
   return new Promise((resolve, reject) => {
     // Create logs table
     db.run(
-      `
-      CREATE TABLE IF NOT EXISTS logs (
+      `CREATE TABLE IF NOT EXISTS logs (
         id INTEGER PRIMARY KEY,
         time INTEGER NOT NULL,
         time_h TEXT,
@@ -341,6 +340,52 @@ const deleteUser = async (username) => {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("DELETE FROM users WHERE username = ?");
       stmt.run([username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const softDeleteUser = async (username) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET username = ?, updated_at = ? WHERE username = ?");
+      stmt.run(["__deleted__", new Date(), username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+// Resume user
+// When user trying to register with an email has a deleted user.
+const updateUsername = async (username, email, password) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET username = ?, password = ?, updated_at = ? WHERE email = ?");
+      stmt.run([username, password, new Date(), email], function (err) {
         if (err) {
           reject(err);
         }
@@ -689,6 +734,8 @@ export {
   getUser,
   insertUser,
   deleteUser,
+  softDeleteUser,
+  updateUsername,
   updateUserPassword,
   updateUserEmail,
   updateUserEmailVerifiedAt,
