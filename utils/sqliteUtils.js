@@ -20,8 +20,7 @@ const initializeDatabase = (db) => {
   return new Promise((resolve, reject) => {
     // Create logs table
     db.run(
-      `
-      CREATE TABLE IF NOT EXISTS logs (
+      `CREATE TABLE IF NOT EXISTS logs (
         id INTEGER PRIMARY KEY,
         time INTEGER NOT NULL,
         time_h TEXT,
