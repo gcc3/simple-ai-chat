@@ -210,6 +210,8 @@ export default function Home() {
   // Initializing
   useEffect(() => {
     initializeSession();
+
+    // Set default localStorage values
     if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
     if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
