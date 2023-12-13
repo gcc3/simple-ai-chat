@@ -28,7 +28,7 @@ export default function help(args) {
     ":role use [role_name] - Use a role/assistant.\n" +
     ":role [ls|list] - List available roles/assistants.\n" +
     ":role [reset] - Reset role to empty.\n" +
-    ":store info - Show current data store.\n" +
+    ":store [name?] - Show data store detail.\n" +
     ":store [ls|list] - List available data stores.\n" +
     ":store use [name] - Use a data store.\n" +
     ":store add [name] [settings] - Create a store.\n" +
