@@ -1,6 +1,7 @@
 import { softDeleteUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 
+// Soft delete user
 export default async function (req, res) {
   // Check if the method is POST
   if (req.method !== "POST") {
