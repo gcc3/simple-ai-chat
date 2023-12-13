@@ -29,7 +29,7 @@ Commands are supported, use `:help` to show commands.
 Vision models, or called GPT-4V is now supported.  
 Use `+img[https://image_url]` to ask question about an image/multiple images.  
 
-* Dictionary search  
+* Dictionary search (deprecated) 
 A local dictionary will be used as messages to let AI reference to enhance the AI response quality.  
 To check/add entry use `:entry list`, `:search [keyword]`, and `:entry add`. 
 
@@ -59,8 +59,8 @@ To use role/assistant, simply type `:role use [role_name]`.
 Use `:role list` to check current available roles/assistants.  
 Prompts provided by the Awesome ChatGPT Prompts  
 
-* Custom Roleplay Role  
-Use `:user role` command to add, set, delete custom roleplay roles.  
+* Custom Roles/Assistants 
+Use `:user role` command to add, set, delete custom roles.  
 
 * Self Result Evaluation  
 I found that the AI can evaluate the result of itself very well.  
