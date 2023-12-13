@@ -28,12 +28,13 @@ export default function help(args) {
     ":role use [role_name] - Use a role/assistant.\n" +
     ":role [ls|list] - List available roles/assistants.\n" +
     ":role [reset] - Reset role to empty.\n" +
-    // ":store info - Show current data store.\n" +
-    // ":store [ls|list] - List available data stores.\n" +
-    // ":store use [name] - Use a data store.\n" +
-    // ":store add [name] [settings] - Create a store.\n" +
-    // ":store [del|delete] [name] - Create/delete a store.\n" +
-    // ":store set [name] [setting] - Setup a store.\n" +
+    ":store info - Show current data store.\n" +
+    ":store [ls|list] - List available data stores.\n" +
+    ":store use [name] - Use a data store.\n" +
+    ":store add [name] [settings] - Create a store.\n" +
+    ":store [del|delete] [name] - Create/delete a store.\n" +
+    ":store set [name] [setting] - Setup a store.\n" +
+    ":store chown [owner] - Change store owner.\n" +
     ":user add [username] [email] [password?] - Create a user.\n" +
     ":user set pass [value] - Change password.\n" +
     ":user set email [value] - Change email address.\n" +
@@ -42,6 +43,9 @@ export default function help(args) {
     ":user role [del|delete] [role_name] - Delete a role/assistant.\n" +
     ":user info - Get logged-in user info and settings.\n" +
     ":user [del|delete] [username] - Delete user with data.\n" +
+    ":group [ls|list] - List all groups.\n" +
+    ":group add [group_name] - Create a group.\n" +
+    ":group [del|delete] [group_name] - Delete a group.\n" +
     ":login [username] [password] - Login user.\n" +
     ":logout - Logout user.\n" +
     ":info - Show local config.\n" +

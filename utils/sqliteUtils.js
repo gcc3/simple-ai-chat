@@ -680,7 +680,7 @@ const insertRole = async (roleName, prompt, createdBy) => {
 
         // If the username doesn't exist, proceed with the insertion
         const stmt = db.prepare("INSERT INTO roles (role, prompt, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?)");
-        stmt.run([roleName, prompt, createdBy, new Date(), ""], function (err) {
+        stmt.run([roleName, prompt, createdBy, new Date(), null], function (err) {
           if (err) {
             reject(err);
             return;
@@ -724,6 +724,140 @@ const updateRolePrompt = async (roleName, newPrompt, createdBy) => {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE roles SET prompt = ?, updated_at = ? WHERE role = ? AND created_by = ?");
       stmt.run([newPrompt, new Date(), roleName, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+// IV. stores
+const getStore = async (name, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM stores WHERE name = ? AND created_by = ?`, [name, createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const getUserStores = async (createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM stores WHERE created_by = ?`, [createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const insertStore = async (name, settings, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      // First, check if the username already exists
+      db.get("SELECT id FROM stores WHERE name = ? AND created_by = ?", [name, createdBy], (err, row) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        // If the username already exists, reject the promise
+        if (row) {
+          reject(new Error("Same name store already exists."));
+          return;
+        }
+
+        // If the username doesn't exist, proceed with the insertion
+        const stmt = db.prepare("INSERT INTO stores (name, owner, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
+        stmt.run([name, createdBy, settings, createdBy, new Date(), null], function (err) {
+          if (err) {
+            reject(err);
+            return;
+          }
+          // This `this.lastID` provides the ID of the last inserted row.
+          resolve(this.lastID);
+        });
+        stmt.finalize();
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const deleteStore = async (name, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("DELETE FROM stores WHERE name = ? AND created_by = ?");
+      stmt.run([name, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateStoreOwner = async (name, newOwner, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE stores SET owner = ?, updated_at = ? WHERE name = ? AND created_by = ?");
+      stmt.run([newOwner, new Date(), name, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateStoreSettings = async (name, newSettings, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND created_by = ?");
+      stmt.run([newSettings, new Date(), name, createdBy], function (err) {
         if (err) {
           reject(err);
         }
