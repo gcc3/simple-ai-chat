@@ -73,6 +73,9 @@ const Documentation = () => {
             ))}
           </tbody>
         </table>
+        <div className="mt-2">
+          * Command shortcuts: Stop generating (⌃c), Clear output (⌃r), Clear output and reset session (⇧⌃r)
+        </div>
       </div>
     </>
   )
