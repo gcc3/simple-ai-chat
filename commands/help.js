@@ -24,10 +24,16 @@ export default function help(args) {
     ":voice use [voice_name] - Set voice.\n" +
     ":lang [ls|list] - List all languages.\n" +
     ":lang use [language_code] - Set language.\n" +
-    ":role - Show current role/assistant prompt.\n" +
+    ":role [name?] - Show role/assistant prompt.\n" +
     ":role use [role_name] - Use a role/assistant.\n" +
     ":role [ls|list] - List available roles/assistants.\n" +
     ":role [reset] - Reset role to empty.\n" +
+    // ":store info - Show current data store.\n" +
+    // ":store [ls|list] - List available data stores.\n" +
+    // ":store use [name] - Use a data store.\n" +
+    // ":store add [name] [settings] - Create a store.\n" +
+    // ":store [del|delete] [name] - Create/delete a store.\n" +
+    // ":store set [name] [setting] - Setup a store.\n" +
     ":user add [username] [email] [password?] - Create a user.\n" +
     ":user set pass [value] - Change password.\n" +
     ":user set email [value] - Change email address.\n" +

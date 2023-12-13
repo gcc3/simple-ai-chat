@@ -31,6 +31,35 @@ export default async function role(args) {
     }
   }
 
+  // Get role prompt by role name
+  if (args[0].startsWith("\"") && args[0].endsWith("\"")) {
+    const role = args[0].slice(1, -1);
+    if (role === "") {
+      return "Role name cannot be empty.";
+    }
+
+    try {
+      const response = await fetch("/api/role/" + role, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return "Role: " + role 
+         + "\nPrompt: " + data.result.prompt;
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  }
+
+  // Reset role
   if (command === "reset") {
     if (localStorage.getItem("role") === "") {
       return "Role is already empty.";
@@ -43,6 +72,7 @@ export default async function role(args) {
     return "Role reset.";
   }
 
+  // List available roles
   if (command === "ls" || command === "list") {
     try {
       const response = await fetch("/api/role/list", {
@@ -87,6 +117,7 @@ export default async function role(args) {
     return "";
   }
 
+  // Use role
   if (command === "use") {
     if (args.length != 2) {
       return "Usage: :role use [role_name]\n"

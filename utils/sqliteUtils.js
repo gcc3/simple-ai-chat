@@ -75,7 +75,25 @@ const initializeDatabase = (db) => {
                   return reject(err);
                 }
 
-                resolve();
+                // Create stores table
+                db.run(
+                  `CREATE TABLE IF NOT EXISTS stores (
+                    id INTEGER PRIMARY KEY,
+                    name TEXT NOT NULL,
+                    owner TEXT NOT NULL,
+                    settings TEXT NOT NULL,
+                    created_by TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT
+                  );`,
+                  (err) => {
+                    if (err) {
+                      return reject(err);
+                    }
+
+                    resolve();
+                  }
+                );
               }
             );
           }
