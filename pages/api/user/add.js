@@ -20,7 +20,7 @@ export default async function (req, res) {
   // Check user existance
   const user = await getUser(username);
   if (user) {
-    return res.status(200).json({
+    return res.status(400).json({
       success: false,
       error: "Username already used.",
     });
