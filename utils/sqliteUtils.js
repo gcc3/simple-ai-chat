@@ -356,6 +356,28 @@ const deleteUser = async (username) => {
   }
 };
 
+const softDeleteUser = async (username) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE FROM users SET username = ?, updated_at = ? WHERE username = ?");
+      stmt.run(["__deleted__", new Date(), username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const updateUserPassword = async (username, newPassword) => {
   const db = await getDatabaseConnection();
   try {
@@ -688,6 +710,7 @@ export {
   getUser,
   insertUser,
   deleteUser,
+  softDeleteUser,
   updateUserPassword,
   updateUserEmail,
   updateUserEmailVerifiedAt,
