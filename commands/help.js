@@ -24,16 +24,25 @@ export default function help(args) {
     ":voice use [voice_name] - Set voice.\n" +
     ":lang [ls|list] - List all languages.\n" +
     ":lang use [language_code] - Set language.\n" +
-    ":role - Show current role/assistant prompt.\n" +
+    ":role [name?] - Show role/assistant prompt.\n" +
     ":role use [role_name] - Use a role/assistant.\n" +
     ":role [ls|list] - List available roles/assistants.\n" +
     ":role [reset] - Reset role to empty.\n" +
+    ":store info - Show current data store.\n" +
+    ":store [ls|list] - List available data stores.\n" +
+    ":store use [name] - Use a data store.\n" +
+    ":store add [name] [settings] - Create a store.\n" +
+    ":store [del|delete] [name] - Create/delete a store.\n" +
+    ":store set name [name] [setting] - Setup a store.\n" +
+    ":store set owner [owner] - Change store owner.\n" +
     ":user add [username] [email] [password?] - Create a user.\n" +
     ":user set pass [value] - Change password.\n" +
     ":user set email [value] - Change email address.\n" +
     ":user reset pass [username] [email] - Recover password.\n" +
     ":user role [add|set] [role_name] [prompt] - Add an assistant.\n" +
     ":user role [del|delete] [role_name] - Delete a role/assistant.\n" +
+    ":user join [group] [password] - Join a group.\n" +
+    ":user leave [group] - Leave a group.\n" +
     ":user info - Get logged-in user info and settings.\n" +
     ":user [del|delete] [username] - Delete user with data.\n" +
     ":login [username] [password] - Login user.\n" +

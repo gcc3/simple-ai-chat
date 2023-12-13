@@ -44,6 +44,7 @@ const initializeDatabase = (db) => {
           `CREATE TABLE IF NOT EXISTS users (
             id INTEGER PRIMARY KEY,
             username TEXT NOT NULL,
+            group TEXT,
             role TEXT NOT NULL,
             role_expires_at INTEGER,
             password TEXT NOT NULL,
@@ -75,7 +76,25 @@ const initializeDatabase = (db) => {
                   return reject(err);
                 }
 
-                resolve();
+                // Create stores table
+                db.run(
+                  `CREATE TABLE IF NOT EXISTS stores (
+                    id INTEGER PRIMARY KEY,
+                    name TEXT NOT NULL,
+                    owner TEXT NOT NULL,
+                    settings TEXT NOT NULL,
+                    created_by TEXT NOT NULL,
+                    created_at TEXT NOT NULL,
+                    updated_at TEXT
+                  );`,
+                  (err) => {
+                    if (err) {
+                      return reject(err);
+                    }
+
+                    resolve();
+                  }
+                );
               }
             );
           }
@@ -315,10 +334,11 @@ const insertUser = async (username, role, role_expires_at, password, email, sett
         }
 
         // If the username doesn't exist, proceed with the insertion
+        const group = username;
         const stmt = db.prepare(
-          "INSERT INTO users (username, role, role_expires_at, password, email, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
+          "INSERT INTO users (username, group, role, role_expires_at, password, email, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)"
         );
-        stmt.run([username, role, role_expires_at, password, email, settings, "inactive", new Date()], function (err) {
+        stmt.run([username, group, role, role_expires_at, password, email, settings, "inactive", new Date()], function (err) {
           if (err) {
             reject(err);
             return;
@@ -362,6 +382,58 @@ const softDeleteUser = async (username) => {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET username = ?, updated_at = ? WHERE username = ?");
       stmt.run(["__deleted__", new Date(), username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const userJoinGroup = async (username, groupName) => {
+  const db = await getDatabaseConnection();
+  const user = await getUser(username);
+  const origGroups = user.group ? user.group.split(",") : [];
+  const newGroups = [...new Set([...origGroups, groupName])].join(",");
+
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET group = ?, updated_at = ? WHERE username = ?");
+      stmt.run([newGroups, new Date(), username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const userLeaveGroup = async (username, groupName) => {
+  const db = await getDatabaseConnection();
+  const user = await getUser(username);
+  const origGroups = user.group ? user.group.split(",") : [];
+  const newGroups = origGroups.filter((g) => g !== groupName).join(",");
+
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET group = ?, updated_at = ? WHERE username = ?");
+      stmt.run([newGroups, new Date(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -662,7 +734,7 @@ const insertRole = async (roleName, prompt, createdBy) => {
 
         // If the username doesn't exist, proceed with the insertion
         const stmt = db.prepare("INSERT INTO roles (role, prompt, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?)");
-        stmt.run([roleName, prompt, createdBy, new Date(), ""], function (err) {
+        stmt.run([roleName, prompt, createdBy, new Date(), null], function (err) {
           if (err) {
             reject(err);
             return;
@@ -722,6 +794,141 @@ const updateRolePrompt = async (roleName, newPrompt, createdBy) => {
   }
 };
 
+// IV. stores
+// Get store by name
+const getStore = async (name, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM stores WHERE name = ? AND created_by = ?`, [name, createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const getUserStores = async (createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM stores WHERE created_by = ?`, [createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const insertStore = async (name, settings, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      // First, check if the username already exists
+      db.get("SELECT id FROM stores WHERE name = ? AND created_by = ?", [name, createdBy], (err, row) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        // If the username already exists, reject the promise
+        if (row) {
+          reject(new Error("Same name store already exists."));
+          return;
+        }
+
+        // If the username doesn't exist, proceed with the insertion
+        const stmt = db.prepare("INSERT INTO stores (name, owner, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
+        stmt.run([name, createdBy, settings, createdBy, new Date(), null], function (err) {
+          if (err) {
+            reject(err);
+            return;
+          }
+          // This `this.lastID` provides the ID of the last inserted row.
+          resolve(this.lastID);
+        });
+        stmt.finalize();
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const deleteStore = async (name, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("DELETE FROM stores WHERE name = ? AND created_by = ?");
+      stmt.run([name, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateStoreOwner = async (name, newOwner, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE stores SET owner = ?, updated_at = ? WHERE name = ? AND created_by = ?");
+      stmt.run([newOwner, new Date(), name, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateStoreSettings = async (name, newSettings, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND created_by = ?");
+      stmt.run([newSettings, new Date(), name, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 export {
   getLogs,
   insertLog,
@@ -735,6 +942,8 @@ export {
   insertUser,
   deleteUser,
   softDeleteUser,
+  userJoinGroup,
+  userLeaveGroup,
   updateUsername,
   updateUserPassword,
   updateUserEmail,
@@ -753,4 +962,10 @@ export {
   insertRole,
   deleteRole,
   updateRolePrompt,
+  getStore,
+  getUserStores,
+  insertStore,
+  deleteStore,
+  updateStoreOwner,
+  updateStoreSettings,
 };

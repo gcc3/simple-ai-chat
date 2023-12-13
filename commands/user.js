@@ -8,7 +8,9 @@ export default async function entry(args) {
                 "       :user set email [value]" + "\n" +
                 "       :user reset pass [username] [email]" + "\n" +
                 "       :user role [add|set] [role_name] [prompt]" + "\n" +
-                "       :user role [del|delete] [role_name]" + "\n";
+                "       :user role [del|delete] [role_name]" + "\n"
+                "       :user join [group] [password]" + "\n" +
+                "       :user leave [group]";
 
   // Get user info, configurations
   if (command === "info") {
@@ -347,6 +349,72 @@ export default async function entry(args) {
         body: JSON.stringify({
           roleName,
           prompt,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.message || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Join a group
+  if (command === "join") {
+    if (args.length != 3) {
+      return "Usage: :user join [group] [password]";
+    }
+
+    const group = args[1];
+    const password = args[2];
+
+    try {
+      const response = await fetch("/api/update/group", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          group,
+          password,  // has password, then join group
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.message || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Leave a group
+  if (command === "leave") {
+    if (args.length != 2) {
+      return "Usage: :user leave [group]";
+    }
+
+    const group = args[1];
+
+    try {
+      const response = await fetch("/api/user/update/group", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          group,  // no password, then leave group
         }),
       });
 

@@ -130,7 +130,7 @@ Messages
 | # | Part                         | Role            | Description                              |
 |---|------------------------------|-----------------|------------------------------------------|
 | 1 | System master message        | system          | set with `ROLE_CONTENT_SYSTEM`           |
-| 2 | Roleplay message             | system          | Message generated for roleplaying        |
+| 2 | Role/assistant message       | system          | Message generated for role/assistant     |
 | 3 | Dictionary search result     | system          | Result of a dictionary search            |
 | 4 | Chat history                 | user, assistant | Chat history from user and assistant     |
 | 5 | User input                   | user            | Direct input provided by the user,       |
