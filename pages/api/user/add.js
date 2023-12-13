@@ -35,8 +35,8 @@ export default async function (req, res) {
   }
 
   // Check if the email already exists in the database.
-  const emailUser = await getUserByEmail(email);
-  if (emailUser && emailUser.username !== username) {
+  const sameEmailUser = await getUserByEmail(email);
+  if (sameEmailUser && sameEmailUser.username !== username) {
     return res.status(400).json({ 
       success: false,
       error: 'Email already used by another user.',
