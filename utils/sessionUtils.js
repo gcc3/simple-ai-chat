@@ -1,6 +1,7 @@
 export function initializeSession() {
-  sessionStorage.setItem("time", Date.now());
-  sessionStorage.setItem("queryId", Date.now());
+  const time = Date.now()
+  sessionStorage.setItem("time", time);
+  sessionStorage.setItem("queryId", time);
 }
 
 // Session ID is a string of number.
