@@ -28,29 +28,31 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
       <div className="mb-1">
         <div>Features Comparison</div>
       </div>
-      <table className="table-fixed">
-        <thead>
-          <tr>
-            <th rowSpan="2">Features/Price</th>
-            <th colSpan="3">Subcriptions(Roles)</th>
-          </tr>
-          <tr>
-            <th>`user`</th>
-            <th>`pro_user`</th>
-            <th>`super_user`</th>
-          </tr>
-        </thead>
-        <tbody>
-          {comparison.map((item, index) => (
-            <tr key={index}>
-              <td>{item.name}</td>
-              <td>{item.user}</td>
-              <td>{item.pro_user}</td>
-              <td>{item.super_user}</td>
+      <div className="table-container">
+        <table className="table-fixed">
+          <thead>
+            <tr>
+              <th rowSpan="2">Features/Price</th>
+              <th colSpan="3">Subcriptions(Roles)</th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+            <tr>
+              <th>`user`</th>
+              <th>`pro_user`</th>
+              <th>`super_user`</th>
+            </tr>
+          </thead>
+          <tbody>
+            {comparison.map((item, index) => (
+              <tr key={index}>
+                <td>{item.name}</td>
+                <td>{item.user}</td>
+                <td>{item.pro_user}</td>
+                <td>{item.super_user}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       <div className="mt-2">* For enterprise use, please contact us at `<a href="mailto:support@simple-ai.io"><u>support@simple-ai.io</u></a>`.</div>
     </div>
   );
