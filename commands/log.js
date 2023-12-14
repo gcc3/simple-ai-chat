@@ -1,6 +1,6 @@
 export default async function log(args) {
   try {
-    const response = await fetch("/api/log/list?query_id=" + localStorage.getItem("queryId"), {
+    const response = await fetch("/api/log/list?query_id=" + sessionStorage.getItem("queryId"), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
