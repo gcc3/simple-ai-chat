@@ -1,9 +1,14 @@
-import { setTheme } from "utils/themeUtils.js";
+import { initializeSession } from "utils/sessionUtils";
 import { setUserLocalStorage } from "utils/userUtils.js";
 
 export default async function login(args) {
   if (args.length != 2) {
     return "Usage: :login [username] [password]";
+  }
+
+  let userLoginPreviously = false;
+  if (localStorage.getItem("user")) {
+    userLoginPreviously = true;
   }
 
   const username = args[0];
@@ -27,13 +32,17 @@ export default async function login(args) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    user = data.user;
-    setUserLocalStorage(user);
+    if (data.success) {
+      user = data.user;
+      setUserLocalStorage(user);
+      console.log("User is set to \"" + localStorage.getItem("user") + "\".");
 
-    console.log("User is set to \"" + localStorage.getItem("user") + "\".");
-    return "Login successful.";
+      if (userLoginPreviously) {
+        initializeSession();
+      }
+      return "Login successful.";
+    }
   } catch (error) {
-
     // Login failed
     console.error(error);
     return error;

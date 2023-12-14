@@ -11,18 +11,27 @@ export default async (req, res) => {
 
   // Validation
   if (!username || !password) {
-    return res.status(400).json({ error: 'Username and password are required' });
+    return res.status(400).json({
+      success: false,
+      error: 'Username and password are required'
+    });
   }
 
   // Get user
   const user = await getUser(username);
   if (!user) {
-    return res.status(401).json({ error: 'User not found.' });
+    return res.status(401).json({
+      success: false,
+      error: 'User not found.'
+    });
   }
 
   // Check password
   if (user.password !== password) {
-    return res.status(401).json({ error: 'Incorrect password.' });
+    return res.status(401).json({
+      success: false,
+      error: 'Incorrect password.'
+    });
   }
 
   // Create JWT token
@@ -35,7 +44,10 @@ export default async (req, res) => {
 
   const token = createToken(payload);
   if (!token) {
-    return res.status(500).json({ error: 'Failed to create token.' });
+    return res.status(500).json({
+      success: false,
+      error: 'Failed to create token.'
+    });
   }
 
   // Update user status
@@ -51,7 +63,8 @@ export default async (req, res) => {
   res.setHeader('Set-Cookie', `auth=${token}; HttpOnly; Path=/; Max-Age=86400; ${sameSiteCookie}`);
   
   res.status(200).json({ 
-    success: true, 
+    success: true,
+    message: 'Login successful.',
     user: { 
       username: user.username, 
       role: user.role,
