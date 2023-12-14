@@ -1,3 +1,5 @@
+import { initializeSession } from "utils/sessionUtils";
+
 export default async function store(args) {
   const command = args[0];
   const usage = "Usage: :store [name?]\n" +
@@ -114,6 +116,9 @@ export default async function store(args) {
     }
 
     const storeName = args[1].slice(1, -1);
+    if (!storeName) {
+      return "Invalid store name.";
+    }
 
     // Check store exists
     try {
@@ -130,24 +135,19 @@ export default async function store(args) {
       }
 
       if (!data.result.stores.includes(storeName) 
-      && (!data.result.user_stores || !Object.entries(data.result.user_stores).some(([key, value]) => value.store === storeName))) {
+      && (!data.result.user_stores || !Object.entries(data.result.user_stores).some(([key, value]) => value.name === storeName))) {
         return "Store \"" + storeName + "\" does not exist.";
       }
     } catch (error) {
       console.error(error);
-      alert(error.message);
+      return error;
     }
 
-    if (storeName != null) {
-      sessionStorage.setItem("store", storeName);
+    sessionStorage.setItem("store", storeName);
 
-      // Reset session to forget previous memory
-      initializeSession();
-
-      return "Store is set to \`" + storeName + "\`, you can use command \`:store\` to show current store information";
-    } else {
-      return "Invalid store name.";
-    }
+    // Reset session to forget previous memory
+    initializeSession();
+    return "Store is set to \`" + storeName + "\`, you can use command \`:store\` to show current store information";
   }
 
   // Reset store
