@@ -20,7 +20,7 @@ export default async function (req, res) {
   }
   const { id, username } = authResult.user;
 
-  // Check role existance
+  // Check store existance
   const sameNameStore = await getStore(name, username);
   if (sameNameStore) {
     return res.status(400).json({ 
