@@ -23,13 +23,13 @@ const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true :
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
 const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
-const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
 const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
 export default async function(req, res) {
   const queryId = req.body.query_id || "";
   const role = req.body.role || "";
+  const store = req.body.store || "";
   const use_stats = req.body.use_stats || false;
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
@@ -131,17 +131,17 @@ export default async function(req, res) {
   + "use_node_ai: " + use_node_ai + "\n"
   + "force_node_ai_query: " + force_node_ai_query + "\n"
   + "use_vector: " + use_vector + "\n"
-  + "force_vector_query: " + force_vector_query + "\n"
   + "use_lcation: " + use_location + "\n"
   + "location: " + location + "\n"
-  + "role: " + role + "\n");
+  + "role: " + (role || "(not set)") + "\n"
+  + "store: " + (store || "(not set)") + "\n");
 
   try {
     let result_text = "";
     let score = 0;
     let token_ct = 0;
 
-    const generateMessagesResult = await generateMessages(authUser, input, null, queryId, role);  // image_url not supported yet
+    const generateMessagesResult = await generateMessages(authUser, input, null, queryId, role, false);  // image_url not supported yet
     score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
 

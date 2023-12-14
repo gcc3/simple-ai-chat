@@ -7,7 +7,6 @@ export function verifiyEmailAddress(email) {
   if (emailParts.length !== 2 || emailParts[0].length === 0 || emailParts[1].length === 0) {
     return false;
   }
-
   return true;
 }
 

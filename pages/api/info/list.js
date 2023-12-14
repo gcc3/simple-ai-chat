@@ -18,7 +18,6 @@ export default async function (req, res) {
     const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
     const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
     const use_vector = process.env.USE_VECTOR == "true" ? true : false;
-    const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
     const use_payment = process.env.USE_PAYMENT == "true" ? true : false;
     const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
@@ -39,9 +38,6 @@ export default async function (req, res) {
         use_node_ai: use_node_ai,
         force_node_ai_query: force_node_ai_query,
         use_vector: use_vector,
-        force_vector_query: force_vector_query,
-        use_vector: use_vector,
-        force_vector_query: force_vector_query,
         use_payment: use_payment,
         use_email: use_email,
       },

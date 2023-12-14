@@ -8,10 +8,11 @@ import { getFunctions, executeFunction } from "function.js";
 import { getTools } from "tools.js";
 import { getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
-import { countChatsForIP, getUser } from "utils/sqliteUtils";
+import { countChatsForIP, getUser, getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 import { countChatsForUser } from "utils/sqliteUtils";
 import { getUsageLimit } from "utils/envUtils";
+import { vectaraQuery } from "utils/vectaraUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -30,13 +31,13 @@ const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true :
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
 const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
-const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
 const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
 export default async function (req, res) {
   const queryId = req.query.query_id || "";
-  const role = req.query.role || "default";
+  const role = req.query.role || "";
+  const store = req.query.store || "";
   const use_stats = req.query.use_stats === "true" ? true : false;
   const use_location = req.query.use_location === "true" ? true : false;
   const location = req.query.location || "";
@@ -189,10 +190,10 @@ export default async function (req, res) {
     + "use_node_ai: " + use_node_ai + "\n"
     + "force_node_ai_query: " + force_node_ai_query + "\n"
     + "use_vector: " + use_vector + "\n"
-    + "force_vector_query: " + force_vector_query + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + location + "\n"
-    + "role: " + role + "\n");
+    + "role: " + (role || "(not set)") + "\n"
+    + "store: " + (store || "(not set)") + "\n");
   }
 
   // II. Tool calls (function calling) input
@@ -312,10 +313,11 @@ export default async function (req, res) {
 
     // 4. Vector database query result
     let refer_doc = "none";
-    if (use_vector && force_vector_query) {
+    if (use_vector && store) {
       console.log("--- vector query ---");
       // Feed message with AI node query result
-      const vectorQueryResult = await executeFunction("query_vector", "{ query: " + input + " }");
+      const store = await getStore(store);
+      const vectorQueryResult = await vectaraQuery(input, store.settings.corpus_id);
       if (vectorQueryResult === undefined) {
         console.log("response: undefined.\n");
       } else {

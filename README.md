@@ -273,9 +273,6 @@ The customer ID of vectara, can get from user profile.
 * VECTARA_CORPUS_ID  
 The indice id.  
 
-* FORCE_VECTOR_QUERY  
-Force query from the vectara vector database.  
-
 * DB  
 Database engline, example `DB=sqlite`.  
 Supported engine: `sqlite`.  
