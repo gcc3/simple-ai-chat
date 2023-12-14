@@ -51,7 +51,7 @@ function Subscription() {
     const data = await response.json();
     if (response.status !== 200) {
       console.log(data.error);
-      throw data.message || new Error(`Request failed with status ${response.status}`);
+      throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
     if (data.success) {
