@@ -1,4 +1,4 @@
-import { updateUserSettings, getUser } from 'utils/sqliteUtils.js';
+import { updateUserSettings, getUser, getUserRoles } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 
 export default async function (req, res) {
@@ -34,6 +34,81 @@ export default async function (req, res) {
         success: false, 
         error: 'User not found.' 
       });
+    }
+
+    // Check if key is valid
+    const validKeys = ['theme', 'speak', 'stats', "fullscreen", "role", "store"];
+    if (!validKeys.includes(key)) {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Invalid key, key must be one of:' + validKeys.join(', ')
+      });
+    }
+
+    // Check if value is valid
+    if (key === 'theme') {
+      const validValues = ['light', 'dark', 'system'];
+      if (!validValues.includes(value)) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+        });
+      }
+    } else if (key === 'speak') {
+      const validValues = ['on', 'off'];
+      if (!validValues.includes(value)) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+        });
+      }
+    } else if (key === 'stats') {
+      const validValues = ['on', 'off'];
+      if (!validValues.includes(value)) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+        });
+      }
+    } else if (key === 'fullscreen') {
+      const validValues = ['on', 'off'];
+      if (!validValues.includes(value)) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+        });
+      }
+    } else if (key === 'role') {
+      const userRoles = await getUserRoles(username);
+      if (Object.entries(userRoles).length === 0) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'No user role found.'
+        });
+      }
+      const validValues = Object.values(userRoles).map(r => "\"" + r.role + "\"");
+      if (!validValues.includes(value)) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+        });
+      }
+    } else if (key === 'store') {
+      // TODO, check this
+      const userStores = await getUserStores(username);
+      if (Object.entries(userStores).length === 0) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'No user role found.'
+        });
+      }
+      const validValues = Object.values(userStores).map(s => "\"" + s.store + "\"");
+      if (!validValues.includes(value)) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+        });
+      }
     }
 
     const wasSuccessful = await updateUserSettings(username, key, value);
