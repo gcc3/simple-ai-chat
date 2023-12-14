@@ -82,6 +82,8 @@ export default async function entry(args) {
             speak:      localStorage.getItem("speak") || "off",
             stats:      localStorage.getItem("stats") || "off",
             fullscreen: localStorage.getItem("fullscreen") || "off",
+            role:       "",
+            store:      "",
           }),
         }),
       });
@@ -102,6 +104,10 @@ export default async function entry(args) {
   if (command === "delete" || command === "del") {
     if (args.length != 2) {
       return "Usage: :user [del|delete] [username]";
+    }
+
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
     }
 
     const username = args[1];
@@ -140,6 +146,10 @@ export default async function entry(args) {
       return "Usage: :user set pass [password]";
     }
 
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
     try {
       const response = await fetch("/api/user/update/password", {
         method: "POST",
@@ -170,6 +180,10 @@ export default async function entry(args) {
       return "Usage: :user set email [email]";
     }
 
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
     const email = args[2];
     try {
       const response = await fetch("/api/user/update/email", {
@@ -180,6 +194,47 @@ export default async function entry(args) {
         },
         body: JSON.stringify({
           email: email,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Set settings
+  if (command === "set" && args[1]) {
+    if (args.length != 3) {
+      return "Usage: :user set [key] [email]";
+    }
+    
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
+    // Check value must be quoted with double quotes.
+    if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
+      return "Setting value must be quoted with double quotes.";
+    }
+    const value = args[2].slice(1, -1);
+
+    try {
+      const response = await fetch("/api/user/update/settings", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          key: args[1],
+          value: value,
         }),
       });
 
@@ -371,6 +426,10 @@ export default async function entry(args) {
       return "Usage: :user join [group] [password]";
     }
 
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
     const group = args[1];
     const password = args[2];
 
@@ -403,6 +462,10 @@ export default async function entry(args) {
   if (command === "leave") {
     if (args.length != 2) {
       return "Usage: :user leave [group]";
+    }
+
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
     }
 
     const group = args[1];

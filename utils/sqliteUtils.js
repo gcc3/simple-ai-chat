@@ -118,8 +118,15 @@ const getDatabaseConnection = async () => {
       await initializeDatabase(db);
 
       // Create root user with defatut settings
-      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 
-        "{\"theme\":\"light\",\"speak\":\"off\",\"stats\":\"off\",\"fullscreen\":\"off\"}");
+      const settings = JSON.stringify({
+        theme: "light",
+        speak: "off",
+        stats: "off",
+        fullscreen: "off",
+        role: "",
+        store: "",
+      });
+      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", settings);
       await updateUserEmailVerifiedAt("root");
 
       return db;
