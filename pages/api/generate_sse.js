@@ -295,7 +295,6 @@ export default async function (req, res) {
     // 3. Node AI response
     if (use_node_ai && force_node_ai_query) {
       console.log("--- node ai query ---");
-      // Feed message with AI node query result
       const nodeAiQueryResult = await executeFunction("query_node_ai", "{ query: " + input + " }");
       if (nodeAiQueryResult === undefined) {
         console.log("response: undefined.\n");
@@ -315,9 +314,16 @@ export default async function (req, res) {
     let refer_doc = "none";
     if (use_vector && store) {
       console.log("--- vector query ---");
-      // Feed message with AI node query result
-      const store = await getStore(store);
-      const vectorQueryResult = await vectaraQuery(input, store.settings.corpus_id);
+      const corpus_id = (await getStore(store)).settings.corpus_id;
+      if (!corpus_id) {
+        console.log("No corpus id found for store " + store);
+        res.write(`data: No corpus id found for store ${store}.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+
+      const vectorQueryResult = await vectaraQuery(input, corpus_id);
       if (vectorQueryResult === undefined) {
         console.log("response: undefined.\n");
       } else {
