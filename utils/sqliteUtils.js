@@ -875,7 +875,7 @@ const deleteStore = async (name, createdBy) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("DELETE FROM stores WHERE name = ? AND created_by = ?");
+      const stmt = db.prepare(`DELETE FROM stores WHERE name = ? AND created_by = ?`);
       stmt.run([name, createdBy], function (err) {
         if (err) {
           reject(err);
@@ -893,11 +893,11 @@ const deleteStore = async (name, createdBy) => {
   }
 };
 
-const updateStoreOwner = async (name, newOwner, createdBy) => {
+const updateStoreOwner = async (name, createdBy, newOwner) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE stores SET owner = ?, updated_at = ? WHERE name = ? AND created_by = ?");
+      const stmt = db.prepare(`UPDATE stores SET owner = ?, updated_at = ? WHERE name = ? AND created_by = ?`);
       stmt.run([newOwner, new Date(), name, createdBy], function (err) {
         if (err) {
           reject(err);
