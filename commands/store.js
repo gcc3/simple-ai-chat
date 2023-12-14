@@ -3,10 +3,56 @@ export default async function store(args) {
   const usage = "Usage: :store [name?]\n" +
                 "       :store [ls|list]\n" +
                 "       :store use [name]\n" +
-                "       :store add [name] [settings]\n" +
+                "       :store add [name]\n" +
                 "       :store [del|delete] [name]\n" +
-                "       :store set name [name] [setting]\n" +
+                "       :store set [key] [value]\n" +
                 "       :store set owner [owner]\n";
+
+  // Get store info
+  if (command === "") {
+    const storeName = localStorage.getItem("store");
+    try {
+      const response = await fetch("/api/store/" + storeName, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return JSON.stringify(data.result, null, 2);
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  }
+
+  // Get store info by name
+  if (args.length === 2) {
+    const storeName = args[1];
+    try {
+      const response = await fetch("/api/store/" + storeName, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return JSON.stringify(data.result, null, 2);
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+  }
 
   // List all available stores
   if (command === "ls" || command === "list") {
