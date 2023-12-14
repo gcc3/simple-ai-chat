@@ -1156,7 +1156,9 @@ export default function Home() {
             {stats && <div className={styles.stats}>{stats}</div>}
             <div className={styles.info} onClick={() => {
               // Copy attach session command to share
-              navigator.clipboard.writeText(":session attach " + sessionStorage.getItem("queryId"));
+              const attachCommand = ":session attach " + sessionStorage.getItem("queryId");
+              navigator.clipboard.writeText(attachCommand);
+              console.log("Copied command:\n" + attachCommand);
             }}>{info}</div>
           </div>
         </div>
