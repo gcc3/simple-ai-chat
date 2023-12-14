@@ -3,10 +3,11 @@ export default async function store(args) {
   const usage = "Usage: :store [name?]\n" +
                 "       :store [ls|list]\n" +
                 "       :store use [name]\n" +
+                "       :store reset\n" +
                 "       :store add [name]\n" +
                 "       :store [del|delete] [name]\n" +
-                "       :store set [key] [value]\n" +
-                "       :store set owner [owner]\n";
+                "       :store set owner [owner]\n" +
+                "       :store set [key] [value]\n";
 
   // Get store info
   if (command === "") {
@@ -76,18 +77,64 @@ export default async function store(args) {
     }
   }
 
-  // Use a store
+  // Use store
   if (command === "use") {
-    if (args.length !== 2) {
-      return usage;
+    if (args.length != 2) {
+      return "Usage: :store use [name]\n"
     }
 
-    const name = args[1];
-    if (!name) {
-      return usage;
+    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
+      return "Store name must be quoted with double quotes.";
     }
 
-    localStorage.setItem("store", name);
+    const storeName = args[1].slice(1, -1);
+
+    // Check store exists
+    try {
+      const response = await fetch("/api/store/list", {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      if (!data.result.stores.includes(storeName) 
+      && (!data.result.user_stores || !Object.entries(data.result.user_stores).some(([key, value]) => value.store === storeName))) {
+        return "Store \"" + storeName + "\" does not exist.";
+      }
+    } catch (error) {
+      console.error(error);
+      alert(error.message);
+    }
+
+    if (storeName != null) {
+      sessionStorage.setItem("store", storeName);
+
+      // Reset session to forget previous memory
+      initializeSession();
+
+      return "Store is set to \`" + storeName + "\`, you can use command \`:store\` to show current store information";
+    } else {
+      return "Invalid store name.";
+    }
+  }
+
+  // Reset store
+  if (command === "reset") {
+    if (sessionStorage.getItem("store") === "") {
+      return "Store is already empty.";
+    }
+
+    sessionStorage.setItem("store", "");  // reset store
+
+    // Reset session to forget previous memory
+    initializeSession();
+    return "Store reset.";
   }
 
   // Add a store

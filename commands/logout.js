@@ -1,4 +1,4 @@
-import { clearUserLocalStorage } from "utils/userUtils";
+import { clearUserWebStorage } from "utils/userUtils";
 
 export default async function logout(args) {
   const username = localStorage.getItem("user");
@@ -24,7 +24,7 @@ export default async function logout(args) {
     }
 
     // Clear user data
-    clearUserLocalStorage();
+    clearUserWebStorage();
 
     return "Logout successful.";
   } catch (error) {

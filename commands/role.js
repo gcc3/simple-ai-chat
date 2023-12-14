@@ -5,7 +5,7 @@ export default async function role(args) {
 
   // Get role prompt
   if (!command) {
-    const role = localStorage.getItem("role");
+    const role = sessionStorage.getItem("role");
     if (role === "") {
       return "No role is set. Use command \`:role use [role_name]\` to set a role.";
     }
@@ -61,11 +61,11 @@ export default async function role(args) {
 
   // Reset role
   if (command === "reset") {
-    if (localStorage.getItem("role") === "") {
+    if (sessionStorage.getItem("role") === "") {
       return "Role is already empty.";
     }
 
-    localStorage.setItem("role", "");  // reset role
+    sessionStorage.setItem("role", "");  // reset role
 
     // Reset session to forget previous memory
     initializeSession();
@@ -153,7 +153,7 @@ export default async function role(args) {
     }
 
     if (roleName != null) {
-      localStorage.setItem("role", roleName);
+      sessionStorage.setItem("role", roleName);
 
       // Reset session to forget previous memory
       initializeSession();

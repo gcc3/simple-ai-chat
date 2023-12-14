@@ -31,13 +31,15 @@ export default function help(args) {
     ":store [name?] - Show data store detail.\n" +
     ":store [ls|list] - List available data stores.\n" +
     ":store use [name] - Use a data store.\n" +
+    ":store reset - Reset data store to empty.\n" +
     ":store add [name] - Create a store.\n" +
     ":store [del|delete] [name] - Delete a store.\n" +
-    ":store set [key] [value] - Setup a store settings.\n" +
     ":store set owner [owner] - Change store owner.\n" +
+    ":store set [key] [value] - Setup a store settings.\n" +
     ":user add [username] [email] [password?] - Create a user.\n" +
     ":user set pass [value] - Change password.\n" +
     ":user set email [value] - Change email address.\n" +
+    ":user set [key] [value] - Change user settings.\n" +
     ":user reset pass [username] [email] - Recover password.\n" +
     ":user role [add|set] [role_name] [prompt] - Add an assistant.\n" +
     ":user role [del|delete] [role_name] - Delete a role/assistant.\n" +

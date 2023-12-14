@@ -6,6 +6,7 @@ export default async function entry(args) {
   const usage = "Usage: :user add [username] [email] [password?]" + "\n" +
                 "       :user set pass [value]" + "\n" +
                 "       :user set email [value]" + "\n" +
+                "       :user set [key] [value]" + "\n" +
                 "       :user reset pass [username] [email]" + "\n" +
                 "       :user role [add|set] [role_name] [prompt]" + "\n" +
                 "       :user role [del|delete] [role_name]" + "\n"
