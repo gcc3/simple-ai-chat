@@ -95,28 +95,35 @@ export default async function store(args) {
       if (data.result.stores.length === 0 && (!data.result.user_stores || Object.entries(data.result.user_stores).length === 0)) {
         return "No available store found.";
       } else {
+        // Found some stores
         let userStores = "";
-        if (localStorage.getItem("user")) {
-          if (data.result.user_stores && Object.entries(data.result.user_stores).length > 0) {
-            let stores = [];
-            Object.entries(data.result.user_stores).forEach(([key, value]) => {
-              stores.push(value.name);
-            });
-            userStores = "User stores: \n" 
-                + "\\" + stores.join(" \\") + "\n\n"; 
-          } else {
-            userStores = "User stores: \n" 
-                      + "No user store found." + "\n\n";
-          }
+        if (data.result.user_stores && Object.entries(data.result.user_stores).length > 0) {
+          let stores = [];
+          Object.entries(data.result.user_stores).forEach(([key, value]) => {
+            stores.push(value.name);
+          });
+          userStores = "User stores: \n" 
+                     + "\\" + stores.join(" \\") + "\n\n"; 
+        } else {
+          userStores = "User stores: \n" 
+                     + "No user store found." + "\n\n";
         }
 
-        let defaultStores = "";
-        if (data.result.stores && data.result.stores.length > 0) {
-          defaultStores = "Default stores: \n" 
-                        + "\\" + data.result.stores.join(" \\");
+        // Found some stores
+        let groupStores = "";
+        if (data.result.stores && Object.entries(data.result.stores).length > 0) {
+          let stores = [];
+          Object.entries(data.result.stores).forEach(([key, value]) => {
+            stores.push(value.name);
+          });
+          groupStores = "Stores: \n" 
+                    + "\\" + stores.join(" \\") + "\n\n"; 
+        } else {
+          groupStores = "Stores: \n" 
+                      + "No store found." + "\n\n";
         }
 
-        return userStores + defaultStores;
+        return userStores + groupStores;
       }
     } catch (error) {
       console.error(error);

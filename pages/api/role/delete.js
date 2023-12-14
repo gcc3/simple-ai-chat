@@ -14,8 +14,7 @@ export default async function (req, res) {
   if (!authResult.success) {
     return res.status(401).json({ 
       success: false,
-      message: 'Authentication failed.',
-      error: authResult.error
+      error: 'Authentication failed.',
     });
   }
   const { id, username } = authResult.user;
@@ -24,9 +23,9 @@ export default async function (req, res) {
   const role = await getRole(roleName, username);
   if (!role) {
     return res.status(200).json({ 
-        success: false, 
-        message: "Role not exists." 
-      });
+      success: false, 
+      error: "Role not exists." 
+    });
   }
 
   deleteRole(roleName, username);

@@ -325,7 +325,7 @@ export default async function entry(args) {
 
       const data = await response.json();
       if (response.status !== 200) {
-        throw data.message || new Error(`Request failed with status ${response.status}`);
+        throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
       if (data.success) {
@@ -367,7 +367,7 @@ export default async function entry(args) {
 
       const data = await response.json();
       if (response.status !== 200) {
-        throw data.message || new Error(`Request failed with status ${response.status}`);
+        throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
       return data.message;
@@ -413,7 +413,7 @@ export default async function entry(args) {
 
       const data = await response.json();
       if (response.status !== 200) {
-        throw data.message || new Error(`Request failed with status ${response.status}`);
+        throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
       return data.message;
@@ -437,7 +437,7 @@ export default async function entry(args) {
     const password = args[2];
 
     try {
-      const response = await fetch("/api/update/group", {
+      const response = await fetch("/api/user/group/join", {
         method: "POST",
         credentials: 'include',
         headers: {
@@ -445,16 +445,18 @@ export default async function entry(args) {
         },
         body: JSON.stringify({
           group,
-          password,  // has password, then join group
+          password,
         }),
       });
 
       const data = await response.json();
       if (response.status !== 200) {
-        throw data.message || new Error(`Request failed with status ${response.status}`);
+        throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return data.message;
+      if (data.success) {
+        return data.message;
+      }
     } catch (error) {
       console.error(error);
       return error;
@@ -474,23 +476,25 @@ export default async function entry(args) {
     const group = args[1];
 
     try {
-      const response = await fetch("/api/user/update/group", {
+      const response = await fetch("/api/user/group/leave", {
         method: "POST",
         credentials: 'include',
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          group,  // no password, then leave group
+          group,
         }),
       });
 
       const data = await response.json();
       if (response.status !== 200) {
-        throw data.message || new Error(`Request failed with status ${response.status}`);
+        throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return data.message;
+      if (data.success) {
+        return data.message;
+      }
     } catch (error) {
       console.error(error);
       return error;

@@ -42,6 +42,7 @@ export default async function (req, res) {
         user: {
           id: user.id, 
           username: user.username,
+          group: user.group,
           email: user.email,
           settings: JSON.parse(user.settings),
           role: user.role,
