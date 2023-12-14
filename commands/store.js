@@ -1,4 +1,5 @@
 import { initializeSession } from "utils/sessionUtils";
+import session from "./session";
 
 export default async function store(args) {
   const command = args[0];
@@ -103,7 +104,7 @@ export default async function store(args) {
             stores.push(value.name);
           });
           userStores = "User stores: \n" 
-                     + "\\" + stores.join(" \\") + "\n\n"; 
+                     + "\\" + stores.join(" \\") + "\n\n";
         } else {
           userStores = "User stores: \n" 
                      + "No user store found." + "\n\n";
@@ -123,7 +124,13 @@ export default async function store(args) {
                       + "No store found." + "\n\n";
         }
 
-        return userStores + groupStores;
+        // Add star to current store
+        let result = userStores + groupStores;
+        if (sessionStorage.getItem("store")) {
+          const currentStore = sessionStorage.getItem("store");
+          result = result.replace("\\" + currentStore, "*\\" + currentStore);
+        }
+        return result;
       }
     } catch (error) {
       console.error(error);
