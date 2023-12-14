@@ -137,7 +137,7 @@ Messages
 | 6 | Location info                | system          | Add when location service is enabled     |
 | 7 | Function calling result      | function        | Result of function calling (tool calls)  |
 | 8 | AI links response            | function        | Response from AI node or hub             |
-| 9 | Vector database query result | function        | Result from a query to a vector database |
+| 9 | Vector database query result | system          | Result from a query to a vector database |
 
 
 AI Links (AI Node)
@@ -272,9 +272,6 @@ The customer ID of vectara, can get from user profile.
 
 * VECTARA_CORPUS_ID  
 The indice id.  
-
-* FORCE_VECTOR_QUERY  
-Force query from the vectara vector database.  
 
 * DB  
 Database engline, example `DB=sqlite`.  

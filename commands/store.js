@@ -277,7 +277,7 @@ export default async function store(args) {
   // Change store owner
   if (command === "set" && args[1] === "owner") {
     if (args.length !== 3) {
-      return usage;
+      return "Usage: :store set owner [owner]\n";
     }
 
     if (!localStorage.getItem("user")) {
@@ -295,7 +295,7 @@ export default async function store(args) {
     }
 
     try {
-      const response = await fetch("/api/store/update/" + storeName + "/settings", {
+      const response = await fetch("/api/store/update/" + storeName + "/owner", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -310,10 +310,12 @@ export default async function store(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return "Store owner changed.";
+      if (data.success) {
+        return data.message;
+      }
     } catch (error) {
       console.error(error);
-      alert(error.message);
+      return error;
     }
   }
 

@@ -8,10 +8,11 @@ import { getFunctions, executeFunction } from "function.js";
 import { getTools } from "tools.js";
 import { getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
-import { countChatsForIP, getUser } from "utils/sqliteUtils";
+import { countChatsForIP, getUser, getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 import { countChatsForUser } from "utils/sqliteUtils";
 import { getUsageLimit } from "utils/envUtils";
+import { vectaraQuery } from "utils/vectaraUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -30,13 +31,13 @@ const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true :
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
 const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
-const force_vector_query = process.env.FORCE_VECTOR_QUERY == "true" ? true : false;
 const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
 export default async function (req, res) {
   const queryId = req.query.query_id || "";
-  const role = req.query.role || "default";
+  const role = req.query.role || "";
+  const store = req.query.store || "";
   const use_stats = req.query.use_stats === "true" ? true : false;
   const use_location = req.query.use_location === "true" ? true : false;
   const location = req.query.location || "";
@@ -45,9 +46,11 @@ export default async function (req, res) {
 
   // Authentication
   const authResult = authenticate(req);
+  let user = null;
   let authUser = null;
   if (authResult.success) {
     authUser = authResult.user;
+    user = await getUser(authResult.user.username);
   }
 
   res.writeHead(200, {
@@ -108,9 +111,6 @@ export default async function (req, res) {
         return;
       }
     } else {
-      // User (the latest get from db)
-      const user = await getUser(authResult.user.username);
-
       // Verify email
       if (use_email && !user.email_verified_at) {
         // Urge verify email address
@@ -189,10 +189,10 @@ export default async function (req, res) {
     + "use_node_ai: " + use_node_ai + "\n"
     + "force_node_ai_query: " + force_node_ai_query + "\n"
     + "use_vector: " + use_vector + "\n"
-    + "force_vector_query: " + force_vector_query + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + location + "\n"
-    + "role: " + role + "\n");
+    + "role: " + (role || "(not set)") + "\n"
+    + "store: " + (store || "(not set)") + "\n");
   }
 
   // II. Tool calls (function calling) input
@@ -294,7 +294,6 @@ export default async function (req, res) {
     // 3. Node AI response
     if (use_node_ai && force_node_ai_query) {
       console.log("--- node ai query ---");
-      // Feed message with AI node query result
       const nodeAiQueryResult = await executeFunction("query_node_ai", "{ query: " + input + " }");
       if (nodeAiQueryResult === undefined) {
         console.log("response: undefined.\n");
@@ -311,28 +310,34 @@ export default async function (req, res) {
     }
 
     // 4. Vector database query result
-    let refer_doc = "none";
-    if (use_vector && force_vector_query) {
+    if (use_vector && store) {
       console.log("--- vector query ---");
-      // Feed message with AI node query result
-      const vectorQueryResult = await executeFunction("query_vector", "{ query: " + input + " }");
-      if (vectorQueryResult === undefined) {
-        console.log("response: undefined.\n");
-      } else {
-        console.log("response: " + vectorQueryResult.replaceAll("\n", "\\n") + "\n");
-        messages.push({
-          "role": "function",
-          "name": "query_vector",
-          "content": "Retrieved context: " + vectorQueryResult,
-        });
-        additionalInfo += vectorQueryResult;
-        logadd(queryId, model, "D=query_vector(query=" + input + ")", "D=" + vectorQueryResult, req);
 
-        // Get vector score and refer doc info
-        if (vectorQueryResult.includes("###VECTOR###")) {
-          const vector_stats = vectorQueryResult.substring(vectorQueryResult.indexOf("###VECTOR###") + 12).trim();
-          refer_doc = vector_stats;
-        }
+      // Get corpus id
+      const storeInfo = await getStore(store, user.username);
+      const storeSettings = JSON.parse(storeInfo.settings);
+      const corpus_id = storeSettings.corpus_id;
+      if (!corpus_id) {
+        console.log("No corpus id found for store " + store);
+        res.write(`data: No corpus id found for store ${store}.\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+
+      // Query
+      const queryResult = await vectaraQuery(input, corpus_id);
+      if (!queryResult) {
+        console.log("response: no result.\n");
+      } else {
+        console.log("response: " + JSON.stringify(queryResult, null, 2) + "\n");
+        queryResult.map(r => {
+          messages.push({
+            "role": "system",
+            "content": "According to " +  r.document + ": " + r.content,
+          });
+          additionalInfo += r.text;
+        });
       }
     }
 
@@ -358,7 +363,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${score},${temperature},${top_p},${token_ct},${use_eval},${functionName},${refer_doc}\n\n`);
+    res.write(`data: ###STATS###${score},${temperature},${top_p},${token_ct},${use_eval},${functionName}\n\n`);
     res.flush();
 
     for await (const part of chatCompletion) {

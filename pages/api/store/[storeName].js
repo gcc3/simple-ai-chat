@@ -17,12 +17,12 @@ export default async function (req, res) {
       // Check if role exists in user roles
       const store = await getStore(storeName, authResult.user.username);
       if (store) {
-        console.log(store);
         return res.status(200).json({ 
           result: {
             store: store.name,
             owner: store.owner,
-            settings: store.settings,
+            created_by: store.created_by,
+            settings: JSON.parse(store.settings),
           },
         });
       } else {
