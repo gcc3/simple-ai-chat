@@ -29,7 +29,7 @@ export default async function (req, res) {
       });
   }
 
-  insertRole(roleName, prompt, username, new Date());
+  insertRole(roleName, prompt, username);
 
   // No error
   return res.status(200).json({ 

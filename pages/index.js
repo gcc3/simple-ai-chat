@@ -211,6 +211,10 @@ export default function Home() {
   useEffect(() => {
     initializeSession();
 
+    // Set default sessionStorage values
+    if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
+    if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");
+
     // Set default localStorage values
     if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
     if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
@@ -219,7 +223,6 @@ export default function Home() {
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
-    if (localStorage.getItem("role") === null) localStorage.setItem("role", "");
 
     // Set styles and themes
     dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
@@ -594,7 +597,9 @@ export default function Home() {
     var textSpoken = "";
 
     const query_id = sessionStorage.getItem("queryId");
-    const role = localStorage.getItem("role");
+    const role = sessionStorage.getItem("role");
+    const store = sessionStorage.getItem("store");
+
     const use_stats = localStorage.getItem("useStats");
     const use_location = localStorage.getItem("useLocation");
     const location = localStorage.getItem("location");
@@ -604,6 +609,7 @@ export default function Home() {
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
                                                            + "&query_id=" + query_id
                                                            + "&role=" + role
+                                                           + "&store=" + store
                                                            + "&use_stats=" + use_stats
                                                            + "&use_location=" + use_location
                                                            + "&location=" + location
@@ -851,7 +857,8 @@ export default function Home() {
         body: JSON.stringify({
             user_input: input, 
             query_id: sessionStorage.getItem("queryId"),
-            role: localStorage.getItem("role"),
+            role: sessionStorage.getItem("role"),
+            store: sessionStorage.getItem("store"),
             use_stats: localStorage.getItem("useStats"),
             use_location: localStorage.getItem("useLocation"),
             location: localStorage.getItem("location"),

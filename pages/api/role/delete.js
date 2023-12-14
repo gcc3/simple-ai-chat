@@ -30,8 +30,6 @@ export default async function (req, res) {
   }
 
   deleteRole(roleName, username);
-
-  // No error
   return res.status(200).json({ 
     success: true,
     message: "Role \"" + roleName + "\" is deleted.",

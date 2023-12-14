@@ -12,13 +12,17 @@ export function setUserLocalStorage(user) {
   if (user.settings) {
     const settings = user.settings;
 
+    if (settings.role) {
+      sessionStorage.setItem("role", settings.role);
+    }
+
+    if (settings.store) {
+      sessionStorage.setItem("store", settings.store);
+    }
+
     if (settings.theme) {
       localStorage.setItem("theme", settings.theme);
       setTheme(localStorage.getItem("theme"));
-    }
-
-    if (settings.role) {
-      localStorage.setItem("role", settings.role);
     }
 
     if (settings.speak) {
@@ -36,7 +40,7 @@ export function setUserLocalStorage(user) {
   }
 }
 
-export function clearUserLocalStorage() {
+export function clearUserWebStorage() {
   localStorage.removeItem("user");
   localStorage.removeItem("userEmail");
   localStorage.removeItem("userRole");
@@ -46,8 +50,13 @@ export function clearUserLocalStorage() {
   initializeSession();
 
   // Reset role
-  if (localStorage.getItem("role")) {
-    localStorage.setItem("role", "");
+  if (sessionStorage.getItem("role")) {
+    sessionStorage.setItem("role", "");
+  }
+
+  // Reset store
+  if (sessionStorage.getItem("store")) {
+    sessionStorage.setItem("store", "");
   }
 }
 
@@ -76,7 +85,7 @@ export async function refreshUserInfo() {
     setUserLocalStorage(user);
   } else {
     if (localStorage.getItem("user")) {
-      clearUserLocalStorage();
+      clearUserWebStorage();
 
       // Clear auth cookie
       document.cookie = "auth=; Path=/;";

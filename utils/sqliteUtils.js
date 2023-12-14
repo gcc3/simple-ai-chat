@@ -118,8 +118,15 @@ const getDatabaseConnection = async () => {
       await initializeDatabase(db);
 
       // Create root user with defatut settings
-      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 
-        "{\"theme\":\"light\",\"speak\":\"off\",\"stats\":\"off\",\"fullscreen\":\"off\"}");
+      const settings = JSON.stringify({
+        theme: "light",
+        speak: "off",
+        stats: "off",
+        fullscreen: "off",
+        role: "",
+        store: "",
+      });
+      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", settings);
       await updateUserEmailVerifiedAt("root");
 
       return db;
@@ -833,7 +840,7 @@ const insertStore = async (name, settings, createdBy) => {
   try {
     return await new Promise((resolve, reject) => {
       // First, check if the username already exists
-      db.get("SELECT id FROM stores WHERE name = ? AND created_by = ?", [name, createdBy], (err, row) => {
+      db.get(`SELECT id FROM stores WHERE name = ? AND created_by = ?`, [name, createdBy], (err, row) => {
         if (err) {
           reject(err);
           return;
@@ -846,12 +853,13 @@ const insertStore = async (name, settings, createdBy) => {
         }
 
         // If the username doesn't exist, proceed with the insertion
-        const stmt = db.prepare("INSERT INTO stores (name, owner, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
+        const stmt = db.prepare(`INSERT INTO stores (name, owner, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`);
         stmt.run([name, createdBy, settings, createdBy, new Date(), null], function (err) {
           if (err) {
             reject(err);
             return;
           }
+          
           // This `this.lastID` provides the ID of the last inserted row.
           resolve(this.lastID);
         });
@@ -907,12 +915,27 @@ const updateStoreOwner = async (name, newOwner, createdBy) => {
   }
 };
 
-const updateStoreSettings = async (name, newSettings, createdBy) => {
+const updateStoreSettings = async (name, createdBy, key, value) => {
   const db = await getDatabaseConnection();
+  const store = await getStore(name, createdBy);
+
+  // Check if the store exists
+  if (!store) {
+    console.error("Store not found.");
+    return;
+  }
+
+  let newSettings = {};
+  if (store.settings) {
+    newSettings = JSON.parse(store.settings);
+  }
+  newSettings[key] = value;
+  const settings = JSON.stringify(newSettings);
+
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND created_by = ?");
-      stmt.run([newSettings, new Date(), name, createdBy], function (err) {
+      stmt.run([settings, new Date(), name, createdBy], function (err) {
         if (err) {
           reject(err);
         }
