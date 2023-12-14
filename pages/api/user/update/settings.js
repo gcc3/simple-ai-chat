@@ -22,7 +22,7 @@ export default async function (req, res) {
   if (!key || !value) {
     return res.status(400).json({ 
       success: false,
-      error: 'Username and settings are required.' 
+      error: 'Key and value are required.' 
     });
   }
 
@@ -51,7 +51,7 @@ export default async function (req, res) {
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
           success: false, 
-          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
     } else if (key === 'speak') {
@@ -59,7 +59,7 @@ export default async function (req, res) {
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
           success: false, 
-          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
     } else if (key === 'stats') {
@@ -67,7 +67,7 @@ export default async function (req, res) {
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
           success: false, 
-          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
     } else if (key === 'fullscreen') {
@@ -75,7 +75,7 @@ export default async function (req, res) {
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
           success: false, 
-          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
     } else if (key === 'role') {
@@ -90,7 +90,7 @@ export default async function (req, res) {
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
           success: false, 
-          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
     } else if (key === 'store') {
@@ -106,7 +106,7 @@ export default async function (req, res) {
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
           success: false, 
-          error: 'Invalid value, value must be one of:' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
     }

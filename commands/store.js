@@ -274,55 +274,28 @@ export default async function store(args) {
     }
   }
 
-  // Setup a store
-  if (command === "set") {
-    if (args.length !== 4) {
-      return usage;
-    }
-
-    const name = args[2];
-    const setting = args[3];
-    if (!name || !setting) {
-      return usage;
-    }
-
-    try {
-      const response = await fetch("/api/store/update/settings", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          name,
-          setting,
-        }),
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      return "Store setup.";
-    } catch (error) {
-      console.error(error);
-      alert(error.message);
-    }
-  }
-
   // Change store owner
   if (command === "set" && args[1] === "owner") {
     if (args.length !== 3) {
       return usage;
     }
 
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
+    const storeName = sessionStorage.getItem("store");
+    if (!storeName) {
+      return "No data store is set, please use command \`:store use [name]\` to set a store.";
+    }
+
     const owner = args[2];
     if (!owner) {
-      return usage;
+      return "Invalid owner.";
     }
 
     try {
-      const response = await fetch("/api/store/update/owner", {
+      const response = await fetch("/api/store/update/" + storeName + "/settings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -341,6 +314,53 @@ export default async function store(args) {
     } catch (error) {
       console.error(error);
       alert(error.message);
+    }
+  }
+
+  // Set settings
+  if (command === "set" && args[1]) {
+    if (args.length != 3) {
+      return "Usage: :user set [key] [value]";
+    }
+    
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
+    const storeName = sessionStorage.getItem("store");
+    if (!storeName) {
+      return "No data store is set, please use command \`:store use [name]\` to set a store.";
+    }
+
+    // Check value must be quoted with double quotes.
+    if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
+      return "Setting value must be quoted with double quotes.";
+    }
+    const key = args[1];
+    const value = args[2].slice(1, -1);
+
+    try {
+      const response = await fetch("/api/store/update/" + storeName + "/settings", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          key,
+          value,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
     }
   }
 

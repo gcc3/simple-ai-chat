@@ -915,12 +915,27 @@ const updateStoreOwner = async (name, newOwner, createdBy) => {
   }
 };
 
-const updateStoreSettings = async (name, newSettings, createdBy) => {
+const updateStoreSettings = async (name, createdBy, key, value) => {
   const db = await getDatabaseConnection();
+  const store = await getStore(name, createdBy);
+
+  // Check if the store exists
+  if (!store) {
+    console.error("Store not found.");
+    return;
+  }
+
+  let newSettings = {};
+  if (store.settings) {
+    newSettings = JSON.parse(store.settings);
+  }
+  newSettings[key] = value;
+  const settings = JSON.stringify(newSettings);
+
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND created_by = ?");
-      stmt.run([newSettings, new Date(), name, createdBy], function (err) {
+      stmt.run([settings, new Date(), name, createdBy], function (err) {
         if (err) {
           reject(err);
         }

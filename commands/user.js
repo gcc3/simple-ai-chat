@@ -212,7 +212,7 @@ export default async function entry(args) {
   // Set settings
   if (command === "set" && args[1]) {
     if (args.length != 3) {
-      return "Usage: :user set [key] [email]";
+      return "Usage: :user set [key] [value]";
     }
     
     if (!localStorage.getItem("user")) {
@@ -223,6 +223,7 @@ export default async function entry(args) {
     if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
       return "Setting value must be quoted with double quotes.";
     }
+    const key = args[1];
     const value = args[2].slice(1, -1);
 
     try {
@@ -233,8 +234,8 @@ export default async function entry(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          key: args[1],
-          value: value,
+          key,
+          value,
         }),
       });
 
