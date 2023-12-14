@@ -153,7 +153,7 @@ export default function Home() {
   // Print session log
   const printSessionLog = async function(log) {
     console.log("Time set to log time: " + log["time"])
-    localStorage.setItem("time",log["time"]);
+    sessionStorage.setItem("time",log["time"]);
     console.log("Session log:", JSON.stringify(log));
 
     // Print the log
@@ -319,7 +319,7 @@ export default function Home() {
 
             // Print session log (previous)
             if (global.STATE === STATES.IDLE) {
-              getSessionLog("prev", localStorage.getItem("queryId"), localStorage.getItem("time"))
+              getSessionLog("prev", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
@@ -343,7 +343,7 @@ export default function Home() {
 
             // Print session log (next)
             if (global.STATE === STATES.IDLE) {
-              getSessionLog("next", localStorage.getItem("queryId"), localStorage.getItem("time"))
+              getSessionLog("next", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (Object.entries(r.result).length === 0) {
                     console.log("No next log.");
@@ -413,7 +413,7 @@ export default function Home() {
   // On submit input
   async function onSubmit(event) {
     event.preventDefault();
-    localStorage.setItem("time", Date.now());  // update time
+    sessionStorage.setItem("time", Date.now());  // update time
 
     // Clear output and preview images
     clearOutput();
@@ -593,7 +593,7 @@ export default function Home() {
     // preapre speech
     var textSpoken = "";
 
-    const query_id = localStorage.getItem("queryId");
+    const query_id = sessionStorage.getItem("queryId");
     const role = localStorage.getItem("role");
     const use_stats = localStorage.getItem("useStats");
     const use_location = localStorage.getItem("useLocation");
@@ -850,7 +850,7 @@ export default function Home() {
         },
         body: JSON.stringify({
             user_input: input, 
-            query_id: localStorage.getItem("queryId"),
+            query_id: sessionStorage.getItem("queryId"),
             role: localStorage.getItem("role"),
             use_stats: localStorage.getItem("useStats"),
             use_location: localStorage.getItem("useLocation"),

@@ -1,5 +1,5 @@
 export default function info(args) {
-  const info = "Session ID: " + localStorage.getItem("queryId") + "\n" +
+  const info = "Session ID: " + sessionStorage.getItem("queryId") + "\n" +
                "Show stats: " + localStorage.getItem("useStats") + "\n" +
                "Stream: " + localStorage.getItem("useStream") + "\n" +
                "Speak: " + localStorage.getItem("useSpeak") + "\n" +

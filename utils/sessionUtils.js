@@ -1,6 +1,6 @@
 export function initializeSession() {
-  localStorage.setItem("time", Date.now());
-  localStorage.setItem("queryId", Date.now());
+  sessionStorage.setItem("time", Date.now());
+  sessionStorage.setItem("queryId", Date.now());
 }
 
 // Session ID is a string of number.
@@ -11,8 +11,8 @@ export function attachSession(sessionId) {
     return verifyResult.message;
   }
 
-  localStorage.setItem("time", sessionId);
-  localStorage.setItem("queryId", sessionId);
+  sessionStorage.setItem("time", sessionId);
+  sessionStorage.setItem("queryId", sessionId);
   return "Attached.";
 }
 
