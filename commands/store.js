@@ -55,7 +55,7 @@ export default async function store(args) {
     }
   }
 
-  // List all available stores
+  // List available stores
   if (command === "ls" || command === "list") {
     try {
       const response = await fetch("/api/store/list", {
@@ -70,11 +70,37 @@ export default async function store(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return data.result.stores.join("\n");
+      if (data.result.stores.length === 0 && (!data.result.user_stores || Object.entries(data.result.user_stores).length === 0)) {
+        return "No available store found.";
+      } else {
+        let userStores = "";
+        if (localStorage.getItem("user")) {
+          if (data.result.user_stores && Object.entries(data.result.user_stores).length > 0) {
+            let stores = [];
+            Object.entries(data.result.user_stores).forEach(([key, value]) => {
+              stores.push(value.name);
+            });
+            userStores = "User stores: \n" 
+                + "\\" + stores.join(" \\") + "\n\n"; 
+          } else {
+            userStores = "User stores: \n" 
+                      + "No user store found." + "\n\n";
+          }
+        }
+
+        let defaultStores = "";
+        if (data.result.stores && data.result.stores.length > 0) {
+          defaultStores = "Default stores: \n" 
+                        + "\\" + data.result.stores.join(" \\");
+        }
+
+        return userStores + defaultStores;
+      }
     } catch (error) {
       console.error(error);
       alert(error.message);
     }
+    return "";
   }
 
   // Use store
