@@ -840,7 +840,7 @@ const insertStore = async (name, settings, createdBy) => {
   try {
     return await new Promise((resolve, reject) => {
       // First, check if the username already exists
-      db.get("SELECT id FROM stores WHERE name = ? AND created_by = ?", [name, createdBy], (err, row) => {
+      db.get(`SELECT id FROM stores WHERE name = ? AND created_by = ?`, [name, createdBy], (err, row) => {
         if (err) {
           reject(err);
           return;
@@ -853,12 +853,13 @@ const insertStore = async (name, settings, createdBy) => {
         }
 
         // If the username doesn't exist, proceed with the insertion
-        const stmt = db.prepare("INSERT INTO stores (name, owner, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)");
+        const stmt = db.prepare(`INSERT INTO stores (name, owner, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`);
         stmt.run([name, createdBy, settings, createdBy, new Date(), null], function (err) {
           if (err) {
             reject(err);
             return;
           }
+          
           // This `this.lastID` provides the ID of the last inserted row.
           resolve(this.lastID);
         });

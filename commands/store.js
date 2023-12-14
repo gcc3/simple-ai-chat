@@ -33,8 +33,8 @@ export default async function store(args) {
   }
 
   // Get store info by name
-  if (args.length === 2) {
-    const storeName = args[1];
+  if (args[0].startsWith("\"") && args[0].endsWith("\"")) {
+    const storeName = args[0].slice(1, -1);
     try {
       const response = await fetch("/api/store/" + storeName, {
         method: "GET",
@@ -139,15 +139,20 @@ export default async function store(args) {
 
   // Add a store
   if (command === "add") {
-    if (args.length !== 3) {
-      return usage;
+    if (args.length !== 2) {
+      return "Usage: :store add [name]\n";
     }
 
-    const name = args[1];
-    const settings = args[2];
-    if (!name || !settings) {
-      return usage;
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
     }
+
+    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
+      return "Store name must be quoted with double quotes.";
+    }
+
+    const name = args[1].slice(1, -1);
+    const settings = JSON.stringify({});
 
     try {
       const response = await fetch("/api/store/add", {
@@ -166,11 +171,13 @@ export default async function store(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      localStorage.setItem("store", name);
-      return "Store added.";
+      if (data.success) {
+        localStorage.setItem("store", name);
+        return data.message;
+      }
     } catch (error) {
       console.error(error);
-      alert(error.message);
+      return error;
     }
   }
 
