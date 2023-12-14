@@ -46,9 +46,11 @@ export default async function (req, res) {
 
   // Authentication
   const authResult = authenticate(req);
+  let user = null;
   let authUser = null;
   if (authResult.success) {
     authUser = authResult.user;
+    user = await getUser(authResult.user.username);
   }
 
   res.writeHead(200, {
@@ -109,9 +111,6 @@ export default async function (req, res) {
         return;
       }
     } else {
-      // User (the latest get from db)
-      const user = await getUser(authResult.user.username);
-
       // Verify email
       if (use_email && !user.email_verified_at) {
         // Urge verify email address
@@ -311,10 +310,13 @@ export default async function (req, res) {
     }
 
     // 4. Vector database query result
-    let refer_doc = "none";
     if (use_vector && store) {
       console.log("--- vector query ---");
-      const corpus_id = (await getStore(store)).settings.corpus_id;
+
+      // Get corpus id
+      const storeInfo = await getStore(store, user.username);
+      const storeSettings = JSON.parse(storeInfo.settings);
+      const corpus_id = storeSettings.corpus_id;
       if (!corpus_id) {
         console.log("No corpus id found for store " + store);
         res.write(`data: No corpus id found for store ${store}.\n\n`); res.flush();
@@ -323,24 +325,19 @@ export default async function (req, res) {
         return;
       }
 
-      const vectorQueryResult = await vectaraQuery(input, corpus_id);
-      if (vectorQueryResult === undefined) {
+      // Query
+      const queryResult = await vectaraQuery(input, corpus_id);
+      if (!queryResult) {
         console.log("response: undefined.\n");
       } else {
-        console.log("response: " + vectorQueryResult.replaceAll("\n", "\\n") + "\n");
-        messages.push({
-          "role": "function",
-          "name": "query_vector",
-          "content": "Retrieved context: " + vectorQueryResult,
+        console.log("response: " + JSON.stringify(queryResult) + "\n");
+        queryResult.map(r => {
+          messages.push({
+            "role": "system",
+            "content": "According to " +  r.document + ": " + r.content,
+          });
+          additionalInfo += r.text;
         });
-        additionalInfo += vectorQueryResult;
-        logadd(queryId, model, "D=query_vector(query=" + input + ")", "D=" + vectorQueryResult, req);
-
-        // Get vector score and refer doc info
-        if (vectorQueryResult.includes("###VECTOR###")) {
-          const vector_stats = vectorQueryResult.substring(vectorQueryResult.indexOf("###VECTOR###") + 12).trim();
-          refer_doc = vector_stats;
-        }
       }
     }
 
@@ -366,7 +363,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${score},${temperature},${top_p},${token_ct},${use_eval},${functionName},${refer_doc}\n\n`);
+    res.write(`data: ###STATS###${score},${temperature},${top_p},${token_ct},${use_eval},${functionName}\n\n`);
     res.flush();
 
     for await (const part of chatCompletion) {

@@ -21,6 +21,7 @@ export default async function (req, res) {
           result: {
             store: store.name,
             owner: store.owner,
+            created_by: store.created_by,
             settings: JSON.parse(store.settings),
           },
         });

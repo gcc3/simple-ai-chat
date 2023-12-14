@@ -707,7 +707,6 @@ export default function Home() {
           const token_ct = _stats_[3];
           const use_eval = _stats_[4];
           const func = _stats_[5];
-          const refer_doc = _stats_[6];
 
           if (use_eval === "true") {
             setEvaluation(
@@ -721,7 +720,6 @@ export default function Home() {
             <div>
               dict_search_score: {score}<br></br>
               func: {func || "none"}<br></br>
-              refer_doc: {refer_doc}<br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
