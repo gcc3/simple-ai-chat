@@ -328,9 +328,9 @@ export default async function (req, res) {
       // Query
       const queryResult = await vectaraQuery(input, corpus_id);
       if (!queryResult) {
-        console.log("response: undefined.\n");
+        console.log("response: no result.\n");
       } else {
-        console.log("response: " + JSON.stringify(queryResult) + "\n");
+        console.log("response: " + JSON.stringify(queryResult, null, 2) + "\n");
         queryResult.map(r => {
           messages.push({
             "role": "system",
