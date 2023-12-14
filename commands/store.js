@@ -12,12 +12,16 @@ export default async function store(args) {
                 "       :store set [key] [value]\n";
 
   // Get store info
-  if (command === "") {
+  if (!command) {
     if (!localStorage.getItem("user")) {
       return "Please login.";
     }
 
-    const storeName = localStorage.getItem("store");
+    const storeName = sessionStorage.getItem("store");
+    if (!storeName) {
+      return "No data store is set, please use command \`:store use [name]\` to set a store.";
+    }
+
     try {
       const response = await fetch("/api/store/" + storeName, {
         method: "GET",
@@ -34,13 +38,17 @@ export default async function store(args) {
       return JSON.stringify(data.result, null, 2);
     } catch (error) {
       console.error(error);
-      alert(error.message);
+      return error;
     }
   }
 
   // Get store info by name
-  if (args[0].startsWith("\"") && args[0].endsWith("\"")) {
+  if (args.length === 1 && args[0].startsWith("\"") && args[0].endsWith("\"")) {
     const storeName = args[0].slice(1, -1);
+    if (!storeName) {
+      return "Invalid store name.";
+    }
+
     try {
       const response = await fetch("/api/store/" + storeName, {
         method: "GET",
@@ -57,7 +65,7 @@ export default async function store(args) {
       return JSON.stringify(data.result, null, 2);
     } catch (error) {
       console.error(error);
-      alert(error.message);
+      return error;
     }
   }
 
