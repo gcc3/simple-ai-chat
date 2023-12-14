@@ -16,7 +16,13 @@ export default async function voice(args) {
     if (langVoiceList.length === 0) {
       return "No voices found for language " + localStorage.getItem("lang") + ".";
     } else {
-      return "\\" + langVoiceList.join(" \\");
+      // Add star to current voice
+      let result = "\\" + langVoiceList.join(" \\");
+      if (localStorage.getItem("voice")) {
+        const currentStore = localStorage.getItem("voice");
+        result = result.replace("\\" + currentStore, "*\\" + currentStore);
+      }
+      return result;
     }
   }
   

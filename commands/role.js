@@ -108,7 +108,13 @@ export default async function role(args) {
         const defaultRoles = "Default roles: \n" 
                      + "\\" + data.result.roles.join(" \\");
 
-        return userRoles + defaultRoles;
+        // Add star to current role
+        let result = userRoles + defaultRoles;
+        if (sessionStorage.getItem("role")) {
+          const currentStore = sessionStorage.getItem("role");
+          result = result.replace("\\" + currentStore, "*\\" + currentStore);
+        }
+        return result;
       }
     } catch (error) {
       console.error(error);

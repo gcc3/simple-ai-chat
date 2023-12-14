@@ -24,7 +24,13 @@ export default async function lang(args) {
   ];
 
   if (command === "ls" || command === "list") {
-    return "\\" + langCodes.join(" \\");
+    // Add star to current lang
+    let result = "\\" + langCodes.join(" \\");
+    if (localStorage.getItem("lang")) {
+      const currentStore = localStorage.getItem("lang");
+      result = result.replace("\\" + currentStore, "*\\" + currentStore);
+    }
+    return result;
   }
   
   if (command === "use") {
