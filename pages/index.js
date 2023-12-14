@@ -1154,7 +1154,10 @@ export default function Home() {
             </div>
             {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
             {stats && <div className={styles.stats}>{stats}</div>}
-            <div className={styles.info}>{info}</div>
+            <div className={styles.info} onClick={() => {
+              // Copy attach session command to share
+              navigator.clipboard.writeText(":session attach " + sessionStorage.getItem("queryId"));
+            }}>{info}</div>
           </div>
         </div>
       
