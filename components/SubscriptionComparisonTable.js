@@ -2,24 +2,26 @@ import React from "react";
 
 // Get amount
 function getPrice(subscriptions, role) {
+  let price = "";
   if (subscriptions.hasOwnProperty(role)) {
     if (subscriptions[role].price == 0) {
-      return "Free";
+      price = "Free";
     }
-    return "$" + subscriptions[role].price + "/month";
+    price = "$" + subscriptions[role].price + "/month + (usage fee)";
   }
+  return price;
 }
 
 const SubscriptionComparisonTable = ({ subscriptions }) => {
   const comparison = [
-    { name: "GPT-4", user: "24/day", pro_user: "2400/month", super_user: "7200/month" },
+    { name: "GPT-4", user: "100/day", pro_user: "200/day", super_user: "300/month" },
     { name: "GPT-4V", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Fullscreen", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "De-hallucination", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Role/Assistant", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Functions", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "Personal Database", user: "╳", pro_user: "Yes(limited)", super_user: "Yes" },
-    { name: "Midjourney", user: "╳", pro_user: "24/day", super_user: "Yes" },
+    { name: "Personal Database", user: "╳", pro_user: "Yes", super_user: "Yes" },
+    { name: "Midjourney", user: "╳", pro_user: "╳", super_user: "Yes" },
     { name: "Pricing", user: getPrice(subscriptions, "user"), pro_user: getPrice(subscriptions, "pro_user"), super_user: getPrice(subscriptions, "super_user")},
   ];
 

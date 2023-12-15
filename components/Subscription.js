@@ -125,10 +125,10 @@ function Subscription() {
       <div className="mt-3">
         <div>Simple AI offers three subscription plans</div>
         <div>
-          - `user`: offer a general user package for only $3/month for accessing the most advanced AI.<br></br>
-          - `pro_user`: provide powerful personal database and Midjourney image generation function for only $18/month.<br></br>
-          - `super_user`: unlimte, latest technology and a larger personal database, $50/month.<br></br>
-          * For new users who register, we offer a 1-month free trial.
+          - `user`: offer a general user package for only $1/month for accessing the most advanced AI.<br></br>
+          - `pro_user`: provide powerful personal database.<br></br>
+          - `super_user`: provide Midjourney advanced image generation.<br></br>
+          * For new users who register, we offer a 7-day free trial (for `user`) and a $10 free usage.
         </div>
       </div>
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
