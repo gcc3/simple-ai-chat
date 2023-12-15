@@ -920,7 +920,7 @@ export default function Home() {
       ));
     } catch (error) {
       console.error(error);
-      alert(error.message);
+      alert(error);
     }
   }
   
