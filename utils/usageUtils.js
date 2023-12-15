@@ -14,7 +14,7 @@ export function getUsage(gpt4Usage = null, gpt4vUsage = null, dbUsage = null, mi
   if (gpt4vUsage) {
     usage.gpt4v = gpt4vUsage;
   } else {
-    usage.gpt4 = {
+    usage.gpt4v = {
       counter: 0,
       token_input: 0,
       token_output: 0,

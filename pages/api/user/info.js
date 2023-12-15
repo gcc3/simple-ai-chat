@@ -1,7 +1,7 @@
 import { getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 import { countChatsForUser } from 'utils/sqliteUtils.js';
-import { getUsageLimit } from 'utils/envUtils.js';
+import { getUseFequencyLimit } from 'utils/envUtils.js';
 import { createToken } from 'utils/authUtils.js';
 const moment = require('moment');
 
@@ -54,9 +54,9 @@ export default async function (req, res) {
           role: user.role,
           role_expires_at: user.role_expires_at,
           role_expires_at_h: (user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "-"),
-          usage: user.usage,
-          balance: "$" + user.balance,
-          fequency_usage: await getUserUsageWithLimit(user.username, user.role),
+          usage: JSON.parse(user.usage),
+          balance: user.balance,
+          use_fequency: await getUseFequencyWithLimit(user.username, user.role),
         }
       });
     } else {
@@ -80,11 +80,11 @@ export default async function (req, res) {
   }
 }
 
-async function getUserUsageWithLimit(username, role) {
+async function getUseFequencyWithLimit(username, role) {
   const daily = await countChatsForUser(username, Date.now() - 86400000, Date.now());
   const weekly = await countChatsForUser(username, Date.now() - 604800000, Date.now());
   const monthly = await countChatsForUser(username, Date.now() - 2592000000, Date.now());
-  const { daily_limit, weekly_limit, monthly_limit } = getUsageLimit(role);
+  const { daily_limit, weekly_limit, monthly_limit } = getUseFequencyLimit(role);
 
   let exceeded = false;
   if (daily_limit && daily >= daily_limit) {

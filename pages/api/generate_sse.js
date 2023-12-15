@@ -11,7 +11,7 @@ import { verifySessionId } from "utils/sessionUtils";
 import { countChatsForIP, getUser, getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 import { countChatsForUser } from "utils/sqliteUtils";
-import { getUsageLimit } from "utils/envUtils";
+import { getUseFequencyLimit } from "utils/envUtils";
 import { vectaraQuery } from "utils/vectaraUtils";
 
 // OpenAI
@@ -146,7 +146,7 @@ export default async function (req, res) {
         const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
         const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
         const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
-        const usageLimit = getUsageLimit(user.role);
+        const usageLimit = getUseFequencyLimit(user.role);
         if (daily >= usageLimit.daily_limit || weekly >= usageLimit.weekly_limit || monthly >= usageLimit.monthly_limit) {
           res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
           res.write(`data: [DONE]\n\n`); res.flush();

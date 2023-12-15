@@ -1,4 +1,4 @@
-export function getUsageLimit(role) {
+export function getUseFequencyLimit(role) {
   if (role === "root_user") {
     return {
       daily_limit: null,
