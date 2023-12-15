@@ -1109,11 +1109,13 @@ export default function Home() {
   }
 
   const handleDotClick = () => {
-    // clear # tag in URL
-    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);
-
-    // Toggle front and back display
+    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);  // clear # tag in URL
     toggleDisplay();
+  }
+
+  const handleSetContent = (content) => {
+    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);  // clear # tag in URL
+    setContent(content);
   }
 
   // Styles
@@ -1175,10 +1177,10 @@ export default function Home() {
           <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
             <div className={styles.container}>
               <div className={styles.nav}>
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>Documentation</div>
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>Usage</div>
-                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>Pricing</div>}
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>Privacy Policy</div>
+                <div className={styles.navitem} onClick={() => handleSetContent(CONTENT.DOCUMENTATION)}>Documentation</div>
+                <div className={styles.navitem} onClick={() => handleSetContent(CONTENT.USAGE)}>Usage</div>
+                {subscriptionDisplay && <div className={styles.navitem} onClick={() => handleSetContent(CONTENT.SUBSCRIPTION)}>Pricing</div>}
+                <div className={styles.navitem} onClick={() => handleSetContent(CONTENT.PRIVACY)}>Privacy Policy</div>
               </div>
               <div className={styles.content}>
                 {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
