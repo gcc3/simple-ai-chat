@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PayPalButton from "./PayPalButton";
-import { refreshUserInfo } from "utils/userUtils";
+import { refreshUserInfo, getRoleLevel } from "utils/userUtils";
 import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
 const moment = require('moment');
 
@@ -16,13 +16,6 @@ function getPrice(subscriptions, role) {
 
 function getDiscount(promotionCode) {
   return 0;
-}
-
-function getRoleLevel(role) {
-  if (role === "user") return 1;
-  if (role === "pro_user") return 2;
-  if (role === "super_user") return 3;
-  if (role === "root_user") return 4;
 }
 
 function Subscription() {
