@@ -1,7 +1,7 @@
 import sqlite3 from "sqlite3";
 import { promises as fs } from "fs";
 import { formatUnixTimestamp } from "./timeUtils.js";
-import { getUsage } from "./usageUtils.js";
+import { genUsage } from "./usageUtils.js";
 
 const createDatabaseFile = () => {
   return new Promise((resolve, reject) => {
@@ -130,7 +130,7 @@ const getDatabaseConnection = async () => {
         store: "",
       });
 
-      const usage = JSON.stringify(getUsage());
+      const usage = JSON.stringify(genUsage());
       await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, usage, settings);
       await updateUserEmailVerifiedAt("root");
 

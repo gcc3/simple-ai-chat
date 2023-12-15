@@ -1,4 +1,4 @@
-export function getUsage(gpt4Usage = null, gpt4vUsage = null, dbUsage = null, midjourneyUsage = null) {
+export function genUsage(gpt4Usage = null, gpt4vUsage = null, dbUsage = null, midjourneyUsage = null) {
   let usage = {};
 
   if (gpt4Usage) {
