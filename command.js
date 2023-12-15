@@ -94,7 +94,7 @@ function extractArgs(input) {
 */
 export function getCommands() {
   const commands = [
-    { command: ":help", short_description: "Show this help message.", description: "" },
+    { command: ":help", short_description: "Show command help.", description: "" },
     { command: ":stop", short_description: "Stop generating. (⌃c)", description: "" },
     { command: ":clear", short_description: "Clear output. (⌃r)", description: "" },
     { command: ":reset", short_description: "Clear output and reset session. (⇧⌃r)", description: "" },
