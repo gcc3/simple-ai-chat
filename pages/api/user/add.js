@@ -58,6 +58,7 @@ export default async function (req, res) {
   // New user info
   const role = "user";
   const role_expires_at = moment().add(7, "days").valueOf();  // 7 days trial
+  const balance = 5;  // $5 for trial
   const password_ = password ? password : generatedPassword;
 
   // Email validation
@@ -103,7 +104,7 @@ export default async function (req, res) {
           updateUsername(username, email, password_);
           message = "Welcome back! we've resumed your subscription status." + (!password ? " Initial password is sent to your email." : "");
         } else {
-          insertUser(username, role, role_expires_at, password_, email, settings);
+          insertUser(username, role, role_expires_at, password_, email, balance, settings);
           message = 'User "' + username + '"' + " is created." + (!password ? " Initial password is sent to your email." : "");
         }
 

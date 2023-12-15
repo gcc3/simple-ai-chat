@@ -90,6 +90,7 @@ function Usage() {
           </div>
           <div className="mt-3">
             <div>Fees: $?</div>
+            <div>Balance: ${user.balance}</div>
           </div>
         </div>
       </div>}
