@@ -131,6 +131,7 @@
   overflow-y: auto;
   display: flex;
   align-items: flex-start;
+  scroll-behavior: smooth;  /* Smooth scrolling */
 }
 .main .nav {
   width: 220px;
