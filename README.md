@@ -127,17 +127,17 @@ System has 4 kinds of roles.
 Messages
 --------
 
-| # | Part                         | Role            | Description                              |
-|---|------------------------------|-----------------|------------------------------------------|
-| 1 | System master message        | system          | set with `ROLE_CONTENT_SYSTEM`           |
-| 2 | Role/assistant message       | system          | Message generated for role/assistant     |
-| 3 | Dictionary search result     | system          | Result of a dictionary search            |
-| 4 | Chat history                 | user, assistant | Chat history from user and assistant     |
-| 5 | User input                   | user            | Direct input provided by the user,       |
-| 6 | Location info                | system          | Add when location service is enabled     |
-| 7 | Function calling result      | function        | Result of function calling (tool calls)  |
-| 8 | AI links response            | function        | Response from AI node or hub             |
-| 9 | Vector database query result | system          | Result from a query to a vector database |
+| #  | Part                           | Role            | Description                              |
+|----|--------------------------------|-----------------|------------------------------------------|
+| -3 | System master message          | system          | set with `ROLE_CONTENT_SYSTEM`           |
+| -2 | Role/assistant message         | system          | Message generated for role/assistant     |
+|    | Dictionary search (deprecated) | system          | Result of a dictionary search            |
+| -1 | Chat history                   | user, assistant | Chat history from user and assistant     |
+| 0  | User input                     | user            | Direct input provided by the user,       |
+| 1  | Location info                  | system          | Add when location service is enabled     |
+| 2  | Function calling result        | function        | Result of function calling (tool calls)  |
+| 3  | AI links response              | function        | Response from AI node or hub             |
+| 4  | Vector database query result   | system          | Result from a query to a vector database |
 
 
 AI Links (AI Node)

@@ -22,12 +22,15 @@ export async function generateMessages(authUser, input, images, queryId, role, d
   let messages = [];
   let token_ct = 0;
   
-  // System message, important
+  // -3. System message, important
   if (role_content_system !== "") {
-    messages.push({ role: "system", content: role_content_system });
+    messages.push({ 
+      role: "system",
+      content: role_content_system,
+    });
   }
 
-  // Roleplay role prompt
+  // -2. Role/assistant prompt
   if (role !== "" && role !== "default") {
     // Default role prompt
     let rolePrompt = await getRolePrompt(role);
@@ -37,10 +40,14 @@ export async function generateMessages(authUser, input, images, queryId, role, d
       const userRole = await getRole(role, authUser.username);
       if (userRole) rolePrompt = userRole.prompt;
     }
-    messages.push({ role: "system", content: rolePrompt });
+
+    messages.push({
+      role: "system",
+      content: rolePrompt,
+    });
   }
 
-  // Dictionary search prompt
+  // Dictionary search prompt (deprecated)
   let score = 0;
   let definitions = [];
   if (process.env.DICT_SEARCH == "true") {
@@ -62,7 +69,7 @@ export async function generateMessages(authUser, input, images, queryId, role, d
     });
   }
 
-  // Chat history
+  // -1. Chat history
   const session = queryId;
   const sessionLogs = await loglist(session, 7);  // limit the memory length to 7 logs
   if (sessionLogs && session.length > 0) {
@@ -84,7 +91,7 @@ export async function generateMessages(authUser, input, images, queryId, role, d
     });
   }
 
-  // Finally, insert user input
+  // 0. User input
   if (!do_functioin_calling) {
     messages.push({ 
       role: "user", 
