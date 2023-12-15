@@ -1,7 +1,4 @@
 import OpenAI from "openai";
-import chalk from 'chalk';
-import { generateMessages } from "utils/promptUtils";
-import { logadd } from "utils/logUtils.js";
 import { getMaxTokens } from "utils/tokenUtils.js";
 
 // OpenAI
@@ -15,12 +12,11 @@ const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : get
 
 export default async function (req, res) {
   const input = req.body.input || "";
-  const definitions = req.body.definitions || "";
   const functionResult = req.body.functionResult || "";
   const result_text = req.body.result_text || "";
 
   try {
-    evaluate(input, definitions, functionResult, result_text).then((eval_result) => {
+    evaluate(input, functionResult, result_text).then((eval_result) => {
       // Output the result
       res.status(200).json({
         result:{
@@ -44,29 +40,23 @@ export default async function (req, res) {
   }
 }
 
-export async function evaluate(input, definitions, additionalInfo, result_text) {
+export async function evaluate(input, additionalInfo, result_text) {
   // Create evaluation message
   const eval_message = [];
-  let dictionary_message = "";
-  if (process.env.DICT_SEARCH === "true") {
-    dictionary_message = definitions.length == 0 ? 
-    "There is completely no information found." : 
-    "The dictionary search result in JSON format is: " + JSON.stringify(definitions);
-  }
+
   const additional_info_message = additionalInfo.length == 0 ?
   "There is completely no information found." :
   "The result is: " + additionalInfo;
 
   eval_message.push({
     role: "user", content: 
-    "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using a dictionary and API to get information for the AI to reference." + "\n\n" +
+    "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using additional infromation for AI reference." + "\n\n" +
     "Now, the user asks: " + input + "\n\n" +
-    (process.env.DICT_SEARCH === "true" ? ("After searching the dictionary. " + dictionary_message + "\n\n") : "") +
-    "After request more information with API." + additional_info_message + "\n\n" +
+    "After request additonal information, I got: " + additional_info_message + "\n\n" +
     "After a while, the AI responds with: " + result_text + "\n\n" +
     "Please evaluate the AI's response for correctness and credibility, 1 being the worst or contains any fake information, 10 being the best, and correct. " +
     "Please only evaluate/consider the correctness, not the information comprehensiveness. " +
-    "When you evaluating, notice that sometimes the AI has hallucination answer, the response may looks correct, but as no exactly match in dictionary the response is completely fake. " +
+    "When you evaluating, notice that sometimes the AI has hallucination answer, the response may looks correct, but actually it is completely fake. " +
     "If the AI response as it doesn't know or doesn't have the information honestly, instead of making fake information or lying, give it a higher score. " +
     "Then, briefly explain why you've given this score in one sentence.\n\n" + 
     "Response in the format: \"score - explaination\"\n" +

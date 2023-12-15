@@ -718,12 +718,11 @@ export default function Home() {
       if (event.data.startsWith("###STATS###")) {
         if (localStorage.getItem('useStats') === "true") {
           const _stats_ = event.data.replace("###STATS###", "").split(',');
-          const score = _stats_[0];
-          const temperature = _stats_[1];
-          const top_p = _stats_[2];
-          const token_ct = _stats_[3];
-          const use_eval = _stats_[4];
-          const func = _stats_[5];
+          const temperature = _stats_[0];
+          const top_p = _stats_[1];
+          const token_ct = _stats_[2];
+          const use_eval = _stats_[3];
+          const func = _stats_[4];
 
           if (use_eval === "true") {
             setEvaluation(
@@ -735,7 +734,6 @@ export default function Home() {
 
           setStats(
             <div>
-              dict_search_score: {score}<br></br>
               func: {func || "none"}<br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
@@ -899,11 +897,8 @@ export default function Home() {
       hljs.highlightAll();
 
       if (localStorage.getItem('useStats') === "true") {
-        const score = data.result.stats.score;
-        
         setStats((
           <div>
-            dict_search_score: {score}<br></br>
             func: {data.result.stats.func || "none"}<br></br>
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>

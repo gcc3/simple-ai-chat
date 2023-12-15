@@ -2,10 +2,6 @@
 import help from "./commands/help.js";
 import stats from "./commands/stats.js";
 import stream from "./commands/stream.js";
-import entry from "./commands/entry.js";
-import ls from "./commands/ls.js";
-import add from "./commands/add.js";
-import search from "./commands/search.js";
 import log from "./commands/log.js";
 import info from "./commands/info.js";
 import session from "./commands/session.js";
@@ -38,12 +34,8 @@ export default function commands(input) {
   }
   
   if (command.startsWith(":help")) return help(args);
-  if (command.startsWith(":entry")) return entry(args);
-  if (command.startsWith(":ls")) return ls(args);
-  if (command.startsWith(":add")) return add(args);
   if (command.startsWith(":stats")) return stats(args);
   if (command.startsWith(":stream")) return stream(args);
-  if (command.startsWith(":search")) return search(args);
   if (command.startsWith(":login")) return login(args);
   if (command.startsWith(":logout")) return logout(args);
   if (command.startsWith(":log")) return log(args);
@@ -85,13 +77,6 @@ function extractArgs(input) {
   return matchList;
 }
 
-/*
-  Deprecated: 
-  ":entry [ls|list|add] - Manage dictionary entries.\n" +
-  ":ls - List all entries, same as `:entry ls`.\n" +
-  ":add [word] [definition] - Same as `:entry add`.\n" +
-  ":search [keyword] - Search dictionary.\n" +
-*/
 export function getCommands() {
   const commands = [
     { id: "commands-general", command: ":help", short_description: "Show command help.", description: "" },

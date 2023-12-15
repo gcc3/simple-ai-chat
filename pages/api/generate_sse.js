@@ -26,7 +26,6 @@ const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model_);
-const dict_search = process.env.DICT_SEARCH == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
 const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
@@ -182,7 +181,6 @@ export default async function (req, res) {
     + "prompt_prefix: " + prompt_prefix + "\n"
     + "prompt_suffix: " + prompt_suffix + "\n"
     + "max_tokens: " + max_tokens + "\n"
-    + "dict_search: " + dict_search + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + use_function_calling + "\n"
@@ -246,15 +244,11 @@ export default async function (req, res) {
 
   try {
     let result_text = "";
-    let definitions = [];
-    let score = 0;
     let token_ct = 0;
     let messages = [];
 
     // Message base
     const generateMessagesResult = await generateMessages(authUser, input, images, queryId, role, do_function_calling);
-    definitions = generateMessagesResult.definitions;
-    score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
 
@@ -363,7 +357,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${score},${temperature},${top_p},${token_ct},${use_eval},${functionName}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${token_ct},${use_eval},${functionName}\n\n`);
     res.flush();
 
     for await (const part of chatCompletion) {
@@ -396,7 +390,7 @@ export default async function (req, res) {
     // vision models not support evaluation
     if (use_eval) {
       if (result_text.trim().length > 0) {
-        await evaluate(input, definitions, additionalInfo, result_text).then((eval_result) => {
+        await evaluate(input, additionalInfo, result_text).then((eval_result) => {
           res.write(`data: ###EVAL###${eval_result}\n\n`); res.flush();
           console.log("eval: " + eval_result + "\n");
         });
