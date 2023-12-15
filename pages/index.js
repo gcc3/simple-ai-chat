@@ -1108,6 +1108,14 @@ export default function Home() {
     }
   }
 
+  const handleDotClick = () => {
+    // clear # tag in URL
+    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);
+
+    // Toggle front and back display
+    toggleDisplay();
+  }
+
   // Styles
   let styles = defaultStyles;
   if (fullscreen === "default") styles = fullscreenStyles;
@@ -1121,7 +1129,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>
+        <div id="btn-dot" onClick={handleDotClick} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>
