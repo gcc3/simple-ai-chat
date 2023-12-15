@@ -7,7 +7,7 @@ export default async function function_(args) {
     let functions = getFunctions();
 
     if (functions.length === 0) {
-      return "No entry found.";
+      return "No functions.";
     } else {
       return functions.map((f) => {
         const args =(() => Object.keys(f.parameters.properties).map((p) => {

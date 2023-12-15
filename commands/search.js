@@ -1,27 +1,28 @@
 export default async function search(args) {
   if (args.length != 1) {
-    return "Usage: :search [keyword]";
+    return "Usage: :search [word]";
+  }
+
+  const store = sessionStorage.getItem("store");
+  if (!store) {
+    return "No store selected.";
   }
 
   if (!args[0].startsWith("\"") || !args[0].endsWith("\"")) {
-    return "Keyword must be quoted with double quotes.";
+    return "Word must be quoted with double quotes.";
   }
 
-  // Remove double quotes
-  for (const arg of args) {
-    if (arg.startsWith("\"") && arg.endsWith("\"")) {
-      args[args.indexOf(arg)] = arg.substring(1, arg.length - 1);
-    }
-  }
-  
-  const keyword = args[0];
+  const word = args[0].slice(1, -1);
   try {
-    const response = await fetch("/api/entry/search", {
+    const response = await fetch("/api/store/search", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ keyword }),
+      body: JSON.stringify({
+        word,
+        store,
+      }),
     });
 
     const data = await response.json();
@@ -29,18 +30,15 @@ export default async function search(args) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    if (data.result.entries.length === 0) {
-      return "No entry found.";
-    } else {
-      let result = "";
-      for (const entry of data.result.entries) {
-        result += entry + "\n\n";
+    if (data.success) {
+      if (data.result && data.result.length > 0) {
+        return JSON.stringify(data.result, null, 2);
+      } else {
+        return "No results found.";
       }
-      return result;
     }
   } catch (error) {
     console.error(error);
-    alert(error.message);
+    return error;
   }
-  return "";
 }

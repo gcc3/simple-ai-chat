@@ -31,10 +31,6 @@ yarn-error.log*
 .env.test.local
 .env.production.local
 
-# dict
-dict.csv
-dict_buff.csv
-
 # vscode
 .vscode
 

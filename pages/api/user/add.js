@@ -3,7 +3,7 @@ import { insertUser, getUser, getUserByEmail, updateUsername } from "utils/sqlit
 import { generatePassword } from "utils/userUtils.js";
 import AWS from "aws-sdk";
 import { encode } from "utils/authUtils";
-import { getUsage } from "utils/usageUtils";
+import { genUsage } from "utils/usageUtils";
 const moment = require("moment");
 
 export default async function (req, res) {
@@ -60,7 +60,7 @@ export default async function (req, res) {
   const role = "user";
   const role_expires_at = moment().add(7, "days").valueOf();  // 7 days trial
   const balance = 5;  // $5 for trial
-  const usage = JSON.stringify(getUsage());
+  const usage = JSON.stringify(genUsage());
   const password_ = password ? password : generatedPassword;
 
   // Email validation

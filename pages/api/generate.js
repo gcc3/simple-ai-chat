@@ -18,7 +18,6 @@ const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
-const dict_search = process.env.DICT_SEARCH == "true" ? true : false;
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
 const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
@@ -126,7 +125,6 @@ export default async function(req, res) {
   + "prompt_prefix: " + prompt_prefix + "\n"
   + "prompt_suffix: " + prompt_suffix + "\n"
   + "max_tokens: " + max_tokens + "\n"
-  + "dict_search: " + dict_search + "\n"
   + "use_function_calling: " + use_function_calling + "\n"
   + "use_node_ai: " + use_node_ai + "\n"
   + "force_node_ai_query: " + force_node_ai_query + "\n"
@@ -138,11 +136,9 @@ export default async function(req, res) {
 
   try {
     let result_text = "";
-    let score = 0;
     let token_ct = 0;
 
     const generateMessagesResult = await generateMessages(authUser, input, null, queryId, role, false);  // image_url not supported yet
-    score = generateMessagesResult.score;
     token_ct = generateMessagesResult.token_ct;
 
     // endpoint: /v1/chat/completions
@@ -177,7 +173,6 @@ export default async function(req, res) {
         stats: {
           temperature: process.env.TEMPERATURE,
           top_p: process.env.TOP_P,
-          score: score,
           token_ct: token_ct,
           func: false
         },

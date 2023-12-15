@@ -29,10 +29,6 @@ Commands are supported, use `:help` to show commands.
 Vision models, or called GPT-4V is now supported.  
 Use `+img[https://image_url]` to ask question about an image/multiple images.  
 
-* Dictionary search (deprecated) 
-A local dictionary will be used as messages to let AI reference to enhance the AI response quality.  
-To check/add entry use `:entry list`, `:search [keyword]`, and `:entry add`. 
-
 * Function calling  
 Support for [function calling](https://openai.com/blog/function-calling-and-other-api-updates), the AI can call the function itself, and with the description it can know when to use the function. Amazing!  
 To list available functions, use `:function ls`  
@@ -64,7 +60,7 @@ Use `:user role` command to add, set, delete custom roles.
 
 * Self Result Evaluation  
 I found that the AI can evaluate the result of itself very well.  
-And this can solve the credibility problem in dictionary searches.  
+And this can solve the credibility problem.  
 To show the stats information includings the self result evaluation use `:stats on`.  
 
 * Location Service  
@@ -127,17 +123,16 @@ System has 4 kinds of roles.
 Messages
 --------
 
-| # | Part                         | Role            | Description                              |
-|---|------------------------------|-----------------|------------------------------------------|
-| 1 | System master message        | system          | set with `ROLE_CONTENT_SYSTEM`           |
-| 2 | Role/assistant message       | system          | Message generated for role/assistant     |
-| 3 | Dictionary search result     | system          | Result of a dictionary search            |
-| 4 | Chat history                 | user, assistant | Chat history from user and assistant     |
-| 5 | User input                   | user            | Direct input provided by the user,       |
-| 6 | Location info                | system          | Add when location service is enabled     |
-| 7 | Function calling result      | function        | Result of function calling (tool calls)  |
-| 8 | AI links response            | function        | Response from AI node or hub             |
-| 9 | Vector database query result | system          | Result from a query to a vector database |
+| #  | Part                           | Role            | Description                              |
+|----|--------------------------------|-----------------|------------------------------------------|
+| -3 | System master message          | system          | set with `ROLE_CONTENT_SYSTEM`           |
+| -2 | Role/assistant message         | system          | Message generated for role/assistant     |
+| -1 | Chat history                   | user, assistant | Chat history from user and assistant     |
+| 0  | User input                     | user            | Direct input provided by the user,       |
+| 1  | Location info                  | system          | Add when location service is enabled     |
+| 2  | Function calling result        | function        | Result of function calling (tool calls)  |
+| 3  | AI links response              | function        | Response from AI node or hub             |
+| 4  | Vector database query result   | system          | Result from a query to a vector database |
 
 
 AI Links (AI Node)
@@ -184,7 +179,6 @@ Setup
 2. Create necessary files.  
    Create `log.config`  
    Create `.env` from `.env.example`  
-   Create `dict.csv` from `dict.csv.example` (required if turn on the dictionary search.)  
    Create `role.csv` from `role.csv.example` (optional)  
    `role.csv.example` is got from https://github.com/f/awesome-chatgpt-prompts  
    * `db.sqlite` will be created automatically.  
@@ -234,15 +228,6 @@ Indicating the message that will show when waiting and querying.
 * MAX_TOKENS  
 Control the max tokens generate in the chat completion.  
 
-* DICT_SEARCH  
-Enable the dictionary search, value should be `true` or `false`  
-To use this feature, GOO_API_APP_ID must be set.  
-`dict.csv` should be create before using this feature.  
-
-* GOO_API_APP_ID  
-Text extraction API  
-Get from https://labs.goo.ne.jp/apiusage/  
-
 * USE_FUNCTION_CALLING  
 Use function calling feature, value should be `true` or `false`.  
 
@@ -269,9 +254,6 @@ The API key of the vectara, can generate from the console.
 
 * VECTARA_CUSTOMER_ID  
 The customer ID of vectara, can get from user profile.  
-
-* VECTARA_CORPUS_ID  
-The indice id.  
 
 * DB  
 Database engline, example `DB=sqlite`.  
