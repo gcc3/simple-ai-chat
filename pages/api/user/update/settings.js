@@ -1,4 +1,4 @@
-import { updateUserSettings, getUser, getUserRoles } from 'utils/sqliteUtils.js';
+import { updateUserSettings, getUser, getUserRoles, getUserStores } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 
 export default async function (req, res) {
@@ -16,6 +16,9 @@ export default async function (req, res) {
     });
   }
   const { id, username } = authResult.user;
+
+  // Get user
+  const user = await getUser(username);
 
   // Input and validation
   const { key, value } = req.body;
@@ -94,14 +97,15 @@ export default async function (req, res) {
         });
       }
     } else if (key === 'store') {
-      // TODO, check this
       const userStores = await getUserStores(username);
+      const groups = user.group.split(',');
       if (Object.entries(userStores).length === 0) {
         return res.status(400).json({ 
           success: false, 
-          error: 'No user role found.'
+          error: 'No user store found.'
         });
       }
+      // TODO include group too
       const validValues = Object.values(userStores).map(s => "\"" + s.store + "\"");
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
