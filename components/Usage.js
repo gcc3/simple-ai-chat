@@ -79,6 +79,16 @@ function Usage() {
             </div>
           </div>
           <div className="mt-3">
+            <div>- Service usage</div>
+            <div className="flex">
+              <table>
+                <tr>
+                  <td className="mr-3 mt-1">Midjourney: 0</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+          <div className="mt-3">
             <div>Fees: $?</div>
           </div>
         </div>
