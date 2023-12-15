@@ -14,7 +14,7 @@ function getPrice(subscriptions, role) {
 
 const SubscriptionComparisonTable = ({ subscriptions }) => {
   const comparison = [
-    { name: "GPT-4", user: "100/day", pro_user: "200/day", super_user: "300/month" },
+    { name: "GPT-4", user: "100/day", pro_user: "200/day", super_user: "300/day" },
     { name: "GPT-4V", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Fullscreen", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "De-hallucination", user: "Yes", pro_user: "Yes", super_user: "Yes" },
