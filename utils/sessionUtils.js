@@ -15,7 +15,7 @@ export function attachSession(sessionId) {
 
   sessionStorage.setItem("time", sessionId);
   sessionStorage.setItem("queryId", sessionId);
-  return "Attached.";
+  return "Attached. Use J/→ or K/← to navigate between session histories.";
 }
 
 function containsOnlyNumbers(str) {
