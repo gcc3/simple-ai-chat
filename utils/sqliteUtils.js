@@ -1,6 +1,7 @@
 import sqlite3 from "sqlite3";
 import { promises as fs } from "fs";
 import { formatUnixTimestamp } from "./timeUtils.js";
+import { getUsage } from "./usageUtils.js";
 
 const createDatabaseFile = () => {
   return new Promise((resolve, reject) => {
@@ -50,6 +51,7 @@ const initializeDatabase = (db) => {
             password TEXT NOT NULL,
             email TEXT,
             email_verified_at INTEGER,
+            balance INTEGER,
             usage INTEGER,
             settings TEXT,
             last_login TEXT,
@@ -127,7 +129,9 @@ const getDatabaseConnection = async () => {
         role: "",
         store: "",
       });
-      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", settings);
+
+      const usage = JSON.stringify(getUsage());
+      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, usage, settings);
       await updateUserEmailVerifiedAt("root");
 
       return db;
@@ -318,7 +322,7 @@ const getUser = async (username) => {
   }
 };
 
-const insertUser = async (username, role, role_expires_at, password, email, settings) => {
+const insertUser = async (username, role, role_expires_at, password, email, balance, usage, settings) => {
   const db = await getDatabaseConnection();
 
   // Check if the username adheres to Unix naming conventions
@@ -344,9 +348,9 @@ const insertUser = async (username, role, role_expires_at, password, email, sett
         // If the username doesn't exist, proceed with the insertion
         const group = username;
         const stmt = db.prepare(
-          "INSERT INTO users (username, \"group\", role, role_expires_at, password, email, usage, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
+          "INSERT INTO users (username, \"group\", role, role_expires_at, password, email, balance, usage, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
         );
-        stmt.run([username, group, role, role_expires_at, password, email, 0, settings, "inactive", new Date()], function (err) {
+        stmt.run([username, group, role, role_expires_at, password, email, balance, usage, settings, "inactive", new Date()], function (err) {
           if (err) {
             reject(err);
             return;

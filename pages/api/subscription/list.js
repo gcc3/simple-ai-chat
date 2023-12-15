@@ -1,4 +1,4 @@
-import { getUsageLimit, getAmount } from "utils/envUtils";
+import { getUseFequencyLimit, getAmount } from "utils/envUtils";
 
 export default async function(req, res) {
   try {
@@ -6,17 +6,17 @@ export default async function(req, res) {
       user: {
         name: "User",
         price: getAmount("user"),
-        usage_limit: getUsageLimit("user"),
+        usage_limit: getUseFequencyLimit("user"),
       },
       pro_user: {
         name: "Pro User",
         price: getAmount("pro_user"),
-        usage_limit: getUsageLimit("pro_user"),
+        usage_limit: getUseFequencyLimit("pro_user"),
       },
       super_user: {
         name: "Super User",
         price : getAmount("super_user"),
-        usage_limit: getUsageLimit("super_user"),
+        usage_limit: getUseFequencyLimit("super_user"),
       }
     });
   } catch (error) {

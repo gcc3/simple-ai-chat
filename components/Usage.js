@@ -1,10 +1,13 @@
 import React, { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
+import { feeCal } from "../utils/usageUtils";
 const moment = require('moment');
 
 function Usage() {
   const [user, setUser] = useState(null);
   const [usage, setUsage] = useState(null);
+  const [useFequency, setUseFequency] = useState(null);
+  const [fee, setFee] = useState(null);
 
   useEffect(() => {
     // Get user info
@@ -22,6 +25,8 @@ function Usage() {
       const user = data.user;
       setUser(user);
       setUsage(user.usage);
+      setFee(feeCal(user.usage));
+      setUseFequency(user.use_fequency);
     }
 
     if (localStorage.getItem("user") && !user) {
@@ -39,57 +44,64 @@ function Usage() {
           <div>Email: {localStorage.getItem("userEmail")}</div>
           <div>Subscription: `{localStorage.getItem("userRole")}`</div>
           <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at !== null && user.role_expires_at < new Date()) && "(Expired)"}</div>
-          <div className="mt-3">
-            <div>- Frequency usage</div>
-            <div className="flex mt-1">
-              <table>
+          {useFequency && <div className="mt-3">
+            <div>- Use Frequency</div>
+            <table className="mt-1 table-fixed">
+              <tbody>
                 <tr>
-                  {<td className="mr-3">Daily: {usage.daily}</td>}
-                  {<td className="mr-3">Weekly: {usage.weekly}</td>}
-                  {<td className="mr-3">Monthly: {usage.monthly}</td>}
+                  <td className="mr-3">Daily: {useFequency.daily}</td>
+                  <td className="mr-3">Weekly: {useFequency.weekly}</td>
+                  <td className="mr-3">Monthly: {useFequency.monthly}</td>
                 </tr>
-              </table>
-            </div>
+              </tbody>
+            </table>
             <div className="mt-3">
-              {usage.daily_limit && <ProgressBar label={"Daily usage"} progress={usage.daily} progressMax={usage.daily_limit} />}
-              {usage.weekly_limit && <ProgressBar label={"Weekly usage"} progress={usage.weekly} progressMax={usage.weekly_limit} />}
-              {usage.monthly_limit && <ProgressBar label={"Monthly usage"} progress={usage.monthly} progressMax={usage.monthly_limit} />}
-              {usage.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
+              {useFequency.daily_limit && <ProgressBar label={"Daily usage"} progress={useFequency.daily} progressMax={useFequency.daily_limit} />}
+              {useFequency.weekly_limit && <ProgressBar label={"Weekly usage"} progress={useFequency.weekly} progressMax={useFequency.weekly_limit} />}
+              {useFequency.monthly_limit && <ProgressBar label={"Monthly usage"} progress={useFequency.monthly} progressMax={useFequency.monthly_limit} />}
+              {useFequency.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
             </div>
-          </div>
+          </div>}
           <div className="mt-3">
             <div>- Token usage</div>
-            <div className="flex">
-              <table>
+            <table className="table-fixed">
+              <tbody>
                 <tr>
-                  <td className="mr-3 mt-1">Input: 0</td>
-                  <td className="mr-3">Output: 0</td>
+                  <td>GPT-4 Turbo</td>
+                  <td>Input: 0</td>
+                  <td>Output: 0</td>
                 </tr>
-              </table>
-            </div>
+                <tr>
+                  <td>GPT-4 Vision</td>
+                  <td>Input: 0</td>
+                  <td>Output: 0</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
           <div className="mt-3">
             <div>- Database usage</div>
-            <div className="flex">
-              <table>
+            <table>
+              <tbody>
                 <tr>
                   <td className="mr-3 mt-1">Size: 0MB</td>
                 </tr>
-              </table>
-            </div>
+              </tbody>
+            </table>
           </div>
           <div className="mt-3">
             <div>- Service usage</div>
-            <div className="flex">
-              <table>
+            <table>
+              <tbody>
                 <tr>
                   <td className="mr-3 mt-1">Midjourney: 0</td>
                 </tr>
-              </table>
-            </div>
+              </tbody>
+            </table>
           </div>
           <div className="mt-3">
-            <div>Fees: $?</div>
+            <div>Fees: ${fee.totalFee}</div>
+            <div>Balance: ${user.balance}</div>
           </div>
         </div>
       </div>}

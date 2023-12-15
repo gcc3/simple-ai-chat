@@ -3,11 +3,11 @@ import { getCommands } from '/command';
 
 const Documentation = () => {
   const features = [
-    { name: "GPT-4 Turbo", description: "Chat with the state-of-the-art GPT-4 Turbo." },
-    { name: "GPT-4 Vision", description: "Interact with powerful vision model GPT-4 Vision. To use Vision model, simply paste the image to the input box." },
-    { name: "Roles/assistants", description: "Let ChatGPT assume various roles or act as an assistant to provide more satisfactory answers. You can customize your own roles/assistant instructions with a prompt and interact with them." },
-    { name: "Personal Database (in progress)", description: "Utilize an advanced vector database engine for powerful data searches." },
-    { name: "Midjourney (in progress)", description: "Image generative AI Midjourney support." },
+    { name: "GPT-4 Turbo", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
+    { name: "GPT-4 Vision", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box." },
+    { name: "Roles/assistants", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
+    { name: "Personal Database (in progress)", description: "Upload files to your personal database for powerful data searches. The results will be inserted as prompts to provide knowledgeable answers." },
+    { name: "Midjourney (in progress)", description: "Utilize the most advanced image generation AI, Midjourney, in combination with ChatGPT prompts to generate high-quality certified images." },
   ];
 
   const sub_features = [
@@ -61,7 +61,7 @@ const Documentation = () => {
           </div>
         ))}
       </div>
-      <div className="mt-2">Other Features:</div>
+      <div className="mt-2">Sub features:</div>
       <div>
         {sub_features.map((item, index) => (
           <div key={index} className="mt-2">

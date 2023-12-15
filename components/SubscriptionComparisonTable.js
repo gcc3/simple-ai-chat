@@ -14,12 +14,9 @@ function getPrice(subscriptions, role) {
 
 const SubscriptionComparisonTable = ({ subscriptions }) => {
   const comparison = [
-    { name: "GPT-4", user: "100/day", pro_user: "200/day", super_user: "300/day" },
-    { name: "GPT-4V", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "Fullscreen", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "De-hallucination", user: "Yes", pro_user: "Yes", super_user: "Yes" },
+    { name: "GPT-4 Turbo", user: "100/day", pro_user: "200/day", super_user: "300/day" },
+    { name: "GPT-4 Vision", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Role/Assistant", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "Functions", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Personal Database", user: "╳", pro_user: "Yes", super_user: "Yes" },
     { name: "Midjourney", user: "╳", pro_user: "╳", super_user: "Yes" },
     { name: "Pricing", user: getPrice(subscriptions, "user"), pro_user: getPrice(subscriptions, "pro_user"), super_user: getPrice(subscriptions, "super_user")},
@@ -34,7 +31,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
         <table className="table-fixed">
           <thead>
             <tr>
-              <th rowSpan="2">Features/Price</th>
+              <th rowSpan="2">Features</th>
               <th colSpan="3">Subcriptions(Roles)</th>
             </tr>
             <tr>
