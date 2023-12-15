@@ -36,8 +36,7 @@ const Documentation = () => {
     <>
       <div>
         <div className="mt-2"><a href="#introduction"><u>Introduction</u></a></div>
-        <div className="mt-2"><a href="#feature-main"><u>Main Features</u></a></div>
-        <div className="mt-2"><a href="#feature-sub"><u>Other Features</u></a></div>
+        <div className="mt-2"><a href="#features"><u>Features</u></a></div>
         <div className="mt-2"><a href="#commands"><u>Commands</u></a></div>
         <div className="mt-2"><a href="#shortcuts"><u>Shortcuts</u></a></div>
       </div>
@@ -45,7 +44,7 @@ const Documentation = () => {
       <div className="mt-2">
         Simple AI (`simple-ai.io`) is a command-based AI chat application that focus on the cutting-edge AI technology. It provides a simple and easy-to-use interface for everyone to interact with the AI models. Simple AI is open-source; you can visit our GitHub repository (<a href="https://github.com/gcc3/simple-ai-chat"><u>link</u></a>) to report any issues you encounter, share your ideas or contribute to the project.
       </div>
-      <div id="feature-main" className="mt-5">Main Features</div>
+      <div id="features" className="mt-5">Features</div>
       <div>
         {features.map((item, index) => (
           <div key={index} className="mt-2">
@@ -54,7 +53,7 @@ const Documentation = () => {
           </div>
         ))}
       </div>
-      <div id="feature-sub" className="mt-5">Other Features</div>
+      <div className="mt-2">Other Features:</div>
       <div>
         {sub_features.map((item, index) => (
           <div key={index} className="mt-2">
