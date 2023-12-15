@@ -128,7 +128,7 @@ function Subscription() {
           - `user`: offer a general user package for only $1/month for accessing the most advanced AI.<br></br>
           - `pro_user`: provide powerful personal database.<br></br>
           - `super_user`: provide Midjourney advanced image generation.<br></br>
-          * For new users who register, we offer a 7-day free trial (for `user`) and a $10 free usage.
+          * For new users who register, we offer a 7-day free trial (for `user`) with a $5 usage.
         </div>
       </div>
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
