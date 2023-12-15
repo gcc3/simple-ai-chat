@@ -252,34 +252,42 @@ export default function Home() {
 
     // Handle global shortcut keys
     const handleKeyDown = (event) => {
-      const elInput = elInputRef.current;
 
       switch (event.key) {
         case "Escape":
           if (document.activeElement.id === "input") {
             // If there is input, use ESC to clear input
-            if (elInput.value.length > 0) {
-              event.preventDefault();
-              clearInput("");
-            } else {
-              // ESC to unfocus input
-              event.preventDefault();
-              elInput.blur();
+            const elInput = elInputRef.current;
+            if (elInput !== null) {
+              if (elInput.value && elInput.value.length > 0) {
+                event.preventDefault();
+                clearInput("");
+              } else {
+                // ESC to unfocus input
+                event.preventDefault();
+                elInput.blur();
+              }
             }
           }
           break;
     
         case "Tab":  // TAB to focus on input
           if (document.activeElement.id !== "input") {
-            event.preventDefault();
-            elInput.focus();
+            const elInput = elInputRef.current;
+            if (elInput !== null) {
+              event.preventDefault();
+              elInput.focus();
+            }
           }
           break;
     
         case "/":  // Press / to focus on input
           if (document.activeElement.id !== "input") {
-            event.preventDefault();
-            elInput.focus();
+            const elInput = elInputRef.current;
+            if (elInput !== null) {
+              event.preventDefault();
+              elInput.focus();
+            }
           }
           break;
 
