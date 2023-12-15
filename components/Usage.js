@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
+import { feeCal } from "../utils/usageUtils";
 const moment = require('moment');
 
 function Usage() {
@@ -89,8 +90,8 @@ function Usage() {
             </div>
           </div>
           <div className="mt-3">
-            <div>Fees: $?</div>
-            <div>Balance: ${user.balance}</div>
+            <div>Fees: ${feeCal(JSON.parse(user.usage))}</div>
+            <div>Balance: {user.balance}</div>
           </div>
         </div>
       </div>}

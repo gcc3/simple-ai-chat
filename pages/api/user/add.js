@@ -3,8 +3,8 @@ import { insertUser, getUser, getUserByEmail, updateUsername } from "utils/sqlit
 import { generatePassword } from "utils/userUtils.js";
 import AWS from "aws-sdk";
 import { encode } from "utils/authUtils";
-const moment = require("moment");
 import { getUsage } from "utils/usageUtils";
+const moment = require("moment");
 
 export default async function (req, res) {
   // Check if the method is POST
