@@ -31,7 +31,11 @@ export default async function search(args) {
     }
 
     if (data.success) {
-      return JSON.stringify(data.result, null, 2);
+      if (data.result.length === 0) {
+        return "No results found.";
+      } else {
+        return JSON.stringify(data.result, null, 2);
+      }
     }
   } catch (error) {
     console.error(error);

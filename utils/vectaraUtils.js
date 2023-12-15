@@ -55,10 +55,10 @@ export async function vectaraQuery(query, corpusId) {
         });
         return result;
       } else {
-        return "No results score greater than 0.5."
+        return []
       }
     } else {
-      return "No results found.";
+      return [];
     }
   }
 }
