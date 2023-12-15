@@ -1,4 +1,5 @@
 import React from 'react';
+import { getCommands } from '/command';
 
 const Documentation = () => {
   const features = [
@@ -20,6 +21,8 @@ const Documentation = () => {
     { name: "Shortcuts", description: "Supports convenient shortcut operations." },
   ];
 
+  const commands = getCommands();
+
   const shortcuts = [
     { action: "Clear the input.", shortcut: "ESC", condition: "Focused on the input area, input area has content." },
     { action: "Unfocus from the input box.", shortcut: "ESC", condition: "Focused on the input area, input area is cleared." },
@@ -31,11 +34,18 @@ const Documentation = () => {
 
   const content = (
     <>
-      <div>Introduction</div>
+      <div>
+        <div className="mt-2"><a href="#introduction"><u>Introduction</u></a></div>
+        <div className="mt-2"><a href="#feature-main"><u>Main Features</u></a></div>
+        <div className="mt-2"><a href="#feature-sub"><u>Other Features</u></a></div>
+        <div className="mt-2"><a href="#commands"><u>Commands</u></a></div>
+        <div className="mt-2"><a href="#shortcuts"><u>Shortcuts</u></a></div>
+      </div>
+      <div id="introduction" className="mt-5">Introduction</div>
       <div className="mt-2">
         Simple AI (`simple-ai.io`) is a command-based AI chat application that focus on the cutting-edge AI technology. It provides a simple and easy-to-use interface for everyone to interact with the AI models. Simple AI is open-source; you can visit our GitHub repository (<a href="https://github.com/gcc3/simple-ai-chat"><u>link</u></a>) to report any issues you encounter, share your ideas or contribute to the project.
       </div>
-      <div className="mt-5">Main Features</div>
+      <div id="feature-main" className="mt-5">Main Features</div>
       <div>
         {features.map((item, index) => (
           <div key={index} className="mt-2">
@@ -44,7 +54,7 @@ const Documentation = () => {
           </div>
         ))}
       </div>
-      <div className="mt-5">Other Features</div>
+      <div id="feature-sub" className="mt-5">Other Features</div>
       <div>
         {sub_features.map((item, index) => (
           <div key={index} className="mt-2">
@@ -53,7 +63,17 @@ const Documentation = () => {
           </div>
         ))}
       </div>
-      <div className="mt-5">Shurtcuts</div>
+      <div id="commands" className="mt-5">Commands</div>
+      <div>
+        {commands.map((item, index) => (
+          <div key={index} className="mt-2">
+            <div>{item.command}</div>
+            <div>Short description: {item.short_description || "-"}</div>
+            <div>Description: {item.description || "-"}</div>
+          </div>
+        ))}
+      </div>
+      <div id="shortcuts" className="mt-5">Shortcuts</div>
       <div className="mt-2">
         <table>
           <thead>
