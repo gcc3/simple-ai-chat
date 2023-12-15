@@ -50,7 +50,7 @@ export default async function (req, res) {
 
     // Check if value is valid
     if (key === 'theme') {
-      const validValues = ['light', 'dark', 'system'];
+      const validValues = ['light', 'dark', 'terminal'];
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
           success: false, 
