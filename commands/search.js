@@ -31,10 +31,10 @@ export default async function search(args) {
     }
 
     if (data.success) {
-      if (data.result.length === 0) {
-        return "No results found.";
-      } else {
+      if (data.result && data.result.length > 0) {
         return JSON.stringify(data.result, null, 2);
+      } else {
+        return "No results found.";
       }
     }
   } catch (error) {

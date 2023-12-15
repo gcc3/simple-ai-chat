@@ -55,10 +55,10 @@ export async function vectaraQuery(query, corpusId) {
         });
         return result;
       } else {
-        return []
+        return null;
       }
     } else {
-      return [];
+      return null;
     }
   }
 }
