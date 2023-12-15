@@ -1108,6 +1108,16 @@ export default function Home() {
     }
   }
 
+  const handleDotClick = () => {
+    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);  // clear # tag in URL
+    toggleDisplay();
+  }
+
+  const handleSetContent = (content) => {
+    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);  // clear # tag in URL
+    setContent(content);
+  }
+
   // Styles
   let styles = defaultStyles;
   if (fullscreen === "default") styles = fullscreenStyles;
@@ -1121,7 +1131,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>
+        <div id="btn-dot" onClick={handleDotClick} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>
@@ -1167,10 +1177,10 @@ export default function Home() {
           <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
             <div className={styles.container}>
               <div className={styles.nav}>
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>Documentation</div>
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>Usage</div>
-                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>Pricing</div>}
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>Privacy Policy</div>
+                <div className={styles.navitem} onClick={() => handleSetContent(CONTENT.DOCUMENTATION)}>Documentation</div>
+                <div className={styles.navitem} onClick={() => handleSetContent(CONTENT.USAGE)}>Usage</div>
+                {subscriptionDisplay && <div className={styles.navitem} onClick={() => handleSetContent(CONTENT.SUBSCRIPTION)}>Pricing</div>}
+                <div className={styles.navitem} onClick={() => handleSetContent(CONTENT.PRIVACY)}>Privacy Policy</div>
               </div>
               <div className={styles.content}>
                 {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
