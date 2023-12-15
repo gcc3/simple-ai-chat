@@ -207,6 +207,11 @@ export default function Home() {
     elInputRef.current.value = "";
   }
 
+  // clear # tag in URL
+  const clearHashTag = () => {
+    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);
+  }
+
   // Initializing
   useEffect(() => {
     initializeSession();
@@ -1109,12 +1114,12 @@ export default function Home() {
   }
 
   const handleDotClick = () => {
-    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);  // clear # tag in URL
+    clearHashTag();
     toggleDisplay();
   }
 
   const handleSetContent = (content) => {
-    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);  // clear # tag in URL
+    clearHashTag();
     setContent(content);
   }
 
