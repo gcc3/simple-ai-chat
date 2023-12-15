@@ -207,15 +207,14 @@ export default function Home() {
     elInputRef.current.value = "";
   }
 
+  // Clear hash tag
+  const removeHashTag = () => {
+    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);
+  };
+
   // Initializing
   useEffect(() => {
     initializeSession();
-
-    // Clear hash tag
-    const removeHashTag = () => {
-      history.pushState(null, null, ' ' + window.location.href.split('#')[0]);
-    };
-    window.addEventListener('hashchange', removeHashTag, false);
 
     // Set default sessionStorage values
     if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
@@ -418,6 +417,9 @@ export default function Home() {
     // Start observing
     const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
     global.outputMutationObserver.observe(elOutputRef.current, observingConfig);
+
+    // Handle hash tag auto removing
+    window.addEventListener('hashchange', removeHashTag, false);
 
     // Cleanup
     return () => {
