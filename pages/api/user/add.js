@@ -57,7 +57,7 @@ export default async function (req, res) {
 
   // New user info
   const role = "user";
-  const role_expires_at = moment().add(1, "months").valueOf();
+  const role_expires_at = moment().add(7, "days").valueOf();  // 7 days trial
   const password_ = password ? password : generatedPassword;
 
   // Email validation
