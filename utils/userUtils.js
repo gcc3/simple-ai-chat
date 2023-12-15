@@ -122,3 +122,10 @@ export async function updateUserSetting(key, value) {
     }
   }
 }
+
+export function getRoleLevel(role) {
+  if (role === "user") return 1;
+  if (role === "pro_user") return 2;
+  if (role === "super_user") return 3;
+  if (role === "root_user") return 4;
+}

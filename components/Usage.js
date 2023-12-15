@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
 import { feeCal } from "../utils/usageUtils";
+import { getRoleLevel } from "utils/userUtils";
 const moment = require('moment');
 
 function Usage() {
@@ -46,7 +47,7 @@ function Usage() {
           <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at !== null && user.role_expires_at < new Date()) && "(Expired)"}</div>
           {useFequency && <div className="mt-3">
             <div>- Use Frequency</div>
-            <table className="mt-1 table-fixed">
+            <table className="table-fixed mt-1">
               <tbody>
                 <tr>
                   <td className="mr-3">Daily: {useFequency.daily}</td>
@@ -62,9 +63,9 @@ function Usage() {
               {useFequency.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
             </div>
           </div>}
-          <div className="mt-3">
+          {getRoleLevel(user.role) >= 1 && <div className="mt-3">
             <div>- Token usage</div>
-            <table className="table-fixed">
+            <table className="table-fixed mt-1">
               <tbody>
                 <tr>
                   <td>GPT-4 Turbo</td>
@@ -78,29 +79,39 @@ function Usage() {
                 </tr>
               </tbody>
             </table>
-          </div>
-          <div className="mt-3">
+            <div className="mt-2">
+              <div>Fees: ${fee.gpt4Fee + fee.gpt4vFee}</div>
+            </div>
+          </div>}
+          {getRoleLevel(user.role) >= 2 && <div className="mt-3">
             <div>- Database usage</div>
-            <table>
+            <table className="table-fixed mt-1">
               <tbody>
                 <tr>
                   <td className="mr-3 mt-1">Size: 0MB</td>
                 </tr>
               </tbody>
             </table>
-          </div>
-          <div className="mt-3">
+            <div className="mt-2">
+              <div>Fees: ${fee.dbFee}</div>
+            </div>
+          </div>}
+          {getRoleLevel(user.role) >= 3 && <div className="mt-3">
             <div>- Service usage</div>
-            <table>
+            <table className="table-fixed mt-1">
               <tbody>
                 <tr>
                   <td className="mr-3 mt-1">Midjourney: 0</td>
                 </tr>
               </tbody>
             </table>
-          </div>
+            <div className="mt-2">
+              <div>Fees: ${fee.dbFee}</div>
+            </div>
+          </div>}
           <div className="mt-3">
-            <div>Fees: ${fee.totalFee}</div>
+            <div>-</div>
+            <div>Total: ${fee.totalFee}</div>
             <div>Balance: ${user.balance}</div>
           </div>
         </div>
