@@ -207,6 +207,11 @@ export default function Home() {
     elInputRef.current.value = "";
   }
 
+  // clear # tag in URL
+  const clearHashTag = () => {
+    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);
+  }
+
   // Initializing
   useEffect(() => {
     initializeSession();
@@ -247,34 +252,42 @@ export default function Home() {
 
     // Handle global shortcut keys
     const handleKeyDown = (event) => {
-      const elInput = elInputRef.current;
 
       switch (event.key) {
         case "Escape":
           if (document.activeElement.id === "input") {
             // If there is input, use ESC to clear input
-            if (elInput.value.length > 0) {
-              event.preventDefault();
-              clearInput("");
-            } else {
-              // ESC to unfocus input
-              event.preventDefault();
-              elInput.blur();
+            const elInput = elInputRef.current;
+            if (elInput !== null) {
+              if (elInput.value && elInput.value.length > 0) {
+                event.preventDefault();
+                clearInput("");
+              } else {
+                // ESC to unfocus input
+                event.preventDefault();
+                elInput.blur();
+              }
             }
           }
           break;
     
         case "Tab":  // TAB to focus on input
           if (document.activeElement.id !== "input") {
-            event.preventDefault();
-            elInput.focus();
+            const elInput = elInputRef.current;
+            if (elInput !== null) {
+              event.preventDefault();
+              elInput.focus();
+            }
           }
           break;
     
         case "/":  // Press / to focus on input
           if (document.activeElement.id !== "input") {
-            event.preventDefault();
-            elInput.focus();
+            const elInput = elInputRef.current;
+            if (elInput !== null) {
+              event.preventDefault();
+              elInput.focus();
+            }
           }
           break;
 
@@ -1109,12 +1122,12 @@ export default function Home() {
   }
 
   const handleDotClick = () => {
-    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);  // clear # tag in URL
+    clearHashTag();
     toggleDisplay();
   }
 
   const handleSetContent = (content) => {
-    history.pushState(null, null, ' ' + window.location.href.split('#')[0]);  // clear # tag in URL
+    clearHashTag();
     setContent(content);
   }
 

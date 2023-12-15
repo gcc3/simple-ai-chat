@@ -37,7 +37,15 @@ const Documentation = () => {
       <div>
         <div className="mt-2"><a href="#introduction"><u>Introduction</u></a></div>
         <div className="mt-2"><a href="#features"><u>Features</u></a></div>
-        <div className="mt-2"><a href="#commands"><u>Commands</u></a></div>
+        <div>
+          <div className="mt-2"><a href="#commands"><u>Commands</u></a></div>
+          <div className="ml-3">
+            <div><a href="#commands-general">- <u>General</u></a></div>
+            <div><a href="#commands-role">- <u>Roles/Assistants</u></a></div>
+            <div><a href="#commands-store">- <u>Personal Database</u></a></div>
+            <div><a href="#commands-user">- <u>User</u></a></div>
+          </div>
+        </div>
         <div className="mt-2"><a href="#shortcuts"><u>Shortcuts</u></a></div>
       </div>
       <div id="introduction" className="mt-5">Introduction</div>
@@ -65,7 +73,7 @@ const Documentation = () => {
       <div id="commands" className="mt-5">Commands</div>
       <div>
         {commands.map((item, index) => (
-          <div key={index} className="mt-2">
+          <div id={item.id} key={index} className="mt-2">
             <div>{item.command}</div>
             <div>Short description: {item.short_description || "-"}</div>
             <div>Description: {item.description || "-"}</div>
