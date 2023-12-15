@@ -37,11 +37,6 @@ export async function vectaraQuery(query, corpusId) {
   if (data && data.responseSet && data.responseSet.length > 0) {
     const responseSet = data.responseSet[0];
 
-    // Check if there is an error
-    if (responseSet.status.length > 0) {
-      return responseSet.status[0].code;
-    }
-
     // Check if there is a result
     // only return if score is greater than 0.5
     if (responseSet.response.length > 0) {

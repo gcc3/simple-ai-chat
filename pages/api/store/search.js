@@ -26,27 +26,20 @@ export default async function handler(req, res) {
     }
     
     // Query
-    const { corpus_id } = storeInfo;
+    const corpus_id = JSON.parse(storeInfo.settings).corpus_id;
     const queryResult = await vectaraQuery(word, corpus_id);
     if (!queryResult) {
       res.status(200).json({
         success: true,
         message: "No results found.",
-        result: {
-          word,
-          store,
-        },
+        result: [],
       });
       return;
     } else {
       res.status(200).json({
         success: true,
         message: "Results found.",
-        result: {
-          word,
-          store,
-          result: queryResult,
-        },
+        result: queryResult,
       });
     }
   } catch (error) {
