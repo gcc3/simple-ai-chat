@@ -21,6 +21,7 @@ import user from "./commands/user.js";
 import login from "./commands/login.js";
 import logout from "./commands/logout.js";
 import store from "./commands/store.js";
+import search from "commands/search.js";
 
 export default function commands(input) {
   let command = input;
@@ -55,6 +56,7 @@ export default function commands(input) {
   if (command.startsWith(":theme")) return theme(args);
   if (command.startsWith(":user")) return user(args);
   if (command.startsWith(":store")) return store(args);
+  if (command.startsWith(":search")) return search(args);
   return "Unknown command.";
 }
 
@@ -106,6 +108,7 @@ export function getCommands() {
     { id: "commands-store", command: ":store [name?]", short_description: "Show data store detail.", description: "" },
     { id: "", command: ":store [ls|list]", short_description: "List available data stores.", description: "" },
     { id: "", command: ":store use [name]", short_description: "Use a data store.", description: "" },
+    { id: "", command: ":search [word]", short_description: "Search data from store.", description: "" },
     { id: "", command: ":store reset", short_description: "Reset data store to empty.", description: "" },
     { id: "", command: ":store add [name]", short_description: "Create a store.", description: "" },
     { id: "", command: ":store [del|delete] [name]", short_description: "Delete a store.", description: "" },

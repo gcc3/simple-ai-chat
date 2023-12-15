@@ -5,7 +5,10 @@ import { authenticate } from 'utils/authUtils.js';
 export default async function (req, res) {
   // Check if the method is POST
   if (req.method !== "POST") {
-    return res.status(405).end();
+    return res.status(405).json({
+      success: false,
+      error: "Method not allowed."
+    });
   }
 
   // User required to delete username
@@ -13,19 +16,28 @@ export default async function (req, res) {
 
   // validation
   if (!username) {
-    return res.status(400).json({ error: "User name is required." });
+    return res.status(400).json({
+      success: false,
+      error: "User name is required."
+    });
   }
 
   // Authentication
   const authResult = authenticate(req);
   if (!authResult.success) {
-    return res.status(401).json({ error: authResult.error });
+    return res.status(401).json({
+      success: false,
+      error: authResult.error
+    });
   }
   const { id, username: authUsername } = authResult.user;
 
   // Check permission
   if (authUsername !== username && authUsername !== "root") {
-    return res.status(401).json({ error: "Permission denied." });
+    return res.status(401).json({
+      success: false,
+      error: "Permission denied."
+    });
   }
 
   try {
@@ -37,8 +49,14 @@ export default async function (req, res) {
       res.setHeader('Set-Cookie', `auth=; HttpOnly; Path=/; Max-Age=0`);
     }
 
-    return res.status(200).json({ success: true, message: 'User deleted.' });
+    return res.status(200).json({
+      success: true,
+      message: 'User deleted.'
+    });
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
+    res.status(500).json({
+      success: false,
+      error: 'Internal Server Error'
+    });
   }
 }

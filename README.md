@@ -255,9 +255,6 @@ The API key of the vectara, can generate from the console.
 * VECTARA_CUSTOMER_ID  
 The customer ID of vectara, can get from user profile.  
 
-* VECTARA_CORPUS_ID  
-The indice id.  
-
 * DB  
 Database engline, example `DB=sqlite`.  
 Supported engine: `sqlite`.  

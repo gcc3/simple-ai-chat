@@ -34,21 +34,36 @@ export async function vectaraQuery(query, corpusId) {
   });
 
   const data = await response.json();
-  if (data && data.responseSet && data.responseSet.length > 0 && data.responseSet[0].response[0].score > 0.5) {
-    let result = [];
+  if (data && data.responseSet && data.responseSet.length > 0) {
     const responseSet = data.responseSet[0];
-    responseSet.response.forEach((r) => {
-      if (r.score >= 0.5) {
-        const document = responseSet.document[r.documentIndex];
-        result.push({
-          document: document.id,
-          score: r.score,
-          content: r.text,
+
+    // Check if there is an error
+    if (responseSet.status.length > 0) {
+      return responseSet.status[0].code;
+    }
+
+    // Check if there is a result
+    // only return if score is greater than 0.5
+    if (responseSet.response.length > 0) {
+      if (responseSet.response[0].score > 0.5) {
+        let result = [];
+        const responseSet = data.responseSet[0];
+        responseSet.response.forEach((r) => {
+          if (r.score >= 0.5) {
+            const document = responseSet.document[r.documentIndex];
+            result.push({
+              document: document.id,
+              score: r.score,
+              content: r.text,
+            });
+          }
         });
+        return result;
+      } else {
+        return "No results score greater than 0.5."
       }
-    });
-    return result;
-  } else {
-    return null;
+    } else {
+      return "No results found.";
+    }
   }
 }

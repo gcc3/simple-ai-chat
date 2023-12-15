@@ -1,7 +1,7 @@
 import { authenticate } from 'utils/authUtils';
 import { getUser, getUserStores } from 'utils/sqliteUtils';
 
-export default async function (req, res) {
+export default async function(req, res) {
   try {
     // User stores
     let userStores = [];
