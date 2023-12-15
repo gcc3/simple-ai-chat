@@ -74,7 +74,7 @@ export default async function (req, res) {
         });
       }
     } else if (key === 'fullscreen') {
-      const validValues = ['on', 'off'];
+      const validValues = ['default', 'split', 'off'];
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
           success: false, 
