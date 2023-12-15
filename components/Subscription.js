@@ -123,19 +123,19 @@ function Subscription() {
         <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at !== null && user.role_expires_at < new Date()) && "(Expired)"}</div>
       </div>}
       <div className="mt-3">
-        <div>Simple AI offers three subscription plans</div>
+        <div>Subscription plans</div>
         <div>
           - `user`: offer a general user package for only $1/month for accessing the most advanced AI.<br></br>
-          - `pro_user`: provide powerful personal database.<br></br>
-          - `super_user`: provide Midjourney advanced image generation.<br></br>
-          * For new users who register, we offer a 7-day free trial (for `user`) with a $5 usage.
+          - `pro_user`: provide advanced features for professonal uses.<br></br>
+          - `super_user`: provide accessability for all latest features.<br></br>
+          <div className="mt-1">* For new users who register (as `user`), we offer a 7-day trial with a $5 usage for free.</div>
         </div>
       </div>
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
       {user && <div className="mt-4">
         {message && <div>- {message}</div>}
         {!message && <div>
-          {user.role !== "root_user" && <div>Select upgrade subscription:
+          {user.role !== "root_user" && <div>Select plan:
             <button className="ml-2" onClick={handleSetTargetRole("user")}>`user`</button>
             <button className="ml-2" onClick={handleSetTargetRole("pro_user")}>`pro_user`</button>
             <button className="ml-2" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
@@ -164,8 +164,8 @@ function Subscription() {
                || (targetRole === user.role && user.role_expires_at !== null)
                || (getRoleLevel(targetRole) < getRoleLevel(user.role) && (user.role_expires_at !== null && user.role_expires_at < new Date())))
                 && <div>
-                <div>{user.role == targetRole ? "Extend 1 month for" : (getRoleLevel(user.role) < getRoleLevel(targetRole) ? "Upgrade" : "Downgrade") + " to"} role: `{targetRole}`</div>
-                <div>Price: {amount === 0 ? "Free" : "$" + amount + "/month"}</div>
+                <div>{user.role == targetRole ? "Extend 1 month for" : (getRoleLevel(user.role) < getRoleLevel(targetRole) ? "Upgrade" : "Downgrade") + " to"} `{targetRole}`</div>
+                <div>Pay: {amount === 0 ? "Free" : "$" + amount}</div>
                 <div className="mt-3">Payment methods:</div>
                 <div className="mt-1">
                   <table>
