@@ -36,6 +36,7 @@ const Documentation = () => {
     <>
       <div>
         <div className="mt-2"><a href="#introduction"><u>Introduction</u></a></div>
+        <div className="mt-2"><a href="#quick-start"><u>Quick Start</u></a></div>
         <div className="mt-2"><a href="#features"><u>Features</u></a></div>
         <div>
           <div className="mt-2"><a href="#commands"><u>Commands</u></a></div>
@@ -51,6 +52,12 @@ const Documentation = () => {
       <div id="introduction" className="mt-5">Introduction</div>
       <div className="mt-2">
         Simple AI (`simple-ai.io`) is a command-based AI chat application that focus on the cutting-edge AI technology. It provides a simple and easy-to-use interface for everyone to interact with the AI models. Simple AI is open-source; you can visit our GitHub repository (<a href="https://github.com/gcc3/simple-ai-chat"><u>link</u></a>) to report any issues you encounter, share your ideas or contribute to the project.
+      </div>
+      <div id="quick-start" className="mt-5">Quick Start</div>
+      <div className="mt-2">
+        <div>1. Type in the input box and press Enter to send the message to the AI model. Paste image to the input box to use GPT-4 Vision.</div>
+        <div>2. Use command `:user add [username] [email] [password?]` to create a new user account, before using check your email box to verifiy the email address.</div>
+        <div>3. Use command `:user login [username] [password?]` to login to your account.</div>
       </div>
       <div id="features" className="mt-5">Features</div>
       <div>
