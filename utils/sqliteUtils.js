@@ -194,6 +194,28 @@ const insertLog = async (session, username, model, input_l, input, output_l, out
   }
 };
 
+const deleteUserLogs = async (username) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("DELETE FROM logs WHERE user = ?");
+      stmt.run([username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const getSessions = async () => {
   const db = await getDatabaseConnection();
   try {
@@ -823,6 +845,28 @@ const deleteRole = async (roleName, createdBy) => {
   }
 };
 
+const deleteUserRoles = async (createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("DELETE FROM roles WHERE created_by = ?");
+      stmt.run([createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const updateRolePrompt = async (roleName, newPrompt, createdBy) => {
   const db = await getDatabaseConnection();
   try {
@@ -937,6 +981,28 @@ const deleteStore = async (name, createdBy) => {
   }
 };
 
+const deleteUserStores = async (createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("DELETE FROM stores WHERE created_by = ?");
+      stmt.run([createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const updateStoreOwner = async (name, createdBy, newOwner) => {
   const db = await getDatabaseConnection();
   try {
@@ -999,6 +1065,7 @@ const updateStoreSettings = async (name, createdBy, key, value) => {
 export {
   getLogs,
   insertLog,
+  deleteUserLogs,
   getSessions,
   deleteSession,
   getUserSessions,
@@ -1030,11 +1097,13 @@ export {
   getUserRoles,
   insertRole,
   deleteRole,
+  deleteUserRoles,
   updateRolePrompt,
   getStore,
   getUserStores,
   insertStore,
   deleteStore,
+  deleteUserStores,
   updateStoreOwner,
   updateStoreSettings,
 };

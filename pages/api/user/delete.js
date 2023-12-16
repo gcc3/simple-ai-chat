@@ -1,4 +1,4 @@
-import { softDeleteUser } from 'utils/sqliteUtils.js';
+import { softDeleteUser, deleteUserLogs, deleteUserRoles, deleteUserStores } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 
 // Soft delete user
@@ -41,8 +41,12 @@ export default async function (req, res) {
   }
 
   try {
+    // Delete user with all related data
+    await deleteUserLogs(username);
+    await deleteUserRoles(username);
+    await deleteUserStores(username);
     await softDeleteUser(username);
-
+    
     // If user delete himself
     // Clear the auth token cookie
     if (authUsername === username) {
