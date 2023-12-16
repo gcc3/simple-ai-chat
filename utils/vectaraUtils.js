@@ -264,7 +264,15 @@ export async function deleteVectaraApiKey(keyId, jwtToken) {
   }
 }
 
-// Response similar with deleteVectaraCorpus
+/*
+  Response example:
+  {
+    "status": {
+      "code": "OK",
+      "statusDetail": "string"
+    }
+  }
+*/
 export async function resetVectaraCorpus(corpusId, jwtToken) {
   const response = await fetch("https://api.vectara.io/v1/reset-corpus", {
     method: "POST",
@@ -281,6 +289,43 @@ export async function resetVectaraCorpus(corpusId, jwtToken) {
 
   const data = await response.json();
   if (data && data.status && (data.status.code === "OK" || data.status.code === "NOT_FOUND")) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/*
+  Response example:
+  {
+    "response": {
+      "status": {},
+      "quotaConsumed": {
+        "numChars": "string",
+        "numMetadataChars": "string"
+      }
+    }
+  }
+*/
+export async function uploadFileToVectaraCorpus(corpusId, file_url, jwtToken) {
+  const formData = new FormData();
+
+  // Get file
+  const file = await fetch(file_url).then((r) => r.blob());
+  formData.append("file", file);
+
+  const response = await fetch("https://api.vectara.io/v1/upload?c=" + process.env.VECTARA_CUSTOMER_ID + "&o=" + corpusId, {
+    method: "POST",
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "Accept": "application/json",
+      "Authorization": "Bearer " + jwtToken,
+    },
+    body: formData,
+  });
+
+  const data = await response.json();
+  if (data && data.response && data.response.quotaConsumed && data.response.quotaConsumed.numChars > 0) {
     return true;
   } else {
     return false;

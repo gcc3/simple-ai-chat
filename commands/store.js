@@ -15,6 +15,7 @@ export default async function store(args) {
                 "       :store set [key] [value]\n";
 
   // Get store info
+  // :store [name?]
   if (!command) {
     if (!localStorage.getItem("user")) {
       return "Please login.";
@@ -46,6 +47,7 @@ export default async function store(args) {
   }
 
   // Get store info by name
+  // :store [name?]
   if (args.length === 1 && args[0].startsWith("\"") && args[0].endsWith("\"")) {
     const storeName = args[0].slice(1, -1);
     if (!storeName) {
@@ -233,6 +235,47 @@ export default async function store(args) {
 
       if (data.success) {
         localStorage.setItem("store", name);
+        return data.message;
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Upload file for indexing
+  if (command === "data" && args[1] === "upload") {
+    if (args.length !== 3) {
+      return "Usage: :store data upload [file]\n";
+    }
+
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
+    if (!file_url.includes("+file[") || !file_url.includes("]")) {
+      return "Invalid file URL.";
+    }
+    const file_url = args[2].replace("+file[", "").replace("]", "");
+    
+    try {
+      const response = await fetch("/api/store/file-upload", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: sessionStorage.getItem("store"),
+          file_url,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      if (data.success) {
         return data.message;
       }
     } catch (error) {
