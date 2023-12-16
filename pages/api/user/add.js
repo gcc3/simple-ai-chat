@@ -131,7 +131,7 @@ export default async function (req, res) {
     } else {
       // No email provided, send password to console
       insertUser(username, role, role_expires_at, password_, email, balance, settings);
-      message = 'User "' + username + '"' + " is created." + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "");
+      message = 'User "' + username + '"' + " is created." + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + " Please login with command `:login " + username + " [password]`.";
     }
 
     // No error
