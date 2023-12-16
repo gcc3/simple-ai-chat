@@ -263,3 +263,26 @@ export async function deleteVectaraApiKey(keyId, jwtToken) {
     return false;
   }
 }
+
+// Response similar with deleteVectaraCorpus
+export async function resetVectaraCorpus(corpusId, jwtToken) {
+  const response = await fetch("https://api.vectara.io/v1/reset-corpus", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + jwtToken,
+      "Accept": "application/json",
+      "customer-id": process.env.VECTARA_CUSTOMER_ID,
+    },
+    body: JSON.stringify({
+      "corpusId": corpusId
+    }),
+  });
+
+  const data = await response.json();
+  if (data && data.status && (data.status.code === "OK" || data.status.code === "NOT_FOUND")) {
+    return true;
+  } else {
+    return false;
+  }
+}

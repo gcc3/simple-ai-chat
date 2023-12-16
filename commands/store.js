@@ -8,6 +8,8 @@ export default async function store(args) {
                 "       :store use [name]\n" +
                 "       :store reset\n" +
                 "       :store add [name]\n" +
+                "       :store data upload [file]\n" +
+                "       :store data reset [name]\n" +
                 "       :store [del|delete] [name]\n" +
                 "       :store set owner [owner]\n" +
                 "       :store set [key] [value]\n";
@@ -231,6 +233,50 @@ export default async function store(args) {
 
       if (data.success) {
         localStorage.setItem("store", name);
+        return data.message;
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Reset a store
+  if (command === "data" && args[1] === "reset") {
+    if (args.length !== 3) {
+      return "Usage: :store data reset [name]\n";
+    }
+
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
+    if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
+      return "Store name must be quoted with double quotes.";
+    }
+
+    const name = args[2].slice(1, -1);
+    if (!name) {
+      return "Invalid store name.";
+    }
+
+    try {
+      const response = await fetch("/api/store/reset", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      if (data.success) {
         return data.message;
       }
     } catch (error) {
