@@ -195,7 +195,7 @@ export default async function (req, res) {
 
   try {
     let result_text = "";
-    let token_ct = 0;
+    let token_ct = 0;  // input token count
     let messages = [];
 
     // Message base

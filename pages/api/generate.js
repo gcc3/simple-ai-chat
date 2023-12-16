@@ -84,7 +84,7 @@ export default async function(req, res) {
 
   try {
     let result_text = "";
-    let token_ct = 0;
+    let token_ct = 0;  // input token count
 
     const generateMessagesResult = await generateMessages(authUser, input, null, queryId, role, false);  // image_url not supported yet
     token_ct = generateMessagesResult.token_ct;
