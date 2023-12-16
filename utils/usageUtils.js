@@ -1,9 +1,11 @@
 export function gpt4FeeCal(input_token_ct, output_token_ct) {
-  return input_token_ct * 0.00001 + output_token_ct * 0.00003;
+  const fee = input_token_ct * 0.00001 + output_token_ct * 0.00003;
+  return parseFloat(fee.toFixed(5)); // Rounds to 5 decimal places
 }
 
 export function gpt4vFeeCal(input_token_ct, output_token_ct) {
-  return input_token_ct * 0.00001 + output_token_ct * 0.00003;
+  const fee = input_token_ct * 0.00001 + output_token_ct * 0.00003;
+  return parseFloat(fee.toFixed(5)); // Rounds to 5 decimal places
 }
 
 export function dbFeeCal(sizeInKb) {
