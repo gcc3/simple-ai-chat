@@ -33,6 +33,8 @@ export default async function(req, res) {
   const use_stats = req.body.use_stats || false;
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
+  const images = req.body.images || null;
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
   // Authentication
   const authResult = authenticate(req);
@@ -52,7 +54,7 @@ export default async function(req, res) {
 
   // User access control
   if (use_access_control) {
-    const uacResult = await getUacResult(req);
+    const uacResult = await getUacResult(user, ip);
     if (!uacResult.success) {
       res.status(400).send(getUacResult.error);
       return;
@@ -88,7 +90,8 @@ export default async function(req, res) {
     let result_text = "";
     let token_ct = 0;  // input token count
 
-    const generateMessagesResult = await generateMessages(user || "", input, null, queryId, role, store, use_location, location, false);  // image_url not supported yet
+    const generateMessagesResult = await generateMessages(user, input, images, queryId, role, store, use_location, location, 
+                                                          false, "", "");  // function calling is not supported
     token_ct = generateMessagesResult.token_ct;
 
     // endpoint: /v1/chat/completions

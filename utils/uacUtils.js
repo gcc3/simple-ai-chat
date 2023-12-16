@@ -3,20 +3,11 @@ import { getUser, countChatsForIP } from './sqliteUtils';
 import { checkUsageExceeded } from './usageUtils';
 
 // User access control utilities
-export async function getUacResult(req) {
-  // Authentication
-  const authResult = authenticate(req);
-  let user = null;
-  let authUser = null;
-  if (authResult.success) {
-    authUser = authResult.user;
-    user = await getUser(authResult.user.username);
-  }
-  const isLogin = authResult.success && user;
+export async function getUacResult(user, ip) {
+  const isLogin = user !== null;
 
   if (!isLogin) {
     // Not a user, urge register a user
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const chatCount = await countChatsForIP(ip, Date.now() - 86400000 * 3, Date.now());
     if (chatCount >= 5) {
       return {

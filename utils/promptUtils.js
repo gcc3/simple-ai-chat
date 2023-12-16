@@ -11,7 +11,7 @@ const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_C
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 
 // Generate messages for chatCompletion
-export async function generateMessages(user, input, images, queryId, role, store, use_location, location, do_functioin_calling = false) {
+export async function generateMessages(user, input, images, queryId, role, store, use_location, location, do_function_calling, functionName, functionMessage) {
   let messages = [];
   let token_ct = 0;
   
@@ -65,7 +65,7 @@ export async function generateMessages(user, input, images, queryId, role, store
   }
 
   // 0. User input
-  if (!do_functioin_calling) {
+  if (!do_function_calling) {
     messages.push({ 
       role: "user", 
       content: (() => {
@@ -96,26 +96,19 @@ export async function generateMessages(user, input, images, queryId, role, store
     });
   }
 
-  // 1. Location info
-  let location_prompt = "";
-  if (use_location && location) {
-    // localtion example: (40.7128, -74.0060)
-    const lat = location.slice(1, -1).split(",")[0];
-    const lng = location.slice(1, -1).split(",")[1];
-    const query = {latitude: lat, longitude: lng}
-    const cities = nearbyCities(query)
-    const city = cities[0]
-    const locationMessage = "User is currently near city " + city.name + ", " + city.country + ", use this infromation if necessary.";
-
-    // Feed with location message
+  // 1. Function calling result
+  let function_prompt = "";
+  if (do_function_calling) {
+    // Feed message with function calling result
     messages.push({
-      "role": "system",
-      "content": locationMessage
+      "role": "function",
+      "name": functionName,
+      "content": functionMessage,
     });
-    location_prompt = locationMessage;
+    function_prompt = functionMessage;
   }
 
-  // 4. Vector database query result
+  // 2. Vector database query result
   let store_prompt = "";
   if (use_vector && store) {
     console.log("--- vector query ---");
@@ -142,12 +135,32 @@ export async function generateMessages(user, input, images, queryId, role, store
       }
     }
   }
+  
+  // 3. Location info
+  let location_prompt = "";
+  if (use_location && location) {
+    // localtion example: (40.7128, -74.0060)
+    const lat = location.slice(1, -1).split(",")[0];
+    const lng = location.slice(1, -1).split(",")[1];
+    const query = {latitude: lat, longitude: lng}
+    const cities = nearbyCities(query)
+    const city = cities[0]
+    const locationMessage = "Additional information: user is currently near city " + city.name + ", " + city.country + ". Use this infromation if necessary.";
+
+    // Feed with location message
+    messages.push({
+      "role": "system",
+      "content": locationMessage
+    });
+    location_prompt = locationMessage;
+  }
 
   return {
     messages,
     token_ct,
     store_prompt,
     role_prompt,
+    function_prompt,
     location_prompt
   };
 }

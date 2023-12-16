@@ -39,6 +39,7 @@ export default async function (req, res) {
   const location = req.query.location || "";
   const images_ = req.query.images || "";
   const files_ = req.query.files || "";
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
 
   // Authentication
   const authResult = authenticate(req);
@@ -96,7 +97,7 @@ export default async function (req, res) {
 
   // User access control
   if (use_access_control) {
-    const uacResult = await getUacResult(req);
+    const uacResult = await getUacResult(user, ip);
     if (!uacResult.success) {
       res.write(`data: ${getUacResult.error}\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
@@ -197,23 +198,13 @@ export default async function (req, res) {
     let messages = [];
 
     // Message base
-    const generateMessagesResult = await generateMessages(user || "", input, images, queryId, role, store, use_location, location, do_function_calling);
+    const generateMessagesResult = await generateMessages(user, input, images, queryId, role, store, use_location, location, 
+                                                          do_function_calling, functionName, functionMessage);
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
 
     // Additional information
     let additionalInfo = "";
-
-    // 2. Function calling result
-    if (do_function_calling) {
-      // Feed message with function calling result
-      messages.push({
-        "role": "function",
-        "name": functionName,
-        "content": functionMessage,
-      });
-      additionalInfo += functionMessage;
-    }
 
     // 3. Node AI response
     if (use_node_ai && force_node_ai_query) {
