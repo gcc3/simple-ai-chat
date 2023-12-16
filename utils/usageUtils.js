@@ -1,5 +1,3 @@
-import { countChatsForUser } from "./sqliteUtils";
-
 export function genUsage(gpt4Usage = null, gpt4vUsage = null, dbUsage = null, midjourneyUsage = null) {
   let usage = {};
 
@@ -47,19 +45,6 @@ export function feeCal(usage) {
     dbFee,
     midjourneyFee,
     totalFee,
-  }
-}
-
-export async function checkUsageExceeded(user) {
-  const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
-  const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
-  const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
-  const usageLimit = getRoleFequencyLimit(user.role);
-  if (daily >= usageLimit.daily_limit || weekly >= usageLimit.weekly_limit || monthly >= usageLimit.monthly_limit) {
-    // Usage exceeded
-    return true;
-  } else {
-    return false;
   }
 }
 

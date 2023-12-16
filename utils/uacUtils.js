@@ -1,6 +1,5 @@
-import { authenticate } from './authUtils';
-import { getUser, countChatsForIP } from './sqliteUtils';
-import { checkUsageExceeded } from './usageUtils';
+import { countChatsForIP, countChatsForUser } from './sqliteUtils';
+import { getRoleFequencyLimit } from './usageUtils';
 
 // User access control utilities
 export async function getUacResult(user, ip) {
@@ -50,4 +49,17 @@ export async function getUacResult(user, ip) {
     success: true,
     message: "UAC verification passed.",
   };
+}
+
+async function checkUsageExceeded(user) {
+  const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
+  const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
+  const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
+  const usageLimit = getRoleFequencyLimit(user.role);
+  if (daily >= usageLimit.daily_limit || weekly >= usageLimit.weekly_limit || monthly >= usageLimit.monthly_limit) {
+    // Usage exceeded
+    return true;
+  } else {
+    return false;
+  }
 }
