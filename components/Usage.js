@@ -237,13 +237,13 @@ function Usage() {
           {!message && <div>
             {user.role !== "root_user" && <div>
               <div>- Add Balance</div>
-              <div className="flex items-center mt-1">
+              <div className="flex flex-wrap items-center mt-1">
                 <div>Select amount:</div>
                 <button className="ml-2 w-11" onClick={handleSetAmount(5)}>$5</button>
                 <button className="ml-2 w-11" onClick={handleSetAmount(10)}>$10</button>
                 <button className="ml-2 w-11" onClick={handleSetAmount(20)}>$20</button>
                 <button className="ml-2 w-11" onClick={handleSetAmount(50)}>$50</button>
-                {amount > 0 && <button className="ml-2 w-20" onClick={handleSetAmount(0)}>Cancle</button>}
+                {amount > 0 && <button className="ml-2 w-20" onClick={handleSetAmount(0)}>Cancel</button>}
               </div>
             </div>}
             {amount !== null && amount > 0 && <div className="mt-3">
