@@ -312,8 +312,8 @@ const countTokenForUserByModel = async (user, model, start, end) => {
           reject(err);
         }
         resolve({
-          input: row.totalInput,
-          output: row.totalOutput
+          input: row.totalInput || 0,
+          output: row.totalOutput || 0,
         });
       });
     });

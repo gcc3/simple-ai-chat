@@ -3,6 +3,7 @@ import ProgressBar from "./ProgressBar";
 import { getRoleLevel } from "utils/userUtils";
 import PayPalButton from "./PayPalButton";
 import { refreshUserInfo } from "utils/userUtils";
+import { gpt4FeeCal, gpt4vFeeCal } from "utils/usageUtils";
 const moment = require('moment');
 
 function Usage() {
@@ -11,7 +12,7 @@ function Usage() {
   const [tokenMonthly, setTokenMonthly] = useState(null);
   const [useCountFequencies, setUseCountFequencies] = useState(null);
   const [useCountMonthly, setUseCountMonthly] = useState(null);
-
+  const [totalFee, setTotalFee] = useState(null);
   const [message, setMessage] = useState(null);
   const [amount, setAmount] = useState(0);
 
@@ -71,6 +72,11 @@ function Usage() {
       if (user.role === "root_user") {
         setMessage("You are the root_user.");
       }
+
+      // Fee calculation
+      const gpt4Fee = gpt4FeeCal(user.usage.token_monthly.token.this_month.input, user.usage.token_monthly.token.this_month.output);
+      const gpt4vFee = gpt4vFeeCal(user.usage.token_monthly.token_v.this_month.input, user.usage.token_monthly.token_v.this_month.output);
+      setTotalFee(gpt4Fee + gpt4vFee);
     }
 
     if (localStorage.getItem("user") && !user) {
@@ -118,7 +124,12 @@ function Usage() {
                 <tr>
                   <td className="mr-3">Output</td>
                   <td className="mr-3">This Month: {tokenMonthly.token.this_month.output}</td>
-                  <td className="mr-3">Last Month: {tokenMonthly.token.last_month.input}</td>
+                  <td className="mr-3">Last Month: {tokenMonthly.token.last_month.output}</td>
+                </tr>
+                <tr>
+                  <td className="mr-3">Usage Fees:</td>
+                  <td className="mr-3"> ${gpt4FeeCal(tokenMonthly.token.this_month.input, tokenMonthly.token.this_month.output)}</td>
+                  <td className="mr-3"> ${gpt4FeeCal(tokenMonthly.token.last_month.input, tokenMonthly.token.last_month.output)}</td>
                 </tr>
               </tbody>
             </table>
@@ -134,6 +145,11 @@ function Usage() {
                     <td className="mr-3">Output</td>
                     <td className="mr-3">This Month: {tokenMonthly.token_v.this_month.output}</td>
                     <td className="mr-3">Last Month: {tokenMonthly.token_v.last_month.output}</td>
+                  </tr>
+                  <tr>
+                    <td className="mr-3">Usage Fees:</td>
+                    <td className="mr-3"> ${gpt4vFeeCal(tokenMonthly.token_v.this_month.input, tokenMonthly.token_v.this_month.output)}</td>
+                    <td className="mr-3"> ${gpt4vFeeCal(tokenMonthly.token_v.last_month.input, tokenMonthly.token_v.last_month.output)}</td>
                   </tr>
                 </tbody>
               </table>
@@ -212,7 +228,7 @@ function Usage() {
           <div className="mt-3">
             <div>- Fees and Balance</div>
             <ProgressBar label={"Usage"} progress={user.usage_fees} progressMax={user.balance} />
-            <div className="mt-3">Total Fees: ${user.usage_fees}</div>
+            <div className="mt-3">Total Fees: ${totalFee}</div>
             <div>Balance: ${user.balance}</div>
           </div>
         </div>
