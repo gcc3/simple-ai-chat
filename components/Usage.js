@@ -108,25 +108,13 @@ function Usage() {
             </div>
           </div>}
           {getRoleLevel(user.role) >= 1 && <div className="mt-3">
-            <div>- Token Meter</div>
+            <div>- Token Usage</div>
             <table className="table-fixed mt-1">
-              <thead>
-                <tr>
-                  <th>Model</th>
-                  <th>Input</th>
-                  <th>Output</th>
-                </tr>
-              </thead>
               <tbody>
-                <tr>
-                  <td>GPT-4 Turbo</td>
-                  <td>Input: 0</td>
-                  <td>Output: 0</td>
-                </tr>
-                <tr>
-                  <td>GPT-4 Vision</td>
-                  <td>Input: 0</td>
-                  <td>Output: 0</td>
+              <tr>
+                  <td className="mr-3">Daily: {useFequency.daily}</td>
+                  <td className="mr-3">Weekly: {useFequency.weekly}</td>
+                  <td className="mr-3">Monthly: {useFequency.monthly}</td>
                 </tr>
               </tbody>
             </table>
