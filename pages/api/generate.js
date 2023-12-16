@@ -16,8 +16,6 @@ const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
-const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
-const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model_);
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
@@ -35,6 +33,7 @@ export default async function(req, res) {
   const location = req.body.location || "";
   const images = req.body.images || null;
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const browser = req.headers['user-agent'];
 
   // Authentication
   const authResult = authenticate(req);
@@ -44,6 +43,10 @@ export default async function(req, res) {
     authUser = authResult.user;
     user = await getUser(authResult.user.username);
   }
+
+  // Input & output
+  let input = "";
+  let output = "";
 
   // Query ID, same as session ID
   const verifyResult = verifySessionId(queryId);
@@ -62,9 +65,8 @@ export default async function(req, res) {
   }
 
   // Input
-  let input = req.body.user_input || "";
+  input = req.body.user_input || "";
   if (input.trim().length === 0) return;
-  input = prompt_prefix + input + prompt_suffix;
   console.log(chalk.yellowBright("\nInput (query_id = " + queryId + "):"));
   console.log(input + "\n");
 
@@ -79,8 +81,6 @@ export default async function(req, res) {
   + "temperature: " + temperature + "\n"
   + "top_p: " + top_p + "\n"
   + "role_content_system (chat): " + role_content_system + "\n"
-  + "prompt_prefix: " + prompt_prefix + "\n"
-  + "prompt_suffix: " + prompt_suffix + "\n"
   + "max_tokens: " + max_tokens + "\n"
   + "use_vision: " + use_vision + "\n"
   + "use_eval: " + use_eval + "\n"
@@ -94,7 +94,6 @@ export default async function(req, res) {
   + "store: " + (store || "(not set)") + "\n");
 
   try {
-    let result_text = "";
     let token_ct = 0;  // input token count
     let messages = [];
 
@@ -118,20 +117,20 @@ export default async function(req, res) {
     if (!choices || choices.length === 0) {
       console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
       console.error("No choice\n");
-      result_text = "Silent...";
+      output = "Silent...";
     } else {
-      result_text = choices[0].message.content;
+      output = choices[0].message.content;
     }
 
     // Output the result
-    if (result_text.trim().length === 0) result_text = "(null)";
+    if (output.trim().length === 0) output = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
-    console.log(result_text + "\n");
-    logadd(queryId, model, input, result_text, req);
+    console.log(output + "\n");
+    logadd(queryId, model, input, output, ip, browser);
 
     res.status(200).json({
       result: {
-        text : result_text,
+        text : output,
         stats: {
           temperature: process.env.TEMPERATURE,
           top_p: process.env.TOP_P,

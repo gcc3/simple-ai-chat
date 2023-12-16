@@ -3,10 +3,7 @@ import { authenticate } from './authUtils.js';
 
 const fs = require('fs');
 
-export function logadd(session, model, input, output, req) {
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  const browser = req.headers['user-agent'];
-
+export function logadd(session, model, input, output, ip, browser) {
   // Get user
   let username = "";
   let { success, user } = authenticate(req);

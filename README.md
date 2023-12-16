@@ -216,9 +216,6 @@ How many completions to generate for each prompt.
 * ROLE_CONTENT_SYSTEM  
 Set the role system's content to role play.  
 
-* PROMPT_PREFIX and PROMPT_SUFFIX  
-Add prefix and suffix for prompt avoid duplicate text input.
-
 * INIT_PLACEHOLDER and ENTER  
 Control the default placeholder text and enter key text.  
 

@@ -20,8 +20,6 @@ const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
-const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
-const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model_);
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
@@ -40,6 +38,7 @@ export default async function (req, res) {
   const images_ = req.query.images || "";
   const files_ = req.query.files || "";
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const browser = req.headers['user-agent'];
 
   // Authentication
   const authResult = authenticate(req);
@@ -49,6 +48,10 @@ export default async function (req, res) {
     authUser = authResult.user;
     user = await getUser(authResult.user.username);
   }
+
+  // Input & output
+  let input = "";
+  let output = "";
 
   res.writeHead(200, {
     'connection': 'keep-alive',
@@ -68,9 +71,11 @@ export default async function (req, res) {
   }
 
   // Input
-  let user_input_escape = req.query.user_input.replaceAll("%", "％").trim();  // escape %
-  let input = decodeURIComponent(user_input_escape) || "";
+  input = req.query.user_input.replaceAll("%", "％").trim();  // escape %
+  input = decodeURIComponent(input) || "";
   if (input.trim().length === 0) return;
+
+  // Images & files
   const decodedImages = decodeURIComponent(images_) || "";
   const decodedFiles = decodeURIComponent(files_) || "";
   let images = [];
@@ -108,7 +113,6 @@ export default async function (req, res) {
 
   // I. Normal input
   if (!input.startsWith("!")) {
-    input = prompt_prefix + input + prompt_suffix;
     console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
     console.log(input + "\n");
 
@@ -128,8 +132,6 @@ export default async function (req, res) {
     + "temperature: " + temperature + "\n"
     + "top_p: " + top_p + "\n"
     + "role_content_system (chat): " + role_content_system + "\n"
-    + "prompt_prefix: " + prompt_prefix + "\n"
-    + "prompt_suffix: " + prompt_suffix + "\n"
     + "max_tokens: " + max_tokens + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
@@ -171,7 +173,7 @@ export default async function (req, res) {
       // Execute function
       const functionResult = await executeFunction(functionName, functionArgsString);
 
-      // Event
+      // Function trigger event
       if (functionResult.event) {
         const event = JSON.stringify(functionResult.event);
         res.write(`data: ###EVENT###${event}\n\n`);
@@ -184,7 +186,7 @@ export default async function (req, res) {
       }
       
       console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
-      logadd(queryId, model, "F=" + function_input, "F=" + functionMessage, req);
+      logadd(queryId, model, "F=" + function_input, "F=" + functionMessage, ip, browser);
     }
 
     // Replace input with original
@@ -193,7 +195,6 @@ export default async function (req, res) {
   }
 
   try {
-    let result_text = "";
     let token_ct = 0;  // input token count
     let messages = [];
 
@@ -219,7 +220,7 @@ export default async function (req, res) {
           "name": "query_node_ai",
           "content": "After calling another AI, its response as: " + nodeAiQueryResult,
         });
-        logadd(queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, req);
+        logadd(queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, ip, browser);
       }
     }
 
@@ -268,7 +269,7 @@ export default async function (req, res) {
       // handle message
       const content = part.choices[0].delta.content;
       if (content) {
-        result_text += content;
+        output += content;
         let message = content.replaceAll("\n", "###RETURN###");
         res.write(`data: ${message}\n\n`); res.flush();
       }
@@ -277,8 +278,8 @@ export default async function (req, res) {
     // Evaluate result
     // vision models not support evaluation
     if (use_eval) {
-      if (result_text.trim().length > 0) {
-        await evaluate(input, additionalInfo, result_text).then((eval_result) => {
+      if (output.trim().length > 0) {
+        await evaluate(input, additionalInfo, output).then((eval_result) => {
           res.write(`data: ###EVAL###${eval_result}\n\n`); res.flush();
           console.log("eval: " + eval_result + "\n");
         });
@@ -289,11 +290,11 @@ export default async function (req, res) {
     res.write(`data: [DONE]\n\n`); res.flush();
 
     // Log
-    if (result_text.trim().length === 0) result_text = "(null)";
+    if (output.trim().length === 0) output = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
-    console.log(result_text + "\n");
-    logadd(queryId, model, input, result_text, req);
-
+    console.log(output + "\n");
+    logadd(queryId, model, input, output, ip, browser);
+    
     res.end();
     return;
   } catch (error) {
