@@ -86,7 +86,7 @@ export default async function(req, res) {
     let result_text = "";
     let token_ct = 0;  // input token count
 
-    const generateMessagesResult = await generateMessages(authUser, input, null, queryId, role, false);  // image_url not supported yet
+    const generateMessagesResult = await generateMessages(req, input, null, queryId, role, store, false);  // image_url not supported yet
     token_ct = generateMessagesResult.token_ct;
 
     // endpoint: /v1/chat/completions

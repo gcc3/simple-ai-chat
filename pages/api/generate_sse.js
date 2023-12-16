@@ -8,9 +8,7 @@ import { getFunctions, executeFunction } from "function.js";
 import { getTools } from "tools.js";
 import { getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
-import { getUser, getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
-import { vectaraQuery } from "utils/vectaraUtils";
 import { getUacResult } from "utils/uacUtils";
 
 // OpenAI
@@ -199,7 +197,7 @@ export default async function (req, res) {
     let messages = [];
 
     // Message base
-    const generateMessagesResult = await generateMessages(authUser, input, images, queryId, role, do_function_calling);
+    const generateMessagesResult = await generateMessages(req, input, images, queryId, role, store, do_function_calling);
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
 
@@ -251,38 +249,6 @@ export default async function (req, res) {
         });
         additionalInfo += nodeAiQueryResult;
         logadd(queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, req);
-      }
-    }
-
-    // 4. Vector database query result
-    if (use_vector && store) {
-      console.log("--- vector query ---");
-
-      // Get corpus id
-      const storeInfo = await getStore(store, user.username);
-      const storeSettings = JSON.parse(storeInfo.settings);
-      const corpus_id = storeSettings.corpus_id;
-      if (!corpus_id) {
-        console.log("No corpus id found for store " + store);
-        res.write(`data: No corpus id found for store ${store}.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-
-      // Query
-      const queryResult = await vectaraQuery(input, corpus_id);
-      if (!queryResult) {
-        console.log("response: no result.\n");
-      } else {
-        console.log("response: " + JSON.stringify(queryResult, null, 2) + "\n");
-        queryResult.map(r => {
-          messages.push({
-            "role": "system",
-            "content": "According to " +  r.document + ": " + r.content,
-          });
-          additionalInfo += r.text;
-        });
       }
     }
 
