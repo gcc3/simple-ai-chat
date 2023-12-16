@@ -23,7 +23,6 @@ const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model_);
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
-const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
@@ -137,7 +136,6 @@ export default async function (req, res) {
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + use_function_calling + "\n"
     + "use_node_ai: " + use_node_ai + "\n"
-    + "force_node_ai_query: " + force_node_ai_query + "\n"
     + "use_vector: " + use_vector + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + location + "\n"
@@ -168,6 +166,18 @@ export default async function (req, res) {
       const tools = tryParseJSON(functionArgsString);
       if (tools) {
         console.log("Tool calls: " + JSON.stringify(tools) + "\n");
+      }
+    } else if (use_node_ai && functionName === "query_node_ai") {
+      // Query node AI
+      // will fully use the node ai query result
+      console.log("--- node ai query ---");
+      const nodeAiQueryResult = await executeFunction("query_node_ai", "{ query: " + input + " }");
+      if (nodeAiQueryResult) {
+        logadd(queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, ip, browser);
+        res.write(`data: ${nodeAiQueryResult}\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
       }
     } else {
       // Execute function
@@ -203,26 +213,6 @@ export default async function (req, res) {
                                                           do_function_calling, functionName, functionMessage);
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
-
-    // Additional information
-    let additionalInfo = "";
-
-    // 3. Node AI response
-    if (use_node_ai && force_node_ai_query) {
-      console.log("--- node ai query ---");
-      const nodeAiQueryResult = await executeFunction("query_node_ai", "{ query: " + input + " }");
-      if (nodeAiQueryResult === undefined) {
-        console.log("response: undefined.\n");
-      } else {
-        console.log("response: " + nodeAiQueryResult);
-        messages.push({
-          "role": "function",
-          "name": "query_node_ai",
-          "content": "After calling another AI, its response as: " + nodeAiQueryResult,
-        });
-        logadd(queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, ip, browser);
-      }
-    }
 
     console.log("--- messages ---");
     console.log(JSON.stringify(messages) + "\n");
@@ -279,7 +269,7 @@ export default async function (req, res) {
     // vision models not support evaluation
     if (use_eval) {
       if (output.trim().length > 0) {
-        await evaluate(input, additionalInfo, output).then((eval_result) => {
+        await evaluate(input, "", output).then((eval_result) => {
           res.write(`data: ###EVAL###${eval_result}\n\n`); res.flush();
           console.log("eval: " + eval_result + "\n");
         });
@@ -294,7 +284,7 @@ export default async function (req, res) {
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(output + "\n");
     logadd(queryId, model, input, output, ip, browser);
-    
+
     res.end();
     return;
   } catch (error) {

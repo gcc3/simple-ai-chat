@@ -240,9 +240,6 @@ Function calling: `query_node_ai(query)`
 * NODE_AI_URL  
 To set up the node AI API url.  
 
-* FORCE_NODE_AI_QUERY  
-Force to query node AI for every query.  
-
 * USE_VECTOR  
 Control enable vectara (vector database), value should be `true` or `false`.  
 

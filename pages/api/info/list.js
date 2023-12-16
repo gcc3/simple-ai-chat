@@ -14,7 +14,6 @@ export default async function (req, res) {
     const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
     const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
     const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
-    const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
     const use_vector = process.env.USE_VECTOR == "true" ? true : false;
     const use_payment = process.env.USE_PAYMENT == "true" ? true : false;
     const use_email = process.env.USE_EMAIL == "true" ? true : false;
@@ -32,7 +31,6 @@ export default async function (req, res) {
         max_tokens: max_tokens,
         use_function_calling: use_function_calling,
         use_node_ai: use_node_ai,
-        force_node_ai_query: force_node_ai_query,
         use_vector: use_vector,
         use_payment: use_payment,
         use_email: use_email,

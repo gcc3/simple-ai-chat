@@ -19,7 +19,6 @@ const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model_);
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
-const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
@@ -86,7 +85,6 @@ export default async function(req, res) {
   + "use_eval: " + use_eval + "\n"
   + "use_function_calling: " + use_function_calling + "\n"
   + "use_node_ai: " + use_node_ai + "\n"
-  + "force_node_ai_query: " + force_node_ai_query + "\n"
   + "use_vector: " + use_vector + "\n"
   + "use_lcation: " + use_location + "\n"
   + "location: " + location + "\n"
