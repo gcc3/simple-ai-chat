@@ -73,7 +73,8 @@ export default async function (req, res) {
             use_count_monthly: {
               this_month: await getUseCountThisMonth(user.username),
               last_month: await getUseCountLastMonth(user.username),
-            }
+            },
+            db_size: 0,
           },
           usage_fees: JSON.parse(user.usage),
           balance: user.balance,
