@@ -55,16 +55,25 @@ export default async function (req, res) {
           role_expires_at: user.role_expires_at,
           role_expires_at_h: (user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "-"),
           usage: {
-            token_fequency: {
+            token_fequencies: {
               token: await getUserTokenFequencies(user.username, process.env.MODEL),
               token_v: await getUserTokenFequencies(user.username, process.env.MODEL_V),
             },
             token_monthly: {
-              token: await getUserTokenUsageThisMonth(user.username, process.env.MODEL),
-              token_v: await getUserTokenUsageThisMonth(user.username, process.env.MODEL_V),
+              token: {
+                this_month: await getUserTokenUsageThisMonth(user.username, process.env.MODEL),
+                last_month: await getUserTokenUsageLastMonth(user.username, process.env.MODEL),
+              },
+              token_v: {
+                this_month: await getUserTokenUsageThisMonth(user.username, process.env.MODEL_V),
+                last_month: await getUserTokenUsageLastMonth(user.username, process.env.MODEL_V),
+              }
             },
-            use_count_fequency: await getUseCountFequenciesWithLimit(user.username, user.role),
-            use_count_monthly: await getUseCountThisMonth(user.username),
+            use_count_fequencies: await getUseCountFequenciesWithLimit(user.username, user.role),
+            use_count_monthly: {
+              this_month: await getUseCountThisMonth(user.username),
+              last_month: await getUseCountLastMonth(user.username),
+            }
           },
           usage_fees: JSON.parse(user.usage),
           balance: user.balance,
@@ -96,6 +105,13 @@ async function getUseCountThisMonth(username) {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth() + 1; // Add 1 because getMonth() returns 0-11
+  return getUseCountByMonth(username, year, month);
+}
+
+async function getUseCountLastMonth(username) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
   return getUseCountByMonth(username, year, month);
 }
 
@@ -142,6 +158,13 @@ async function getUserTokenUsageThisMonth(username, model) {
   const now = new Date();
   const year = now.getFullYear();
   const month = now.getMonth() + 1; // Add 1 because getMonth() returns 0-11
+  return getUserTokenUsageByMonth(username, model, year, month);
+}
+
+async function getUserTokenUsageLastMonth(username, model) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
   return getUserTokenUsageByMonth(username, model, year, month);
 }
 

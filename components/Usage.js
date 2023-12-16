@@ -1,6 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
 import ProgressBar from "./ProgressBar";
-import { feeCal } from "../utils/usageUtils";
 import { getRoleLevel } from "utils/userUtils";
 import PayPalButton from "./PayPalButton";
 import { refreshUserInfo } from "utils/userUtils";
@@ -8,9 +7,11 @@ const moment = require('moment');
 
 function Usage() {
   const [user, setUser] = useState(null);
-  const [useFequency, setUseFequency] = useState(null);
-  const [tokenUsage, setTokenUsage] = useState(null);
-  const [fee, setFee] = useState(null);
+  const [tokenFequencies, setTokenFequencies] = useState(null);
+  const [tokenMonthly, setTokenMonthly] = useState(null);
+  const [useCountFequencies, setUseCountFequencies] = useState(null);
+  const [useCountMonthly, setUseCountMonthly] = useState(null);
+
   const [message, setMessage] = useState(null);
   const [amount, setAmount] = useState(0);
 
@@ -62,9 +63,14 @@ function Usage() {
 
       const user = data.user;
       setUser(user);
-      setFee(feeCal(user.usage));
-      setUseFequency(user.use_fequency);
-      setTokenUsage(user.token_usage);
+      setUseCountFequencies(user.usage.use_count_fequencies);
+      setUseCountMonthly(user.usage.use_count_monthly);
+      setTokenFequencies(user.usage.token_fequencies);
+      setTokenMonthly(user.usage.token_monthly);
+
+      if (user.role === "root_user") {
+        setMessage("You are the root_user.");
+      }
     }
 
     if (localStorage.getItem("user") && !user) {
@@ -89,35 +95,98 @@ function Usage() {
           <div>Email: {localStorage.getItem("userEmail")}</div>
           <div>Subscription: `{localStorage.getItem("userRole")}`</div>
           <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at !== null && user.role_expires_at < new Date()) && "(Expired)"}</div>
-          {useFequency && tokenUsage && getRoleLevel(user.role) >= 1 && <div className="mt-3">
-            <div>- Token usage</div>
+          {user.usage && getRoleLevel(user.role) >= 1 && <div className="mt-3">
+            <div>- Monthly Usage</div>
+            <div className="mt-1">Use Count</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
-                  <td className="mr-3">Query Counter</td>
-                  <td className="mr-3">Daily: {useFequency.daily}</td>
-                  <td className="mr-3">Weekly: {useFequency.weekly}</td>
-                  <td className="mr-3">Monthly: {useFequency.monthly}</td>
+                  <td className="mr-3">Use Count</td>
+                  <td className="mr-3">This Month: {useCountMonthly.this_month}</td>
+                  <td className="mr-3">Last Month: {useCountMonthly.last_month}</td>
                 </tr>
+              </tbody>
+            </table>
+            <div className="mt-3">GPT-4 Turbo Token</div>
+            <table className="table-fixed mt-1">
+              <tbody>
                 <tr>
                   <td className="mr-3">Input</td>
-                  <td className="mr-3">Daily: {tokenUsage.daily[0].input}</td>
-                  <td className="mr-3">Weekly: {tokenUsage.weekly[0].input}</td>
-                  <td className="mr-3">Monthly: {tokenUsage.monthly[0].output}</td>
+                  <td className="mr-3">This Month: {tokenMonthly.token.this_month.input}</td>
+                  <td className="mr-3">Last Month: {tokenMonthly.token.last_month.input}</td>
                 </tr>
                 <tr>
                   <td className="mr-3">Output</td>
-                  <td className="mr-3">Daily: {tokenUsage.daily[0].output}</td>
-                  <td className="mr-3">Weekly: {tokenUsage.weekly[0].output}</td>
-                  <td className="mr-3">Monthly: {tokenUsage.monthly[0].output}</td>
+                  <td className="mr-3">This Month: {tokenMonthly.token.this_month.output}</td>
+                  <td className="mr-3">Last Month: {tokenMonthly.token.last_month.input}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="mt-3">GPT-4 Vision Token</div>
+            <table className="table-fixed mt-1">
+              <tbody>
+                  <tr>
+                    <td className="mr-3">Input</td>
+                    <td className="mr-3">This Month: {tokenMonthly.token_v.this_month.input}</td>
+                    <td className="mr-3">Last Month: {tokenMonthly.token_v.last_month.input}</td>
+                  </tr>
+                  <tr>
+                    <td className="mr-3">Output</td>
+                    <td className="mr-3">This Month: {tokenMonthly.token_v.this_month.output}</td>
+                    <td className="mr-3">Last Month: {tokenMonthly.token_v.last_month.output}</td>
+                  </tr>
+                </tbody>
+              </table>
+            <div className="mt-3">- Fequencies</div>
+            <table className="table-fixed mt-1">
+              <tbody>
+                <tr>
+                  <td className="mr-3">Use Count</td>
+                  <td className="mr-3">Daily: {useCountFequencies.daily}</td>
+                  <td className="mr-3">Weekly: {useCountFequencies.weekly}</td>
+                  <td className="mr-3">Monthly: {useCountFequencies.monthly}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="mt-3">GPT-4 Turbo Token</div>
+            <table className="table-fixed mt-1">
+              <tbody>
+                <tr>
+                  <td className="mr-3">Input</td>
+                  <td className="mr-3">Daily: {tokenFequencies.token.daily.input}</td>
+                  <td className="mr-3">Weekly: {tokenFequencies.token.weekly.input}</td>
+                  <td className="mr-3">Monthly: {tokenFequencies.token.monthly.input}</td>
+                </tr>
+                <tr>
+                  <td className="mr-3">Output</td>
+                  <td className="mr-3">Daily: {tokenFequencies.token.daily.output}</td>
+                  <td className="mr-3">Weekly: {tokenFequencies.token.weekly.output}</td>
+                  <td className="mr-3">Monthly: {tokenFequencies.token.monthly.output}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="mt-3">GPT-4 Vision Token</div>
+            <table className="table-fixed mt-1">
+              <tbody>
+                <tr>
+                  <td className="mr-3">Input</td>
+                  <td className="mr-3">Daily: {tokenFequencies.token_v.daily.input}</td>
+                  <td className="mr-3">Weekly: {tokenFequencies.token_v.weekly.input}</td>
+                  <td className="mr-3">Monthly: {tokenFequencies.token_v.monthly.input}</td>
+                </tr>
+                <tr>
+                  <td className="mr-3">Output</td>
+                  <td className="mr-3">Daily: {tokenFequencies.token_v.daily.output}</td>
+                  <td className="mr-3">Weekly: {tokenFequencies.token_v.weekly.output}</td>
+                  <td className="mr-3">Monthly: {tokenFequencies.token_v.monthly.output}</td>
                 </tr>
               </tbody>
             </table>
             <div className="mt-3">
-              {useFequency.daily_limit && <ProgressBar label={"Daily usage"} progress={useFequency.daily} progressMax={useFequency.daily_limit} />}
-              {useFequency.weekly_limit && <ProgressBar label={"Weekly usage"} progress={useFequency.weekly} progressMax={useFequency.weekly_limit} />}
-              {useFequency.monthly_limit && <ProgressBar label={"Monthly usage"} progress={useFequency.monthly} progressMax={useFequency.monthly_limit} />}
-              {useFequency.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
+              {useCountFequencies.daily_limit && <ProgressBar label={"Daily usage"} progress={useCountFequencies.daily} progressMax={useCountFequencies.daily_limit} />}
+              {useCountFequencies.weekly_limit && <ProgressBar label={"Weekly usage"} progress={useCountFequencies.weekly} progressMax={useCountFequencies.weekly_limit} />}
+              {useCountFequencies.monthly_limit && <ProgressBar label={"Monthly usage"} progress={useCountFequencies.monthly} progressMax={useCountFequencies.monthly_limit} />}
+              {useCountFequencies.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
             </div>
           </div>}
           {getRoleLevel(user.role) >= 2 && <div className="mt-3">
@@ -129,9 +198,6 @@ function Usage() {
                 </tr>
               </tbody>
             </table>
-            <div className="mt-2">
-              <div>Fees: ${fee.dbFee}</div>
-            </div>
           </div>}
           {getRoleLevel(user.role) >= 3 && <div className="mt-3">
             <div>- Service usage</div>
@@ -142,14 +208,11 @@ function Usage() {
                 </tr>
               </tbody>
             </table>
-            <div className="mt-2">
-              <div>Fees: ${fee.dbFee}</div>
-            </div>
           </div>}
           <div className="mt-3">
             <div>- Fees and Balance</div>
-            <ProgressBar label={"Usage"} progress={fee.totalFee} progressMax={user.balance} />
-            <div className="mt-3">Total Fees: ${fee.totalFee}</div>
+            <ProgressBar label={"Usage"} progress={user.usage_fees} progressMax={user.balance} />
+            <div className="mt-3">Total Fees: ${user.usage_fees}</div>
             <div>Balance: ${user.balance}</div>
           </div>
         </div>
