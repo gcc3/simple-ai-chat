@@ -180,7 +180,7 @@ export default async function (req, res) {
         const token_ct = 0;
         const use_eval = false;
         const functionName = "query_node_ai";
-        logadd(queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, ip, browser);
+        logadd(user, queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, ip, browser);
         res.write(`data: ${nodeAiQueryResult}\n\n`); res.flush();
         res.write(`data: ###ENV###${model}\n\n`); res.flush();
         res.write(`data: ###STATS###${temperature},${top_p},${token_ct},${use_eval},${functionName}\n\n`);
@@ -205,7 +205,7 @@ export default async function (req, res) {
       }
       
       console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
-      logadd(queryId, model, "F=" + function_input, "F=" + functionMessage, ip, browser);
+      logadd(user, queryId, model, "F=" + function_input, "F=" + functionMessage, ip, browser);
     }
 
     // Replace input with original
@@ -292,7 +292,7 @@ export default async function (req, res) {
     if (output.trim().length === 0) output = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(output + "\n");
-    logadd(queryId, model, input, output, ip, browser);
+    logadd(user, queryId, model, input, output, ip, browser);
 
     res.end();
     return;

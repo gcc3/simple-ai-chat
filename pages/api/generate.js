@@ -124,7 +124,7 @@ export default async function(req, res) {
     if (output.trim().length === 0) output = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(output + "\n");
-    logadd(queryId, model, input, output, ip, browser);
+    logadd(user, queryId, model, input, output, ip, browser);
 
     res.status(200).json({
       result: {
