@@ -32,7 +32,13 @@ export default async function search(args) {
 
     if (data.success) {
       if (data.result && data.result.length > 0) {
-        return JSON.stringify(data.result, null, 2);
+        let result = "";
+        for (let i = 0; i < data.result.length; i++) {
+          result += "Document: " + data.result[i].document + "\n" +
+                    "Score: " + data.result[i].score + "\n" +
+                    "Content:\n" + data.result[i].content + "\n\n";
+        }
+        return result;
       } else {
         return "No results found.";
       }
