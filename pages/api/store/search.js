@@ -26,8 +26,10 @@ export default async function handler(req, res) {
     }
     
     // Query
-    const corpus_id = JSON.parse(storeInfo.settings).corpus_id;
-    const queryResult = await vectaraQuery(word, corpus_id);
+    const settings = JSON.parse(storeInfo.settings);
+    const corpusId = settings.corpusId;
+    const apiKey = settings.apiKey;
+    const queryResult = await vectaraQuery(word, corpusId, apiKey);
     res.status(200).json({
       success: true,
       result: queryResult,

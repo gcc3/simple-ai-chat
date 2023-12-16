@@ -1,11 +1,11 @@
-export async function vectaraQuery(query, corpusId) {
+export async function vectaraQuery(query, corpusId, apiKey) {
   const response = await fetch("https://api.vectara.io/v1/query", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
       Accept: "application/json",
       "customer-id": process.env.VECTARA_CUSTOMER_ID,
-      "x-api-key": process.env.VECTARA_API_KEY,
+      "x-api-key": apiKey,
     },
     body: JSON.stringify({
       query: [
@@ -221,7 +221,7 @@ export async function deleteVectaraCorpus(corpusId, jwtToken) {
   });
 
   const data = await response.json();
-  if (data && data.status && data.status.code === "OK") {
+  if (data && data.status && (data.status.code === "OK" || data.status.code === "NOT_FOUND")) {
     return true;
   } else {
     return false;
@@ -257,7 +257,7 @@ export async function deleteVectaraApiKey(keyId, jwtToken) {
   });
 
   const data = await response.json();
-  if (data && data.status && (data.status[0].code === "OK") || (data.status[0].code === "NOT_FOUND")) {
+  if (data && data.status && data.status.length > 0 && (data.status[0].code === "OK") || (data.status[0].code === "NOT_FOUND")) {
     return true;
   } else {
     return false;
