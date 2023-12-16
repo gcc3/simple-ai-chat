@@ -33,20 +33,20 @@ export default async function (req, res) {
 
   // Store count limit
   const sameUserStores = await getUserStores(username);
-  if (user.role === "user" && sameUserStores.length >= 1) {
+  if (user.role === "user" && sameUserStores.length >= 0) {
     return res.status(400).json({ 
       success: false,
-      error: "`user` can create at most 1 store."
+      error: "`user` cannot create data store."
     });
-  } else if (user.role === "pro_user" && sameUserStores.length >= 3) {
+  } else if (user.role === "pro_user" && sameUserStores.length >= 1) {
     return res.status(400).json({ 
       success: false,
-      error: "`pro_user` can create at most 3 stores."
+      error: "You've already created a data store."
     });
-  } else if (user.role === "super_user" && sameUserStores.length >= 10) {
+  } else if (user.role === "super_user" && sameUserStores.length >= 2) {
     return res.status(400).json({ 
       success: false,
-      error: "`super_user` can create at most 10 stores."
+      error: "Your can create at most 2 data stores."
     });
   }
 
