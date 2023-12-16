@@ -365,9 +365,9 @@ const insertUser = async (username, role, role_expires_at, password, email, bala
         // If the username doesn't exist, proceed with the insertion
         const group = username;
         const stmt = db.prepare(
-          "INSERT INTO users (username, \"group\", role, role_expires_at, password, email, balance, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
+          "INSERT INTO users (username, \"group\", role, role_expires_at, password, email, balance, usage, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
         );
-        stmt.run([username, group, role, role_expires_at, password, email, balance, settings, "inactive", new Date()], function (err) {
+        stmt.run([username, group, role, role_expires_at, password, email, balance, 0, settings, "inactive", new Date()], function (err) {
           if (err) {
             reject(err);
             return;
