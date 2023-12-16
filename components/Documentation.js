@@ -6,18 +6,18 @@ const Documentation = () => {
     { name: "GPT-4 Turbo", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
     { name: "GPT-4 Vision", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box." },
     { name: "Roles/assistants", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
-    { name: "Personal Database (in progress)", description: "Upload files to your personal database for powerful data searches. The results will be inserted as prompts to provide knowledgeable answers." },
+    { name: "Personal Database", description: "Upload files to your personal database for powerful data searches. The results will be inserted as prompts to provide knowledgeable answers." },
     { name: "Midjourney (in progress)", description: "Utilize the most advanced image generation AI, Midjourney, in combination with ChatGPT prompts to generate high-quality certified images." },
   ];
 
   const sub_features = [
     { name: "Full-screen mode and split-screen mode", description: "For easy use requiring extensive input and output, such as programmers, essay writer." },
     { name: "De-hallucination(`self_eval_score`)", description: "Detect hallucinations in chat to provide more trustworthiness, use command \`:stats on\`." },
-    { name: "TTS voice", description: "Reading with an option to select from the system's local TTS voice library." },
+    { name: "TTS voice", description: "Reading with an option to select from the system's local TTS voice library, use command \`:speak on\` to enable." },
     { name: "Themes", description: "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode." },
-    { name: "Function calls", description: "Such as weather and time queries, etc." },
-    { name: "Location-based query", description: "Questioning based on user's geographic location information. e.g., answering \"How's the weather today?\" by automatically obtaining the location." },
-    { name: "Page redirection", description: "Jump to a specified page, for example: Open the official website of X University." },
+    { name: "Function calls", description: "GPT will choise function to use to get information he need. Such as weather and time queries, etc. Functions can be called by user directlly from the input as well." },
+    { name: "Location-based query", description: "Questioning based on user's geographic location information. e.g., answering \"How's the weather today?\" by automatically obtaining the location. To use location feature, use command \`:location on\`." },
+    { name: "Page redirection", description: "Jump to a specified page, GPT will do it automatically, for example: Open the official website of OpenAI." },
     { name: "Shortcuts", description: "Supports convenient shortcut operations." },
   ];
 
