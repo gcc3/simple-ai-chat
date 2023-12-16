@@ -1,37 +1,3 @@
-export function genUsage(gpt4Usage = null, gpt4vUsage = null, dbUsage = null, midjourneyUsage = null) {
-  let usage = {};
-
-  if (gpt4Usage) {
-    usage.gpt4 = gpt4Usage;
-  } else {
-    usage.gpt4 = {
-      counter: 0,
-      token_input: 0,
-      token_output: 0,
-    }
-  }
-
-  if (gpt4vUsage) {
-    usage.gpt4v = gpt4vUsage;
-  } else {
-    usage.gpt4v = {
-      counter: 0,
-      token_input: 0,
-      token_output: 0,
-    }
-  }
-
-  if (dbUsage) {
-    usage.db = dbUsage;
-  }
-
-  if (midjourneyUsage) {
-    usage.midjourney = midjourneyUsage;
-  }
-
-  return usage;
-}
-
 export function gpt4FeeCal(input_token_ct, output_token_ct) {
   return input_token_ct * 0.00001 + output_token_ct * 0.00003;
 }
