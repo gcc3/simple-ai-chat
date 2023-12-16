@@ -487,7 +487,9 @@ export default function Home() {
         printImage(image_url, elOutputRef, "before");
       });
     }
-    if (file_urls_encoded.length > 0) console.log("Files:" + file_urls_encoded.join("\n"));
+    if (file_urls_encoded.length > 0) {
+      console.log("Files:" + file_urls_encoded.join("\n"));
+    }
 
     // 2. Replace the full-width characters
     const input = global.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
@@ -509,8 +511,11 @@ export default function Home() {
 
     // Command input
     if (input.startsWith(":")) {
-      console.log("Command Input:\n" + input.substring(1));
-      const commandResult = await command(input);
+      console.log("Command Input:\n" + input);
+
+      // Get command result
+      const files = file_urls.concat(image_urls);
+      const commandResult = await command(input, files);
 
       // Use command return to bypass reset output and info
       if (commandResult !== null) {
@@ -1091,15 +1096,17 @@ export default function Home() {
     // Look for any images in the pasted data
     const items = clipboardData.items;
     for (let i = 0; i < items.length; i++) {
-      console.log(items[i].type);
-      if (items[i].type.indexOf('image/jpeg') === 0
-      || items[i].type.indexOf('image/png') === 0
-      || items[i].type.indexOf('text/plain') === 0
-      || items[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0 
-      || items[i].type.indexOf('application/pdf') === 0) {
-        // image, text file, word file, pdf file    
-        event.preventDefault();
-        filePlus(items[i].getAsFile(), items[i].type);
+      // Must be a file, for paste plain text should be ignored.
+      if (items[i].getAsFile()) {
+        if (items[i].type.indexOf('image/jpeg') === 0
+        || items[i].type.indexOf('image/png') === 0
+        || items[i].type.indexOf('text/plain') === 0
+        || items[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0 
+        || items[i].type.indexOf('application/pdf') === 0) {
+          // image, text file, word file, pdf file    
+          event.preventDefault();
+          filePlus(items[i].getAsFile(), items[i].type);
+        }
       }
     }
   };

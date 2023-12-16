@@ -8,7 +8,7 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
-  const { name, file_url } = req.body;
+  const { name, files } = req.body;
 
   // Authentication
   const authResult = authenticate(req);
@@ -49,7 +49,7 @@ export default async function (req, res) {
   }
 
   // Upload file
-  if (!await uploadFileToVectaraCorpus(settings.corpusId, file_url, jwtToken)) {
+  if (!await uploadFileToVectaraCorpus(settings.corpusId, files, jwtToken)) {
     console.log("Failed to upload file.");
     return res.status(400).json({
       success: false,

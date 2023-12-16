@@ -64,6 +64,10 @@ export async function getUacResult(user, ip) {
 }
 
 async function checkFequenciesExceeded(user) {
+  if (user.role == "root") {
+    return false;
+  }
+
   const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
   const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
   const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());

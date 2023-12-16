@@ -1,7 +1,7 @@
 import { initializeSession } from "utils/sessionUtils";
 import session from "./session";
 
-export default async function store(args) {
+export default async function store(args, files) {
   const command = args[0];
   const usage = "Usage: :store [name?]\n" +
                 "       :store [ls|list]\n" +
@@ -245,18 +245,13 @@ export default async function store(args) {
 
   // Upload file for indexing
   if (command === "data" && args[1] === "upload") {
-    if (args.length !== 3) {
+    if (args.length !== 2 || !files) {
       return "Usage: :store data upload [file]\n";
     }
 
     if (!localStorage.getItem("user")) {
       return "Please login.";
     }
-
-    if (!file_url.includes("+file[") || !file_url.includes("]")) {
-      return "Invalid file URL.";
-    }
-    const file_url = args[2].replace("+file[", "").replace("]", "");
     
     try {
       const response = await fetch("/api/store/file-upload", {
@@ -266,7 +261,7 @@ export default async function store(args) {
         },
         body: JSON.stringify({
           name: sessionStorage.getItem("store"),
-          file_url,
+          files,  // array of file URLs
         }),
       });
 

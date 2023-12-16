@@ -307,12 +307,14 @@ export async function resetVectaraCorpus(corpusId, jwtToken) {
     }
   }
 */
-export async function uploadFileToVectaraCorpus(corpusId, file_url, jwtToken) {
+export async function uploadFileToVectaraCorpus(corpusId, files, jwtToken) {
   const formData = new FormData();
 
   // Get file
-  const file = await fetch(file_url).then((r) => r.blob());
-  formData.append("file", file);
+  for (let i = 0; i < files.length; i++) {
+    const file = await fetch(files[i]).then((r) => r.blob());
+    formData.append("file", file);
+  }
 
   const response = await fetch("https://api.vectara.io/v1/upload?c=" + process.env.VECTARA_CUSTOMER_ID + "&o=" + corpusId, {
     method: "POST",
@@ -321,7 +323,9 @@ export async function uploadFileToVectaraCorpus(corpusId, file_url, jwtToken) {
       "Accept": "application/json",
       "Authorization": "Bearer " + jwtToken,
     },
-    body: formData,
+    body: {
+      file: formData,
+    }
   });
 
   const data = await response.json();
