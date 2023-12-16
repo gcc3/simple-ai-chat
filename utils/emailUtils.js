@@ -11,6 +11,13 @@ export function verifiyEmailAddress(email) {
 }
 
 export async function evalEmailAddress(email) {
+  if (process.env.HUNTER_API_KEY === undefined) {
+    console.error("Hunter API key not found.");
+    return {
+      success: true,
+    };
+  }
+
   // Use hunter.io API to check if the email is valid.
   try {
     const response = await fetch("https://api.hunter.io/v2/email-verifier?email=" + email + "&api_key=" + process.env.HUNTER_API_KEY);
