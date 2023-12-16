@@ -1181,7 +1181,7 @@ export default function Home() {
               <div className={styles.nav}>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>Documentation</div>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>Usage</div>
-                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>Pricing</div>}
+                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>Subcriptions</div>}
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>Privacy Policy</div>
               </div>
               <div className={styles.content}>
