@@ -138,12 +138,23 @@ export async function generateMessages(user, input, images, queryId, role, store
   let location_prompt = "";
   if (use_location && location) {
     // localtion example: (40.7128, -74.0060)
-    const lat = location.slice(1, -1).split(",")[0];
-    const lng = location.slice(1, -1).split(",")[1];
+    const lat = location.slice(1, -1).split(",")[0].trim();
+    const lng = location.slice(1, -1).split(",")[1].trim();
     const query = {latitude: lat, longitude: lng}
-    const cities = nearbyCities(query)
-    const city = cities[0]
-    const locationMessage = "Additional information: user is currently near city " + city.name + ", " + city.country + ". Use this infromation if necessary.";
+
+    let locationMessage = "Additional information:\n";
+
+    // Get nearby cities
+    const cities = nearbyCities(query);
+    const city = cities[0];
+    locationMessage += "user is currently near city " + city.name + ", " + city.country + "\n";
+
+    // Get user address with Google Maps API
+    const address = await getAddress(lat, lng);
+    locationMessage += "User accurate address: " + address + "\n";
+
+    // Finish
+    locationMessage += "Use this infromation if necessary.\n";
 
     // Feed with location message
     messages.push({

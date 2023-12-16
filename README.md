@@ -292,7 +292,7 @@ The value should be `true` or `false`.
 * HUNTER_API_KEY  
 Use hunter API to verify email.  
 
-* GOOGLE_APIS_KEY  
+* GOOGLE_API_KEY  
 Use for detect accurate address.  
 
 
