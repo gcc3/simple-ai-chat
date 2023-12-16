@@ -136,23 +136,24 @@ function Usage() {
             <div className="mt-3">GPT-4 Vision Token</div>
             <table className="table-fixed mt-1">
               <tbody>
-                  <tr>
-                    <td className="mr-3">Input</td>
-                    <td className="mr-3">This Month: {tokenMonthly.token_v.this_month.input}</td>
-                    <td className="mr-3">Last Month: {tokenMonthly.token_v.last_month.input}</td>
-                  </tr>
-                  <tr>
-                    <td className="mr-3">Output</td>
-                    <td className="mr-3">This Month: {tokenMonthly.token_v.this_month.output}</td>
-                    <td className="mr-3">Last Month: {tokenMonthly.token_v.last_month.output}</td>
-                  </tr>
-                  <tr>
-                    <td className="mr-3">Usage Fees:</td>
-                    <td className="mr-3"> ${gpt4vFeeCal(tokenMonthly.token_v.this_month.input, tokenMonthly.token_v.this_month.output)}</td>
-                    <td className="mr-3"> ${gpt4vFeeCal(tokenMonthly.token_v.last_month.input, tokenMonthly.token_v.last_month.output)}</td>
-                  </tr>
-                </tbody>
-              </table>
+                <tr>
+                  <td className="mr-3">Input</td>
+                  <td className="mr-3">This Month: {tokenMonthly.token_v.this_month.input}</td>
+                  <td className="mr-3">Last Month: {tokenMonthly.token_v.last_month.input}</td>
+                </tr>
+                <tr>
+                  <td className="mr-3">Output</td>
+                  <td className="mr-3">This Month: {tokenMonthly.token_v.this_month.output}</td>
+                  <td className="mr-3">Last Month: {tokenMonthly.token_v.last_month.output}</td>
+                </tr>
+                <tr>
+                  <td className="mr-3">Usage Fees:</td>
+                  <td className="mr-3"> ${gpt4vFeeCal(tokenMonthly.token_v.this_month.input, tokenMonthly.token_v.this_month.output)}</td>
+                  <td className="mr-3"> ${gpt4vFeeCal(tokenMonthly.token_v.last_month.input, tokenMonthly.token_v.last_month.output)}</td>
+                </tr>
+              </tbody>
+            </table>
+            <div className="mt-2">* For token pricing, refer to the OpenAI official pricing document.(<a href="https://openai.com/pricing#language-models"><u>link</u></a>) </div>
             <div className="mt-3">- Fequencies</div>
             <table className="table-fixed mt-1">
               <tbody>

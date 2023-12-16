@@ -4,7 +4,6 @@ import { toggleEnterChange } from '../states/enterSlice.js';
 import { updateUserSetting } from 'utils/userUtils.js';
 
 export default function fullscreen(args) {
-
   const usage = "Usage: :fullscreen" + "\n" +
                 "       :fullscreen [split/off]";
 
