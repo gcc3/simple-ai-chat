@@ -9,10 +9,12 @@ export async function generateFileURl(blob, file_id) {
     contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
   } else if (blob.name.endsWith('.txt')) {
     contentType = 'text/plain';
+  } else if (blob.name.endsWith('.pdf')) {
+    contentType = 'application/pdf';
   } else {
     return {
       success: false,
-      message: 'Invalid file type. Supported type: JPEG, PNG, DOCX, TXT.'
+      message: 'Invalid file type. Supported type: JPEG, PNG, DOCX, TXT, PDF.'
     };
   }
 

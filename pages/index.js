@@ -1043,11 +1043,14 @@ export default function Home() {
     }
   }
 
-  // +img[] or +image[] or +file[]
-  const filePlus = async (blob, typePrefix) => {
+  // +img[], +image[], +file[]
+  const filePlus = async (blob, type) => {
     // Insert placeholder text for the image
     const file_id = Date.now().toString();
-    const filePlaceholder = typePrefix + "[file_id:" + file_id +"(uploading...)] ";
+
+    let prefix = "+file";
+    if (type === "image/png" || type === "image/jpeg") prefix = "+image";
+    const filePlaceholder = prefix + "[file_id:" + file_id +"(uploading...)] ";
 
     // Insert the placeholder text at the cursor position or text selection
     const text = elInputRef.current.value;
@@ -1067,7 +1070,7 @@ export default function Home() {
     console.log('Image/file pasted: ' + blob.name);
 
     // Upload the image to S3
-    const uploadResult = await generateFileURl(blob, file_id);
+    const uploadResult = await generateFileURl(blob, file_id, type);
     if (!uploadResult.success) {
       console.error(uploadResult.message);
       setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", "file_id:" + file_id + "(failed:" + uploadResult.message + ")"));
@@ -1088,18 +1091,15 @@ export default function Home() {
     // Look for any images in the pasted data
     const items = clipboardData.items;
     for (let i = 0; i < items.length; i++) {
-      if (items[i].type.indexOf('image') === 0) {
-        // prevent the default behavior
+      console.log(items[i].type);
+      if (items[i].type.indexOf('image/jpeg') === 0
+      || items[i].type.indexOf('image/png') === 0
+      || items[i].type.indexOf('text/plain') === 0
+      || items[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0 
+      || items[i].type.indexOf('application/pdf') === 0) {
+        // image, text file, word file, pdf file    
         event.preventDefault();
-
-        // Generate +image
-        filePlus(items[i].getAsFile(), "+img");
-      } else if (items[i].type.indexOf('text') === 0 || items[i].type.indexOf('application') === 0) {
-        // prevent the default behavior
-        event.preventDefault();
-
-        // Generate +file
-        filePlus(items[i].getAsFile(), "+file");
+        filePlus(items[i].getAsFile(), items[i].type);
       }
     }
   };
@@ -1116,12 +1116,14 @@ export default function Home() {
 
     // Look for any images in the dropped data
     for (let i = 0; i < droppedFiles.length; i++) {
-      if (droppedFiles[i].type.indexOf('image') === 0) {
-        // prevent the default behavior
+      if (droppedFiles[i].type.indexOf('image/jpeg') === 0
+      || droppedFiles[i].type.indexOf('image/png') === 0
+      || droppedFiles[i].type.indexOf('text/plain') === 0 
+      || droppedFiles[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0
+      || droppedFiles[i].type.indexOf('application/pdf') === 0) {
+        // image, text file, word file, pdf file
         event.preventDefault();
-
-        // Generate +image
-        filePlus(droppedFiles[i]);
+        filePlus(droppedFiles[i], droppedFiles[i].type);
       }
     }
   }
