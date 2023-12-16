@@ -2,7 +2,7 @@ import { getLogs, insertLog } from "./sqliteUtils.js"
 
 const fs = require('fs');
 
-export function logadd(user, session, model, input, output, ip, browser) {
+export function logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser) {
   // Filter out logs
   if (logfilter(output, "USER")) return;
   if (logfilter(output, "IP")) return;
@@ -14,7 +14,7 @@ export function logadd(user, session, model, input, output, ip, browser) {
   }
 
   // Insert log
-  insertLog(session, username, model, input, output, ip, browser);
+  insertLog(session, username, model, input_token_ct, input, output_token_ct, output, ip, browser);
 }
 
 export async function loglist(session, limit = 50) {

@@ -6,6 +6,7 @@ import { getMaxTokens } from "utils/tokenUtils";
 import { authenticate } from "utils/authUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { getUacResult } from "utils/uacUtils";
+import { countToken } from "utils/tokenUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -124,7 +125,11 @@ export default async function(req, res) {
     if (output.trim().length === 0) output = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(output + "\n");
-    logadd(user, queryId, model, input, output, ip, browser);
+
+    // Log
+    const input_token_ct = token_ct.total;
+    const output_token_ct = countToken(model, output);
+    logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     res.status(200).json({
       result: {
@@ -132,7 +137,7 @@ export default async function(req, res) {
         stats: {
           temperature: process.env.TEMPERATURE,
           top_p: process.env.TOP_P,
-          token_ct: token_ct.total,
+          token_ct: input_token_ct,
           func: false
         },
         info: {

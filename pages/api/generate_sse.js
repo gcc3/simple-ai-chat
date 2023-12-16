@@ -6,7 +6,7 @@ import { tryParseJSON } from "utils/jsonUtils"
 import { evaluate } from './evaluate';
 import { getFunctions, executeFunction } from "function.js";
 import { getTools } from "tools.js";
-import { getMaxTokens } from "utils/tokenUtils";
+import { countToken, getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
@@ -180,7 +180,12 @@ export default async function (req, res) {
         const token_ct = 0;
         const use_eval = false;
         const functionName = "query_node_ai";
-        logadd(user, queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, ip, browser);
+
+        // Log
+        const input_token_ct = countToken(model, "N=query_node_ai(query=" + input + ")");
+        const output_token_ct = countToken(model, "N=" + nodeAiQueryResult);
+        logadd(user, queryId, model, input_token_ct, "N=query_node_ai(query=" + input + ")", output_token_ct, "N=" + nodeAiQueryResult, ip, browser);
+
         res.write(`data: ${nodeAiQueryResult}\n\n`); res.flush();
         res.write(`data: ###ENV###${model}\n\n`); res.flush();
         res.write(`data: ###STATS###${temperature},${top_p},${token_ct},${use_eval},${functionName}\n\n`);
@@ -205,7 +210,11 @@ export default async function (req, res) {
       }
       
       console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
-      logadd(user, queryId, model, "F=" + function_input, "F=" + functionMessage, ip, browser);
+
+      // Log
+      const input_token_ct = countToken(model, "F=" + function_input);
+      const output_token_ct = countToken(model, "F=" + functionMessage);
+      logadd(user, queryId, model, input_token_ct, "F=" + function_input, output_token_ct, "F=" + functionMessage, ip, browser);
     }
 
     // Replace input with original
@@ -292,11 +301,14 @@ export default async function (req, res) {
     console.log("--- token_ct ---");
     console.log(JSON.stringify(token_ct) + "\n");
 
-    // Log
     if (output.trim().length === 0) output = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(output + "\n");
-    logadd(user, queryId, model, input, output, ip, browser);
+    
+    // Log
+    const input_token_ct = token_ct.total;
+    const output_token_ct = countToken(model, output);
+    logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     res.end();
     return;

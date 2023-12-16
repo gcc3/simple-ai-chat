@@ -171,12 +171,10 @@ const getLogs = async (session, limit = 50) => {
   }
 };
 
-const insertLog = async (session, username, model, input, output, ip, browser) => {
+const insertLog = async (session, username, model, input_l, input, output_l, output, ip, browser) => {
   const db = await getDatabaseConnection();
   const time = Date.now();
   const time_h = formatUnixTimestamp(time);
-  const input_l = input.length;
-  const output_l = output.length;
 
   try {
     return await new Promise((resolve, reject) => {
