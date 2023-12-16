@@ -9,7 +9,7 @@ export default async function store(args, files) {
                 "       :store reset\n" +
                 "       :store add [name]\n" +
                 "       :store data upload [file]\n" +
-                "       :store data reset [name]\n" +
+                "       :store data reset [name?]\n" +
                 "       :store [del|delete] [name]\n" +
                 "       :store set owner [owner]\n" +
                 "       :store set [key] [value]\n";
@@ -281,8 +281,8 @@ export default async function store(args, files) {
 
   // Reset a store
   if (command === "data" && args[1] === "reset") {
-    if (args.length !== 3) {
-      return "Usage: :store data reset [name]\n";
+    if (args.length !== 2 && args.length !== 3) {
+      return "Usage: :store data reset [name?]\n";
     }
 
     if (!localStorage.getItem("user")) {
@@ -293,9 +293,17 @@ export default async function store(args, files) {
       return "Store name must be quoted with double quotes.";
     }
 
-    const name = args[2].slice(1, -1);
-    if (!name) {
-      return "Invalid store name.";
+    let name = "";
+    if (args.length === 2) {
+      name = sessionStorage.getItem("store");
+      if (!name) {
+        return "No data store is set, please use command \`:store use [name]\` to set a store.";
+      }
+    } else {
+      name = args[2].slice(1, -1);
+      if (!name) {
+        return "Invalid store name.";
+      }
     }
 
     try {

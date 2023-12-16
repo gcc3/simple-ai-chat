@@ -126,7 +126,7 @@ export function getCommands() {
     { id: "", command: ":store add [name]", short_description: "Create a store.", description: "" },
     { id: "", command: ":store [del|delete] [name]", short_description: "Delete a store.", description: "" },
     { id: "", command: ":store data upload [file]", short_description: "Upload file for indexing.", description: "" },
-    { id: "", command: ":store data reset [name]", short_description: "Reset data.", description: "" },
+    { id: "", command: ":store data reset [name?]", short_description: "Reset store data.", description: "" },
     { id: "", command: ":store set owner [owner]", short_description: "Change store owner.", description: "" },
     { id: "", command: ":store set [key] [value]", short_description: "Setup a store settings.", description: "" },
     { id: "commands-user", command: ":user add [username] [email] [password?]", short_description: "Create a user.", description: "" },
