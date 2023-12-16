@@ -1,10 +1,12 @@
 import React, { useEffect, useState } from "react";
 
-const PayPalButton = ({ targetRole, amount, onSuccess }) => {
+const PayPalButton = ({ amount, targetRole = null, onSuccess }) => {
   useEffect(() => {
     // Set amount
-    if (targetRole === "pro_user") amount = "5.00";
-    if (targetRole === "super_user") amount = "15.00";
+    if (targetRole) {
+      if (targetRole === "pro_user") amount = "5.00";
+      if (targetRole === "super_user") amount = "15.00";
+    }
 
     let scriptAdded = false;
     const loadPayPalScript = async () => {

@@ -128,4 +128,5 @@ export function getRoleLevel(role) {
   if (role === "pro_user") return 2;
   if (role === "super_user") return 3;
   if (role === "root_user") return 4;
+  return 0;
 }

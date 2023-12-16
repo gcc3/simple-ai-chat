@@ -506,6 +506,28 @@ const updateUserPassword = async (username, newPassword) => {
   }
 };
 
+const updateUserBalance = async (username, newBalance) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET balance = ?, updated_at = ? WHERE username = ?");
+      stmt.run([newBalance, new Date(), username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const updateUserEmail = async (username, newEmail) => {
   const db = await getDatabaseConnection();
   try {
@@ -972,6 +994,7 @@ export {
   userLeaveGroup,
   updateUsername,
   updateUserPassword,
+  updateUserBalance,
   updateUserEmail,
   updateUserEmailVerifiedAt,
   updateUserRole,

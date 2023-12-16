@@ -28,7 +28,7 @@ export default async function (req, res) {
     if (!user) {
       return res.status(400).json({ 
         success: false,
-        message: 'User not found.',
+        error: 'User not found.',
       });
     }
 
@@ -91,25 +91,25 @@ export default async function (req, res) {
             message: 'Subscription updated, an email is sent to user.', 
             data 
           });
-        }).catch((err) => {
-          console.error(err, err.stack);
+        }).catch((error) => {
+          console.error(error, error.stack);
           return res.status(500).json({ 
             success: false, 
             message: 'Subscription updated, failed to send email to user.', 
-            error: err
+            error: error
           });
         });
     } else {
       return res.status(400).json({ 
         success: false, 
-        message: 'Failed to update subscription, please contact support.',
+        error: 'Failed to update subscription, please contact support.',
        });
     }
   } catch (error) {
     console.error('Error:', error);
     return res.status(500).json({ 
       success: false,
-      message: 'Error occurred while updating the user subscription, please contact support.'
+      error: 'Error occurred while updating the user subscription, please contact support.'
     });
   }
 }
