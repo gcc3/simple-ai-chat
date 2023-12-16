@@ -3,13 +3,13 @@ export default async function search(args) {
     return "Usage: :search [word]";
   }
 
+  if (!args[0].startsWith("\"") || !args[0].endsWith("\"")) {
+    return "Word must be quoted with double quotes.";
+  }
+
   const store = sessionStorage.getItem("store");
   if (!store) {
     return "No store selected.";
-  }
-
-  if (!args[0].startsWith("\"") || !args[0].endsWith("\"")) {
-    return "Word must be quoted with double quotes.";
   }
 
   const word = args[0].slice(1, -1);
