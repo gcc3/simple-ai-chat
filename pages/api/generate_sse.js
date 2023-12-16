@@ -10,6 +10,7 @@ import { getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
+import { getUser } from "utils/sqliteUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -296,12 +297,12 @@ export default async function (req, res) {
     res.end();
     return;
   } catch (error) {
-    console.log("Error:");
+    console.log("Error (Generate SSE API):");
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.write(`data: An error occurred during your request. (${error.response.status})\n\n`)
     } else {
-      console.error(`Error with OpenAI API request: ${error.message}`);
+      console.error(`${error.message}`);
       res.write(`data: An error occurred during your request.\n\n`)
     }
     res.flush();

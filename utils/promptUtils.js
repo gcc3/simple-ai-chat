@@ -2,7 +2,7 @@ import { loglist } from './logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
 import { getRole, getStore } from './sqliteUtils.js';
 import { vectaraQuery } from "utils/vectaraUtils";
-const nearbyCities = require("nearby-cities")
+import { getAddress } from "utils/googleMapsUtils";
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -145,6 +145,7 @@ export async function generateMessages(user, input, images, queryId, role, store
     let locationMessage = "Additional information:\n";
 
     // Get nearby cities
+    const nearbyCities = require("nearby-cities")
     const cities = nearbyCities(query);
     const city = cities[0];
     locationMessage += "user is currently near city " + city.name + ", " + city.country + "\n";
