@@ -130,8 +130,7 @@ const getDatabaseConnection = async () => {
         store: "",
       });
 
-      const usage = JSON.stringify(genUsage());
-      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, usage, settings);
+      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, settings);
       await updateUserEmailVerifiedAt("root");
 
       return db;
@@ -308,11 +307,17 @@ const countTokenForUser = async (user, start, end) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT input_l, output_l FROM logs WHERE user = ? AND time >= ? AND time <= ?`, [user, start, end], (err, row) => {
+      db.all(`SELECT model, SUM(input_l) as totalInput, SUM(output_l) as totalOutput FROM logs WHERE user = ? AND time >= ? AND time <= ? GROUP BY model`, [user, start, end], (err, rows) => {
         if (err) {
           reject(err);
         }
-        resolve(row.count);
+        // Create an array to hold the sum for each model
+        const sumByModel = rows.map(row => ({
+          model: row.model,
+          input: row.totalInput,
+          output: row.totalOutput,
+        }));
+        resolve(sumByModel);
       });
     });
   } finally {
@@ -337,7 +342,7 @@ const getUser = async (username) => {
   }
 };
 
-const insertUser = async (username, role, role_expires_at, password, email, balance, usage, settings) => {
+const insertUser = async (username, role, role_expires_at, password, email, balance, settings) => {
   const db = await getDatabaseConnection();
 
   // Check if the username adheres to Unix naming conventions
@@ -363,9 +368,9 @@ const insertUser = async (username, role, role_expires_at, password, email, bala
         // If the username doesn't exist, proceed with the insertion
         const group = username;
         const stmt = db.prepare(
-          "INSERT INTO users (username, \"group\", role, role_expires_at, password, email, balance, usage, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
+          "INSERT INTO users (username, \"group\", role, role_expires_at, password, email, balance, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
         );
-        stmt.run([username, group, role, role_expires_at, password, email, balance, usage, settings, "inactive", new Date()], function (err) {
+        stmt.run([username, group, role, role_expires_at, password, email, balance, settings, "inactive", new Date()], function (err) {
           if (err) {
             reject(err);
             return;
