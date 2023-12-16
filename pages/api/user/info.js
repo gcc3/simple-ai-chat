@@ -1,6 +1,6 @@
 import { getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
-import { countChatsForUser, countTokenForUser } from 'utils/sqliteUtils.js';
+import { countChatsForUser, countTokenForUserByModel } from 'utils/sqliteUtils.js';
 import { createToken } from 'utils/authUtils.js';
 import { getRoleFequencyLimit } from 'utils/usageUtils.js';
 const moment = require('moment');
@@ -46,7 +46,7 @@ export default async function (req, res) {
 
       res.status(200).json({ 
         user: {
-          id: user.id, 
+          id: user.id,
           username: user.username,
           group: user.group,
           email: user.email,
@@ -54,10 +54,30 @@ export default async function (req, res) {
           role: user.role,
           role_expires_at: user.role_expires_at,
           role_expires_at_h: (user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "-"),
-          usage: JSON.parse(user.usage),
+          usage: {
+            token_fequencies: {
+              token: await getUserTokenFequencies(user.username, process.env.MODEL),
+              token_v: await getUserTokenFequencies(user.username, process.env.MODEL_V),
+            },
+            token_monthly: {
+              token: {
+                this_month: await getUserTokenUsageThisMonth(user.username, process.env.MODEL),
+                last_month: await getUserTokenUsageLastMonth(user.username, process.env.MODEL),
+              },
+              token_v: {
+                this_month: await getUserTokenUsageThisMonth(user.username, process.env.MODEL_V),
+                last_month: await getUserTokenUsageLastMonth(user.username, process.env.MODEL_V),
+              }
+            },
+            use_count_fequencies: await getUseCountFequenciesWithLimit(user.username, user.role),
+            use_count_monthly: {
+              this_month: await getUseCountThisMonth(user.username),
+              last_month: await getUseCountLastMonth(user.username),
+            },
+            db_size: 0,
+          },
+          usage_fees: JSON.parse(user.usage),
           balance: user.balance,
-          token_usage: await getUserTokenUsage(user.username),
-          use_fequency: await getUseFequencyWithLimit(user.username, user.role),
         }
       });
     } else {
@@ -81,7 +101,30 @@ export default async function (req, res) {
   }
 }
 
-async function getUseFequencyWithLimit(username, role) {
+// Use count
+async function getUseCountThisMonth(username) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1; // Add 1 because getMonth() returns 0-11
+  return getUseCountByMonth(username, year, month);
+}
+
+async function getUseCountLastMonth(username) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  return getUseCountByMonth(username, year, month);
+}
+
+async function getUseCountByMonth(username, year, month) {
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const startTime = new Date(year, month - 1, 1).getTime();
+  const endTime = new Date(year, month - 1, daysInMonth, 23, 59, 59).getTime();
+  return await countChatsForUser(username, startTime, endTime);
+}
+
+// Use count fequencies
+async function getUseCountFequenciesWithLimit(username, role) {
   const daily = await countChatsForUser(username, Date.now() - 86400000, Date.now());
   const weekly = await countChatsForUser(username, Date.now() - 604800000, Date.now());
   const monthly = await countChatsForUser(username, Date.now() - 2592000000, Date.now());
@@ -111,11 +154,33 @@ async function getUseFequencyWithLimit(username, role) {
   }
 }
 
-async function getUserTokenUsage(username) {
-  const daily = await countTokenForUser(username, Date.now() - 86400000, Date.now());
-  const weekly = await countTokenForUser(username, Date.now() - 604800000, Date.now());
-  const monthly = await countTokenForUser(username, Date.now() - 2592000000, Date.now());
+// Token
+async function getUserTokenUsageThisMonth(username, model) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1; // Add 1 because getMonth() returns 0-11
+  return getUserTokenUsageByMonth(username, model, year, month);
+}
 
+async function getUserTokenUsageLastMonth(username, model) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth();
+  return getUserTokenUsageByMonth(username, model, year, month);
+}
+
+async function getUserTokenUsageByMonth(username, model, year, month) {
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const startTime = new Date(year, month - 1, 1).getTime();
+  const endTime = new Date(year, month - 1, daysInMonth, 23, 59, 59).getTime();
+  return await countTokenForUserByModel(username, model, startTime, endTime);
+}
+
+// Token fequencies
+async function getUserTokenFequencies(username, model) {
+  const daily = await countTokenForUserByModel(username, model, Date.now() - 86400000, Date.now());
+  const weekly = await countTokenForUserByModel(username, model, Date.now() - 604800000, Date.now());
+  const monthly = await countTokenForUserByModel(username, model, Date.now() - 2592000000, Date.now());
   return {
     daily,
     weekly,

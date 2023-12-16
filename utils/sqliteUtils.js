@@ -130,8 +130,7 @@ const getDatabaseConnection = async () => {
         store: "",
       });
 
-      const usage = JSON.stringify(genUsage());
-      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, usage, settings);
+      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, settings);
       await updateUserEmailVerifiedAt("root");
 
       return db;
@@ -304,15 +303,18 @@ const countChatsForUser = async (user, start, end) => {
 };
 
 // Count how many chats for a user for a date range
-const countTokenForUser = async (user, start, end) => {
+const countTokenForUserByModel = async (user, model, start, end) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT input_l, output_l FROM logs WHERE user = ? AND time >= ? AND time <= ?`, [user, start, end], (err, row) => {
+      db.get(`SELECT SUM(input_l) as totalInput, SUM(output_l) as totalOutput FROM logs WHERE user = ? AND model = ? AND time >= ? AND time <= ?`, [user, model, start, end], (err, row) => {
         if (err) {
           reject(err);
         }
-        resolve(row.count);
+        resolve({
+          input: row.totalInput || 0,
+          output: row.totalOutput || 0,
+        });
       });
     });
   } finally {
@@ -337,7 +339,7 @@ const getUser = async (username) => {
   }
 };
 
-const insertUser = async (username, role, role_expires_at, password, email, balance, usage, settings) => {
+const insertUser = async (username, role, role_expires_at, password, email, balance, settings) => {
   const db = await getDatabaseConnection();
 
   // Check if the username adheres to Unix naming conventions
@@ -365,7 +367,7 @@ const insertUser = async (username, role, role_expires_at, password, email, bala
         const stmt = db.prepare(
           "INSERT INTO users (username, \"group\", role, role_expires_at, password, email, balance, usage, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
         );
-        stmt.run([username, group, role, role_expires_at, password, email, balance, usage, settings, "inactive", new Date()], function (err) {
+        stmt.run([username, group, role, role_expires_at, password, email, balance, 0, settings, "inactive", new Date()], function (err) {
           if (err) {
             reject(err);
             return;
@@ -1003,7 +1005,7 @@ export {
   getSessionLog,
   countChatsForIP,
   countChatsForUser,
-  countTokenForUser,
+  countTokenForUserByModel,
   getUser,
   insertUser,
   deleteUser,

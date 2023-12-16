@@ -1,5 +1,5 @@
-import { countChatsForIP, countChatsForUser } from './sqliteUtils';
-import { getRoleFequencyLimit } from './usageUtils';
+import { getUser, countChatsForIP, countChatsForUser, countTokenForUserByModel } from './sqliteUtils';
+import { getRoleFequencyLimit, gpt4FeeCal, gpt4vFeeCal, dbFeeCal } from './usageUtils';
 
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
@@ -38,11 +38,21 @@ export async function getUacResult(user, ip) {
 
   // Check usage exceeded or not
   if (isLogin) {
-    const exceeded = await checkUsageExceeded(user);
-    if (exceeded) {
+    // Check fequencies
+    const fequenciesExceeded = await checkFequenciesExceeded(user);
+    if (fequenciesExceeded) {
       return {
         success: false,
-        error: "Your usage has exceeded the limit. Please upgrade your subscription to continue using our services.",
+        error: "Your usage fequencies has exceeded the limit. Please upgrade your subscription to continue using our services.",
+      }
+    }
+
+    // Check usage fee
+    const usageExceeded = await checkUsageExceeded(user);
+    if (usageExceeded) {
+      return {
+        success: false,
+        error: "Your usage fee has exceeded. Please charge your balance to continue using our services.",
       }
     }
   }
@@ -53,7 +63,7 @@ export async function getUacResult(user, ip) {
   };
 }
 
-async function checkUsageExceeded(user) {
+async function checkFequenciesExceeded(user) {
   const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
   const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
   const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
@@ -64,4 +74,38 @@ async function checkUsageExceeded(user) {
   } else {
     return false;
   }
+}
+
+async function checkUsageExceeded(user) {
+  // GPT-4 Turbo fee
+  const gpt4Token = await getUserTokenUsageThisMonth(user.username, process.env.MODEL);
+  const gpt4Fee = gpt4FeeCal(gpt4Token.input, gpt4Token.output);
+
+  // GPT-4 Vision fee
+  const gpt4vToken = await getUserTokenUsageThisMonth(user.username, process.env.MODEL_V);
+  const gpt4vFee = gpt4vFeeCal(gpt4vToken.input, gpt4vToken.output);
+
+  // Total fee
+  const totalFee = gpt4Fee + gpt4vFee;
+
+  if (totalFee > user.balance) {
+    // Usage exceeded
+    return true;
+  } else {
+    return false;
+  }
+}
+
+async function getUserTokenUsageThisMonth(username, model) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1; // Add 1 because getMonth() returns 0-11
+  return getUserTokenUsageByMonth(username, model, year, month);
+}
+
+async function getUserTokenUsageByMonth(username, model, year, month) {
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const startTime = new Date(year, month - 1, 1).getTime();
+  const endTime = new Date(year, month - 1, daysInMonth, 23, 59, 59).getTime();
+  return await countTokenForUserByModel(username, model, startTime, endTime);
 }

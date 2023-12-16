@@ -3,7 +3,6 @@ import { insertUser, getUser, getUserByEmail, updateUsername } from "utils/sqlit
 import { generatePassword } from "utils/userUtils.js";
 import AWS from "aws-sdk";
 import { encode } from "utils/authUtils";
-import { genUsage } from "utils/usageUtils";
 const moment = require("moment");
 
 export default async function (req, res) {
@@ -60,7 +59,6 @@ export default async function (req, res) {
   const role = "user";
   const role_expires_at = moment().add(7, "days").valueOf();  // 7 days trial
   const balance = 5;  // $5 for trial
-  const usage = JSON.stringify(genUsage());
   const password_ = password ? password : generatedPassword;
 
   // Email validation
@@ -106,7 +104,7 @@ export default async function (req, res) {
           updateUsername(username, email, password_);
           message = "Welcome back! we've resumed your subscription status." + (!password ? " Initial password is sent to your email." : "");
         } else {
-          insertUser(username, role, role_expires_at, password_, email, balance, usage, settings);
+          insertUser(username, role, role_expires_at, password_, email, balance, settings);
           message = 'User "' + username + '"' + " is created." + (!password ? " Initial password is sent to your email." : "");
         }
 
@@ -132,7 +130,7 @@ export default async function (req, res) {
       message = "Welcome back! we've resumed your subscription status." + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "");
     } else {
       // No email provided, send password to console
-      insertUser(username, role, role_expires_at, password_, email, balance, usage, settings);
+      insertUser(username, role, role_expires_at, password_, email, balance, settings);
       message = 'User "' + username + '"' + " is created." + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "");
     }
 

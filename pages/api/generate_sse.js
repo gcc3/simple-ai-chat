@@ -104,7 +104,7 @@ export default async function (req, res) {
   if (use_access_control) {
     const uacResult = await getUacResult(user, ip);
     if (!uacResult.success) {
-      res.write(`data: ${getUacResult.error}\n\n`); res.flush();
+      res.write(`data: ${uacResult.error}\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
       res.end();
       return;
