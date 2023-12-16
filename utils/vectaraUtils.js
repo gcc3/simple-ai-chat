@@ -1,3 +1,6 @@
+import FormData from 'form-data';
+import fetch from 'node-fetch';
+
 export async function vectaraQuery(query, corpusId, apiKey) {
   const response = await fetch("https://api.vectara.io/v1/query", {
     method: "POST",
@@ -308,24 +311,28 @@ export async function resetVectaraCorpus(corpusId, jwtToken) {
   }
 */
 export async function uploadFileToVectaraCorpus(corpusId, files, jwtToken) {
-  const formData = new FormData();
+  const fileUrl = files[0];
 
-  // Get file
-  for (let i = 0; i < files.length; i++) {
-    const file = await fetch(files[i]).then((r) => r.blob());
-    formData.append("file", file);
-  }
+  // Download the file from the URL
+  const fileResponse = await fetch(fileUrl);
+  if (!fileResponse.ok) throw new Error('Failed to download file.');
+  const buffer = await fileResponse.buffer();
+
+  // Prepare the file for upload
+  const formData = new FormData();
+  formData.append('file', buffer, { 
+    filename: 'downloaded_file',
+    contentType: fileResponse.headers.get('content-type'),
+  });
 
   const response = await fetch("https://api.vectara.io/v1/upload?c=" + process.env.VECTARA_CUSTOMER_ID + "&o=" + corpusId, {
     method: "POST",
     headers: {
-      "Content-Type": "multipart/form-data",
       "Accept": "application/json",
       "Authorization": "Bearer " + jwtToken,
+      ...formData.getHeaders(),
     },
-    body: {
-      file: formData,
-    }
+    body: formData
   });
 
   const data = await response.json();
