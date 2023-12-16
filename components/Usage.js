@@ -1,7 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import ProgressBar from "./ProgressBar";
 import { feeCal } from "../utils/usageUtils";
 import { getRoleLevel } from "utils/userUtils";
+import PayPalButton from "./PayPalButton";
+import { refreshUserInfo } from "utils/userUtils";
 const moment = require('moment');
 
 function Usage() {
@@ -9,6 +11,41 @@ function Usage() {
   const [usage, setUsage] = useState(null);
   const [useFequency, setUseFequency] = useState(null);
   const [fee, setFee] = useState(null);
+  const [message, setMessage] = useState(null);
+  const [amount, setAmount] = useState(0);
+
+  const onSuccess = useCallback(async (details) => {
+    console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
+    console.log("Detail: ", details);
+  
+    // Update user role
+    const response = await fetch("/api/user/update/balance", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        amount,
+      }),
+    });
+  
+    const data = await response.json();
+    if (response.status !== 200) {
+      console.log(data.error);
+      throw data.error || new Error(`Request failed with status ${response.status}`);
+    }
+  
+    if (data.success) {
+      setMessage(data.message);
+  
+      // Refresh user info
+      const user = await refreshUserInfo();
+      setUser(user);
+    } else {
+      console.log(data.error);
+      setMessage(data.error);
+    }
+  }, [amount]);
 
   useEffect(() => {
     // Get user info
@@ -35,12 +72,19 @@ function Usage() {
     }
   });
 
+  function handleSetAmount(amount) {
+    return () => {
+      setAmount(amount);
+      console.log("Targe amount is set to:", amount);
+    };
+  }
+
   const content = (
     <>
       {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]`</div>}
       {user && <div>
         <div>
-          <div className="mb-1">- Subcription</div>
+          <div className="mb-1">- Subcription Status</div>
           <div>User: {localStorage.getItem("user")}</div>
           <div>Email: {localStorage.getItem("userEmail")}</div>
           <div>Subscription: `{localStorage.getItem("userRole")}`</div>
@@ -64,8 +108,15 @@ function Usage() {
             </div>
           </div>}
           {getRoleLevel(user.role) >= 1 && <div className="mt-3">
-            <div>- Token usage</div>
+            <div>- Token Meter</div>
             <table className="table-fixed mt-1">
+              <thead>
+                <tr>
+                  <th>Model</th>
+                  <th>Input</th>
+                  <th>Output</th>
+                </tr>
+              </thead>
               <tbody>
                 <tr>
                   <td>GPT-4 Turbo</td>
@@ -79,9 +130,6 @@ function Usage() {
                 </tr>
               </tbody>
             </table>
-            <div className="mt-2">
-              <div>Fees: ${fee.gpt4Fee + fee.gpt4vFee}</div>
-            </div>
           </div>}
           {getRoleLevel(user.role) >= 2 && <div className="mt-3">
             <div>- Database usage</div>
@@ -110,10 +158,48 @@ function Usage() {
             </div>
           </div>}
           <div className="mt-3">
-            <div>-</div>
-            <div>Total: ${fee.totalFee}</div>
+            <div>- Usage and Balance</div>
+            <ProgressBar label={"Usage"} progress={fee.totalFee} progressMax={user.balance} />
+            <div className="mt-3">Total Fees: ${fee.totalFee}</div>
             <div>Balance: ${user.balance}</div>
           </div>
+        </div>
+        <div className="mt-4">
+          {message && <div>{message}</div>}
+          {!message && <div>
+            {user.role !== "root_user" && <div>
+              <div>- Add Balance</div>
+              <div className="flex items-center mt-1">
+                <div>Select amount:</div>
+                <button className="ml-2 w-11" onClick={handleSetAmount(5)}>$5</button>
+                <button className="ml-2 w-11" onClick={handleSetAmount(10)}>$10</button>
+                <button className="ml-2 w-11" onClick={handleSetAmount(20)}>$20</button>
+                <button className="ml-2 w-11" onClick={handleSetAmount(50)}>$50</button>
+                {amount > 0 && <button className="ml-2 w-20" onClick={handleSetAmount(0)}>Cancle</button>}
+              </div>
+            </div>}
+            {amount !== null && amount > 0 && <div className="mt-3">
+              <div>Pay: {amount === 0 ? "Free" : "$" + amount}</div>
+              <div className="mt-3">Payment methods:</div>
+              <div className="mt-1">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Paypal or Credit Card</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td className="p-1">
+                      <PayPalButton amount={amount} onSuccess={onSuccess} />
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <div className="mt-2">* Your payment will be securely handled through the banking system; we do not store or collect your payment details.</div>
+              </div>
+            </div>}
+          </div>}
         </div>
       </div>}
     </>

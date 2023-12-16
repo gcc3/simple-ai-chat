@@ -171,12 +171,10 @@ const getLogs = async (session, limit = 50) => {
   }
 };
 
-const insertLog = async (session, username, model, input, output, ip, browser) => {
+const insertLog = async (session, username, model, input_l, input, output_l, output, ip, browser) => {
   const db = await getDatabaseConnection();
   const time = Date.now();
   const time_h = formatUnixTimestamp(time);
-  const input_l = input.length;
-  const output_l = output.length;
 
   try {
     return await new Promise((resolve, reject) => {
@@ -492,6 +490,28 @@ const updateUserPassword = async (username, newPassword) => {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET password = ?, updated_at = ? WHERE username = ?");
       stmt.run([newPassword, new Date(), username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateUserBalance = async (username, newBalance) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET balance = ?, updated_at = ? WHERE username = ?");
+      stmt.run([newBalance, new Date(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -974,6 +994,7 @@ export {
   userLeaveGroup,
   updateUsername,
   updateUserPassword,
+  updateUserBalance,
   updateUserEmail,
   updateUserEmailVerifiedAt,
   updateUserRole,

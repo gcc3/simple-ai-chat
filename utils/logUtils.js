@@ -1,23 +1,20 @@
 import { getLogs, insertLog } from "./sqliteUtils.js"
-import { authenticate } from './authUtils.js';
 
 const fs = require('fs');
 
-export function logadd(session, model, input, output, req) {
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-  const browser = req.headers['user-agent'];
-
-  // Get user
-  let username = "";
-  let { success, user } = authenticate(req);
-  if (success) username = user.username;
-
+export function logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser) {
   // Filter out logs
   if (logfilter(output, "USER")) return;
   if (logfilter(output, "IP")) return;
 
+  // Get username
+  let username = "";
+  if (user) {
+    username = user.username;
+  }
+
   // Insert log
-  insertLog(session, username, model, input, output, ip, browser);
+  insertLog(session, username, model, input_token_ct, input, output_token_ct, output, ip, browser);
 }
 
 export async function loglist(session, limit = 50) {

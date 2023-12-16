@@ -54,8 +54,8 @@ function Subscription() {
       const user = await refreshUserInfo();
       setUser(user);
     } else {
-      setMessage(data.message);
-      if (data.error) console.log(data.error);
+      console.log(data.error);
+      setMessage(data.error);
     }
   }, [targetRole, amount]);
 
@@ -109,15 +109,15 @@ function Subscription() {
     <>
       {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]`</div>}
       {user && <div>
-        <div>Subcription Status</div>
+        <div>- Subcription Status</div>
         <div className="mt-1">User: {user.username}</div>
         <div>Email: {user.email}</div>
         <div>Subscription: `{user.role}`</div>
         <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at !== null && user.role_expires_at < new Date()) && "(Expired)"}</div>
       </div>}
       <div className="mt-3">
-        <div>Subscription plans</div>
-        <div>
+        <div>- Subscription plans</div>
+        <div className="mt-1">
           - `user`: offer a general user package for only $1/month for accessing the most advanced AI.<br></br>
           - `pro_user`: provide advanced features for professonal uses.<br></br>
           - `super_user`: provide accessability for all latest features.<br></br>
@@ -128,10 +128,15 @@ function Subscription() {
       {user && <div className="mt-4">
         {message && <div>- {message}</div>}
         {!message && <div>
-          {user.role !== "root_user" && <div>Select plan:
-            <button className="ml-2" onClick={handleSetTargetRole("user")}>`user`</button>
-            <button className="ml-2" onClick={handleSetTargetRole("pro_user")}>`pro_user`</button>
-            <button className="ml-2" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
+          {user.role !== "root_user" && <div>
+            <div>- Upgrade and Downgrade</div>
+            <div className="flex items-center mt-2">
+              <div>Select Subcription plan:</div>
+              <button className="ml-2" onClick={handleSetTargetRole("user")}>`user`</button>
+              <button className="ml-2" onClick={handleSetTargetRole("pro_user")}>`pro_user`</button>
+              <button className="ml-2" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
+              {targetRole && <button className="ml-2 w-20" onClick={handleSetTargetRole(null)}>Cancle</button>}
+            </div>
           </div>}
           {targetRole && <div className="mt-3">
             {((user.role_expires_at !== null && getRoleLevel(user.role) > getRoleLevel(targetRole) && user.role_expires_at > new Date()) 
@@ -188,7 +193,7 @@ function Subscription() {
   return (
     <div className="Subcription">
       <div className="text-center mb-4">
-        <div>Subscribe to become a pro/super user.</div>
+        <div>Subcriptions</div>
       </div>
       <div>{content}</div>
     </div>

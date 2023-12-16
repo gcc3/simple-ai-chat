@@ -25,12 +25,12 @@ export default async function (req, res) {
       });
     });
   } catch (error) {
-    console.log("Error (evaluate):");
+    console.log("Error (Evaluate API):");
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json(error.response.data);
     } else {
-      console.error(`Error with OpenAI API request: ${error.message}`);
+      console.error(`${error.message}`);
       res.status(500).json({
         error: {
           message: "An error occurred during your request.",
@@ -90,11 +90,11 @@ export async function evaluate(input, additionalInfo, result_text) {
     if (result_text.trim().length === 0) result_text = "null";
     return result_text;
   } catch (error) {
-    console.log("Error (evaluate):");
+    console.log("Error (Evaluate API):");
     if (error.response) {
       console.error(error.response.status, error.response.data);
     } else {
-      console.error(`Error with OpenAI API request: ${error.message}`);
+      console.error(`${error.message}`);
     }
     return "error";
   }

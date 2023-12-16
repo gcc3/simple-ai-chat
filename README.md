@@ -126,13 +126,13 @@ Messages
 | #  | Part                           | Role            | Description                              |
 |----|--------------------------------|-----------------|------------------------------------------|
 | -3 | System master message          | system          | set with `ROLE_CONTENT_SYSTEM`           |
-| -2 | Role/assistant message         | system          | Message generated for role/assistant     |
+| -2 | Role/assistant prompt          | system          | Message generated for role/assistant     |
 | -1 | Chat history                   | user, assistant | Chat history from user and assistant     |
-| 0  | User input                     | user            | Direct input provided by the user,       |
-| 1  | Location info                  | system          | Add when location service is enabled     |
-| 2  | Function calling result        | function        | Result of function calling (tool calls)  |
-| 3  | AI links response              | function        | Response from AI node or hub             |
-| 4  | Vector database query result   | system          | Result from a query to a vector database |
+|  0 | User input                     | user            | Direct input provided by the user,       |
+|  1 | Function calling result        | function        | Result of function calling (tool calls)  |
+|  2 | Vector database query result   | system          | Result from a query to a vector database |
+|  3 | Location info                  | system          | Add when location service is enabled     |
+|  A | Node AI query result           | -               | Replace with result from AI node or hub  |
 
 
 AI Links (AI Node)
@@ -216,9 +216,6 @@ How many completions to generate for each prompt.
 * ROLE_CONTENT_SYSTEM  
 Set the role system's content to role play.  
 
-* PROMPT_PREFIX and PROMPT_SUFFIX  
-Add prefix and suffix for prompt avoid duplicate text input.
-
 * INIT_PLACEHOLDER and ENTER  
 Control the default placeholder text and enter key text.  
 
@@ -242,9 +239,6 @@ Function calling: `query_node_ai(query)`
 
 * NODE_AI_URL  
 To set up the node AI API url.  
-
-* FORCE_NODE_AI_QUERY  
-Force to query node AI for every query.  
 
 * USE_VECTOR  
 Control enable vectara (vector database), value should be `true` or `false`.  
@@ -297,6 +291,9 @@ The value should be `true` or `false`.
 
 * HUNTER_API_KEY  
 Use hunter API to verify email.  
+
+* GOOGLE_API_KEY  
+Use for detect accurate address.  
 
 
 Coding rules

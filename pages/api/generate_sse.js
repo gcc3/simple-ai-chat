@@ -6,13 +6,11 @@ import { tryParseJSON } from "utils/jsonUtils"
 import { evaluate } from './evaluate';
 import { getFunctions, executeFunction } from "function.js";
 import { getTools } from "tools.js";
-import { getMaxTokens } from "utils/tokenUtils";
+import { countToken, getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
-import { countChatsForIP, getUser, getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
-import { countChatsForUser } from "utils/sqliteUtils";
-import { getUseFequencyLimit } from "utils/envUtils";
-import { vectaraQuery } from "utils/vectaraUtils";
+import { getUacResult } from "utils/uacUtils";
+import { getUser } from "utils/sqliteUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -23,12 +21,9 @@ const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
-const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
-const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
 const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model_);
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
-const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
@@ -42,6 +37,8 @@ export default async function (req, res) {
   const location = req.query.location || "";
   const images_ = req.query.images || "";
   const files_ = req.query.files || "";
+  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const browser = req.headers['user-agent'];
 
   // Authentication
   const authResult = authenticate(req);
@@ -51,6 +48,10 @@ export default async function (req, res) {
     authUser = authResult.user;
     user = await getUser(authResult.user.username);
   }
+
+  // Input & output
+  let input = "";
+  let output = "";
 
   res.writeHead(200, {
     'connection': 'keep-alive',
@@ -70,9 +71,11 @@ export default async function (req, res) {
   }
 
   // Input
-  let user_input_escape = req.query.user_input.replaceAll("%", "％").trim();  // escape %
-  let input = decodeURIComponent(user_input_escape) || "";
+  input = req.query.user_input.replaceAll("%", "％").trim();  // escape %
+  input = decodeURIComponent(input) || "";
   if (input.trim().length === 0) return;
+
+  // Images & files
   const decodedImages = decodeURIComponent(images_) || "";
   const decodedFiles = decodeURIComponent(files_) || "";
   let images = [];
@@ -99,66 +102,17 @@ export default async function (req, res) {
 
   // User access control
   if (use_access_control) {
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    if (!authResult.success) {
-      // Not a user, urge register a user
-      const chatCount = await countChatsForIP(ip, Date.now() - 86400000 * 3, Date.now());
-      if (chatCount >= 5) {
-        res.write(`data: Please register a user to continue, you can use the command \`:user add [username] [email] [password?]\`.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-    } else {
-      // Verify email
-      if (use_email && !user.email_verified_at) {
-        // Urge verify email address
-        res.write(`data: Please verify your email to continue. To send verification again, you can use the command \`:user set email [email]\`.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-
-      // Subscription expired
-      if (user.role_expires_at && user.role_expires_at < Date.now()) {
-        // Urge extend subscription
-        res.write(`data: Your subscription has expired. Please renew it to continue using our services.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-
-      // Limit `user` chats per day
-      if (user.role === "user") {
-        const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
-        if (chatCount >= 24) {
-          res.write(`data: Daily usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
-          res.write(`data: [DONE]\n\n`); res.flush();
-          res.end();
-          return;
-        }
-      }
-
-      // Pro user or super user, check usage limit
-      if (user.role === "pro_user" || user.role === "super_user") {
-        // Check usage exceeded or not
-        const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
-        const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
-        const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
-        const usageLimit = getUseFequencyLimit(user.role);
-        if (daily >= usageLimit.daily_limit || weekly >= usageLimit.weekly_limit || monthly >= usageLimit.monthly_limit) {
-          res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
-          res.write(`data: [DONE]\n\n`); res.flush();
-          res.end();
-          return;
-        }
-      }
+    const uacResult = await getUacResult(user, ip);
+    if (!uacResult.success) {
+      res.write(`data: ${getUacResult.error}\n\n`); res.flush();
+      res.write(`data: [DONE]\n\n`); res.flush();
+      res.end();
+      return;
     }
   }
 
   // I. Normal input
   if (!input.startsWith("!")) {
-    input = prompt_prefix + input + prompt_suffix;
     console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
     console.log(input + "\n");
 
@@ -178,14 +132,11 @@ export default async function (req, res) {
     + "temperature: " + temperature + "\n"
     + "top_p: " + top_p + "\n"
     + "role_content_system (chat): " + role_content_system + "\n"
-    + "prompt_prefix: " + prompt_prefix + "\n"
-    + "prompt_suffix: " + prompt_suffix + "\n"
     + "max_tokens: " + max_tokens + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + use_function_calling + "\n"
     + "use_node_ai: " + use_node_ai + "\n"
-    + "force_node_ai_query: " + force_node_ai_query + "\n"
     + "use_vector: " + use_vector + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + location + "\n"
@@ -217,11 +168,36 @@ export default async function (req, res) {
       if (tools) {
         console.log("Tool calls: " + JSON.stringify(tools) + "\n");
       }
+    } else if (use_node_ai && functionName === "query_node_ai") {
+      // Query node AI
+      // will fully use the node ai query result
+      console.log("--- node ai query ---");
+      const nodeAiQueryResult = await executeFunction("query_node_ai", "{ query: " + input + " }");
+      if (nodeAiQueryResult) {
+        const model = "node_ai";
+        const temperature = 0;
+        const top_p = 0;
+        const token_ct = 0;
+        const use_eval = false;
+        const functionName = "query_node_ai";
+
+        // Log
+        const input_token_ct = countToken(model, "N=query_node_ai(query=" + input + ")");
+        const output_token_ct = countToken(model, "N=" + nodeAiQueryResult);
+        logadd(user, queryId, model, input_token_ct, "N=query_node_ai(query=" + input + ")", output_token_ct, "N=" + nodeAiQueryResult, ip, browser);
+
+        res.write(`data: ${nodeAiQueryResult}\n\n`); res.flush();
+        res.write(`data: ###ENV###${model}\n\n`); res.flush();
+        res.write(`data: ###STATS###${temperature},${top_p},${token_ct},${use_eval},${functionName}\n\n`);
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
     } else {
       // Execute function
       const functionResult = await executeFunction(functionName, functionArgsString);
 
-      // Event
+      // Function trigger event
       if (functionResult.event) {
         const event = JSON.stringify(functionResult.event);
         res.write(`data: ###EVENT###${event}\n\n`);
@@ -234,7 +210,11 @@ export default async function (req, res) {
       }
       
       console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
-      logadd(queryId, model, "F=" + function_input, "F=" + functionMessage, req);
+
+      // Log
+      const input_token_ct = countToken(model, "F=" + function_input);
+      const output_token_ct = countToken(model, "F=" + functionMessage);
+      logadd(user, queryId, model, input_token_ct, "F=" + function_input, output_token_ct, "F=" + functionMessage, ip, browser);
     }
 
     // Replace input with original
@@ -243,104 +223,21 @@ export default async function (req, res) {
   }
 
   try {
-    let result_text = "";
-    let token_ct = 0;
+    let token_ct;  // input token count
     let messages = [];
 
     // Message base
-    const generateMessagesResult = await generateMessages(authUser, input, images, queryId, role, do_function_calling);
+    const generateMessagesResult = await generateMessages(user, model, input, images, queryId, role, store, use_location, location, 
+                                                          do_function_calling, functionName, functionMessage);
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
-
-    // Additional information
-    let additionalInfo = "";
-
-    // 1. Location info
-    if (use_location && location) {
-      // localtion example: (40.7128, -74.0060)
-      const lat = location.slice(1, -1).split(",")[0];
-      const lng = location.slice(1, -1).split(",")[1];
-      const nearbyCities = require("nearby-cities")
-      const query = {latitude: lat, longitude: lng}
-      const cities = nearbyCities(query)
-      const city = cities[0]
-      const locationMessage = "User is currently near city " + city.name + ", " + city.country + ".";
-
-      // Feed with location message
-      messages.push({
-        "role": "system",
-        "content": locationMessage
-      });
-      additionalInfo += locationMessage;
-    }
-
-    // 2. Function calling result
-    if (do_function_calling) {
-      // Feed message with function calling result
-      messages.push({
-        "role": "function",
-        "name": functionName,
-        "content": functionMessage,
-      });
-      additionalInfo += functionMessage;
-    }
-
-    // 3. Node AI response
-    if (use_node_ai && force_node_ai_query) {
-      console.log("--- node ai query ---");
-      const nodeAiQueryResult = await executeFunction("query_node_ai", "{ query: " + input + " }");
-      if (nodeAiQueryResult === undefined) {
-        console.log("response: undefined.\n");
-      } else {
-        console.log("response: " + nodeAiQueryResult);
-        messages.push({
-          "role": "function",
-          "name": "query_node_ai",
-          "content": "After calling another AI, its response as: " + nodeAiQueryResult,
-        });
-        additionalInfo += nodeAiQueryResult;
-        logadd(queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, req);
-      }
-    }
-
-    // 4. Vector database query result
-    if (use_vector && store) {
-      console.log("--- vector query ---");
-
-      // Get corpus id
-      const storeInfo = await getStore(store, user.username);
-      const storeSettings = JSON.parse(storeInfo.settings);
-      const corpus_id = storeSettings.corpus_id;
-      if (!corpus_id) {
-        console.log("No corpus id found for store " + store);
-        res.write(`data: No corpus id found for store ${store}.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-
-      // Query
-      const queryResult = await vectaraQuery(input, corpus_id);
-      if (!queryResult) {
-        console.log("response: no result.\n");
-      } else {
-        console.log("response: " + JSON.stringify(queryResult, null, 2) + "\n");
-        queryResult.map(r => {
-          messages.push({
-            "role": "system",
-            "content": "According to " +  r.document + ": " + r.content,
-          });
-          additionalInfo += r.text;
-        });
-      }
-    }
 
     console.log("--- messages ---");
     console.log(JSON.stringify(messages) + "\n");
 
     // endpoint: /v1/chat/completions
     const chatCompletion = await openai.chat.completions.create({
-      model: model,
+      model,
       // response_format: { type: "json_object" },
       messages,
       temperature,
@@ -357,7 +254,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${token_ct},${use_eval},${functionName}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${token_ct.total},${use_eval},${functionName}\n\n`);
     res.flush();
 
     for await (const part of chatCompletion) {
@@ -380,7 +277,7 @@ export default async function (req, res) {
       // handle message
       const content = part.choices[0].delta.content;
       if (content) {
-        result_text += content;
+        output += content;
         let message = content.replaceAll("\n", "###RETURN###");
         res.write(`data: ${message}\n\n`); res.flush();
       }
@@ -389,8 +286,8 @@ export default async function (req, res) {
     // Evaluate result
     // vision models not support evaluation
     if (use_eval) {
-      if (result_text.trim().length > 0) {
-        await evaluate(input, additionalInfo, result_text).then((eval_result) => {
+      if (output.trim().length > 0) {
+        await evaluate(input, "", output).then((eval_result) => {
           res.write(`data: ###EVAL###${eval_result}\n\n`); res.flush();
           console.log("eval: " + eval_result + "\n");
         });
@@ -400,21 +297,28 @@ export default async function (req, res) {
     // Done message
     res.write(`data: [DONE]\n\n`); res.flush();
 
-    // Log
-    if (result_text.trim().length === 0) result_text = "(null)";
+    // Token
+    console.log("--- token_ct ---");
+    console.log(JSON.stringify(token_ct) + "\n");
+
+    if (output.trim().length === 0) output = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
-    console.log(result_text + "\n");
-    logadd(queryId, model, input, result_text, req);
+    console.log(output + "\n");
+    
+    // Log
+    const input_token_ct = token_ct.total;
+    const output_token_ct = countToken(model, output);
+    logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     res.end();
     return;
   } catch (error) {
-    console.log("Error:");
+    console.log("Error (Generate SSE API):");
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.write(`data: An error occurred during your request. (${error.response.status})\n\n`)
     } else {
-      console.error(`Error with OpenAI API request: ${error.message}`);
+      console.error(`${error.message}`);
       res.write(`data: An error occurred during your request.\n\n`)
     }
     res.flush();
