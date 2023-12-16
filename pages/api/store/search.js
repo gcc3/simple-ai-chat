@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     const settings = JSON.parse(storeInfo.settings);
     const corpusId = settings.corpusId;
     const apiKey = settings.apiKey;
-    const queryResult = await vectaraQuery(word, corpusId, apiKey);
+    const queryResult = await vectaraQuery(word, corpusId, apiKey, 0.1);
     res.status(200).json({
       success: true,
       result: queryResult,

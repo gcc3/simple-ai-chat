@@ -1,7 +1,7 @@
 import FormData from 'form-data';
 import fetch from 'node-fetch';
 
-export async function vectaraQuery(query, corpusId, apiKey) {
+export async function vectaraQuery(query, corpusId, apiKey, scoreThreshold = 0.5) {
   const response = await fetch("https://api.vectara.io/v1/query", {
     method: "POST",
     headers: {
@@ -41,13 +41,13 @@ export async function vectaraQuery(query, corpusId, apiKey) {
     const responseSet = data.responseSet[0];
 
     // Check if there is a result
-    // only return if score is greater than 0.5
+    // only return if score is greater than score threshold
     if (responseSet.response.length > 0) {
-      if (responseSet.response[0].score > 0.5) {
+      if (responseSet.response[0].score > scoreThreshold) {
         let result = [];
         const responseSet = data.responseSet[0];
         responseSet.response.forEach((r) => {
-          if (r.score >= 0.5) {
+          if (r.score >= scoreThreshold) {
             const document = responseSet.document[r.documentIndex];
             result.push({
               document: document.id,
