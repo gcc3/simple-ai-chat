@@ -1,8 +1,6 @@
 import { loglist } from './logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
-import { getRole } from './sqliteUtils.js';
-import { getUser, getStore } from "utils/sqliteUtils";
-import { authenticate } from "utils/authUtils";
+import { getRole, getStore } from './sqliteUtils.js';
 import { vectaraQuery } from "utils/vectaraUtils";
 const nearbyCities = require("nearby-cities")
 
