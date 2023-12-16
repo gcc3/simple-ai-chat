@@ -77,7 +77,6 @@ async function checkFequenciesExceeded(user) {
 }
 
 async function checkUsageExceeded(user) {
-  const user = await getUser(username);
   const totalFee = (() => {
     // GPT-4 Turbo fee
     const gpt4Token = user.usage.token_monthly.token;
