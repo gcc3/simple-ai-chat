@@ -36,9 +36,11 @@ export default async function(req, res) {
 
   // Authentication
   const authResult = authenticate(req);
+  let user = null;
   let authUser = null;
   if (authResult.success) {
     authUser = authResult.user;
+    user = await getUser(authResult.user.username);
   }
 
   // Query ID, same as session ID
@@ -50,8 +52,8 @@ export default async function(req, res) {
 
   // User access control
   if (use_access_control) {
-    const getUacResult = await getUacResult(req);
-    if (!getUacResult.success) {
+    const uacResult = await getUacResult(req);
+    if (!uacResult.success) {
       res.status(400).send(getUacResult.error);
       return;
     }
@@ -86,7 +88,7 @@ export default async function(req, res) {
     let result_text = "";
     let token_ct = 0;  // input token count
 
-    const generateMessagesResult = await generateMessages(req, input, null, queryId, role, store, false);  // image_url not supported yet
+    const generateMessagesResult = await generateMessages(user || "", input, null, queryId, role, store, use_location, location, false);  // image_url not supported yet
     token_ct = generateMessagesResult.token_ct;
 
     // endpoint: /v1/chat/completions

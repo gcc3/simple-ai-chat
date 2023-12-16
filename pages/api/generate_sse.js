@@ -197,31 +197,12 @@ export default async function (req, res) {
     let messages = [];
 
     // Message base
-    const generateMessagesResult = await generateMessages(req, input, images, queryId, role, store, do_function_calling);
+    const generateMessagesResult = await generateMessages(user || "", input, images, queryId, role, store, use_location, location, do_function_calling);
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
 
     // Additional information
     let additionalInfo = "";
-
-    // 1. Location info
-    if (use_location && location) {
-      // localtion example: (40.7128, -74.0060)
-      const lat = location.slice(1, -1).split(",")[0];
-      const lng = location.slice(1, -1).split(",")[1];
-      const nearbyCities = require("nearby-cities")
-      const query = {latitude: lat, longitude: lng}
-      const cities = nearbyCities(query)
-      const city = cities[0]
-      const locationMessage = "User is currently near city " + city.name + ", " + city.country + ".";
-
-      // Feed with location message
-      messages.push({
-        "role": "system",
-        "content": locationMessage
-      });
-      additionalInfo += locationMessage;
-    }
 
     // 2. Function calling result
     if (do_function_calling) {

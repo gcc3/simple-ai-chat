@@ -4,24 +4,16 @@ import { getRole } from './sqliteUtils.js';
 import { getUser, getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 import { vectaraQuery } from "utils/vectaraUtils";
+const nearbyCities = require("nearby-cities")
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 
 // Generate messages for chatCompletion
-export async function generateMessages(req, input, images, queryId, role, store, do_functioin_calling = false) {
+export async function generateMessages(user, input, images, queryId, role, store, use_location, location, do_functioin_calling = false) {
   let messages = [];
   let token_ct = 0;
-
-  // Authentication
-  const authResult = authenticate(req);
-  let user = null;
-  let authUser = null;
-  if (authResult.success) {
-    authUser = authResult.user;
-    user = await getUser(authResult.user.username);
-  }
   
   // -3. System message, important
   if (role_content_system !== "") {
@@ -104,6 +96,25 @@ export async function generateMessages(req, input, images, queryId, role, store,
     });
   }
 
+  // 1. Location info
+  let location_prompt = "";
+  if (use_location && location) {
+    // localtion example: (40.7128, -74.0060)
+    const lat = location.slice(1, -1).split(",")[0];
+    const lng = location.slice(1, -1).split(",")[1];
+    const query = {latitude: lat, longitude: lng}
+    const cities = nearbyCities(query)
+    const city = cities[0]
+    const locationMessage = "User is currently near city " + city.name + ", " + city.country + ", use this infromation if necessary.";
+
+    // Feed with location message
+    messages.push({
+      "role": "system",
+      "content": locationMessage
+    });
+    location_prompt = locationMessage;
+  }
+
   // 4. Vector database query result
   let store_prompt = "";
   if (use_vector && store) {
@@ -137,5 +148,6 @@ export async function generateMessages(req, input, images, queryId, role, store,
     token_ct,
     store_prompt,
     role_prompt,
+    location_prompt
   };
 }
