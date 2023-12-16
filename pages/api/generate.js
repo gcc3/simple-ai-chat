@@ -11,14 +11,14 @@ import { getUacResult } from "utils/uacUtils";
 const openai = new OpenAI();
 
 // configurations
-const model = process.env.MODEL ? process.env.MODEL : "";
+const model_ = process.env.MODEL ? process.env.MODEL : "";
 const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
 const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
 const prompt_prefix = process.env.PROMPT_PREFIX ? process.env.PROMPT_PREFIX : "";
 const prompt_suffix = process.env.PROMPT_SUFFIX ? process.env.PROMPT_SUFFIX : "";
-const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
+const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model_);
 const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
 const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
 const force_node_ai_query = process.env.FORCE_NODE_AI_QUERY == "true" ? true : false;
@@ -68,6 +68,11 @@ export default async function(req, res) {
   console.log(chalk.yellowBright("\nInput (query_id = " + queryId + "):"));
   console.log(input + "\n");
 
+  // Model switch
+  const use_vision = images.length > 0;
+  const model = use_vision ? model_v : model_;
+  const use_eval = use_stats && !use_vision;
+
   // Configuration info
   console.log("--- configuration info ---\n" 
   + "model: " + model + "\n"
@@ -77,6 +82,8 @@ export default async function(req, res) {
   + "prompt_prefix: " + prompt_prefix + "\n"
   + "prompt_suffix: " + prompt_suffix + "\n"
   + "max_tokens: " + max_tokens + "\n"
+  + "use_vision: " + use_vision + "\n"
+  + "use_eval: " + use_eval + "\n"
   + "use_function_calling: " + use_function_calling + "\n"
   + "use_node_ai: " + use_node_ai + "\n"
   + "force_node_ai_query: " + force_node_ai_query + "\n"
@@ -89,19 +96,21 @@ export default async function(req, res) {
   try {
     let result_text = "";
     let token_ct = 0;  // input token count
+    let messages = [];
 
     const generateMessagesResult = await generateMessages(user, input, images, queryId, role, store, use_location, location, 
                                                           false, "", "");  // function calling is not supported
     token_ct = generateMessagesResult.token_ct;
+    messages = generateMessagesResult.messages;
 
     // endpoint: /v1/chat/completions
     let chatCompletion;
     chatCompletion = await openai.chat.completions.create({
-      model: process.env.MODEL,
-      messages: generateMessagesResult.messages,
-      temperature: temperature,
-      top_p: top_p,
-      max_tokens: max_tokens,
+      model,
+      messages,
+      temperature,
+      top_p,
+      max_tokens,
     });
 
     // Get result

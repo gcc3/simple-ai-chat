@@ -219,7 +219,6 @@ export default async function (req, res) {
           "name": "query_node_ai",
           "content": "After calling another AI, its response as: " + nodeAiQueryResult,
         });
-        additionalInfo += nodeAiQueryResult;
         logadd(queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, req);
       }
     }
@@ -229,7 +228,7 @@ export default async function (req, res) {
 
     // endpoint: /v1/chat/completions
     const chatCompletion = await openai.chat.completions.create({
-      model: model,
+      model,
       // response_format: { type: "json_object" },
       messages,
       temperature,
