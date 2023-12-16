@@ -1,6 +1,6 @@
 import { getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
-import { countChatsForUser, countTokenForUser } from 'utils/sqliteUtils.js';
+import { countChatsForUser, countTokenForUserByModel } from 'utils/sqliteUtils.js';
 import { createToken } from 'utils/authUtils.js';
 import { getRoleFequencyLimit } from 'utils/usageUtils.js';
 const moment = require('moment');
@@ -46,7 +46,7 @@ export default async function (req, res) {
 
       res.status(200).json({ 
         user: {
-          id: user.id, 
+          id: user.id,
           username: user.username,
           group: user.group,
           email: user.email,
@@ -54,11 +54,12 @@ export default async function (req, res) {
           role: user.role,
           role_expires_at: user.role_expires_at,
           role_expires_at_h: (user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "-"),
-          usage_fequency: {
-            token: await getUserTokenUsage(user.username),
-            query_count: await getUseFequencyWithLimit(user.username, user.role),
+          usage: {
+            token: await getUserTokenUsage(user.username, process.env.MODEL),
+            token_v: await getUserTokenUsage(user.username, process.env.MODEL_V),
+            use_fequency_count: await getUserUseFequencyWithLimit(user.username, user.role),
           },
-          unpaid_usage: JSON.parse(user.usage),
+          usage_fees: JSON.parse(user.usage),
           balance: user.balance,
         }
       });
@@ -83,7 +84,7 @@ export default async function (req, res) {
   }
 }
 
-async function getUseFequencyWithLimit(username, role) {
+async function getUserUseFequencyWithLimit(username, role) {
   const daily = await countChatsForUser(username, Date.now() - 86400000, Date.now());
   const weekly = await countChatsForUser(username, Date.now() - 604800000, Date.now());
   const monthly = await countChatsForUser(username, Date.now() - 2592000000, Date.now());
@@ -113,10 +114,10 @@ async function getUseFequencyWithLimit(username, role) {
   }
 }
 
-async function getUserTokenUsage(username) {
-  const daily = await countTokenForUser(username, Date.now() - 86400000, Date.now());
-  const weekly = await countTokenForUser(username , Date.now() - 604800000, Date.now());
-  const monthly = await countTokenForUser(username, Date.now() - 2592000000, Date.now());
+async function getUserTokenUsage(username, model) {
+  const daily = await countTokenForUserByModel(username, model, Date.now() - 86400000, Date.now());
+  const weekly = await countTokenForUserByModel(username, model, Date.now() - 604800000, Date.now());
+  const monthly = await countTokenForUserByModel(username, model, Date.now() - 2592000000, Date.now());
 
   return {
     daily,

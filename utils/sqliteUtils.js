@@ -303,21 +303,18 @@ const countChatsForUser = async (user, start, end) => {
 };
 
 // Count how many chats for a user for a date range
-const countTokenForUser = async (user, start, end) => {
+const countTokenForUserByModel = async (user, model, start, end) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT model, SUM(input_l) as totalInput, SUM(output_l) as totalOutput FROM logs WHERE user = ? AND time >= ? AND time <= ? GROUP BY model`, [user, start, end], (err, rows) => {
+      db.get(`SELECT SUM(input_l) as totalInput, SUM(output_l) as totalOutput FROM logs WHERE user = ? AND model = ? AND time >= ? AND time <= ?`, [user, model, start, end], (err, row) => {
         if (err) {
           reject(err);
         }
-        // Create an array to hold the sum for each model
-        const sumByModel = rows.map(row => ({
-          model: row.model,
+        resolve({
           input: row.totalInput,
-          output: row.totalOutput,
-        }));
-        resolve(sumByModel);
+          output: row.totalOutput
+        });
       });
     });
   } finally {
@@ -1008,7 +1005,7 @@ export {
   getSessionLog,
   countChatsForIP,
   countChatsForUser,
-  countTokenForUser,
+  countTokenForUserByModel,
   getUser,
   insertUser,
   deleteUser,
