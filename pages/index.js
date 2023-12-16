@@ -1043,11 +1043,11 @@ export default function Home() {
     }
   }
 
-  // +img[] or +image[]
-  const imagePlus = async (blob) => {
+  // +img[] or +image[] or +file[]
+  const filePlus = async (blob, typePrefix) => {
     // Insert placeholder text for the image
     const file_id = Date.now().toString();
-    const imagePlaceholder = "+img[file_id:" + file_id +"(uploading...)] ";
+    const filePlaceholder = typePrefix + "[file_id:" + file_id +"(uploading...)] ";
 
     // Insert the placeholder text at the cursor position or text selection
     const text = elInputRef.current.value;
@@ -1060,11 +1060,11 @@ export default function Home() {
     }
 
     // Update the textarea value with the placeholder text
-    setInput(textBefore + imagePlaceholder + textAfter);
+    setInput(textBefore + filePlaceholder + textAfter);
     reAdjustInputHeight();  // Re-adjust input height as input changed
 
     // Grab the file
-    console.log('Image pasted: ' + blob.name);
+    console.log('Image/file pasted: ' + blob.name);
 
     // Upload the image to S3
     const uploadResult = await generateFileURl(blob, file_id);
@@ -1093,7 +1093,13 @@ export default function Home() {
         event.preventDefault();
 
         // Generate +image
-        imagePlus(items[i].getAsFile());
+        filePlus(items[i].getAsFile(), "+img");
+      } else if (items[i].type.indexOf('text') === 0 || items[i].type.indexOf('application') === 0) {
+        // prevent the default behavior
+        event.preventDefault();
+
+        // Generate +file
+        filePlus(items[i].getAsFile(), "+file");
       }
     }
   };
@@ -1115,7 +1121,7 @@ export default function Home() {
         event.preventDefault();
 
         // Generate +image
-        imagePlus(droppedFiles[i]);
+        filePlus(droppedFiles[i]);
       }
     }
   }

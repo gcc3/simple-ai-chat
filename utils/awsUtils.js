@@ -5,14 +5,18 @@ export async function generateFileURl(blob, file_id) {
     contentType = 'image/jpeg';
   } else if (blob.name.endsWith('.png')) {
     contentType = 'image/png';
+  } else if (blob.name.endsWith('.docx')) {
+    contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
+  } else if (blob.name.endsWith('.txt')) {
+    contentType = 'text/plain';
   } else {
     return {
       success: false,
-      message: 'Invalid image type. Only JPEG and PNG are supported.'
+      message: 'Invalid file type. Supported type: JPEG, PNG, DOCX, TXT.'
     };
   }
 
-  // Upload the image
+  // Upload the image/file to S3
   console.log('Getting pre-signed URL...');
   const response = await fetch("/api/file/generate-presigned-url?fileId=" + file_id + "&fileName=" + blob.name + "&contentType=" + contentType.replaceAll("/", "%2F"), {
     method: "GET",
@@ -29,7 +33,7 @@ export async function generateFileURl(blob, file_id) {
 
   // Upload the file directly to S3 using the pre-signed URL
   if (presignedUrl) {
-    console.log('Uploading image...');
+    console.log('Uploading image/file...');
     const uploadResult = await fetch(presignedUrl, {
       method: 'PUT',
       headers: {
