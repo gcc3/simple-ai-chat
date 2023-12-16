@@ -1,5 +1,4 @@
 import { getLogs, insertLog } from "./sqliteUtils.js"
-import { authenticate } from './authUtils.js';
 
 const fs = require('fs');
 
