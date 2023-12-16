@@ -195,3 +195,71 @@ export async function generateVectaraApiKey(corpusId, jwtToken) {
     return null;
   }
 }
+
+/*
+  Response example:
+  {
+    "status": {
+        "code": "OK",
+        "statusDetail": "Corpus Deleted",
+        "cause": null
+    }
+  }
+*/
+export async function deleteVectaraCorpus(corpusId, jwtToken) {
+  const response = await fetch("https://api.vectara.io/v1/delete-corpus", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + jwtToken,
+      "Accept": "application/json",
+      "customer-id": process.env.VECTARA_CUSTOMER_ID,
+    },
+    body: JSON.stringify({
+      "corpusId": corpusId
+    }),
+  });
+
+  const data = await response.json();
+  if (data && data.status && data.status.code === "OK") {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+/*
+  Response example:
+  {
+    "status": [
+        {
+            "code": "OK",
+            "statusDetail": "",
+            "cause": null
+        }
+    ]
+  }
+*/
+export async function deleteVectaraApiKey(keyId, jwtToken) {
+  const response = await fetch("https://api.vectara.io/v1/delete-api-key", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + jwtToken,
+      "Accept": "application/json",
+      "customer-id": process.env.VECTARA_CUSTOMER_ID,
+    },
+    body: JSON.stringify({
+      "keyId": [
+        keyId
+      ]
+    }),
+  });
+
+  const data = await response.json();
+  if (data && data.status && (data.status[0].code === "OK") || (data.status[0].code === "NOT_FOUND")) {
+    return true;
+  } else {
+    return false;
+  }
+}

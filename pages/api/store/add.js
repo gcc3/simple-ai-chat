@@ -93,7 +93,7 @@ export default async function (req, res) {
   const settings = JSON.stringify({
     "engine": "vectara",
     "corpusId": corpusId,
-    "apkKey": apiKey,
+    "apiKey": apiKey,
   });
 
   insertStore(name, settings, username);
