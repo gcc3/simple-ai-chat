@@ -1,4 +1,4 @@
-import { getUser, countChatsForIP, countChatsForUser } from './sqliteUtils';
+import { getUser, countChatsForIP, countChatsForUser, countTokenForUserByModel } from './sqliteUtils';
 import { getRoleFequencyLimit, gpt4FeeCal, gpt4vFeeCal, dbFeeCal } from './usageUtils';
 
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
@@ -77,21 +77,16 @@ async function checkFequenciesExceeded(user) {
 }
 
 async function checkUsageExceeded(user) {
-  const totalFee = (() => {
-    // GPT-4 Turbo fee
-    const gpt4Token = user.usage.token_monthly.token;
-    const gpt4Fee = gpt4FeeCal(gpt4Token.input, gpt4Token.output);
+  // GPT-4 Turbo fee
+  const gpt4Token = await getUserTokenUsageThisMonth(user.username, process.env.MODEL);
+  const gpt4Fee = gpt4FeeCal(gpt4Token.input, gpt4Token.output);
 
-    // GPT-4 Vision fee
-    const gpt4vToken = user.usage.token_monthly.token_v;
-    const gpt4vFee = gpt4vFeeCal(gpt4vToken.input, gpt4vToken.output);
+  // GPT-4 Vision fee
+  const gpt4vToken = await getUserTokenUsageThisMonth(user.username, process.env.MODEL_V);
+  const gpt4vFee = gpt4vFeeCal(gpt4vToken.input, gpt4vToken.output);
 
-    // Database fee
-    const dbFee = dbFeeCal(user.usage.db_size);
-
-    // Total fee
-    return gpt4Fee + gpt4vFee + dbFee;
-  })();  // IIFE
+  // Total fee
+  const totalFee = gpt4Fee + gpt4vFee;
 
   if (totalFee > user.balance) {
     // Usage exceeded
@@ -99,4 +94,18 @@ async function checkUsageExceeded(user) {
   } else {
     return false;
   }
+}
+
+async function getUserTokenUsageThisMonth(username, model) {
+  const now = new Date();
+  const year = now.getFullYear();
+  const month = now.getMonth() + 1; // Add 1 because getMonth() returns 0-11
+  return getUserTokenUsageByMonth(username, model, year, month);
+}
+
+async function getUserTokenUsageByMonth(username, model, year, month) {
+  const daysInMonth = new Date(year, month, 0).getDate();
+  const startTime = new Date(year, month - 1, 1).getTime();
+  const endTime = new Date(year, month - 1, daysInMonth, 23, 59, 59).getTime();
+  return await countTokenForUserByModel(username, model, startTime, endTime);
 }

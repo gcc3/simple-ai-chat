@@ -59,7 +59,7 @@ export default async function(req, res) {
   if (use_access_control) {
     const uacResult = await getUacResult(user, ip);
     if (!uacResult.success) {
-      res.status(400).send(getUacResult.error);
+      res.status(400).send(uacResult.error);
       return;
     }
   }
