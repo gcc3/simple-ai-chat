@@ -126,13 +126,13 @@ Messages
 | #  | Part                           | Role            | Description                              |
 |----|--------------------------------|-----------------|------------------------------------------|
 | -3 | System master message          | system          | set with `ROLE_CONTENT_SYSTEM`           |
-| -2 | Role/assistant message         | system          | Message generated for role/assistant     |
+| -2 | Role/assistant prompt          | system          | Message generated for role/assistant     |
 | -1 | Chat history                   | user, assistant | Chat history from user and assistant     |
-| 0  | User input                     | user            | Direct input provided by the user,       |
-| 1  | Location info                  | system          | Add when location service is enabled     |
-| 2  | Function calling result        | function        | Result of function calling (tool calls)  |
-| 3  | AI links response              | function        | Response from AI node or hub             |
-| 4  | Vector database query result   | system          | Result from a query to a vector database |
+|  0 | User input                     | user            | Direct input provided by the user,       |
+|  1 | Function calling result        | function        | Result of function calling (tool calls)  |
+|  2 | Vector database query result   | system          | Result from a query to a vector database |
+|  3 | Location info                  | system          | Add when location service is enabled     |
+|  A | Node AI query result           | -               | Replace with result from AI node or hub  |
 
 
 AI Links (AI Node)

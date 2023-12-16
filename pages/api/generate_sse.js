@@ -173,8 +173,16 @@ export default async function (req, res) {
       console.log("--- node ai query ---");
       const nodeAiQueryResult = await executeFunction("query_node_ai", "{ query: " + input + " }");
       if (nodeAiQueryResult) {
+        const model = "node_ai";
+        const temperature = 0;
+        const top_p = 0;
+        const token_ct = 0;
+        const use_eval = false;
+        const functionName = "query_node_ai";
         logadd(queryId, model, "N=query_node_ai(query=" + input + ")", "N=" + nodeAiQueryResult, ip, browser);
         res.write(`data: ${nodeAiQueryResult}\n\n`); res.flush();
+        res.write(`data: ###ENV###${model}\n\n`); res.flush();
+        res.write(`data: ###STATS###${temperature},${top_p},${token_ct},${use_eval},${functionName}\n\n`);
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
         return;

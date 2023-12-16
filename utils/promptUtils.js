@@ -15,7 +15,7 @@ export async function generateMessages(user, input, images, queryId, role, store
   let messages = [];
   let token_ct = 0;
   
-  // -3. System message, important
+  // -3. System master message, important
   if (role_content_system !== "") {
     messages.push({ 
       role: "system",
