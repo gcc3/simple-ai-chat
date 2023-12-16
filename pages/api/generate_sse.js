@@ -8,11 +8,10 @@ import { getFunctions, executeFunction } from "function.js";
 import { getTools } from "tools.js";
 import { getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
-import { countChatsForIP, getUser, getStore } from "utils/sqliteUtils";
+import { getUser, getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
-import { countChatsForUser } from "utils/sqliteUtils";
-import { getUseFequencyLimit } from "utils/envUtils";
 import { vectaraQuery } from "utils/vectaraUtils";
+import { getUacResult } from "utils/uacUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -99,60 +98,12 @@ export default async function (req, res) {
 
   // User access control
   if (use_access_control) {
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    if (!authResult.success) {
-      // Not a user, urge register a user
-      const chatCount = await countChatsForIP(ip, Date.now() - 86400000 * 3, Date.now());
-      if (chatCount >= 5) {
-        res.write(`data: Please register a user to continue, you can use the command \`:user add [username] [email] [password?]\`.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-    } else {
-      // Verify email
-      if (use_email && !user.email_verified_at) {
-        // Urge verify email address
-        res.write(`data: Please verify your email to continue. To send verification again, you can use the command \`:user set email [email]\`.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-
-      // Subscription expired
-      if (user.role_expires_at && user.role_expires_at < Date.now()) {
-        // Urge extend subscription
-        res.write(`data: Your subscription has expired. Please renew it to continue using our services.\n\n`); res.flush();
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
-
-      // Limit `user` chats per day
-      if (user.role === "user") {
-        const chatCount = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
-        if (chatCount >= 24) {
-          res.write(`data: Daily usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
-          res.write(`data: [DONE]\n\n`); res.flush();
-          res.end();
-          return;
-        }
-      }
-
-      // Pro user or super user, check usage limit
-      if (user.role === "pro_user" || user.role === "super_user") {
-        // Check usage exceeded or not
-        const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
-        const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
-        const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
-        const usageLimit = getUseFequencyLimit(user.role);
-        if (daily >= usageLimit.daily_limit || weekly >= usageLimit.weekly_limit || monthly >= usageLimit.monthly_limit) {
-          res.write(`data: Usage exceeded. Please upgrade/subscribe to continue.\n\n`); res.flush();
-          res.write(`data: [DONE]\n\n`); res.flush();
-          res.end();
-          return;
-        }
-      }
+    const uacResult = await getUacResult(req);
+    if (!uacResult.success) {
+      res.write(`data: ${getUacResult.error}\n\n`); res.flush();
+      res.write(`data: [DONE]\n\n`); res.flush();
+      res.end();
+      return;
     }
   }
 
