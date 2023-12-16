@@ -303,6 +303,23 @@ const countChatsForUser = async (user, start, end) => {
   }
 };
 
+// Count how many chats for a user for a date range
+const countTokenForUser = async (user, start, end) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT input_l, output_l FROM logs WHERE user = ? AND time >= ? AND time <= ?`, [user, start, end], (err, row) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(row.count);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
 // II. users
 const getUser = async (username) => {
   const db = await getDatabaseConnection();
@@ -986,6 +1003,7 @@ export {
   getSessionLog,
   countChatsForIP,
   countChatsForUser,
+  countTokenForUser,
   getUser,
   insertUser,
   deleteUser,

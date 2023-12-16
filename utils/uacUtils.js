@@ -1,6 +1,8 @@
 import { countChatsForIP, countChatsForUser } from './sqliteUtils';
 import { getRoleFequencyLimit } from './usageUtils';
 
+const use_email = process.env.USE_EMAIL == "true" ? true : false;
+
 // User access control utilities
 export async function getUacResult(user, ip) {
   const isLogin = user !== null;

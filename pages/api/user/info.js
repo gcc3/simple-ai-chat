@@ -1,6 +1,6 @@
 import { getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
-import { countChatsForUser } from 'utils/sqliteUtils.js';
+import { countChatsForUser, countTokenForUser } from 'utils/sqliteUtils.js';
 import { createToken } from 'utils/authUtils.js';
 import { getRoleFequencyLimit } from 'utils/usageUtils.js';
 const moment = require('moment');
@@ -56,6 +56,7 @@ export default async function (req, res) {
           role_expires_at_h: (user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "-"),
           usage: JSON.parse(user.usage),
           balance: user.balance,
+          token_usage: await getUserTokenUsage(user.username),
           use_fequency: await getUseFequencyWithLimit(user.username, user.role),
         }
       });
@@ -107,5 +108,17 @@ async function getUseFequencyWithLimit(username, role) {
     monthly,
     monthly_limit,
     exceeded,
+  }
+}
+
+async function getUserTokenUsage(username) {
+  const daily = await countTokenForUser(username, Date.now() - 86400000, Date.now());
+  const weekly = await countTokenForUser(username, Date.now() - 604800000, Date.now());
+  const monthly = await countTokenForUser(username, Date.now() - 2592000000, Date.now());
+
+  return {
+    daily,
+    weekly,
+    monthly,
   }
 }
