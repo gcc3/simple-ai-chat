@@ -64,7 +64,7 @@ export async function getUacResult(user, ip) {
 }
 
 async function checkFequenciesExceeded(user) {
-  if (user.role == "root") {
+  if (user.role == "root_user") {
     return false;
   }
 
