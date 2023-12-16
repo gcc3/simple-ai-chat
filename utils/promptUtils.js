@@ -3,15 +3,16 @@ import { getRolePrompt } from './roleUtils.js';
 import { getRole, getStore } from './sqliteUtils.js';
 import { vectaraQuery } from "utils/vectaraUtils";
 import { getAddress } from "utils/googleMapsUtils";
+import { countToken } from "utils/tokenUtils";
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 
 // Generate messages for chatCompletion
-export async function generateMessages(user, input, images, queryId, role, store, use_location, location, do_function_calling, functionName, functionMessage) {
+export async function generateMessages(user, model, input, images, queryId, role, store, use_location, location, do_function_calling, functionName, functionMessage) {
   let messages = [];
-  let token_ct = 0;
+  let token_ct = {};
   
   // -3. System master message, important
   if (role_content_system !== "") {
@@ -19,10 +20,12 @@ export async function generateMessages(user, input, images, queryId, role, store
       role: "system",
       content: role_content_system,
     });
+
+    // Count tokens
+    token_ct["system"] = countToken(model, role_content_system);
   }
 
   // -2. Role/assistant prompt
-  let role_prompt = "";
   if (role !== "" && role !== "default") {
     // Default role prompt
     let rolePrompt = await getRolePrompt(role);
@@ -37,10 +40,13 @@ export async function generateMessages(user, input, images, queryId, role, store
       role: "system",
       content: rolePrompt,
     });
-    role_prompt = rolePrompt;
+
+    // Count tokens
+    token_ct["role"] = countToken(model, rolePrompt);
   }
 
   // -1. Chat history
+  let chat_history_total_prompt = "";
   const session = queryId;
   const sessionLogs = await loglist(session, 7);  // limit the memory length to 7 logs
   if (sessionLogs && session.length > 0) {
@@ -59,7 +65,12 @@ export async function generateMessages(user, input, images, queryId, role, store
         role: "assistant", 
         content: log.output 
       });
+
+      chat_history_total_prompt += log.input + log.output;
     });
+
+    // Count tokens
+    token_ct["history"] = countToken(model, chat_history_total_prompt);
   }
 
   // 0. User input
@@ -92,10 +103,12 @@ export async function generateMessages(user, input, images, queryId, role, store
         return c;
       })()  // Immediately-invoked function expression (IIFE)
     });
+
+    // Count tokens
+    token_ct["user_input"] = countToken(model, input);
   }
 
   // 1. Function calling result
-  let function_prompt = "";
   if (do_function_calling) {
     // Feed message with function calling result
     messages.push({
@@ -103,11 +116,13 @@ export async function generateMessages(user, input, images, queryId, role, store
       "name": functionName,
       "content": functionMessage,
     });
-    function_prompt = functionMessage;
+
+    // Count tokens
+    token_ct["function"] = countToken(model, functionMessage);
   }
 
   // 2. Vector database query result
-  let store_prompt = "";
+  let store_total_prompt = "";
   if (use_vector && store) {
     console.log("--- vector query ---");
 
@@ -128,14 +143,17 @@ export async function generateMessages(user, input, images, queryId, role, store
             "role": "system",
             "content": content,
           });
-          store_prompt += content + "\n";
+
+          store_total_prompt += content;
         });
       }
     }
+
+    // Count tokens
+    token_ct["store"] = countToken(model, store_total_prompt);
   }
   
   // 3. Location info
-  let location_prompt = "";
   if (use_location && location) {
     // localtion example: (40.7128, -74.0060)
     const lat = location.slice(1, -1).split(",")[0].trim();
@@ -162,15 +180,20 @@ export async function generateMessages(user, input, images, queryId, role, store
       "role": "system",
       "content": locationMessage
     });
-    location_prompt = locationMessage;
+
+    // Count tokens
+    token_ct["location"] = countToken(model, locationMessage);
   }
+
+  // Total token count
+  let token_ct_total = 0;
+  for (const key in token_ct) {
+    token_ct_total += token_ct[key];
+  }
+  token_ct["total"] = token_ct_total;
 
   return {
     messages,
     token_ct,
-    store_prompt,
-    role_prompt,
-    function_prompt,
-    location_prompt
   };
 }

@@ -92,10 +92,10 @@ export default async function(req, res) {
   + "store: " + (store || "(not set)") + "\n");
 
   try {
-    let token_ct = 0;  // input token count
+    let token_ct;  // input token count
     let messages = [];
 
-    const generateMessagesResult = await generateMessages(user, input, images, queryId, role, store, use_location, location, 
+    const generateMessagesResult = await generateMessages(user, model, input, images, queryId, role, store, use_location, location, 
                                                           false, "", "");  // function calling is not supported
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
@@ -132,7 +132,7 @@ export default async function(req, res) {
         stats: {
           temperature: process.env.TEMPERATURE,
           top_p: process.env.TOP_P,
-          token_ct: token_ct,
+          token_ct: token_ct.total,
           func: false
         },
         info: {

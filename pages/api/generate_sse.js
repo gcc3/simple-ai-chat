@@ -214,11 +214,11 @@ export default async function (req, res) {
   }
 
   try {
-    let token_ct = 0;  // input token count
+    let token_ct;  // input token count
     let messages = [];
 
     // Message base
-    const generateMessagesResult = await generateMessages(user, input, images, queryId, role, store, use_location, location, 
+    const generateMessagesResult = await generateMessages(user, model, input, images, queryId, role, store, use_location, location, 
                                                           do_function_calling, functionName, functionMessage);
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
@@ -245,7 +245,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${token_ct},${use_eval},${functionName}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${token_ct.total},${use_eval},${functionName}\n\n`);
     res.flush();
 
     for await (const part of chatCompletion) {
@@ -287,6 +287,10 @@ export default async function (req, res) {
 
     // Done message
     res.write(`data: [DONE]\n\n`); res.flush();
+
+    // Token
+    console.log("--- token_ct ---");
+    console.log(JSON.stringify(token_ct) + "\n");
 
     // Log
     if (output.trim().length === 0) output = "(null)";

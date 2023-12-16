@@ -1,3 +1,5 @@
+import { get_encoding, encoding_for_model } from "tiktoken";
+
 // Max tokens for differnet models
 const max_tokens_dict = {
   "gpt-4-1106-preview": 8192,  // the 128000 is not yet, "this model supports at most 4096 completion tokens"
@@ -11,4 +13,12 @@ const max_tokens_dict = {
 export function getMaxTokens(model) {
   // only use halp of the max tokens to avoid exceeding the limit
   return max_tokens_dict[model] / 2;
+}
+
+export function countToken(model, input) {
+  const encoding = encoding_for_model(model);
+  const tokens = encoding.encode(input);
+  const tokenCount = tokens.length;
+  encoding.free();
+  return tokenCount;
 }
