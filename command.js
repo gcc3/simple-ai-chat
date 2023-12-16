@@ -23,15 +23,18 @@ import logout from "./commands/logout.js";
 import store from "./commands/store.js";
 import search from "commands/search.js";
 
-export default function commands(input) {
+export default function commands(input, files) {
   let command = input;
   let args = [];
   
   if (input.indexOf(' ') !== -1) {
     // Has arguments
     command = input.substring(0, input.indexOf(' '));
+
     args = extractArgs(input.substring(input.indexOf(' ') + 1));
-    console.log("Command Arguments: " + args);
+    if (args.length > 0) {
+      console.log("Command Arguments: " + args);
+    }
   }
   
   if (command.startsWith(":help")) return help(args);
@@ -55,7 +58,7 @@ export default function commands(input) {
   if (command.startsWith(":fullscreen")) return fullscreen(args);
   if (command.startsWith(":theme")) return theme(args);
   if (command.startsWith(":user")) return user(args);
-  if (command.startsWith(":store")) return store(args);
+  if (command.startsWith(":store")) return store(args, files);
   if (command.startsWith(":search")) return search(args);
   return "Unknown command.";
 }
@@ -77,6 +80,16 @@ function extractArgs(input) {
     }
   }
   return matchList;
+}
+
+function extractFiles(str) {
+  const regex = /\+file\[(https?:\/\/[^\]]+)\]/g; // Global regular expression to find all URLs inside +file[...]
+  const urls = [];
+  let match;
+  while ((match = regex.exec(str)) !== null) {
+      urls.push(match[1]); // Add each found URL to the array
+  }
+  return urls; // Return the array of URLs
 }
 
 export function getCommands() {
