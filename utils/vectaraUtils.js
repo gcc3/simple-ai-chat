@@ -62,3 +62,136 @@ export async function vectaraQuery(query, corpusId) {
     }
   }
 }
+
+/*
+{
+    "access_token": "xxxxxxxxxxx",
+    "expires_in": 3600,
+    "token_type": "Bearer"
+}
+*/
+export async function createVectaraJtwToken() {
+  try {
+    const params = new URLSearchParams();
+    params.append("grant_type", "client_credentials");
+    params.append("client_id", process.env.VECTARA_CLIENT_ID);
+    params.append("client_secret", process.env.VECTARA_CLIENT_SECRET);
+
+    const response = await fetch("https://vectara-prod-" + process.env.VECTARA_CUSTOMER_ID + ".auth.us-west-2.amazoncognito.com/oauth2/token", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+        "Accept": "application/json",
+        "customer-id": process.env.VECTARA_CUSTOMER_ID,
+        "x-api-key": process.env.VECTARA_API_KEY,
+      },
+      body: params.toString(),
+    });
+
+    const data = await response.json();
+    if (data && data.access_token) {
+      return data.access_token;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+/*
+  Response example:
+  {
+      "corpusId": 123,
+      "status": {
+          "code": "OK",
+          "statusDetail": "Corpus Created",
+          "cause": null
+      }
+  }
+*/
+export async function createVectaraCorpus(name, description, jwtToken) {
+  try {
+    const response = await fetch(`https://api.vectara.io/v1/create-corpus`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer " + jwtToken,
+        "Accept": "application/json",
+        "customer-id": process.env.VECTARA_CUSTOMER_ID,
+      },
+      body: JSON.stringify({
+        "corpus": {
+          "id": 0,
+          "name": name,
+          "description": description,
+          "dtProvision": "1",
+          "enabled": true,
+          "swapQenc": false,
+          "swapIenc": false,
+          "textless": false,
+          "encrypted": true,
+          "encoderId": "1",
+          "metadataMaxBytes": 0,
+          "customDimensions": [],
+          "filterAttributes": []
+        }
+      }),
+    });
+
+    const data = await response.json();
+    if (data && data.corpusId) {
+      return data.corpusId;
+    } else {
+      return null;
+    }
+  } catch (error) {
+    console.log(error);
+    return null;
+  }
+}
+
+/*
+  Response example:
+  {
+    "response": [
+        {
+            "keyId": "zwt_xxxxxxxxxxxxxxx",
+            "status": {
+                "code": "OK",
+                "statusDetail": "",
+                "cause": null
+            }
+        }
+    ]
+}
+*/
+export async function generateVectaraApiKey(corpusId, jwtToken) {
+  const response = await fetch("https://api.vectara.io/v1/create-api-key", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "Authorization": "Bearer " + jwtToken,
+      "Accept": "application/json",
+      "customer-id": process.env.VECTARA_CUSTOMER_ID,
+    },
+    body: JSON.stringify({
+      "apiKeyData": [
+        {
+          "description": "test",
+          "apiKeyType": "API_KEY_TYPE__SERVING_INDEXING",
+          "corpusId": [
+            corpusId
+          ]
+        }
+      ]
+    }),
+  });
+
+  const data = await response.json();
+  if (data && data.response && data.response.length > 0) {
+    return data.response[0].keyId;
+  } else {
+    return null;
+  }
+}

@@ -212,7 +212,6 @@ export default async function store(args) {
     }
 
     const name = args[1].slice(1, -1);
-    const settings = JSON.stringify({});
 
     try {
       const response = await fetch("/api/store/add", {
@@ -222,7 +221,6 @@ export default async function store(args) {
         },
         body: JSON.stringify({
           name,
-          settings,
         }),
       });
 

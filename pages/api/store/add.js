@@ -1,5 +1,6 @@
-import { getStore, insertStore } from "utils/sqliteUtils.js";
+import { getUser, getStore, getUserStores, insertStore } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
+import { createVectaraCorpus, generateVectaraApiKey, createVectaraJtwToken } from "utils/vectaraUtils.js";
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -7,7 +8,7 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
-  const { name, settings } = req.body;
+  const { name } = req.body;
 
   // Authentication
   const authResult = authenticate(req);
@@ -19,6 +20,7 @@ export default async function (req, res) {
     });
   }
   const { id, username } = authResult.user;
+  const user = getUser(username);
 
   // Check store existance
   const sameNameStore = await getStore(name, username);
@@ -29,9 +31,74 @@ export default async function (req, res) {
     });
   }
 
+  // Store count limit
+  const sameUserStores = await getUserStores(username);
+  if (user.role === "user" && sameUserStores.length >= 1) {
+    return res.status(400).json({ 
+      success: false,
+      error: "`user` can create at most 1 store."
+    });
+  } else if (user.role === "pro_user" && sameUserStores.length >= 3) {
+    return res.status(400).json({ 
+      success: false,
+      error: "`pro_user` can create at most 3 stores."
+    });
+  } else if (user.role === "super_user" && sameUserStores.length >= 10) {
+    return res.status(400).json({ 
+      success: false,
+      error: "`super_user` can create at most 10 stores."
+    });
+  }
+
+  console.log("Creating store \"" + name + "\"...");
+
+  // Get JWT token
+  const jwtToken = await createVectaraJtwToken();
+  if (!jwtToken) {
+    console.log("Failed to get JTW token.");
+    return res.status(500).json({ 
+      success: false, 
+      error: "Failed to create store." 
+    });
+  }
+
+  console.log("Got JTW token.");
+
+  // Create store
+  const corpusName = "i-" + Date.now();
+  const description = "store: " + name + ", created by " + username;
+  const corpusId = await createVectaraCorpus(corpusName, description, jwtToken);
+  if (!corpusId) {
+    console.log("Failed to create corpus.");
+    return res.status(500).json({ 
+      success: false, 
+      error: "Failed to create store." 
+    });
+  }
+
+  console.log("Created corpus: " + corpusId);
+
+  // Get API key
+  const apiKey = await generateVectaraApiKey(corpusId, jwtToken);
+  if (!apiKey) {
+    console.log("Failed to get API key.");
+    return res.status(500).json({ 
+      success: false, 
+      error: "Failed to create store." 
+    });
+  }
+
+  console.log("Got API key.");
+
+  const settings = JSON.stringify({
+    "engine": "vectara",
+    "corpusId": corpusId,
+    "apkKey": apiKey,
+  });
+
   insertStore(name, settings, username);
   return res.status(200).json({ 
     success: true,
-    message: "Store \"" + name + "\" is created.",
+    message: "Store \"" + name + "\" is created. You can use command `:store \"" + name + "\"` to check store status.",
   });
 }
