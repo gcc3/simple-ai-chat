@@ -109,6 +109,12 @@ It's possible to input multiple lines. Use `crtl` or `alt` with `enter` key to b
 Use placeholder to store and show the last input.  
 Use `tab` key to restore input from the placehodler.  
 
+* File upload  
+Support image type: JPG, PNG  
+Support file type: TXT, DOCX, PDF  
+User can upload these types and query for file content.  
+Image type will be answer with vision model.  
+
 
 Roles
 -----
