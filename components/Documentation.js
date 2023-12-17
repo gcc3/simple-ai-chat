@@ -78,6 +78,9 @@ const Documentation = () => {
         ))}
       </div>
       <div id="commands" className="mt-5">Commands</div>
+      <div className="mt-2">
+        Simple AI is command-based, most of opreations can be executed with comnands. For example, to change theme use `:theme` command, to enter full-screen mode, use `:fullscreen` command. Use `:help` to list all available commands.
+      </div>
       <div>
         {commands.map((item, index) => (
           <div id={item.id} key={index} className="mt-2">

@@ -47,7 +47,7 @@ global.rawInput = "";
 global.rawOutput = "";
 global.rawPlaceholder = "";
 
-export default function Home() {
+export default function Home() { 
   // States
   const [placeholder, setPlaceholder] = useState("");
   const [waiting, setWaiting] = useState("");
@@ -213,7 +213,7 @@ export default function Home() {
   };
 
   // Initializing
-  useEffect(() => {
+  useEffect(() => { 
     initializeSession();
 
     // Set default localStorage values
@@ -415,6 +415,16 @@ export default function Home() {
         }
       }
     });
+
+    // Put a intro text if not logged in
+    if (!localStorage.getItem("user")) {
+      const introText = "Welcome to Simple AI (`simple-ai.io`)!" + "\n\n"
+                      + "Quick start:\n"
+                      + "1. Type in the input box and press Enter to send message and interact with the AI. " + "\n"
+                      + "2. There is a dot in the corner of the screen; click it to access the documentation." + "\n"
+                      + "3. Use command `:user add [username] [email] [password?]` to create a user." + "\n";
+      printOutput(introText);
+    }
 
     // Start observing
     const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
