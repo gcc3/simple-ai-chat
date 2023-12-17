@@ -123,7 +123,12 @@ export default async function (req, res) {
     }
     if (files.length > 0) {
       console.log("--- files ---");
-      console.log(files.join("\n") + "\n");
+      files.map((file) => {
+        console.log(file);
+
+        // TODO: process file content
+      });
+      console.log("");  // new line
     }
 
     // Configuration info
