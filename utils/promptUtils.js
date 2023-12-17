@@ -90,14 +90,25 @@ export async function generateMessages(user, model, input, files, images, queryI
         for (let i = 0; i < files.length; i++) {
           if (files[i] !== "") {
             try {
-              const response = await fetch(files[i]);
-              const fileContent = await response.text();
+              let fileContent = "";
+              const fileExtension = files[i].split('.').pop().split(/\#|\?/)[0].toLowerCase();
+              if (fileExtension === "txt") {
+                const response = await fetch(files[i]);
+                fileContent = await response.text();
+              } else if (fileExtension === "json") {
+                const response = await fetch(files[i]);
+                fileContent = JSON.stringify(await response.json(), null, 2);
+              }
               c.push({
                 type: "text",
                 text: "User input file content:\n" + fileContent,
               });
             } catch (error) {
-              console.error("Error fetching file:", files[i], error);
+              console.error("Error fetching file:" + files[i] + "\n" + error);
+              c.push({
+                type: "text",
+                text: "Error fetching file:" + files[i] + "\n" + error,
+              });
             }
           }
         }

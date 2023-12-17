@@ -1075,12 +1075,13 @@ export default function Home() {
     reAdjustInputHeight();  // Re-adjust input height as input changed
 
     // Grab the file
-    console.log('Image/file pasted/dropped: ' + blob.name);
+    console.log('Image/file pasted/dropped: ' + blob.name + ' (' + type + ')');
 
     // Upload the image to S3
     let message = "null";
     const supportedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
-    const supportedFileTypes = ["text/plain", "application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+    const supportedFileTypes = ["text/plain", "application/pdf", "application/json", 
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
     const supportedTypes = supportedImageTypes.concat(supportedFileTypes);
     if (supportedTypes.includes(type)) {
       const uploadResult = await generateFileURl(blob, file_id, type);
