@@ -458,34 +458,32 @@ export default function Home() {
     // files starts with +file[url] or +image[url] or +img[url]
     let image_urls = [], image_urls_encoded = [];
     let file_urls = [], file_urls_encoded = [];
-    const inputBlocks = global.rawInput.split(/[\s\n]+/);  // split by space or new line
-    for (let i = 0; i < inputBlocks.length; i++) {
-      if (inputBlocks[i].startsWith("+image[") || inputBlocks[i].startsWith("+img[") || inputBlocks[i].startsWith("+file[")) {
-        const block = inputBlocks[i];
+    let matches = [...global.rawInput.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
+    matches.forEach(match => {
+      const block = match[1] + "[" + match[2] + "]";
 
-        // Extract the URL
-        const url = block.replace("+image[", "").replace("+img[", "").replace("+file[", "").replace("]", "");
+      // Extract the URL
+      const url = block.replace("+image[", "").replace("+img[", "").replace("+file[", "").replace("]", "");
 
-        // Check if the URL is valid
-        if (!url.startsWith("http")) {
-          console.error("Invalid URL: " + url);
-          printOutput("URL must start with http or https.");
-          return;
-        }
-
-        // Add to the URL list
-        if (block.startsWith("+image[") || block.startsWith("+img[")) {
-          image_urls.push(url);
-          image_urls_encoded.push(encodeURIComponent(url));
-        } else if (block.startsWith("+file[")) {
-          file_urls.push(url);
-          file_urls_encoded.push(encodeURIComponent(url));
-        }
-
-        // Remove the block from the raw input
-        global.rawInput = global.rawInput.replace(inputBlocks[i], "");
+      // Check if the URL is valid
+      if (!url.startsWith("http")) {
+        console.error("Invalid URL: " + url);
+        printOutput("URL must start with http or https.");
+        return;
       }
-    }
+
+      // Add to the URL list
+      if (block.startsWith("+image[") || block.startsWith("+img[")) {
+        image_urls.push(url);
+        image_urls_encoded.push(encodeURIComponent(url));
+      } else if (block.startsWith("+file[")) {
+        file_urls.push(url);
+        file_urls_encoded.push(encodeURIComponent(url));
+      }
+
+      // Remove the block from the raw input
+      global.rawInput = global.rawInput.replace(block, "");
+    });
     if (image_urls.length > 0) {
       console.log("Images:\n" + image_urls.join("\n"));
       image_urls.map((image_url) => {
