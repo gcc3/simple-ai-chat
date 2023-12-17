@@ -1075,7 +1075,7 @@ export default function Home() {
     reAdjustInputHeight();  // Re-adjust input height as input changed
 
     // Grab the file
-    console.log('Image/file pasted: ' + blob.name);
+    console.log('Image/file pasted/dropped: ' + blob.name);
 
     // Upload the image to S3
     const uploadResult = await generateFileURl(blob, file_id, type);
