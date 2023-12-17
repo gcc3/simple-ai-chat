@@ -1079,9 +1079,9 @@ export default function Home() {
 
     // Upload the image to S3
     let message = "null";
-    const supportedTypes = ["image/png", "image/jpeg", "image/jpg", 
-                             "text/plain", "application/pdf",
-                             "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+    const supportedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
+    const supportedFileTypes = ["text/plain", "application/pdf", "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+    const supportedTypes = supportedImageTypes.concat(supportedFileTypes);
     if (supportedTypes.includes(type)) {
       const uploadResult = await generateFileURl(blob, file_id, type);
       if (!uploadResult.success) {
@@ -1093,7 +1093,11 @@ export default function Home() {
         message = uploadResult.objectUrl;
       }
     } else {
-      message = "file_id:" + file_id + "(unsupported file type)";
+      if (type.startsWith("image/")) {
+        message = "file_id:" + file_id + "(failed: unsupported image type)";
+      } else {
+        message = "file_id:" + file_id + "(failed: unsupported file type)";
+      }
     }
     setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", message));
 
