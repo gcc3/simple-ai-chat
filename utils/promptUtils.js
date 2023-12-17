@@ -10,7 +10,7 @@ const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_C
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 
 // Generate messages for chatCompletion
-export async function generateMessages(user, model, input, images, queryId, role, store, use_location, location, do_function_calling, functionName, functionMessage) {
+export async function generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, do_function_calling, functionName, functionMessage) {
   let messages = [];
   let token_ct = {};
   

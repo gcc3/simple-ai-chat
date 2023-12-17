@@ -31,6 +31,7 @@ export default async function(req, res) {
   const use_stats = req.body.use_stats || false;
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
+  const files = req.body.files || null;
   const images = req.body.images || null;
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
@@ -96,7 +97,7 @@ export default async function(req, res) {
     let token_ct;  // input token count
     let messages = [];
 
-    const generateMessagesResult = await generateMessages(user, model, input, images, queryId, role, store, use_location, location, 
+    const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, 
                                                           false, "", "");  // function calling is not supported
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
