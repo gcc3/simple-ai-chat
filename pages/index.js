@@ -462,7 +462,7 @@ export default function Home() {
     for (let i = 0; i < inputBlocks.length; i++) {
       if (inputBlocks[i].startsWith("+image[") || inputBlocks[i].startsWith("+img[") || inputBlocks[i].startsWith("+file[")) {
         const block = inputBlocks[i];
-        
+
         // Extract the URL
         const url = block.replace("+image[", "").replace("+img[", "").replace("+file[", "").replace("]", "");
 
@@ -493,7 +493,7 @@ export default function Home() {
       });
     }
     if (file_urls.length > 0) {
-      console.log("Files:" + file_urls.join("\n"));
+      console.log("Files:\n" + file_urls.join("\n"));
     }
 
     // 2. Replace the full-width characters
