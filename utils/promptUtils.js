@@ -166,13 +166,23 @@ export async function generateMessages(user, model, input, files, images, queryI
   if (use_vector && store) {
     console.log("--- vector query ---");
 
-    // Get corpus id
-    const storeInfo = await getStore(store, user.username);
-    const storeSettings = JSON.parse(storeInfo.settings);
-    const corpus_id = storeSettings.corpus_id;
-    if (corpus_id) {
-      // Query
-      const queryResult = await vectaraQuery(input, corpus_id);
+    // Get settings
+    const settings = JSON.parse(storeInfo.settings);
+    const corpusId = settings.corpusId;
+    const apiKey = settings.apiKey;
+    const threshold = settings.threshold;
+    const numberOfResults = settings.numberOfResults;
+
+    // Query
+    if (!apiKey || !corpusId || !threshold || !numberOfResults) {
+      console.log("response: Store not configured.\n");
+    } else {
+      console.log("corpus_id: " + corpusId);
+      console.log("api_key: " + apiKey);
+      console.log("threshold: " + threshold);
+      console.log("number_of_results: " + numberOfResults);
+
+      const queryResult = await vectaraQuery(input, corpusId, apiKey, threshold, numberOfResults);
       if (!queryResult) {
         console.log("response: no result.\n");
       } else {

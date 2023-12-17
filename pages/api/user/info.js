@@ -1,6 +1,5 @@
-import { getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
-import { countChatsForUser, countTokenForUserByModel } from 'utils/sqliteUtils.js';
+import { getUser, countChatsForUser, countTokenForUserByModel, countUserStores } from 'utils/sqliteUtils.js';
 import { createToken } from 'utils/authUtils.js';
 import { getRoleFequencyLimit } from 'utils/usageUtils.js';
 const moment = require('moment');
@@ -74,7 +73,7 @@ export default async function (req, res) {
               this_month: await getUseCountThisMonth(user.username),
               last_month: await getUseCountLastMonth(user.username),
             },
-            db_size: 0,
+            store_count: (await countUserStores(user.username)).count,
           },
           usage_fees: JSON.parse(user.usage),
           balance: user.balance,

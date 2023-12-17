@@ -1,7 +1,7 @@
 import FormData from 'form-data';
 import fetch from 'node-fetch';
 
-export async function vectaraQuery(query, corpusId, apiKey, scoreThreshold = 0.5) {
+export async function vectaraQuery(query, corpusId, apiKey, scoreThreshold = 0.5, numberOfResults = 5) {
   const response = await fetch("https://api.vectara.io/v1/query", {
     method: "POST",
     headers: {
@@ -15,7 +15,7 @@ export async function vectaraQuery(query, corpusId, apiKey, scoreThreshold = 0.5
         {
           query: query,
           start: 0,
-          numResults: 5,
+          numResults: numberOfResults,
           contextConfig: {
             charsBefore: 60,
             charsAfter: 60,
@@ -49,10 +49,20 @@ export async function vectaraQuery(query, corpusId, apiKey, scoreThreshold = 0.5
         responseSet.response.forEach((r) => {
           if (r.score >= scoreThreshold) {
             const document = responseSet.document[r.documentIndex];
+            const metadata = document.metadata;
+            let title = "";
+            metadata.forEach((m) => {
+              if (m.name === "title") {
+                title = m.value;
+              }
+            });
+            title = title.replaceAll("\n", " ").replace(/\s+/g, ' ');  // trim title
+            
             result.push({
               document: document.id,
               score: r.score,
               content: r.text,
+              title: title,
             });
           }
         });
