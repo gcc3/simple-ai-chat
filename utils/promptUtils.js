@@ -4,6 +4,7 @@ import { getRole, getStore } from './sqliteUtils.js';
 import { vectaraQuery } from "utils/vectaraUtils";
 import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
+const fetch = require('node-fetch');
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -90,15 +91,27 @@ export async function generateMessages(user, model, input, files, images, queryI
         for (let i = 0; i < files.length; i++) {
           if (files[i] !== "") {
             try {
-              let fileContent = "";
               const fileExtension = files[i].split('.').pop().split(/\#|\?/)[0].toLowerCase();
+              const response = await fetch(files[i]);
+              const pdfParse = require('pdf-parse');
+              const mammoth = require('mammoth');
+              
+              // Get content form different file types
+              let fileContent = "(file is empty)";
               if (fileExtension === "txt") {
-                const response = await fetch(files[i]);
                 fileContent = await response.text();
               } else if (fileExtension === "json") {
-                const response = await fetch(files[i]);
                 fileContent = JSON.stringify(await response.json(), null, 2);
+              } else if (fileExtension === "pdf") {
+                const buffer = await response.buffer();
+                const data = await pdfParse(buffer);   // Use pdf-parse to extract text
+                fileContent = data.text;
+              } else if (fileExtension === "docx") {
+                const buffer = await response.buffer();
+                const data = await mammoth.extractRawText({ buffer: buffer });  // Use mammoth to extract text
+                fileContent = data.value;
               }
+
               c.push({
                 type: "text",
                 text: "User input file content:\n" + fileContent,
