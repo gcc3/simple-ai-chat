@@ -25,11 +25,22 @@ export default async function handler(req, res) {
       return;
     }
     
-    // Query
+    // Get settings
     const settings = JSON.parse(storeInfo.settings);
     const corpusId = settings.corpusId;
     const apiKey = settings.apiKey;
-    const queryResult = await vectaraQuery(text, corpusId, apiKey, 0.1);
+    const threshold = settings.threshold;
+    const numberOfResults = settings.numberOfResults;
+    if (!apiKey || !corpusId || !threshold || !numberOfResults) {
+      res.status(400).json({
+        success: false,
+        error: "Store not configured.",
+      });
+      return;
+    }
+
+    // Query
+    const queryResult = await vectaraQuery(text, corpusId, apiKey, threshold, numberOfResults);
     res.status(200).json({
       success: true,
       result: queryResult,

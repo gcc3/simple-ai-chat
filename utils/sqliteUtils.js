@@ -923,6 +923,22 @@ const getUserStores = async (createdBy) => {
   }
 };
 
+const countUserStores = async (createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT COUNT(*) AS count FROM stores WHERE created_by = ?`, [createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const insertStore = async (name, settings, createdBy) => {
   const db = await getDatabaseConnection();
   try {
@@ -1101,6 +1117,7 @@ export {
   updateRolePrompt,
   getStore,
   getUserStores,
+  countUserStores,
   insertStore,
   deleteStore,
   deleteUserStores,

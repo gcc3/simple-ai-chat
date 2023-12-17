@@ -1,4 +1,4 @@
-import { getUser, getStore, getUserStores, insertStore } from "utils/sqliteUtils.js";
+import { getUser, getStore, countUserStores, insertStore } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
 import { createVectaraCorpus, generateVectaraApiKey, createVectaraJtwToken } from "utils/vectaraUtils.js";
 
@@ -20,7 +20,7 @@ export default async function (req, res) {
     });
   }
   const { id, username } = authResult.user;
-  const user = getUser(username);
+  const user = await getUser(username);
 
   // Check store existance
   const sameNameStore = await getStore(name, username);
@@ -32,18 +32,18 @@ export default async function (req, res) {
   }
 
   // Store count limit
-  const sameUserStores = await getUserStores(username);
-  if (user.role === "user" && sameUserStores.length >= 0) {
+  const sameUserStoresCount = (await countUserStores(username)).count;
+  if (user.role === "user" && sameUserStoresCount >= 0) {
     return res.status(400).json({ 
       success: false,
-      error: "`user` cannot create data store."
+      error: "Your subscription does not support the creation of a data store."
     });
-  } else if (user.role === "pro_user" && sameUserStores.length >= 1) {
+  } else if (user.role === "pro_user" && sameUserStoresCount >= 1) {
     return res.status(400).json({ 
       success: false,
       error: "You've already created a data store."
     });
-  } else if (user.role === "super_user" && sameUserStores.length >= 2) {
+  } else if (user.role === "super_user" && sameUserStoresCount >= 2) {
     return res.status(400).json({ 
       success: false,
       error: "Your can create at most 2 data stores."
