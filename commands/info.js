@@ -1,6 +1,6 @@
 export default function info(args) {
   const info = "Session ID: " + sessionStorage.getItem("queryId") + "\n" +
-               "Time(timeline): " + sessionStorage.getItem("time") + "\n" +
+               "Timeline: " + sessionStorage.getItem("time") + "\n" +
                "Role: " + (sessionStorage.getItem("role") || "(not set)") + "\n" +
                "Store: " + (localStorage.getItem("store") || "(not set)") + "\n" +
                "Show stats: " + localStorage.getItem("useStats") + "\n" +

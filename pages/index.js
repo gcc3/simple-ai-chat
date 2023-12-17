@@ -153,7 +153,7 @@ export default function Home() {
   // Print session log
   const printSessionLog = async function(log) {
     console.log("Time set to log time: " + log["time"])
-    sessionStorage.setItem("time",log["time"]);
+    sessionStorage.setItem("time", log["time"]);
     console.log("Session log:", JSON.stringify(log));
 
     // Print the log
@@ -216,11 +216,8 @@ export default function Home() {
   useEffect(() => {
     initializeSession();
 
-    // Set default sessionStorage values
-    if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
-    if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");
-
     // Set default localStorage values
+    if (localStorage.getItme("upTimestamp") === null) localStorage.setItem("upTimestamp", Date.now());
     if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
     if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
@@ -228,6 +225,11 @@ export default function Home() {
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
+
+    // Set default sessionStorage values
+    if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
+    if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");
+    if (sessionStorage.getItem("time") === null) sessionStorage.setItem("time", Date.now());
 
     // Set styles and themes
     dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
