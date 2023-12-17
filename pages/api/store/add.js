@@ -66,7 +66,7 @@ export default async function (req, res) {
 
   // Create store
   const corpusName = "i-" + Date.now();
-  const description = "store: " + name + ", created by " + username;
+  const description = "store: " + name + ", created by: " + username;
   const corpusId = await createVectaraCorpus(corpusName, description, jwtToken);
   if (!corpusId) {
     console.log("Failed to create corpus.");
