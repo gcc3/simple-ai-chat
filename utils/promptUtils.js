@@ -4,6 +4,7 @@ import { getRole, getStore } from './sqliteUtils.js';
 import { vectaraQuery } from "utils/vectaraUtils";
 import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
+const fetch = require('node-fetch');
 
 // configurations
 const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
@@ -90,14 +91,37 @@ export async function generateMessages(user, model, input, files, images, queryI
         for (let i = 0; i < files.length; i++) {
           if (files[i] !== "") {
             try {
+              const fileExtension = files[i].split('.').pop().split(/\#|\?/)[0].toLowerCase();
               const response = await fetch(files[i]);
-              const fileContent = await response.text();
+              const pdfParse = require('pdf-parse');
+              const mammoth = require('mammoth');
+              
+              // Get content form different file types
+              let fileContent = "(file is empty)";
+              if (fileExtension === "txt") {
+                fileContent = await response.text();
+              } else if (fileExtension === "json") {
+                fileContent = JSON.stringify(await response.json(), null, 2);
+              } else if (fileExtension === "pdf") {
+                const buffer = await response.buffer();
+                const data = await pdfParse(buffer);   // Use pdf-parse to extract text
+                fileContent = data.text;
+              } else if (fileExtension === "docx") {
+                const buffer = await response.buffer();
+                const data = await mammoth.extractRawText({ buffer: buffer });  // Use mammoth to extract text
+                fileContent = data.value;
+              }
+
               c.push({
                 type: "text",
                 text: "User input file content:\n" + fileContent,
               });
             } catch (error) {
-              console.error("Error fetching file:", files[i], error);
+              console.error("Error fetching file:" + files[i] + "\n" + error);
+              c.push({
+                type: "text",
+                text: "Error fetching file:" + files[i] + "\n" + error,
+              });
             }
           }
         }
@@ -145,10 +169,14 @@ export async function generateMessages(user, model, input, files, images, queryI
     // Get corpus id
     const storeInfo = await getStore(store, user.username);
     const storeSettings = JSON.parse(storeInfo.settings);
-    const corpus_id = storeSettings.corpus_id;
-    if (corpus_id) {
+    const corpusId = storeSettings.corpusId;
+    const apiKey = storeSettings.apiKey;
+    console.log("corpus_id: " + corpusId);
+    console.log("api_key: " + apiKey);
+
+    if (corpusId && apiKey) {
       // Query
-      const queryResult = await vectaraQuery(input, corpus_id);
+      const queryResult = await vectaraQuery(input, corpusId, apiKey);
       if (!queryResult) {
         console.log("response: no result.\n");
       } else {
@@ -163,6 +191,8 @@ export async function generateMessages(user, model, input, files, images, queryI
           store_total_prompt += content;
         });
       }
+    } else {
+      console.log("response: vector setting error.\n");
     }
 
     // Count tokens

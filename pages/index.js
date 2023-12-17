@@ -1075,17 +1075,32 @@ export default function Home() {
     reAdjustInputHeight();  // Re-adjust input height as input changed
 
     // Grab the file
-    console.log('Image/file pasted: ' + blob.name);
+    console.log('Image/file pasted/dropped: ' + blob.name + ' (' + type + ')');
 
     // Upload the image to S3
-    const uploadResult = await generateFileURl(blob, file_id, type);
-    if (!uploadResult.success) {
-      console.error(uploadResult.message);
-      setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", "file_id:" + file_id + "(failed:" + uploadResult.message + ")"));
+    let message = "null";
+    const supportedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
+    const supportedFileTypes = ["text/plain", "application/pdf", "application/json", 
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+    const supportedTypes = supportedImageTypes.concat(supportedFileTypes);
+    if (supportedTypes.includes(type)) {
+      const uploadResult = await generateFileURl(blob, file_id, type);
+      if (!uploadResult.success) {
+        // Print error message
+        console.error(uploadResult.message);
+        message = "file_id:" + file_id + "(failed:" + uploadResult.message + ")";
+      } else {
+        // Replace the placeholder text with the image URL
+        message = uploadResult.objectUrl;
+      }
     } else {
-      // Replace the placeholder text with the image URL
-      setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", uploadResult.objectUrl));
+      if (type.startsWith("image/")) {
+        message = "file_id:" + file_id + "(failed: unsupported image type)";
+      } else {
+        message = "file_id:" + file_id + "(failed: unsupported file type)";
+      }
     }
+    setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", message));
 
     // Re-adjust input height as input changed
     reAdjustInputHeight();
@@ -1101,15 +1116,9 @@ export default function Home() {
     for (let i = 0; i < items.length; i++) {
       // Must be a file, for paste plain text should be ignored.
       if (items[i].getAsFile()) {
-        if (items[i].type.indexOf('image/jpeg') === 0
-         || items[i].type.indexOf('image/png') === 0
-         || items[i].type.indexOf('text/plain') === 0
-         || items[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0 
-         || items[i].type.indexOf('application/pdf') === 0) {
-          // image, text file, word file, pdf file    
-          event.preventDefault();
-          filePlus(items[i].getAsFile(), items[i].type);
-        }
+        // image, text file, word file, pdf file    
+        event.preventDefault();
+        filePlus(items[i].getAsFile(), items[i].type);
       }
     }
   };
@@ -1126,15 +1135,9 @@ export default function Home() {
 
     // Look for any images in the dropped data
     for (let i = 0; i < droppedFiles.length; i++) {
-      if (droppedFiles[i].type.indexOf('image/jpeg') === 0
-       || droppedFiles[i].type.indexOf('image/png') === 0
-       || droppedFiles[i].type.indexOf('text/plain') === 0 
-       || droppedFiles[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0
-       || droppedFiles[i].type.indexOf('application/pdf') === 0) {
-        // image, text file, word file, pdf file
-        event.preventDefault();
-        filePlus(droppedFiles[i], droppedFiles[i].type);
-      }
+      // image, text file, word file, pdf file
+      event.preventDefault();
+      filePlus(droppedFiles[i], droppedFiles[i].type);
     }
   }
 

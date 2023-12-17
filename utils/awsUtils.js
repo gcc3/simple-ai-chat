@@ -3,18 +3,20 @@ export async function generateFileURl(blob, file_id) {
   let contentType = "";
   if (blob.name.endsWith('.jpeg') || blob.name.endsWith('.jpg')) {
     contentType = 'image/jpeg';
-  } else if (blob.name.endsWith('.png')) {
+  } else if (blob.name.toLowerCase().endsWith('.png')) {
     contentType = 'image/png';
-  } else if (blob.name.endsWith('.docx')) {
+  } else if (blob.name.toLowerCase().endsWith('.docx')) {
     contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
-  } else if (blob.name.endsWith('.txt')) {
+  } else if (blob.name.toLowerCase().endsWith('.txt')) {
     contentType = 'text/plain';
-  } else if (blob.name.endsWith('.pdf')) {
+  } else if (blob.name.toLowerCase().endsWith('.pdf')) {
     contentType = 'application/pdf';
+  } else if (blob.name.toLowerCase().endsWith('.json')) {
+    contentType = 'application/json';
   } else {
     return {
       success: false,
-      message: 'Invalid file type. Supported type: JPEG, PNG, DOCX, TXT, PDF.'
+      message: 'Invalid file type. Supported type: JPEG/JPG, PNG, DOCX, TXT, JSON, PDF.'
     };
   }
 
