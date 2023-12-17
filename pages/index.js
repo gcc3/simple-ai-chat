@@ -1099,10 +1099,10 @@ export default function Home() {
       // Must be a file, for paste plain text should be ignored.
       if (items[i].getAsFile()) {
         if (items[i].type.indexOf('image/jpeg') === 0
-        || items[i].type.indexOf('image/png') === 0
-        || items[i].type.indexOf('text/plain') === 0
-        || items[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0 
-        || items[i].type.indexOf('application/pdf') === 0) {
+         || items[i].type.indexOf('image/png') === 0
+         || items[i].type.indexOf('text/plain') === 0
+         || items[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0 
+         || items[i].type.indexOf('application/pdf') === 0) {
           // image, text file, word file, pdf file    
           event.preventDefault();
           filePlus(items[i].getAsFile(), items[i].type);
@@ -1124,10 +1124,10 @@ export default function Home() {
     // Look for any images in the dropped data
     for (let i = 0; i < droppedFiles.length; i++) {
       if (droppedFiles[i].type.indexOf('image/jpeg') === 0
-      || droppedFiles[i].type.indexOf('image/png') === 0
-      || droppedFiles[i].type.indexOf('text/plain') === 0 
-      || droppedFiles[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0
-      || droppedFiles[i].type.indexOf('application/pdf') === 0) {
+       || droppedFiles[i].type.indexOf('image/png') === 0
+       || droppedFiles[i].type.indexOf('text/plain') === 0 
+       || droppedFiles[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0
+       || droppedFiles[i].type.indexOf('application/pdf') === 0) {
         // image, text file, word file, pdf file
         event.preventDefault();
         filePlus(droppedFiles[i], droppedFiles[i].type);
