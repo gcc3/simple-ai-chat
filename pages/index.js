@@ -456,35 +456,33 @@ export default function Home() {
     // Pre-process the input
     // 1. Extract the files/images if there is any
     // files starts with +file[url] or +image[url] or +img[url]
-    let image_urls = [];
-    let image_urls_encoded = [];
-    let file_urls = [];
-    let file_urls_encoded = [];
-    const inputBlocks = global.rawInput.split(/[\s\n]+/);
+    let image_urls = [], image_urls_encoded = [];
+    let file_urls = [], file_urls_encoded = [];
+    const inputBlocks = global.rawInput.split(/[\s\n]+/);  // split by space or new line
     for (let i = 0; i < inputBlocks.length; i++) {
-      if (inputBlocks[i].startsWith("+image[") || inputBlocks[i].startsWith("+img[")) {
+      if (inputBlocks[i].startsWith("+image[") || inputBlocks[i].startsWith("+img[") || inputBlocks[i].startsWith("+file[")) {
         const block = inputBlocks[i];
-        const url = block.replace("+image[", "").replace("+img[", "").replace("]", "");
-        if (!url.startsWith("http")) {
-          console.error("Invalid URL: " + url);
-          printOutput("URL must start with http or https.");
-          return;
-        }
-        image_urls.push(url);
-        image_urls_encoded.push(encodeURIComponent(url));
-        global.rawInput = global.rawInput.replace(inputBlocks[i], "");
-      }
+        
+        // Extract the URL
+        const url = block.replace("+image[", "").replace("+img[", "").replace("+file[", "").replace("]", "");
 
-      if (inputBlocks[i].startsWith("+file[")) {
-        const block = inputBlocks[i];
-        const url = block.replace("+file[", "").replace("]", "");
+        // Check if the URL is valid
         if (!url.startsWith("http")) {
           console.error("Invalid URL: " + url);
           printOutput("URL must start with http or https.");
           return;
         }
-        file_urls.push(url);
-        file_urls_encoded.push(encodeURIComponent(url));
+
+        // Add to the URL list
+        if (block.startsWith("+image[") || block.startsWith("+img[")) {
+          image_urls.push(url);
+          image_urls_encoded.push(encodeURIComponent(url));
+        } else if (block.startsWith("+file[")) {
+          file_urls.push(url);
+          file_urls_encoded.push(encodeURIComponent(url));
+        }
+
+        // Remove the block from the raw input
         global.rawInput = global.rawInput.replace(inputBlocks[i], "");
       }
     }
@@ -494,8 +492,8 @@ export default function Home() {
         printImage(image_url, elOutputRef, "before");
       });
     }
-    if (file_urls_encoded.length > 0) {
-      console.log("Files:" + file_urls_encoded.join("\n"));
+    if (file_urls.length > 0) {
+      console.log("Files:" + file_urls.join("\n"));
     }
 
     // 2. Replace the full-width characters
