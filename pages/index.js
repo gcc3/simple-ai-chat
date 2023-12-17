@@ -1077,29 +1077,40 @@ export default function Home() {
     // Grab the file
     console.log('Image/file pasted/dropped: ' + blob.name + ' (' + type + ')');
 
-    // Upload the image to S3
     let message = "null";
-    const supportedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
-    const supportedFileTypes = ["text/plain", "application/pdf", "application/json", 
-                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
-    const supportedTypes = supportedImageTypes.concat(supportedFileTypes);
-    if (supportedTypes.includes(type)) {
-      const uploadResult = await generateFileURl(blob, file_id, type);
-      if (!uploadResult.success) {
-        // Print error message
-        console.error(uploadResult.message);
-        message = "file_id:" + file_id + "(failed:" + uploadResult.message + ")";
-      } else {
-        // Replace the placeholder text with the image URL
-        message = uploadResult.objectUrl;
-      }
+    
+    // 1. Check file size
+    const fileSize = blob.size;
+    if (fileSize > 10485760) {
+      // 10MB
+      message = "file_id:" + file_id + "(failed: file size exceeds 10MB)";
     } else {
-      if (type.startsWith("image/")) {
-        message = "file_id:" + file_id + "(failed: unsupported image type)";
+      const supportedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
+      const supportedFileTypes = ["text/plain", "application/pdf", "application/json", 
+                                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+      const supportedTypes = supportedImageTypes.concat(supportedFileTypes);
+
+      // 2. Check file type
+      if (supportedTypes.includes(type)) {
+        // Upload the image to S3
+        const uploadResult = await generateFileURl(blob, file_id, type);
+        if (!uploadResult.success) {
+          // Print error message
+          console.error(uploadResult.message);
+          message = "file_id:" + file_id + "(failed:" + uploadResult.message + ")";
+        } else {
+          // Replace the placeholder text with the image URL
+          message = uploadResult.objectUrl;
+        }
       } else {
-        message = "file_id:" + file_id + "(failed: unsupported file type)";
+        if (type.startsWith("image/")) {
+          message = "file_id:" + file_id + "(failed: unsupported image type)";
+        } else {
+          message = "file_id:" + file_id + "(failed: unsupported file type)";
+        }
       }
     }
+
     setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", message));
 
     // Re-adjust input height as input changed

@@ -228,7 +228,7 @@ function Usage() {
           </div>}
           <div className="mt-3">
             <div>- Fees and Balance</div>
-            <ProgressBar label={"Usage"} progress={user.usage_fees} progressMax={user.balance} />
+            <ProgressBar label={"Usage"} progress={totalFee} progressMax={user.balance} />
             <div className="mt-3">Total Fees: ${totalFee}</div>
             <div>Balance: ${user.balance}</div>
           </div>
