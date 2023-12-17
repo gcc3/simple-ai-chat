@@ -418,7 +418,7 @@ export default function Home() {
 
     // Put a intro text if not logged in
     if (!localStorage.getItem("user")) {
-      printOutput("Welcome to simple-ai.io! Type your message and press Enter to interact with the AI.");
+      printOutput("Welcome to simple-ai.io! Input text and press Enter to interact with the AI.");
     }
 
     // Start observing

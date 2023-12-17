@@ -120,7 +120,7 @@ const Documentation = () => {
   return (
     <div className="Documentation">
       <div className="text-center mb-4">
-        <div>Welcome to the simple-ai.io</div>
+        <div>Documentation</div>
       </div>
       <div>{content}</div>
     </div>
