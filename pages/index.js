@@ -47,7 +47,7 @@ global.rawInput = "";
 global.rawOutput = "";
 global.rawPlaceholder = "";
 
-export default function Home() {
+export default function Home() { 
   // States
   const [placeholder, setPlaceholder] = useState("");
   const [waiting, setWaiting] = useState("");
@@ -153,7 +153,7 @@ export default function Home() {
   // Print session log
   const printSessionLog = async function(log) {
     console.log("Time set to log time: " + log["time"])
-    sessionStorage.setItem("time",log["time"]);
+    sessionStorage.setItem("time", log["time"]);
     console.log("Session log:", JSON.stringify(log));
 
     // Print the log
@@ -213,14 +213,11 @@ export default function Home() {
   };
 
   // Initializing
-  useEffect(() => {
+  useEffect(() => { 
     initializeSession();
 
-    // Set default sessionStorage values
-    if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
-    if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");
-
     // Set default localStorage values
+    if (localStorage.getItem("_up") === null) localStorage.setItem("_up", Date.now());
     if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
     if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
@@ -228,6 +225,11 @@ export default function Home() {
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
+
+    // Set default sessionStorage values
+    if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
+    if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");
+    if (sessionStorage.getItem("time") === null) sessionStorage.setItem("time", Date.now());
 
     // Set styles and themes
     dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
@@ -413,6 +415,16 @@ export default function Home() {
         }
       }
     });
+
+    // Put a intro text if not logged in
+    if (!localStorage.getItem("user")) {
+      const introText = "Welcome to Simple AI (`simple-ai.io`)!" + "\n\n"
+                      + "Quick start:\n"
+                      + "1. Type in the input box and press Enter to send message and interact with the AI. " + "\n"
+                      + "2. There is a dot in the corner of the screen; click it to access the documentation." + "\n"
+                      + "3. Use command `:user add [username] [email] [password?]` to create a user." + "\n";
+      printOutput(introText);
+    }
 
     // Start observing
     const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
@@ -1099,10 +1111,10 @@ export default function Home() {
       // Must be a file, for paste plain text should be ignored.
       if (items[i].getAsFile()) {
         if (items[i].type.indexOf('image/jpeg') === 0
-        || items[i].type.indexOf('image/png') === 0
-        || items[i].type.indexOf('text/plain') === 0
-        || items[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0 
-        || items[i].type.indexOf('application/pdf') === 0) {
+         || items[i].type.indexOf('image/png') === 0
+         || items[i].type.indexOf('text/plain') === 0
+         || items[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0 
+         || items[i].type.indexOf('application/pdf') === 0) {
           // image, text file, word file, pdf file    
           event.preventDefault();
           filePlus(items[i].getAsFile(), items[i].type);
@@ -1124,10 +1136,10 @@ export default function Home() {
     // Look for any images in the dropped data
     for (let i = 0; i < droppedFiles.length; i++) {
       if (droppedFiles[i].type.indexOf('image/jpeg') === 0
-      || droppedFiles[i].type.indexOf('image/png') === 0
-      || droppedFiles[i].type.indexOf('text/plain') === 0 
-      || droppedFiles[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0
-      || droppedFiles[i].type.indexOf('application/pdf') === 0) {
+       || droppedFiles[i].type.indexOf('image/png') === 0
+       || droppedFiles[i].type.indexOf('text/plain') === 0 
+       || droppedFiles[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0
+       || droppedFiles[i].type.indexOf('application/pdf') === 0) {
         // image, text file, word file, pdf file
         event.preventDefault();
         filePlus(droppedFiles[i], droppedFiles[i].type);

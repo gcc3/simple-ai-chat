@@ -1,6 +1,6 @@
 export default async function search(args) {
   if (args.length != 1) {
-    return "Usage: :search [word]";
+    return "Usage: :search [text]";
   }
 
   if (!args[0].startsWith("\"") || !args[0].endsWith("\"")) {
@@ -12,7 +12,7 @@ export default async function search(args) {
     return "No store selected.";
   }
 
-  const word = args[0].slice(1, -1);
+  const text = args[0].slice(1, -1);
   try {
     const response = await fetch("/api/store/search", {
       method: "POST",
@@ -20,7 +20,7 @@ export default async function search(args) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        word,
+        text,
         store,
       }),
     });

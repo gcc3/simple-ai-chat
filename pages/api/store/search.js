@@ -3,7 +3,7 @@ import { getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 
 export default async function handler(req, res) {
-  const { store, word } = req.body;
+  const { store, text } = req.body;
 
   // Authentication
   const authResult = authenticate(req);
@@ -29,7 +29,7 @@ export default async function handler(req, res) {
     const settings = JSON.parse(storeInfo.settings);
     const corpusId = settings.corpusId;
     const apiKey = settings.apiKey;
-    const queryResult = await vectaraQuery(word, corpusId, apiKey, 0.1);
+    const queryResult = await vectaraQuery(text, corpusId, apiKey, 0.1);
     res.status(200).json({
       success: true,
       result: queryResult,
