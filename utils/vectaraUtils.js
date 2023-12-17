@@ -49,10 +49,20 @@ export async function vectaraQuery(query, corpusId, apiKey, scoreThreshold = 0.5
         responseSet.response.forEach((r) => {
           if (r.score >= scoreThreshold) {
             const document = responseSet.document[r.documentIndex];
+            const metadata = document.metadata;
+            let title = "";
+            metadata.forEach((m) => {
+              if (m.name === "title") {
+                title = m.value;
+              }
+            });
+            title = title.replaceAll("\n", " ").replace(/\s+/g, ' ');  // trim title
+            
             result.push({
               document: document.id,
               score: r.score,
               content: r.text,
+              title: title,
             });
           }
         });

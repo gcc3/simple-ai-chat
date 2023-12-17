@@ -35,6 +35,7 @@ export default async function search(args) {
         let result = "";
         for (let i = 0; i < data.result.length; i++) {
           result += "Document: " + data.result[i].document + "\n" +
+                    (data.result[i].title && "Title: " + data.result[i].title) + "\n" +
                     "Score: " + data.result[i].score + "\n" +
                     "Content:\n" + data.result[i].content + "\n\n";
         }
