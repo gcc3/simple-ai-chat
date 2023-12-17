@@ -166,17 +166,23 @@ export async function generateMessages(user, model, input, files, images, queryI
   if (use_vector && store) {
     console.log("--- vector query ---");
 
-    // Get corpus id
-    const storeInfo = await getStore(store, user.username);
-    const storeSettings = JSON.parse(storeInfo.settings);
-    const corpusId = storeSettings.corpusId;
-    const apiKey = storeSettings.apiKey;
-    console.log("corpus_id: " + corpusId);
-    console.log("api_key: " + apiKey);
+    // Get settings
+    const settings = JSON.parse(storeInfo.settings);
+    const corpusId = settings.corpusId;
+    const apiKey = settings.apiKey;
+    const threshold = settings.threshold;
+    const numberOfResults = settings.numberOfResults;
 
-    if (corpusId && apiKey) {
-      // Query
-      const queryResult = await vectaraQuery(input, corpusId, apiKey);
+    // Query
+    if (!apiKey || !corpusId || !threshold || !numberOfResults) {
+      console.log("response: Store not configured.\n");
+    } else {
+      console.log("corpus_id: " + corpusId);
+      console.log("api_key: " + apiKey);
+      console.log("threshold: " + threshold);
+      console.log("number_of_results: " + numberOfResults);
+
+      const queryResult = await vectaraQuery(input, corpusId, apiKey, threshold, numberOfResults);
       if (!queryResult) {
         console.log("response: no result.\n");
       } else {
@@ -191,8 +197,6 @@ export async function generateMessages(user, model, input, files, images, queryI
           store_total_prompt += content;
         });
       }
-    } else {
-      console.log("response: vector setting error.\n");
     }
 
     // Count tokens
