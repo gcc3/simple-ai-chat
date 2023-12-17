@@ -1087,7 +1087,7 @@ export default function Home() {
       if (!uploadResult.success) {
         // Print error message
         console.error(uploadResult.message);
-        message = "file_id:" + file_id + "(failed:" + uploadResult.message + ")");
+        message = "file_id:" + file_id + "(failed:" + uploadResult.message + ")";
       } else {
         // Replace the placeholder text with the image URL
         message = uploadResult.objectUrl;
