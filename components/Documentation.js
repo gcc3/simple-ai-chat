@@ -48,10 +48,11 @@ const Documentation = () => {
           </div>
         </div>
         <div className="mt-2"><a href="#shortcuts"><u>Shortcuts</u></a></div>
+        <div className="mt-2"><a href="#feedback"><u>Feedback & Support</u></a></div>
       </div>
       <div id="introduction" className="mt-5">Introduction</div>
       <div className="mt-2">
-        Simple AI (`simple-ai.io`) is a command-based AI chat application that focus on the cutting-edge AI technology. It provides a simple and easy-to-use interface for everyone to interact with the AI models. Simple AI is open-source; you can visit our GitHub repository (<a href="https://github.com/gcc3/simple-ai-chat"><u>link</u></a>) to report any issues you encounter, share your ideas or contribute to the project.
+        Simple AI (`simple-ai.io`) is a command-based AI chat application that focus on the cutting-edge AI technology. It provides a simple and easy-to-use interface for everyone to interact with the AI models.
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
@@ -78,6 +79,9 @@ const Documentation = () => {
         ))}
       </div>
       <div id="commands" className="mt-5">Commands</div>
+      <div className="mt-2">
+        Simple AI is command-based; most operations can be executed with commands. To distinguish from general input, commands must start with a ":". For example, to change the theme, use the `:theme` command; to enter full-screen mode, use the `:fullscreen` command. Use `:help` to list all available commands.
+      </div>
       <div>
         {commands.map((item, index) => (
           <div id={item.id} key={index} className="mt-2">
@@ -88,7 +92,7 @@ const Documentation = () => {
         ))}
       </div>
       <div id="shortcuts" className="mt-5">Shortcuts</div>
-      <div className="mt-2">
+      <div className="mt-3">
         <table>
           <thead>
             <tr>
@@ -111,13 +115,20 @@ const Documentation = () => {
           * Command shortcuts: Stop generating (⌃c), Clear output (⌃r), Clear output and reset session (⇧⌃r)
         </div>
       </div>
+      <div id="feedback" className="mt-5">Feedback & Support</div>
+      <div className="mt-2">
+        Simple AI is open-source; you can visit our GitHub issues (<a href="https://github.com/gcc3/simple-ai-chat/issues"><u>link</u></a>) to report any issues you encounter, share your ideas or contribute to the project.
+      </div>
+      <div className="mt-2">
+        You can also contact us via email `<a href="mailto:support@simple-ai.io"><u>support@simple-ai.io</u></a>`.
+      </div>
     </>
   )
 
   return (
     <div className="Documentation">
       <div className="text-center mb-4">
-        <div>Welcome to the simple-ai.io</div>
+        <div>Documentation</div>
       </div>
       <div>{content}</div>
     </div>

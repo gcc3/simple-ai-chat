@@ -227,7 +227,7 @@ export default async function (req, res) {
     let messages = [];
 
     // Message base
-    const generateMessagesResult = await generateMessages(user, model, input, images, queryId, role, store, use_location, location, 
+    const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, 
                                                           do_function_calling, functionName, functionMessage);
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;

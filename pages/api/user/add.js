@@ -60,6 +60,10 @@ export default async function (req, res) {
   const role_expires_at = moment().add(7, "days").valueOf();  // 7 days trial
   const balance = 5;  // $5 for trial
   const password_ = password ? password : generatedPassword;
+  const quickStart = "Quick start:" + "\n" +
+                     "1. Use `:user login [username] [password]` to log in." + "\n" +
+                     "2. Use `:help` to list all available commands." + "\n" +
+                     "3. There is a dot in the corner of the screen; click it.";
 
   // Email validation
   if (process.env.USE_EMAIL == "true") {
@@ -95,6 +99,7 @@ export default async function (req, res) {
       },
     };
 
+    let passwordGuide = !password ? " Initial password is sent to your email." : "";
     ses
       .sendEmail(emailParams)
       .promise()
@@ -102,10 +107,10 @@ export default async function (req, res) {
         let message = "";
         if (userResume) {
           updateUsername(username, email, password_);
-          message = "Welcome back! we've resumed your subscription status." + (!password ? " Initial password is sent to your email." : "");
+          message = "Welcome back! we've resumed your subscription status." + passwordGuide;
         } else {
           insertUser(username, role, role_expires_at, password_, email, balance, settings);
-          message = 'User "' + username + '"' + " is created." + (!password ? " Initial password is sent to your email." : "") + " Please login with command `:login " + username + " [password]`.";
+          message = "User \"" + username + "\" is created." + passwordGuide + "\n\n" + quickStart;
         }
 
         res.status(200).json({
@@ -125,13 +130,14 @@ export default async function (req, res) {
       });
   } else {
     let message = "";
+    let passwordGuide = !password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "";
     if (userResume) {
       updateUsername(username, email, password_);
-      message = "Welcome back! we've resumed your subscription status." + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "");
+      message = "Welcome back! we've resumed your subscription status." + passwordGuide;
     } else {
       // No email provided, send password to console
       insertUser(username, role, role_expires_at, password_, email, balance, settings);
-      message = 'User "' + username + '"' + " is created." + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + " Please login with command `:login " + username + " [password]`.";
+      message = "User \"" + username + "\" is created." + passwordGuide + "\n\n" + quickStart;
     }
 
     // No error

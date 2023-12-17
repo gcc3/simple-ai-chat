@@ -1,4 +1,4 @@
-import { getUser, countChatsForIP, countChatsForUser, countTokenForUserByModel } from './sqliteUtils';
+import { countChatsForIP, countChatsForUser, countTokenForUserByModel } from './sqliteUtils';
 import { getRoleFequencyLimit, gpt4FeeCal, gpt4vFeeCal, dbFeeCal } from './usageUtils';
 
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
@@ -23,7 +23,7 @@ export async function getUacResult(user, ip) {
     // Urge verify email address
     return {
       success: false,
-      error: "Please verify your email to continue. To send verification again, you can use the command \`:user set email [email]\`."
+      error: "Please verify your email. To re-send verification email, login and use the command \`:user set email [email]\`."
     };
   }
 
@@ -43,7 +43,7 @@ export async function getUacResult(user, ip) {
     if (fequenciesExceeded) {
       return {
         success: false,
-        error: "Your usage fequencies has exceeded the limit. Please upgrade your subscription to continue using our services.",
+        error: "Your usage frequency has exceeded the limit. You can upgrade your subscription to increase the limit.",
       }
     }
 
@@ -52,7 +52,7 @@ export async function getUacResult(user, ip) {
     if (usageExceeded) {
       return {
         success: false,
-        error: "Your usage fee has exceeded. Please charge your balance to continue using our services.",
+        error: "Your usage fee has been exceeded. Please add funds to your balance to continue using our services.",
       }
     }
   }

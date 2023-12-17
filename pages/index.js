@@ -47,7 +47,7 @@ global.rawInput = "";
 global.rawOutput = "";
 global.rawPlaceholder = "";
 
-export default function Home() {
+export default function Home() { 
   // States
   const [placeholder, setPlaceholder] = useState("");
   const [waiting, setWaiting] = useState("");
@@ -153,7 +153,7 @@ export default function Home() {
   // Print session log
   const printSessionLog = async function(log) {
     console.log("Time set to log time: " + log["time"])
-    sessionStorage.setItem("time",log["time"]);
+    sessionStorage.setItem("time", log["time"]);
     console.log("Session log:", JSON.stringify(log));
 
     // Print the log
@@ -213,14 +213,11 @@ export default function Home() {
   };
 
   // Initializing
-  useEffect(() => {
+  useEffect(() => { 
     initializeSession();
 
-    // Set default sessionStorage values
-    if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
-    if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");
-
     // Set default localStorage values
+    if (localStorage.getItem("_up") === null) localStorage.setItem("_up", Date.now());
     if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
     if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
@@ -228,6 +225,11 @@ export default function Home() {
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
+
+    // Set default sessionStorage values
+    if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
+    if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");
+    if (sessionStorage.getItem("time") === null) sessionStorage.setItem("time", Date.now());
 
     // Set styles and themes
     dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
@@ -414,6 +416,11 @@ export default function Home() {
       }
     });
 
+    // Put a intro text if not logged in
+    if (!localStorage.getItem("user")) {
+      printOutput("Welcome to simple-ai.io! Input text and press Enter to interact with the AI.");
+    }
+
     // Start observing
     const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
     global.outputMutationObserver.observe(elOutputRef.current, observingConfig);
@@ -449,46 +456,42 @@ export default function Home() {
     // Pre-process the input
     // 1. Extract the files/images if there is any
     // files starts with +file[url] or +image[url] or +img[url]
-    let image_urls = [];
-    let image_urls_encoded = [];
-    let file_urls = [];
-    let file_urls_encoded = [];
-    const inputBlocks = global.rawInput.split(/[\s\n]+/);
-    for (let i = 0; i < inputBlocks.length; i++) {
-      if (inputBlocks[i].startsWith("+image[") || inputBlocks[i].startsWith("+img[")) {
-        const block = inputBlocks[i];
-        const url = block.replace("+image[", "").replace("+img[", "").replace("]", "");
-        if (!url.startsWith("http")) {
-          console.error("Invalid URL: " + url);
-          printOutput("URL must start with http or https.");
-          return;
-        }
-        image_urls.push(url);
-        image_urls_encoded.push(encodeURIComponent(url));
-        global.rawInput = global.rawInput.replace(inputBlocks[i], "");
+    let image_urls = [], image_urls_encoded = [];
+    let file_urls = [], file_urls_encoded = [];
+    let matches = [...global.rawInput.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
+    matches.forEach(match => {
+      const block = match[1] + "[" + match[2] + "]";
+
+      // Extract the URL
+      const url = block.replace("+image[", "").replace("+img[", "").replace("+file[", "").replace("]", "");
+
+      // Check if the URL is valid
+      if (!url.startsWith("http")) {
+        console.error("Invalid URL: " + url);
+        printOutput("URL must start with http or https.");
+        return;
       }
 
-      if (inputBlocks[i].startsWith("+file[")) {
-        const block = inputBlocks[i];
-        const url = block.replace("+file[", "").replace("]", "");
-        if (!url.startsWith("http")) {
-          console.error("Invalid URL: " + url);
-          printOutput("URL must start with http or https.");
-          return;
-        }
+      // Add to the URL list
+      if (block.startsWith("+image[") || block.startsWith("+img[")) {
+        image_urls.push(url);
+        image_urls_encoded.push(encodeURIComponent(url));
+      } else if (block.startsWith("+file[")) {
         file_urls.push(url);
         file_urls_encoded.push(encodeURIComponent(url));
-        global.rawInput = global.rawInput.replace(inputBlocks[i], "");
       }
-    }
+
+      // Remove the block from the raw input
+      global.rawInput = global.rawInput.replace(block, "");
+    });
     if (image_urls.length > 0) {
       console.log("Images:\n" + image_urls.join("\n"));
       image_urls.map((image_url) => {
         printImage(image_url, elOutputRef, "before");
       });
     }
-    if (file_urls_encoded.length > 0) {
-      console.log("Files:" + file_urls_encoded.join("\n"));
+    if (file_urls.length > 0) {
+      console.log("Files:\n" + file_urls.join("\n"));
     }
 
     // 2. Replace the full-width characters
@@ -1072,17 +1075,32 @@ export default function Home() {
     reAdjustInputHeight();  // Re-adjust input height as input changed
 
     // Grab the file
-    console.log('Image/file pasted: ' + blob.name);
+    console.log('Image/file pasted/dropped: ' + blob.name + ' (' + type + ')');
 
     // Upload the image to S3
-    const uploadResult = await generateFileURl(blob, file_id, type);
-    if (!uploadResult.success) {
-      console.error(uploadResult.message);
-      setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", "file_id:" + file_id + "(failed:" + uploadResult.message + ")"));
+    let message = "null";
+    const supportedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
+    const supportedFileTypes = ["text/plain", "application/pdf", "application/json", 
+                                "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+    const supportedTypes = supportedImageTypes.concat(supportedFileTypes);
+    if (supportedTypes.includes(type)) {
+      const uploadResult = await generateFileURl(blob, file_id, type);
+      if (!uploadResult.success) {
+        // Print error message
+        console.error(uploadResult.message);
+        message = "file_id:" + file_id + "(failed:" + uploadResult.message + ")";
+      } else {
+        // Replace the placeholder text with the image URL
+        message = uploadResult.objectUrl;
+      }
     } else {
-      // Replace the placeholder text with the image URL
-      setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", uploadResult.objectUrl));
+      if (type.startsWith("image/")) {
+        message = "file_id:" + file_id + "(failed: unsupported image type)";
+      } else {
+        message = "file_id:" + file_id + "(failed: unsupported file type)";
+      }
     }
+    setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", message));
 
     // Re-adjust input height as input changed
     reAdjustInputHeight();
@@ -1098,15 +1116,9 @@ export default function Home() {
     for (let i = 0; i < items.length; i++) {
       // Must be a file, for paste plain text should be ignored.
       if (items[i].getAsFile()) {
-        if (items[i].type.indexOf('image/jpeg') === 0
-        || items[i].type.indexOf('image/png') === 0
-        || items[i].type.indexOf('text/plain') === 0
-        || items[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0 
-        || items[i].type.indexOf('application/pdf') === 0) {
-          // image, text file, word file, pdf file    
-          event.preventDefault();
-          filePlus(items[i].getAsFile(), items[i].type);
-        }
+        // image, text file, word file, pdf file    
+        event.preventDefault();
+        filePlus(items[i].getAsFile(), items[i].type);
       }
     }
   };
@@ -1123,15 +1135,9 @@ export default function Home() {
 
     // Look for any images in the dropped data
     for (let i = 0; i < droppedFiles.length; i++) {
-      if (droppedFiles[i].type.indexOf('image/jpeg') === 0
-      || droppedFiles[i].type.indexOf('image/png') === 0
-      || droppedFiles[i].type.indexOf('text/plain') === 0 
-      || droppedFiles[i].type.indexOf('application/vnd.openxmlformats-officedocument.wordprocessingml.document') === 0
-      || droppedFiles[i].type.indexOf('application/pdf') === 0) {
-        // image, text file, word file, pdf file
-        event.preventDefault();
-        filePlus(droppedFiles[i], droppedFiles[i].type);
-      }
+      // image, text file, word file, pdf file
+      event.preventDefault();
+      filePlus(droppedFiles[i], droppedFiles[i].type);
     }
   }
 

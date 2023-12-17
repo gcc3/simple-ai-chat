@@ -118,7 +118,7 @@ export function getCommands() {
     { id: "", command: ":role use [role_name]", short_description: "Use a role/assistant.", description: "" },
     { id: "", command: ":role [ls|list]", short_description: "List available roles/assistants.", description: "" },
     { id: "", command: ":role [reset]", short_description: "Reset role to empty.", description: "" },
-    { id: "commands-store", command: ":search [word]", short_description: "Search data from store.", description: "" },
+    { id: "commands-store", command: ":search [text]", short_description: "Search from data store.", description: "" },
     { id: "", command: ":store [name?]", short_description: "Show data store detail.", description: "" },
     { id: "", command: ":store [ls|list]", short_description: "List available data stores.", description: "" },
     { id: "", command: ":store use [name]", short_description: "Use a data store.", description: "" },
