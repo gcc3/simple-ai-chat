@@ -94,6 +94,8 @@ export default async function (req, res) {
     "engine": "vectara",
     "corpusId": corpusId,
     "apiKey": apiKey,
+    "threshold": 0.6,
+    "numberOfResults": 5,
   });
 
   insertStore(name, settings, username);
