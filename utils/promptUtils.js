@@ -77,7 +77,7 @@ export async function generateMessages(user, model, input, files, images, queryI
   if (!do_function_calling) {
     messages.push({ 
       role: "user", 
-      content: (() => {
+      content: await (async () => {
         let c = [];
 
         // Text
@@ -85,6 +85,22 @@ export async function generateMessages(user, model, input, files, images, queryI
             type: "text",
             text: input
         });
+
+        // File input
+        for (let i = 0; i < files.length; i++) {
+          if (files[i] !== "") {
+            try {
+              const response = await fetch(files[i]);
+              const fileContent = await response.text();
+              c.push({
+                type: "text",
+                text: "User input file content:\n" + fileContent,
+              });
+            } catch (error) {
+              console.error("Error fetching file:", files[i], error);
+            }
+          }
+        }
 
         // Vision model
         // If images is not empty, add image to content
