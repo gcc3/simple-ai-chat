@@ -111,7 +111,7 @@ Use `tab` key to restore input from the placehodler.
 
 * File upload  
 Support image type: JPG, PNG  
-Support file type: TXT, DOCX, PDF  
+Support file type: TXT, JSON, DOCX, PDF  
 User can upload these types and query for file content.  
 Image type will be answer with vision model.  
 
