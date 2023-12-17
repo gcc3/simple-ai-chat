@@ -1080,7 +1080,7 @@ export default function Home() {
     let message = "null";
     
     // 1. Check file size
-    const fileSize = items[i].getAsFile().size;
+    const fileSize = blob.size;
     if (fileSize > 10485760) {
       // 10MB
       message = "file_id:" + file_id + "(failed: file size exceeds 10MB)";
