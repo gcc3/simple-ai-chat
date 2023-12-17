@@ -4,8 +4,9 @@ import { getCommands } from '/command';
 const Documentation = () => {
   const features = [
     { name: "GPT-4 Turbo", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
-    { name: "GPT-4 Vision", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box." },
-    { name: "Roles/assistants", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
+    { name: "GPT-4 Vision (Image Input)", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box." },
+    { name: "File Input", description: "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference." },
+    { name: "Roles/Assistants", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
     { name: "Personal Database", description: "Upload files to your personal database for powerful data searches. The results will be inserted as prompts to provide knowledgeable answers." },
     { name: "Midjourney (in progress)", description: "Utilize the most advanced image generation AI, Midjourney, in combination with ChatGPT prompts to generate high-quality certified images." },
   ];
