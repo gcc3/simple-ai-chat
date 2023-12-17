@@ -439,6 +439,7 @@ export default function Home() {
 
   // On submit input
   async function onSubmit(event) {
+    if (global.STATE === STATES.DOING) return;
     event.preventDefault();
     sessionStorage.setItem("time", Date.now());  // update time
 
