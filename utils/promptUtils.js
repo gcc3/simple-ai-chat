@@ -10,7 +10,7 @@ const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_C
 const use_vector = process.env.USE_VECTOR == "true" ? true : false;
 
 // Generate messages for chatCompletion
-export async function generateMessages(user, model, input, images, queryId, role, store, use_location, location, do_function_calling, functionName, functionMessage) {
+export async function generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, do_function_calling, functionName, functionMessage) {
   let messages = [];
   let token_ct = {};
   
@@ -77,7 +77,7 @@ export async function generateMessages(user, model, input, images, queryId, role
   if (!do_function_calling) {
     messages.push({ 
       role: "user", 
-      content: (() => {
+      content: await (async () => {
         let c = [];
 
         // Text
@@ -85,6 +85,22 @@ export async function generateMessages(user, model, input, images, queryId, role
             type: "text",
             text: input
         });
+
+        // File input
+        for (let i = 0; i < files.length; i++) {
+          if (files[i] !== "") {
+            try {
+              const response = await fetch(files[i]);
+              const fileContent = await response.text();
+              c.push({
+                type: "text",
+                text: "User input file content:\n" + fileContent,
+              });
+            } catch (error) {
+              console.error("Error fetching file:", files[i], error);
+            }
+          }
+        }
 
         // Vision model
         // If images is not empty, add image to content
