@@ -61,9 +61,9 @@ export default async function (req, res) {
   const balance = 5;  // $5 for trial
   const password_ = password ? password : generatedPassword;
   const quickStart = "Quick start:" + "\n" +
-                     "1. Use the command `:user login [username] [password]` to log in to your account." + "\n" +
-                     "2. Use the `:help` command to list all available commands." + "\n" +
-                     "3. There is a dot in the corner of the screen; click it to access more detailed documentation.";
+                     "1. Use `:user login [username] [password]` to log in." + "\n" +
+                     "2. Use `:help` to list all available commands." + "\n" +
+                     "3. There is a dot in the corner of the screen; click it.";
 
   // Email validation
   if (process.env.USE_EMAIL == "true") {
