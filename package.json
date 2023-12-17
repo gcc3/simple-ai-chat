@@ -19,6 +19,7 @@
     "csv": "^6.3.0",
     "csv-writer": "^1.6.0",
     "highlight.js": "^11.9.0",
+    "image-size": "^1.0.2",
     "jsonwebtoken": "^9.0.2",
     "mammoth": "^1.6.0",
     "moment": "^2.29.4",
