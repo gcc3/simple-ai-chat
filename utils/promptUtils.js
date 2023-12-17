@@ -169,10 +169,14 @@ export async function generateMessages(user, model, input, files, images, queryI
     // Get corpus id
     const storeInfo = await getStore(store, user.username);
     const storeSettings = JSON.parse(storeInfo.settings);
-    const corpus_id = storeSettings.corpus_id;
-    if (corpus_id) {
+    const corpusId = storeSettings.corpusId;
+    const apiKey = storeSettings.apiKey;
+    console.log("corpus_id: " + corpusId);
+    console.log("api_key: " + apiKey);
+
+    if (corpusId && apiKey) {
       // Query
-      const queryResult = await vectaraQuery(input, corpus_id);
+      const queryResult = await vectaraQuery(input, corpusId, apiKey);
       if (!queryResult) {
         console.log("response: no result.\n");
       } else {
@@ -187,6 +191,8 @@ export async function generateMessages(user, model, input, files, images, queryI
           store_total_prompt += content;
         });
       }
+    } else {
+      console.log("response: vector setting error.\n");
     }
 
     // Count tokens
