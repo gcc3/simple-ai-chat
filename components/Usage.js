@@ -153,7 +153,7 @@ function Usage() {
                 </tr>
               </tbody>
             </table>
-            <div className="mt-2">* For token pricing, refer to the OpenAI official pricing document.(<a href="https://openai.com/pricing#language-models"><u>link</u></a>) </div>
+            <div className="mt-2">* For token pricing, refer to the OpenAI official pricing document. (<a href="https://openai.com/pricing#language-models"><u>link</u></a>) </div>
             <div className="mt-3">- Fequencies</div>
             <table className="table-fixed mt-1">
               <tbody>
