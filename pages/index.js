@@ -418,11 +418,11 @@ export default function Home() {
 
     // Put a intro text if not logged in
     if (!localStorage.getItem("user")) {
-      const introText = "Welcome to Simple AI (`simple-ai.io`)!" + "\n\n"
+      const introText = "Welcome to simple-ai.io!" + "\n\n"
                       + "Quick start:\n"
-                      + "1. Type in the input box and press Enter to send message and interact with the AI. " + "\n"
+                      + "1. Type in the input box and press Enter to send messages and interact with the AI." + "\n"
                       + "2. There is a dot in the corner of the screen; click it to access the documentation." + "\n"
-                      + "3. Use command `:user add [username] [email] [password?]` to create a user." + "\n";
+                      + "3. Use command `:user add [username] [email] [password?]` to create a user.";
       printOutput(introText);
     }
 
