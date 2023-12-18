@@ -1,4 +1,4 @@
-export default async function stats(args) {
+export default async function eval_(args) {
   const value = args[0];
 
   if (value !== "on" && value !== "off") {
