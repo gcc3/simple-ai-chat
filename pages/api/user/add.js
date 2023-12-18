@@ -57,8 +57,8 @@ export default async function (req, res) {
 
   // New user info
   const role = "user";
-  const role_expires_at = moment().add(7, "days").valueOf();  // 7 days trial
-  const balance = 5;  // $5 for trial
+  const role_expires_at = moment().add(7, "days").valueOf();  // 7 days for trial
+  const balance = 1;  // $1 for trial
   const password_ = password ? password : generatedPassword;
   const quickStart = "Quick start:" + "\n" +
                      "1. Use `:user login [username] [password]` to log in." + "\n" +
