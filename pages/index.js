@@ -735,6 +735,8 @@ export default function Home() {
           const token_ct = _stats_[2];
           const use_eval = _stats_[3];
           const func = _stats_[4];
+          const role = _stats_[5];
+          const store = _stats_[6];
 
           if (use_eval === "true") {
             setEvaluation(
@@ -750,6 +752,8 @@ export default function Home() {
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
+              {role && <div>role: {role}<br></br></div>}
+              {store && <div>store: {store}<br></br></div>}
             </div>
           );
         }
@@ -916,6 +920,8 @@ export default function Home() {
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>
             token_ct: {data.result.stats.token_ct}<br></br>
+            {data.result.stats.role ? "role: " + data.result.stats.role + "<br></br>" : ""}
+            {data.result.stats.store ? "store: " + data.result.stats.store + "<br></br>" : ""}
           </div>
         ));
       }

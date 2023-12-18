@@ -140,7 +140,9 @@ export default async function(req, res) {
           temperature: process.env.TEMPERATURE,
           top_p: process.env.TOP_P,
           token_ct: input_token_ct,
-          func: false
+          func: false,
+          role: role,
+          store: store,
         },
         info: {
           model: process.env.MODEL,

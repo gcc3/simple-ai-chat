@@ -181,7 +181,10 @@ export async function generateMessages(user, model, input, files, images, queryI
   // 2. Vector database query result
   let store_total_prompt = "";
   if (use_vector && store) {
-    console.log("--- vector query ---");
+    console.log("--- vector data store ---");
+
+    // Get store info
+    const storeInfo = await getStore(store, user.username);
 
     // Get settings
     const settings = JSON.parse(storeInfo.settings);

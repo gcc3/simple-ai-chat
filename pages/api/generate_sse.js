@@ -189,7 +189,7 @@ export default async function (req, res) {
 
         res.write(`data: ${nodeAiQueryResult}\n\n`); res.flush();
         res.write(`data: ###ENV###${model}\n\n`); res.flush();
-        res.write(`data: ###STATS###${temperature},${top_p},${token_ct},${use_eval},${functionName}\n\n`);
+        res.write(`data: ###STATS###${temperature},${top_p},${token_ct},${use_eval},${functionName},${role},${store}\n\n`);
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
         return;
@@ -255,7 +255,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${token_ct.total},${use_eval},${functionName}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${token_ct.total},${use_eval},${functionName},${role},${store}\n\n`);
     res.flush();
 
     for await (const part of chatCompletion) {
