@@ -219,6 +219,7 @@ export default function Home() {
     // Set default localStorage values
     if (localStorage.getItem("_up") === null) localStorage.setItem("_up", Date.now());
     if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
+    if (localStorage.getItem("useEval") === null) localStorage.setItem("useEval", "false");
     if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
     if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
@@ -627,6 +628,7 @@ export default function Home() {
     const store = sessionStorage.getItem("store");
 
     const use_stats = localStorage.getItem("useStats");
+    const use_eval = localStorage.getItem("useEval");
     const use_location = localStorage.getItem("useLocation");
     const location = localStorage.getItem("location");
 
@@ -637,6 +639,7 @@ export default function Home() {
                                                            + "&role=" + role
                                                            + "&store=" + store
                                                            + "&use_stats=" + use_stats
+                                                           + "&use_eval=" + use_eval
                                                            + "&use_location=" + use_location
                                                            + "&location=" + location
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
@@ -882,6 +885,7 @@ export default function Home() {
             role: sessionStorage.getItem("role"),
             store: sessionStorage.getItem("store"),
             use_stats: localStorage.getItem("useStats"),
+            use_eval: localStorage.getItem("useEval"),
             use_location: localStorage.getItem("useLocation"),
             location: localStorage.getItem("location"),
           }),

@@ -33,6 +33,7 @@ export default async function (req, res) {
   const role = req.query.role || "";
   const store = req.query.store || "";
   const use_stats = req.query.use_stats === "true" ? true : false;
+  const use_eval_ = req.query.use_eval === "true" ? true : false;
   const use_location = req.query.use_location === "true" ? true : false;
   const location = req.query.location || "";
   const images_ = req.query.images || "";
@@ -98,7 +99,7 @@ export default async function (req, res) {
   // Model switch
   const use_vision = images.length > 0;
   const model = use_vision ? model_v : model_;
-  const use_eval = use_stats && !use_vision;
+  const use_eval = use_eval_ && use_stats && !use_vision;
 
   // User access control
   if (use_access_control) {

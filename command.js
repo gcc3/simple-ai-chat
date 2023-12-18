@@ -1,6 +1,7 @@
 
 import help from "./commands/help.js";
 import stats from "./commands/stats.js";
+import eval from "./commands/eval.js";
 import stream from "./commands/stream.js";
 import log from "./commands/log.js";
 import info from "./commands/info.js";
@@ -39,6 +40,7 @@ export default function commands(input, files) {
   
   if (command.startsWith(":help")) return help(args);
   if (command.startsWith(":stats")) return stats(args);
+  if (command.startsWith(":eval")) return eval(args);
   if (command.startsWith(":stream")) return stream(args);
   if (command.startsWith(":login")) return login(args);
   if (command.startsWith(":logout")) return logout(args);
@@ -107,7 +109,8 @@ export function getCommands() {
     { id: "", command: ":session [ls|list]", short_description: "List sessions.", description: "" },
     { id: "", command: ":session attach [session_id]", short_description: "Attach to a session.", description: "" },
     { id: "", command: ":session [del|delete] [session_id]", short_description: "Delete a session.", description: "" },
-    { id: "", command: ":stats [on|off]", short_description: "Show/hide stats info and scores.", description: "" },
+    { id: "", command: ":stats [on|off]", short_description: "Show a stats info, score.", description: "" },
+    { id: "", command: ":eval [on|off]", short_description: "Enable the self evaluation score.", description: "" },
     { id: "", command: ":stream [on|off]", short_description: "Switch on/off stream mode.", description: "" },
     { id: "", command: ":speak [on|off]", short_description: "Switch on/off auto speak.", description: "" },
     { id: "", command: ":voice [ls|list]", short_description: "List all supported voices.", description: "" },
