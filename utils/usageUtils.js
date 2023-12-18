@@ -1,11 +1,13 @@
+import { npre } from "./numberUtils";
+
 export function gpt4FeeCal(input_token_ct, output_token_ct) {
   const fee = input_token_ct * 0.00001 + output_token_ct * 0.00003;
-  return parseFloat(fee.toFixed(5)); // Rounds to 5 decimal places
+  return npre(fee); // Rounds to 5 decimal places
 }
 
 export function gpt4vFeeCal(input_token_ct, output_token_ct) {
   const fee = input_token_ct * 0.00001 + output_token_ct * 0.00003;
-  return parseFloat(fee.toFixed(5)); // Rounds to 5 decimal places
+  return npre(fee); // Rounds to 5 decimal places
 }
 
 export function dbFeeCal(sizeInKb) {
