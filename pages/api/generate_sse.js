@@ -178,18 +178,18 @@ export default async function (req, res) {
         const model = "node_ai";
         const temperature = 0;
         const top_p = 0;
-        const token_ct = 0;
+        const token_ct_n = 0;
         const use_eval = false;
         const functionName = "query_node_ai";
 
         // Log
-        const input_token_ct = countToken(model, "N=query_node_ai(query=" + input + ")");
-        const output_token_ct = countToken(model, "N=" + nodeAiQueryResult);
-        logadd(user, queryId, model, input_token_ct, "N=query_node_ai(query=" + input + ")", output_token_ct, "N=" + nodeAiQueryResult, ip, browser);
+        const input_token_ct_n = countToken(model, "N=query_node_ai(query=" + input + ")");
+        const output_token_ct_n = countToken(model, "N=" + nodeAiQueryResult);
+        logadd(user, queryId, model, input_token_ct_n, "N=query_node_ai(query=" + input + ")", output_token_ct_n, "N=" + nodeAiQueryResult, ip, browser);
 
         res.write(`data: ${nodeAiQueryResult}\n\n`); res.flush();
         res.write(`data: ###ENV###${model}\n\n`); res.flush();
-        res.write(`data: ###STATS###${temperature},${top_p},${token_ct},${use_eval},${functionName},${role},${store}\n\n`);
+        res.write(`data: ###STATS###${temperature},${top_p},${token_ct_n},${use_eval},${functionName},${role},${store}\n\n`);
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
         return;
@@ -213,9 +213,9 @@ export default async function (req, res) {
       console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
 
       // Log
-      const input_token_ct = countToken(model, "F=" + function_input);
-      const output_token_ct = countToken(model, "F=" + functionMessage);
-      logadd(user, queryId, model, input_token_ct, "F=" + function_input, output_token_ct, "F=" + functionMessage, ip, browser);
+      const input_token_ct_f = countToken(model, "F=" + function_input);
+      const output_token_ct_f = countToken(model, "F=" + functionMessage);
+      logadd(user, queryId, model, input_token_ct_f, "F=" + function_input, output_token_ct_f, "F=" + functionMessage, ip, browser);
     }
 
     // Replace input with original
@@ -224,15 +224,17 @@ export default async function (req, res) {
   }
 
   try {
-    let token_ct_input = 0;
-    let token_ct_output = 0;
+    let token_ct = [];  // detailed token count
+    let input_token_ct = 0;
+    let output_token_ct = 0;
     let messages = [];
     let raw_prompt = "";
 
     // Message base
     const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, 
                                                           do_function_calling, functionName, functionMessage);
-    token_ct_input += generateMessagesResult.token_ct.total;
+    token_ct.push(generateMessagesResult.token_ct);
+    input_token_ct += generateMessagesResult.token_ct.total;
     messages = generateMessagesResult.messages;
     raw_prompt = generateMessagesResult.raw_prompt;
 
@@ -258,7 +260,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${token_ct_input + token_ct_output},${use_eval},${functionName},${role},${store}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store}\n\n`);
     res.flush();
 
     for await (const part of chatCompletion) {
@@ -289,14 +291,13 @@ export default async function (req, res) {
 
     // Evaluate result
     // vision models not support evaluation
-    let eval_token_ct = 0;
     if (use_eval) {
       if (output.trim().length > 0) {
         const evalResult = await evaluate(user, input, raw_prompt, output);
         if (evalResult.success) {
           res.write(`data: ###EVAL###${evalResult.output}\n\n`); res.flush();
           console.log("eval: " + evalResult.output + "\n");
-          token_ct_output += evalResult.token_ct;
+          output_token_ct += evalResult.token_ct;
         } else {
           res.write(`data: ###EVAL###${evalResult.error}\n\n`); res.flush();
         }
@@ -312,9 +313,9 @@ export default async function (req, res) {
     console.log(output + "\n");
     
     // Log
-    token_ct_output += countToken(model, output);
-    res.write(`data: ###STATS###${temperature},${top_p},${token_ct_input + output_token_ct},${use_eval},${functionName},${role},${store}\n\n`);
-    logadd(user, queryId, model, token_ct_input, input, token_ct_output, output, ip, browser);
+    output_token_ct += countToken(model, output);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store}\n\n`);
+    logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     // Done message
     res.write(`data: [DONE]\n\n`); res.flush();
