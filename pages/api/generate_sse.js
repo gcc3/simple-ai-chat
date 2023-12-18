@@ -288,12 +288,17 @@ export default async function (req, res) {
 
     // Evaluate result
     // vision models not support evaluation
+    let eval_token_ct = 0;
     if (use_eval) {
       if (output.trim().length > 0) {
-        await evaluate(input, raw_prompt, output).then((eval_result) => {
-          res.write(`data: ###EVAL###${eval_result}\n\n`); res.flush();
-          console.log("eval: " + eval_result + "\n");
-        });
+        const evalResult = await evaluate(user, input, raw_prompt, output);
+        if (evalResult.success) {
+          res.write(`data: ###EVAL###${evalResult.output}\n\n`); res.flush();
+          console.log("eval: " + evalResult.output + "\n");
+          eval_token_ct += evalResult.token_ct;
+        } else {
+          res.write(`data: ###EVAL###${evalResult.error}\n\n`); res.flush();
+        }
       }
     }
 
@@ -310,7 +315,7 @@ export default async function (req, res) {
     
     // Log
     const input_token_ct = token_ct.total;
-    const output_token_ct = countToken(model, output);
+    const output_token_ct = countToken(model, output) + (use_eval ? eval_token_ct : 0);
     logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     res.end();

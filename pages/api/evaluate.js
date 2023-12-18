@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import { getMaxTokens } from "utils/tokenUtils.js";
+import { countToken } from "utils/tokenUtils.js";
 
 // OpenAI
 const openai = new OpenAI();
@@ -40,31 +41,33 @@ export default async function (req, res) {
   }
 }
 
-export async function evaluate(input, raw_prompt, output) {
+export async function evaluate(user, input, raw_prompt, output) {
   // Create evaluation message
   const eval_message = [];
 
+  let eval_prompt = "";
+  eval_prompt = "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using additional infromation for AI reference." + "\n\n" +
+                "Now, the user asks: " + input + "\n\n" +
+                "After request additonal information, I got additional infromation in Json format: " + JSON.stringify(raw_prompt) + "\n\n" +
+                "After a while, the AI responds with: " + output + "\n\n" +
+                "Please evaluate the AI's response for correctness and credibility, 1 being the worst or contains any fake information, 10 being the best, and correct. " +
+                "Please only evaluate/consider the correctness, not the information comprehensiveness. " +
+                "When you evaluating, notice that sometimes the AI has hallucination answer, the response may looks correct, but actually it is completely fake. " +
+                "If the AI response as it doesn't know or doesn't have the information honestly, instead of making fake information or lying, give it a higher score. " +
+                "Then, briefly explain why you've given this score in one sentence.\n\n" + 
+                "Response in the format: \"score - explaination\"\n" +
+                "Example: 7 - Because..."
+
   eval_message.push({
     role: "user", 
-    content: 
-    "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using additional infromation for AI reference." + "\n\n" +
-    "Now, the user asks: " + input + "\n\n" +
-    "After request additonal information, I got additional infromation in Json format: " + JSON.stringify(raw_prompt) + "\n\n" +
-    "After a while, the AI responds with: " + output + "\n\n" +
-    "Please evaluate the AI's response for correctness and credibility, 1 being the worst or contains any fake information, 10 being the best, and correct. " +
-    "Please only evaluate/consider the correctness, not the information comprehensiveness. " +
-    "When you evaluating, notice that sometimes the AI has hallucination answer, the response may looks correct, but actually it is completely fake. " +
-    "If the AI response as it doesn't know or doesn't have the information honestly, instead of making fake information or lying, give it a higher score. " +
-    "Then, briefly explain why you've given this score in one sentence.\n\n" + 
-    "Response in the format: \"score - explaination\"\n" +
-    "Example: 7 - Because..."
+    content: eval_prompt,
   })
 
   console.log("--- result evaluation --- ");
   console.log("eval_message: " + JSON.stringify(eval_message));
 
   try {
-    let result_text = "";
+    let eval_output = "";
 
     // endpoint: /v1/chat/completions
     const chatCompletion = await openai.chat.completions.create({
@@ -78,21 +81,23 @@ export async function evaluate(input, raw_prompt, output) {
     // Get result
     const choices = chatCompletion.choices;
     if (!choices || choices.length === 0) {
-      result_text = "result error";
+      eval_output = "result error";
     } else {
-      result_text = choices[0].message.content;
+      eval_output = choices[0].message.content;
     }
 
     // Output the result
-    if (result_text.trim().length === 0) result_text = "null";
-    return result_text;
+    if (eval_output.trim().length === 0) eval_output = "null";
+    return {
+      success: true,
+      token_ct: countToken(model, eval_prompt),
+      output: eval_output,
+    };
   } catch (error) {
     console.log("Error (Evaluate API):");
-    if (error.response) {
-      console.error(error.response.status, error.response.data);
-    } else {
-      console.error(`${error.message}`);
-    }
-    return "error";
+    return {
+      success: false,
+      error: JSON.stringify(error),
+    };
   }
 }
