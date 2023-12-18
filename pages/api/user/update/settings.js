@@ -40,7 +40,7 @@ export default async function (req, res) {
     }
 
     // Check if key is valid
-    const validKeys = ['theme', 'speak', 'stats', "fullscreen", "role", "store"];
+    const validKeys = ['theme', 'speak', 'stats', 'eval', "fullscreen", "role", "store"];
     if (!validKeys.includes(key)) {
       return res.status(400).json({ 
         success: false, 

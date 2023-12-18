@@ -81,6 +81,7 @@ export default async function entry(args) {
             theme:      localStorage.getItem("theme") || "light",
             speak:      localStorage.getItem("speak") || "off",
             stats:      localStorage.getItem("stats") || "off",
+            eval:       localStorage.getItem("eval") || "off",
             fullscreen: localStorage.getItem("fullscreen") || "off",
             role:       "",
             store:      "",
