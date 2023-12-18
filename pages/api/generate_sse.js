@@ -224,14 +224,15 @@ export default async function (req, res) {
   }
 
   try {
-    let token_ct;  // input token count
+    let token_ct_input = 0;
+    let token_ct_output = 0;
     let messages = [];
     let raw_prompt = "";
 
     // Message base
     const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, 
                                                           do_function_calling, functionName, functionMessage);
-    token_ct = generateMessagesResult.token_ct;
+    token_ct_input += generateMessagesResult.token_ct.total;
     messages = generateMessagesResult.messages;
     raw_prompt = generateMessagesResult.raw_prompt;
 
@@ -257,7 +258,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${token_ct.total},${use_eval},${functionName},${role},${store}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${token_ct_input + token_ct_output},${use_eval},${functionName},${role},${store}\n\n`);
     res.flush();
 
     for await (const part of chatCompletion) {
@@ -295,15 +296,12 @@ export default async function (req, res) {
         if (evalResult.success) {
           res.write(`data: ###EVAL###${evalResult.output}\n\n`); res.flush();
           console.log("eval: " + evalResult.output + "\n");
-          eval_token_ct += evalResult.token_ct;
+          token_ct_output += evalResult.token_ct;
         } else {
           res.write(`data: ###EVAL###${evalResult.error}\n\n`); res.flush();
         }
       }
     }
-
-    // Done message
-    res.write(`data: [DONE]\n\n`); res.flush();
 
     // Token
     console.log("--- token_ct ---");
@@ -314,10 +312,12 @@ export default async function (req, res) {
     console.log(output + "\n");
     
     // Log
-    const input_token_ct = token_ct.total;
-    const output_token_ct = countToken(model, output) + (use_eval ? eval_token_ct : 0);
-    logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
+    token_ct_output += countToken(model, output);
+    res.write(`data: ###STATS###${temperature},${top_p},${token_ct_input + output_token_ct},${use_eval},${functionName},${role},${store}\n\n`);
+    logadd(user, queryId, model, token_ct_input, input, token_ct_output, output, ip, browser);
 
+    // Done message
+    res.write(`data: [DONE]\n\n`); res.flush();
     res.end();
     return;
   } catch (error) {
