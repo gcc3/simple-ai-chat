@@ -646,6 +646,7 @@ export default function Home() {
                                                            + "&files=" + files.join(encodeURIComponent("###")));
 
     let do_function_calling = false;
+    let done_evaluating = false;
     let functionName = "";
     let functionArgsString = "";
     let do_tool_calls = false;
@@ -723,6 +724,8 @@ export default function Home() {
             self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
           </div>
         );
+
+        done_evaluating = true;
         return;
       }
 
@@ -738,7 +741,7 @@ export default function Home() {
           const role = _stats_[5];
           const store = _stats_[6];
 
-          if (use_eval === "true") {
+          if (use_eval === "true" && !done_evaluating) {
             setEvaluation(
               <div>
                 self_eval_score: evaluating...<br></br>
