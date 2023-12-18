@@ -226,12 +226,14 @@ export default async function (req, res) {
   try {
     let token_ct;  // input token count
     let messages = [];
+    let raw_prompt = "";
 
     // Message base
     const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, 
                                                           do_function_calling, functionName, functionMessage);
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
+    raw_prompt = generateMessagesResult.raw_prompt;
 
     console.log("--- messages ---");
     console.log(JSON.stringify(messages) + "\n");
@@ -288,7 +290,7 @@ export default async function (req, res) {
     // vision models not support evaluation
     if (use_eval) {
       if (output.trim().length > 0) {
-        await evaluate(input, "", output).then((eval_result) => {
+        await evaluate(input, raw_prompt, output).then((eval_result) => {
           res.write(`data: ###EVAL###${eval_result}\n\n`); res.flush();
           console.log("eval: " + eval_result + "\n");
         });

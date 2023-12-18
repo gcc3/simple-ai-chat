@@ -278,12 +278,11 @@ export async function generateMessages(user, model, input, files, images, queryI
   return {
     messages,
     token_ct,
-    prompt: {
+    raw_prompt: {
       system: system_prompt,
       role: role_prompt,
       history: chat_history_prompt,
-      input: input,
-      input_file: user_input_file_prompt,
+      user_input_file: user_input_file_prompt,
       function: function_prompt,
       store: store_prompt,
       location: location_prompt,

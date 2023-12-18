@@ -40,20 +40,17 @@ export default async function (req, res) {
   }
 }
 
-export async function evaluate(input, additionalInfo, result_text) {
+export async function evaluate(input, raw_prompt, output) {
   // Create evaluation message
   const eval_message = [];
 
-  const additional_info_message = additionalInfo.length == 0 ?
-  "There is completely no information found." :
-  "The result is: " + additionalInfo;
-
   eval_message.push({
-    role: "user", content: 
+    role: "user", 
+    content: 
     "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using additional infromation for AI reference." + "\n\n" +
     "Now, the user asks: " + input + "\n\n" +
-    "After request additonal information, I got: " + additional_info_message + "\n\n" +
-    "After a while, the AI responds with: " + result_text + "\n\n" +
+    "After request additonal information, I got additional infromation in Json format: " + JSON.stringify(raw_prompt) + "\n\n" +
+    "After a while, the AI responds with: " + output + "\n\n" +
     "Please evaluate the AI's response for correctness and credibility, 1 being the worst or contains any fake information, 10 being the best, and correct. " +
     "Please only evaluate/consider the correctness, not the information comprehensiveness. " +
     "When you evaluating, notice that sometimes the AI has hallucination answer, the response may looks correct, but actually it is completely fake. " +
