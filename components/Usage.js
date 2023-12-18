@@ -4,6 +4,7 @@ import { getRoleLevel } from "utils/userUtils";
 import PayPalButton from "./PayPalButton";
 import { refreshUserInfo } from "utils/userUtils";
 import { gpt4FeeCal, gpt4vFeeCal } from "utils/usageUtils";
+import { npre } from "utils/numberUtils";
 const moment = require('moment');
 
 function Usage() {
@@ -76,7 +77,7 @@ function Usage() {
       // Fee calculation
       const gpt4Fee = gpt4FeeCal(user.usage.token_monthly.token.this_month.input, user.usage.token_monthly.token.this_month.output);
       const gpt4vFee = gpt4vFeeCal(user.usage.token_monthly.token_v.this_month.input, user.usage.token_monthly.token_v.this_month.output);
-      setTotalFee(gpt4Fee + gpt4vFee);
+      setTotalFee(npre(gpt4Fee + gpt4vFee));
     }
 
     if (localStorage.getItem("user") && !user) {
@@ -228,9 +229,9 @@ function Usage() {
           </div>}
           <div className="mt-3">
             <div>- Fees and Balance</div>
-            <ProgressBar label={"Usage"} progress={totalFee} progressMax={user.balance} />
+            <ProgressBar label={"Usage"} progress={totalFee} progressMax={npre(user.balance)} />
             <div className="mt-3">Total Fees: ${totalFee}</div>
-            <div>Balance: ${user.balance}</div>
+            <div>Balance: ${npre(user.balance)}</div>
           </div>
         </div>
         <div className="mt-4">
