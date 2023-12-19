@@ -599,7 +599,6 @@ export default function Home() {
       console.log("Images:\n" + image_urls.join("\n"));
       image_urls.map((image_url) => {
         printImage(image_url, elOutputRef, "before");
-        printVideo("https://www.youtube.com/watch?v=RhtjGp7oMvE", elOutputRef, "before");
       });
     }
     if (file_urls.length > 0) {
