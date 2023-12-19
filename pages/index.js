@@ -167,9 +167,8 @@ export default function Home() {
     clearOutput();
 
     // Print input
-    setPlaceholder({ text: log["input"], height: elInputRef.current.style.height });
+    setPlaceholder({ text: log["input"], height: null });
     global.rawPlaceholder = log["input"];
-    reAdjustInputHeight();
 
     // Print output
     printOutput(log["output"]);
