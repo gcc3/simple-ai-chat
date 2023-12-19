@@ -111,7 +111,7 @@ export default function Home() {
     }
   };
 
-  // Print output
+  // Print image output
   const printImage = (image_url, targetRef, beforeOrAfter = "after") => {
     if (targetRef.current && elWrapperRef.current) {
       // Create a div to hold the image
@@ -130,6 +130,42 @@ export default function Home() {
         elWrapperRef.current.appendChild(imageDiv);
       } else if (beforeOrAfter === "before") {
         elWrapperRef.current.insertBefore(imageDiv, targetRef.current);
+      }
+    } else {
+      console.error("Target ref is null.");
+    }
+  };
+
+  // Print video output (support: youtube)
+  const printVideo = (video_url, targetRef, beforeOrAfter = "after") => {
+    if (targetRef.current && elWrapperRef.current) {
+      // Create a div to hold the iframe for the YouTube video
+      const videoDiv = document.createElement('div');
+      videoDiv.className = "p-1 mb-5 video-preview";
+
+      // Get the width of the targetRef element
+      const targetWidth = targetRef.current.offsetWidth;
+
+      // Extract the YouTube video ID from the URL
+      const videoId = video_url.split('v=')[1].split('&')[0];
+
+      // Create an iframe and append it to the div
+      const iframe = document.createElement('iframe');
+      iframe.className = "rounded-md";
+      iframe.width = "560";
+      iframe.height = "315";
+      iframe.src = `https://www.youtube.com/embed/${videoId}`; // The URL for the YouTube video embed
+      iframe.title = "YouTube video player";
+      iframe.frameBorder = "0";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      iframe.allowFullscreen = true;
+      videoDiv.appendChild(iframe);
+
+      // Append the videoDiv to the div with the ref
+      if (beforeOrAfter === "after") {
+        elWrapperRef.current.appendChild(videoDiv);
+      } else if (beforeOrAfter === "before") {
+        elWrapperRef.current.insertBefore(videoDiv, targetRef.current);
       }
     } else {
       console.error("Target ref is null.");
@@ -167,9 +203,8 @@ export default function Home() {
     clearOutput();
 
     // Print input
-    setPlaceholder({ text: log["input"], height: elInputRef.current.style.height });
+    setPlaceholder({ text: log["input"], height: null });
     global.rawPlaceholder = log["input"];
-    reAdjustInputHeight();
 
     // Print output
     printOutput(log["output"]);
@@ -188,6 +223,16 @@ export default function Home() {
   const clearPreviewImages = () => {
     if (elWrapperRef.current) {
       const imageDivs = elWrapperRef.current.getElementsByClassName("image-preview");
+      while (imageDivs.length > 0) {
+        imageDivs[0].remove();
+      }
+    }
+  }
+
+  // Clear preview videos
+  const clearPreviewVideos = () => {
+    if (elWrapperRef.current) {
+      const imageDivs = elWrapperRef.current.getElementsByClassName("video-preview");
       while (imageDivs.length > 0) {
         imageDivs[0].remove();
       }
@@ -455,6 +500,7 @@ export default function Home() {
     // Clear output and preview images
     clearOutput();
     clearPreviewImages();
+    clearPreviewVideos();
 
     // Clear info, stats, evaluation
     const resetInfo = () => {
