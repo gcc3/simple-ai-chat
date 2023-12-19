@@ -129,7 +129,7 @@ function Subscription() {
         {message && <div>- {message}</div>}
         {!message && <div>
           {user.role !== "root_user" && <div>
-            <div>- Upgrade and Downgrade</div>
+            <div>- Extend, Upgrade or Downgrade</div>
             <div className="flex flex-wrap items-center mt-2">
               <div>Select plan:</div>
               <button className="ml-2" onClick={handleSetTargetRole("user")}>`user`</button>
