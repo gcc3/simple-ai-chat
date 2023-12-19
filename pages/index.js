@@ -116,7 +116,7 @@ export default function Home() {
     if (targetRef.current && elWrapperRef.current) {
       // Create a div to hold the image
       const imageDiv = document.createElement('div');
-      imageDiv.className = "p-2 mb-5 image-preview";
+      imageDiv.className = "mb-5 image-preview";
 
       // Create an image and append it to div
       const img = document.createElement('img');
