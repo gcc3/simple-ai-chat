@@ -13,7 +13,7 @@ const Documentation = () => {
 
   const sub_features = [
     { name: "Full-screen mode and split-screen mode", description: "For easy use requiring extensive input and output, such as programmers, essay writer." },
-    { name: "De-hallucination(`self_eval_score`)", description: "Detect hallucinations in chat to provide more trustworthiness, use command \`:stats on\`." },
+    { name: "Dehallucination(`self_eval_score`)", description: "Detect hallucinations in chat to provide more trustworthiness. When the AI exhibits hallucination, it can sometimes generate completely fabricated answers. By enabling the dehallucination feature, a message will be displayed along with statistics to allow users to judge the accuracy of the information. Essentially, this feature resends the user's input and the AI's output, along with reference information, back to AI for self-evaluation. Use command \`:stats on\`, and `:eval on` to turn on it." },
     { name: "TTS voice", description: "Reading with an option to select from the system's local TTS voice library, use command \`:speak on\` to enable." },
     { name: "Themes", description: "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode." },
     { name: "Function calls", description: "GPT will choise function to use to get information he need. Such as weather and time queries, etc. Functions can be called by user directlly from the input as well." },
