@@ -34,5 +34,7 @@ export default async function eval_(args) {
     }
   }
 
-  return value == "on" ? "Self evaluation score enabled." : "Self evaluation score disabled.";
+  const turnOnStats = " `self_eval_score` is in stats, use command `:stats on` to show stats.";
+  const useEvalWill = " Note, use self evaluation score will double the cost of tokens."
+  return value == "on" ? "Self evaluation score enabled." + turnOnStats + useEvalWill : "Self evaluation score disabled.";
 }

@@ -109,7 +109,7 @@ export function getCommands() {
     { id: "", command: ":session [ls|list]", short_description: "List sessions.", description: "" },
     { id: "", command: ":session attach [session_id]", short_description: "Attach to a session.", description: "" },
     { id: "", command: ":session [del|delete] [session_id]", short_description: "Delete a session.", description: "" },
-    { id: "", command: ":stats [on|off]", short_description: "Show a stats info, score.", description: "" },
+    { id: "", command: ":stats [on|off]", short_description: "Show stats info.", description: "" },
     { id: "", command: ":eval [on|off]", short_description: "Enable the self evaluation score.", description: "" },
     { id: "", command: ":stream [on|off]", short_description: "Switch on/off stream mode.", description: "" },
     { id: "", command: ":speak [on|off]", short_description: "Switch on/off auto speak.", description: "" },
