@@ -1,5 +1,6 @@
 import React from 'react';
 import { getCommands } from '/command';
+import { getFunctions } from '../function';
 
 const Documentation = () => {
   const features = [
@@ -7,22 +8,24 @@ const Documentation = () => {
     { name: "GPT-4 Vision (Image Input)", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box." },
     { name: "File Input", description: "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference." },
     { name: "Roles/Assistants", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
-    { name: "Personal Database", description: "Upload files to your personal database for powerful data searches. The results will be inserted as prompts to provide knowledgeable answers." },
+    { name: "Personal Data Store", description: "Upload files to your personal database for powerful data searches. The results will be inserted as prompts to provide knowledgeable answers." },
     { name: "Midjourney (in progress)", description: "Utilize the most advanced image generation AI, Midjourney, in combination with ChatGPT prompts to generate high-quality certified images." },
   ];
 
   const sub_features = [
-    { name: "Full-screen mode and split-screen mode", description: "For easy use requiring extensive input and output, such as programmers, essay writer." },
+    { name: "Full-screen mode and split-screen mode", description: "For easy use requiring extensive input and output, such as programmers, essay writer. To use split-screen mode, use command \`:fullscreen split\`." },
     { name: "Dehallucination(`self_eval_score`)", description: "Detect hallucinations in chat to provide more trustworthiness. When the AI exhibits hallucination, it can sometimes generate completely fabricated answers. By enabling the dehallucination feature, a message will be displayed along with statistics to allow users to judge the accuracy of the information. Essentially, this feature resends the user's input and the AI's output, along with reference information, back to AI for self-evaluation. Use command \`:stats on\`, and `:eval on` to turn on it." },
     { name: "TTS voice", description: "Reading with an option to select from the system's local TTS voice library, use command \`:speak on\` to enable." },
     { name: "Themes", description: "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode." },
-    { name: "Function calls", description: "GPT will choise function to use to get information he need. Such as weather and time queries, etc. Functions can be called by user directlly from the input as well." },
+    { name: "Function calls", description: "GPT will choise function to use to get information he need. Such as weather and time queries, etc. Functions can be called by user directlly from the input as well. Refer: #functions" },
     { name: "Location-based query", description: "Questioning based on user's geographic location information. e.g., answering \"How's the weather today?\" by automatically obtaining the location. To use location feature, use command \`:location on\`." },
     { name: "Page redirection", description: "Jump to a specified page, GPT will do it automatically, for example: Open the official website of OpenAI." },
     { name: "Shortcuts", description: "Supports convenient shortcut operations." },
   ];
 
   const commands = getCommands();
+
+  const functions = getFunctions();
 
   const shortcuts = [
     { action: "Clear the input.", shortcut: "ESC", condition: "Focused on the input area, input area has content." },
@@ -52,6 +55,7 @@ const Documentation = () => {
             <div><a href="#commands-config">- <u>Information</u></a></div>
           </div>
         </div>
+        <div className="mt-2"><a href="#functions"><u>Functions</u></a></div>
         <div className="mt-2"><a href="#shortcuts"><u>Shortcuts</u></a></div>
         <div className="mt-2"><a href="#feedback"><u>Feedback & Support</u></a></div>
       </div>
@@ -97,6 +101,38 @@ const Documentation = () => {
             </div>
           </>
         ))}
+      </div>
+      <div id="functions" className="mt-5">Functions</div>
+      <div className="mt-2">
+        We provide some built-in functions to get information from the Internet. Both user and AI can use these functions. To get a list of available functions, use the `:function ls` command.
+      </div>
+      <div className="mt-3">
+        <table>
+          <thead>
+            <tr>
+              <th>Function</th>
+              <th>Execute</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {functions.map((f, index) => (
+              <tr key={index}>
+                <td>{f.name}</td>
+                <td>{(() => {
+                  const args =(() => Object.keys(f.parameters.properties).map((p) => {
+                    return `\"${p}\": \"___\"`;
+                  }).join(", "))();
+                  return `!${f.name}({ ${args} })`
+                })()}</td>
+                <td>{f.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <div className="mt-2">
+          * Weather data is provided by Wolfram Alpha.
+        </div>
       </div>
       <div id="shortcuts" className="mt-5">Shortcuts</div>
       <div className="mt-3">
