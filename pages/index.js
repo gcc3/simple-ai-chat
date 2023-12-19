@@ -395,8 +395,7 @@ export default function Home() {
           break;
 
         case "ArrowLeft":
-        case "k":
-          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ←");
 
@@ -418,11 +417,56 @@ export default function Home() {
           }
           break;
 
+        case "k":
+          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: k");
+
+            // Print session log (previous)
+            if (global.STATE === STATES.IDLE) {
+              getSessionLog("prev", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+                .then((r) => {
+                  if (Object.entries(r.result).length === 0) {
+                    console.log("No previous log.");
+                    return;
+                  } else {
+                    const log = r.result["log"];
+                    printSessionLog(log);
+                  }
+                });
+            } else {
+              console.log("Aborted as generating.");
+            }
+          }
+          break;
+
         case "ArrowRight":
+          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: →");
+
+            // Print session log (next)
+            if (global.STATE === STATES.IDLE) {
+              getSessionLog("next", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+                .then((r) => {
+                  if (Object.entries(r.result).length === 0) {
+                    console.log("No next log.");
+                    return;
+                  } else {
+                    const log = r.result["log"];
+                    printSessionLog(log);
+                  }
+              });
+            } else {
+              console.log("Aborted as generating.");
+            }
+          }
+          break;
+
         case "j":
           if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
-            console.log("Shortcut: →");
+            console.log("Shortcut: j");
 
             // Print session log (next)
             if (global.STATE === STATES.IDLE) {
