@@ -4,6 +4,7 @@ import stats from "./commands/stats.js";
 import stream from "./commands/stream.js";
 import log from "./commands/log.js";
 import info from "./commands/info.js";
+import ls from "./commands/ls.js";
 import session from "./commands/session.js";
 import role from "./commands/role.js";
 import clear from "./commands/clear.js";
@@ -44,6 +45,7 @@ export default function commands(input, files) {
   if (command.startsWith(":logout")) return logout(args);
   if (command.startsWith(":log")) return log(args);
   if (command.startsWith(":info")) return info(args);
+  if (command.startsWith(":ls")) return ls(args);
   if (command.startsWith(":session")) return session(args);
   if (command.startsWith(":role")) return role(args);
   if (command.startsWith(":clear")) return clear(args);
@@ -104,6 +106,7 @@ export function getCommands() {
     { id: "", command: ":function [ls|list]", short_description: "List all supported functions.", description: "" },
     { id: "", command: ":location [on|off]", short_description: "Switch on/off location service.", description: "" },
     { id: "", command: ":log", short_description: "Show logs for current session.", description: "" },
+    { id: "", command: ":ls", short_description: "List sessions, same as `:session ls`.", description: "" },
     { id: "", command: ":session [ls|list]", short_description: "List sessions.", description: "" },
     { id: "", command: ":session attach [session_id]", short_description: "Attach to a session.", description: "" },
     { id: "", command: ":session [del|delete] [session_id]", short_description: "Delete a session.", description: "" },
