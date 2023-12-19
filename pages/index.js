@@ -111,7 +111,7 @@ export default function Home() {
     }
   };
 
-  // Print output
+  // Print image output
   const printImage = (image_url, targetRef, beforeOrAfter = "after") => {
     if (targetRef.current && elWrapperRef.current) {
       // Create a div to hold the image
@@ -130,6 +130,42 @@ export default function Home() {
         elWrapperRef.current.appendChild(imageDiv);
       } else if (beforeOrAfter === "before") {
         elWrapperRef.current.insertBefore(imageDiv, targetRef.current);
+      }
+    } else {
+      console.error("Target ref is null.");
+    }
+  };
+
+  // Print video output (support: youtube)
+  const printVideo = (video_url, targetRef, beforeOrAfter = "after") => {
+    if (targetRef.current && elWrapperRef.current) {
+      // Create a div to hold the iframe for the YouTube video
+      const videoDiv = document.createElement('div');
+      videoDiv.className = "p-1 mb-5 video-preview";
+
+      // Get the width of the targetRef element
+      const targetWidth = targetRef.current.offsetWidth;
+
+      // Extract the YouTube video ID from the URL
+      const videoId = video_url.split('v=')[1].split('&')[0];
+
+      // Create an iframe and append it to the div
+      const iframe = document.createElement('iframe');
+      iframe.className = "rounded-md";
+      iframe.width = "560";
+      iframe.height = "315";
+      iframe.src = `https://www.youtube.com/embed/${videoId}`; // The URL for the YouTube video embed
+      iframe.title = "YouTube video player";
+      iframe.frameBorder = "0";
+      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+      iframe.allowFullscreen = true;
+      videoDiv.appendChild(iframe);
+
+      // Append the videoDiv to the div with the ref
+      if (beforeOrAfter === "after") {
+        elWrapperRef.current.appendChild(videoDiv);
+      } else if (beforeOrAfter === "before") {
+        elWrapperRef.current.insertBefore(videoDiv, targetRef.current);
       }
     } else {
       console.error("Target ref is null.");
@@ -166,7 +202,14 @@ export default function Home() {
     resetInfo();
     clearOutput();
 
+    // Print input
+    setPlaceholder({ text: log["input"], height: null });
+    global.rawPlaceholder = log["input"];
+
+    // Print output
     printOutput(log["output"]);
+    global.rawOutput = log["output"];
+
     setInfo((
       <div>
         model: {log["model"]}<br></br>
@@ -180,6 +223,16 @@ export default function Home() {
   const clearPreviewImages = () => {
     if (elWrapperRef.current) {
       const imageDivs = elWrapperRef.current.getElementsByClassName("image-preview");
+      while (imageDivs.length > 0) {
+        imageDivs[0].remove();
+      }
+    }
+  }
+
+  // Clear preview videos
+  const clearPreviewVideos = () => {
+    if (elWrapperRef.current) {
+      const imageDivs = elWrapperRef.current.getElementsByClassName("video-preview");
       while (imageDivs.length > 0) {
         imageDivs[0].remove();
       }
@@ -219,6 +272,7 @@ export default function Home() {
     // Set default localStorage values
     if (localStorage.getItem("_up") === null) localStorage.setItem("_up", Date.now());
     if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
+    if (localStorage.getItem("useEval") === null) localStorage.setItem("useEval", "false");
     if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
     if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
@@ -446,6 +500,7 @@ export default function Home() {
     // Clear output and preview images
     clearOutput();
     clearPreviewImages();
+    clearPreviewVideos();
 
     // Clear info, stats, evaluation
     const resetInfo = () => {
@@ -627,6 +682,7 @@ export default function Home() {
     const store = sessionStorage.getItem("store");
 
     const use_stats = localStorage.getItem("useStats");
+    const use_eval = localStorage.getItem("useEval");
     const use_location = localStorage.getItem("useLocation");
     const location = localStorage.getItem("location");
 
@@ -637,12 +693,14 @@ export default function Home() {
                                                            + "&role=" + role
                                                            + "&store=" + store
                                                            + "&use_stats=" + use_stats
+                                                           + "&use_eval=" + use_eval
                                                            + "&use_location=" + use_location
                                                            + "&location=" + location
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
                                                            + "&files=" + files.join(encodeURIComponent("###")));
 
     let do_function_calling = false;
+    let done_evaluating = false;
     let functionName = "";
     let functionArgsString = "";
     let do_tool_calls = false;
@@ -720,6 +778,8 @@ export default function Home() {
             self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
           </div>
         );
+
+        done_evaluating = true;
         return;
       }
 
@@ -732,8 +792,10 @@ export default function Home() {
           const token_ct = _stats_[2];
           const use_eval = _stats_[3];
           const func = _stats_[4];
+          const role = _stats_[5];
+          const store = _stats_[6];
 
-          if (use_eval === "true") {
+          if (use_eval === "true" && !done_evaluating) {
             setEvaluation(
               <div>
                 self_eval_score: evaluating...<br></br>
@@ -747,6 +809,8 @@ export default function Home() {
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
+              {role && <div>role: {role}<br></br></div>}
+              {store && <div>store: {store}<br></br></div>}
             </div>
           );
         }
@@ -882,6 +946,7 @@ export default function Home() {
             role: sessionStorage.getItem("role"),
             store: sessionStorage.getItem("store"),
             use_stats: localStorage.getItem("useStats"),
+            use_eval: localStorage.getItem("useEval"),
             use_location: localStorage.getItem("useLocation"),
             location: localStorage.getItem("location"),
           }),
@@ -912,6 +977,8 @@ export default function Home() {
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>
             token_ct: {data.result.stats.token_ct}<br></br>
+            {data.result.stats.role ? "role: " + data.result.stats.role + "<br></br>" : ""}
+            {data.result.stats.store ? "store: " + data.result.stats.store + "<br></br>" : ""}
           </div>
         ));
       }

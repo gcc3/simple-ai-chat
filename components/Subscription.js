@@ -121,7 +121,7 @@ function Subscription() {
           1. `user`: offer a general user package for only $1/month for accessing the most advanced AI.<br></br>
           2. `pro_user`: provide advanced features for professonal uses.<br></br>
           3. `super_user`: provide accessability for all latest features.<br></br>
-          <div className="mt-1">* For new users who register (as `user`), we offer a 7-day trial with a $5 usage for free.</div>
+          <div className="mt-1">* New users has a 7-day free trial with a $1 usage.</div>
         </div>
       </div>
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}

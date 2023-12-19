@@ -17,38 +17,42 @@ export async function generateMessages(user, model, input, files, images, queryI
   let token_ct = {};
   
   // -3. System master message, important
+  let system_prompt = "";
   if (role_content_system !== "") {
+    system_prompt += role_content_system;
+
     messages.push({ 
       role: "system",
-      content: role_content_system,
+      content: system_prompt,
     });
 
     // Count tokens
-    token_ct["system"] = countToken(model, role_content_system);
+    token_ct["system"] = countToken(model, system_prompt);
   }
 
   // -2. Role/assistant prompt
+  let role_prompt = "";
   if (role !== "" && role !== "default") {
     // Default role prompt
-    let rolePrompt = await getRolePrompt(role);
+    role_prompt = await getRolePrompt(role);
 
     // User role prompt
     if (user) {
       const userRole = await getRole(role, user.username);
-      if (userRole) rolePrompt = userRole.prompt;
+      if (userRole) role_prompt = userRole.prompt;
     }
 
     messages.push({
       role: "system",
-      content: rolePrompt,
+      content: role_prompt,
     });
 
     // Count tokens
-    token_ct["role"] = countToken(model, rolePrompt);
+    token_ct["role"] = countToken(model, role_prompt);
   }
 
   // -1. Chat history
-  let chat_history_total_prompt = "";
+  let chat_history_prompt = "";
   const session = queryId;
   const sessionLogs = await loglist(session, 7);  // limit the memory length to 7 logs
   if (sessionLogs && session.length > 0) {
@@ -68,14 +72,15 @@ export async function generateMessages(user, model, input, files, images, queryI
         content: log.output 
       });
 
-      chat_history_total_prompt += log.input + log.output;
+      chat_history_prompt += log.input + log.output + "\n";
     });
 
     // Count tokens
-    token_ct["history"] = countToken(model, chat_history_total_prompt);
+    token_ct["history"] = countToken(model, chat_history_prompt);
   }
 
   // 0. User input
+  let user_input_file_prompt = "";
   if (!do_function_calling) {
     messages.push({ 
       role: "user", 
@@ -93,7 +98,6 @@ export async function generateMessages(user, model, input, files, images, queryI
 
         // File input
         if (files && files.length > 0) {
-          let user_input_file_prompt = "";
           for (let i = 0; i < files.length; i++) {
             if (files[i] !== "") {
               try {
@@ -166,22 +170,28 @@ export async function generateMessages(user, model, input, files, images, queryI
   }
 
   // 1. Function calling result
+  let function_prompt = "";
   if (do_function_calling) {
+    function_prompt += functionMessage;
+
     // Feed message with function calling result
     messages.push({
       "role": "function",
       "name": functionName,
-      "content": functionMessage,
+      "content": function_prompt,
     });
 
     // Count tokens
-    token_ct["function"] = countToken(model, functionMessage);
+    token_ct["function"] = countToken(model, function_prompt);
   }
 
-  // 2. Vector database query result
-  let store_total_prompt = "";
+  // 2. Vector data store result
+  let store_prompt = "";
   if (use_vector && store) {
-    console.log("--- vector query ---");
+    console.log("--- vector data store ---");
+
+    // Get store info
+    const storeInfo = await getStore(store, user.username);
 
     // Get settings
     const settings = JSON.parse(storeInfo.settings);
@@ -211,45 +221,51 @@ export async function generateMessages(user, model, input, files, images, queryI
             "content": content,
           });
 
-          store_total_prompt += content;
+          store_prompt += content;
         });
       }
     }
 
     // Count tokens
-    token_ct["store"] = countToken(model, store_total_prompt);
+    token_ct["store"] = countToken(model, store_prompt);
   }
   
   // 3. Location info
+  let location_prompt = "";
   if (use_location && location) {
+    console.log("--- vector data store ---");
+
     // localtion example: (40.7128, -74.0060)
     const lat = location.slice(1, -1).split(",")[0].trim();
     const lng = location.slice(1, -1).split(",")[1].trim();
-    const query = {latitude: lat, longitude: lng}
+    console.log("lat: " + lat);
+    console.log("lng: " + lng);
 
-    let locationMessage = "Additional information:\n";
+    location_prompt += "Additional information:\n";
 
     // Get nearby cities
     const nearbyCities = require("nearby-cities")
-    const cities = nearbyCities(query);
+    const cities = nearbyCities({latitude: lat, longitude: lng});
     const city = cities[0];
-    locationMessage += "user is currently near city " + city.name + ", " + city.country + "\n";
+    location_prompt += "user is currently near city " + city.name + ", " + city.country + "\n";
+    console.log("nearby_citie: " + city.name + ", " + city.country);
 
     // Get user address with Google Maps API
     const address = await getAddress(lat, lng);
-    locationMessage += "User accurate address: " + address + "\n";
+    location_prompt += "User accurate address: " + address + "\n";
+    console.log("address: " + address + "\n");
 
     // Finish
-    locationMessage += "Use this infromation if necessary.\n";
+    location_prompt += "Use this infromation if necessary.\n";
 
     // Feed with location message
     messages.push({
       "role": "system",
-      "content": locationMessage
+      "content": location_prompt
     });
 
     // Count tokens
-    token_ct["location"] = countToken(model, locationMessage);
+    token_ct["location"] = countToken(model, location_prompt);
   }
 
   // Total token count
@@ -262,5 +278,14 @@ export async function generateMessages(user, model, input, files, images, queryI
   return {
     messages,
     token_ct,
+    raw_prompt: {
+      system: system_prompt,
+      role: role_prompt,
+      history: chat_history_prompt,
+      user_input_file: user_input_file_prompt,
+      function: function_prompt,
+      store: store_prompt,
+      location: location_prompt,
+    }
   };
 }

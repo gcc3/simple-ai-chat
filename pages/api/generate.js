@@ -29,6 +29,7 @@ export default async function(req, res) {
   const role = req.body.role || "";
   const store = req.body.store || "";
   const use_stats = req.body.use_stats || false;
+  const use_eval_ = req.body.use_eval || false;
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
   const files = req.body.files || null;
@@ -74,7 +75,7 @@ export default async function(req, res) {
   // Model switch
   const use_vision = images.length > 0;
   const model = use_vision ? model_v : model_;
-  const use_eval = use_stats && !use_vision;
+  const use_eval = use_eval_ && use_stats && !use_vision;
 
   // Configuration info
   console.log("--- configuration info ---\n" 
@@ -139,7 +140,9 @@ export default async function(req, res) {
           temperature: process.env.TEMPERATURE,
           top_p: process.env.TOP_P,
           token_ct: input_token_ct,
-          func: false
+          func: false,
+          role: role,
+          store: store,
         },
         info: {
           model: process.env.MODEL,
