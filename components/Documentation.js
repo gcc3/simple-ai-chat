@@ -28,8 +28,8 @@ const Documentation = () => {
     { action: "Clear the input.", shortcut: "ESC", condition: "Focused on the input area, input area has content." },
     { action: "Unfocus from the input box.", shortcut: "ESC", condition: "Focused on the input area, input area is cleared." },
     { action: "Repeat last input.", shortcut: "Tab", condition: "Focused on the input area, input area is cleared." },
-    { action: "Navigate to the previous session history(log).", shortcut: "← or K", condition: "Unfocused from the input area." },
-    { action: "Navigate to the next session history(log).", shortcut: "→ or J", condition: "Unfocused from the input area." },
+    { action: "Navigate to the previous session history(log).", shortcut: "← or K", condition: "Unfocused from the input area. or input box is empty if use `←`." },
+    { action: "Navigate to the next session history(log).", shortcut: "→ or J", condition: "Unfocused from the input area, or input box is empty if use `→`" },
     { action: "Change focus to input area.", shortcut: "Tab or /", condition: "Unfocused from the input area." },
   ];
 
@@ -43,9 +43,13 @@ const Documentation = () => {
           <div className="mt-2"><a href="#commands"><u>Commands</u></a></div>
           <div className="ml-3">
             <div><a href="#commands-general">- <u>General</u></a></div>
-            <div><a href="#commands-role">- <u>Roles/Assistants</u></a></div>
-            <div><a href="#commands-store">- <u>Personal Database</u></a></div>
+            <div><a href="#commands-session">- <u>Session</u></a></div>
+            <div><a href="#commands-eval">- <u>Stats & Self-evaluation</u></a></div>
+            <div><a href="#commands-speak">- <u>Speak</u></a></div>
+            <div><a href="#commands-role">- <u>Roles & Assistants</u></a></div>
+            <div><a href="#commands-store">- <u>Data Store</u></a></div>
             <div><a href="#commands-user">- <u>User</u></a></div>
+            <div><a href="#commands-config">- <u>Information</u></a></div>
           </div>
         </div>
         <div className="mt-2"><a href="#shortcuts"><u>Shortcuts</u></a></div>
@@ -84,12 +88,14 @@ const Documentation = () => {
         Simple AI is command-based; most operations can be executed with commands. To distinguish from general input, commands must start with a ":". For example, to change the theme, use the `:theme` command; to enter full-screen mode, use the `:fullscreen` command. Use `:help` to list all available commands.
       </div>
       <div>
-        {commands.map((item, index) => (
-          <div id={item.id} key={index} className="mt-2">
-            <div>{item.command}</div>
-            <div>Short description: {item.short_description || "-"}</div>
-            <div>Description: {item.description || "-"}</div>
-          </div>
+        {commands.map((item, index) => (<>
+            {item.id && <div id={item.id} className="mt-3">- {item.title}</div>}
+            <div key={index} className="mt-2">
+              <div>{item.command}</div>
+              <div>Short description: {item.short_description || "-"}</div>
+              <div>Description: {item.description || "-"}</div>
+            </div>
+          </>
         ))}
       </div>
       <div id="shortcuts" className="mt-5">Shortcuts</div>

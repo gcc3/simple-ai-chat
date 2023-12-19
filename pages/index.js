@@ -116,14 +116,18 @@ export default function Home() {
     if (targetRef.current && elWrapperRef.current) {
       // Create a div to hold the image
       const imageDiv = document.createElement('div');
-      imageDiv.className = "p-1 mb-5 image-preview";
+      imageDiv.className = "mb-5 image-preview";
 
       // Create an image and append it to div
       const img = document.createElement('img');
-      img.className = "rounded-md";
+      img.className = "";
+      img.style.width = "100%";
+      img.style.height = "100%";
+      imageDiv.appendChild(img);
+
+      // Set the image attributes
       img.src = image_url;  // The URL of the image
       img.alt = image_url;  // Alternative text for the image
-      imageDiv.appendChild(img);
 
       // Append the image to the div with the ref
       if (beforeOrAfter === "after") {
@@ -136,36 +140,43 @@ export default function Home() {
     }
   };
 
-  // Print video output (support: youtube)
+  // Print video output (support: YouTube)
   const printVideo = (video_url, targetRef, beforeOrAfter = "after") => {
-    if (targetRef.current && elWrapperRef.current) {
-      // Create a div to hold the iframe for the YouTube video
+    if (targetRef.current) {
+      // Create a wrapper div to hold the iframe and control its aspect ratio
       const videoDiv = document.createElement('div');
-      videoDiv.className = "p-1 mb-5 video-preview";
-
-      // Get the width of the targetRef element
-      const targetWidth = targetRef.current.offsetWidth;
-
+      videoDiv.className = "mb-5 video-preview";
+      
+      // Here the padding-top is 56.25%, which is the result of (9 / 16 * 100).
+      videoDiv.style.position = 'relative';
+      videoDiv.style.paddingTop = '56.25%'; // Aspect ratio for 16:9
+      
+      // Create the iframe
+      const iframe = document.createElement('iframe');
+      iframe.className = "";
+      iframe.style.position = 'absolute';
+      iframe.style.width = '100%';
+      iframe.style.height = '100%';
+      iframe.style.left = '0';
+      iframe.style.top = '0';
+      
       // Extract the YouTube video ID from the URL
       const videoId = video_url.split('v=')[1].split('&')[0];
-
-      // Create an iframe and append it to the div
-      const iframe = document.createElement('iframe');
-      iframe.className = "rounded-md";
-      iframe.width = "560";
-      iframe.height = "315";
       iframe.src = `https://www.youtube.com/embed/${videoId}`; // The URL for the YouTube video embed
       iframe.title = "YouTube video player";
       iframe.frameBorder = "0";
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
       iframe.allowFullscreen = true;
+      
+      // Append the iframe to the wrapper div
       videoDiv.appendChild(iframe);
-
-      // Append the videoDiv to the div with the ref
+      
+      // Append the videoWrapper to the div with the ref
+      const elWrapperRef = targetRef.current.parentNode; // Assuming the parent node is where you want to insert the video
       if (beforeOrAfter === "after") {
-        elWrapperRef.current.appendChild(videoDiv);
+        elWrapperRef.appendChild(videoDiv);
       } else if (beforeOrAfter === "before") {
-        elWrapperRef.current.insertBefore(videoDiv, targetRef.current);
+        elWrapperRef.insertBefore(videoDiv, targetRef.current);
       }
     } else {
       console.error("Target ref is null.");
@@ -384,8 +395,7 @@ export default function Home() {
           break;
 
         case "ArrowLeft":
-        case "k":
-          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ←");
 
@@ -407,11 +417,56 @@ export default function Home() {
           }
           break;
 
+        case "k":
+          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: k");
+
+            // Print session log (previous)
+            if (global.STATE === STATES.IDLE) {
+              getSessionLog("prev", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+                .then((r) => {
+                  if (Object.entries(r.result).length === 0) {
+                    console.log("No previous log.");
+                    return;
+                  } else {
+                    const log = r.result["log"];
+                    printSessionLog(log);
+                  }
+                });
+            } else {
+              console.log("Aborted as generating.");
+            }
+          }
+          break;
+
         case "ArrowRight":
+          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: →");
+
+            // Print session log (next)
+            if (global.STATE === STATES.IDLE) {
+              getSessionLog("next", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+                .then((r) => {
+                  if (Object.entries(r.result).length === 0) {
+                    console.log("No next log.");
+                    return;
+                  } else {
+                    const log = r.result["log"];
+                    printSessionLog(log);
+                  }
+              });
+            } else {
+              console.log("Aborted as generating.");
+            }
+          }
+          break;
+
         case "j":
           if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
-            console.log("Shortcut: →");
+            console.log("Shortcut: j");
 
             // Print session log (next)
             if (global.STATE === STATES.IDLE) {
@@ -544,6 +599,7 @@ export default function Home() {
       console.log("Images:\n" + image_urls.join("\n"));
       image_urls.map((image_url) => {
         printImage(image_url, elOutputRef, "before");
+        printVideo("https://www.youtube.com/watch?v=RhtjGp7oMvE", elOutputRef, "before");
       });
     }
     if (file_urls.length > 0) {
