@@ -28,8 +28,8 @@ const Documentation = () => {
     { action: "Clear the input.", shortcut: "ESC", condition: "Focused on the input area, input area has content." },
     { action: "Unfocus from the input box.", shortcut: "ESC", condition: "Focused on the input area, input area is cleared." },
     { action: "Repeat last input.", shortcut: "Tab", condition: "Focused on the input area, input area is cleared." },
-    { action: "Navigate to the previous session history(log).", shortcut: "← or K", condition: "Unfocused from the input area. or input box is empty if use `←`." },
-    { action: "Navigate to the next session history(log).", shortcut: "→ or J", condition: "Unfocused from the input area, or input box is empty if use `→`" },
+    { action: "Navigate to the previous session history(log).", shortcut: "← or K", condition: "Unfocused from the input area， or input box is empty when using `←`." },
+    { action: "Navigate to the next session history(log).", shortcut: "→ or J", condition: "Unfocused from the input area, or input box is empty when using `→`" },
     { action: "Change focus to input area.", shortcut: "Tab or /", condition: "Unfocused from the input area." },
   ];
 
