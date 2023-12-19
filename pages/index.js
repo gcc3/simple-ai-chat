@@ -166,7 +166,15 @@ export default function Home() {
     resetInfo();
     clearOutput();
 
+    // Print input
+    setPlaceholder({ text: log["input"], height: elInputRef.current.style.height });
+    global.rawPlaceholder = log["input"];
+    reAdjustInputHeight();
+
+    // Print output
     printOutput(log["output"]);
+    global.rawOutput = log["output"];
+
     setInfo((
       <div>
         model: {log["model"]}<br></br>
