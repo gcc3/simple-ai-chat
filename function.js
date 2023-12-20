@@ -7,7 +7,7 @@ export function executeFunction(functionName, argsString) {
   if (process.env.USE_FUNCTION_CALLING !== "true") {
     return {
       success: false,
-      message: "function calling is not enabled.\n"
+      error: "function calling is not enabled.\n"
     }
   }
   
@@ -40,7 +40,7 @@ export function executeFunction(functionName, argsString) {
 
   return {
     success: false,
-    message: "No such function.",
+    error: "No such function.",
   }
 }
 
