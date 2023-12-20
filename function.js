@@ -12,7 +12,15 @@ export function executeFunction(functionName, argsString) {
   }
   
   // functionArgs is a json string
-  const paramObject = JSON.parse(argsString);
+  let paramObject = null;
+  try {
+    paramObject = JSON.parse(argsString);
+  } catch (error) {
+    return {
+      success: false,
+      error: "Invalid arguments.",
+    }
+  }
 
   // Functions
   if (functionName === "get_time") {
