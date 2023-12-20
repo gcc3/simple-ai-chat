@@ -7,12 +7,20 @@ export function executeFunction(functionName, argsString) {
   if (process.env.USE_FUNCTION_CALLING !== "true") {
     return {
       success: false,
-      message: "function calling is not enabled.\n"
+      error: "function calling is not enabled.\n"
     }
   }
   
   // functionArgs is a json string
-  const paramObject = JSON.parse(argsString);
+  let paramObject = null;
+  try {
+    paramObject = JSON.parse(argsString);
+  } catch (error) {
+    return {
+      success: false,
+      error: "Invalid arguments.",
+    }
+  }
 
   // Functions
   if (functionName === "get_time") {
@@ -40,7 +48,7 @@ export function executeFunction(functionName, argsString) {
 
   return {
     success: false,
-    message: "No such function.",
+    error: "No such function.",
   }
 }
 
