@@ -5,9 +5,13 @@ export default async function getTime(paramObject) {
   if (!timeZone) timeZone = "UTC";
 
   if (!timezone.tz.names().includes(timeZone)) {
-    return "Invalid timezone. Please use one of the following: " + timezone.tz.names().join(", ");
+    return {
+      success: false,
+      error: "Invalid timezone. Please use one of the following: " + timezone.tz.names().join(", "),
+    }
   }
   return {
-    message: new Date().toLocaleString('en-US', { timeZone: timeZone })
-  };
+    success: true,
+    message: new Date().toLocaleString('en-US', { timeZone: timeZone }),
+  }
 }

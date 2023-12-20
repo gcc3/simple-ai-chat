@@ -2,9 +2,12 @@ import parseStringPromise from 'xml2js';
 
 export default async function getWeather(paramObject) {
   const location = paramObject.location;
-  if (!location) return "Invalid location.";
-  let message = "";
+  if (!location) return {
+    success: false,
+    error: "Invalid location.",
+  }
 
+  let result = "";
   const response = await fetch("http://api.wolframalpha.com/v2/query?" + new URLSearchParams({
       appid: process.env.WOLFRAM_ALPHA_APPID,
       input: "What's the weather in " + location,
@@ -22,7 +25,7 @@ export default async function getWeather(paramObject) {
   const responseText = await response.text();
   const data = await parseStringPromise.parseStringPromise(responseText);  // XML to object
   if (!data.queryresult || !data.queryresult.pod || data.queryresult.pod.length === 0) {
-    message = "No response.";
+    result = "No response.";
   } else {
     let weathers = "";
     data.queryresult.pod.map((pod) => {
@@ -36,10 +39,11 @@ export default async function getWeather(paramObject) {
         });
       }
     });
-    message = weathers;
+    result = weathers;
   }
 
   return {
-    message
-  };
+    success: true,
+    message: result,
+  }
 }
