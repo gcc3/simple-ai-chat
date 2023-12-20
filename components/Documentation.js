@@ -106,7 +106,7 @@ const Documentation = () => {
       <div className="mt-2">
         We provide some built-in functions to get information from the Internet. Both user and AI can use these functions. To get a list of available functions, use the `:function ls` command.
       </div>
-      <div className="mt-3">
+      <div className="mt-3 table-container">
         <table>
           <thead>
             <tr>
@@ -135,7 +135,7 @@ const Documentation = () => {
         </div>
       </div>
       <div id="shortcuts" className="mt-5">Shortcuts</div>
-      <div className="mt-3">
+      <div className="mt-3 table-container">
         <table>
           <thead>
             <tr>
