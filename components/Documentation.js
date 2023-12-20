@@ -61,13 +61,11 @@ const Documentation = () => {
       </div>
       <div id="introduction" className="mt-5">Introduction</div>
       <div className="mt-2">
-        Simple AI (`simple-ai.io`) is a command-based AI chat application that focus on the cutting-edge AI technology. It provides a simple and easy-to-use interface for everyone to interact with the AI models.
+        Simple AI (`simple-ai.io`) is a AI chat application. It focus on improve the user experice of interacting with AI models. It rovides a command-based and easy-to-use shell interface to interact with the AI models.
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
-        <div>1. Type in the input box and press Enter to send the message to the AI model. Paste image to the input box to use GPT-4 Vision.</div>
-        <div>2. Use command `:user add [username] [email] [password?]` to create a new user account, before using check your email box to verifiy the email address.</div>
-        <div>3. Use command `:user login [username] [password?]` to login to your account.</div>
+        <div>(Here insert the introduction video.)</div>
       </div>
       <div id="features" className="mt-5">Features</div>
       <div>
