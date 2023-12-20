@@ -7,7 +7,6 @@ const fullscreenSlice = createSlice({
   initialState,
   reducers: {
     toggleFullscreen: (state, action) => {
-      localStorage.setItem('fullscreen', action.payload);
       return action.payload;
     }
   }
