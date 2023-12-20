@@ -129,7 +129,7 @@ const Documentation = () => {
           </tbody>
         </table>
         <div className="mt-2">
-          * Weather data is provided by Wolfram Alpha.
+          * Weather data is provided by WolframAlpha.
         </div>
       </div>
       <div id="shortcuts" className="mt-5">Shortcuts</div>
