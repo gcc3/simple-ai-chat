@@ -159,7 +159,7 @@ export default async function (req, res) {
     const function_input = input.split("Q=")[0].substring(1);
     functionName = function_input.split("(")[0];
     functionArgsString = function_input.split("(")[1].split(")")[0];
-    console.log("Function input: " + function_input);
+    console.log("Function input: " + input);
     console.log("Function name: " + functionName);
     console.log("Arguments: " + functionArgsString);
 
