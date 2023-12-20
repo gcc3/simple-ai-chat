@@ -197,25 +197,26 @@ export default async function (req, res) {
     } else {
       // Execute function
       const functionResult = await executeFunction(functionName, functionArgsString);
+      if (functionResult.success) {
+        // Function trigger event
+        if (functionResult.event) {
+          const event = JSON.stringify(functionResult.event);
+          res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
+        }
 
-      // Function trigger event
-      if (functionResult.event) {
-        const event = JSON.stringify(functionResult.event);
-        res.write(`data: ###EVENT###${event}\n\n`);
+        // Message
+        functionMessage = functionResult.message;
+        if (!functionMessage.endsWith("\n")) {
+          functionMessage += "\n";
+        }
+
+        console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
+        
+        // Log
+        const input_token_ct_f = countToken(model, "F=" + function_input);
+        const output_token_ct_f = countToken(model, "F=" + functionMessage);
+        logadd(user, queryId, model, input_token_ct_f, "F=" + function_input, output_token_ct_f, "F=" + functionMessage, ip, browser);
       }
-
-      // Message
-      functionMessage = functionResult.message;
-      if (!functionMessage.endsWith("\n")) {
-        functionMessage += "\n";
-      }
-      
-      console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
-
-      // Log
-      const input_token_ct_f = countToken(model, "F=" + function_input);
-      const output_token_ct_f = countToken(model, "F=" + functionMessage);
-      logadd(user, queryId, model, input_token_ct_f, "F=" + function_input, output_token_ct_f, "F=" + functionMessage, ip, browser);
     }
 
     // Replace input with original
