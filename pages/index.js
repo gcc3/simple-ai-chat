@@ -66,8 +66,8 @@ export default function Home() {
 
   // Global states with Redux
   const dispatch = useDispatch();
-  let fullscreen = useSelector(state => state.fullscreen);
-  let enter = useSelector(state => state.enter);
+  const fullscreen = useSelector(state => state.fullscreen);
+  const enter = useSelector(state => state.enter);
 
   // Toggle display
   const toggleDisplay = () => {
@@ -313,21 +313,6 @@ export default function Home() {
     // Handle window resize
     const handleResize = () => {
       reAdjustInputHeight();
-
-      // For fullscreen split mode, if too narrow, switch to default mode
-      if (window.innerWidth < 650) {
-        if (fullscreen === "split" && localStorage.getItem("fullscreen") === "split") {
-          console.log("Set fullscreen to default as too narrow.");
-          dispatch(toggleFullscreen("default"));
-          fullscreen = "default";
-        }
-      } else {
-        if (fullscreen === "default" && localStorage.getItem("fullscreen") === "split") {
-          console.log("Set fullscreen back to split.");
-          dispatch(toggleFullscreen("split"));
-          fullscreen = "split";
-        }
-      }
     };
     window.addEventListener('resize', handleResize);
     handleResize();
