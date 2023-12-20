@@ -1,9 +1,18 @@
 export default async function redirectToUrl(paramObject) {
   const url = paramObject.url;
   const blank = paramObject.blank;
-  if (!url) return {
-    success: false,
-    error: "Please provide a URL to redirect to."
+  if (!url) {
+    return {
+      success: false,
+      error: "Please provide a URL."
+    }
+  }
+
+  if (!url.startsWith("http")) {
+    return {
+      success: false,
+      error: "Please provide a URL starts with `http`."
+    }
   }
   return {
     success: true,

@@ -704,7 +704,7 @@ export default function Home() {
           }
           printOutput(functionResult.message);
         } else {
-          printOutput("Function error: " + functionResult.error);
+          printOutput(functionResult.error);
         }
       } catch (error) {
         console.error(error);
