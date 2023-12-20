@@ -5,7 +5,10 @@ import redirectToUrl from "./functions/redirect_to_url.js";
 
 export function executeFunction(functionName, argsString) {
   if (process.env.USE_FUNCTION_CALLING !== "true") {
-    return "function calling is not enabled.\n";
+    return {
+      success: false,
+      message: "function calling is not enabled.\n"
+    }
   }
   
   // functionArgs is a json string
@@ -26,11 +29,19 @@ export function executeFunction(functionName, argsString) {
   
   // call other AI node to get help
   if (functionName === "query_node_ai") {
-    if (process.env.USE_NODE_AI !== "true") return "AI Node is not enabled.";
+    if (process.env.USE_NODE_AI !== "true") {
+      return {
+        success: false,
+        error: "AI Node is not enabled.",
+      }
+    }
     return queryNodeAi(paramObject);
   }
 
-  return "No such function.";
+  return {
+    success: false,
+    message: "No such function.",
+  }
 }
 
 export function getFunctions() {

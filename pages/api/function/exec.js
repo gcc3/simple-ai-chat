@@ -2,15 +2,13 @@ import { executeFunction } from "function.js";
 
 export default async function (req, res) {
   try {
-    res.status(200).json({
-      result: await executeFunction(req.query.func, req.query.args)
-    });
+    const functionResult = await executeFunction(req.query.func, req.query.args);
+    res.status(200).json(functionResult);  // Use the function result directly as it include parameters
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      result: {
-        message : error
-      },
+      success: false,
+      error: error
     });
   }
 }

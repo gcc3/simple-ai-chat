@@ -671,37 +671,41 @@ export default function Home() {
             "Content-Type": "application/json",
           },
         });
-        const functionResult = JSON.parse(await response.text()).result;
+        const functionResult = JSON.parse(await response.text());
 
-        console.log("Function Output: " + functionResult);
         if (response.status !== 200) {
           throw response.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        // Handle event
-        if (functionResult.event) {
-          const _event = functionResult.event;
-          console.log("Event(Function CLI): " + JSON.stringify(_event));
+        if (functionResult.success) {
+          console.log("Function Output: " + JSON.stringify(functionResult));
 
-          // Handle redirect event
-          if (_event.name === "redirect") {
-            console.log("Redirecting to \"" + _event.parameters.url + "\"...");
+          // Handle event
+          if (functionResult.event) {
+            const _event = functionResult.event;
+            console.log("Event(Function CLI): " + JSON.stringify(_event));
 
-            // Redirect to URL
-            if (!_event.parameters.url.startsWith("http")) {
-              console.error("URL must start with http or https.");
-            } else {
+            // Handle redirect event
+            if (_event.name === "redirect") {
+              console.log("Redirecting to \"" + _event.parameters.url + "\"...");
+
               // Redirect to URL
-              if (_event.parameters.blank == true) {
-                window.open(_event.parameters.url, '_blank');  // open with new tab
+              if (!_event.parameters.url.startsWith("http")) {
+                console.error("URL must start with http or https.");
               } else {
-                window.top.location.href = _event.parameters.url;
+                // Redirect to URL
+                if (_event.parameters.blank == true) {
+                  window.open(_event.parameters.url, '_blank');  // open with new tab
+                } else {
+                  window.top.location.href = _event.parameters.url;
+                }
               }
             }
           }
+          printOutput(functionResult.message);
+        } else {
+          printOutput("Function error: " + functionResult.error);
         }
-
-        printOutput(functionResult.message);
       } catch (error) {
         console.error(error);
       }
