@@ -653,14 +653,14 @@ export default function Home() {
     if (input.startsWith("!")) {
       const function_input = input.substring(1);
       if (!function_input.includes("(") || !function_input.includes(")")) {
-        console.error("Invalid function input: " + function_input);
+        console.error("Invalid function input: " + input);
         printOutput("Invalid function input.");
         return;
       }
 
       const funcName = function_input.split("(")[0];
       const funcArgs = function_input.split("(")[1].split(")")[0];
-      console.log("Function Input: " + input.substring(1));
+      console.log("Function Input: " + input);
       console.log("Function Name: " + funcName);
       console.log("Function Args: " + funcArgs);
 
