@@ -61,7 +61,7 @@ const Documentation = () => {
       </div>
       <div id="introduction" className="mt-5">Introduction</div>
       <div className="mt-2">
-        Simple AI (`simple-ai.io`) is a AI chat application. It focus on improve the user experice of interacting with AI models. It rovides a command-based and easy-to-use shell interface to interact with the AI models.
+        Simple AI (`simple-ai.io`) is an AI chat application. It focuses on improving the user experience of interacting with AI models. It provides a command-based and easy-to-use shell interface to interact with the AI models.
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
