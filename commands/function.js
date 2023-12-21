@@ -11,7 +11,14 @@ export default async function function_(args) {
     } else {
       return functions.map((f) => {
         const args =(() => Object.keys(f.parameters.properties).map((p) => {
-          return `\"${p}\": \"___\"`;
+          const type = f.parameters.properties[p].type;
+          if (type === "string") {
+            return `\"${p}\": \"___\"`;
+          } else if (type === "boolean") {
+            return `\"${p}\": [true|false]`;
+          } else {
+            return `\"${p}\": [${type}]`;
+          }
         }).join(", "))();
 
         return `!${f.name}({ ${args} })`;
