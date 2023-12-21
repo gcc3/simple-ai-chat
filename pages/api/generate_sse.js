@@ -211,6 +211,11 @@ export default async function (req, res) {
         }
 
         console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
+
+        // Log
+        const input_token_ct_f = countToken(model, "F=" + function_input);
+        const output_token_ct_f = countToken(model, "F=" + functionMessage);
+        logadd(user, queryId, model, input_token_ct_f, "F=" + function_input, output_token_ct_f, "F=" + functionMessage, ip, browser);
       }
     }
 
