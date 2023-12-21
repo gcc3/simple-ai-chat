@@ -35,7 +35,7 @@ export default async function redirectToUrl(paramObject) {
   }
   return {
     success: true,
-    message: "Browser is redirected to `" + url + "`." + blankMessage,  // It's actually redirecting but AI required to be told it is redirected
+    message: "Browser is redirected to `" + url + "`." + blankMessage + " Only redirect once no metter success or failure.",  // It's actually redirecting but AI required to be told it is redirected
     event: { name: "redirect", parameters: { url, blank }, },
   };
 }

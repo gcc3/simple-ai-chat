@@ -906,6 +906,9 @@ export default function Home() {
           
           // Generate with function calling
           console.log("Function calling: " + funcInput);
+          if (input.startsWith("!")) {
+            input = input.split("Q=")[1];
+          }
           generate_sse(funcInput + " Q=" + input, [], []);
           return;
         }
@@ -916,6 +919,9 @@ export default function Home() {
           
           // Generate with tool calls
           console.log("Tool calls: " + toolInput);
+          if (input.startsWith("!")) {
+            input = input.split("Q=")[1];
+          }
           generate_sse(toolInput + " Q=" + input, [], []);
           return;
         }
