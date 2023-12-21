@@ -57,23 +57,37 @@ export async function generateMessages(user, model, input, files, images, queryI
   const sessionLogs = await loglist(session, 7);  // limit the memory length to 7 logs
   if (sessionLogs && session.length > 0) {
     sessionLogs.reverse().map(log => {
-      if (log.input) {
+      if (log.input.startsWith("F=") && log.output.startsWith("F=")) {
+        // Function calling log
+        const input = log.input.slice(1);
+        const output = log.output.slice(2);
+        const functionName = input.slice(1).split("(")[0];
+        const functionMessage = output;
         messages.push({ 
-          role: "user",
-          content: [
-            {
-              type: "text",
-              text: log.input
-            }
-          ]
+          role: "function",
+          name: functionName,
+          content: functionMessage,
         });
-      }
-      
-      if (log.output) {
-        messages.push({ 
-          role: "assistant", 
-          content: log.output 
-        });
+      } else {
+        // Normal log
+        if (log.input) {
+          messages.push({ 
+            role: "user",
+            content: [
+              {
+                type: "text",
+                text: log.input
+              }
+            ]
+          });
+        }
+        
+        if (log.output) {
+          messages.push({ 
+            role: "assistant", 
+            content: log.output 
+          });
+        }
       }
 
       chat_history_prompt += log.input + log.output + "\n";
