@@ -5,7 +5,7 @@ const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
 // User access control utilities
 export async function getUacResult(user, ip) {
-  const isLogin = user !== null;
+  const isLogin = (user !== null && user !== undefined);
 
   if (!isLogin) {
     // Not a user, urge register a user

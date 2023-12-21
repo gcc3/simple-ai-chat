@@ -747,6 +747,19 @@ export default function Home() {
 
     // Vision: Will automatically use vision model if there is any image
     // If use vision model function calling cannot use
+    console.log("Input: " + input);
+    const config = {
+      query_id: query_id,
+      role: role,
+      store: store,
+      use_stats: use_stats,
+      use_eval: use_eval,
+      use_location: use_location,
+      location: location,
+      images: images,
+      files: files
+    };
+    console.log("Config: " + JSON.stringify(config));
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
                                                            + "&query_id=" + query_id
                                                            + "&role=" + role
@@ -893,6 +906,9 @@ export default function Home() {
           
           // Generate with function calling
           console.log("Function calling: " + funcInput);
+          if (input.startsWith("!")) {
+            input = input.split("Q=")[1];
+          }
           generate_sse(funcInput + " Q=" + input, [], []);
           return;
         }
@@ -903,6 +919,9 @@ export default function Home() {
           
           // Generate with tool calls
           console.log("Tool calls: " + toolInput);
+          if (input.startsWith("!")) {
+            input = input.split("Q=")[1];
+          }
           generate_sse(toolInput + " Q=" + input, [], []);
           return;
         }
@@ -992,6 +1011,17 @@ export default function Home() {
   // Normal generate
   async function generate(input) {    
     console.log("Input:\n" + input);
+    const config = {
+      user_input: input, 
+      query_id: sessionStorage.getItem("queryId"),
+      role: sessionStorage.getItem("role"),
+      store: sessionStorage.getItem("store"),
+      use_stats: localStorage.getItem("useStats"),
+      use_eval: localStorage.getItem("useEval"),
+      use_location: localStorage.getItem("useLocation"),
+      location: localStorage.getItem("location"),
+    };
+    console.log("Config: " + JSON.stringify(config));
 
     try {
       const response = await fetch("/api/generate", {
@@ -999,16 +1029,7 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({
-            user_input: input, 
-            query_id: sessionStorage.getItem("queryId"),
-            role: sessionStorage.getItem("role"),
-            store: sessionStorage.getItem("store"),
-            use_stats: localStorage.getItem("useStats"),
-            use_eval: localStorage.getItem("useEval"),
-            use_location: localStorage.getItem("useLocation"),
-            location: localStorage.getItem("location"),
-          }),
+        body: JSON.stringify(config),
       });
 
       const data = await response.json();

@@ -14,9 +14,26 @@ export default async function redirectToUrl(paramObject) {
       error: "Please provide a URL starts with `http`."
     }
   }
+
+  if (blank === undefined) {
+    return {
+      success: false,
+      error: "Please provide a blank parameter."
+    }
+  }
+
+  if (blank !== true && blank !== false) {
+    return {
+      success: false,
+      error: "Please provide a blank parameter as true or false."
+    }
+  }
+
+  let blankMessage = "";
+  if (blank) blankMessage = " Brower opened URL in a new tab";
   return {
     success: true,
-    message: "Redirected to " + url + " successfully." + " Please don't need to redirect again.",  // It's actually redirecting but AI required to be told it is redirected
+    message: "Browser is redirected to `" + url + "`." + blankMessage + " Only redirect once no metter success or failure.",  // It's actually redirecting but AI required to be told it is redirected
     event: { name: "redirect", parameters: { url, blank }, },
   };
 }
