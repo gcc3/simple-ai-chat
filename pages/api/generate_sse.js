@@ -311,7 +311,7 @@ export default async function (req, res) {
 
     // Output
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
-    console.log(output + "\n");
+    console.log((output || "(null)") + "\n");
 
     // Function call & tool calls output
     if (output_function_call) {
@@ -326,7 +326,9 @@ export default async function (req, res) {
     // Log
     output_token_ct += countToken(model, output);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store}\n\n`);
-    logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
+    if (!input && !output) {
+      logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
+    }
 
     // Done message
     res.write(`data: [DONE]\n\n`); res.flush();
