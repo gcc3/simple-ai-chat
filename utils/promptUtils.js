@@ -99,91 +99,93 @@ export async function generateMessages(user, model, input, files, images, queryI
 
   // 0. User input
   let user_input_file_prompt = "";
-  messages.push({ 
-    role: "user", 
-    content: await (async () => {
-      let c = [];
+  if (!do_function_calling) {
+    messages.push({ 
+      role: "user", 
+      content: await (async () => {
+        let c = [];
 
-      // Text
-      c.push({
-          type: "text",
-          text: input
-      });
-      
-      // Count tokens
-      token_ct["user_input"] = countToken(model, input);
+        // Text
+        c.push({
+            type: "text",
+            text: input
+        });
+        
+        // Count tokens
+        token_ct["user_input"] = countToken(model, input);
 
-      // File input
-      if (files && files.length > 0) {
-        for (let i = 0; i < files.length; i++) {
-          if (files[i] !== "") {
-            try {
-              const fileExtension = files[i].split('.').pop().split(/\#|\?/)[0].toLowerCase();
-              const response = await fetch(files[i]);
-              const pdfParse = require('pdf-parse');
-              const mammoth = require('mammoth');
-              
-              // Get content form different file types
-              let fileContent = "(file is empty)";
-              if (fileExtension === "txt") {
-                fileContent = await response.text();
-              } else if (fileExtension === "json") {
-                fileContent = JSON.stringify(await response.json(), null, 2);
-              } else if (fileExtension === "pdf") {
-                const buffer = await response.buffer();
-                const data = await pdfParse(buffer);   // Use pdf-parse to extract text
-                fileContent = data.text;
-              } else if (fileExtension === "docx") {
-                const buffer = await response.buffer();
-                const data = await mammoth.extractRawText({ buffer: buffer });  // Use mammoth to extract text
-                fileContent = data.value;
+        // File input
+        if (files && files.length > 0) {
+          for (let i = 0; i < files.length; i++) {
+            if (files[i] !== "") {
+              try {
+                const fileExtension = files[i].split('.').pop().split(/\#|\?/)[0].toLowerCase();
+                const response = await fetch(files[i]);
+                const pdfParse = require('pdf-parse');
+                const mammoth = require('mammoth');
+                
+                // Get content form different file types
+                let fileContent = "(file is empty)";
+                if (fileExtension === "txt") {
+                  fileContent = await response.text();
+                } else if (fileExtension === "json") {
+                  fileContent = JSON.stringify(await response.json(), null, 2);
+                } else if (fileExtension === "pdf") {
+                  const buffer = await response.buffer();
+                  const data = await pdfParse(buffer);   // Use pdf-parse to extract text
+                  fileContent = data.text;
+                } else if (fileExtension === "docx") {
+                  const buffer = await response.buffer();
+                  const data = await mammoth.extractRawText({ buffer: buffer });  // Use mammoth to extract text
+                  fileContent = data.value;
+                }
+
+                c.push({
+                  type: "text",
+                  text: "User input file content:\n" + fileContent,
+                });
+                user_input_file_prompt += fileContent;
+              } catch (error) {
+                const errorMessages = "Error fetching file:" + files[i] + "\n" + error;
+                console.error(errorMessages);
+                c.push({
+                  type: "text",
+                  text: errorMessages,
+                });
+                user_input_file_prompt += errorMessages;
               }
-
-              c.push({
-                type: "text",
-                text: "User input file content:\n" + fileContent,
-              });
-              user_input_file_prompt += fileContent;
-            } catch (error) {
-              const errorMessages = "Error fetching file:" + files[i] + "\n" + error;
-              console.error(errorMessages);
-              c.push({
-                type: "text",
-                text: errorMessages,
-              });
-              user_input_file_prompt += errorMessages;
             }
           }
+          token_ct["user_input_file"] = countToken(model, user_input_file_prompt);
         }
-        token_ct["user_input_file"] = countToken(model, user_input_file_prompt);
-      }
 
-      // Vision model
-      // If images is not empty, add image to content
-      if (images && images.length > 0) {
-        let image_token_ct = 0;
-        const count_tokens_v = (w, h) => {
-          return 85 + 170 * Math.ceil(w / 512) * Math.ceil(h / 512);
-        };
+        // Vision model
+        // If images is not empty, add image to content
+        if (images && images.length > 0) {
+          let image_token_ct = 0;
+          const count_tokens_v = (w, h) => {
+            return 85 + 170 * Math.ceil(w / 512) * Math.ceil(h / 512);
+          };
 
-        for (let i = 0; i < images.length; i++) {
-          // Get image size
-          const dimensions = await fetchImageSize(images[i])
-          image_token_ct += count_tokens_v(dimensions.width, dimensions.height)
-          if (i !== "") {
-            c.push({
-              type: "image",
-              image_url: {
-                url: images[i]
-              }
-            });
+          for (let i = 0; i < images.length; i++) {
+            // Get image size
+            const dimensions = await fetchImageSize(images[i])
+            image_token_ct += count_tokens_v(dimensions.width, dimensions.height)
+            if (i !== "") {
+              c.push({
+                type: "image",
+                image_url: {
+                  url: images[i]
+                }
+              });
+            }
           }
+          token_ct["user_input_image"] = image_token_ct;
         }
-        token_ct["user_input_image"] = image_token_ct;
-      }
-      return c;
-    })()  // Immediately-invoked function expression (IIFE)
-  });
+        return c;
+      })()  // Immediately-invoked function expression (IIFE)
+    });
+  }
 
   // 1. Function calling result
   let function_prompt = "";
