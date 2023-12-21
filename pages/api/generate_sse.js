@@ -326,6 +326,7 @@ export default async function (req, res) {
     // Log
     output_token_ct += countToken(model, output);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store}\n\n`);
+    if (do_function_calling) { input_token_ct = 0; input = ""; }  // Function calling intput is already logged
     logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     // Done message
