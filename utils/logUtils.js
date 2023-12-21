@@ -4,8 +4,14 @@ const fs = require('fs');
 
 export function logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser) {
   // Filter out logs
-  if (logfilter(output, "USER")) return;
-  if (logfilter(output, "IP")) return;
+  if (logfilter(output, "USER")) {
+    console.log("Log ignored (USER).\n");
+    return;
+  }
+  if (logfilter(output, "IP")) {
+    console.log("Log ignored (IP).\n");
+    return;
+  }
 
   // Get username
   let username = "";
@@ -24,8 +30,6 @@ export async function loglist(session, limit = 50) {
 }
 
 function logfilter(line, indicater) {
-  if (line === "") return true;
-  
   // filter with rules
   const rules = fs.readFileSync('./log.config', 'utf8').split("\n");
   for (const rule of rules) {
