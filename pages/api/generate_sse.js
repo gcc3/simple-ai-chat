@@ -264,21 +264,21 @@ export default async function (req, res) {
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store}\n\n`);
     res.flush();
 
+    let output_function_call = "";
+    let output_tool_calls = "";
     for await (const part of chatCompletion) {
       // handle function call
-      if (part.choices[0].delta.function_call) {
-        const function_call = part.choices[0].delta.function_call;
-        if (function_call) {
-          res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`); res.flush();
-        }
+      const function_call = part.choices[0].delta.function_call;
+      if (function_call) {
+        res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`); res.flush();
+        output_function_call += function_call.arguments;
       }
 
       // handle tool calls
-      if (part.choices[0].delta.tool_calls) {
-        const tool_call = part.choices[0].delta.tool_calls[0];
-        if (tool_call) {
-          res.write(`data: ###TOOL###${JSON.stringify(tool_call)}\n\n`); res.flush();
-        }
+      const tool_calls = part.choices[0].delta.tool_calls;
+      if (tool_calls) {
+        res.write(`data: ###TOOL###${JSON.stringify(tool_calls)}\n\n`); res.flush();
+        output_tool_calls += tool_calls.arguments;
       }
 
       // handle message
@@ -309,10 +309,21 @@ export default async function (req, res) {
     console.log("--- token_ct ---");
     console.log(JSON.stringify(token_ct) + "\n");
 
+    // Output
     if (output.trim().length === 0) output = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(output + "\n");
-    
+
+    // Function call & tool calls output
+    if (output_function_call) {
+      console.log("--- function call ---");
+      console.log(JSON.stringify(output_function_call) + "\n");
+    }
+    if (output_tool_calls) {
+      console.log("--- tool calls ---");
+      console.log(JSON.stringify(output_tool_calls) + "\n");
+    }
+
     // Log
     output_token_ct += countToken(model, output);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store}\n\n`);
