@@ -310,7 +310,6 @@ export default async function (req, res) {
     console.log(JSON.stringify(token_ct) + "\n");
 
     // Output
-    if (output.trim().length === 0) output = "(null)";
     console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
     console.log(output + "\n");
 
