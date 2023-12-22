@@ -60,6 +60,7 @@ export default async function (req, res) {
   const role_expires_at = moment().add(7, "days").valueOf();  // 7 days for trial
   const balance = 1;  // $1 for trial
   const password_ = password ? password : generatedPassword;
+  const loginComamndGuide = " You can login with command: `:login [username] [password]`";
 
   // Email validation
   if (process.env.USE_EMAIL == "true") {
@@ -106,7 +107,7 @@ export default async function (req, res) {
           message = "Welcome back! we've resumed your subscription status." + passwordGuide;
         } else {
           insertUser(username, role, role_expires_at, password_, email, balance, settings);
-          message = "User \"" + username + "\" is created." + passwordGuide;
+          message = "User \"" + username + "\" is created." + passwordGuide + loginComamndGuide;
         }
 
         res.status(200).json({
@@ -133,7 +134,7 @@ export default async function (req, res) {
     } else {
       // No email provided, send password to console
       insertUser(username, role, role_expires_at, password_, email, balance, settings);
-      message = "User \"" + username + "\" is created." + passwordGuide;
+      message = "User \"" + username + "\" is created." + passwordGuide + loginComamndGuide;
     }
 
     // No error
