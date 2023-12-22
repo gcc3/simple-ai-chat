@@ -3,8 +3,7 @@ Simple AI Chat
 ==============
 
 
-A dialogue application implemented based on OpenAI's API.  
-The backend of which can be customizable.  
+Simple AI Chat is a command-based AI chat application, aimed at providing users with an easy and simple AI experience. This application is deployed to [simple-ai.io](https://simple-ai.io). You can fork this code and deploy it on your machine for non-commercial use. (For details, please refer to the LICENSE file.) For bugs or suggestions, please report to the repository's GitHub Issues.  
 
 
 Dependencies
