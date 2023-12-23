@@ -303,7 +303,7 @@ export async function generateMessages(user, model, input, files, images, queryI
   // 4. Location info
   let location_prompt = "";
   if (use_location && location) {
-    console.log("--- vector data store ---");
+    console.log("--- location info ---");
 
     // localtion example: (40.7128, -74.0060)
     const lat = location.slice(1, -1).split(",")[0].trim();
@@ -311,7 +311,7 @@ export async function generateMessages(user, model, input, files, images, queryI
     console.log("lat: " + lat);
     console.log("lng: " + lng);
 
-    location_prompt += "Additional information:\n";
+    location_prompt += "User location info:\n";
 
     // Get nearby cities
     const nearbyCities = require("nearby-cities")
