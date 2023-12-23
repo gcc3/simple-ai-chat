@@ -25,6 +25,7 @@ import logout from "./commands/logout.js";
 import store from "./commands/store.js";
 import search from "commands/search.js";
 import node from "commands/node.js";
+import query from "commands/query.js";
 
 export default function commands(input, files) {
   let command = input;
@@ -66,6 +67,7 @@ export default function commands(input, files) {
   if (command.startsWith(":store")) return store(args, files);
   if (command.startsWith(":search")) return search(args);
   if (command.startsWith(":node")) return node(args);
+  if (command.startsWith(":query")) return query(args);
   return "Unknown command.";
 }
 
@@ -126,7 +128,7 @@ export function getCommands() {
     { id: "", title: "", command: ":role use [role_name]", short_description: "Use a role/assistant.", description: "" },
     { id: "", title: "", command: ":role [ls|list]", short_description: "List available roles/assistants.", description: "Roles and assistants include user custom roles and system roles." },
     { id: "", title: "", command: ":role [reset]", short_description: "Reset role to empty.", description: "Clear the current role." },
-    { id: "commands-store", title: "Data Store", command: ":search [text]", short_description: "Search from data store.", description: "Search to get inforamtion from the current data store, include settings." },
+    { id: "commands-store", title: "Data Store", command: ":search [text]", short_description: "Search from current data store.", description: "Search to get inforamtion from the current data store." },
     { id: "", title: "", command: ":store [name?]", short_description: "Show data store detail.", description: "The store name is optional. If no name is input, it will return the current data store details." },
     { id: "", title: "", command: ":store [ls|list]", short_description: "List available data stores.", description: "Include the user data stores and shared data stores." },
     { id: "", title: "", command: ":store use [name]", short_description: "Use a data store.", description: "" },
@@ -137,7 +139,8 @@ export function getCommands() {
     { id: "", title: "", command: ":store data reset [name?]", short_description: "Reset store data.", description: "" },
     { id: "", title: "", command: ":store set owner [owner]", short_description: "Change store owner.", description: "" },
     { id: "", title: "", command: ":store set [key] [value]", short_description: "Setup a store settings.", description: "Users can adjust the values of data store settings." },
-    { id: "commands-node", title: "Node", command: ":node [name?]", short_description: "Show node detail.", description: "The node name is optional. If no name is input, it will return the current node details." },
+    { id: "commands-node", title: "Node (Node AI)", command: ":query [input]", short_description: "Query current node.", description: "Query node to get inforamtion from the current node." },
+    { id: "", title: "", command: ":node [name?]", short_description: "Show node detail.", description: "The node name is optional. If no name is input, it will return the current node details." },
     { id: "", title: "", command: ":node [ls|list]", short_description: "List available data nodes.", description: "Include the user data nodes and shared nodes." },
     { id: "", title: "", command: ":node use [name]", short_description: "Use a node.", description: "" },
     { id: "", title: "", command: ":node reset", short_description: "Reset node to empty.", description: "Reset the current node to empty." },
