@@ -7,7 +7,7 @@ const Documentation = () => {
     { name: "GPT-4 Turbo", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
     { name: "GPT-4 Vision (Image Input)", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box." },
     { name: "File Input", description: "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference." },
-    { name: "Roles/Assistants", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
+    { name: "Roles", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
     { name: "Personal Data Store", description: "Upload files to your personal database for powerful data searches. The results will be inserted as prompts to provide knowledgeable answers." },
     { name: "Node (Node AI)", description: "Connect to another AI or any data source, to get response or data." },
     { name: "Midjourney (in progress)", description: "Midjourney is the first node AI. It utilizes the most advanced image generation AI in combination with ChatGPT prompts to generate high-quality certified images." },
@@ -50,7 +50,7 @@ const Documentation = () => {
             <div><a href="#commands-session">- <u>Session</u></a></div>
             <div><a href="#commands-eval">- <u>Stats & Self-evaluation</u></a></div>
             <div><a href="#commands-speak">- <u>Speak</u></a></div>
-            <div><a href="#commands-role">- <u>Roles & Assistants</u></a></div>
+            <div><a href="#commands-role">- <u>Roles</u></a></div>
             <div><a href="#commands-store">- <u>Data Store</u></a></div>
             <div><a href="#commands-node">- <u>Node (Node AI)</u></a></div>
             <div><a href="#commands-user">- <u>User</u></a></div>

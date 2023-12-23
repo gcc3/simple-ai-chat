@@ -31,7 +31,7 @@ export async function generateMessages(user, model, input, files, images, queryI
     token_ct["system"] = countToken(model, system_prompt);
   }
 
-  // -2. Role/assistant prompt
+  // -2. Role prompt
   let role_prompt = "";
   if (role !== "" && role !== "default") {
     // Default role prompt
