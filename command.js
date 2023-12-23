@@ -90,16 +90,6 @@ function extractArgs(input) {
   return matchList;
 }
 
-function extractFiles(str) {
-  const regex = /\+file\[(https?:\/\/[^\]]+)\]/g; // Global regular expression to find all URLs inside +file[...]
-  const urls = [];
-  let match;
-  while ((match = regex.exec(str)) !== null) {
-      urls.push(match[1]); // Add each found URL to the array
-  }
-  return urls; // Return the array of URLs
-}
-
 export function getCommands() {
   const commands = [
     { id: "commands-general", title: "General", command: ":help", short_description: "Show command help.", description: "" },
