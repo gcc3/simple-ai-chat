@@ -47,14 +47,14 @@ Use arrow key "←", and "→" to check and print previous or next session log.
 Before switching log, unfocusing input box is required.
 Use "ESC" key to unfocus, or just click somewhere else.  
 
-* Role/Assistant  
-Roles and assistants are prompts created for certain purposes.  
+* Role
+Roles are prompts created for certain purposes.  
 User can custom own role prompt.  
-To use role/assistant, simply type `:role use [role_name]`.  
-Use `:role list` to check current available roles/assistants.  
+To use role, simply type `:role use [role_name]`.  
+Use `:role list` to check current available roles.  
 Prompts provided by the Awesome ChatGPT Prompts  
 
-* Custom Roles/Assistants 
+* Custom Roles 
 Use `:user role` command to add, set, delete custom roles.  
 
 * Self Result Evaluation  
@@ -131,7 +131,7 @@ Messages
 | #  | Part                           | Role            | Description                              |
 |----|--------------------------------|-----------------|------------------------------------------|
 | -3 | System master message          | system          | set with `ROLE_CONTENT_SYSTEM`           |
-| -2 | Role/assistant prompt          | system          | Message generated for role/assistant     |
+| -2 | Role prompt                    | system          | Role prompt message.                     |
 | -1 | Chat history                   | user, assistant | Chat history from user and assistant     |
 |  0 | User input                     | user            | Direct input provided by the user,       |
 |  1 | Function calling result        | function        | Result of function calling (tool calls)  |

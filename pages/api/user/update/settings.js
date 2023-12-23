@@ -1,4 +1,4 @@
-import { updateUserSettings, getUser, getUserRoles, getUserStores } from 'utils/sqliteUtils.js';
+import { updateUserSettings, getUser, getUserRoles, getUserStores, getUserNodes } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 
 export default async function (req, res) {
@@ -22,10 +22,10 @@ export default async function (req, res) {
 
   // Input and validation
   const { key, value } = req.body;
-  if (!key || !value) {
+  if (!key) {
     return res.status(400).json({ 
       success: false,
-      error: 'Key and value are required.' 
+      error: 'Key is required.'
     });
   }
 
@@ -40,7 +40,7 @@ export default async function (req, res) {
     }
 
     // Check if key is valid
-    const validKeys = ['theme', 'speak', 'stats', 'eval', "fullscreen", "role", "store"];
+    const validKeys = ['theme', 'speak', 'stats', 'eval', "fullscreen", "role", "store", "node"];
     if (!validKeys.includes(key)) {
       return res.status(400).json({ 
         success: false, 
@@ -89,8 +89,13 @@ export default async function (req, res) {
           error: 'No user role found.'
         });
       }
-      const validValues = Object.values(userRoles).map(r => "\"" + r.role + "\"");
-      if (!validValues.includes(value)) {
+      const validValues = [];
+      validValues.push("\"\"");
+      Object.values(userRoles).map(s => {
+        const value = "\"" + s.role + "\""
+        validValues.push(value);
+      });
+      if (!validValues.includes("\"" + value + "\"")) {
         return res.status(400).json({ 
           success: false, 
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
@@ -101,13 +106,44 @@ export default async function (req, res) {
       const groups = user.group.split(',');
       if (Object.entries(userStores).length === 0) {
         return res.status(400).json({ 
-          success: false, 
+          success: false,
           error: 'No user store found.'
         });
       }
+      console.log(JSON.stringify(userStores));
+
       // TODO include group too
-      const validValues = Object.values(userStores).map(s => "\"" + s.store + "\"");
-      if (!validValues.includes(value)) {
+      const validValues = [];
+      validValues.push("\"\"");
+      Object.values(userStores).map(s => {
+        const value = "\"" + s.name + "\""
+        validValues.push(value);
+      });
+      if (!validValues.includes("\"" + value + "\"")) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+        });
+      }
+    } else if (key === 'node') {
+      const userNodes = await getUserNodes(username);
+      const groups = user.group.split(',');
+      if (Object.entries(userNodes).length === 0) {
+        return res.status(400).json({ 
+          success: false,
+          error: 'No user node found.'
+        });
+      }
+      console.log(JSON.stringify(userNodes));
+
+      // TODO include group too
+      const validValues = [];
+      validValues.push("\"\"");
+      Object.values(userNodes).map(s => {
+        const value = "\"" + s.name + "\""
+        validValues.push(value);
+      });
+      if (!validValues.includes("\"" + value + "\"")) {
         return res.status(400).json({ 
           success: false, 
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
