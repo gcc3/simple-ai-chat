@@ -29,14 +29,6 @@ export default async function (req, res) {
     });
   }
 
-  const settings = JSON.parse(node.settings);
-  if (!settings.apiKey || !settings.corpusId) {
-    return res.status(400).json({ 
-      success: false, 
-      error: "Node has invalid settings." 
-    });
-  }
-
   // Finally, delete node from database
   deleteNode(name, username);
   return res.status(200).json({ 

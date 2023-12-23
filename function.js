@@ -1,6 +1,5 @@
 import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
-import queryNodeAi from "./functions/query_node_ai.js";
 import redirectToUrl from "./functions/redirect_to_url.js";
 
 export function executeFunction(functionName, argsString) {
@@ -33,22 +32,6 @@ export function executeFunction(functionName, argsString) {
 
   if (functionName === "redirect_to_url") {
     return redirectToUrl(paramObject);
-  }
-  
-  // call other AI node to get help
-  if (functionName === "query_node_ai") {
-    if (process.env.USE_NODE_AI !== "true") {
-      return {
-        success: false,
-        error: "AI Node is not enabled.",
-      }
-    }
-    return queryNodeAi(paramObject);
-  }
-
-  return {
-    success: false,
-    error: "No such function.",
   }
 }
 
@@ -106,25 +89,6 @@ export function getFunctions() {
       required: ["url"],
     }
   });
-
-  // query AI node
-  // only if AI node is enabled
-  if (process.env.USE_NODE_AI === "true") {
-    functions.push({
-      name: 'query_node_ai',
-      description: 'Get support or data or assistant from another AI if you totally do not know the answer.',
-      parameters: {
-        type: "object",
-        properties: {
-          query: {
-            type: "string",
-            description: "A question string. As you lack of some information or data, you need to ask another AI about that.",
-          }
-        },
-        required: ["query"],
-      }
-    });
-  }
 
   return functions;
 }

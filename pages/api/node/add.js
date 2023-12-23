@@ -42,7 +42,7 @@ export default async function (req, res) {
   console.log("Creating node \"" + name + "\"...");
 
   const settings = JSON.stringify({
-    "host": "",
+    "endpoint": "",
   });
 
   insertNode(name, settings, username);

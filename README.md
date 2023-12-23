@@ -140,12 +140,15 @@ Messages
 |  A | Node AI query result           | -               | Replace with result from AI node or hub  |
 
 
-AI Links (AI Node)
-------------------
+Node (AI Node)
+--------------
 
-Simple AI is able to link to another support AI by function calling.  
+Simple AI is able to link to another support AI or data source.  
+To use AI links, set `USE_NODE_AI` to `true`.  
 
-The API response format:  
+Any API response format as following can be used as a `node``:  
+
+Simply use text:
 
 ```json
 {
@@ -153,13 +156,32 @@ The API response format:
 }
 ```
 
-Also, 2 projects [simple-ai-node](https://github.com/gcc3/simple-ai-node) and [simple-ai-hub](https://github.com/gcc3/simple-ai-hub) are provided.  
+Or more complex:
+
+```json
+{
+    "result": {
+      "text": "Sample result text.",
+      "image": [
+         {
+            "name": "file_name.file_extension",
+            "image_url": "",
+         },
+         ...
+      ],
+      "files": [
+         {
+            "name": "file_name.file_extension",
+            "url": "file_url",
+         },
+         ...
+      ]
+    }
+}
+```
+
+Another 2 repositories [simple-ai-node](https://github.com/gcc3/simple-ai-node) and [simple-ai-hub](https://github.com/gcc3/simple-ai-hub) are provided.  
 To use multiple AI node, a AI hub is suggested, it can send query to multipe node simultaneously.  
-
-To use AI links:  
-
-1. Set `USE_NODE_AI` to `true`.  
-2. Set `NODE_AI_URL` to the AI node.  
 
 
 Shortcuts
@@ -241,9 +263,6 @@ Get from https://products.wolframalpha.com/api
 [Simple AI Node](https://github.com/gcc3/simple-ai-node) is available to help the chat answer with data.
 To use multiple node, consider use [Simple AI Hub](https://github.com/gcc3/simple-ai-hub)  
 Function calling: `query_node_ai(query)`  
-
-* NODE_AI_URL  
-To set up the node AI API url.  
 
 * USE_VECTOR  
 Control enable vectara (vector database), value should be `true` or `false`.  

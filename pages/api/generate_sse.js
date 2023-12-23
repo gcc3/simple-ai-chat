@@ -10,8 +10,9 @@ import { countToken, getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
-import { getUser } from "utils/sqliteUtils";
+import { getUser, getNode } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
+import { queryNodeAi } from "utils/nodeUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -23,6 +24,7 @@ export default async function (req, res) {
   const queryId = req.query.query_id || "";
   const role = req.query.role || "";
   const store = req.query.store || "";
+  const node = req.query.node || "";
   const use_stats = req.query.use_stats === "true" ? true : false;
   const use_eval_ = req.query.use_eval === "true" ? true : false;
   const use_location = req.query.use_location === "true" ? true : false;
@@ -159,31 +161,6 @@ export default async function (req, res) {
       const tools = tryParseJSON(functionArgsString);
       if (tools) {
         console.log("Tool calls: " + JSON.stringify(tools) + "\n");
-      }
-    } else if (use_node_ai && functionName === "query_node_ai") {
-      // Query node AI
-      // will fully use the node ai query result
-      console.log("--- node ai query ---");
-      const nodeAiQueryResult = await executeFunction("query_node_ai", "{ query: " + input + " }");
-      if (nodeAiQueryResult) {
-        const model = "node_ai";
-        const temperature = 0;
-        const top_p = 0;
-        const token_ct_n = 0;
-        const use_eval = false;
-        const functionName = "query_node_ai";
-
-        // Log
-        const input_token_ct_n = countToken(model, "N=query_node_ai(query=" + input + ")");
-        const output_token_ct_n = countToken(model, "N=" + nodeAiQueryResult);
-        logadd(user, queryId, model, input_token_ct_n, "N=query_node_ai(query=" + input + ")", output_token_ct_n, "N=" + nodeAiQueryResult, ip, browser);
-
-        res.write(`data: ${nodeAiQueryResult}\n\n`); res.flush();
-        res.write(`data: ###ENV###${model}\n\n`); res.flush();
-        res.write(`data: ###STATS###${temperature},${top_p},${token_ct_n},${use_eval},${functionName},${role},${store}\n\n`);
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
       }
     } else {
       // Execute function

@@ -18,6 +18,7 @@ export default async function(req, res) {
   const queryId = req.body.query_id || "";
   const role = req.body.role || "";
   const store = req.body.store || "";
+  const node = req.body.node || "";
   const use_stats = req.body.use_stats || false;
   const use_eval_ = req.body.use_eval || false;
   const use_location = req.body.use_location || false;
