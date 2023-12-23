@@ -30,7 +30,7 @@ export default async function redirectToUrl(paramObject) {
   }
 
   let blankMessage = "";
-  if (blank) blankMessage = " Brower opened URL in a new tab";
+  if (blank) blankMessage = " Brower opened URL in a new tab.";
   return {
     success: true,
     message: "Browser is redirected to `" + url + "`." + blankMessage,
