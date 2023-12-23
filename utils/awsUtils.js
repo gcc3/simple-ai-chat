@@ -9,6 +9,8 @@ export async function generateFileURl(blob, file_id) {
     contentType = 'application/vnd.openxmlformats-officedocument.wordprocessingml.document';
   } else if (blob.name.toLowerCase().endsWith('.txt')) {
     contentType = 'text/plain';
+  } else if (blob.name.toLowerCase().endsWith('.csv')) {
+    contentType = 'text/csv';
   } else if (blob.name.toLowerCase().endsWith('.pdf')) {
     contentType = 'application/pdf';
   } else if (blob.name.toLowerCase().endsWith('.json')) {
@@ -16,7 +18,7 @@ export async function generateFileURl(blob, file_id) {
   } else {
     return {
       success: false,
-      message: 'Invalid file type. Supported type: JPEG/JPG, PNG, DOCX, TXT, JSON, PDF.'
+      message: 'Invalid file type. Supported type: JPEG/JPG, PNG, PDF, DOCX, TXT, CSV, JSON.'
     };
   }
 

@@ -130,6 +130,8 @@ export async function generateMessages(user, model, input, files, images, queryI
                   fileContent = await response.text();
                 } else if (fileExtension === "json") {
                   fileContent = JSON.stringify(await response.json(), null, 2);
+                } else if (fileExtension === "csv") {
+                  fileContent = await response.text();
                 } else if (fileExtension === "pdf") {
                   const buffer = await response.buffer();
                   const data = await pdfParse(buffer);   // Use pdf-parse to extract text
