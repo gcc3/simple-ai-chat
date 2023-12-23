@@ -202,6 +202,14 @@ export async function generateMessages(user, model, input, files, images, queryI
       "content": function_prompt,
     });
 
+    if (functionName === "redirect_to_url") {
+      messages.push({
+        "role": "system",
+        "content": "Please response to user: " + functionMessage,
+      });
+      function_prompt += "Please response to user: " + functionMessage;
+    }
+
     // Count tokens
     token_ct["function"] = countToken(model, function_prompt);
   }

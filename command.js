@@ -90,16 +90,6 @@ function extractArgs(input) {
   return matchList;
 }
 
-function extractFiles(str) {
-  const regex = /\+file\[(https?:\/\/[^\]]+)\]/g; // Global regular expression to find all URLs inside +file[...]
-  const urls = [];
-  let match;
-  while ((match = regex.exec(str)) !== null) {
-      urls.push(match[1]); // Add each found URL to the array
-  }
-  return urls; // Return the array of URLs
-}
-
 export function getCommands() {
   const commands = [
     { id: "commands-general", title: "General", command: ":help", short_description: "Show command help.", description: "" },
@@ -133,7 +123,7 @@ export function getCommands() {
     { id: "", title: "", command: ":store [ls|list]", short_description: "List available data stores.", description: "Include the user data stores and shared data stores." },
     { id: "", title: "", command: ":store use [name]", short_description: "Use a data store.", description: "" },
     { id: "", title: "", command: ":store reset", short_description: "Reset data store to empty.", description: "Reset the current data store to empty. This will not reset data store data, to reset data use `:store data reset`" },
-    { id: "", title: "", command: ":store add [name]", short_description: "Create a store.", description: "" },
+    { id: "", title: "", command: ":store add [name]", short_description: "Create a data store.", description: "Create a data store with database engine." },
     { id: "", title: "", command: ":store [del|delete] [name]", short_description: "Delete a store.", description: "" },
     { id: "", title: "", command: ":store data upload [file]", short_description: "Upload file for indexing.", description: "Support .txt, .docx, .pdf files." },
     { id: "", title: "", command: ":store data reset [name?]", short_description: "Reset store data.", description: "" },

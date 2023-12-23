@@ -35,10 +35,10 @@ export function executeFunction(functionName, argsString) {
   }
 }
 
-export function getFunctions() {
+export function getFunctions(lastFunctionName = null) {
   let functions = []
 
-  // get time
+  // Get time
   functions.push({
     name: 'get_time',
     description: 'Provide the current time.',
@@ -54,7 +54,7 @@ export function getFunctions() {
     }
   });
 
-  // get weather
+  // Get weather
   functions.push({
     name: 'get_weather',
     description: 'Get weather for a given location or city, e.g. San Francisco, CA. Do not use it except user asks for it.',
@@ -70,25 +70,29 @@ export function getFunctions() {
     }
   });
 
-  // redirect to url
-  functions.push({
-    name: 'redirect_to_url',
-    description: 'Redirect to a URL.',
-    parameters: {
-      type: "object",
-      properties: {
-        url: {
-          type: "string",
-          description: "The URL to redirect to.",
+  // Redirect to url
+  // This function has strange behavior, when give it to AI it will be called again and again.
+  // To avoid this, don't give it to AI when it is called last time.
+  if (lastFunctionName !== "redirect_to_url") {
+    functions.push({
+      name: 'redirect_to_url',
+      description: 'Redirect to a URL.',
+      parameters: {
+        type: "object",
+        properties: {
+          url: {
+            type: "string",
+            description: "The URL to redirect to.",
+          },
+          blank: {
+            type: "boolean",
+            description: "Whether to open the URL in a new tab.",
+          }
         },
-        blank: {
-          type: "boolean",
-          description: "Whether to open the URL in a new tab.",
-        }
-      },
-      required: ["url"],
-    }
-  });
+        required: ["url"],
+      }
+    });
+  }
 
   return functions;
 }

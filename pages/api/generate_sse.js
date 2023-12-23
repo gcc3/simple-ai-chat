@@ -221,7 +221,7 @@ export default async function (req, res) {
       stream: true,
       // vision does not support function calling
       ...(use_function_calling && !use_vision && {
-        functions: getFunctions(),
+        functions: getFunctions(functionName),
         function_call: "auto",
         // tools: getTools(),
         // tool_choice: "auto"
@@ -229,7 +229,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store},${node}\n\n`);
     res.flush();
 
     let output_function_call = "";
@@ -293,7 +293,7 @@ export default async function (req, res) {
 
     // Log
     output_token_ct += countToken(model, output);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store},${node}\n\n`);
     if (do_function_calling) { input_token_ct = 0; input = ""; }  // Function calling intput is already logged
     logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
 

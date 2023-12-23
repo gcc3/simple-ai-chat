@@ -29,11 +29,12 @@ export default async function redirectToUrl(paramObject) {
     }
   }
 
-  let blankMessage = "";
-  if (blank) blankMessage = " Brower opened URL in a new tab";
+  let message = "";
+  if (blank) message = "The browser has been redirected to `" + url + "` and has opened in a new tab.";
+  else message = "The browser has been redirected to `" + url;
   return {
     success: true,
-    message: "Browser is redirected to `" + url + "`." + blankMessage + " Only redirect once no metter success or failure.",  // It's actually redirecting but AI required to be told it is redirected
+    message: message,
     event: { name: "redirect", parameters: { url, blank }, },
   };
 }
