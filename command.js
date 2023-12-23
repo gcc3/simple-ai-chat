@@ -24,6 +24,7 @@ import login from "./commands/login.js";
 import logout from "./commands/logout.js";
 import store from "./commands/store.js";
 import search from "commands/search.js";
+import node from "commands/node.js";
 
 export default function commands(input, files) {
   let command = input;
@@ -64,6 +65,7 @@ export default function commands(input, files) {
   if (command.startsWith(":user")) return user(args);
   if (command.startsWith(":store")) return store(args, files);
   if (command.startsWith(":search")) return search(args);
+  if (command.startsWith(":node")) return node(args);
   return "Unknown command.";
 }
 
@@ -128,13 +130,21 @@ export function getCommands() {
     { id: "", title: "", command: ":store [name?]", short_description: "Show data store detail.", description: "The store name is optional. If no name is input, it will return the current data store details." },
     { id: "", title: "", command: ":store [ls|list]", short_description: "List available data stores.", description: "Include the user data stores and shared data stores." },
     { id: "", title: "", command: ":store use [name]", short_description: "Use a data store.", description: "" },
-    { id: "", title: "", command: ":store reset", short_description: "Reset data store to empty.", description: "This will not reset data store data, to reset data use `:store data reset`" },
+    { id: "", title: "", command: ":store reset", short_description: "Reset data store to empty.", description: "Reset the current data store to empty. This will not reset data store data, to reset data use `:store data reset`" },
     { id: "", title: "", command: ":store add [name]", short_description: "Create a store.", description: "" },
     { id: "", title: "", command: ":store [del|delete] [name]", short_description: "Delete a store.", description: "" },
     { id: "", title: "", command: ":store data upload [file]", short_description: "Upload file for indexing.", description: "Support .txt, .docx, .pdf files." },
     { id: "", title: "", command: ":store data reset [name?]", short_description: "Reset store data.", description: "" },
     { id: "", title: "", command: ":store set owner [owner]", short_description: "Change store owner.", description: "" },
     { id: "", title: "", command: ":store set [key] [value]", short_description: "Setup a store settings.", description: "Users can adjust the values of data store settings." },
+    { id: "commands-node", title: "Node", command: ":node [name?]", short_description: "Show node detail.", description: "The node name is optional. If no name is input, it will return the current node details." },
+    { id: "", title: "", command: ":node [ls|list]", short_description: "List available data nodes.", description: "Include the user data nodes and shared nodes." },
+    { id: "", title: "", command: ":node use [name]", short_description: "Use a node.", description: "" },
+    { id: "", title: "", command: ":node reset", short_description: "Reset node to empty.", description: "Reset the current node to empty." },
+    { id: "", title: "", command: ":node add [name]", short_description: "Create a node.", description: "" },
+    { id: "", title: "", command: ":node [del|delete] [name]", short_description: "Delete a node.", description: "" },
+    { id: "", title: "", command: ":node set owner [owner]", short_description: "Change node owner.", description: "" },
+    { id: "", title: "", command: ":node set [key] [value]", short_description: "Setup a node settings.", description: "Users can adjust the values of node settings." },
     { id: "commands-user", title: "User", command: ":user add [username] [email] [password?]", short_description: "Create a user.", description: "After creating a user, email verification is required. Setting a password is optional. If you choose not to set a password, the system will generate one for you and send it to your email." },
     { id: "", title: "", command: ":user set pass [value]", short_description: "Change password.", description: "After changing the password, the user will receive an email notification." },
     { id: "", title: "", command: ":user set email [value]", short_description: "Change email address.", description: "After changing their email address, the user will receive a verification email. Email verification is mandatory." },

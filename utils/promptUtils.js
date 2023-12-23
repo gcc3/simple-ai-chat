@@ -1,18 +1,19 @@
 import { loglist } from './logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
-import { getRole, getStore } from './sqliteUtils.js';
+import { getRole, getStore, getNode } from './sqliteUtils.js';
 import { vectaraQuery } from "utils/vectaraUtils";
 import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
+import queryNodeAi from "utils/nodeUtils";
 const fetch = require('node-fetch');
 
 // configurations
 const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 // Generate messages for chatCompletion
-export async function generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, do_function_calling, functionName, functionMessage) {
+export async function generateMessages(user, model, input, files, images, queryId, role, store, node, use_location, location, do_function_calling, functionName, functionMessage) {
   let messages = [];
   let token_ct = {};
   
@@ -222,7 +223,7 @@ export async function generateMessages(user, model, input, files, images, queryI
 
     // Query
     if (!apiKey || !corpusId || !threshold || !numberOfResults) {
-      console.log("response: Store not configured.\n");
+      console.log("response: (Store not configured)\n");
     } else {
       console.log("corpus_id: " + corpusId);
       console.log("api_key: " + apiKey);
@@ -249,8 +250,49 @@ export async function generateMessages(user, model, input, files, images, queryI
     // Count tokens
     token_ct["store"] = countToken(model, store_prompt);
   }
-  
-  // 3. Location info
+
+  // 3. Node AI result
+  let node_prompt = "";
+  if (use_node_ai && node) {
+    console.log("--- node ai ---");
+
+    // Get node info
+    const nodeInfo = await getNode(node, user.username);
+
+    // Get settings
+    const settings = JSON.parse(nodeInfo.settings);
+    const endpoint = settings.endpoint;
+    if (!endpoint) {
+      console.log("response: (Node not configured)\n");
+    } else {
+      console.log("endpoint: " + endpoint);
+
+      const queryResult = await queryNodeAi(input, endpoint);
+      if (!queryResult.success) {
+        console.log("response: (no result)\n");
+      } else {
+        console.log("response: " + JSON.stringify(queryResult, null, 2) + "\n");
+        let content = "";
+        if (typeof queryResult.result === "string") {
+          content = queryResult.result;
+        } else {
+          content = queryResult.result.text;
+        }
+
+        messages.push({
+          "role": "system",
+          "content": "Reference data: " + content,
+        });
+
+        node_prompt += content;
+      }
+    }
+
+    // Count tokens
+    token_ct["node"] = countToken(model, node_prompt);
+  }
+
+  // 4. Location info
   let location_prompt = "";
   if (use_location && location) {
     console.log("--- vector data store ---");

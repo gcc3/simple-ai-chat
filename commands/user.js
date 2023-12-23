@@ -85,6 +85,7 @@ export default async function entry(args) {
             fullscreen: localStorage.getItem("fullscreen") || "off",
             role:       "",
             store:      "",
+            node:       "",
           }),
         }),
       });
