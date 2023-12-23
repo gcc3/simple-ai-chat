@@ -1,15 +1,13 @@
 import OpenAI from "openai";
 import { getMaxTokens } from "utils/tokenUtils.js";
 import { countToken } from "utils/tokenUtils.js";
+import { getSystemConfigurations } from "utils/sysUtils.js";
 
 // OpenAI
 const openai = new OpenAI();
 
 // configurations
-const model = process.env.MODEL ? process.env.MODEL : "";
-const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
-const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
-const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
+const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 export default async function (req, res) {
   const input = req.body.input || "";

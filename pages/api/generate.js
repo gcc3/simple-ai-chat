@@ -2,27 +2,17 @@ import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils.js";
-import { getMaxTokens } from "utils/tokenUtils";
 import { authenticate } from "utils/authUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { getUacResult } from "utils/uacUtils";
 import { countToken } from "utils/tokenUtils";
+import { getSystemConfigurations } from "utils/sysUtils";
 
 // OpenAI
 const openai = new OpenAI();
 
 // configurations
-const model_ = process.env.MODEL ? process.env.MODEL : "";
-const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
-const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
-const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
-const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
-const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model_);
-const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
-const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
-const use_vector = process.env.USE_VECTOR == "true" ? true : false;
-const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
-const use_email = process.env.USE_EMAIL == "true" ? true : false;
+const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 export default async function(req, res) {
   const queryId = req.body.query_id || "";

@@ -502,9 +502,14 @@ export default function Home() {
           if (result.enter) {
             dispatch(toggleEnterChange(result.enter));
           }
-          if (result.waiting) setWaiting(result.waiting);                     // Set waiting text
-          if (result.querying) setQuerying(result.querying);                  // Set querying text
-          if (result.use_payment) setSubscriptionDisplay(true);              // Set use payment
+          if (result.waiting) setWaiting(result.waiting);  // Set waiting text
+          if (result.querying) setQuerying(result.querying);  // Set querying text
+          if (result.use_payment) setSubscriptionDisplay(true);  // Set use payment
+
+          // Set welcome message
+          if (result.welcome_message && !localStorage.getItem("user")) {
+            printOutput(result.welcome_message);
+          }
       } catch (error) {
         console.error("There was an error fetching the data:", error);
       }
@@ -524,11 +529,6 @@ export default function Home() {
         }
       }
     });
-
-    // Put a intro text if not logged in
-    if (!localStorage.getItem("user")) {
-      printOutput("Welcome to simple-ai.io! You can type your question or any other inquiry into the input box and then press Enter to interact with the AI. Use the left (←) and right (→) arrow keys to navigate between chats. Click on the dot in the screen corner to check the documentation. Enjoy!");
-    }
 
     // Start observing
     const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
