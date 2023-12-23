@@ -231,7 +231,7 @@ export default async function node(args) {
       }
 
       if (data.success) {
-        localStorage.setItem("node", name);
+        sessionStorage.setItem("node", name);
         return data.message;
       }
     } catch (error) {
