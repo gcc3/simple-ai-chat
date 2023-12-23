@@ -19,6 +19,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
     { name: "File Input", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Role/Assistant", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Personal Database", user: "╳", pro_user: "1", super_user: "2" },
+    { name: "Node (Node AI)", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Midjourney", user: "╳", pro_user: "╳", super_user: "Yes" },
     { name: "Pricing", user: getPrice(subscriptions, "user"), pro_user: getPrice(subscriptions, "pro_user"), super_user: getPrice(subscriptions, "super_user")},
   ];

@@ -95,7 +95,25 @@ const initializeDatabase = (db) => {
                       return reject(err);
                     }
 
-                    resolve();
+                    // Create nodes table
+                    db.run(
+                      `CREATE TABLE IF NOT EXISTS nodes (
+                        id INTEGER PRIMARY KEY,
+                        name TEXT NOT NULL,
+                        owner TEXT NOT NULL,
+                        settings TEXT NOT NULL,
+                        created_by TEXT NOT NULL,
+                        created_at TEXT NOT NULL,
+                        updated_at TEXT
+                      );`,
+                      (err) => {
+                        if (err) {
+                          return reject(err);
+                        }
+
+                        resolve();
+                      }
+                    );
                   }
                 );
               }
@@ -1078,6 +1096,195 @@ const updateStoreSettings = async (name, createdBy, key, value) => {
   }
 };
 
+// V. Nodes
+// Get node by name
+const getNode = async (name, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM nodes WHERE name = ? AND created_by = ?`, [name, createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const getUserNodes = async (createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM nodes WHERE created_by = ?`, [createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const countUserNodes = async (createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT COUNT(*) AS count FROM nodes WHERE created_by = ?`, [createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const insertNode = async (name, settings, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      // First, check if the username already exists
+      db.get(`SELECT id FROM nodes WHERE name = ? AND created_by = ?`, [name, createdBy], (err, row) => {
+        if (err) {
+          reject(err);
+          return;
+        }
+
+        // If the username already exists, reject the promise
+        if (row) {
+          reject(new Error("Same name node already exists."));
+          return;
+        }
+
+        // If the username doesn't exist, proceed with the insertion
+        const stmt = db.prepare(`INSERT INTO nodes (name, owner, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`);
+        stmt.run([name, createdBy, settings, createdBy, new Date(), null], function (err) {
+          if (err) {
+            reject(err);
+            return;
+          }
+          
+          // This `this.lastID` provides the ID of the last inserted row.
+          resolve(this.lastID);
+        });
+        stmt.finalize();
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const deleteNode = async (name, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare(`DELETE FROM nodes WHERE name = ? AND created_by = ?`);
+      stmt.run([name, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const deleteUserNodes = async (createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("DELETE FROM nodes WHERE created_by = ?");
+      stmt.run([createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateNodeOwner = async (name, createdBy, newOwner) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare(`UPDATE nodes SET owner = ?, updated_at = ? WHERE name = ? AND created_by = ?`);
+      stmt.run([newOwner, new Date(), name, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateNodeSettings = async (name, createdBy, key, value) => {
+  const db = await getDatabaseConnection();
+  const node = await getNode(name, createdBy);
+
+  // Check if the node exists
+  if (!node) {
+    console.error("Node not found.");
+    return;
+  }
+
+  let newSettings = {};
+  if (node.settings) {
+    newSettings = JSON.parse(node.settings);
+  }
+  newSettings[key] = value;
+  const settings = JSON.stringify(newSettings);
+
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE nodes SET settings = ?, updated_at = ? WHERE name = ? AND created_by = ?");
+      stmt.run([settings, new Date(), name, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 export {
   getLogs,
   insertLog,
@@ -1123,4 +1330,12 @@ export {
   deleteUserStores,
   updateStoreOwner,
   updateStoreSettings,
+  getNode,
+  getUserNodes,
+  countUserNodes,
+  insertNode,
+  deleteNode,
+  deleteUserNodes,
+  updateNodeOwner,
+  updateNodeSettings,
 };

@@ -294,6 +294,7 @@ export default function Home() {
     // Set default sessionStorage values
     if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
     if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");
+    if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");
     if (sessionStorage.getItem("time") === null) sessionStorage.setItem("time", Date.now());
 
     // Set styles and themes
@@ -739,6 +740,7 @@ export default function Home() {
     const query_id = sessionStorage.getItem("queryId");
     const role = sessionStorage.getItem("role");
     const store = sessionStorage.getItem("store");
+    const node = sessionStorage.getItem("node");
 
     const use_stats = localStorage.getItem("useStats");
     const use_eval = localStorage.getItem("useEval");
@@ -752,6 +754,7 @@ export default function Home() {
       query_id: query_id,
       role: role,
       store: store,
+      node: node,
       use_stats: use_stats,
       use_eval: use_eval,
       use_location: use_location,
@@ -764,6 +767,7 @@ export default function Home() {
                                                            + "&query_id=" + query_id
                                                            + "&role=" + role
                                                            + "&store=" + store
+                                                           + "&node=" + node
                                                            + "&use_stats=" + use_stats
                                                            + "&use_eval=" + use_eval
                                                            + "&use_location=" + use_location
@@ -866,6 +870,7 @@ export default function Home() {
           const func = _stats_[4];
           const role = _stats_[5];
           const store = _stats_[6];
+          const node = _stats_[7];
 
           if (use_eval === "true" && !done_evaluating) {
             setEvaluation(
@@ -883,6 +888,7 @@ export default function Home() {
               token_ct: {token_ct}<br></br>
               {role && <div>role: {role}<br></br></div>}
               {store && <div>store: {store}<br></br></div>}
+              {node && <div>node: {node}<br></br></div>}
             </div>
           );
         }
@@ -1016,6 +1022,7 @@ export default function Home() {
       query_id: sessionStorage.getItem("queryId"),
       role: sessionStorage.getItem("role"),
       store: sessionStorage.getItem("store"),
+      node: sessionStorage.getItem("node"),
       use_stats: localStorage.getItem("useStats"),
       use_eval: localStorage.getItem("useEval"),
       use_location: localStorage.getItem("useLocation"),
@@ -1059,6 +1066,7 @@ export default function Home() {
             token_ct: {data.result.stats.token_ct}<br></br>
             {data.result.stats.role ? "role: " + data.result.stats.role + "<br></br>" : ""}
             {data.result.stats.store ? "store: " + data.result.stats.store + "<br></br>" : ""}
+            {data.result.stats.node ? "node: " + data.result.stats.node + "<br></br>" : ""}
           </div>
         ));
       }
