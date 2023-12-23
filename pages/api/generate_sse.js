@@ -12,7 +12,7 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser, getNode } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { queryNodeAi } from "utils/nodeUtils";
+import queryNodeAi from "utils/nodeUtils";
 
 // OpenAI
 const openai = new OpenAI();

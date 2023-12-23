@@ -1,6 +1,6 @@
 import { getNode } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
-import { queryNodeAi } from "utils/nodeUtils";
+import queryNodeAi from "utils/nodeUtils";
 
 export default async function handler(req, res) {
   const { node, input } = req.body;
