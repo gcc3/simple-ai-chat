@@ -8,8 +8,7 @@ import { fetchImageSize } from "utils/imageUtils";
 const fetch = require('node-fetch');
 
 // configurations
-const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
-const use_vector = process.env.USE_VECTOR == "true" ? true : false;
+const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfiguration();
 
 // Generate messages for chatCompletion
 export async function generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, do_function_calling, functionName, functionMessage) {
