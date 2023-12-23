@@ -146,6 +146,7 @@ const getDatabaseConnection = async () => {
         fullscreen: "off",
         role: "",
         store: "",
+        node: "",
       });
 
       await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, settings);
