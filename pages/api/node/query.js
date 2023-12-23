@@ -3,7 +3,15 @@ import { authenticate } from "utils/authUtils";
 import queryNodeAi from "utils/nodeUtils";
 
 export default async function handler(req, res) {
-  const { node, input } = req.body;
+  const node = req.query.node || "";
+  const input = req.query.input || "";
+  if (!node || !input) {
+    res.status(400).json({
+      success: false,
+      error: "Missing parameters.",
+    });
+    return;
+  }
 
   // Authentication
   const authResult = authenticate(req);
@@ -38,20 +46,7 @@ export default async function handler(req, res) {
 
     // Query
     const queryResult = await queryNodeAi(input, endpoint);
-
-    // Veryfy format
-    if (!queryResult.result) {
-      res.status(500).json({
-        success: false,
-        error: "Node response format is unsatisfactory.",
-      });
-      return;
-    }
-
-    res.status(200).json({
-      success: true,
-      result: queryResult.result,
-    });
+    res.status(200).json(queryResult);
   } catch (error) {
     console.error(error);
     res.status(500).json({

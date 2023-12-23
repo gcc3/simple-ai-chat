@@ -4,7 +4,7 @@ export default async function queryNodeAi(query, endpoint) {
     error: "Invalid query.",
   }
 
-  const response = await fetch(endpoint + new URLSearchParams({
+  const response = await fetch(endpoint + "?" + new URLSearchParams({
       input: query,
     })
   , {
@@ -15,8 +15,32 @@ export default async function queryNodeAi(query, endpoint) {
   });
 
   const data = await response.json();
+  
+  // Veryfy format
+  if (!data.result) {
+    return {
+      success: false,
+      error: "Unexpected node response format.",
+    };
+  }
+
+  if (typeof data.result !== "string" && !data.result.text) {
+    return {
+      success: false,
+      error: "Unexpected node response format.",
+    };
+  }
+
+  let message = "";
+  if (typeof data.result === "string") {
+    message = data.result;
+  } else {
+    message = data.result.text;
+  }
+
   return {
     success: true,
-    message: data.result
+    message: message,
+    result: data.result,
   };
 }

@@ -136,8 +136,8 @@ Messages
 |  0 | User input                     | user            | Direct input provided by the user,       |
 |  1 | Function calling result        | function        | Result of function calling (tool calls)  |
 |  2 | Vector database query result   | system          | Result from a query to a vector database |
-|  3 | Location info                  | system          | Add when location service is enabled     |
-|  A | Node AI query result           | -               | Replace with result from AI node or hub  |
+|  3 | Node AI query result           | -               | Replace with result from AI node or hub  |
+|  4 | Location info                  | system          | Add when location service is enabled     |
 
 
 Node (AI Node)
