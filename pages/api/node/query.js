@@ -3,7 +3,7 @@ import { authenticate } from "utils/authUtils";
 import { queryNodeAi } from "utils/nodeUtils";
 
 export default async function handler(req, res) {
-  const { node, text } = req.body;
+  const { node, input } = req.body;
 
   // Authentication
   const authResult = authenticate(req);
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
     }
 
     // Query
-    const queryResult = await queryNodeAi(text, endpoint);
+    const queryResult = await queryNodeAi(input, endpoint);
 
     // Veryfy format
     if (!queryResult.result) {
