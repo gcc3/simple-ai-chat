@@ -167,14 +167,12 @@ Or more complex:
             "name": "file_name.file_extension",
             "image_url": "",
          },
-         ...
       ],
       "files": [
          {
             "name": "file_name.file_extension",
             "url": "file_url",
          },
-         ...
       ]
     }
 }
