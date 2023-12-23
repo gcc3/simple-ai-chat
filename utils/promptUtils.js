@@ -207,6 +207,7 @@ export async function generateMessages(user, model, input, files, images, queryI
         "role": "system",
         "content": "Please response to user: " + functionMessage,
       });
+      function_prompt += "Please response to user: " + functionMessage;
     }
 
     // Count tokens
