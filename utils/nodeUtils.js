@@ -41,6 +41,6 @@ export default async function queryNodeAi(query, endpoint) {
   return {
     success: true,
     message: message,
-    result: data.result,
+    result: data,
   };
 }

@@ -3,8 +3,7 @@ import { authenticate } from "utils/authUtils";
 import queryNodeAi from "utils/nodeUtils";
 
 export default async function handler(req, res) {
-  const node = req.query.node || "";
-  const input = req.query.input || "";
+  const { node, input } = req.body;
   if (!node || !input) {
     res.status(400).json({
       success: false,

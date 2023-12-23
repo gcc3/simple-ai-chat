@@ -267,8 +267,8 @@ export async function generateMessages(user, model, input, files, images, queryI
     } else {
       console.log("endpoint: " + endpoint);
 
-      const queryResult = await queryNodeAi(input, endpoint);
-      if (!queryResult.success) {
+      const queryResult = (await queryNodeAi(input, endpoint)).result;
+      if (!queryResult) {
         console.log("response: (no result)\n");
       } else {
         console.log("response: " + JSON.stringify(queryResult, null, 2) + "\n");
