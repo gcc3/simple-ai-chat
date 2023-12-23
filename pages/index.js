@@ -58,7 +58,6 @@ export default function Home() {
   const [display, setDisplay] = useState(DISPLAY.FRONT);
   const [content, setContent] = useState(CONTENT.DOCUMENTATION);
   const [subscriptionDisplay, setSubscriptionDisplay] = useState(false);
-  const [welcome, setWelcome] = useState("");
 
   // Refs
   const elInputRef = useRef(null);
@@ -506,7 +505,11 @@ export default function Home() {
           if (result.waiting) setWaiting(result.waiting);  // Set waiting text
           if (result.querying) setQuerying(result.querying);  // Set querying text
           if (result.use_payment) setSubscriptionDisplay(true);  // Set use payment
-          if (result.welcome_message) setWelcome(result.welcome_message);  // Set welcome message
+
+          // Set welcome message
+          if (result.welcome_message && !localStorage.getItem("user")) {
+            printOutput(result.welcome_message);
+          }
       } catch (error) {
         console.error("There was an error fetching the data:", error);
       }
@@ -526,11 +529,6 @@ export default function Home() {
         }
       }
     });
-
-    // Put a intro text if not logged in
-    if (!localStorage.getItem("user") && welcome) {
-      printOutput(welcome);
-    }
 
     // Start observing
     const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
