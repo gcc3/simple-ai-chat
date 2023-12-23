@@ -141,7 +141,7 @@ export function getCommands() {
     { id: "", title: "", command: ":store set [key] [value]", short_description: "Setup a store settings.", description: "Users can adjust the values of data store settings." },
     { id: "commands-node", title: "Node (Node AI)", command: ":query [input]", short_description: "Query current node.", description: "Query node to get inforamtion from the current node." },
     { id: "", title: "", command: ":node [name?]", short_description: "Show node detail.", description: "The node name is optional. If no name is input, it will return the current node details." },
-    { id: "", title: "", command: ":node [ls|list]", short_description: "List available data nodes.", description: "Include the user data nodes and shared nodes." },
+    { id: "", title: "", command: ":node [ls|list]", short_description: "List available nodes.", description: "Include the user data nodes and shared nodes." },
     { id: "", title: "", command: ":node use [name]", short_description: "Use a node.", description: "" },
     { id: "", title: "", command: ":node reset", short_description: "Reset node to empty.", description: "Reset the current node to empty." },
     { id: "", title: "", command: ":node add [name]", short_description: "Create a node.", description: "" },
