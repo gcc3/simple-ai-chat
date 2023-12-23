@@ -1234,7 +1234,8 @@ export default function Home() {
       message = "file_id:" + file_id + "(failed: file size exceeds 10MB)";
     } else {
       const supportedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
-      const supportedFileTypes = ["text/plain", "application/pdf", "application/json", 
+      const supportedFileTypes = ["text/plain", "application/pdf", "application/json",
+                                  "text/csv", "application/vnd.ms-excel",
                                   "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
       const supportedTypes = supportedImageTypes.concat(supportedFileTypes);
 
@@ -1275,7 +1276,6 @@ export default function Home() {
     for (let i = 0; i < items.length; i++) {
       // Must be a file, for paste plain text should be ignored.
       if (items[i].getAsFile()) {
-        // image, text file, word file, pdf file    
         event.preventDefault();
         filePlus(items[i].getAsFile(), items[i].type);
       }
@@ -1294,7 +1294,6 @@ export default function Home() {
 
     // Look for any images in the dropped data
     for (let i = 0; i < droppedFiles.length; i++) {
-      // image, text file, word file, pdf file
       event.preventDefault();
       filePlus(droppedFiles[i], droppedFiles[i].type);
     }
