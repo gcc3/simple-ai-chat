@@ -171,9 +171,11 @@ export default async function (req, res) {
           }
 
           // Add log
-          const input_token_ct_f = countToken(model, "F=" + functionResults[i].function);
-          const output_token_ct_f = countToken(model, "F=" + functionResults[i].message);
-          logadd(user, session, model, input_token_ct_f, "F=" + functionResults[i].function, output_token_ct_f, "F=" + functionResults[i].message, ip, browser);
+          const input_f = "F=" + functionResults[i].function;
+          const output_f = "F=" + functionResults[i].message;
+          const input_token_ct_f = countToken(model, input_f);
+          const output_token_ct_f = countToken(model, output_f);
+          logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, ip, browser);
         }
       }
     }
