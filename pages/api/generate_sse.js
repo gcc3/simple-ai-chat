@@ -305,7 +305,7 @@ export default async function (req, res) {
     }
     if (outputType === TYPE.TOOL_CALL) {
       // Add tool calls output to log
-      output = output_tool_calls;
+      output = "T=" + output_tool_calls;
     }
     logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
