@@ -39,7 +39,6 @@ Example: `!get_time({ "timezone": "UTC" })`
 !get_weather({ "location": "kyoto" })
 Function call be called simultaneously, add `,` between functions.  
 Example: !get_time({ "timezone": "UTC" }),!get_weather({ "location": "kyoto" })
-
 Below tools are to be supported.  
 2. Code Interpreter  
 3. Knowledge Retrieval  
@@ -138,16 +137,16 @@ System has 4 kinds of roles.
 Messages
 --------
 
-| #  | Part                           | Role            | Description                              |
-|----|--------------------------------|-----------------|------------------------------------------|
-| -3 | System master message          | system          | set with `ROLE_CONTENT_SYSTEM`           |
-| -2 | Role prompt                    | system          | Role prompt message.                     |
-| -1 | Chat history                   | user, assistant | Chat history from user and assistant     |
-|  0 | User input                     | user            | Direct input provided by the user,       |
-|  1 | Function calling result        | tool            | Result of function calling (tool calls)  |
-|  2 | Vector database query result   | system          | Result from a query to a vector database |
-|  3 | Node AI query result           | -               | Replace with result from AI node or hub  |
-|  4 | Location info                  | system          | Add when location service is enabled     |
+| #  | Part                           | Role                  | Description                              |
+|----|--------------------------------|-----------------------|------------------------------------------|
+| -3 | System master message          | system                | set with `ROLE_CONTENT_SYSTEM`           |
+| -2 | Role prompt                    | system                | Role prompt message.                     |
+| -1 | Chat history                   | user, assistant, tool | Chat history from user and assistant     |
+|  0 | User input                     | user                  | Direct input provided by the user,       |
+|  1 | Function calling result        | tool                  | Result of function calling (tool calls)  |
+|  2 | Vector database query result   | system                | Result from a query to a vector database |
+|  3 | Node AI query result           | system                | Result from AI node or hub               |
+|  4 | Location info                  | system                | Add when location service is enabled     |
 
 
 Node (AI Node)
