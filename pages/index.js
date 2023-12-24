@@ -823,28 +823,12 @@ export default function Home() {
         return;
       }
 
-      // II. Handle the callings (function or tool)
-      // 1. Function calling
-      if (event.data.startsWith("###FUNC###")) {
-        do_function_calling = true;
-        printOutput(querying);
-
-        const funcObject = JSON.parse(event.data.replace("###FUNC###", ""));
-        if (funcObject.name) {
-          functionName = funcObject.name;
-        }
-        if (funcObject.arguments) {
-          functionArgsString += funcObject.arguments;
-        }
-        return;
-      }
-
-      // 2. Tool calls
-      if (event.data.startsWith("###TOOL###")) {
+      // II. Handle the callings (tool calls)
+      if (event.data.startsWith("###CALL###")) {
         do_tool_calls = true;
         printOutput(querying);
 
-        const tool = (JSON.parse(event.data.replace("###TOOL###", "")))[0];
+        const tool = (JSON.parse(event.data.replace("###CALL###", "")))[0];
         const toolsSameIndex = tools.find(t => t.index === tool.index);
         if (toolsSameIndex) {
           // Found same index tool
