@@ -97,10 +97,17 @@ export async function generateMessages(user, model, input, inputType, files, ima
         }
         
         if (log.output) {
-          messages.push({ 
-            role: "assistant", 
-            content: log.output 
-          });
+          if (log.output.startsWith("T=")) {
+            messages.push({ 
+              role: "assistant",
+              tool_calls: JSON.parse(log.output.slice(2)),
+            });
+          } else {
+            messages.push({ 
+              role: "assistant", 
+              content: log.output 
+            });
+          }
         }
       }
 
