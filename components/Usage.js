@@ -101,7 +101,7 @@ function Usage() {
           <div>User: {localStorage.getItem("user")}</div>
           <div>Email: {localStorage.getItem("userEmail")}</div>
           <div>Subscription: `{localStorage.getItem("userRole")}`</div>
-          <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at !== null && user.role_expires_at < new Date()) && "(Expired)"}</div>
+          <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
           {user.usage && getRoleLevel(user.role) >= 1 && <div className="mt-3">
             <div>- Monthly Usage</div>
             <div className="mt-1">Use Count</div>

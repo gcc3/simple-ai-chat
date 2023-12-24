@@ -20,8 +20,8 @@ const Documentation = () => {
     { name: "Themes", description: "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode." },
     { name: "Function calls", description: "GPT will choise function to use to get information he need. Such as weather and time queries, etc. Functions can be called by user directlly from the input as well. Refer: #functions" },
     { name: "Location-based query", description: "Questioning based on user's geographic location information. e.g., answering \"How's the weather today?\" by automatically obtaining the location. To use location feature, use command \`:location on\`." },
-    { name: "Page redirection", description: "Jump to a specified page, GPT will do it automatically, for example: Open the official website of OpenAI." },
-    { name: "Shortcuts", description: "Supports convenient shortcut operations." },
+    { name: "Page redirection", description: "Jump to a specified page, GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously." },
+    { name: "Shortcuts", description: "Supports convenient shortcut operations. Refer: `Shortcuts`" },
   ];
 
   const commands = getCommands();
