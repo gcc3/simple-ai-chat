@@ -680,37 +680,46 @@ export default function Home() {
         const functionResults = responseJson.function_results;
         console.log("Function Results: " + JSON.stringify(functionResults));
 
-        for (let i = 0; i < functionResults.length; i++) {
-          const functionResult = functionResults[i];
-
-          // Print the output
-          let resultText = "Function: " + functionResult.function + "\n";
+        if (functionResults.length === 1) {
+          const functionResult = functionResults[0];
           if (functionResult.success) {
-            resultText += "Result: " + functionResult.message;
+            printOutput(functionResult.message);
           } else {
-            resultText += "Error: " + functionResult.error;
+            printOutput(functionResult.error);
           }
-          if (elOutputRef.current.innerHTML !== "") resultText = "\n\n" + resultText;
-          printOutput(resultText, true, true);
-
-          // Handle event
-          if (functionResult.event) {
-            const _event = functionResult.event;
-            console.log("Function Event: " + JSON.stringify(_event));
-
-            // Handle redirect event
-            if (_event.name === "redirect") {
-              console.log("Redirecting to \"" + _event.parameters.url + "\"...");
-
-              // Redirect to URL
-              if (!_event.parameters.url.startsWith("http")) {
-                console.error("URL must start with http or https.");
-              } else {
+        } else {
+          for (let i = 0; i < functionResults.length; i++) {
+            const functionResult = functionResults[i];
+  
+            // Print the output
+            let resultText = "!" + functionResult.function + "\n";
+            if (functionResult.success) {
+              resultText += functionResult.message;
+            } else {
+              resultText += functionResult.error;
+            }
+            if (elOutputRef.current.innerHTML !== "") resultText = "\n\n" + resultText;
+            printOutput(resultText, true, true);
+  
+            // Handle event
+            if (functionResult.event) {
+              const _event = functionResult.event;
+              console.log("Function Event: " + JSON.stringify(_event));
+  
+              // Handle redirect event
+              if (_event.name === "redirect") {
+                console.log("Redirecting to \"" + _event.parameters.url + "\"...");
+  
                 // Redirect to URL
-                if (_event.parameters.blank == true) {
-                  window.open(_event.parameters.url, '_blank');  // open with new tab
+                if (!_event.parameters.url.startsWith("http")) {
+                  console.error("URL must start with http or https.");
                 } else {
-                  window.top.location.href = _event.parameters.url;
+                  // Redirect to URL
+                  if (_event.parameters.blank == true) {
+                    window.open(_event.parameters.url, '_blank');  // open with new tab
+                  } else {
+                    window.top.location.href = _event.parameters.url;
+                  }
                 }
               }
             }
