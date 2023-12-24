@@ -3,13 +3,36 @@ export default function set(args) {
     return "Usage: :set [key] [value]";
   }
 
-  if (args[1].startsWith("\"") && args[1].endsWith("\"")) {
+  // Key validation
+  const key = args[0].toLowerCase();
+  const validKeys = [
+    "session",
+    "time",
+    "memlength",
+    "role",
+    "store",
+    "node",
+    "showstats",
+    "stream",
+    "speak",
+    "voice",
+    "lang",
+    "locationservice",
+    "location"
+  ];
+
+  if (!validKeys.includes(key)) {
+    return "Unknown key. Key must be one of: session, time, memLength, role, store, node, showStats, stream, speak, voice, lang, locationService, location";
+  }
+
+  // Value validation
+  if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
     return "Value must not be quoted.";
   }
 
-  const key = args[0].toLowerCase();
-  const value = args[1].split("\"")[1].split("\"")[0];
+  const value = args[1].slice(1, -1);
 
+  console.log("Set \"" + key + "\" to \"" + value + "\".");
   switch (key) {
     case "session":
       sessionStorage.setItem("session", value);
@@ -29,13 +52,13 @@ export default function set(args) {
     case "node":
       sessionStorage.setItem("node", value);
       break;
-    case "showstats":
+    case "useStats":
       localStorage.setItem("useStats", value);
       break;
-    case "stream":
+    case "useStream":
       localStorage.setItem("useStream", value);
       break;
-    case "speak":
+    case "useSpeak":
       localStorage.setItem("useSpeak", value);
       break;
     case "voice":
@@ -44,13 +67,13 @@ export default function set(args) {
     case "lang":
       localStorage.setItem("lang", value);
       break;
-    case "locationservice":
+    case "useLocation":
       localStorage.setItem("useLocation", value);
       break;
     case "location":
       localStorage.setItem("location", value);
       break;
-    default:
-      return "Unknown key: " + key + ", key must be one of: session, time, memLength, role, store, node, showStats, stream, speak, voice, lang, locationService, location";
   }
+
+  return "Set \"" + key + "\" to \"" + value + "\".";
 }
