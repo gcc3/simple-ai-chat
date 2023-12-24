@@ -824,7 +824,7 @@ export default function Home() {
       }
 
       // II. Handle the callings (function or tool)
-      // 1. Function call
+      // 1. Function calling
       if (event.data.startsWith("###FUNC###")) {
         do_function_calling = true;
         printOutput(querying);
