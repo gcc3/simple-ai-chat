@@ -4,7 +4,7 @@ import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils";
 import { tryParseJSON } from "utils/jsonUtils"
 import { evaluate } from './evaluate';
-import { getFunctions, executeFunction, getTools } from "function.js";
+import { getFunctions, executeFunctions, getTools } from "function.js";
 import { countToken, getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
@@ -138,52 +138,40 @@ export default async function (req, res) {
   }
 
   // II. Tool calls (function calling) input
-  let do_function_calling = false;
+  let do_tool_calls = false;
   let functionName = "";
-  let functionArgsString = "";
   let functionMessage = "";
   let original_input = "";
   if (input.startsWith("!")) {
-    do_function_calling = true;
+    do_tool_calls = true;
     console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
 
     // Function name and arguments
     const function_input = input.split("Q=")[0].substring(1);
-    functionName = function_input.split("(")[0];
-    functionArgsString = function_input.split("(")[1].split(")")[0];
-    console.log("Function input: " + input);
-    console.log("Function name: " + functionName);
-    console.log("Arguments: " + functionArgsString);
+    const functions = function_input.substring(1).split(",!");
+    console.log("Functions: " + JSON.stringify(functions));
 
-    if (functionName === "call_tools") {
-      // Execute tool calls
-      const tools = tryParseJSON(functionArgsString);
-      if (tools) {
-        console.log("Tool calls: " + JSON.stringify(tools) + "\n");
+    // Execute function
+    const functionResult = await executeFunctions(functions);
+    if (functionResult.success) {
+      // Function trigger event
+      if (functionResult.event) {
+        const event = JSON.stringify(functionResult.event);
+        res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
       }
-    } else {
-      // Execute function
-      const functionResult = await executeFunction(functionName, functionArgsString);
-      if (functionResult.success) {
-        // Function trigger event
-        if (functionResult.event) {
-          const event = JSON.stringify(functionResult.event);
-          res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
-        }
 
-        // Message
-        functionMessage = functionResult.message;
-        if (!functionMessage.endsWith("\n")) {
-          functionMessage += "\n";
-        }
-
-        console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
-
-        // Log
-        const input_token_ct_f = countToken(model, "F=" + function_input);
-        const output_token_ct_f = countToken(model, "F=" + functionMessage);
-        logadd(user, queryId, model, input_token_ct_f, "F=" + function_input, output_token_ct_f, "F=" + functionMessage, ip, browser);
+      // Message
+      functionMessage = functionResult.message;
+      if (!functionMessage.endsWith("\n")) {
+        functionMessage += "\n";
       }
+
+      console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
+
+      // Log
+      const input_token_ct_f = countToken(model, "F=" + function_input);
+      const output_token_ct_f = countToken(model, "F=" + functionMessage);
+      logadd(user, queryId, model, input_token_ct_f, "F=" + function_input, output_token_ct_f, "F=" + functionMessage, ip, browser);
     }
 
     // Replace input with original
@@ -199,8 +187,7 @@ export default async function (req, res) {
     let raw_prompt = "";
 
     // Message base
-    const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, node, use_location, location, 
-                                                          do_function_calling, functionName, functionMessage);
+    const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, node, use_location, location, do_tool_calls);
     token_ct.push(generateMessagesResult.token_ct);
     input_token_ct += generateMessagesResult.token_ct.total;
     messages = generateMessagesResult.messages;
@@ -220,8 +207,6 @@ export default async function (req, res) {
       stream: true,
       // vision does not support function calling
       ...(use_function_calling && !use_vision && {
-        // functions: getFunctions(functionName),
-        // function_call: "auto",
         tools: getTools(),
         tool_choice: "auto"
       })
@@ -293,7 +278,7 @@ export default async function (req, res) {
     // Log
     output_token_ct += countToken(model, output);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store},${node}\n\n`);
-    if (do_function_calling) { input_token_ct = 0; input = ""; }  // Function calling intput is already logged
+    if (do_tool_calls) { input_token_ct = 0; input = ""; }  // Function calling intput is already logged
     logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     // Done message

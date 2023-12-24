@@ -2,6 +2,32 @@ import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import redirectToUrl from "./functions/redirect_to_url.js";
 
+export function executeFunctions(functions) {
+  return Promise.all(functions.map(async (f) => {
+    const funcName = f.split("(")[0];
+    const funcArgs = f.split("(")[1].split(")")[0];
+    try {
+      const result = await executeFunction(funcName, funcArgs);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+
+      return {
+        success: true,
+        function: f,
+        message: result.message,
+        event: result.event,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        function: f,
+        error: error.message,
+      };
+    }
+  }));
+}
+
 export function executeFunction(functionName, argsString) {
   if (process.env.USE_FUNCTION_CALLING !== "true") {
     return {

@@ -89,8 +89,7 @@ export default async function(req, res) {
     let token_ct;  // input token count
     let messages = [];
 
-    const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, 
-                                                          false, "", "");  // function calling is not supported
+    const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, false);  // function calling is not supported
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
 

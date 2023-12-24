@@ -13,9 +13,13 @@ const fetch = require('node-fetch');
 const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 // Generate messages for chatCompletion
-export async function generateMessages(user, model, input, files, images, queryId, role, store, node, use_location, location, do_function_calling, functionName, functionMessage) {
+export async function generateMessages(user, model, input, files, images, queryId, role, store, node, use_location, location, do_tool_calls) {
   let messages = [];
   let token_ct = {};
+  
+  // TODO to be deleted
+  let functionName = "";
+  let functionMessage = "";
   
   // -3. System master message, important
   let system_prompt = "";
@@ -100,7 +104,7 @@ export async function generateMessages(user, model, input, files, images, queryI
 
   // 0. User input
   let user_input_file_prompt = "";
-  if (!do_function_calling) {
+  if (!do_tool_calls) {
     messages.push({ 
       role: "user", 
       content: await (async () => {
@@ -192,7 +196,7 @@ export async function generateMessages(user, model, input, files, images, queryI
 
   // 1. Function calling result
   let function_prompt = "";
-  if (do_function_calling) {
+  if (do_tool_calls) {
     function_prompt += functionMessage;
 
     // Feed message with function calling result
