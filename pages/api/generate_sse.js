@@ -2,7 +2,6 @@ import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils";
-import { tryParseJSON } from "utils/jsonUtils"
 import { evaluate } from './evaluate';
 import { getFunctions, executeFunctions, getTools } from "function.js";
 import { countToken, getMaxTokens } from "utils/tokenUtils";
@@ -11,10 +10,15 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser, getNode } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import queryNodeAi from "utils/nodeUtils";
 
 // OpenAI
 const openai = new OpenAI();
+
+// Input output type
+const TYPE = {
+  NORMAL: 0,
+  TOOL_CALL: 1
+};
 
 // configurations
 const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
@@ -45,7 +49,9 @@ export default async function (req, res) {
 
   // Input & output
   let input = "";
+  let inputType = TYPE.NORMAL;
   let output = "";
+  let outputType = TYPE.NORMAL;
 
   res.writeHead(200, {
     'connection': 'keep-alive',
@@ -107,6 +113,7 @@ export default async function (req, res) {
 
   // Type I. Normal input
   if (!input.startsWith("!")) {
+    inputType = TYPE.NORMAL;
     console.log(chalk.yellowBright("Input (session = " + session + "):"));
     console.log(input + "\n");
 
@@ -141,12 +148,11 @@ export default async function (req, res) {
   // Type II. Tool calls (function calling) input
   // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
   // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
-  let do_tool_calls = false;
   let functionNames = "";
   let functionResults = [];
   let originalInput = "";
   if (input.startsWith("!")) {
-    do_tool_calls = true;
+    inputType = TYPE.TOOL_CALL;
     console.log(chalk.cyanBright("Tool calls (session = " + session + "):"));
  
     // Curerently OpenAI only support function calling in tool calls.
@@ -198,11 +204,11 @@ export default async function (req, res) {
     let raw_prompt = "";
 
     // Message base
-    const generateMessagesResult = await generateMessages(user, model, input, files, images, 
+    const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
                                                           session, mem_length,
                                                           role, store, node, 
                                                           use_location, location,
-                                                          do_tool_calls, functionResults);
+                                                          functionResults);
     token_ct.push(generateMessagesResult.token_ct);
     input_token_ct += generateMessagesResult.token_ct.total;
     messages = generateMessagesResult.messages;
@@ -231,18 +237,29 @@ export default async function (req, res) {
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
     res.flush();
 
-    let output_tool_calls = "";
+    let toolCalls = [];
     for await (const part of chatCompletion) {
-      // handle tool calls
+      // handle tool calls output
       const tool_calls = part.choices[0].delta.tool_calls;
       if (tool_calls) {
+        outputType = TYPE.TOOL_CALL;
         res.write(`data: ###CALL###${JSON.stringify(tool_calls)}\n\n`); res.flush();
-        output_tool_calls += tool_calls.arguments;  // TODO fix this
+
+        const toolCall = tool_calls[0];
+        const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
+        if (toolCallSameIndex) {
+          // Found same index tool
+          toolCallSameIndex.function.arguments += toolCall.function.arguments;
+        } else {
+          // If not found, add the tool
+          toolCalls.push(toolCall);
+        }
       }
 
-      // handle message
+      // handle message output
       const content = part.choices[0].delta.content;
       if (content) {
+        outputType = TYPE.NORMAL;
         output += content;
         let message = content.replaceAll("\n", "###RETURN###");
         res.write(`data: ${message}\n\n`); res.flush();
@@ -273,15 +290,16 @@ export default async function (req, res) {
     console.log((output || "(null)") + "\n");
 
     // Tool calls output
+    const output_tool_calls = JSON.stringify(toolCalls);
     if (output_tool_calls) {
       console.log("--- tool calls ---");
-      console.log(JSON.stringify(output_tool_calls) + "\n");
+      console.log(output_tool_calls + "\n");
     }
 
     // Log
     output_token_ct += countToken(model, output);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
-    if (do_tool_calls) { input_token_ct = 0; input = ""; }  // Function calling intput is already logged
+    if (inputType === TYPE.TOOL_CALL) { input_token_ct = 0; input = ""; }  // Function calling input is already logged
     logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     // Done message

@@ -9,15 +9,21 @@ import { getSystemConfigurations } from "utils/sysUtils";
 import queryNodeAi from "utils/nodeUtils";
 const fetch = require('node-fetch');
 
+// Input output type
+const TYPE = {
+  NORMAL: 0,
+  TOOL_CALL: 1
+};
+
 // configurations
 const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 // Generate messages for chatCompletion
-export async function generateMessages(user, model, input, files, images,
+export async function generateMessages(user, model, input, inputType, files, images,
                                        session, mem_length = 7,
                                        role, store, node,
                                        use_location, location,
-                                       do_tool_calls, functionResults) {
+                                       functionResults) {
   let messages = [];
   let token_ct = {};
   
@@ -107,7 +113,7 @@ export async function generateMessages(user, model, input, files, images,
 
   // 0. User input
   let user_input_file_prompt = "";
-  if (!do_tool_calls) {
+  if (inputType !== TYPE.TOOL_CALL) {
     messages.push({ 
       role: "user", 
       content: await (async () => {
@@ -199,7 +205,7 @@ export async function generateMessages(user, model, input, files, images,
 
   // 1. Function calling result
   let function_prompt = "";
-  if (do_tool_calls) {
+  if (inputType === TYPE.TOOL_CALL && functionResults && functionResults.length > 0) {
     function_prompt += functionMessage;
 
     // Feed message with function calling result

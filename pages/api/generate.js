@@ -11,6 +11,12 @@ import { getSystemConfigurations } from "utils/sysUtils";
 // OpenAI
 const openai = new OpenAI();
 
+// Input output type
+const TYPE = {
+  NORMAL: 0,
+  TOOL_CALL: 1
+};
+
 // configurations
 const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
@@ -90,11 +96,11 @@ export default async function(req, res) {
     let token_ct;  // input token count
     let messages = [];
 
-    const generateMessagesResult = await generateMessages(user, model, input, files, images, 
+    const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
                                                           session, mem_length,
                                                           role, store, node,
                                                           use_location, location, 
-                                                          false, null);  // function calling is not supported
+                                                          null);  // function calling is not supported
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
 

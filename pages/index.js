@@ -805,7 +805,7 @@ export default function Home() {
     let functionName = "";
     let functionArgsString = "";
     let do_tool_calls = false;
-    let tools = [];
+    let toolCalls = [];
 
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
@@ -835,14 +835,14 @@ export default function Home() {
         do_tool_calls = true;
         printOutput(querying);
 
-        const tool = (JSON.parse(event.data.replace("###CALL###", "")))[0];
-        const toolsSameIndex = tools.find(t => t.index === tool.index);
-        if (toolsSameIndex) {
+        const toolCall = (JSON.parse(event.data.replace("###CALL###", "")))[0];
+        const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
+        if (toolCallSameIndex) {
           // Found same index tool
-          toolsSameIndex.function.arguments += tool.function.arguments;
+          toolCallSameIndex.function.arguments += toolCall.function.arguments;
         } else {
           // If not found, add the tool
-          tools.push(tool);
+          toolCalls.push(toolCall);
         }
         return;
       }
@@ -930,8 +930,8 @@ export default function Home() {
         // Tool calls
         if (do_tool_calls) {
           let functions = [];
-          tools.map((tool) => {
-            functions.push("!" + tool.function.name + "(" + tool.function.arguments + ")");
+          toolCalls.map((tool_call) => {
+            functions.push("!" + tool_call.function.name + "(" + tool_call.function.arguments + ")");
           });
           const functionInput = functions.join(",");
 
