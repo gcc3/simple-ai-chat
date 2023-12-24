@@ -180,6 +180,11 @@ export default async function (req, res) {
       }
     }
 
+    // Remove last comma
+    if (functionNames.endsWith(",")) {
+      functionNames = functionNames.substring(0, functionNames.length - 1);
+    }
+
     // Replace input with original
     originalInput = input.split("Q=")[1];
     input = originalInput;
