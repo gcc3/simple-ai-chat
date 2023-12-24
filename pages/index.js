@@ -800,10 +800,7 @@ export default function Home() {
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
                                                            + "&files=" + files.join(encodeURIComponent("###")));
 
-    let do_function_calling = false;
     let done_evaluating = false;
-    let functionName = "";
-    let functionArgsString = "";
     let do_tool_calls = false;
     let toolCalls = [];
 
@@ -913,34 +910,20 @@ export default function Home() {
         // Reset state
         global.STATE = STATES.IDLE;
 
-        // Function calling
-        if (do_function_calling) {
-          const functionInput = "!" + functionName + "(" + functionArgsString + ")";
-          
-          // Generate with function calling
-          console.log("Function calling: " + functionInput);
-          if (input.startsWith("!")) {
-            input = input.split("Q=")[1];
-          }
-
-          generate_sse(functionInput + " Q=" + input, [], []);
-          return;
-        }
-
-        // Tool calls
+        // Tool calls (function calling)
         if (do_tool_calls) {
           let functions = [];
-          toolCalls.map((tool_call) => {
-            functions.push("!" + tool_call.function.name + "(" + tool_call.function.arguments + ")");
+          toolCalls.map((t) => {
+            functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
           });
           const functionInput = functions.join(",");
 
           // Generate with tool calls (function calling)
-          console.log("Tool calls: " + functionInput);
           if (input.startsWith("!")) {
             input = input.split("Q=")[1];
           }
 
+          // Call generate with function
           generate_sse(functionInput + " Q=" + input, [], []);
           return;
         }
