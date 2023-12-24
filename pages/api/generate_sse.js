@@ -20,7 +20,7 @@ const openai = new OpenAI();
 const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 export default async function (req, res) {
-  const queryId = req.query.query_id || "";
+  const session = req.query.session || "";
   const role = req.query.role || "";
   const store = req.query.store || "";
   const node = req.query.node || "";
@@ -55,7 +55,7 @@ export default async function (req, res) {
   });
   
   // Query ID, same as session ID
-  const verifyResult = verifySessionId(queryId);
+  const verifyResult = verifySessionId(session);
   if (!verifyResult.success) {
     res.write(`data: ${verifyResult.message}\n\n`); res.flush();
     res.write(`data: [DONE]\n\n`); res.flush();
@@ -106,7 +106,7 @@ export default async function (req, res) {
 
   // I. Normal input
   if (!input.startsWith("!")) {
-    console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
+    console.log(chalk.yellowBright("Input (session = " + session + "):"));
     console.log(input + "\n");
 
     // Images & files
@@ -144,7 +144,7 @@ export default async function (req, res) {
   let original_input = "";
   if (input.startsWith("!")) {
     do_tool_calls = true;
-    console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
+    console.log(chalk.cyanBright("Function calling (session = " + session + "):"));
 
     // Function name and arguments
     const function_input = input.split("Q=")[0].substring(1);
@@ -171,7 +171,7 @@ export default async function (req, res) {
       // Log
       const input_token_ct_f = countToken(model, "F=" + function_input);
       const output_token_ct_f = countToken(model, "F=" + functionMessage);
-      logadd(user, queryId, model, input_token_ct_f, "F=" + function_input, output_token_ct_f, "F=" + functionMessage, ip, browser);
+      logadd(user, session, model, input_token_ct_f, "F=" + function_input, output_token_ct_f, "F=" + functionMessage, ip, browser);
     }
 
     // Replace input with original
@@ -187,7 +187,7 @@ export default async function (req, res) {
     let raw_prompt = "";
 
     // Message base
-    const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, node, use_location, location, do_tool_calls);
+    const generateMessagesResult = await generateMessages(user, model, input, files, images, session, role, store, node, use_location, location, do_tool_calls);
     token_ct.push(generateMessagesResult.token_ct);
     input_token_ct += generateMessagesResult.token_ct.total;
     messages = generateMessagesResult.messages;
@@ -254,7 +254,7 @@ export default async function (req, res) {
     console.log(JSON.stringify(token_ct) + "\n");
 
     // Output
-    console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
+    console.log(chalk.blueBright("Output (session = "+ session + "):"));
     console.log((output || "(null)") + "\n");
 
     // Tool calls output
@@ -267,7 +267,7 @@ export default async function (req, res) {
     output_token_ct += countToken(model, output);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store},${node}\n\n`);
     if (do_tool_calls) { input_token_ct = 0; input = ""; }  // Function calling intput is already logged
-    logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
+    logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     // Done message
     res.write(`data: [DONE]\n\n`); res.flush();

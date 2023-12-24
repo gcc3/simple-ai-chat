@@ -13,7 +13,11 @@ const fetch = require('node-fetch');
 const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 // Generate messages for chatCompletion
-export async function generateMessages(user, model, input, files, images, queryId, role, store, node, use_location, location, do_tool_calls) {
+export async function generateMessages(user, model, input, files, images, 
+                                       session, mem_length = 7, 
+                                       role, store, node, 
+                                       use_location, location, 
+                                       do_tool_calls, function_results) {
   let messages = [];
   let token_ct = {};
   
@@ -58,8 +62,7 @@ export async function generateMessages(user, model, input, files, images, queryI
 
   // -1. Chat history
   let chat_history_prompt = "";
-  const session = queryId;
-  const sessionLogs = await loglist(session, 7);  // limit the memory length to 7 logs
+  const sessionLogs = await loglist(session, mem_length);  // limit the memory length to 7 logs
   if (sessionLogs && session.length > 0) {
     sessionLogs.reverse().map(log => {
       if (log.input.startsWith("F=") && log.output.startsWith("F=")) {

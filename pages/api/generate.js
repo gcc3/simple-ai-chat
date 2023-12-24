@@ -15,7 +15,7 @@ const openai = new OpenAI();
 const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 export default async function(req, res) {
-  const queryId = req.body.query_id || "";
+  const session = req.body.session || "";
   const role = req.body.role || "";
   const store = req.body.store || "";
   const node = req.body.node || "";
@@ -41,8 +41,8 @@ export default async function(req, res) {
   let input = "";
   let output = "";
 
-  // Query ID, same as session ID
-  const verifyResult = verifySessionId(queryId);
+  // Session
+  const verifyResult = verifySessionId(session);
   if (!verifyResult.success) {
     res.status(400).send(verifyResult.message);
     return;
@@ -60,7 +60,7 @@ export default async function(req, res) {
   // Input
   input = req.body.user_input || "";
   if (input.trim().length === 0) return;
-  console.log(chalk.yellowBright("\nInput (query_id = " + queryId + "):"));
+  console.log(chalk.yellowBright("\nInput (session = " + session + "):"));
   console.log(input + "\n");
 
   // Model switch
@@ -89,7 +89,10 @@ export default async function(req, res) {
     let token_ct;  // input token count
     let messages = [];
 
-    const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, use_location, location, false);  // function calling is not supported
+    const generateMessagesResult = await generateMessages(user, model, input, files, images, 
+                                                          session, role, store, 
+                                                          use_location, location, 
+                                                          false, null);  // function calling is not supported
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
 
@@ -106,7 +109,7 @@ export default async function(req, res) {
     // Get result
     const choices = chatCompletion.choices;
     if (!choices || choices.length === 0) {
-      console.log(chalk.redBright("Error (query_id = " + queryId + "):"));
+      console.log(chalk.redBright("Error (session = " + session + "):"));
       console.error("No choice\n");
       output = "Silent...";
     } else {
@@ -115,13 +118,13 @@ export default async function(req, res) {
 
     // Output the result
     if (output.trim().length === 0) output = "(null)";
-    console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
+    console.log(chalk.blueBright("Output (session = "+ session + "):"));
     console.log(output + "\n");
 
     // Log
     const input_token_ct = token_ct.total;
     const output_token_ct = countToken(model, output);
-    logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
+    logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     res.status(200).json({
       result: {

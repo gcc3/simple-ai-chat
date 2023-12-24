@@ -2,7 +2,7 @@ export function initializeSession() {
   console.log("Session initializing...");
   const time = Date.now()
   sessionStorage.setItem("time", time);
-  sessionStorage.setItem("queryId", time);
+  sessionStorage.setItem("session", time);
 }
 
 // Session ID is a string of number.
@@ -14,7 +14,7 @@ export function attachSession(sessionId) {
   }
 
   sessionStorage.setItem("time", sessionId);
-  sessionStorage.setItem("queryId", sessionId);
+  sessionStorage.setItem("session", sessionId);
   return "Attached. To navigate between session histories: use `J` or `→` to navigate to the next, and use `K` or ←` to navigate to the previous.";
 }
 
@@ -22,22 +22,22 @@ function containsOnlyNumbers(str) {
   return /^\d+$/.test(str);
 }
 
-export function verifySessionId(queryId) {
-  if (!queryId) {
+export function verifySessionId(session) {
+  if (!session) {
     return {
       success: false,
-      message: "Session ID (`query_id`) is required." 
+      message: "Session is required." 
     };
   }
 
-  if (!containsOnlyNumbers(queryId)) {
+  if (!containsOnlyNumbers(session)) {
     return {
       success: false,
-      message: "Session ID must be a number." 
+      message: "Session must be a number." 
     };
   }
 
-  if (queryId.length != 13 || queryId <= 1669766400000 || queryId >= 2016921600000) {
+  if (session.length != 13 || session <= 1669766400000 || session >= 2016921600000) {
     return {
       success: false,
       message: "Time traveler detected."
@@ -46,6 +46,6 @@ export function verifySessionId(queryId) {
 
   return {
     success: true,
-    message: "Session ID is valid."
+    message: "Session is valid."
   };
 }

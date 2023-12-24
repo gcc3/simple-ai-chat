@@ -25,7 +25,7 @@ export function logadd(user, session, model, input_token_ct, input, output_token
 
 export async function loglist(session, limit = 50) {
   let loglines = "";
-  if (!session) return loglines;  // don't show anything if no queryId is given
+  if (!session) return loglines;  // don't show anything if no session is given
   return await getLogs(session, limit);
 }
 

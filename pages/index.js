@@ -402,7 +402,7 @@ export default function Home() {
 
             // Print session log (previous)
             if (global.STATE === STATES.IDLE) {
-              getSessionLog("prev", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+              getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
@@ -425,7 +425,7 @@ export default function Home() {
 
             // Print session log (previous)
             if (global.STATE === STATES.IDLE) {
-              getSessionLog("prev", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+              getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
@@ -448,7 +448,7 @@ export default function Home() {
 
             // Print session log (next)
             if (global.STATE === STATES.IDLE) {
-              getSessionLog("next", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+              getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (Object.entries(r.result).length === 0) {
                     console.log("No next log.");
@@ -471,7 +471,7 @@ export default function Home() {
 
             // Print session log (next)
             if (global.STATE === STATES.IDLE) {
-              getSessionLog("next", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+              getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (Object.entries(r.result).length === 0) {
                     console.log("No next log.");
@@ -757,7 +757,7 @@ export default function Home() {
     // preapre speech
     var textSpoken = "";
 
-    const query_id = sessionStorage.getItem("queryId");
+    const session = sessionStorage.getItem("session");
     const role = sessionStorage.getItem("role");
     const store = sessionStorage.getItem("store");
     const node = sessionStorage.getItem("node");
@@ -771,7 +771,7 @@ export default function Home() {
     // If use vision model function calling cannot use
     console.log("Input: " + input);
     const config = {
-      query_id: query_id,
+      session: session,
       role: role,
       store: store,
       node: node,
@@ -784,7 +784,7 @@ export default function Home() {
     };
     console.log("Config: " + JSON.stringify(config));
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
-                                                           + "&query_id=" + query_id
+                                                           + "&session=" + session
                                                            + "&role=" + role
                                                            + "&store=" + store
                                                            + "&node=" + node
@@ -1027,7 +1027,7 @@ export default function Home() {
     console.log("Input:\n" + input);
     const config = {
       user_input: input, 
-      query_id: sessionStorage.getItem("queryId"),
+      session: sessionStorage.getItem("session"),
       role: sessionStorage.getItem("role"),
       store: sessionStorage.getItem("store"),
       node: sessionStorage.getItem("node"),
@@ -1363,7 +1363,7 @@ export default function Home() {
             {stats && <div className={styles.stats}>{stats}</div>}
             <div className={styles.info} onClick={() => {
               // Copy attach session command to share
-              const attachCommand = ":session attach " + sessionStorage.getItem("queryId");
+              const attachCommand = ":session attach " + sessionStorage.getItem("session");
               navigator.clipboard.writeText(attachCommand);
               console.log("Copied command:\n" + attachCommand);
             }}>{info}</div>
