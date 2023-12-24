@@ -213,7 +213,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
       const f = functionResults[i];
       const c = functionCalls[i];
       
-      if (c.tyle === "function" && c.function && c.function.name === f.name) {
+      if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
         // Feed message with function calling result
         messages.push({
           "role": "tool",

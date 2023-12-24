@@ -293,7 +293,7 @@ export default async function (req, res) {
 
     // Tool calls output
     const output_tool_calls = JSON.stringify(toolCalls);
-    if (output_tool_calls) {
+    if (output_tool_calls && toolCalls.length > 0) {
       console.log("--- tool calls ---");
       console.log(output_tool_calls + "\n");
     }
