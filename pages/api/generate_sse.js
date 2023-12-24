@@ -220,10 +220,10 @@ export default async function (req, res) {
       stream: true,
       // vision does not support function calling
       ...(use_function_calling && !use_vision && {
-        functions: getFunctions(functionName),
-        function_call: "auto",
-        // tools: getTools(),
-        // tool_choice: "auto"
+        // functions: getFunctions(functionName),
+        // function_call: "auto",
+        tools: getTools(),
+        tool_choice: "auto"
       })
     });
 

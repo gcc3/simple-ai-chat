@@ -798,7 +798,7 @@ export default function Home() {
     let functionName = "";
     let functionArgsString = "";
     let do_tool_calls = false;
-    let toolsObjectString = "";
+    let tools = [];
 
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
@@ -829,8 +829,7 @@ export default function Home() {
         do_function_calling = true;
         printOutput(querying);
 
-        const _func_ = event.data.replace("###FUNC###", "");
-        const funcObject = JSON.parse(_func_);
+        const funcObject = JSON.parse(event.data.replace("###FUNC###", ""));
         if (funcObject.name) {
           functionName = funcObject.name;
         }
@@ -845,16 +844,15 @@ export default function Home() {
         do_tool_calls = true;
         printOutput(querying);
 
-        const _tool_ = event.data.replace("###TOOL###", "");
-        const toolsObject = JSON.parse(_tool_);
-        toolsObject.map((tool) => {
-          if (tool.id) {
-            functionName = tool.name;
-            if (tool.arguments) {
-              functionArgsString += tool.arguments;
-            }
-          }
-        });
+        const tool = (JSON.parse(event.data.replace("###TOOL###", "")))[0];
+        const toolsSameIndex = tools.find(t => t.index === tool.index);
+        if (toolsSameIndex) {
+          // Found same index tool
+          toolsSameIndex.function.arguments += tool.function.arguments;
+        } else {
+          // If not found, add the tool
+          tools.push(tool);
+        }
         return;
       }
 
@@ -926,27 +924,33 @@ export default function Home() {
 
         // Function calling
         if (do_function_calling) {
-          const funcInput = "!" + functionName + "(" + functionArgsString + ")";
+          const functionInput = "!" + functionName + "(" + functionArgsString + ")";
           
           // Generate with function calling
-          console.log("Function calling: " + funcInput);
+          console.log("Function calling: " + functionInput);
           if (input.startsWith("!")) {
             input = input.split("Q=")[1];
           }
-          generate_sse(funcInput + " Q=" + input, [], []);
+
+          generate_sse(functionInput + " Q=" + input, [], []);
           return;
         }
 
         // Tool calls
         if (do_tool_calls) {
-          const toolInput = "!call_tools(" + toolsObjectString + ")";
-          
-          // Generate with tool calls
-          console.log("Tool calls: " + toolInput);
+          let functions = [];
+          tools.map((tool) => {
+            functions.push("!" + tool.function.name + "(" + tool.function.arguments + ")");
+          });
+          const functionInput = functions.join(",");
+
+          // Generate with tool calls (function calling)
+          console.log("Tool calls: " + functionInput);
           if (input.startsWith("!")) {
             input = input.split("Q=")[1];
           }
-          generate_sse(toolInput + " Q=" + input, [], []);
+
+          generate_sse(functionInput + " Q=" + input, [], []);
           return;
         }
 
