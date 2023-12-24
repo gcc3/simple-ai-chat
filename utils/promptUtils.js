@@ -68,15 +68,13 @@ export async function generateMessages(user, model, input, inputType, files, ima
   if (sessionLogs && session.length > 0) {
     sessionLogs.reverse().map(log => {
       if (log.input.startsWith("F=") && log.output.startsWith("F=")) {
-        // Function calling log
-        const input = log.input.slice(1);
-        const output = log.output.slice(2);
-        const functionName = input.slice(1).split("(")[0];
-        const functionMessage = output;
+        // Tool call log
+        const c = JSON.parse(log.input.slice(2));
+        const message = log.output.slice(2);
         messages.push({ 
-          role: "function",
-          name: functionName,
-          content: functionMessage,
+          role: "tool",
+          content: message,
+          tool_call_id: c.id,
         });
       } else {
         // Normal log
@@ -216,9 +214,9 @@ export async function generateMessages(user, model, input, inputType, files, ima
       if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
         // Feed message with function calling result
         messages.push({
-          "role": "tool",
-          "content": f.message,
-          "tool_call_id": c.id,
+          role: "tool",
+          content: f.message,
+          tool_call_id: c.id,
         });
 
         function_prompt += f.message;

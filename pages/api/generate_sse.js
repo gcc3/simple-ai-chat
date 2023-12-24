@@ -171,20 +171,23 @@ export default async function (req, res) {
     console.log("Result:" + JSON.stringify(functionResults) + "\n");
     if (functionResults.length > 0) {
       for (let i = 0; i < functionResults.length; i++) {
-        if (functionResults[i].success) {
-          // Add function name
-          functionNames += functionResults[i].function.split("(")[0] + ",";
+        const f = functionResults[i];
+        const c = functionCalls[i];
 
-          // Trigger event
-          // Function trigger event
-          if (functionResults[i].event) {
-            const event = JSON.stringify(functionResults[i].event);
-            res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
-          }
+        // Add function name
+        functionNames += f.function.split("(")[0].trim() + ",";
 
-          // Add log
-          const input_f = "F=" + functionResults[i].function;
-          const output_f = "F=" + functionResults[i].message;
+        // Trigger event
+        // Function trigger event
+        if (f.event) {
+          const event = JSON.stringify(f.event);
+          res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
+        }
+
+        // Add log
+        if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
+          const input_f = "F=" + JSON.stringify(c);
+          const output_f = "F=" + f.message;
           const input_token_ct_f = countToken(model, input_f);
           const output_token_ct_f = countToken(model, output_f);
           logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, ip, browser);
