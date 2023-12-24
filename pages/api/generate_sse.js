@@ -306,7 +306,7 @@ export default async function (req, res) {
           const output_f = "F=" + f.message;
           const input_token_ct_f = countToken(model, input_f);
           const output_token_ct_f = countToken(model, output_f);
-          logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, ip, browser);
+          await logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, ip, browser);
         }
       }
     }
@@ -322,7 +322,7 @@ export default async function (req, res) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }
-    logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
+    await logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     // Final stats
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
