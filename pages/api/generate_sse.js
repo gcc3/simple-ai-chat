@@ -296,11 +296,21 @@ export default async function (req, res) {
       console.log(output_tool_calls + "\n");
     }
 
-    // Log
+    // Token count and log
     output_token_ct += countToken(model, output);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
-    if (inputType === TYPE.TOOL_CALL) { input_token_ct = 0; input = ""; }  // Function calling input is already logged
+    if (inputType === TYPE.TOOL_CALL) {
+      // Function calling input is already logged
+      input_token_ct = 0;
+      input = "";
+    }
+    if (outputType === TYPE.TOOL_CALL) {
+      // Add tool calls output to log
+      output = output_tool_calls;
+    }
     logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
+
+    // Final stats
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
 
     // Done message
     res.write(`data: [DONE]\n\n`); res.flush();
