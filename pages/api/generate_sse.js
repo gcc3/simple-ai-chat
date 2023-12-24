@@ -21,6 +21,7 @@ const { model : model_, model_v, role_content_system, welcome_message, querying,
 
 export default async function (req, res) {
   const session = req.query.session || "";
+  const mem_length = req.query.mem_length || 0;
   const role = req.query.role || "";
   const store = req.query.store || "";
   const node = req.query.node || "";
@@ -187,7 +188,11 @@ export default async function (req, res) {
     let raw_prompt = "";
 
     // Message base
-    const generateMessagesResult = await generateMessages(user, model, input, files, images, session, role, store, node, use_location, location, do_tool_calls);
+    const generateMessagesResult = await generateMessages(user, model, input, files, images, 
+                                                          session, mem_length,
+                                                          role, store, node, 
+                                                          use_location, location,
+                                                          do_tool_calls);
     token_ct.push(generateMessagesResult.token_ct);
     input_token_ct += generateMessagesResult.token_ct.total;
     messages = generateMessagesResult.messages;

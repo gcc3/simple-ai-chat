@@ -292,6 +292,7 @@ export default function Home() {
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
 
     // Set default sessionStorage values
+    if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
     if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
     if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");
     if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");
@@ -758,6 +759,7 @@ export default function Home() {
     var textSpoken = "";
 
     const session = sessionStorage.getItem("session");
+    const mem_length = sessionStorage.getItem("memLength");
     const role = sessionStorage.getItem("role");
     const store = sessionStorage.getItem("store");
     const node = sessionStorage.getItem("node");
@@ -772,6 +774,7 @@ export default function Home() {
     console.log("Input: " + input);
     const config = {
       session: session,
+      mem_length: mem_length,
       role: role,
       store: store,
       node: node,
@@ -786,6 +789,7 @@ export default function Home() {
     console.log("Config: " + JSON.stringify(config));
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
                                                            + "&session=" + session
+                                                           + "&mem_length=" + mem_length
                                                            + "&role=" + role
                                                            + "&store=" + store
                                                            + "&node=" + node
@@ -1029,6 +1033,7 @@ export default function Home() {
     const config = {
       user_input: input, 
       session: sessionStorage.getItem("session"),
+      mem_length: sessionStorage.getItem("memLength"),
       role: sessionStorage.getItem("role"),
       store: sessionStorage.getItem("store"),
       node: sessionStorage.getItem("node"),

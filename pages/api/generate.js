@@ -16,6 +16,7 @@ const { model : model_, model_v, role_content_system, welcome_message, querying,
 
 export default async function(req, res) {
   const session = req.body.session || "";
+  const mem_length = req.body.mem_length || 0;
   const role = req.body.role || "";
   const store = req.body.store || "";
   const node = req.body.node || "";
@@ -90,7 +91,8 @@ export default async function(req, res) {
     let messages = [];
 
     const generateMessagesResult = await generateMessages(user, model, input, files, images, 
-                                                          session, role, store, 
+                                                          session, mem_length,
+                                                          role, store, node,
                                                           use_location, location, 
                                                           false, null);  // function calling is not supported
     token_ct = generateMessagesResult.token_ct;
