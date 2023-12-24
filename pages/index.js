@@ -801,7 +801,6 @@ export default function Home() {
                                                            + "&files=" + files.join(encodeURIComponent("###")));
 
     let done_evaluating = false;
-    let do_tool_calls = false;
     let toolCalls = [];
 
     openaiEssSrouce.onopen = function(event) {
@@ -829,7 +828,6 @@ export default function Home() {
 
       // II. Handle the callings (tool calls)
       if (event.data.startsWith("###CALL###")) {
-        do_tool_calls = true;
         printOutput(querying);
 
         const toolCall = (JSON.parse(event.data.replace("###CALL###", "")))[0];
@@ -911,7 +909,7 @@ export default function Home() {
         global.STATE = STATES.IDLE;
 
         // Tool calls (function calling)
-        if (do_tool_calls) {
+        if (toolCalls.length > 0) {
           let functions = [];
           toolCalls.map((t) => {
             functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
