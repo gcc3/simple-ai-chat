@@ -15,6 +15,22 @@ export function toolsToFunctions(tools) {
 
 // `functions` is a list of function strings
 // e.g. ["get_time({\"timezone\": \"America/Los_Angeles\"})"]
+// `executeFunctions` returns a list of results
+// e.g. [
+//   {
+//     success: true,
+//     function: "get_time({\"timezone\": \"America/Los_Angeles\"})",
+//     message: "The current time is 3:30 PM.",
+//     event: {
+//       event_details...
+//     }
+//   },
+//   {
+//     success: false,
+//     function: "get_weather({\"location\": \"San Francisco, CA\"})",
+//     error: "The location is not found."
+//   }
+// ]
 export function executeFunctions(functions) {
   return Promise.all(functions.map(async (f) => {
     const funcName = f.split("(")[0];

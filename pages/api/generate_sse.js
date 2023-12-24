@@ -105,7 +105,7 @@ export default async function (req, res) {
     }
   }
 
-  // I. Normal input
+  // Type I. Normal input
   if (!input.startsWith("!")) {
     console.log(chalk.yellowBright("Input (session = " + session + "):"));
     console.log(input + "\n");
@@ -138,46 +138,49 @@ export default async function (req, res) {
     + "store: " + (store || "(not set)") + "\n");
   }
 
-  // II. Tool calls (function calling) input
+  // Type II. Tool calls (function calling) input
+  // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
+  // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
   let do_tool_calls = false;
-  let functionName = "";
-  let functionMessage = "";
-  let original_input = "";
+  let functionNames = "";
+  let functionResults = [];
+  let originalInput = "";
   if (input.startsWith("!")) {
     do_tool_calls = true;
-    console.log(chalk.cyanBright("Function calling (session = " + session + "):"));
-
+    console.log(chalk.cyanBright("Tool calls (session = " + session + "):"));
+ 
+    // Curerently OpenAI only support function calling in tool calls.
     // Function name and arguments
-    const function_input = input.split("Q=")[0].substring(1);
-    const functions = function_input.substring(1).split(",!");
+    const functions = input.split("Q=")[0].substring(1).split(",!");
     console.log("Functions: " + JSON.stringify(functions));
 
     // Execute function
-    const functionResult = await executeFunctions(functions);
-    if (functionResult.success) {
-      // Function trigger event
-      if (functionResult.event) {
-        const event = JSON.stringify(functionResult.event);
-        res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
+    functionResults = await executeFunctions(functions);
+    console.log("Result:" + JSON.stringify(functionResults) + "\n");
+    if (functionResults.length > 0) {
+      for (let i = 0; i < functionResults.length; i++) {
+        if (functionResults[i].success) {
+          // Add function name
+          functionNames += functionResults[i].function.split("(")[0] + ",";
+
+          // Trigger event
+          // Function trigger event
+          if (functionResults[i].event) {
+            const event = JSON.stringify(functionResults[i].event);
+            res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
+          }
+
+          // Add log
+          const input_token_ct_f = countToken(model, "F=" + functionResults[i].function);
+          const output_token_ct_f = countToken(model, "F=" + functionResults[i].message);
+          logadd(user, session, model, input_token_ct_f, "F=" + functionResults[i].function, output_token_ct_f, "F=" + functionResults[i].message, ip, browser);
+        }
       }
-
-      // Message
-      functionMessage = functionResult.message;
-      if (!functionMessage.endsWith("\n")) {
-        functionMessage += "\n";
-      }
-
-      console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
-
-      // Log
-      const input_token_ct_f = countToken(model, "F=" + function_input);
-      const output_token_ct_f = countToken(model, "F=" + functionMessage);
-      logadd(user, session, model, input_token_ct_f, "F=" + function_input, output_token_ct_f, "F=" + functionMessage, ip, browser);
     }
 
     // Replace input with original
-    original_input = input.split("Q=")[1];
-    input = original_input;
+    originalInput = input.split("Q=")[1];
+    input = originalInput;
   }
 
   try {
@@ -192,7 +195,7 @@ export default async function (req, res) {
                                                           session, mem_length,
                                                           role, store, node, 
                                                           use_location, location,
-                                                          do_tool_calls);
+                                                          do_tool_calls, functionResults);
     token_ct.push(generateMessagesResult.token_ct);
     input_token_ct += generateMessagesResult.token_ct.total;
     messages = generateMessagesResult.messages;
@@ -218,7 +221,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store},${node}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
     res.flush();
 
     let output_tool_calls = "";
@@ -270,7 +273,7 @@ export default async function (req, res) {
 
     // Log
     output_token_ct += countToken(model, output);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store},${node}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
     if (do_tool_calls) { input_token_ct = 0; input = ""; }  // Function calling intput is already logged
     logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
 

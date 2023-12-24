@@ -13,11 +13,11 @@ const fetch = require('node-fetch');
 const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 // Generate messages for chatCompletion
-export async function generateMessages(user, model, input, files, images, 
-                                       session, mem_length = 7, 
-                                       role, store, node, 
-                                       use_location, location, 
-                                       do_tool_calls, function_results) {
+export async function generateMessages(user, model, input, files, images,
+                                       session, mem_length = 7,
+                                       role, store, node,
+                                       use_location, location,
+                                       do_tool_calls, functionResults) {
   let messages = [];
   let token_ct = {};
   
