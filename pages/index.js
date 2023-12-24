@@ -782,6 +782,7 @@ export default function Home() {
       images: images,
       files: files
     };
+    
     console.log("Config: " + JSON.stringify(config));
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
                                                            + "&session=" + session

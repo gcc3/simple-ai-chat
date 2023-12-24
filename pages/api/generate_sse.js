@@ -132,7 +132,7 @@ export default async function (req, res) {
     + "use_node_ai: " + use_node_ai + "\n"
     + "use_vector: " + use_vector + "\n"
     + "use_lcation: " + use_location + "\n"
-    + "location: " + location + "\n"
+    + "location: " + (use_location ? location : "(disabled)") + "\n"
     + "role: " + (role || "(not set)") + "\n"
     + "store: " + (store || "(not set)") + "\n");
   }
