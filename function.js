@@ -2,6 +2,19 @@ import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import redirectToUrl from "./functions/redirect_to_url.js";
 
+// `tools` is a generated json from OpenAI API
+export function toolsToFunctions(tools) {
+  let functions = [];
+  for (let i = 0; i < tools.length; i++) {
+    if (tools[i].type === "function") {
+      functions.push(tools[i].function.name + "(" + JSON.stringify(tools[i].function.parameters) + ")");
+    }
+  }
+  return functions;
+}
+
+// `functions` is a list of function strings
+// e.g. ["get_time({\"timezone\": \"America/Los_Angeles\"})"]
 export function executeFunctions(functions) {
   return Promise.all(functions.map(async (f) => {
     const funcName = f.split("(")[0];

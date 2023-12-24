@@ -651,6 +651,8 @@ export default function Home() {
     // Function CLI
     // Format: !function_name({ "arg1":"value1", "arg2":"value2", ... })
     // Example: !get_weather({ "location":"Tokyo" })
+    // Support multple functions: !function_name({ "arg1":"value1", "arg2":"value2", ... }),!function_name({ "arg1":"value1", "arg2":"value2", ... })
+    // Example: !get_weather({ "location":"Tokyo" }),!get_time({ "timezone":"America/Los_Angeles" })
     if (input.startsWith("!")) {
       const functions = input.substring(1).split(",!");
       console.log("Function CLI: " + JSON.stringify(functions));
