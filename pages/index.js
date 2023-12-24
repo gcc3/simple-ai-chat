@@ -652,39 +652,51 @@ export default function Home() {
     // Format: !function_name({ "arg1":"value1", "arg2":"value2", ... })
     // Example: !get_weather({ "location":"Tokyo" })
     if (input.startsWith("!")) {
-      const function_input = input.substring(1);
-      if (!function_input.includes("(") || !function_input.includes(")")) {
-        console.error("Invalid function input: " + input);
-        printOutput("Invalid function input.");
-        return;
-      }
-
-      const funcName = function_input.split("(")[0];
-      const funcArgs = function_input.split("(")[1].split(")")[0];
-      console.log("Function Input: " + input);
-      console.log("Function Name: " + funcName);
-      console.log("Function Args: " + funcArgs);
+      const functions = input.substring(1).split(",!");
+      console.log("Function CLI: " + JSON.stringify(functions));
 
       try {
-        const response = await fetch("/api/function/exec?func=" + funcName + "&args=" + funcArgs, {
-          method: "GET",
+        const response = await fetch("/api/function/exec", {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            functions
+          }),
         });
-        const functionResult = JSON.parse(await response.text());
 
         if (response.status !== 200) {
           throw response.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        if (functionResult.success) {
-          console.log("Function Output: " + JSON.stringify(functionResult));
+        const responseJson = await response.json();
+        if (!responseJson.success) {
+          console.log("Function Error: " + responseJson.error);
+          printOutput(responseJson.error);
+          return;
+        }
+
+        const functionResults = responseJson.function_results;
+        console.log("Function Results: " + JSON.stringify(functionResults));
+
+        for (let i = 0; i < functionResults.length; i++) {
+          const functionResult = functionResults[i];
+
+          // Print the output
+          let resultText = "Function: " + functionResult.function + "\n";
+          if (functionResult.success) {
+            resultText += "Result: " + functionResult.message;
+          } else {
+            resultText += "Error: " + functionResult.error;
+          }
+          if (elOutputRef.current.innerHTML !== "") resultText = "\n\n" + resultText;
+          printOutput(resultText, true, true);
 
           // Handle event
           if (functionResult.event) {
             const _event = functionResult.event;
-            console.log("Event(Function CLI): " + JSON.stringify(_event));
+            console.log("Function Event: " + JSON.stringify(_event));
 
             // Handle redirect event
             if (_event.name === "redirect") {
@@ -703,9 +715,6 @@ export default function Home() {
               }
             }
           }
-          printOutput(functionResult.message);
-        } else {
-          printOutput(functionResult.error);
         }
       } catch (error) {
         console.error(error);
