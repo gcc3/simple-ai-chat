@@ -96,3 +96,18 @@ export function getFunctions(lastFunctionName = null) {
 
   return functions;
 }
+
+// A tools wrapper for functions
+export function getTools(lastFunctionName = null) {
+  let functions = getFunctions(lastFunctionName);
+  
+  let tools = []
+  for (let i = 0; i < functions.length; i++) {
+    tools.push({
+      type: "function",
+      function: functions[i]
+    });
+  }
+
+  return tools;
+}

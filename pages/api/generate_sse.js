@@ -4,8 +4,7 @@ import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils";
 import { tryParseJSON } from "utils/jsonUtils"
 import { evaluate } from './evaluate';
-import { getFunctions, executeFunction } from "function.js";
-import { getTools } from "tools.js";
+import { getFunctions, executeFunction, getTools } from "function.js";
 import { countToken, getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
