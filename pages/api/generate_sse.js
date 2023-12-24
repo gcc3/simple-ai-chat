@@ -172,7 +172,7 @@ export default async function (req, res) {
     if (functionResults.length > 0) {
       for (let i = 0; i < functionResults.length; i++) {
         const f = functionResults[i];
-        const c = functionCalls[i];
+        const c = functionCalls[i];  // not using here.
 
         // Add function name
         functionNames += f.function.split("(")[0].trim() + ",";
@@ -182,15 +182,6 @@ export default async function (req, res) {
         if (f.event) {
           const event = JSON.stringify(f.event);
           res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
-        }
-
-        // Add log
-        if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
-          const input_f = "F=" + JSON.stringify(c);
-          const output_f = "F=" + f.message;
-          const input_token_ct_f = countToken(model, input_f);
-          const output_token_ct_f = countToken(model, output_f);
-          logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, ip, browser);
         }
       }
     }
@@ -302,6 +293,25 @@ export default async function (req, res) {
     }
 
     // Token count and log
+    // Must add tool calls log first, then add the general input output log
+    // 1. tool calls
+    if (functionCalls && functionCalls.length > 0 && functionResults && functionResults.length > 0) {
+      for (let i = 0; i < functionResults.length; i++) {
+        const f = functionResults[i];
+        const c = functionCalls[i];
+
+        // Add log
+        if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
+          const input_f = "F=" + JSON.stringify(c);
+          const output_f = "F=" + f.message;
+          const input_token_ct_f = countToken(model, input_f);
+          const output_token_ct_f = countToken(model, output_f);
+          await logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, ip, browser);
+        }
+      }
+    }
+
+    // 2. input
     output_token_ct += countToken(model, output);
     if (inputType === TYPE.TOOL_CALL) {
       // Function calling input is already logged
@@ -312,7 +322,7 @@ export default async function (req, res) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }
-    logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
+    await logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     // Final stats
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
