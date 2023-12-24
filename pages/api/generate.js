@@ -46,7 +46,9 @@ export default async function(req, res) {
 
   // Input & output
   let input = "";
+  let inputType = TYPE.NORMAL;
   let output = "";
+  let outputType = TYPE.NORMAL;
 
   // Session
   const verifyResult = verifySessionId(session);
