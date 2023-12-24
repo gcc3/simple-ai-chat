@@ -90,7 +90,7 @@ export function executeFunction(functionName, argsString) {
   }
 }
 
-export function getFunctions(lastFunctionName = null) {
+export function getFunctions() {
   let functions = []
 
   // Get time
@@ -126,28 +126,24 @@ export function getFunctions(lastFunctionName = null) {
   });
 
   // Redirect to url
-  // This function has strange behavior, when give it to AI it will be called again and again.
-  // To avoid this, don't give it to AI when it is called last time.
-  if (lastFunctionName !== "redirect_to_url") {
-    functions.push({
-      name: 'redirect_to_url',
-      description: 'Redirect to a URL.',
-      parameters: {
-        type: "object",
-        properties: {
-          url: {
-            type: "string",
-            description: "The URL to redirect to.",
-          },
-          blank: {
-            type: "boolean",
-            description: "Whether to open the URL in a new tab.",
-          }
+  functions.push({
+    name: 'redirect_to_url',
+    description: 'Redirect to a URL.',
+    parameters: {
+      type: "object",
+      properties: {
+        url: {
+          type: "string",
+          description: "The URL to redirect to.",
         },
-        required: ["url"],
-      }
-    });
-  }
+        blank: {
+          type: "boolean",
+          description: "Whether to open the URL in a new tab.",
+        }
+      },
+      required: ["url"],
+    }
+  });
 
   return functions;
 }

@@ -23,13 +23,9 @@ export async function generateMessages(user, model, input, inputType, files, ima
                                        session, mem_length = 7,
                                        role, store, node,
                                        use_location, location,
-                                       functionResults) {
+                                       functionCalls, functionResults) {
   let messages = [];
   let token_ct = {};
-  
-  // TODO to be deleted
-  let functionName = "";
-  let functionMessage = "";
   
   // -3. System master message, important
   let system_prompt = "";
@@ -213,21 +209,20 @@ export async function generateMessages(user, model, input, inputType, files, ima
   // 1. Function calling result
   let function_prompt = "";
   if (inputType === TYPE.TOOL_CALL && functionResults && functionResults.length > 0) {
-    function_prompt += functionMessage;
+    for (let i = 0; i < functionResults.length; i++) {
+      const f = functionResults[i];
+      const c = functionCalls[i];
+      
+      if (c.tyle === "function" && c.function && c.function.name === f.name) {
+        // Feed message with function calling result
+        messages.push({
+          "role": "tool",
+          "content": f.message,
+          "tool_call_id": c.id,
+        });
 
-    // Feed message with function calling result
-    messages.push({
-      "role": "function",
-      "name": functionName,
-      "content": function_prompt,
-    });
-
-    if (functionName === "redirect_to_url") {
-      messages.push({
-        "role": "system",
-        "content": "Please response to user: " + functionMessage,
-      });
-      function_prompt += "Please response to user: " + functionMessage;
+        function_prompt += f.message;
+      }
     }
 
     // Count tokens

@@ -149,16 +149,22 @@ export default async function (req, res) {
   // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
   // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
   let functionNames = "";
+  let functionCalls = [];
   let functionResults = [];
-  let originalInput = "";
   if (input.startsWith("!")) {
     inputType = TYPE.TOOL_CALL;
     console.log(chalk.cyanBright("Tool calls (session = " + session + "):"));
  
     // Curerently OpenAI only support function calling in tool calls.
     // Function name and arguments
-    const functions = input.split("Q=")[0].substring(1).split(",!");
+    const functions = input.split("T=")[0].trim().substring(1).split(",!");
     console.log("Functions: " + JSON.stringify(functions));
+
+    // Tool calls
+    functionCalls = JSON.parse(input.split("T=")[1].trim().split("Q=")[0].trim());
+
+    // Replace input with original
+    input = input.split("Q=")[1];
 
     // Execute function
     functionResults = await executeFunctions(functions);
@@ -190,10 +196,6 @@ export default async function (req, res) {
     if (functionNames.endsWith(",")) {
       functionNames = functionNames.substring(0, functionNames.length - 1);
     }
-
-    // Replace input with original
-    originalInput = input.split("Q=")[1];
-    input = originalInput;
   }
 
   try {
@@ -208,7 +210,7 @@ export default async function (req, res) {
                                                           session, mem_length,
                                                           role, store, node, 
                                                           use_location, location,
-                                                          functionResults);
+                                                          functionCalls, functionResults);
     token_ct.push(generateMessagesResult.token_ct);
     input_token_ct += generateMessagesResult.token_ct.total;
     messages = generateMessagesResult.messages;

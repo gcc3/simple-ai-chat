@@ -102,7 +102,7 @@ export default async function(req, res) {
                                                           session, mem_length,
                                                           role, store, node,
                                                           use_location, location, 
-                                                          null);  // function calling is not supported
+                                                          null, null);  // tool calls (function calling) is not supported
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
 

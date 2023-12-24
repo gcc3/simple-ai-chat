@@ -922,7 +922,7 @@ export default function Home() {
           }
 
           // Call generate with function
-          generate_sse(functionInput + " Q=" + input, [], []);
+          generate_sse(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
           return;
         }
 
