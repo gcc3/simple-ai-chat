@@ -28,12 +28,22 @@ Commands are supported, use `:help` to show commands.
 Vision models, or called GPT-4V is now supported.  
 Use `+img[https://image_url]` to ask question about an image/multiple images.  
 
-* Function calling  
-Support for [function calling](https://openai.com/blog/function-calling-and-other-api-updates), the AI can call the function itself, and with the description it can know when to use the function. Amazing!  
+* Tools  
+
+1. Function calling  
+Support for [function calling](https://openai.com/blog/function-calling-and-other-api-updates).  
+The AI can call the function itself, and with the description it can know when to use the function. Amazing!  
 To list available functions, use `:function ls`  
 To execute a function from input, use `!function_name({ "argument": "value" })`  
 Example: `!get_time({ "timezone": "UTC" })`  
 !get_weather({ "location": "kyoto" })
+Function call be called simultaneously, add `,` between functions.  
+Example: !get_time({ "timezone": "UTC" }),!get_weather({ "location": "kyoto" })
+
+Below tools are to be supported.  
+2. Code Interpreter  
+3. Knowledge Retrieval  
+4. Supported files
 
 * Session  
 to continue the previous talk, use `:session attach [session_id]` to attach to a session.  
@@ -134,7 +144,7 @@ Messages
 | -2 | Role prompt                    | system          | Role prompt message.                     |
 | -1 | Chat history                   | user, assistant | Chat history from user and assistant     |
 |  0 | User input                     | user            | Direct input provided by the user,       |
-|  1 | Function calling result        | function        | Result of function calling (tool calls)  |
+|  1 | Function calling result        | tool            | Result of function calling (tool calls)  |
 |  2 | Vector database query result   | system          | Result from a query to a vector database |
 |  3 | Node AI query result           | -               | Replace with result from AI node or hub  |
 |  4 | Location info                  | system          | Add when location service is enabled     |
@@ -259,8 +269,7 @@ Get from https://products.wolframalpha.com/api
 
 * USE_NODE_AI  
 [Simple AI Node](https://github.com/gcc3/simple-ai-node) is available to help the chat answer with data.
-To use multiple node, consider use [Simple AI Hub](https://github.com/gcc3/simple-ai-hub)  
-Function calling: `query_node_ai(query)`  
+To use multiple node, consider use [Simple AI Hub](https://github.com/gcc3/simple-ai-hub).  
 
 * USE_VECTOR  
 Control enable vectara (vector database), value should be `true` or `false`.  

@@ -1,6 +1,7 @@
 export default function info(args) {
-  const info = "Session ID: " + sessionStorage.getItem("queryId") + "\n" +
+  const info = "Session ID: " + sessionStorage.getItem("session") + "\n" +
                "Timeline: " + sessionStorage.getItem("time") + "\n" +
+               "Memory length: " + sessionStorage.getItem("memLength") + "\n" +
                "Role: " + (sessionStorage.getItem("role") || "(not set)") + "\n" +
                "Store: " + (sessionStorage.getItem("store") || "(not set)") + "\n" +
                "Node: " + (sessionStorage.getItem("node") || "(not set)") + "\n" +
@@ -10,7 +11,7 @@ export default function info(args) {
                "Voice: " + (localStorage.getItem("voice") || "default") + "\n" +
                "Language: " + (localStorage.getItem("lang") || "en-US") + "\n" +
                "Location service: " + localStorage.getItem("useLocation") + "\n" +
-               "Location: " + (localStorage.getItem("location") || "(disabled)") + "\n";
+               "Location: " + (localStorage.getItem("location") || "(not set)") + "\n";
 
   return info;
 }

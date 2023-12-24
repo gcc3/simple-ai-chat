@@ -9,11 +9,21 @@ import { getSystemConfigurations } from "utils/sysUtils";
 import queryNodeAi from "utils/nodeUtils";
 const fetch = require('node-fetch');
 
+// Input output type
+const TYPE = {
+  NORMAL: 0,
+  TOOL_CALL: 1
+};
+
 // configurations
 const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 // Generate messages for chatCompletion
-export async function generateMessages(user, model, input, files, images, queryId, role, store, node, use_location, location, do_function_calling, functionName, functionMessage) {
+export async function generateMessages(user, model, input, inputType, files, images,
+                                       session, mem_length = 7,
+                                       role, store, node,
+                                       use_location, location,
+                                       functionCalls, functionResults) {
   let messages = [];
   let token_ct = {};
   
@@ -54,20 +64,17 @@ export async function generateMessages(user, model, input, files, images, queryI
 
   // -1. Chat history
   let chat_history_prompt = "";
-  const session = queryId;
-  const sessionLogs = await loglist(session, 7);  // limit the memory length to 7 logs
+  const sessionLogs = await loglist(session, mem_length);  // limit the memory length to 7 logs
   if (sessionLogs && session.length > 0) {
     sessionLogs.reverse().map(log => {
       if (log.input.startsWith("F=") && log.output.startsWith("F=")) {
-        // Function calling log
-        const input = log.input.slice(1);
-        const output = log.output.slice(2);
-        const functionName = input.slice(1).split("(")[0];
-        const functionMessage = output;
+        // Tool call log
+        const c = JSON.parse(log.input.slice(2));
+        const message = log.output.slice(2);
         messages.push({ 
-          role: "function",
-          name: functionName,
-          content: functionMessage,
+          role: "tool",
+          content: message,
+          tool_call_id: c.id,
         });
       } else {
         // Normal log
@@ -84,10 +91,17 @@ export async function generateMessages(user, model, input, files, images, queryI
         }
         
         if (log.output) {
-          messages.push({ 
-            role: "assistant", 
-            content: log.output 
-          });
+          if (log.output.startsWith("T=")) {
+            messages.push({ 
+              role: "assistant",
+              tool_calls: JSON.parse(log.output.slice(2)),
+            });
+          } else {
+            messages.push({ 
+              role: "assistant", 
+              content: log.output 
+            });
+          }
         }
       }
 
@@ -100,7 +114,7 @@ export async function generateMessages(user, model, input, files, images, queryI
 
   // 0. User input
   let user_input_file_prompt = "";
-  if (!do_function_calling) {
+  if (inputType !== TYPE.TOOL_CALL) {
     messages.push({ 
       role: "user", 
       content: await (async () => {
@@ -192,22 +206,21 @@ export async function generateMessages(user, model, input, files, images, queryI
 
   // 1. Function calling result
   let function_prompt = "";
-  if (do_function_calling) {
-    function_prompt += functionMessage;
+  if (inputType === TYPE.TOOL_CALL && functionResults && functionResults.length > 0) {
+    for (let i = 0; i < functionResults.length; i++) {
+      const f = functionResults[i];
+      const c = functionCalls[i];
+      
+      if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
+        // Feed message with function calling result
+        messages.push({
+          role: "tool",
+          content: f.message,
+          tool_call_id: c.id,
+        });
 
-    // Feed message with function calling result
-    messages.push({
-      "role": "function",
-      "name": functionName,
-      "content": function_prompt,
-    });
-
-    if (functionName === "redirect_to_url") {
-      messages.push({
-        "role": "system",
-        "content": "Please response to user: " + functionMessage,
-      });
-      function_prompt += "Please response to user: " + functionMessage;
+        function_prompt += f.message;
+      }
     }
 
     // Count tokens

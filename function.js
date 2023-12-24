@@ -2,6 +2,61 @@ import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import redirectToUrl from "./functions/redirect_to_url.js";
 
+// `tools` is a generated json from OpenAI API
+export function toolsToFunctions(tools) {
+  let functions = [];
+  for (let i = 0; i < tools.length; i++) {
+    if (tools[i].type === "function") {
+      functions.push(tools[i].function.name + "(" + JSON.stringify(tools[i].function.parameters) + ")");
+    }
+  }
+  return functions;
+}
+
+// `functions` is a list of function strings
+// e.g. ["get_time({\"timezone\": \"America/Los_Angeles\"})"]
+// `executeFunctions` returns a list of results
+// e.g. [
+//   {
+//     success: true,
+//     function: "get_time({\"timezone\": \"America/Los_Angeles\"})",
+//     message: "The current time is 3:30 PM.",
+//     event: {
+//       event_details...
+//     }
+//   },
+//   {
+//     success: false,
+//     function: "get_weather({\"location\": \"San Francisco, CA\"})",
+//     error: "The location is not found."
+//   }
+// ]
+export function executeFunctions(functions) {
+  return Promise.all(functions.map(async (f) => {
+    const funcName = f.split("(")[0];
+    const funcArgs = f.split("(")[1].split(")")[0];
+    try {
+      const result = await executeFunction(funcName, funcArgs);
+      if (!result.success) {
+        throw new Error(result.error);
+      }
+
+      return {
+        success: true,
+        function: f,
+        message: result.message,
+        event: result.event,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        function: f,
+        error: error.message,
+      };
+    }
+  }));
+}
+
 export function executeFunction(functionName, argsString) {
   if (process.env.USE_FUNCTION_CALLING !== "true") {
     return {
@@ -35,7 +90,7 @@ export function executeFunction(functionName, argsString) {
   }
 }
 
-export function getFunctions(lastFunctionName = null) {
+export function getFunctions() {
   let functions = []
 
   // Get time
@@ -71,28 +126,39 @@ export function getFunctions(lastFunctionName = null) {
   });
 
   // Redirect to url
-  // This function has strange behavior, when give it to AI it will be called again and again.
-  // To avoid this, don't give it to AI when it is called last time.
-  if (lastFunctionName !== "redirect_to_url") {
-    functions.push({
-      name: 'redirect_to_url',
-      description: 'Redirect to a URL.',
-      parameters: {
-        type: "object",
-        properties: {
-          url: {
-            type: "string",
-            description: "The URL to redirect to.",
-          },
-          blank: {
-            type: "boolean",
-            description: "Whether to open the URL in a new tab.",
-          }
+  functions.push({
+    name: 'redirect_to_url',
+    description: 'Redirect to a URL.',
+    parameters: {
+      type: "object",
+      properties: {
+        url: {
+          type: "string",
+          description: "The URL to redirect to.",
         },
-        required: ["url"],
-      }
+        blank: {
+          type: "boolean",
+          description: "Whether to open the URL in a new tab.",
+        }
+      },
+      required: ["url"],
+    }
+  });
+
+  return functions;
+}
+
+// A tools wrapper for functions
+export function getTools(lastFunctionName = null) {
+  let functions = getFunctions(lastFunctionName);
+  
+  let tools = []
+  for (let i = 0; i < functions.length; i++) {
+    tools.push({
+      type: "function",
+      function: functions[i]
     });
   }
 
-  return functions;
+  return tools;
 }

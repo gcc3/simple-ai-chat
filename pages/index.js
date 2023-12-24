@@ -292,6 +292,7 @@ export default function Home() {
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
 
     // Set default sessionStorage values
+    if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
     if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
     if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");
     if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");
@@ -402,7 +403,7 @@ export default function Home() {
 
             // Print session log (previous)
             if (global.STATE === STATES.IDLE) {
-              getSessionLog("prev", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+              getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
@@ -425,7 +426,7 @@ export default function Home() {
 
             // Print session log (previous)
             if (global.STATE === STATES.IDLE) {
-              getSessionLog("prev", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+              getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
@@ -448,7 +449,7 @@ export default function Home() {
 
             // Print session log (next)
             if (global.STATE === STATES.IDLE) {
-              getSessionLog("next", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+              getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (Object.entries(r.result).length === 0) {
                     console.log("No next log.");
@@ -471,7 +472,7 @@ export default function Home() {
 
             // Print session log (next)
             if (global.STATE === STATES.IDLE) {
-              getSessionLog("next", sessionStorage.getItem("queryId"), sessionStorage.getItem("time"))
+              getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (Object.entries(r.result).length === 0) {
                     console.log("No next log.");
@@ -651,61 +652,81 @@ export default function Home() {
     // Function CLI
     // Format: !function_name({ "arg1":"value1", "arg2":"value2", ... })
     // Example: !get_weather({ "location":"Tokyo" })
+    // Support multple functions: !function_name({ "arg1":"value1", "arg2":"value2", ... }),!function_name({ "arg1":"value1", "arg2":"value2", ... })
+    // Example: !get_weather({ "location":"Tokyo" }),!get_time({ "timezone":"America/Los_Angeles" })
     if (input.startsWith("!")) {
-      const function_input = input.substring(1);
-      if (!function_input.includes("(") || !function_input.includes(")")) {
-        console.error("Invalid function input: " + input);
-        printOutput("Invalid function input.");
-        return;
-      }
-
-      const funcName = function_input.split("(")[0];
-      const funcArgs = function_input.split("(")[1].split(")")[0];
-      console.log("Function Input: " + input);
-      console.log("Function Name: " + funcName);
-      console.log("Function Args: " + funcArgs);
+      const functions = input.substring(1).split(",!");
+      console.log("Function CLI: " + JSON.stringify(functions));
 
       try {
-        const response = await fetch("/api/function/exec?func=" + funcName + "&args=" + funcArgs, {
-          method: "GET",
+        const response = await fetch("/api/function/exec", {
+          method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
+          body: JSON.stringify({
+            functions
+          }),
         });
-        const functionResult = JSON.parse(await response.text());
 
         if (response.status !== 200) {
           throw response.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        if (functionResult.success) {
-          console.log("Function Output: " + JSON.stringify(functionResult));
+        const responseJson = await response.json();
+        if (!responseJson.success) {
+          console.log("Function Error: " + responseJson.error);
+          printOutput(responseJson.error);
+          return;
+        }
 
-          // Handle event
-          if (functionResult.event) {
-            const _event = functionResult.event;
-            console.log("Event(Function CLI): " + JSON.stringify(_event));
+        const functionResults = responseJson.function_results;
+        console.log("Function Results: " + JSON.stringify(functionResults));
 
-            // Handle redirect event
-            if (_event.name === "redirect") {
-              console.log("Redirecting to \"" + _event.parameters.url + "\"...");
-
-              // Redirect to URL
-              if (!_event.parameters.url.startsWith("http")) {
-                console.error("URL must start with http or https.");
-              } else {
+        if (functionResults.length === 1) {
+          const functionResult = functionResults[0];
+          if (functionResult.success) {
+            printOutput(functionResult.message);
+          } else {
+            printOutput(functionResult.error);
+          }
+        } else {
+          for (let i = 0; i < functionResults.length; i++) {
+            const functionResult = functionResults[i];
+  
+            // Print the output
+            let resultText = "!" + functionResult.function + "\n";
+            if (functionResult.success) {
+              resultText += functionResult.message;
+            } else {
+              resultText += functionResult.error;
+            }
+            if (elOutputRef.current.innerHTML !== "") resultText = "\n\n" + resultText;
+            printOutput(resultText, true, true);
+  
+            // Handle event
+            if (functionResult.event) {
+              const _event = functionResult.event;
+              console.log("Function Event: " + JSON.stringify(_event));
+  
+              // Handle redirect event
+              if (_event.name === "redirect") {
+                console.log("Redirecting to \"" + _event.parameters.url + "\"...");
+  
                 // Redirect to URL
-                if (_event.parameters.blank == true) {
-                  window.open(_event.parameters.url, '_blank');  // open with new tab
+                if (!_event.parameters.url.startsWith("http")) {
+                  console.error("URL must start with http or https.");
                 } else {
-                  window.top.location.href = _event.parameters.url;
+                  // Redirect to URL
+                  if (_event.parameters.blank == true) {
+                    window.open(_event.parameters.url, '_blank');  // open with new tab
+                  } else {
+                    window.top.location.href = _event.parameters.url;
+                  }
                 }
               }
             }
           }
-          printOutput(functionResult.message);
-        } else {
-          printOutput(functionResult.error);
         }
       } catch (error) {
         console.error(error);
@@ -737,7 +758,8 @@ export default function Home() {
     // preapre speech
     var textSpoken = "";
 
-    const query_id = sessionStorage.getItem("queryId");
+    const session = sessionStorage.getItem("session");
+    const mem_length = sessionStorage.getItem("memLength");
     const role = sessionStorage.getItem("role");
     const store = sessionStorage.getItem("store");
     const node = sessionStorage.getItem("node");
@@ -751,7 +773,8 @@ export default function Home() {
     // If use vision model function calling cannot use
     console.log("Input: " + input);
     const config = {
-      query_id: query_id,
+      session: session,
+      mem_length: mem_length,
       role: role,
       store: store,
       node: node,
@@ -762,9 +785,11 @@ export default function Home() {
       images: images,
       files: files
     };
+    
     console.log("Config: " + JSON.stringify(config));
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
-                                                           + "&query_id=" + query_id
+                                                           + "&session=" + session
+                                                           + "&mem_length=" + mem_length
                                                            + "&role=" + role
                                                            + "&store=" + store
                                                            + "&node=" + node
@@ -775,12 +800,8 @@ export default function Home() {
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
                                                            + "&files=" + files.join(encodeURIComponent("###")));
 
-    let do_function_calling = false;
     let done_evaluating = false;
-    let functionName = "";
-    let functionArgsString = "";
-    let do_tool_calls = false;
-    let toolsObjectString = "";
+    let toolCalls = [];
 
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
@@ -805,38 +826,19 @@ export default function Home() {
         return;
       }
 
-      // II. Handle the callings (function or tool)
-      // 1. Function call
-      if (event.data.startsWith("###FUNC###")) {
-        do_function_calling = true;
+      // II. Handle the callings (tool calls)
+      if (event.data.startsWith("###CALL###")) {
         printOutput(querying);
 
-        const _func_ = event.data.replace("###FUNC###", "");
-        const funcObject = JSON.parse(_func_);
-        if (funcObject.name) {
-          functionName = funcObject.name;
+        const toolCall = (JSON.parse(event.data.replace("###CALL###", "")))[0];
+        const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
+        if (toolCallSameIndex) {
+          // Found same index tool
+          toolCallSameIndex.function.arguments += toolCall.function.arguments;
+        } else {
+          // If not found, add the tool
+          toolCalls.push(toolCall);
         }
-        if (funcObject.arguments) {
-          functionArgsString += funcObject.arguments;
-        }
-        return;
-      }
-
-      // 2. Tool calls
-      if (event.data.startsWith("###TOOL###")) {
-        do_tool_calls = true;
-        printOutput(querying);
-
-        const _tool_ = event.data.replace("###TOOL###", "");
-        const toolsObject = JSON.parse(_tool_);
-        toolsObject.map((tool) => {
-          if (tool.id) {
-            functionName = tool.name;
-            if (tool.arguments) {
-              functionArgsString += tool.arguments;
-            }
-          }
-        });
         return;
       }
 
@@ -906,29 +908,21 @@ export default function Home() {
         // Reset state
         global.STATE = STATES.IDLE;
 
-        // Function calling
-        if (do_function_calling) {
-          const funcInput = "!" + functionName + "(" + functionArgsString + ")";
-          
-          // Generate with function calling
-          console.log("Function calling: " + funcInput);
-          if (input.startsWith("!")) {
-            input = input.split("Q=")[1];
-          }
-          generate_sse(funcInput + " Q=" + input, [], []);
-          return;
-        }
+        // Tool calls (function calling)
+        if (toolCalls.length > 0) {
+          let functions = [];
+          toolCalls.map((t) => {
+            functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
+          });
+          const functionInput = functions.join(",");
 
-        // Tool calls
-        if (do_tool_calls) {
-          const toolInput = "!call_tools(" + toolsObjectString + ")";
-          
-          // Generate with tool calls
-          console.log("Tool calls: " + toolInput);
+          // Generate with tool calls (function calling)
           if (input.startsWith("!")) {
             input = input.split("Q=")[1];
           }
-          generate_sse(toolInput + " Q=" + input, [], []);
+
+          // Call generate with function
+          generate_sse(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
           return;
         }
 
@@ -1019,7 +1013,8 @@ export default function Home() {
     console.log("Input:\n" + input);
     const config = {
       user_input: input, 
-      query_id: sessionStorage.getItem("queryId"),
+      session: sessionStorage.getItem("session"),
+      mem_length: sessionStorage.getItem("memLength"),
       role: sessionStorage.getItem("role"),
       store: sessionStorage.getItem("store"),
       node: sessionStorage.getItem("node"),
@@ -1355,7 +1350,7 @@ export default function Home() {
             {stats && <div className={styles.stats}>{stats}</div>}
             <div className={styles.info} onClick={() => {
               // Copy attach session command to share
-              const attachCommand = ":session attach " + sessionStorage.getItem("queryId");
+              const attachCommand = ":session attach " + sessionStorage.getItem("session");
               navigator.clipboard.writeText(attachCommand);
               console.log("Copied command:\n" + attachCommand);
             }}>{info}</div>

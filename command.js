@@ -26,6 +26,7 @@ import store from "./commands/store.js";
 import search from "commands/search.js";
 import node from "commands/node.js";
 import query from "commands/query.js";
+import set from "commands/set.js";
 
 export default function commands(input, files) {
   let command = input;
@@ -68,6 +69,7 @@ export default function commands(input, files) {
   if (command.startsWith(":search")) return search(args);
   if (command.startsWith(":node")) return node(args);
   if (command.startsWith(":query")) return query(args);
+  if (command.startsWith(":set")) return set(args);
   return "Unknown command.";
 }
 
@@ -102,6 +104,7 @@ export function getCommands() {
     { id: "", title: "", command: ":function [ls|list]", short_description: "List all supported functions.", description: "To directly call a function, use `!function_name(parameters)`" },
     { id: "", title: "", command: ":location [on|off]", short_description: "Switch on/off location service.", description: "When you turn on the location service, the AI can provide answers based on your location." },
     { id: "", title: "", command: ":stream [on|off]", short_description: "Switch on/off stream mode.", description: "When the stream is off, the text will be displayed once the answer is fully generated." },
+    { id: "", title: "", command: ":set [key] [value]", short_description: "Set local configurations.", description: "Set local configuration, the key must be one of: session, time, memLength, role, store, node, showStats, stream, speak, voice, lang, locationService, location" },
     { id: "commands-session", title: "Sessions & Logs", command: ":log", short_description: "Show logs for current session.", description: "" },
     { id: "", title: "", command: ":ls", short_description: "List sessions, same as `:session ls`.", description: "" },
     { id: "", title: "", command: ":session [ls|list]", short_description: "List sessions.", description: "List sessions with short user input." },
@@ -144,7 +147,7 @@ export function getCommands() {
     { id: "", title: "", command: ":user info", short_description: "Get logged-in user info and settings.", description: "Check user settings." },
     { id: "", title: "", command: ":user set [key] [value]", short_description: "Change user settings.", description: "Users can adjust their settings, and any values must be enclosed in double quotes." },
     { id: "", title: "", command: ":user reset pass [username] [email]", short_description: "Recover password.", description: "A recovery email containing a generated password will be sent to the user. If you forgot your password and cannot login your account, please use this command to recover your password." },
-    { id: "", title: "", command: ":user role [add|set] [role_name] [prompt]", short_description: "Add an custom role.", description: "" },
+    { id: "", title: "", command: ":user role [add|set] [role_name] [prompt]", short_description: "Add a role.", description: "" },
     { id: "", title: "", command: ":user role [del|delete] [role_name]", short_description: "Delete a role.", description: "" },
     { id: "", title: "", command: ":user join [group] [password]", short_description: "Join a group.", description: "Group is actually a user, you can join a user to access its shared data. The password is his password." },
     { id: "", title: "", command: ":user leave [group]", short_description: "Leave a group.", description: "" },

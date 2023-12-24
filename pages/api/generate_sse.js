@@ -2,26 +2,30 @@ import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils";
-import { tryParseJSON } from "utils/jsonUtils"
 import { evaluate } from './evaluate';
-import { getFunctions, executeFunction } from "function.js";
-import { getTools } from "tools.js";
+import { getFunctions, executeFunctions, getTools } from "function.js";
 import { countToken, getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser, getNode } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import queryNodeAi from "utils/nodeUtils";
 
 // OpenAI
 const openai = new OpenAI();
+
+// Input output type
+const TYPE = {
+  NORMAL: 0,
+  TOOL_CALL: 1
+};
 
 // configurations
 const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 export default async function (req, res) {
-  const queryId = req.query.query_id || "";
+  const session = req.query.session || "";
+  const mem_length = req.query.mem_length || 0;
   const role = req.query.role || "";
   const store = req.query.store || "";
   const node = req.query.node || "";
@@ -45,7 +49,9 @@ export default async function (req, res) {
 
   // Input & output
   let input = "";
+  let inputType = TYPE.NORMAL;
   let output = "";
+  let outputType = TYPE.NORMAL;
 
   res.writeHead(200, {
     'connection': 'keep-alive',
@@ -56,7 +62,7 @@ export default async function (req, res) {
   });
   
   // Query ID, same as session ID
-  const verifyResult = verifySessionId(queryId);
+  const verifyResult = verifySessionId(session);
   if (!verifyResult.success) {
     res.write(`data: ${verifyResult.message}\n\n`); res.flush();
     res.write(`data: [DONE]\n\n`); res.flush();
@@ -105,9 +111,10 @@ export default async function (req, res) {
     }
   }
 
-  // I. Normal input
+  // Type I. Normal input
   if (!input.startsWith("!")) {
-    console.log(chalk.yellowBright("Input (query_id = " + queryId + "):"));
+    inputType = TYPE.NORMAL;
+    console.log(chalk.yellowBright("Input (session = " + session + "):"));
     console.log(input + "\n");
 
     // Images & files
@@ -133,63 +140,65 @@ export default async function (req, res) {
     + "use_node_ai: " + use_node_ai + "\n"
     + "use_vector: " + use_vector + "\n"
     + "use_lcation: " + use_location + "\n"
-    + "location: " + location + "\n"
+    + "location: " + (use_location ? (location === "" ? "(not set)" : location) : "(disabled)") + "\n"
     + "role: " + (role || "(not set)") + "\n"
     + "store: " + (store || "(not set)") + "\n");
   }
 
-  // II. Tool calls (function calling) input
-  let do_function_calling = false;
-  let functionName = "";
-  let functionArgsString = "";
-  let functionMessage = "";
-  let original_input = "";
+  // Type II. Tool calls (function calling) input
+  // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
+  // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
+  let functionNames = "";
+  let functionCalls = [];
+  let functionResults = [];
   if (input.startsWith("!")) {
-    do_function_calling = true;
-    console.log(chalk.cyanBright("Function calling (query_id = " + queryId + "):"));
-
+    inputType = TYPE.TOOL_CALL;
+    console.log(chalk.cyanBright("Tool calls (session = " + session + "):"));
+ 
+    // Curerently OpenAI only support function calling in tool calls.
     // Function name and arguments
-    const function_input = input.split("Q=")[0].substring(1);
-    functionName = function_input.split("(")[0];
-    functionArgsString = function_input.split("(")[1].split(")")[0];
-    console.log("Function input: " + input);
-    console.log("Function name: " + functionName);
-    console.log("Arguments: " + functionArgsString);
+    const functions = input.split("T=")[0].trim().substring(1).split(",!");
+    console.log("Functions: " + JSON.stringify(functions));
 
-    if (functionName === "call_tools") {
-      // Execute tool calls
-      const tools = tryParseJSON(functionArgsString);
-      if (tools) {
-        console.log("Tool calls: " + JSON.stringify(tools) + "\n");
-      }
-    } else {
-      // Execute function
-      const functionResult = await executeFunction(functionName, functionArgsString);
-      if (functionResult.success) {
+    // Tool calls
+    functionCalls = JSON.parse(input.split("T=")[1].trim().split("Q=")[0].trim());
+
+    // Replace input with original
+    input = input.split("Q=")[1];
+
+    // Execute function
+    functionResults = await executeFunctions(functions);
+    console.log("Result:" + JSON.stringify(functionResults) + "\n");
+    if (functionResults.length > 0) {
+      for (let i = 0; i < functionResults.length; i++) {
+        const f = functionResults[i];
+        const c = functionCalls[i];
+
+        // Add function name
+        functionNames += f.function.split("(")[0].trim() + ",";
+
+        // Trigger event
         // Function trigger event
-        if (functionResult.event) {
-          const event = JSON.stringify(functionResult.event);
+        if (f.event) {
+          const event = JSON.stringify(f.event);
           res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
         }
 
-        // Message
-        functionMessage = functionResult.message;
-        if (!functionMessage.endsWith("\n")) {
-          functionMessage += "\n";
+        // Add log
+        if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
+          const input_f = "F=" + JSON.stringify(c);
+          const output_f = "F=" + f.message;
+          const input_token_ct_f = countToken(model, input_f);
+          const output_token_ct_f = countToken(model, output_f);
+          logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, ip, browser);
         }
-
-        console.log("Result: " + functionMessage.replace(/\n/g, "\\n") + "\n");
-
-        // Log
-        const input_token_ct_f = countToken(model, "F=" + function_input);
-        const output_token_ct_f = countToken(model, "F=" + functionMessage);
-        logadd(user, queryId, model, input_token_ct_f, "F=" + function_input, output_token_ct_f, "F=" + functionMessage, ip, browser);
       }
     }
 
-    // Replace input with original
-    original_input = input.split("Q=")[1];
-    input = original_input;
+    // Remove last comma
+    if (functionNames.endsWith(",")) {
+      functionNames = functionNames.substring(0, functionNames.length - 1);
+    }
   }
 
   try {
@@ -200,8 +209,11 @@ export default async function (req, res) {
     let raw_prompt = "";
 
     // Message base
-    const generateMessagesResult = await generateMessages(user, model, input, files, images, queryId, role, store, node, use_location, location, 
-                                                          do_function_calling, functionName, functionMessage);
+    const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
+                                                          session, mem_length,
+                                                          role, store, node, 
+                                                          use_location, location,
+                                                          functionCalls, functionResults);
     token_ct.push(generateMessagesResult.token_ct);
     input_token_ct += generateMessagesResult.token_ct.total;
     messages = generateMessagesResult.messages;
@@ -221,37 +233,38 @@ export default async function (req, res) {
       stream: true,
       // vision does not support function calling
       ...(use_function_calling && !use_vision && {
-        functions: getFunctions(functionName),
-        function_call: "auto",
-        // tools: getTools(),
-        // tool_choice: "auto"
+        tools: getTools(),
+        tool_choice: "auto"
       })
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store},${node}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
     res.flush();
 
-    let output_function_call = "";
-    let output_tool_calls = "";
+    let toolCalls = [];
     for await (const part of chatCompletion) {
-      // handle function call
-      const function_call = part.choices[0].delta.function_call;
-      if (function_call) {
-        res.write(`data: ###FUNC###${JSON.stringify(function_call)}\n\n`); res.flush();
-        output_function_call += function_call.arguments;
-      }
-
-      // handle tool calls
+      // handle tool calls output
       const tool_calls = part.choices[0].delta.tool_calls;
       if (tool_calls) {
-        res.write(`data: ###TOOL###${JSON.stringify(tool_calls)}\n\n`); res.flush();
-        output_tool_calls += tool_calls.arguments;
+        outputType = TYPE.TOOL_CALL;
+        res.write(`data: ###CALL###${JSON.stringify(tool_calls)}\n\n`); res.flush();
+
+        const toolCall = tool_calls[0];
+        const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
+        if (toolCallSameIndex) {
+          // Found same index tool
+          toolCallSameIndex.function.arguments += toolCall.function.arguments;
+        } else {
+          // If not found, add the tool
+          toolCalls.push(toolCall);
+        }
       }
 
-      // handle message
+      // handle message output
       const content = part.choices[0].delta.content;
       if (content) {
+        outputType = TYPE.NORMAL;
         output += content;
         let message = content.replaceAll("\n", "###RETURN###");
         res.write(`data: ${message}\n\n`); res.flush();
@@ -278,24 +291,31 @@ export default async function (req, res) {
     console.log(JSON.stringify(token_ct) + "\n");
 
     // Output
-    console.log(chalk.blueBright("Output (query_id = "+ queryId + "):"));
+    console.log(chalk.blueBright("Output (session = "+ session + "):"));
     console.log((output || "(null)") + "\n");
 
-    // Function call & tool calls output
-    if (output_function_call) {
-      console.log("--- function call ---");
-      console.log(JSON.stringify(output_function_call) + "\n");
-    }
-    if (output_tool_calls) {
+    // Tool calls output
+    const output_tool_calls = JSON.stringify(toolCalls);
+    if (output_tool_calls && toolCalls.length > 0) {
       console.log("--- tool calls ---");
-      console.log(JSON.stringify(output_tool_calls) + "\n");
+      console.log(output_tool_calls + "\n");
     }
 
-    // Log
+    // Token count and log
     output_token_ct += countToken(model, output);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionName},${role},${store},${node}\n\n`);
-    if (do_function_calling) { input_token_ct = 0; input = ""; }  // Function calling intput is already logged
-    logadd(user, queryId, model, input_token_ct, input, output_token_ct, output, ip, browser);
+    if (inputType === TYPE.TOOL_CALL) {
+      // Function calling input is already logged
+      input_token_ct = 0;
+      input = "";
+    }
+    if (outputType === TYPE.TOOL_CALL) {
+      // Add tool calls output to log
+      output = "T=" + output_tool_calls;
+    }
+    logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
+
+    // Final stats
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
 
     // Done message
     res.write(`data: [DONE]\n\n`); res.flush();

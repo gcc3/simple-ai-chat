@@ -4,7 +4,7 @@ import { getSessionLog } from "utils/sqliteUtils";
 
 export default async function (req, res) {
   try {
-    const session = req.query.query_id;
+    const session = req.query.session;
 
     // Authenticate user
     const authResult = authenticate(req);
