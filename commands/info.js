@@ -10,7 +10,7 @@ export default function info(args) {
                "Voice: " + (localStorage.getItem("voice") || "default") + "\n" +
                "Language: " + (localStorage.getItem("lang") || "en-US") + "\n" +
                "Location service: " + localStorage.getItem("useLocation") + "\n" +
-               "Location: " + (localStorage.getItem("location") || "(disabled)") + "\n";
+               "Location: " + (localStorage.getItem("location") || "(not set)") + "\n";
 
   return info;
 }
