@@ -37,4 +37,6 @@ function mysqlQuery({ host, port, user, password, database}, query) {
   });
 }
 
-module.exports = mysqlQuery;
+export {
+  mysqlQuery
+};

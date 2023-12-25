@@ -50,7 +50,7 @@ export default async function (req, res) {
     if (wasSuccessful) {
       return res.status(200).json({ 
         success: true, 
-        message: "Settings updated successfully."
+        message: "Setting updated."
       });
     } else {
       return res.status(400).json({ 

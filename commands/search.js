@@ -31,18 +31,9 @@ export default async function search(args) {
     }
 
     if (data.success) {
-      if (data.result && data.result.length > 0) {
-        let result = "";
-        for (let i = 0; i < data.result.length; i++) {
-          result += "Document: " + data.result[i].document + "\n" +
-                    (data.result[i].title && "Title: " + data.result[i].title) + "\n" +
-                    "Score: " + data.result[i].score + "\n" +
-                    "Content:\n" + data.result[i].content + "\n\n";
-        }
-        return result;
-      } else {
-        return "No results found.";
-      }
+      return data.message;
+    } else {
+      return data.error;
     }
   } catch (error) {
     console.error(error);

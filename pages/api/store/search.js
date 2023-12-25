@@ -49,7 +49,7 @@ export default async function handler(req, res) {
       }
       res.status(200).json({
         success: true,
-        result: queryResult.result,
+        message: queryResult.message,
       });
       return;
     }
@@ -66,7 +66,7 @@ export default async function handler(req, res) {
 
       res.status(200).json({
         success: true,
-        result: queryResult.result,
+        message: queryResult.message,
       });
       return;
     }
@@ -93,7 +93,7 @@ async function searchMysqlStore(settings, text) {
   if (!host || !port || !user || !password || !database) {
     return {
       success: false,
-      error: "Store not configured.",
+      error: "Store not configured. Use `:store set [key] [value]` to configure the store settings.",
     };
   }
 
@@ -109,7 +109,7 @@ async function searchMysqlStore(settings, text) {
   const queryResult = await mysqlQuery(dbConfig, text);
   return {
     success: true,
-    result: queryResult,
+    message: JSON.stringify(queryResult, null, 2),
   };
 }
 
@@ -121,14 +121,28 @@ async function searchVectaraStore(settings, text) {
   if (!apiKey || !corpusId || !threshold || !numberOfResults) {
     return {
       success: false,
-      error: "Store not configured.",
+      error: "Store not configured. Use `:store set [key] [value]` to configure the store settings.",
     };
   }
 
   // Query
   const queryResult = await vectaraQuery(text, corpusId, apiKey, threshold, numberOfResults);
-  return {
-    success: true,
-    result: queryResult,
-  };
+  if (queryResult && queryResult.length > 0) {
+    let result = "";
+    for (let i = 0; i < queryResult.length; i++) {
+      result += "Document: " + queryResult[i].document + "\n" +
+                (queryResult[i].title && "Title: " + queryResult[i].title) + "\n" +
+                "Score: " + queryResult[i].score + "\n" +
+                "Content:\n" + queryResult[i].content + "\n\n";
+    }
+    return {
+      success: true,
+      message: result,
+    };
+  } else {
+    return {
+      success: true,
+      message: "No results found.",
+    };
+  }
 }
