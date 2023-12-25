@@ -10,7 +10,7 @@ const mysql = require('mysql');
  * @param {string} query - The SQL query to execute.
  * @returns {Promise} - A promise that resolves with the query results.
  */
-function executeQuery({ host, port, user, password, database}, query) {
+function mysqlQuery({ host, port, user, password, database}, query) {
   return new Promise((resolve, reject) => {
     // Create a connection to the database
     const connection = mysql.createConnection({ host, port, user, password, database });
@@ -37,4 +37,4 @@ function executeQuery({ host, port, user, password, database}, query) {
   });
 }
 
-module.exports = executeQuery;
+module.exports = mysqlQuery;

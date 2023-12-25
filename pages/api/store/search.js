@@ -1,7 +1,7 @@
 import { vectaraQuery } from "utils/vectaraUtils";
 import { getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
-import { executeQuery } from "utils/mysqlUtils";
+import { mysqlQuery } from "utils/mysqlUtils";
 
 export default async function handler(req, res) {
   const { store, text } = req.body;
@@ -106,7 +106,7 @@ async function searchMysqlStore(settings, text) {
   }
 
   // Query
-  const queryResult = await executeQuery(dbConfig, text);
+  const queryResult = await mysqlQuery(dbConfig, text);
   return {
     success: true,
     result: queryResult,
