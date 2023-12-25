@@ -16,13 +16,8 @@ export default async function redirectToUrl(paramObject) {
   }
 
   if (blank === undefined) {
-    return {
-      success: false,
-      error: "Please provide a blank parameter."
-    }
-  }
-
-  if (blank !== true && blank !== false) {
+    blank = true;  // by default, open in a new tab
+  } else if (blank !== true && blank !== false) {
     return {
       success: false,
       error: "Please provide a blank parameter as true or false."

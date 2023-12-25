@@ -303,7 +303,7 @@ export default async function (req, res) {
         // Add log
         if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
           const input_f = "F=" + JSON.stringify(c);
-          const output_f = "F=" + f.message;
+          let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
           const input_token_ct_f = countToken(model, input_f);
           const output_token_ct_f = countToken(model, output_f);
           await logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, ip, browser);

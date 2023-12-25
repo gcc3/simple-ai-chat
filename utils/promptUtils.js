@@ -215,7 +215,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
         // Feed message with function calling result
         messages.push({
           role: "tool",
-          content: f.message,
+          content: f.success ? f.result : "Error: " + f.error,
           tool_call_id: c.id,
         });
 
