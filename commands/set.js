@@ -12,17 +12,17 @@ export default function set(args) {
     "role",
     "store",
     "node",
-    "showstats",
-    "stream",
-    "speak",
+    "usestats",
+    "usestream",
+    "usespeak",
     "voice",
     "lang",
-    "locationservice",
+    "uselocation",
     "location"
   ];
 
   if (!validKeys.includes(key)) {
-    return "Unknown key. Key must be one of: session, time, memLength, role, store, node, showStats, stream, speak, voice, lang, locationService, location";
+    return "Unknown key. Key must be one of: " + validKeys.join(", ") + ".";
   }
 
   // Value validation
@@ -60,19 +60,19 @@ export default function set(args) {
     case "node":
       sessionStorage.setItem("node", value);
       break;
-    case "useStats":
+    case "usestats":
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
       localStorage.setItem("useStats", value);
       break;
-    case "useStream":
+    case "usestream":
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
       localStorage.setItem("useStream", value);
       break;
-    case "useSpeak":
+    case "usespeak":
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
@@ -84,7 +84,7 @@ export default function set(args) {
     case "lang":
       localStorage.setItem("lang", value);
       break;
-    case "useLocation":
+    case "uselocation":
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
