@@ -31,34 +31,58 @@ export default async function (req, res) {
   }
 
   const settings = JSON.parse(store.settings);
-  if (!settings.apiKey || !settings.corpusId) {
+  if (!settings.engine) {
     return res.status(400).json({ 
       success: false, 
-      error: "Store has invalid settings." 
+      error: "Store not initialized. Use `:store init [engine]` to initialize a data store." 
     });
+  }
+
+  if (settings.engine === "vectara") {
+    const vectaraResult = await resetVectaraStore(settings);
+    if (!vectaraResult.success) {
+      return res.status(400).json({ 
+        success: false, 
+        error: vectaraResult.error
+      });
+    } else {
+      return res.status(200).json({ 
+        success: true,
+        message: "Store \"" + name + "\" is reset.",
+      });
+    }
+  }
+
+  return res.status(400).json({ 
+    success: false, 
+    error: "Invalid engine for reset." 
+  });
+}
+
+async function resetVectaraStore(settings) {
+  if (!settings.apiKey || !settings.corpusId) {
+    return { 
+      success: false, 
+      error: "Store has invalid settings." 
+    };
   }
 
   // Get JWT token
   const jwtToken = await createVectaraJtwToken();
   if (!jwtToken) {
     console.log("Failed to create JWT token.");
-    return res.status(400).json({ 
+    return { 
       success: false,
       error: "Failed to reset data store.",
-    });
+    };
   }
 
   // Reset store
   if (!await resetVectaraCorpus(settings.corpusId, jwtToken)) {
     console.log("Failed to reset corpus.");
-    return res.status(400).json({
+    return {
       success: false,
       error: "Failed to reset data store.",
-    });
+    };
   }
-
-  return res.status(200).json({ 
-    success: true,
-    message: "Store \"" + name + "\" is reset.",
-  });
 }
