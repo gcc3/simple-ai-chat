@@ -1,6 +1,6 @@
 export default async function redirectToUrl(paramObject) {
   const url = paramObject.url;
-  const blank = paramObject.blank;
+  let blank = paramObject.blank;
   if (!url) {
     return {
       success: false,
