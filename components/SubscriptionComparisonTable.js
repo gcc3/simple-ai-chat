@@ -18,7 +18,6 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
     { name: "GPT-4 Vision (Image Input)", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "File Input", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Role", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "Assistant", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Personal Database", user: "╳", pro_user: "1", super_user: "2" },
     { name: "Node (Node AI)", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Midjourney", user: "╳", pro_user: "╳", super_user: "Yes" },
