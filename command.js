@@ -104,7 +104,7 @@ export function getCommands() {
     { id: "", title: "", command: ":function [ls|list]", short_description: "List all supported functions.", description: "To directly call a function, use `!function_name(parameters)`" },
     { id: "", title: "", command: ":location [on|off]", short_description: "Switch on/off location service.", description: "When you turn on the location service, the AI can provide answers based on your location." },
     { id: "", title: "", command: ":stream [on|off]", short_description: "Switch on/off stream mode.", description: "When the stream is off, the text will be displayed once the answer is fully generated." },
-    { id: "", title: "", command: ":set [key] [value]", short_description: "Set local configurations.", description: "Set local configuration, the key must be one of session storage or local storage key, case nonsensitive." },
+    { id: "", title: "", command: ":set [key] [value]", short_description: "Set local configurations.", description: "Set local configuration, the key must be one of session storage or local storage key, case nonsensitive. To check the available keys, use command `:info`" },
     { id: "commands-session", title: "Sessions & Logs", command: ":log", short_description: "Show logs for current session.", description: "" },
     { id: "", title: "", command: ":ls", short_description: "List sessions, same as `:session ls`.", description: "" },
     { id: "", title: "", command: ":session [ls|list]", short_description: "List sessions.", description: "List sessions with short user input." },

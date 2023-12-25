@@ -155,7 +155,7 @@ Node (AI Node)
 Simple AI is able to link to another support AI or data source.  
 To use AI links, set `USE_NODE_AI` to `true`.  
 
-Any API response format as following can be used as a `node``:  
+Any API response format as following can be used as a `node`:  
 
 Simply use text:
 
