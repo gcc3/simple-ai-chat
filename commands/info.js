@@ -1,5 +1,5 @@
 export default function info(args) {
-  const info = "- Session configurations:\n" +
+  const info = "Session Configurations:\n" +
                "Session ID (key: `session`): " + sessionStorage.getItem("session") + "\n" +
                "Timeline (key: `time`): " + sessionStorage.getItem("time") + "\n" +
                "Memory length (key: `memLength`, default: 7): " + sessionStorage.getItem("memLength") + "\n" +
@@ -7,7 +7,7 @@ export default function info(args) {
                "Store (key: `store`): " + (sessionStorage.getItem("store") || "(not set)") + "\n" +
                "Node (key: `node`): " + (sessionStorage.getItem("node") || "(not set)") + "\n" +
                "\n" +
-               "- Local configurations:\n" +
+               "Local Configurations:\n" +
                "Show stats (key: `useStats`): " + localStorage.getItem("useStats") + "\n" +
                "Stream (key: `useStream`): " + localStorage.getItem("useStream") + "\n" +
                "Speak (key: `useSpeak`): " + localStorage.getItem("useSpeak") + "\n" +
