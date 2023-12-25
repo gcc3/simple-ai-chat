@@ -1,6 +1,7 @@
 import { vectaraQuery } from "utils/vectaraUtils";
 import { getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
+import { executeQuery } from "utils/mysqlUtils";
 
 export default async function handler(req, res) {
   const { store, text } = req.body;
@@ -53,6 +54,23 @@ export default async function handler(req, res) {
       return;
     }
 
+    if (settings.engine === "mysql") {
+      const queryResult = await searchMysqlStore(settings, text);
+      if (!queryResult.success) {
+        res.status(400).json({
+          success: false,
+          error: queryResult.error,
+        });
+        return;
+      }
+
+      res.status(200).json({
+        success: true,
+        result: queryResult.result,
+      });
+      return;
+    }
+
     res.status(400).json({
       success: false,
       error: "Invalid engine for search.",
@@ -64,6 +82,35 @@ export default async function handler(req, res) {
       error: "An error occurred during your request.",
     });
   }
+}
+
+async function searchMysqlStore(settings, text) {
+  const host = settings.host;
+  const port = settings.port;
+  const user = settings.user;
+  const password = settings.password;
+  const database = settings.database;
+  if (!host || !port || !user || !password || !database) {
+    return {
+      success: false,
+      error: "Store not configured.",
+    };
+  }
+
+  const dbConfig = {
+    host,
+    port,
+    user,
+    password,
+    database,
+  }
+
+  // Query
+  const queryResult = await executeQuery(dbConfig, text);
+  return {
+    success: true,
+    result: queryResult,
+  };
 }
 
 async function searchVectaraStore(settings, text) {

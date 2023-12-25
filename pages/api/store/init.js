@@ -97,6 +97,7 @@ async function initializeMysqlStore() {
       port: 3306,
       username: "",
       password: "",
+      database: "",
       description: "",
     }
   }
