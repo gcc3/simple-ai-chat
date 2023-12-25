@@ -94,7 +94,7 @@ function extractArgs(input) {
 
 export function getCommands() {
   const commands = [
-    { id: "commands-general", title: "General", command: ":help", short_description: "Show command help.", description: "" },
+    { id: "commands-general", title: "General", command: ":help [command?]", short_description: "Show command help.", description: "The command should be enclosed in double quotes." },
     { id: "", title: "", command: ":stop", short_description: "Stop generating. (⌃c)", description: "Same as in a shell, use control + c can stop executing." },
     { id: "", title: "", command: ":clear", short_description: "Clear output. (⌃r)", description: "Reset output to empty." },
     { id: "", title: "", command: ":reset", short_description: "Clear output and reset session. (⇧⌃r)", description: "Resetting the AI memory. It will also revert the roles and storage settings to their defaults, since these configurations are stored in the session storage." },
@@ -104,7 +104,7 @@ export function getCommands() {
     { id: "", title: "", command: ":function [ls|list]", short_description: "List all supported functions.", description: "To directly call a function, use `!function_name(parameters)`" },
     { id: "", title: "", command: ":location [on|off]", short_description: "Switch on/off location service.", description: "When you turn on the location service, the AI can provide answers based on your location." },
     { id: "", title: "", command: ":stream [on|off]", short_description: "Switch on/off stream mode.", description: "When the stream is off, the text will be displayed once the answer is fully generated." },
-    { id: "", title: "", command: ":set [key] [value]", short_description: "Set local configurations.", description: "Set local configuration, the key must be one of session storage or local storage key, case nonsensitive. To check the available keys, use command `:info`" },
+    { id: "", title: "", command: ":set [key] [value]", short_description: "Set local configurations.", description: "Set session configurations and local configurations, the key must be one of session storage or local storage key, case nonsensitive. To check the available keys, use command `:info`. Example: `set memlength 0`, this can set the memory to 0 and save a lots of tokens." },
     { id: "commands-session", title: "Sessions & Logs", command: ":log", short_description: "Show logs for current session.", description: "" },
     { id: "", title: "", command: ":ls", short_description: "List sessions, same as `:session ls`.", description: "" },
     { id: "", title: "", command: ":session [ls|list]", short_description: "List sessions.", description: "List sessions with short user input." },
@@ -127,6 +127,7 @@ export function getCommands() {
     { id: "", title: "", command: ":store use [name]", short_description: "Use a data store.", description: "" },
     { id: "", title: "", command: ":store reset", short_description: "Reset data store to empty.", description: "Reset the current data store to empty. This will not reset data store data, to reset data use `:store data reset`" },
     { id: "", title: "", command: ":store add [name]", short_description: "Create a data store.", description: "Create a data store with database engine." },
+    { id: "", title: "", command: ":store init [engine]", short_description: "Initialize a data store.", description: "Initialize the current data store with a database engine, supported engines: \"vectara\", \"mysql\". Engine name should be enclosed in double quotes." },
     { id: "", title: "", command: ":store [del|delete] [name]", short_description: "Delete a store.", description: "" },
     { id: "", title: "", command: ":store data upload [file]", short_description: "Upload file for indexing.", description: "Support .txt, .docx, .pdf files." },
     { id: "", title: "", command: ":store data reset [name?]", short_description: "Reset store data.", description: "" },

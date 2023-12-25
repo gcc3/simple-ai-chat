@@ -8,6 +8,7 @@ export default async function store(args, files) {
                 "       :store use [name]\n" +
                 "       :store reset\n" +
                 "       :store add [name]\n" +
+                "       :store init [engine]\n" +
                 "       :store data upload [file]\n" +
                 "       :store data reset [name?]\n" +
                 "       :store [del|delete] [name]\n" +
@@ -235,6 +236,61 @@ export default async function store(args, files) {
 
       if (data.success) {
         sessionStorage.setItem("store", name);
+        return data.message;
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Initialize a store
+  if (command === "init") {
+    if (args.length !== 2) {
+      return "Usage: :store init [engine]\n";
+    }
+
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
+    const storeName = sessionStorage.getItem("store");
+    if (!storeName) {
+      return "No data store is set, please use command \`:store use [name]\` to set a store.";
+    }
+
+    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
+      return "Store engine must be quoted with double quotes.";
+    }
+
+    const engine = args[1].slice(1, -1);
+    if (!engine) {
+      return "Invalid engine.";
+    }
+
+    const vaildEngines = ["mysql", "vectara"];
+    if (!vaildEngines.includes(engine)) {
+      return "Invalid engine. Valid engines are: " + vaildEngines.join(", ");
+    }
+
+    try {
+      const response = await fetch("/api/store/init", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          name: storeName,
+          engine,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      if (data.success) {
         return data.message;
       }
     } catch (error) {

@@ -31,39 +31,15 @@ export default async function (req, res) {
   }
 
   const settings = JSON.parse(store.settings);
-  if (!settings.apiKey || !settings.corpusId) {
-    return res.status(400).json({ 
-      success: false, 
-      error: "Store has invalid settings." 
-    });
-  }
 
-  // Get JWT token
-  const jwtToken = await createVectaraJtwToken();
-  if (!jwtToken) {
-    console.log("Failed to create JWT token.");
-    return res.status(400).json({ 
-      success: false,
-      error: "Failed to delete data store.",
-    });
-  }
-
-  // Delete API key
-  if (!await deleteVectaraApiKey(settings.apiKey, jwtToken)) {
-    console.log("Failed to delete API key.");
-    return res.status(400).json({
-      success: false,
-      error: "Failed to delete data store.",
-    });
-  }
-
-  // Delete store
-  if (!await deleteVectaraCorpus(settings.corpusId, jwtToken)) {
-    console.log("Failed to delete corpus.");
-    return res.status(400).json({
-      success: false,
-      error: "Failed to delete data store.",
-    });
+  if (settings.engine === "vectara") {
+    const deleteResult = await deleteVectaraStore(settings);
+    if (!deleteResult.success) {
+      return res.status(400).json({ 
+        success: false, 
+        error: deleteResult.error 
+      });
+    }
   }
 
   // Finally, delete store from database
@@ -72,4 +48,42 @@ export default async function (req, res) {
     success: true,
     message: "Store \"" + name + "\" is deleted.",
   });
+}
+
+async function deleteVectaraStore(settings) {
+  if (!settings.apiKey || !settings.corpusId) {
+    return { 
+      success: false, 
+      error: "Store has invalid settings." 
+    };
+  }
+
+  const jwtToken = await createVectaraJtwToken();
+  if (!jwtToken) {
+    console.log("Failed to create JWT token.");
+    return {
+      success: false,
+      error: "Failed to delete data store.",
+    };
+  }
+
+  if (!await deleteVectaraApiKey(settings.apiKey, jwtToken)) {
+    console.log("Failed to delete API key.");
+    return {
+      success: false,
+      error: "Failed to delete data store.",
+    };
+  }
+
+  if (!await deleteVectaraCorpus(settings.corpusId, jwtToken)) {
+    console.log("Failed to delete corpus.");
+    return {
+      success: false,
+      error: "Failed to delete data store.",
+    };
+  }
+
+  return {
+    success: true,
+  };
 }

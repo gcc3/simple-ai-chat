@@ -1,6 +1,5 @@
-import { getUser, getStore, countUserStores, insertStore } from "utils/sqliteUtils.js";
+import { getStore, insertStore } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
-import { createVectaraCorpus, generateVectaraApiKey, createVectaraJtwToken } from "utils/vectaraUtils.js";
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -20,7 +19,6 @@ export default async function (req, res) {
     });
   }
   const { id, username } = authResult.user;
-  const user = await getUser(username);
 
   // Check store existance
   const sameNameStore = await getStore(name, username);
@@ -31,71 +29,10 @@ export default async function (req, res) {
     });
   }
 
-  // Store count limit
-  const sameUserStoresCount = (await countUserStores(username)).count;
-  if (user.role === "user" && sameUserStoresCount >= 0) {
-    return res.status(400).json({ 
-      success: false,
-      error: "Your subscription does not support the creation of a data store."
-    });
-  } else if (user.role === "pro_user" && sameUserStoresCount >= 1) {
-    return res.status(400).json({ 
-      success: false,
-      error: "You've already created a data store."
-    });
-  } else if (user.role === "super_user" && sameUserStoresCount >= 2) {
-    return res.status(400).json({ 
-      success: false,
-      error: "Your can create at most 2 data stores."
-    });
-  }
-
-  console.log("Creating store \"" + name + "\"...");
-
-  // Get JWT token
-  const jwtToken = await createVectaraJtwToken();
-  if (!jwtToken) {
-    console.log("Failed to get JTW token.");
-    return res.status(500).json({ 
-      success: false, 
-      error: "Failed to create store." 
-    });
-  }
-
-  console.log("Got JTW token.");
-
-  // Create store
-  const corpusName = "i-" + Date.now();
-  const description = "store: " + name + ", created by: " + username;
-  const corpusId = await createVectaraCorpus(corpusName, description, jwtToken);
-  if (!corpusId) {
-    console.log("Failed to create corpus.");
-    return res.status(500).json({ 
-      success: false, 
-      error: "Failed to create store." 
-    });
-  }
-
-  console.log("Created corpus: " + corpusId);
-
-  // Get API key
-  const apiKey = await generateVectaraApiKey(corpusId, jwtToken);
-  if (!apiKey) {
-    console.log("Failed to get API key.");
-    return res.status(500).json({ 
-      success: false, 
-      error: "Failed to create store." 
-    });
-  }
-
-  console.log("Got API key.");
-
+  // Store setting initialized as empty
+  // Use :store init [engine] to initialize the store
   const settings = JSON.stringify({
-    "engine": "vectara",
-    "corpusId": corpusId,
-    "apiKey": apiKey,
-    "threshold": 0.6,
-    "numberOfResults": 5,
+    "engine": "",
   });
 
   insertStore(name, settings, username);
