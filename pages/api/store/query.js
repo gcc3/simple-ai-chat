@@ -4,7 +4,7 @@ import { authenticate } from "utils/authUtils";
 import { mysqlQuery } from "utils/mysqlUtils";
 
 export default async function handler(req, res) {
-  const { store, text } = req.body;
+  const { store, query } = req.body;
 
   // Authentication
   const authResult = authenticate(req);
@@ -39,7 +39,7 @@ export default async function handler(req, res) {
     }
 
     if (settings.engine === "mysql") {
-      const queryResult = await queryMysqlStore(settings, text);
+      const queryResult = await queryMysqlStore(settings, query);
       if (!queryResult.success) {
         res.status(400).json({
           success: false,
@@ -68,7 +68,7 @@ export default async function handler(req, res) {
   }
 }
 
-async function queryMysqlStore(settings, text) {
+async function queryMysqlStore(settings, query) {
   const host = settings.host;
   const port = settings.port;
   const user = settings.user;
@@ -90,7 +90,7 @@ async function queryMysqlStore(settings, text) {
   }
 
   // Query
-  const queryResult = await mysqlQuery(dbConfig, text);
+  const queryResult = await mysqlQuery(dbConfig, query);
   return {
     success: true,
     message: JSON.stringify(queryResult, null, 2),

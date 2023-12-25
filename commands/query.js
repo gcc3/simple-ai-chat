@@ -12,7 +12,7 @@ export default async function query(args) {
     return "No store selected.";
   }
 
-  const input = args[0].slice(1, -1);
+  const query = args[0].slice(1, -1);
   try {
     const response = await fetch("/api/store/query", {
       method: "POST",
@@ -20,7 +20,7 @@ export default async function query(args) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        input,
+        query,
         store,
       }),
     });
@@ -31,11 +31,9 @@ export default async function query(args) {
     }
 
     if (data.success) {
-      if (data.result) {
-        return JSON.stringify(data.result, null, 2);
-      } else {
-        return "No response.";
-      }
+      return data.message;
+    } else {
+      return data.error;
     }
   } catch (error) {
     console.error(error);
