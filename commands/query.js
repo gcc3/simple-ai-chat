@@ -7,9 +7,9 @@ export default async function query(args) {
     return "Word must be quoted with double quotes.";
   }
 
-  const node = sessionStorage.getItem("node");
-  if (!node) {
-    return "No node selected.";
+  const store = sessionStorage.getItem("store");
+  if (!store) {
+    return "No store selected.";
   }
 
   const input = args[0].slice(1, -1);
@@ -21,7 +21,7 @@ export default async function query(args) {
       },
       body: JSON.stringify({
         input,
-        node,
+        store,
       }),
     });
 
