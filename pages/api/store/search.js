@@ -16,8 +16,8 @@ export default async function handler(req, res) {
   const { id, username } = authResult.user;
 
   try {
-    const store = await getStore(store, username);
-    if (!store) {
+    const store_ = await getStore(store, username);
+    if (!store_) {
       res.status(404).json({
         success: false,
         error: "Store not found.",
@@ -26,7 +26,7 @@ export default async function handler(req, res) {
     }
     
     // Get settings
-    const settings = JSON.parse(store.settings);
+    const settings = JSON.parse(store_.settings);
 
     // Check is initialized
     if (!settings.engine) {
