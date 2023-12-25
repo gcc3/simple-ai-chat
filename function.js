@@ -140,7 +140,7 @@ export function getFunctions() {
         },
         blank: {
           type: "boolean",
-          description: "Whether to open the URL in a new tab.",
+          description: "Whether to open the URL in a new tab. Open in new tab except user request to open in same tab.",
         }
       },
       required: ["url"],
