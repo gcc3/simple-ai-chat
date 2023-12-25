@@ -106,6 +106,7 @@ async function searchMysqlStore(settings, text) {
   }
 
   // Query
+  // TODO use generate instead
   const queryResult = await mysqlQuery(dbConfig, text);
   return {
     success: true,

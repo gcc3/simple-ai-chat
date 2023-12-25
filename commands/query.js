@@ -14,7 +14,7 @@ export default async function query(args) {
 
   const input = args[0].slice(1, -1);
   try {
-    const response = await fetch("/api/node/query", {
+    const response = await fetch("/api/store/query", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
