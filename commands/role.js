@@ -103,9 +103,6 @@ export default async function role(args) {
             userRoles = "User roles: \n" 
                       + "No user role found." + "\n\n";
           }
-        } else {
-          userRoles = "User roles: \n" 
-                    + "Login to use custom roles." + "\n\n";
         }
 
         const defaultRoles = "Default roles: \n" 
