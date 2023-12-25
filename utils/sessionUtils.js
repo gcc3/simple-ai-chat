@@ -15,7 +15,7 @@ export function attachSession(sessionId) {
 
   sessionStorage.setItem("time", sessionId);
   sessionStorage.setItem("session", sessionId);
-  return "Attached. To navigate between session histories: use `J` or `→` to navigate to the next, and use `K` or ←` to navigate to the previous.";
+  return "Session attached. Use `→` or `←` to navigate between session logs.";
 }
 
 function containsOnlyNumbers(str) {
