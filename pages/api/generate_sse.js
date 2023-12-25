@@ -148,7 +148,7 @@ export default async function (req, res) {
   // Type II. Tool calls (function calling) input
   // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
   // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
-  let functionNames = "";
+  let functionNames = [];
   let functionCalls = [];
   let functionResults = [];
   if (input.startsWith("!")) {
@@ -175,7 +175,10 @@ export default async function (req, res) {
         const c = functionCalls[i];  // not using here.
 
         // Add function name
-        functionNames += f.function.split("(")[0].trim() + ",";
+        const functionName = f.function.split("(")[0].trim();
+        if (functionNames.indexOf(functionName) === -1) {
+          functionNames.push(functionName);
+        }
 
         // Trigger event
         // Function trigger event
@@ -184,11 +187,6 @@ export default async function (req, res) {
           res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
         }
       }
-    }
-
-    // Remove last comma
-    if (functionNames.endsWith(",")) {
-      functionNames = functionNames.substring(0, functionNames.length - 1);
     }
   }
 
@@ -230,7 +228,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node}\n\n`);
     res.flush();
 
     let toolCalls = [];
@@ -325,7 +323,7 @@ export default async function (req, res) {
     await logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     // Final stats
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames},${role},${store},${node}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node}\n\n`);
 
     // Done message
     res.write(`data: [DONE]\n\n`); res.flush();

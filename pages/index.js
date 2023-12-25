@@ -884,7 +884,7 @@ export default function Home() {
 
           setStats(
             <div>
-              func: {func || "none"}<br></br>
+              func: {func.replaceAll('|', ", ") || "none"}<br></br>
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
@@ -1055,7 +1055,7 @@ export default function Home() {
       if (localStorage.getItem('useStats') === "true") {
         setStats((
           <div>
-            func: {data.result.stats.func || "none"}<br></br>
+            func: {data.result.stats.func.replaceAll('|', ", ") || "none"}<br></br>
             temperature: {data.result.stats.temperature}<br></br>
             top_p: {data.result.stats.top_p}<br></br>
             token_ct: {data.result.stats.token_ct}<br></br>
