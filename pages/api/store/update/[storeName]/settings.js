@@ -1,4 +1,4 @@
-import { updateStoreSettings, getStore } from 'utils/sqliteUtils.js';
+import { updateStoreSetting, getStore } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 
 export default async function (req, res) {
@@ -46,7 +46,7 @@ export default async function (req, res) {
     }
 
     // TODO check if key and value is valid
-    const wasSuccessful = await updateStoreSettings(storeName, username, key, value);
+    const wasSuccessful = await updateStoreSetting(storeName, username, key, value);
     if (wasSuccessful) {
       return res.status(200).json({ 
         success: true, 

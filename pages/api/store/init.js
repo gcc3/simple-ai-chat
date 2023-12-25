@@ -1,4 +1,4 @@
-import { getUser, getStore, insertStore } from "utils/sqliteUtils.js";
+import { getUser, getStore, updateStoreSettings } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
 import { createVectaraCorpus, generateVectaraApiKey, createVectaraJtwToken } from "utils/vectaraUtils.js";
 
@@ -39,7 +39,7 @@ export default async function (req, res) {
   }
 
   // Check store settings existance
-  if (JSON.parse(store.settings).engine) {
+  if (store.settings && JSON.parse(store.settings).engine) {
     return res.status(400).json({ 
       success: false, 
       error: "Store already initialized." 
@@ -49,15 +49,33 @@ export default async function (req, res) {
   console.log("Initializing store \"" + name + "\"...");
 
   if (engine === "vectara") {
-    const vectaraResult = await initializeVectaraStore();
-    if (!vectaraResult.success) {
+    const initResult = await initializeVectaraStore();
+    if (!initResult.success) {
       return res.status(400).json({ 
         success: false, 
-        error: vectaraResult.error
+        error: initResult.error
       });
     }
-    const { settings } = vectaraResult;
-    insertStore(name, settings, username);
+
+    const settings = JSON.stringify(initResult.settings);
+    updateStoreSettings(name, username, settings);
+    return res.status(200).json({ 
+      success: true,
+      message: "Store \"" + name + "\" is initialized. You can use command `:store \"" + name + "\"` to check store status and settings.",
+    });
+  }
+
+  if (engine === "mysql") {
+    const initResult = await initializeMysqlStore();
+    if (!initResult.success) {
+      return res.status(400).json({ 
+        success: false, 
+        error: initResult.error
+      });
+    }
+
+    const settings = JSON.stringify(initResult.settings);
+    updateStoreSettings(name, username, settings);
     return res.status(200).json({ 
       success: true,
       message: "Store \"" + name + "\" is initialized. You can use command `:store \"" + name + "\"` to check store status and settings.",
@@ -68,6 +86,20 @@ export default async function (req, res) {
     success: false, 
     error: "Engine not supported, supported engine: \"vectara\", \"mysql\"."
   });
+}
+
+async function initializeMysqlStore() {
+  return {
+    success: true,
+    settings: {
+      engine: "mysql",
+      host: "",
+      port: 3306,
+      username: "",
+      password: "",
+      description: "",
+    }
+  }
 }
 
 async function initializeVectaraStore() {
@@ -109,13 +141,13 @@ async function initializeVectaraStore() {
 
   console.log("Got API key.");
 
-  const settings = JSON.stringify({
-    "engine": "vectara",
-    "corpusId": corpusId,
-    "apiKey": apiKey,
-    "threshold": 0.6,
-    "numberOfResults": 5,
-  });
+  const settings = {
+    engine: "vectara",
+    corpusId: corpusId,
+    apiKey: apiKey,
+    threshold: 0.6,
+    numberOfResults: 5,
+  };
 
   return {
     success: true,

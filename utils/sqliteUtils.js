@@ -1060,7 +1060,7 @@ const updateStoreOwner = async (name, createdBy, newOwner) => {
   }
 };
 
-const updateStoreSettings = async (name, createdBy, key, value) => {
+const updateStoreSetting = async (name, createdBy, key, value) => {
   const db = await getDatabaseConnection();
   const store = await getStore(name, createdBy);
 
@@ -1081,6 +1081,36 @@ const updateStoreSettings = async (name, createdBy, key, value) => {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND created_by = ?");
       stmt.run([settings, new Date(), name, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateStoreSettings = async (name, createdBy, newSettings) => {
+  const db = await getDatabaseConnection();
+  const store = await getStore(name, createdBy);
+
+  // Check if the store exists
+  if (!store) {
+    console.error("Store not found.");
+    return;
+  }
+
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND created_by = ?");
+      stmt.run([newSettings, new Date(), name, createdBy], function (err) {
         if (err) {
           reject(err);
         }
@@ -1330,6 +1360,7 @@ export {
   deleteStore,
   deleteUserStores,
   updateStoreOwner,
+  updateStoreSetting,
   updateStoreSettings,
   getNode,
   getUserNodes,
