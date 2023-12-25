@@ -1,6 +1,6 @@
 export default async function query(args) {
   if (args.length != 1) {
-    return "Usage: :query [input]";
+    return "Usage: :query [query]";
   }
 
   if (!args[0].startsWith("\"") || !args[0].endsWith("\"")) {
