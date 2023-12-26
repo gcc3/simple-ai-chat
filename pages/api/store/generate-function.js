@@ -16,7 +16,7 @@ export default async function (req, res) {
   }
   const { id, username } = authResult.user;
 
-  const { store } = req.body;
+  const { store } = req.query;
   const storeInfo = await getStore(store, username);
   if (!storeInfo) {
     return res.status(400).json({ 
