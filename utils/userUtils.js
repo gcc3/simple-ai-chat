@@ -7,7 +7,7 @@ export function setUserLocalStorage(user) {
   localStorage.setItem("user", user.username);
   localStorage.setItem("userEmail", user.email);
   localStorage.setItem("userRole", user.role);
-  localStorage.setItem("userSettings", user.settings);
+  localStorage.setItem("userSettings", JSON.stringify(user.settings));
 
   if (user.settings) {
     const settings = user.settings;

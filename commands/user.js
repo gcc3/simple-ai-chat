@@ -1,5 +1,5 @@
 import { verifiyEmailAddress } from "utils/emailUtils";
-import { setUserLocalStorage } from "utils/userUtils";
+import { clearUserWebStorage, setUserLocalStorage } from "utils/userUtils";
 
 export default async function entry(args) {
   const command = args[0];
@@ -130,10 +130,7 @@ export default async function entry(args) {
       }
 
       if (data.success) {
-        localStorage.removeItem("user");
-        localStorage.removeItem("userEmail");
-        localStorage.removeItem("userRole");
-        localStorage.removeItem("userSettings");
+        clearUserWebStorage();
       }
       return data.message;
     } catch (error) {
