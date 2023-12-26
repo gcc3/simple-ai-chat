@@ -98,6 +98,8 @@ async function initializeMysqlStore() {
       user: "",
       password: "",
       database: "",
+      table: "",
+      tableColumnsDef: "",
       description: "",
     }
   }
