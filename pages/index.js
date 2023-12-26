@@ -293,9 +293,9 @@ export default function Home() {
 
     // Set default sessionStorage values
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
-    if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");
-    if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");
-    if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");
+    if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");    // default role
+    if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");  // default store
+    if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");    // default node
     if (sessionStorage.getItem("time") === null) sessionStorage.setItem("time", Date.now());
 
     // Set styles and themes

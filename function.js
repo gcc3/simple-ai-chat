@@ -151,8 +151,8 @@ export function getFunctions() {
 }
 
 // A tools wrapper for functions
-export function getTools(lastFunctionName = null) {
-  let functions = getFunctions(lastFunctionName);
+export function getTools() {
+  let functions = getFunctions();
   
   let tools = []
   for (let i = 0; i < functions.length; i++) {

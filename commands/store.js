@@ -1,5 +1,4 @@
 import { initializeSession } from "utils/sessionUtils";
-import session from "./session";
 
 export default async function store(args, files) {
   const command = args[0];

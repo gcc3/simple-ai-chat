@@ -1,27 +1,27 @@
 export default async function query(args) {
   if (args.length != 1) {
-    return "Usage: :query [input]";
+    return "Usage: :query [query]";
   }
 
   if (!args[0].startsWith("\"") || !args[0].endsWith("\"")) {
     return "Word must be quoted with double quotes.";
   }
 
-  const node = sessionStorage.getItem("node");
-  if (!node) {
-    return "No node selected.";
+  const store = sessionStorage.getItem("store");
+  if (!store) {
+    return "No store selected.";
   }
 
-  const input = args[0].slice(1, -1);
+  const query = args[0].slice(1, -1);
   try {
-    const response = await fetch("/api/node/query", {
+    const response = await fetch("/api/store/query", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        input,
-        node,
+        query,
+        store,
       }),
     });
 
@@ -31,11 +31,9 @@ export default async function query(args) {
     }
 
     if (data.success) {
-      if (data.result) {
-        return JSON.stringify(data.result, null, 2);
-      } else {
-        return "No response.";
-      }
+      return data.message;
+    } else {
+      return data.error;
     }
   } catch (error) {
     console.error(error);
