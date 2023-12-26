@@ -153,12 +153,12 @@ export function getCommands() {
     { id: "", title: "", command: ":user reset pass [username] [email]", short_description: "Recover password.", description: "A recovery email containing a generated password will be sent to the user. If you forgot your password and cannot login your account, please use this command to recover your password." },
     { id: "", title: "", command: ":user role [add|set] [role_name] [prompt]", short_description: "Add a role.", description: "" },
     { id: "", title: "", command: ":user role [del|delete] [role_name]", short_description: "Delete a role.", description: "" },
-    { id: "", title: "", command: ":user join [group] [password]", short_description: "Join a group.", description: "Group is actually a user, you can join a user to access its shared data. The password is his password." },
+    { id: "", title: "", command: ":user join [group] [password]", short_description: "Join a group.", description: "Join a group. A group is a user, you can join a user to access his/her shared data. The password is his/her password." },
     { id: "", title: "", command: ":user leave [group]", short_description: "Leave a group.", description: "" },
     { id: "", title: "", command: ":user [del|delete] [username]", short_description: "Delete user with data.", description: "" },
-    { id: "", title: "", command: ":login [username] [password]", short_description: "Login user.", description: "" },
+    { id: "", title: "", command: ":login [username] [password]", short_description: "Login user.", description: "Login user and load configurations from user settings." },
     { id: "", title: "", command: ":logout", short_description: "Logout user.", description: "" },
-    { id: "commands-config", title: "Information", command: ":info", short_description: "Show local config.", description: "Local configuration saved in browser session storage or local storage." },
+    { id: "commands-config", title: "Information", command: ":info", short_description: "Show local config.", description: "Show local configurations and session configurations that saved in browser session storage or local storage." },
     { id: "", title: "", command: ":system", short_description: "Show system config.", description: "System configuration in server." },
   ];
   return commands;
