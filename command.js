@@ -124,7 +124,7 @@ export function getCommands() {
     { id: "", title: "", command: ":role [ls|list]", short_description: "List available roles.", description: "Roles include user custom roles and system roles." },
     { id: "", title: "", command: ":role [reset]", short_description: "Reset role to empty.", description: "Clear the current role." },
     { id: "commands-store", title: "Data Store", command: ":search [text]", short_description: "Search from current data store.", description: "Search to get inforamtion from the current data store with nature language." },
-    { id: "", title: "", command: ":query [query]", short_description: "Direct query from current data store.", description: "Provide more straightforward way to query from current data store, without any AI involved." },
+    { id: "", title: "", command: ":query [query]", short_description: "Query directly from data store.", description: "Provide more straightforward way to query from current data store, without any AI involved." },
     { id: "", title: "", command: ":store [name?]", short_description: "Show data store detail.", description: "The store name is optional. If no name is input, it will return the current data store details." },
     { id: "", title: "", command: ":store [ls|list]", short_description: "List available data stores.", description: "Include the user data stores and shared data stores." },
     { id: "", title: "", command: ":store use [name]", short_description: "Use a data store.", description: "" },
