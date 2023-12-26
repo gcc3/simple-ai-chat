@@ -334,9 +334,11 @@ export async function generateMessages(user, model, input, inputType, files, ima
     console.log("nearby_citie: " + city.name + ", " + city.country);
 
     // Get user address with Google Maps API
-    const address = await getAddress(lat, lng);
-    location_prompt += "User accurate address: " + address + "\n";
-    console.log("address: " + address + "\n");
+    if (process.env.GOOGLE_API_KEY) {
+      const address = await getAddress(lat, lng);
+      location_prompt += "User accurate address: " + address + "\n";
+      console.log("address: " + address + "\n");
+    }
 
     // Finish
     location_prompt += "Use this infromation if necessary.\n";

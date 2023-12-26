@@ -1,5 +1,5 @@
 import { verifiyEmailAddress } from "utils/emailUtils";
-import { clearUserWebStorage, setUserLocalStorage } from "utils/userUtils";
+import { clearUserWebStorage, generatePassword, setUserLocalStorage } from "utils/userUtils";
 
 export default async function entry(args) {
   const command = args[0];
@@ -78,14 +78,15 @@ export default async function entry(args) {
           email,
           password,
           settings: JSON.stringify({
-            theme:      localStorage.getItem("theme") || "light",
-            speak:      localStorage.getItem("speak") || "off",
-            stats:      localStorage.getItem("stats") || "off",
-            eval:       localStorage.getItem("eval") || "off",
-            fullscreen: localStorage.getItem("fullscreen") || "off",
-            role:       "",
-            store:      "",
-            node:       "",
+            theme:         localStorage.getItem("theme") || "light",
+            speak:         localStorage.getItem("speak") || "off",
+            stats:         localStorage.getItem("stats") || "off",
+            eval:          localStorage.getItem("eval") || "off",
+            fullscreen:    localStorage.getItem("fullscreen") || "off",
+            role:          "",
+            store:         "",
+            node:          "",
+            groupPassword: generatePassword(),
           }),
         }),
       });
