@@ -35,8 +35,10 @@ export default async (req, res) => {
   }
 
   // Get user
-  const userGroup = await getUser(groupName);
-  if (!userGroup) {
+  const userName = groupName;
+  const user = await getUser(userName);
+  const settings = JSON.parse(user.settings);
+  if (!user) {
     return res.status(401).json({
       success: false,
       error: 'Group not found.'
@@ -44,7 +46,7 @@ export default async (req, res) => {
   }
 
   // Check password
-  if (userGroup.password !== password) {
+  if (settings.groupPassword !== password) {
     return res.status(401).json({
       success: false,
       error: 'Incorrect password.'

@@ -153,7 +153,7 @@ export function getCommands() {
     { id: "", title: "", command: ":user reset pass [username] [email]", short_description: "Recover password.", description: "A recovery email containing a generated password will be sent to the user. If you forgot your password and cannot login your account, please use this command to recover your password." },
     { id: "", title: "", command: ":user role [add|set] [role_name] [prompt]", short_description: "Add a role.", description: "" },
     { id: "", title: "", command: ":user role [del|delete] [role_name]", short_description: "Delete a role.", description: "" },
-    { id: "", title: "", command: ":user join [group] [password]", short_description: "Join a group.", description: "Join a group. A group is a user, you can join a user to access his/her shared data. The password is his/her password." },
+    { id: "", title: "", command: ":user join [group] [password]", short_description: "Join a group.", description: "Join a group. When creating a user, a group with the same name will also be created, and owned by this user. A user can join any group to access shared data. The password is generated and set in the user's settings." },
     { id: "", title: "", command: ":user leave [group]", short_description: "Leave a group.", description: "" },
     { id: "", title: "", command: ":user [del|delete] [username]", short_description: "Delete user with data.", description: "" },
     { id: "", title: "", command: ":login [username] [password]", short_description: "Login user.", description: "Login user and load configurations from user settings." },
