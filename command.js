@@ -136,7 +136,7 @@ export function getCommands() {
     { id: "", title: "", command: ":store data upload [file]", short_description: "Upload file for indexing.", description: "Support .txt, .docx, .pdf files." },
     { id: "", title: "", command: ":store data reset [name?]", short_description: "Reset store data.", description: "" },
     { id: "", title: "", command: ":store [del|delete] [name]", short_description: "Delete a store.", description: "" },
-    { id: "commands-node", title: "Node (Node AI)", command: ":generate [input]", short_description: "Generate from current node.", description: "Generate from the current node (Node AI)." },
+    { id: "commands-node", title: "Node (Node AI)", command: ":generate [input]", short_description: "Generate from node.", description: "Generate from the current node (Node AI)." },
     { id: "", title: "", command: ":node [name?]", short_description: "Show node detail.", description: "The node name is optional. If no name is input, it will return the current node details." },
     { id: "", title: "", command: ":node [ls|list]", short_description: "List available nodes.", description: "Include the user data nodes and shared nodes." },
     { id: "", title: "", command: ":node use [name]", short_description: "Use a node.", description: "" },
