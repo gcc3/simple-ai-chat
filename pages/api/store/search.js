@@ -1,6 +1,7 @@
 import { vectaraQuery } from "utils/vectaraUtils";
 import { getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
+import { mysqlQuery } from "utils/mysqlUtils";
 
 export default async function handler(req, res) {
   const { store, text } = req.body;
@@ -48,7 +49,24 @@ export default async function handler(req, res) {
       }
       res.status(200).json({
         success: true,
-        result: queryResult.result,
+        message: queryResult.message,
+      });
+      return;
+    }
+
+    if (settings.engine === "mysql") {
+      const queryResult = await searchMysqlStore(settings, text);
+      if (!queryResult.success) {
+        res.status(400).json({
+          success: false,
+          error: queryResult.error,
+        });
+        return;
+      }
+
+      res.status(200).json({
+        success: true,
+        message: queryResult.message,
       });
       return;
     }
@@ -66,6 +84,36 @@ export default async function handler(req, res) {
   }
 }
 
+async function searchMysqlStore(settings, text) {
+  const host = settings.host;
+  const port = settings.port;
+  const user = settings.user;
+  const password = settings.password;
+  const database = settings.database;
+  if (!host || !port || !user || !password || !database) {
+    return {
+      success: false,
+      error: "Store not configured. Use `:store set [key] [value]` to configure the store settings.",
+    };
+  }
+
+  const dbConfig = {
+    host,
+    port,
+    user,
+    password,
+    database,
+  }
+
+  // Query
+  // TODO use generate instead
+  const queryResult = await mysqlQuery(dbConfig, text);
+  return {
+    success: true,
+    message: JSON.stringify(queryResult, null, 2),
+  };
+}
+
 async function searchVectaraStore(settings, text) {
   const corpusId = settings.corpusId;
   const apiKey = settings.apiKey;
@@ -74,14 +122,28 @@ async function searchVectaraStore(settings, text) {
   if (!apiKey || !corpusId || !threshold || !numberOfResults) {
     return {
       success: false,
-      error: "Store not configured.",
+      error: "Store not configured. Use `:store set [key] [value]` to configure the store settings.",
     };
   }
 
   // Query
   const queryResult = await vectaraQuery(text, corpusId, apiKey, threshold, numberOfResults);
-  return {
-    success: true,
-    result: queryResult,
-  };
+  if (queryResult && queryResult.length > 0) {
+    let result = "";
+    for (let i = 0; i < queryResult.length; i++) {
+      result += "Document: " + queryResult[i].document + "\n" +
+                (queryResult[i].title && "Title: " + queryResult[i].title) + "\n" +
+                "Score: " + queryResult[i].score + "\n" +
+                "Content:\n" + queryResult[i].content + "\n\n";
+    }
+    return {
+      success: true,
+      message: result,
+    };
+  } else {
+    return {
+      success: true,
+      message: "No results found.",
+    };
+  }
 }

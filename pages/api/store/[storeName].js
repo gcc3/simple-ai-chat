@@ -19,6 +19,7 @@ export default async function (req, res) {
       if (store) {
         return res.status(200).json({ 
           result: {
+            id: store.id,
             store: store.name,
             owner: store.owner,
             created_by: store.created_by,

@@ -139,13 +139,13 @@ Messages
 
 | #  | Part                           | Role                  | Description                              |
 |----|--------------------------------|-----------------------|------------------------------------------|
-| -3 | System master message          | system                | set with `ROLE_CONTENT_SYSTEM`           |
+| -3 | System master message          | system                | Set with `ROLE_CONTENT_SYSTEM`.          |
 | -2 | Role prompt                    | system                | Role prompt message.                     |
-| -1 | Chat history                   | user, assistant, tool | Chat history from user and assistant     |
-|  0 | User input                     | user                  | Direct input provided by the user,       |
-|  1 | Function calling result        | tool                  | Result of function calling (tool calls)  |
-|  2 | Vector database query result   | system                | Result from a query to a vector database |
-|  3 | Node AI query result           | system                | Result from AI node or hub               |
+| -1 | Chat history                   | user, assistant, tool | Chat history from user and assistant.    |
+|  0 | User input                     | user                  | Direct input provided by the user.       |
+|  1 | Function calling result        | tool                  | Results of tool calls.                   |
+|  2 | Data store search result       | system                | Result from a data store engine.         |
+|  3 | Node AI query result           | system                | Result from AI node or hub.              |
 |  4 | Location info                  | system                | Add when location service is enabled     |
 
 
