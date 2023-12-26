@@ -1,7 +1,9 @@
 import { mysqlQuery } from "utils/mysqlUtils";
+import { authenticate } from "utils/authUtils";
+import { getStore } from "utils/sqliteUtils";
 
 export default async function (req, res) {
-  if (req.method !== "POST") {
+  if (req.method !== "GET") {
     return res.status(405).end();
   }
 
@@ -40,7 +42,7 @@ export default async function (req, res) {
 }
 
 async function generateStoreFunction(store) {
-  const settings = store.settings;
+  const settings = JSON.parse(store.settings);
 
   const dbConfig = {
     host: settings.host,
@@ -55,8 +57,10 @@ async function generateStoreFunction(store) {
   let databaseSchemas = [];
   const tableNames = await mysqlQuery(dbConfig, "SHOW TABLES");
   for (const tableName of tableNames) {
-    const columnNames = await mysqlQuery(dbConfig, `SHOW COLUMNS FROM ${tableName}`);
-    databaseSchemas.push({ "table_name": tableName, "column_names": columnNames });
+    const table = tableName[Object.keys(tableName)[0]];
+    const columnNames = await mysqlQuery(dbConfig, `SHOW COLUMNS FROM ${table}`);
+    const columnNamesArray = columnNames.map(columnName => columnName.Field);
+    databaseSchemas.push({ "table_name": table, "column_names": columnNamesArray });
   }
   const tableDescriptions = databaseSchemas.map(table => {
     return `Table: ${table.table_name}\nColumns: ${table.column_names.join(', ')}`;
