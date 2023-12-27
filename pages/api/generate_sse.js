@@ -314,7 +314,7 @@ export default async function (req, res) {
     if (inputType === TYPE.TOOL_CALL) {
       // Function calling input is already logged
       input_token_ct = 0;
-      input = "";
+      input = "Q=" + input;
     }
     if (outputType === TYPE.TOOL_CALL) {
       // Add tool calls output to log

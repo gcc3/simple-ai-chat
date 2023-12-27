@@ -78,7 +78,9 @@ export async function generateMessages(user, model, input, inputType, files, ima
         });
       } else {
         // Normal log
-        if (log.input) {
+        // To record the original user input after the function calling
+        // the input will add "Q=" as prefix
+        if (log.input && !log.input.startsWith("Q=")) {
           messages.push({ 
             role: "user",
             content: [
