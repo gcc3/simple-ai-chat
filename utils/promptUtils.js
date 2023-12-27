@@ -68,7 +68,9 @@ export async function generateMessages(user, model, input, inputType, files, ima
   if (sessionLogs && sessionLogs.length > 0) {
     sessionLogs.reverse().map(log => {
       if (log.input.startsWith("F=") && log.output.startsWith("F=")) {
-        // Tool call log
+        // Each Tool call query and response log
+        // The input will add "F=" as prefix
+        // The output will add "F=" as prefix
         const c = JSON.parse(log.input.slice(2));
         const message = log.output.slice(2);
         messages.push({ 
@@ -94,11 +96,15 @@ export async function generateMessages(user, model, input, inputType, files, ima
         
         if (log.output) {
           if (log.output.startsWith("T=")) {
+            // Tool call output log
+            // The output will add "T=" as prefix
+            // AI generated the tool call
             messages.push({ 
               role: "assistant",
               tool_calls: JSON.parse(log.output.slice(2)),
             });
           } else {
+            // Normal output log
             messages.push({ 
               role: "assistant", 
               content: log.output 
