@@ -37,7 +37,7 @@ const Documentation = () => {
     { action: "Change focus to input area.", shortcut: "Tab or /", condition: "Unfocused from the input area." },
   ];
 
-  const api = [
+  const apis = [
     { endpoint: "GET /api/generate_sse", parameters: "session, mem_length, role, store, node, use_stats, use_eval, use_location, location, images, files", description: "Generate a response from the AI model with stream." },
     { endpoint: "POST /api/generate", parameters: "session, mem_length, role, store, node, use_stats, use_eval, use_location, location, images, files", description: "Generate a response from the AI model." },
   ];
@@ -171,9 +171,9 @@ const Documentation = () => {
           * Command shortcuts: Stop generating (⌃c), Clear output (⌃r), Clear output and reset session (⇧⌃r)
         </div>
       </div>
-      <div id="api" className="mt-5">API</div>
+      <div id="api" className="mt-5">APIs</div>
       <div className="mt-2">
-        Simple AI provides an API for developers to integrate with their applications. The API is currently in beta and is subject to change.
+        Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change.
       </div>
       <div className="mt-3 table-container">
         <table>
@@ -185,7 +185,7 @@ const Documentation = () => {
             </tr>
           </thead>
           <tbody>
-            {api.map((item, index) => (
+            {apis.map((item, index) => (
               <tr key={index}>
                 <td>{item.endpoint}</td>
                 <td>{item.parameters}</td>
