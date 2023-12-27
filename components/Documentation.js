@@ -173,7 +173,7 @@ const Documentation = () => {
       </div>
       <div id="api" className="mt-5">APIs</div>
       <div className="mt-2">
-        Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change.
+        Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)
       </div>
       <div className="mt-3 table-container">
         <table>
