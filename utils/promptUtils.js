@@ -64,21 +64,40 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
   // -1. Chat history
   let chat_history_prompt = "";
-  const sessionLogs = await loglist(session, mem_length);  // limit the memory length to 7 logs
-  if (sessionLogs && session.length > 0) {
+  const sessionLogs = await loglist(session, mem_length);  // limit the memory length in the chat history
+  if (sessionLogs && sessionLogs.length > 0) {
     sessionLogs.reverse().map(log => {
       if (log.input.startsWith("F=") && log.output.startsWith("F=")) {
-        // Tool call log
+        // Each Tool call query and response log
+        // The input will add "F=" as prefix
+        // The output will add "F=" as prefix
         const c = JSON.parse(log.input.slice(2));
-        const message = log.output.slice(2);
-        messages.push({ 
-          role: "tool",
-          content: message,
-          tool_call_id: c.id,
+        
+        // Find tool call id in messages
+        let isFound = false;
+        messages.map(m => {
+          if (m.role === "assistant" && m.tool_calls && m.tool_calls.length > 0) {
+            m.tool_calls.map(t => {
+              if (t.id === c.id) isFound = true;
+            });
+          }
         });
+
+        // Add tool call query
+        // only if the tool call id is found in messages
+        if (isFound) {
+          const message = log.output.slice(2);
+          messages.push({ 
+            role: "tool",
+            content: message,
+            tool_call_id: c.id,
+          });
+        }
       } else {
         // Normal log
-        if (log.input) {
+        // To record the original user input after the function calling
+        // the input will add "Q=" as prefix
+        if (log.input && !log.input.startsWith("Q=")) {
           messages.push({ 
             role: "user",
             content: [
@@ -92,11 +111,15 @@ export async function generateMessages(user, model, input, inputType, files, ima
         
         if (log.output) {
           if (log.output.startsWith("T=")) {
+            // Tool call output log
+            // The output will add "T=" as prefix
+            // AI generated the tool call
             messages.push({ 
               role: "assistant",
               tool_calls: JSON.parse(log.output.slice(2)),
             });
           } else {
+            // Normal output log
             messages.push({ 
               role: "assistant", 
               content: log.output 
