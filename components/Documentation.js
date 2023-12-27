@@ -37,6 +37,11 @@ const Documentation = () => {
     { action: "Change focus to input area.", shortcut: "Tab or /", condition: "Unfocused from the input area." },
   ];
 
+  const apis = [
+    { endpoint: "GET /api/generate_sse", parameters: "session, mem_length, role, store, node, use_stats, use_eval, use_location, location, images, files", description: "Generate a response from the AI model with stream." },
+    { endpoint: "POST /api/generate", parameters: "session, mem_length, role, store, node, use_stats, use_eval, use_location, location, images, files", description: "Generate a response from the AI model." },
+  ];
+
   const content = (
     <>
       <div>
@@ -59,6 +64,7 @@ const Documentation = () => {
         </div>
         <div className="mt-2"><a href="#functions"><u>Functions</u></a></div>
         <div className="mt-2"><a href="#shortcuts"><u>Shortcuts</u></a></div>
+        <div className="mt-2"><a href="#api"><u>APIs</u></a></div>
         <div className="mt-2"><a href="#feedback"><u>Feedback & Support</u></a></div>
       </div>
       <div id="introduction" className="mt-5">Introduction</div>
@@ -164,6 +170,30 @@ const Documentation = () => {
         <div className="mt-2">
           * Command shortcuts: Stop generating (⌃c), Clear output (⌃r), Clear output and reset session (⇧⌃r)
         </div>
+      </div>
+      <div id="api" className="mt-5">APIs</div>
+      <div className="mt-2">
+        Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)
+      </div>
+      <div className="mt-3 table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Endpoint</th>
+              <th>Parameters</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {apis.map((item, index) => (
+              <tr key={index}>
+                <td>{item.endpoint}</td>
+                <td>{item.parameters}</td>
+                <td>{item.description}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
       <div id="feedback" className="mt-5">Feedback & Support</div>
       <div className="mt-2">
