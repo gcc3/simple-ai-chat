@@ -72,12 +72,25 @@ export async function generateMessages(user, model, input, inputType, files, ima
         // The input will add "F=" as prefix
         // The output will add "F=" as prefix
         const c = JSON.parse(log.input.slice(2));
-        const message = log.output.slice(2);
-        messages.push({ 
-          role: "tool",
-          content: message,
-          tool_call_id: c.id,
+        
+        // Find tool call id in messages
+        let isFound = false;
+        messages.map(m => {
+          if (m.role === "assistant" && m.tool_calls && m.tool_calls.id === c.id) {
+            isFound = true;
+          }
         });
+
+        // Add tool call query
+        // only if the tool call id is found in messages
+        if (!isFound) {
+          const message = log.output.slice(2);
+          messages.push({ 
+            role: "tool",
+            content: message,
+            tool_call_id: c.id,
+          });
+        }
       } else {
         // Normal log
         // To record the original user input after the function calling
