@@ -228,6 +228,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
   }
 
   // 1. Function calling result
+  // The latest function calling result, not the history
   let function_prompt = "";
   if (inputType === TYPE.TOOL_CALL && functionResults && functionResults.length > 0) {
     for (let i = 0; i < functionResults.length; i++) {
@@ -235,14 +236,26 @@ export async function generateMessages(user, model, input, inputType, files, ima
       const c = functionCalls[i];
       
       if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
-        // Feed message with function calling result
-        messages.push({
-          role: "tool",
-          content: f.success ? f.message : "Error: " + f.error,
-          tool_call_id: c.id,
+        // Find tool call id in messages
+        let isFound = false;
+        messages.map(m => {
+          if (m.role === "assistant" && m.tool_calls && m.tool_calls.length > 0) {
+            m.tool_calls.map(t => {
+              if (t.id === c.id) isFound = true;
+            });
+          }
         });
 
-        function_prompt += f.message;
+        // Feed message with function calling result
+        if (isFound) {
+          messages.push({
+            role: "tool",
+            content: f.success ? f.message : "Error: " + f.error,
+            tool_call_id: c.id,
+          });
+
+          function_prompt += f.message;
+        }
       }
     }
 
