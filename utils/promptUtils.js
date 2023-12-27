@@ -76,8 +76,10 @@ export async function generateMessages(user, model, input, inputType, files, ima
         // Find tool call id in messages
         let isFound = false;
         messages.map(m => {
-          if (m.role === "assistant" && m.tool_calls && m.tool_calls.id === c.id) {
-            isFound = true;
+          if (m.role === "assistant" && m.tool_calls && m.tool_calls.length > 0) {
+            m.tool_calls.map(t => {
+              if (t.id === c.id) isFound = true;
+            });
           }
         });
 
