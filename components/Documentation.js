@@ -8,8 +8,8 @@ const Documentation = () => {
     { name: "GPT-4 Vision (Image Input)", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box." },
     { name: "File Input", description: "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference." },
     { name: "Roles", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
-    { name: "Personal Data Store", description: "Upload files to your personal database for powerful data searches. The results will be inserted as prompts to provide knowledgeable answers." },
-    { name: "Node (Node AI)", description: "Connect to another AI or any data source, to get response or data." },
+    { name: "Data Stores", description: "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers." },
+    { name: "Node (Node AI)", description: "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI." },
     { name: "Midjourney (in progress)", description: "Midjourney is the first node AI. It utilizes the most advanced image generation AI in combination with ChatGPT prompts to generate high-quality certified images." },
   ];
 
