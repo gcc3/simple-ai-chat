@@ -83,7 +83,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
         // Add tool call query
         // only if the tool call id is found in messages
-        if (!isFound) {
+        if (isFound) {
           const message = log.output.slice(2);
           messages.push({ 
             role: "tool",
