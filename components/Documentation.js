@@ -64,7 +64,7 @@ const Documentation = () => {
         </div>
         <div className="mt-2"><a href="#functions"><u>Functions</u></a></div>
         <div className="mt-2"><a href="#shortcuts"><u>Shortcuts</u></a></div>
-        <div className="mt-2"><a href="#api"><u>API</u></a></div>
+        <div className="mt-2"><a href="#api"><u>APIs</u></a></div>
         <div className="mt-2"><a href="#feedback"><u>Feedback & Support</u></a></div>
       </div>
       <div id="introduction" className="mt-5">Introduction</div>
