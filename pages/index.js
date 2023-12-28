@@ -404,7 +404,9 @@ export default function Home() {
             // Triggle fullscreen split
             localStorage.setItem('fullscreen', "split");
             dispatch(toggleFullscreen("split"));
-            updateUserSetting("fullscreen", "split");
+            if (localStorage.getItem("user")) {
+              updateUserSetting("fullscreen", "split");
+            }
             
             console.log("Shortcut: ⌃|");
           }
