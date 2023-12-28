@@ -605,7 +605,8 @@ export default function Home() {
   async function onSubmit(event) {
     if (global.STATE === STATES.DOING) return;
     event.preventDefault();
-    sessionStorage.setItem("time", Date.now());  // update time
+    sessionStorage.setItem("time", Date.now());  // reset time
+    sessionStorage.setItem("historyIndex", 0);   // reset history index
 
     // Clear output and preview images
     clearOutput();
