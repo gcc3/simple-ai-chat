@@ -1,4 +1,4 @@
-import { getUser, getStore, updateStoreEngine, updateStoreSettings } from "utils/sqliteUtils.js";
+import { getUser, getStore, updateStoreSettings } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
 import { createVectaraCorpus, generateVectaraApiKey, createVectaraJtwToken } from "utils/vectaraUtils.js";
 import { mysqlQuery } from "utils/mysqlUtils.js";
@@ -51,7 +51,6 @@ export default async function (req, res) {
     }
 
     const settings = JSON.stringify(initResult.settings);
-    updateStoreEngine(name, username, store.engine)
     updateStoreSettings(name, username, settings);
     return res.status(200).json({ 
       success: true,
@@ -69,7 +68,6 @@ export default async function (req, res) {
     }
 
     const settings = JSON.stringify(initResult.settings);
-    updateStoreEngine(name, username, store.engine)
     updateStoreSettings(name, username, settings);
     return res.status(200).json({ 
       success: true,
