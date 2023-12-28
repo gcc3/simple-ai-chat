@@ -86,14 +86,30 @@ async function generateStoreFunction(store) {
   let function_ = null;
   if (settings.engine === "mysql") {
     function_ = {
-      name: 'search_store_' + store.id,
+      name: "search_store",
       description: store.description,
       parameters: {
         type: "object",
         properties: {
+          host: {
+            type: "string",
+            description: "The hostname of the database.",
+          },
+          user: {
+            type: "string",
+            description: "The username for the database.",
+          },
+          password: {
+            type: "string",
+            description: "The password for the database.",
+          },
+          database: {
+            type: "string",
+            description: "The name of the database.",
+          },
           query: {
             type: "string",
-            description: `
+            description: ` 
             """
             SQL query extracting info to answer the user's question.
             SQL should be written using this database schema:
@@ -105,7 +121,7 @@ async function generateStoreFunction(store) {
             `
           },
         },
-        required: ["query"],
+        required: ["host", "user", "password", "database", "query"],
       }
     };
   }

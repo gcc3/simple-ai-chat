@@ -209,7 +209,10 @@ export default async function (req, res) {
     input_token_ct += generateMessagesResult.token_ct.total;
     raw_prompt = generateMessagesResult.raw_prompt;
     mem = generateMessagesResult.mem;
-    const tools = getTools()
+
+    // Get tools
+    // system tools, and store tools
+    const tools = getTools(store);
 
     console.log("--- tools ---");
     console.log(JSON.stringify(tools) + "\n");
