@@ -124,6 +124,9 @@ Support file type: TXT, JSON, DOCX, PDF
 User can upload these types and query for file content.  
 Image type will be answer with vision model.  
 
+* Command History  
+Use up and down arrow key to navigate between command history.  
+
 
 Roles
 -----
