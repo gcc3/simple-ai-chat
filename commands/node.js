@@ -94,10 +94,12 @@ export default async function node(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (data.result.nodes.length === 0 && (!data.result.user_nodes || Object.entries(data.result.user_nodes).length === 0)) {
+      if (Object.entries(data.result.user_nodes).length === 0 
+       && Object.entries(data.result.group_nodes).length === 0 
+       && Object.entries(data.result.system_nodes).length === 0) {
         return "No available node found.";
       } else {
-        // Found some nodes
+        // User nodes
         let userNodes = "";
         if (data.result.user_nodes && Object.entries(data.result.user_nodes).length > 0) {
           let nodes = [];
@@ -108,25 +110,39 @@ export default async function node(args) {
                      + "\\" + nodes.join(" \\") + "\n\n";
         } else {
           userNodes = "User nodes: \n" 
-                     + "No user node found." + "\n\n";
+                     + "No node found." + "\n\n";
         }
 
-        // Found some nodes
+        // Group nodes
         let groupNodes = "";
-        if (data.result.nodes && Object.entries(data.result.nodes).length > 0) {
+        if (data.result.group_nodes && Object.entries(data.result.group_nodes).length > 0) {
           let nodes = [];
-          Object.entries(data.result.nodes).forEach(([key, value]) => {
+          Object.entries(data.result.group_nodes).forEach(([key, value]) => {
             nodes.push(value.name);
           });
-          groupNodes = "Nodes: \n" 
+          groupNodes = "Group nodes: \n" 
                     + "\\" + nodes.join(" \\") + "\n\n"; 
         } else {
-          groupNodes = "Nodes: \n" 
+          groupNodes = "Group nodes: \n" 
+                      + "No node found." + "\n\n";
+        }
+
+        // System nodes
+        let systemNodes = "";
+        if (data.result.system_nodes && Object.entries(data.result.system_nodes).length > 0) {
+          let nodes = [];
+          Object.entries(data.result.system_nodes).forEach(([key, value]) => {
+            nodes.push(value.name);
+          });
+          systemNodes = "System nodes: \n" 
+                      + "\\" + nodes.join(" \\") + "\n\n"; 
+        } else {
+          systemNodes = "System nodes: \n" 
                       + "No node found." + "\n\n";
         }
 
         // Add star to current node
-        let result = userNodes + groupNodes;
+        let result = userNodes + groupNodes + systemNodes;
         if (sessionStorage.getItem("node")) {
           const currentNode = sessionStorage.getItem("node");
           result = result.replace("\\" + currentNode, "*\\" + currentNode);
@@ -153,29 +169,6 @@ export default async function node(args) {
     const nodeName = args[1].slice(1, -1);
     if (!nodeName) {
       return "Invalid node name.";
-    }
-
-    // Check node exists
-    try {
-      const response = await fetch("/api/node/list", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      if (!data.result.nodes.includes(nodeName) 
-      && (!data.result.user_nodes || !Object.entries(data.result.user_nodes).some(([key, value]) => value.name === nodeName))) {
-        return "Node \"" + nodeName + "\" does not exist.";
-      }
-    } catch (error) {
-      console.error(error);
-      return error;
     }
 
     sessionStorage.setItem("node", nodeName);

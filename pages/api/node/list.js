@@ -5,7 +5,9 @@ export default async function(req, res) {
   try {
     // User nodes
     let userNodes = [];
-    let nodes = [];
+    let groupNodes = [];
+    let systemNodes = [];
+
     const authResult = authenticate(req);
     if (authResult.success) {
       const { id, username } = authResult.user;
@@ -20,17 +22,19 @@ export default async function(req, res) {
         if (!group || group === user.username) {
           continue;
         }
-
-        const groupNodes = await getUserNodes(group);
-        nodes.push(...groupNodes);
+        groupNodes.push(...await getUserNodes(group));
       }
+
+      // Get system nodes
+      systemNodes.push(...await getUserNodes('root'));
     }
 
     // Output the result
     res.status(200).json({
       result: {
         user_nodes: userNodes,
-        nodes: nodes,  // group nodes
+        group_nodes: groupNodes,
+        system_nodes: systemNodes,
       },
     });
   } catch (error) {

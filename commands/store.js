@@ -97,10 +97,12 @@ export default async function store(args, files) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (data.result.stores.length === 0 && (!data.result.user_stores || Object.entries(data.result.user_stores).length === 0)) {
+      if (Object.entries(data.result.user_stores).length === 0
+       && Object.entries(data.result.group_stores).length === 0
+       && Object.entries(data.result.system_stores).length === 0) {
         return "No available store found.";
       } else {
-        // Found some stores
+        // User stores
         let userStores = "";
         if (data.result.user_stores && Object.entries(data.result.user_stores).length > 0) {
           let stores = [];
@@ -111,25 +113,39 @@ export default async function store(args, files) {
                      + "\\" + stores.join(" \\") + "\n\n";
         } else {
           userStores = "User stores: \n" 
-                     + "No user store found." + "\n\n";
+                     + "No store found." + "\n\n";
         }
 
-        // Found some stores
+        // Group stores
         let groupStores = "";
-        if (data.result.stores && Object.entries(data.result.stores).length > 0) {
+        if (data.result.group_stores && Object.entries(data.result.group_stores).length > 0) {
           let stores = [];
-          Object.entries(data.result.stores).forEach(([key, value]) => {
+          Object.entries(data.result.group_stores).forEach(([key, value]) => {
             stores.push(value.name);
           });
-          groupStores = "Stores: \n" 
+          groupStores = "Group Stores: \n" 
                     + "\\" + stores.join(" \\") + "\n\n"; 
         } else {
-          groupStores = "Stores: \n" 
+          groupStores = "Group Stores: \n" 
                       + "No store found." + "\n\n";
         }
 
+        // System stores
+        let systemStores = "";
+        if (data.result.system_stores && Object.entries(data.result.system_stores).length > 0) {
+          let stores = [];
+          Object.entries(data.result.system_stores).forEach(([key, value]) => {
+            stores.push(value.name);
+          });
+          systemStores = "System Stores: \n" 
+                       + "\\" + stores.join(" \\") + "\n\n"; 
+        } else {
+          systemStores = "System Stores: \n" 
+                       + "No store found." + "\n\n";
+        }
+
         // Add star to current store
-        let result = userStores + groupStores;
+        let result = userStores + groupStores + systemStores;
         if (sessionStorage.getItem("store")) {
           const currentStore = sessionStorage.getItem("store");
           result = result.replace("\\" + currentStore, "*\\" + currentStore);
@@ -156,29 +172,6 @@ export default async function store(args, files) {
     const storeName = args[1].slice(1, -1);
     if (!storeName) {
       return "Invalid store name.";
-    }
-
-    // Check store exists
-    try {
-      const response = await fetch("/api/store/list", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      if (!data.result.stores.includes(storeName) 
-      && (!data.result.user_stores || !Object.entries(data.result.user_stores).some(([key, value]) => value.name === storeName))) {
-        return "Store \"" + storeName + "\" does not exist.";
-      }
-    } catch (error) {
-      console.error(error);
-      return error;
     }
 
     sessionStorage.setItem("store", storeName);
