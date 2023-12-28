@@ -16,7 +16,7 @@ import Usage from "components/Usage";
 import Subscription from "components/Subscription";
 import Documentation from "components/Documentation";
 import Copyrights from "components/Copyrights";
-import { refreshUserInfo } from "utils/userUtils";
+import { refreshUserInfo, updateUserSetting } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
 import { generateFileURl } from "utils/awsUtils";
@@ -393,6 +393,20 @@ export default function Home() {
               command(":reset");
               console.log("Shortcut: ⇧⌃r");
             }
+          }
+          break;
+        
+        case "\\":
+        case "|":  // fullscreen split mode
+          if (event.ctrlKey) {
+            event.preventDefault();
+
+            // Triggle fullscreen split
+            localStorage.setItem('fullscreen', "split");
+            dispatch(toggleFullscreen("split"));
+            updateUserSetting("fullscreen", "split");
+            
+            console.log("Shortcut: ⌃|");
           }
           break;
 
