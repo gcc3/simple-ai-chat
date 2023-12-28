@@ -1,8 +1,9 @@
 export default async function searchStore(paramObject) {
   const { store, query } = paramObject;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
   try {
-    const response = await fetch("/api/store/query", {
+    const response = await fetch(baseUrl + "/api/store/query", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

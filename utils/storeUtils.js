@@ -58,7 +58,7 @@ export async function generateStoreFunction(store) {
         properties: {
           store: {
             type: "string",
-            description: "The data store name. Use \"" + store.name + "\"",
+            description: "A JSON string of data store access configuration. In this case use \"" + JSON.stringify(store) + "\"",
           },
           query: {
             type: "string",
