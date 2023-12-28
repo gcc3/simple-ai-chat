@@ -58,20 +58,14 @@ export async function generateStoreFunction(store) {
         properties: {
           store: {
             type: "string",
-            description: "The data store name. Use \"" + store.store + "\"",
+            description: "The data store name. Use \"" + store.name + "\"",
           },
           query: {
             type: "string",
-            description: ` 
-            """
-            SQL query extracting info to answer the user's question.
-            SQL should be written using this database schema:
-            ${database_schema_string}
-            The table and its columns are defined as follows:
-            ${table_columns_def}
-            The query should be returned in plain text, not in JSON.
-            """
-            `
+            description: "SQL query extracting info to answer the user's question. " + "\n" +
+                         "SQL should be written using this database schema: " + database_schema_string + "\n" +
+                         "The table and its columns are defined as follows: " + table_columns_def + "\n" +
+                         "The query should be returned in plain text, not in JSON."
           },
         },
         required: ["store", "query"],
