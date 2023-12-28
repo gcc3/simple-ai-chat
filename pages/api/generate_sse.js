@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils";
 import { evaluate } from './evaluate';
-import { getFunctions, executeFunctions, getTools } from "function.js";
+import { executeFunctions, getTools } from "function.js";
 import { countToken, getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
@@ -205,10 +205,14 @@ export default async function (req, res) {
                                                           use_location, location,
                                                           functionCalls, functionResults);
     token_ct.push(generateMessagesResult.token_ct);
-    input_token_ct += generateMessagesResult.token_ct.total;
     messages = generateMessagesResult.messages;
+    input_token_ct += generateMessagesResult.token_ct.total;
     raw_prompt = generateMessagesResult.raw_prompt;
     mem = generateMessagesResult.mem;
+    const tools = getTools()
+
+    console.log("--- tools ---");
+    console.log(JSON.stringify(tools) + "\n");
 
     console.log("--- messages ---");
     console.log(JSON.stringify(messages) + "\n");
@@ -224,7 +228,7 @@ export default async function (req, res) {
       stream: true,
       // vision does not support function calling
       ...(use_function_calling && !use_vision && {
-        tools: getTools(),
+        tools,
         tool_choice: "auto"
       })
     });
