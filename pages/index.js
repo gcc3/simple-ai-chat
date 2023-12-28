@@ -888,9 +888,11 @@ export default function Home() {
         if (toolCallSameIndex) {
           // Found same index tool
           toolCallSameIndex.function.arguments += toolCall.function.arguments;
+          console.log(toolCall.function.arguments);
         } else {
           // If not found, add the tool
           toolCalls.push(toolCall);
+          console.log(JSON.stringify(toolCall));
         }
         return;
       }
