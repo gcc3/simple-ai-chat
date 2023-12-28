@@ -91,21 +91,9 @@ async function generateStoreFunction(store) {
       parameters: {
         type: "object",
         properties: {
-          host: {
+          store: {
             type: "string",
-            description: "The hostname of the database.",
-          },
-          user: {
-            type: "string",
-            description: "The username for the database.",
-          },
-          password: {
-            type: "string",
-            description: "The password for the database.",
-          },
-          database: {
-            type: "string",
-            description: "The name of the database.",
+            description: "The data store name.",
           },
           query: {
             type: "string",
