@@ -1,6 +1,7 @@
 import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import redirectToUrl from "./functions/redirect_to_url.js";
+import searchStore from "./functions/search_store.js";
 
 // `tools` is a generated json from OpenAI API
 export function toolsToFunctions(tools) {
@@ -13,7 +14,7 @@ export function toolsToFunctions(tools) {
   return functions;
 }
 
-/* 
+/*
 `functions` is a list of function strings
 e.g. ["get_time({\"timezone\": \"America/Los_Angeles\"})"]
 `executeFunctions` returns a list of results
@@ -90,6 +91,10 @@ export function executeFunction(functionName, argsString) {
   if (functionName === "redirect_to_url") {
     return redirectToUrl(paramObject);
   }
+
+  if (functionName === "search_store") {
+    return searchStore(paramObject);
+  }
 }
 
 export function getFunctions() {
@@ -151,9 +156,9 @@ export function getFunctions() {
 }
 
 // A tools wrapper for functions
-export function getTools() {
+export async function getTools() {
   let functions = getFunctions();
-  
+
   let tools = []
   for (let i = 0; i < functions.length; i++) {
     tools.push({

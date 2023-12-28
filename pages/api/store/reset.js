@@ -31,14 +31,14 @@ export default async function (req, res) {
   }
 
   const settings = JSON.parse(store.settings);
-  if (!settings.engine) {
+  if (!store.engine) {
     return res.status(400).json({ 
       success: false, 
       error: "Store not initialized. Use `:store init [engine]` to initialize a data store." 
     });
   }
 
-  if (settings.engine === "vectara") {
+  if (store.engine === "vectara") {
     const vectaraResult = await resetVectaraStore(settings);
     if (!vectaraResult.success) {
       return res.status(400).json({ 

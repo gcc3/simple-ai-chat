@@ -85,7 +85,8 @@ const initializeDatabase = (db) => {
                     id INTEGER PRIMARY KEY,
                     name TEXT NOT NULL,
                     owner TEXT NOT NULL,
-                    settings TEXT NOT NULL,
+                    engine TEXT,
+                    settings TEXT,
                     created_by TEXT NOT NULL,
                     created_at TEXT NOT NULL,
                     updated_at TEXT
@@ -956,7 +957,7 @@ const countUserStores = async (createdBy) => {
   }
 };
 
-const insertStore = async (name, settings, createdBy) => {
+const insertStore = async (name, engine, settings, createdBy) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
@@ -1042,6 +1043,36 @@ const updateStoreOwner = async (name, createdBy, newOwner) => {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare(`UPDATE stores SET owner = ?, updated_at = ? WHERE name = ? AND created_by = ?`);
       stmt.run([newOwner, new Date(), name, createdBy], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateStoreEngine = async (name, createdBy, newEngine) => {
+  const db = await getDatabaseConnection();
+  const store = await getStore(name, createdBy);
+
+  // Check if the store exists
+  if (!store) {
+    console.error("Store not found.");
+    return;
+  }
+
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE stores SET engine = ?, updated_at = ? WHERE name = ? AND created_by = ?");
+      stmt.run([newEngine, new Date(), name, createdBy], function (err) {
         if (err) {
           reject(err);
         }
@@ -1358,6 +1389,7 @@ export {
   deleteStore,
   deleteUserStores,
   updateStoreOwner,
+  updateStoreEngine,
   updateStoreSetting,
   updateStoreSettings,
   getNode,

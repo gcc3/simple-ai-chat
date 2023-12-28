@@ -1,4 +1,4 @@
-import { getUser, getStore, updateStoreSettings } from "utils/sqliteUtils.js";
+import { getUser, getStore, updateStoreEngine, updateStoreSettings } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
 import { createVectaraCorpus, generateVectaraApiKey, createVectaraJtwToken } from "utils/vectaraUtils.js";
 
@@ -39,7 +39,7 @@ export default async function (req, res) {
   }
 
   // Check store settings existance
-  if (store.settings && JSON.parse(store.settings).engine) {
+  if (store.engine) {
     return res.status(400).json({ 
       success: false, 
       error: "Store already initialized." 
@@ -58,6 +58,7 @@ export default async function (req, res) {
     }
 
     const settings = JSON.stringify(initResult.settings);
+    updateStoreEngine(name, username, engine)
     updateStoreSettings(name, username, settings);
     return res.status(200).json({ 
       success: true,
@@ -75,6 +76,7 @@ export default async function (req, res) {
     }
 
     const settings = JSON.stringify(initResult.settings);
+    updateStoreEngine(name, username, engine)
     updateStoreSettings(name, username, settings);
     return res.status(200).json({ 
       success: true,
@@ -92,7 +94,6 @@ async function initializeMysqlStore() {
   return {
     success: true,
     settings: {
-      engine: "mysql",
       host: "",
       port: 3306,
       user: "",
@@ -145,7 +146,6 @@ async function initializeVectaraStore() {
   console.log("Got API key.");
 
   const settings = {
-    engine: "vectara",
     corpusId: corpusId,
     apiKey: apiKey,
     threshold: 0.6,

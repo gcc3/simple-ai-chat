@@ -1,36 +1,24 @@
-import { vectaraQuery } from "utils/vectaraUtils";
-import { getStore } from "utils/sqliteUtils";
-import { authenticate } from "utils/authUtils";
 import { mysqlQuery } from "utils/mysqlUtils";
 
 export default async function handler(req, res) {
   const { store, query } = req.body;
 
-  // Authentication
-  const authResult = authenticate(req);
-  if (!authResult.success) {
-    return res.status(401).json({
-      success: false,
-      error: authResult.error
-    });
-  }
-  const { id, username } = authResult.user;
-
   try {
-    const store_ = await getStore(store, username);
-    if (!store_) {
-      res.status(404).json({
+    const storeInfo = JSON.parse(store);
+
+    if (storeInfo.engine !== "mysql") {
+      res.status(400).json({
         success: false,
-        error: "Store not found.",
+        error: "Invalid engine for query.",
       });
       return;
     }
-    
+
     // Get settings
-    const settings = JSON.parse(store_.settings);
+    const settings = JSON.parse(storeInfo.settings);
 
     // Check is initialized
-    if (!settings.engine) {
+    if (!storeInfo.engine) {
       res.status(400).json({
         success: false,
         error: "Store not initialized. Use `:store init [engine]` to initialize a data store.",
@@ -38,7 +26,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    if (settings.engine === "mysql") {
+    if (storeInfo.engine === "mysql") {
       const queryResult = await queryMysqlStore(settings, query);
       if (!queryResult.success) {
         res.status(400).json({

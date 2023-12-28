@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     const settings = JSON.parse(store_.settings);
 
     // Check is initialized
-    if (!settings.engine) {
+    if (!store.engine) {
       res.status(400).json({
         success: false,
         error: "Store not initialized. Use `:store init [engine]` to initialize a data store.",
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    if (settings.engine === "vectara") {
+    if (store.engine === "vectara") {
       const queryResult = await searchVectaraStore(settings, text);
       if (!queryResult.success) {
         res.status(400).json({
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    if (settings.engine === "mysql") {
+    if (store.engine === "mysql") {
       const queryResult = await searchMysqlStore(settings, text);
       if (!queryResult.success) {
         res.status(400).json({
@@ -90,10 +90,19 @@ async function searchMysqlStore(settings, text) {
   const user = settings.user;
   const password = settings.password;
   const database = settings.database;
+
+  // Check if settings are set
   if (!host || !port || !user || !password || !database) {
+    let error = "";
+    if (!host) { error = "No `host`."; }
+    else if (!port) { error = "No `port`."; }
+    else if (!user) { error = "No `user`."; }
+    else if (!password) { error = "No `password`."; }
+    else if (!database) { error = "No `database`."; }
+
     return {
       success: false,
-      error: "Store not configured. Use `:store set [key] [value]` to configure the store settings.",
+      error: error + " Use `:store set [key] [value]` to configure the store settings.",
     };
   }
 

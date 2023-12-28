@@ -268,7 +268,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
   // 2. Vector data store result
   let store_prompt = "";
-  if (use_vector && store) {
+  if (use_vector && store.engine === "vectara" && store) {
     console.log("--- vector data store ---");
 
     // Get store info
