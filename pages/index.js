@@ -1188,7 +1188,7 @@ export default function Home() {
 
       // Fullscreen split
       if (fullscreen === "split") {
-        elInput.style.height = "100%";
+        // Do nothing
       }
 
       // Non-fullscreen
