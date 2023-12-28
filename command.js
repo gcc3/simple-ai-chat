@@ -32,7 +32,10 @@ import generate from "commands/generate.js";
 export default function commands(input, files) {
   let command = input;
   let args = [];
-  
+
+  // Push to command history
+  pushCommandHistory(command);
+
   if (input.indexOf(' ') !== -1) {
     // Has arguments
     command = input.substring(0, input.indexOf(' '));
@@ -162,4 +165,30 @@ export function getCommands() {
     { id: "", title: "", command: ":system", short_description: "Show system config.", description: "System configuration in server." },
   ];
   return commands;
+}
+
+function pushCommandHistory(command) {
+  let commandHistory = JSON.parse(sessionStorage.getItem("history"));
+
+  // All command index shift + 1
+  let keys = Object.keys(commandHistory).sort().reverse();
+  keys.forEach((key) => {
+    commandHistory[parseInt(key) + 1] = commandHistory[key];
+  });
+
+  // Push to command history
+  commandHistory[1] = command;
+
+  // Remove the oldest command
+  while (Object.entries(commandHistory).length > 10) {
+    // Remove the oldest command
+    delete commandHistory[Object.keys(commandHistory).sort().reverse()[0]];
+  }
+
+  sessionStorage.setItem("history", JSON.stringify(commandHistory));
+}
+
+export function getHistoryCommand(index) {
+  let commandHistory = JSON.parse(sessionStorage.getItem("history"));
+  return commandHistory[index];
 }

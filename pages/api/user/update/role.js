@@ -1,6 +1,7 @@
 import { updateUserRole, extendUserRole, getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 import AWS from 'aws-sdk';
+
 const moment = require('moment');
 
 // TODO: add API key authentication
