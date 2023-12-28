@@ -5,7 +5,9 @@ export default async function(req, res) {
   try {
     // User stores
     let userStores = [];
-    let stores = [];
+    let groupStores = [];
+    let systemStores = [];
+
     const authResult = authenticate(req);
     if (authResult.success) {
       const { id, username } = authResult.user;
@@ -20,17 +22,19 @@ export default async function(req, res) {
         if (!group || group === user.username) {
           continue;
         }
-
-        const groupStores = await getUserStores(group);
-        stores.push(...groupStores);
+        groupStores.push(...await getUserStores(group));
       }
+
+      // Get system stores
+      systemStores.push(...await getUserStores('root'));
     }
 
     // Output the result
     res.status(200).json({
       result: {
         user_stores: userStores,
-        stores: stores,  // group stores
+        group_stores: groupStores,
+        system_stores: systemStores,
       },
     });
   } catch (error) {
