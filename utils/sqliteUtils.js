@@ -808,6 +808,22 @@ const getUserRoles = async (createdBy) => {
   }
 };
 
+const countUserRoles = async (createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT COUNT(*) AS count FROM roles WHERE created_by = ?`, [createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const insertRole = async (roleName, prompt, createdBy) => {
   const db = await getDatabaseConnection();
   try {
@@ -1350,6 +1366,7 @@ export {
   getDatabaseConnection,
   getRole,
   getUserRoles,
+  countUserRoles,
   insertRole,
   deleteRole,
   deleteUserRoles,

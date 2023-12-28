@@ -1,7 +1,8 @@
 import { authenticate } from 'utils/authUtils.js';
-import { getUser, countChatsForUser, countTokenForUserByModel, countUserStores } from 'utils/sqliteUtils.js';
+import { getUser, countChatsForUser, countTokenForUserByModel, countUserRoles, countUserStores, countUserNodes } from 'utils/sqliteUtils.js';
 import { createToken } from 'utils/authUtils.js';
 import { getRoleFequencyLimit } from 'utils/usageUtils.js';
+import { gpt4FeeCal, gpt4vFeeCal } from "utils/usageUtils";
 const moment = require('moment');
 
 export default async function (req, res) {
@@ -39,6 +40,20 @@ export default async function (req, res) {
         });
       }
 
+      // Count token
+      const tokenMonthlyUsageThisMonth = await getUserTokenUsageThisMonth(user.username, process.env.MODEL);
+      const tokenMonthlyUsageLastMonth = await getUserTokenUsageLastMonth(user.username, process.env.MODEL);
+      const tokenVMonthlyUsageThisMonth = await getUserTokenUsageThisMonth(user.username, process.env.MODEL_V);
+      const tokenVMonthlyUsageLastMonth = await getUserTokenUsageLastMonth(user.username, process.env.MODEL_V);
+
+      // Fee calculation
+      const gpt4FeeThisMonth = gpt4FeeCal(tokenMonthlyUsageThisMonth.input, tokenMonthlyUsageThisMonth.output);
+      const gpt4vFeeThisMonth = gpt4vFeeCal(tokenVMonthlyUsageThisMonth.input, tokenVMonthlyUsageThisMonth.output);
+      const totalUsageFeeThisMonth = gpt4FeeThisMonth + gpt4vFeeThisMonth;
+      const gpt4FeeLastMonth = gpt4FeeCal(tokenMonthlyUsageLastMonth.input, tokenMonthlyUsageLastMonth.output);
+      const gpt4vFeeLastMonth = gpt4vFeeCal(tokenVMonthlyUsageLastMonth.input, tokenVMonthlyUsageLastMonth.output);
+      const totalUsageFeeLastMonth = gpt4FeeLastMonth + gpt4vFeeLastMonth;
+
       // Set the token as a cookie
       const sameSiteCookie = process.env.SAME_SITE_COOKIE;
       res.setHeader('Set-Cookie', `auth=${token}; HttpOnly; Path=/; Max-Age=86400; ${sameSiteCookie}`);
@@ -60,12 +75,12 @@ export default async function (req, res) {
             },
             token_monthly: {
               token: {
-                this_month: await getUserTokenUsageThisMonth(user.username, process.env.MODEL),
-                last_month: await getUserTokenUsageLastMonth(user.username, process.env.MODEL),
+                this_month: tokenMonthlyUsageThisMonth,
+                last_month: tokenMonthlyUsageLastMonth,
               },
               token_v: {
-                this_month: await getUserTokenUsageThisMonth(user.username, process.env.MODEL_V),
-                last_month: await getUserTokenUsageLastMonth(user.username, process.env.MODEL_V),
+                this_month: tokenVMonthlyUsageThisMonth,
+                last_month: tokenVMonthlyUsageLastMonth,
               }
             },
             use_count_fequencies: await getUseCountFequenciesWithLimit(user.username, user.role),
@@ -73,9 +88,16 @@ export default async function (req, res) {
               this_month: await getUseCountThisMonth(user.username),
               last_month: await getUseCountLastMonth(user.username),
             },
+            user_role_count: (await countUserRoles(user.username)).count,
             store_count: (await countUserStores(user.username)).count,
+            node_count: (await countUserNodes(user.username)).count,
+            gpt4_fee_last_month: gpt4FeeLastMonth,
+            gpt4v_fee_last_month: gpt4vFeeLastMonth,
+            total_usage_fees_last_month: totalUsageFeeLastMonth,
+            gpt4_fee_this_month: gpt4FeeThisMonth,
+            gpt4v_fee_this_month: gpt4vFeeThisMonth,
+            total_usage_fees_this_month: totalUsageFeeThisMonth,
           },
-          usage_fees: JSON.parse(user.usage),
           balance: user.balance,
         }
       });

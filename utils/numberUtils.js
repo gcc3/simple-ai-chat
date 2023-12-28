@@ -1,4 +1,7 @@
 // Number precision
 export function npre(num, precision = 5) {
-  return parseFloat(num.toFixed(precision));
+  if (num && typeof num === "number") {
+    return parseFloat(num.toFixed(precision));
+  }
+  return 0;
 }
