@@ -60,7 +60,7 @@ export default async function (req, res) {
 }
 
 async function resetVectaraStore(settings) {
-  if (!settings.apiKey || !settings.corpusId) {
+  if (!settings.apiKey || !settings.corpusId || !settings.clientId || !settings.clientSecret || !settings.customerId) {
     return { 
       success: false, 
       error: "Store has invalid settings." 
@@ -68,7 +68,7 @@ async function resetVectaraStore(settings) {
   }
 
   // Get JWT token
-  const jwtToken = await createVectaraJtwToken();
+  const jwtToken = await createVectaraJtwToken(settings.clientId, settings.clientSecret, settings.customerId, settings.apiKey);
   if (!jwtToken) {
     console.log("Failed to create JWT token.");
     return { 
@@ -78,7 +78,7 @@ async function resetVectaraStore(settings) {
   }
 
   // Reset store
-  if (!await resetVectaraCorpus(settings.corpusId, jwtToken)) {
+  if (!await resetVectaraCorpus(settings.corpusId, jwtToken, settings.customerId)) {
     console.log("Failed to reset corpus.");
     return {
       success: false,

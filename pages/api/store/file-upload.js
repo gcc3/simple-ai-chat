@@ -32,14 +32,6 @@ export default async function (req, res) {
 
   const settings = JSON.parse(store.settings);
 
-  // Check is initialized
-  if (!settings.engine) {
-    return res.status(400).json({ 
-      success: false, 
-      error: "Store not initialized. Use `:store init [engine]` to initialize a data store." 
-    });
-  }
-
   if (settings.engine === "vectara") {
     const uploadResult = await uploadFileToVectaraStore(settings, files[0]);
     if (!uploadResult.success) {
@@ -61,14 +53,14 @@ export default async function (req, res) {
 }
 
 async function uploadFileToVectaraStore(settings, file) {
-  if (!settings.apiKey || !settings.corpusId) {
+  if (!settings.apiKey || !settings.corpusId || !settings.clientId || !settings.clientSecret || !settings.customerId) {
     return { 
       success: false, 
       error: "Store has invalid settings." 
     };
   }
 
-  const jwtToken = await createVectaraJtwToken();
+  const jwtToken = await createVectaraJtwToken(settings.clientId, settings.clientSecret, settings.customerId, settings.apiKey);
   if (!jwtToken) {
     console.log("Failed to create JWT token.");
     return {
@@ -78,7 +70,7 @@ async function uploadFileToVectaraStore(settings, file) {
   }
 
   // Upload file
-  if (!await uploadFileToVectaraCorpus(settings.corpusId, file, jwtToken)) {
+  if (!await uploadFileToVectaraCorpus(settings.corpusId, file, jwtToken, settings.customerId)) {
     console.log("Failed to upload file.");
     return {
       success: false,

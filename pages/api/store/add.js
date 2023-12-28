@@ -46,12 +46,11 @@ export default async function (req, res) {
 
   if (engine === "vectara") {
     settings = {
-      vectaraApiKey: "",
-      vectaraCustomerId: "",
-      vectaraClientId: "",
-      vectaraClientSecret: "",
-      vectaraJwtToken: "",
-      vectaraCorpusId: "",
+      apiKey: "",
+      customerId: "",
+      clientId: "",
+      clientSecret: "",
+      corpusId: "",
       description: "",
     }
   }

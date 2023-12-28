@@ -7,7 +7,7 @@ export default async function store(args, files) {
                 "       :store use [name]\n" +
                 "       :store reset\n" +
                 "       :store add [engine] [name]\n" +
-                "       :store init\n" +
+                "       :store init [name?]\n" +
                 "       :store data upload [file]\n" +
                 "       :store data reset [name?]\n" +
                 "       :store [del|delete] [name]\n" +
