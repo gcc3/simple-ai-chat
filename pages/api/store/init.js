@@ -1,4 +1,4 @@
-import { getUser, getStore, updateStoreSettings } from "utils/sqliteUtils.js";
+import { getUser, getStore, updateStoreEngine, updateStoreSettings } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
 import { createVectaraCorpus, generateVectaraApiKey, createVectaraJtwToken } from "utils/vectaraUtils.js";
 

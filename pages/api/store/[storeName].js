@@ -23,6 +23,7 @@ export default async function (req, res) {
             store: store.name,
             owner: store.owner,
             created_by: store.created_by,
+            engine: store.engine,
             settings: JSON.parse(store.settings),
           },
         });
