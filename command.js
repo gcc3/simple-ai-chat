@@ -32,7 +32,10 @@ import generate from "commands/generate.js";
 export default function commands(input, files) {
   let command = input;
   let args = [];
-  
+
+  // Push to command history
+  pushCommandHistory(command);
+
   if (input.indexOf(' ') !== -1) {
     // Has arguments
     command = input.substring(0, input.indexOf(' '));
@@ -101,7 +104,7 @@ export function getCommands() {
     { id: "", title: "", command: ":clear", short_description: "Clear output. (⌃r)", description: "Clear output. This will only reset output to empty." },
     { id: "", title: "", command: ":reset", short_description: "Clear output and reset session. (⇧⌃r)", description: "Clear output and reset session. This will reset the AI memory as session is reset. It will not reset role, store and node." },
     { id: "", title: "", command: ":fullscreen", short_description: "Use fullscreen mode.", description: "Use fullscreen (default) mode." },
-    { id: "", title: "", command: ":fullscreen [split|off]", short_description: "Fullscreen split mode or turn off.", description: "Use fullscreen split mode, to split screen left and right. Or use off to turn fullscreen off. Fullscreen split mode will makes easier to input data and review output, especially when dealing with lengthy responses." },
+    { id: "", title: "", command: ":fullscreen [split|off]", short_description: "Fullscreen split mode (^|) or off.", description: "Use fullscreen split mode, to split screen left and right. Or use off to turn fullscreen off. Fullscreen split mode will makes easier to input data and review output, especially when dealing with lengthy responses." },
     { id: "", title: "", command: ":theme [light/dark/terminal]", short_description: "Change color theme.", description: "" },
     { id: "", title: "", command: ":function [ls|list]", short_description: "List all supported functions.", description: "To directly call a function, use `!function_name(parameters)`" },
     { id: "", title: "", command: ":location [on|off]", short_description: "Switch on/off location service.", description: "When you turn on the location service, the AI can provide answers based on your location." },
@@ -162,4 +165,30 @@ export function getCommands() {
     { id: "", title: "", command: ":system", short_description: "Show system config.", description: "System configuration in server." },
   ];
   return commands;
+}
+
+function pushCommandHistory(command) {
+  let commandHistory = JSON.parse(sessionStorage.getItem("history"));
+
+  // All command index shift + 1
+  let keys = Object.keys(commandHistory).sort().reverse();
+  keys.forEach((key) => {
+    commandHistory[parseInt(key) + 1] = commandHistory[key];
+  });
+
+  // Push to command history
+  commandHistory[1] = command;
+
+  // Remove the oldest command
+  while (Object.entries(commandHistory).length > 10) {
+    // Remove the oldest command
+    delete commandHistory[Object.keys(commandHistory).sort().reverse()[0]];
+  }
+
+  sessionStorage.setItem("history", JSON.stringify(commandHistory));
+}
+
+export function getHistoryCommand(index) {
+  let commandHistory = JSON.parse(sessionStorage.getItem("history"));
+  return commandHistory[index];
 }

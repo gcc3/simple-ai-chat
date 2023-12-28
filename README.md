@@ -19,8 +19,8 @@ Vectara https://vectara.com/
 tailwind https://tailwindcss.com/docs/
 
 
-Main Features
--------------
+Features
+--------
 
 Commands are supported, use `:help` to show commands.  
 
@@ -28,8 +28,7 @@ Commands are supported, use `:help` to show commands.
 Vision models, or called GPT-4V is now supported.  
 Use `+img[https://image_url]` to ask question about an image/multiple images.  
 
-* Tools  
-
+* Tool calls  
 1. Function calling  
 Support for [function calling](https://openai.com/blog/function-calling-and-other-api-updates).  
 The AI can call the function itself, and with the description it can know when to use the function. Amazing!  
@@ -44,26 +43,24 @@ Below tools are to be supported.
 3. Knowledge Retrieval  
 4. Supported files
 
-* Session  
+* Function Calling  
+Refer `Function Calling`
+
+* Sessions and ogs  
 to continue the previous talk, use `:session attach [session_id]` to attach to a session.  
 Use `:info` to check the current session ID.  
-
-* Logs  
 Use `:log` to show the current conversation(session) history.  
-
-* Session log  
 Use arrow key "←", and "→" to check and print previous or next session log.  
 Before switching log, unfocusing input box is required.
 Use "ESC" key to unfocus, or just click somewhere else.  
 
-* Role
+* Roles
 Roles are prompts created for certain purposes.  
 User can custom own role prompt.  
 To use role, simply type `:role use [role_name]`.  
 Use `:role list` to check current available roles.  
 Prompts provided by the Awesome ChatGPT Prompts  
-
-* Custom Roles 
+User can use their custom roles  
 Use `:user role` command to add, set, delete custom roles.  
 
 * Self Result Evaluation  
@@ -71,7 +68,7 @@ I found that the AI can evaluate the result of itself very well.
 And this can solve the credibility problem.  
 To show the stats information includings the self result evaluation use `:stats on`.  
 
-* Location Service  
+* User Location  
 Use the device location to enhance the geology location based questions (like weather or time).  
 To enable use `:location on`  
 
@@ -80,12 +77,16 @@ Use `:speak on` to turn on the speak after generating.
 Use `:speak stop` to stop the speaking.  
 To change language use `:lang use [language code]`  
 
-* AI links   
+* AI links (Node AI)   
 Refer AI Links below.  
 
-* Vector Database  
+* Data Stores  
+User :store to setup a data store  
+1. Vector database search  
 Query data from vector database engine.  
-Currently support [Vectara](https://vectara.com/).  
+Support [Vectara](https://vectara.com/).  
+2. Relational database
+Support `MySQL`
 
 * Themes  
 Provide light theme by default, a dark theme, and a terminal style theme.  
@@ -123,6 +124,9 @@ Support file type: TXT, JSON, DOCX, PDF
 User can upload these types and query for file content.  
 Image type will be answer with vision model.  
 
+* Command History  
+Use up and down arrow key to navigate between command history.  
+
 
 Roles
 -----
@@ -132,6 +136,19 @@ System has 4 kinds of roles.
 2. super_user, advanced use
 3. pro_user, professional use
 4. user, basic use
+
+
+Function Calling
+----------------
+
+!get_time({ "timezone": "___" })  
+Simply return the current time with timezone.  
+
+!get_weather({ "location": "___" })  
+Return weather with WolframeAlpha API.  
+
+!redirect_to_url({ "url": "___", "blank": [true|false] })  
+Send event to brower to make a redirection.  
 
 
 Messages
@@ -340,7 +357,7 @@ return res.status(400).json({
 });
 ```
 
-or 
+Or  
 
 ```
 return res.status(400).json({

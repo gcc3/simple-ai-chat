@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
-import command from "command.js";
+import command, { getHistoryCommand, getNextCommand, getPreviousCommand } from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -16,7 +16,7 @@ import Usage from "components/Usage";
 import Subscription from "components/Subscription";
 import Documentation from "components/Documentation";
 import Copyrights from "components/Copyrights";
-import { refreshUserInfo } from "utils/userUtils";
+import { refreshUserInfo, updateUserSetting } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
 import { generateFileURl } from "utils/awsUtils";
@@ -297,6 +297,8 @@ export default function Home() {
     if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");  // default store
     if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");    // default node
     if (sessionStorage.getItem("time") === null) sessionStorage.setItem("time", Date.now());
+    if (sessionStorage.getItem("history") === null) sessionStorage.setItem("history", JSON.stringify({}));
+    if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", 0);
 
     // Set styles and themes
     dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
@@ -392,6 +394,57 @@ export default function Home() {
               setEvaluation();
               command(":reset");
               console.log("Shortcut: ⇧⌃r");
+            }
+          }
+          break;
+        
+        case "\\":
+        case "|":  // fullscreen split mode
+          if (event.ctrlKey) {
+            event.preventDefault();
+
+            // Triggle fullscreen split
+            localStorage.setItem('fullscreen', "split");
+            dispatch(toggleFullscreen("split"));
+            if (localStorage.getItem("user")) {
+              updateUserSetting("fullscreen", "split");
+            }
+            
+            console.log("Shortcut: ⌃|");
+          }
+          break;
+
+        case "ArrowUp":
+          if ((global.rawInput === "" && global.rawPlaceholder.startsWith(":") || global.rawInput.startsWith(":")) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: ↑");
+
+            // Set input to previous command history
+            const historyIndex = parseInt(sessionStorage.getItem("historyIndex"));
+            console.log("historyIndex: " + historyIndex);
+            const command = getHistoryCommand(historyIndex + 1);
+            if (command) {
+              setInput(command);
+              sessionStorage.setItem("historyIndex", historyIndex + 1);
+            }
+          }
+          break;
+
+        case "ArrowDown":
+          if ((global.rawInput === "" && global.rawPlaceholder.startsWith(":") || global.rawInput.startsWith(":")) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: ↓");
+
+            // Set input to previous command history
+            const historyIndex = parseInt(sessionStorage.getItem("historyIndex"));
+            const command = getHistoryCommand(historyIndex - 1);
+            if (command) {
+              setInput(command);
+              sessionStorage.setItem("historyIndex", historyIndex - 1);
+            } else {
+              // Clear input
+              setInput("");
+              sessionStorage.setItem("historyIndex", 0);
             }
           }
           break;
@@ -552,7 +605,8 @@ export default function Home() {
   async function onSubmit(event) {
     if (global.STATE === STATES.DOING) return;
     event.preventDefault();
-    sessionStorage.setItem("time", Date.now());  // update time
+    sessionStorage.setItem("time", Date.now());  // reset time
+    sessionStorage.setItem("historyIndex", 0);   // reset history index
 
     // Clear output and preview images
     clearOutput();

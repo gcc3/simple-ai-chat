@@ -11,7 +11,9 @@ export default function fullscreen(args) {
   if (args.length === 0) {
     localStorage.setItem('fullscreen', "default");
     store.dispatch(toggleFullscreen("default"));
-    updateUserSetting("fullscreen", "default");
+    if (localStorage.getItem("user")) {
+      updateUserSetting("fullscreen", "default");
+    }
     return "Fullscreen default enabled.";
   }
 
@@ -26,14 +28,18 @@ export default function fullscreen(args) {
     if (config === "split") {
       localStorage.setItem('fullscreen', "split");
       store.dispatch(toggleFullscreen("split"));
-      updateUserSetting("fullscreen", "split");
+      if (localStorage.getItem("user")) {
+        updateUserSetting("fullscreen", "split");
+      }
       return "Fullscreen split vertically.";
     }
 
     if (config === "off") {
       localStorage.setItem('fullscreen', "off");
       store.dispatch(toggleFullscreen("off"));
-      updateUserSetting("fullscreen", "off");
+      if (localStorage.getItem("user")) {
+        updateUserSetting("fullscreen", "off");
+      }
       return "Fullscreen disabled.";
     }
 
