@@ -271,12 +271,10 @@ export default async function store(args, files) {
         return "Store name must be quoted with double quotes.";
       }
 
-      const name = args[1].slice(1, -1);
-      if (!name) {
+      storeName = args[1].slice(1, -1);
+      if (!storeName) {
         return "Invalid store name.";
       }
-
-      storeName = args[1];
     } else {
       // Use current store
       storeName = sessionStorage.getItem("store");

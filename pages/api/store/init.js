@@ -41,7 +41,7 @@ export default async function (req, res) {
 
   console.log("Initializing store \"" + name + "\"...");
 
-  if (engine === "vectara") {
+  if (store.engine === "vectara") {
     const initResult = await initializeVectaraStore(store);
     if (!initResult.success) {
       return res.status(400).json({ 
@@ -51,7 +51,7 @@ export default async function (req, res) {
     }
 
     const settings = JSON.stringify(initResult.settings);
-    updateStoreEngine(name, username, engine)
+    updateStoreEngine(name, username, store.engine)
     updateStoreSettings(name, username, settings);
     return res.status(200).json({ 
       success: true,
@@ -59,7 +59,7 @@ export default async function (req, res) {
     });
   }
 
-  if (engine === "mysql") {
+  if (store.engine === "mysql") {
     const initResult = await initializeMysqlStore(store);
     if (!initResult.success) {
       return res.status(400).json({ 
@@ -69,7 +69,7 @@ export default async function (req, res) {
     }
 
     const settings = JSON.stringify(initResult.settings);
-    updateStoreEngine(name, username, engine)
+    updateStoreEngine(name, username, store.engine)
     updateStoreSettings(name, username, settings);
     return res.status(200).json({ 
       success: true,
@@ -83,7 +83,7 @@ export default async function (req, res) {
   });
 }
 
-async function initializeMysqlStore() {
+async function initializeMysqlStore(store) {
   let settings = JSON.parse(store.settings);
 
   if (!settings.host || !settings.port || !settings.user || !settings.password || !settings.database) {
