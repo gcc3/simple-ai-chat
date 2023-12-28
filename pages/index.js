@@ -443,7 +443,7 @@ export default function Home() {
               sessionStorage.setItem("historyIndex", historyIndex - 1);
             } else {
               // Clear input
-              setInput("");
+              setInput(":");
               sessionStorage.setItem("historyIndex", 0);
             }
           }
