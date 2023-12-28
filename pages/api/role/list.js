@@ -14,7 +14,7 @@ export default async function (req, res) {
       userRoles = await getUserRoles(username);
     }
 
-    // Default roles
+    // System roles
     const roles = await roleListing();
 
     // Output the result

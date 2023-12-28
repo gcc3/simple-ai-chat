@@ -6,7 +6,7 @@ export async function roleListing() {
   fixLastRowNotEmpty('role.csv');
   let roles = [];
 
-  // Default roles
+  // System roles
   const csvRows = fs.createReadStream("./role.csv", { encoding: "utf8" })
                     .pipe(parse({separator: ',', quote: '\"', from_line: 2}))
 

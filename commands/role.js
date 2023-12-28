@@ -105,7 +105,7 @@ export default async function role(args) {
           }
         }
 
-        const defaultRoles = "Default roles: \n" 
+        const defaultRoles = "System roles: \n" 
                      + "\\" + data.result.roles.join(" \\");
 
         // Add star to current role
