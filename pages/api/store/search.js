@@ -90,10 +90,19 @@ async function searchMysqlStore(settings, text) {
   const user = settings.user;
   const password = settings.password;
   const database = settings.database;
+
+  // Check if settings are set
   if (!host || !port || !user || !password || !database) {
+    let error = "";
+    if (!host) { error = "No `host`."; }
+    else if (!port) { error = "No `port`."; }
+    else if (!user) { error = "No `user`."; }
+    else if (!password) { error = "No `password`."; }
+    else if (!database) { error = "No `database`."; }
+
     return {
       success: false,
-      error: "Store not configured. Use `:store set [key] [value]` to configure the store settings.",
+      error: error + " Use `:store set [key] [value]` to configure the store settings.",
     };
   }
 
