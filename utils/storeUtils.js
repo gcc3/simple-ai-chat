@@ -3,6 +3,12 @@ import { mysqlQuery } from "./mysqlUtils.js";
 export async function generateStoreFunction(store) {
   const settings = JSON.parse(store.settings);
 
+  // Engine description
+  let engine_description = "";
+  if (store.engine === "mysql") {
+    engine_description = "This is a MySQL database";
+  }
+
   const dbConfig = {
     host: settings.host,
     port: settings.port,
@@ -46,13 +52,13 @@ export async function generateStoreFunction(store) {
   if (store.engine === "mysql") {
     function_ = {
       name: "search_store",
-      description: settings.description,
+      description: engine_description + "\n" + settings.description,
       parameters: {
         type: "object",
         properties: {
           store: {
             type: "string",
-            description: "The data store name.",
+            description: "The data store name. Use \"" + store.store + "\"",
           },
           query: {
             type: "string",
