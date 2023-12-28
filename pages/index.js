@@ -421,7 +421,6 @@ export default function Home() {
 
             // Set input to previous command history
             const historyIndex = parseInt(sessionStorage.getItem("historyIndex"));
-            console.log("historyIndex: " + historyIndex);
             const command = getHistoryCommand(historyIndex + 1);
             if (command) {
               setInput(command);
