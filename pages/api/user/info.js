@@ -88,9 +88,6 @@ export default async function (req, res) {
               this_month: await getUseCountThisMonth(user.username),
               last_month: await getUseCountLastMonth(user.username),
             },
-            user_role_count: (await countUserRoles(user.username)).count,
-            store_count: (await countUserStores(user.username)).count,
-            node_count: (await countUserNodes(user.username)).count,
             gpt4_fee_last_month: gpt4FeeLastMonth,
             gpt4v_fee_last_month: gpt4vFeeLastMonth,
             total_usage_fees_last_month: totalUsageFeeLastMonth,
@@ -99,6 +96,9 @@ export default async function (req, res) {
             total_usage_fees_this_month: totalUsageFeeThisMonth,
           },
           balance: user.balance,
+          user_role_count: (await countUserRoles(user.username)).count,
+          store_count: (await countUserStores(user.username)).count,
+          node_count: (await countUserNodes(user.username)).count,
         }
       });
     } else {
