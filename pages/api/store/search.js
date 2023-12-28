@@ -17,8 +17,8 @@ export default async function handler(req, res) {
   const { id, username } = authResult.user;
 
   try {
-    const store_ = await getStore(store, username);
-    if (!store_) {
+    const storeInfo = await getStore(store, username);
+    if (!storeInfo) {
       res.status(404).json({
         success: false,
         error: "Store not found.",
@@ -27,10 +27,10 @@ export default async function handler(req, res) {
     }
     
     // Get settings
-    const settings = JSON.parse(store_.settings);
+    const settings = JSON.parse(storeInfo.settings);
 
     // Check is initialized
-    if (!store.engine) {
+    if (!storeInfo.engine) {
       res.status(400).json({
         success: false,
         error: "Store not initialized. Use `:store init [engine]` to initialize a data store.",
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    if (store.engine === "vectara") {
+    if (storeInfo.engine === "vectara") {
       const queryResult = await searchVectaraStore(settings, text);
       if (!queryResult.success) {
         res.status(400).json({
@@ -54,7 +54,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    if (store.engine === "mysql") {
+    if (storeInfo.engine === "mysql") {
       const queryResult = await searchMysqlStore(settings, text);
       if (!queryResult.success) {
         res.status(400).json({
