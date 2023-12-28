@@ -25,7 +25,6 @@ import logout from "./commands/logout.js";
 import store from "./commands/store.js";
 import search from "commands/search.js";
 import node from "commands/node.js";
-import query from "commands/query.js";
 import set from "commands/set.js";
 import generate from "commands/generate.js";
 
@@ -72,7 +71,6 @@ export default function commands(input, files) {
   if (command.startsWith(":store")) return store(args, files);
   if (command.startsWith(":search")) return search(args);
   if (command.startsWith(":node")) return node(args);
-  if (command.startsWith(":query")) return query(args);
   if (command.startsWith(":set")) return set(args);
   if (command.startsWith(":generate")) return generate(args);
   return "Unknown command.";
@@ -126,7 +124,6 @@ export function getCommands() {
     { id: "", title: "", command: ":role [ls|list]", short_description: "List available roles.", description: "Roles include user custom roles and system roles." },
     { id: "", title: "", command: ":role [reset]", short_description: "Reset role to empty.", description: "Clear the current role." },
     { id: "commands-store", title: "Data Store", command: ":search [text]", short_description: "Search from current data store.", description: "Search to get inforamtion from the current data store with nature language." },
-    { id: "", title: "", command: ":query [query]", short_description: "Query directly from data store.", description: "Provide more straightforward way to query from current data store, without any AI involved." },
     { id: "", title: "", command: ":store [name?]", short_description: "Show data store detail.", description: "Show detail of a data store. The store name is optional. If no name is input, it will return the current data store details." },
     { id: "", title: "", command: ":store [ls|list]", short_description: "List available data stores.", description: "Include the user data stores and shared data stores." },
     { id: "", title: "", command: ":store use [name]", short_description: "Use a data store.", description: "" },
