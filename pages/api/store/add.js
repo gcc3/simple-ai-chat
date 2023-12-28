@@ -31,11 +31,10 @@ export default async function (req, res) {
 
   // Store setting initialized as empty
   // Use :store init [engine] to initialize the store
-  const settings = JSON.stringify({
-    "engine": "",
-  });
-
-  insertStore(name, settings, username);
+  const engine = "";
+  const settings = JSON.stringify({});
+  insertStore(name, engine, settings, username);
+  
   return res.status(200).json({ 
     success: true,
     message: "Store \"" + name + "\" is created. You can use command `:store \"" + name + "\"` to check store status and settings, and use `:store init [engine]` to initialize the store.",

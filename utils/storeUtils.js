@@ -43,7 +43,7 @@ export async function generateStoreFunction(store) {
   const table_columns_def = settings.tableColumnsDef || "No table and column definitions found.";
 
   let function_ = null;
-  if (settings.engine === "mysql") {
+  if (store.engine === "mysql") {
     function_ = {
       name: "search_store",
       description: settings.description,

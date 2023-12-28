@@ -30,7 +30,7 @@ export default async function handler(req, res) {
     const settings = JSON.parse(store_.settings);
 
     // Check is initialized
-    if (!settings.engine) {
+    if (!store_.engine) {
       res.status(400).json({
         success: false,
         error: "Store not initialized. Use `:store init [engine]` to initialize a data store.",
@@ -38,7 +38,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    if (settings.engine === "mysql") {
+    if (store_.engine === "mysql") {
       const queryResult = await queryMysqlStore(settings, query);
       if (!queryResult.success) {
         res.status(400).json({

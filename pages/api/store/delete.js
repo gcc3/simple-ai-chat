@@ -32,7 +32,7 @@ export default async function (req, res) {
 
   const settings = JSON.parse(store.settings);
 
-  if (settings.engine === "vectara") {
+  if (store.engine === "vectara") {
     const deleteResult = await deleteVectaraStore(settings);
     if (!deleteResult.success) {
       return res.status(400).json({ 
