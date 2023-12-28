@@ -9,17 +9,6 @@ export async function generateStoreFunction(store) {
     engine_description = "This is a MySQL database";
   }
 
-  const dbConfig = {
-    host: settings.host,
-    port: settings.port,
-    user: settings.user,
-    password: settings.password,
-    database: settings.database,
-    table: settings.table,
-  };
-
-  
-
   // Table and colume definitions
   const table_columns_def = settings.tableColumnsDef || "No table and column definitions found.";
 
@@ -38,8 +27,8 @@ export async function generateStoreFunction(store) {
           query: {
             type: "string",
             description: "SQL query extracting info to answer the user's question. " + "\n" +
-                         "SQL should be written using this database schema: " + database_schema_string + "\n" +
-                         "The table and its columns are defined as follows: " + table_columns_def + "\n" +
+                         "SQL should be written using this database schema: " + settings.schema + "\n" +
+                         "The table and its columns are defined as follows: " + settings.tableColumnsDef + "\n" +
                          "The query should be returned in plain text, not in JSON."
           },
         },
