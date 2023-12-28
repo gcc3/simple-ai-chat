@@ -975,8 +975,8 @@ const insertStore = async (name, engine, settings, createdBy) => {
         }
 
         // If the username doesn't exist, proceed with the insertion
-        const stmt = db.prepare(`INSERT INTO stores (name, owner, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`);
-        stmt.run([name, createdBy, settings, createdBy, new Date(), null], function (err) {
+        const stmt = db.prepare(`INSERT INTO stores (name, owner, engine, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)`);
+        stmt.run([name, createdBy, engine, settings, createdBy, new Date(), null], function (err) {
           if (err) {
             reject(err);
             return;
