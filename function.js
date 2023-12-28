@@ -155,42 +155,9 @@ export function getFunctions() {
   return functions;
 }
 
-async function generateStoreFunction(store) {
-  try {
-    const response = await fetch("/api/store/generate-function?" + store, {
-      method: "GET",
-      credentials: 'include',
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
-    }
-
-    if (data.success) {
-      return data.function;
-    } else {
-      return null;
-    }
-  } catch (error) {
-    console.error(error);
-    return null;
-  }
-}
-
 // A tools wrapper for functions
-export function getTools(store = null) {
+export async function getTools() {
   let functions = getFunctions();
-  
-  if (store) {
-    const function_ = generateStoreFunction(store);
-    if (function_) {
-      functions.push(function_);
-    }
-  }
 
   let tools = []
   for (let i = 0; i < functions.length; i++) {

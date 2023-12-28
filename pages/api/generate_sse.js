@@ -8,8 +8,9 @@ import { countToken, getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
-import { getUser, getNode } from "utils/sqliteUtils";
+import { getUser, getNode, getStore } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
+import { generateStoreFunction } from "utils/storeUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -211,8 +212,20 @@ export default async function (req, res) {
     mem = generateMessagesResult.mem;
 
     // Get tools
-    // system tools, and store tools
-    const tools = getTools(store);
+    // system tools
+    let tools = await getTools();
+
+    // store tools
+    if (user && store) {
+      const storeInfo = await getStore(store, user.username);
+      if (JSON.parse(storeInfo.settings).engine === "mysql") {
+        const storeFunction = await generateStoreFunction(storeInfo);
+        tools.push({
+          type: "function",
+          function: storeFunction
+        });
+      }
+    }
 
     console.log("--- tools ---");
     console.log(JSON.stringify(tools) + "\n");
