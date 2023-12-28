@@ -2,6 +2,7 @@ import { setTheme } from "./themeUtils";
 import store from '../store.js';
 import { toggleFullscreen } from '../states/fullscreenSlice.js';
 import { initializeSession } from "./sessionUtils";
+import session from "commands/session";
 
 export function setUserLocalStorage(user) {
   localStorage.setItem("user", user.username);
@@ -12,13 +13,10 @@ export function setUserLocalStorage(user) {
   if (user.settings) {
     const settings = user.settings;
 
-    if (settings.role) {
-      sessionStorage.setItem("role", settings.role);
-    }
-
-    if (settings.store) {
-      sessionStorage.setItem("store", settings.store);
-    }
+    // Overwrite role, store, node
+    sessionStorage.setItem("role", settings.role);
+    sessionStorage.setItem("store", settings.store);
+    sessionStorage.setItem("node", settings.node);
 
     if (settings.theme) {
       localStorage.setItem("theme", settings.theme);
