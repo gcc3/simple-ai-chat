@@ -97,6 +97,7 @@ export default async function(req, res) {
   try {
     let token_ct;  // input token count
     let messages = [];
+    let mem = 0;
 
     const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
                                                           session, mem_length,
@@ -105,6 +106,7 @@ export default async function(req, res) {
                                                           null, null);  // tool calls (function calling) is not supported
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
+    mem = generateMessagesResult.mem;
 
     // endpoint: /v1/chat/completions
     let chatCompletion;
@@ -143,9 +145,11 @@ export default async function(req, res) {
           temperature: process.env.TEMPERATURE,
           top_p: process.env.TOP_P,
           token_ct: input_token_ct,
+          mem: mem,
           func: false,
           role: role,
           store: store,
+          node: node,
         },
         info: {
           model: process.env.MODEL,

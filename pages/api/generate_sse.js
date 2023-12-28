@@ -196,6 +196,7 @@ export default async function (req, res) {
     let output_token_ct = 0;
     let messages = [];
     let raw_prompt = "";
+    let mem = 0;
 
     // Message base
     const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
@@ -207,6 +208,7 @@ export default async function (req, res) {
     input_token_ct += generateMessagesResult.token_ct.total;
     messages = generateMessagesResult.messages;
     raw_prompt = generateMessagesResult.raw_prompt;
+    mem = generateMessagesResult.mem;
 
     console.log("--- messages ---");
     console.log(JSON.stringify(messages) + "\n");
@@ -228,7 +230,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
     res.flush();
 
     let toolCalls = [];
@@ -323,7 +325,7 @@ export default async function (req, res) {
     await logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
 
     // Final stats
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
 
     // Done message
     res.write(`data: [DONE]\n\n`); res.flush();

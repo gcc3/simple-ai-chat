@@ -20,7 +20,7 @@ const { model, model_v, role_content_system, welcome_message, querying, waiting,
 
 // Generate messages for chatCompletion
 export async function generateMessages(user, model, input, inputType, files, images,
-                                       session, mem_length = 7,
+                                       session, mem_limit = 7,
                                        role, store, node,
                                        use_location, location,
                                        functionCalls, functionResults) {
@@ -63,10 +63,13 @@ export async function generateMessages(user, model, input, inputType, files, ima
   }
 
   // -1. Chat history
+  let mem = 0;
   let chat_history_prompt = "";
-  const sessionLogs = await loglist(session, mem_length);  // limit the memory length in the chat history
+  const sessionLogs = await loglist(session, mem_limit);  // limit the memory length in the chat history
   if (sessionLogs && sessionLogs.length > 0) {
     sessionLogs.reverse().map(log => {
+      mem += 1;
+
       if (log.input.startsWith("F=") && log.output.startsWith("F=")) {
         // Each Tool call query and response log
         // The input will add "F=" as prefix
@@ -399,6 +402,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
   return {
     messages,
     token_ct,
+    mem,
     raw_prompt: {
       system: system_prompt,
       role: role_prompt,
