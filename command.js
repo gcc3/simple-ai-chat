@@ -114,7 +114,6 @@ export function getCommands() {
     { id: "", title: "", command: ":ls", short_description: "List sessions, same as `:session ls`.", description: "" },
     { id: "", title: "", command: ":session [ls|list]", short_description: "List sessions.", description: "List sessions with short user input." },
     { id: "", title: "", command: ":session attach [session_id]", short_description: "Attach to a session.", description: "When attached to a session, you can use left/right arraw key or J/K key to navigate between session logs." },
-    { id: "", title: "", command: ":session [del|delete] [session_id]", short_description: "Delete a session.", description: "" },
     { id: "commands-eval", title: "Stats & Self-evaluation", command: ":stats [on|off]", short_description: "Show stats info.", description: "A stats information will show below." },
     { id: "", title: "", command: ":eval [on|off]", short_description: "Enable the self evaluation score.", description: "" },
     { id: "commands-speak", title: "Speak", command: ":speak [on|off]", short_description: "Switch on/off auto speak.", description: "Auto read the result with system TTS voice." },
