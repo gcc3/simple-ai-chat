@@ -975,8 +975,8 @@ const insertStore = async (name, engine, settings, createdBy) => {
         }
 
         // If the username doesn't exist, proceed with the insertion
-        const stmt = db.prepare(`INSERT INTO stores (name, owner, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`);
-        stmt.run([name, createdBy, settings, createdBy, new Date(), null], function (err) {
+        const stmt = db.prepare(`INSERT INTO stores (name, owner, engine, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)`);
+        stmt.run([name, createdBy, engine, settings, createdBy, new Date(), null], function (err) {
           if (err) {
             reject(err);
             return;
@@ -1043,36 +1043,6 @@ const updateStoreOwner = async (name, createdBy, newOwner) => {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare(`UPDATE stores SET owner = ?, updated_at = ? WHERE name = ? AND created_by = ?`);
       stmt.run([newOwner, new Date(), name, createdBy], function (err) {
-        if (err) {
-          reject(err);
-        }
-        if (this.changes > 0) {
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      });
-      stmt.finalize();
-    });
-  } finally {
-    db.close();
-  }
-};
-
-const updateStoreEngine = async (name, createdBy, newEngine) => {
-  const db = await getDatabaseConnection();
-  const store = await getStore(name, createdBy);
-
-  // Check if the store exists
-  if (!store) {
-    console.error("Store not found.");
-    return;
-  }
-
-  try {
-    return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE stores SET engine = ?, updated_at = ? WHERE name = ? AND created_by = ?");
-      stmt.run([newEngine, new Date(), name, createdBy], function (err) {
         if (err) {
           reject(err);
         }
@@ -1389,7 +1359,6 @@ export {
   deleteStore,
   deleteUserStores,
   updateStoreOwner,
-  updateStoreEngine,
   updateStoreSetting,
   updateStoreSettings,
   getNode,
