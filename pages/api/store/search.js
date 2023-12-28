@@ -128,7 +128,9 @@ async function searchVectaraStore(settings, text) {
   const apiKey = settings.apiKey;
   const threshold = settings.threshold;
   const numberOfResults = settings.numberOfResults;
-  if (!apiKey || !corpusId || !threshold || !numberOfResults) {
+  const customerId = settings.customerId;
+
+  if (!apiKey || !corpusId || !threshold || !numberOfResults || !customerId) {
     return {
       success: false,
       error: "Store not configured. Use `:store set [key] [value]` to configure the store settings.",
@@ -136,7 +138,7 @@ async function searchVectaraStore(settings, text) {
   }
 
   // Query
-  const queryResult = await vectaraQuery(text, corpusId, apiKey, threshold, numberOfResults);
+  const queryResult = await vectaraQuery(text, corpusId, apiKey, threshold, numberOfResults, customerId);
   if (queryResult && queryResult.length > 0) {
     let result = "";
     for (let i = 0; i < queryResult.length; i++) {

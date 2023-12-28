@@ -6,6 +6,7 @@ export default async function handler(req, res) {
   try {
     const storeInfo = JSON.parse(store);
 
+    // Only for mysql
     if (storeInfo.engine !== "mysql") {
       res.status(400).json({
         success: false,

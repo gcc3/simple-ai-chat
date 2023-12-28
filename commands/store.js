@@ -6,8 +6,8 @@ export default async function store(args, files) {
                 "       :store [ls|list]\n" +
                 "       :store use [name]\n" +
                 "       :store reset\n" +
-                "       :store add [name]\n" +
-                "       :store init [engine]\n" +
+                "       :store add [engine] [name]\n" +
+                "       :store init [name?]\n" +
                 "       :store data upload [file]\n" +
                 "       :store data reset [name?]\n" +
                 "       :store [del|delete] [name]\n" +
@@ -196,8 +196,8 @@ export default async function store(args, files) {
 
   // Add a store
   if (command === "add") {
-    if (args.length !== 2) {
-      return "Usage: :store add [name]\n";
+    if (args.length !== 3) {
+      return "Usage: :store add [engine] [name]\n";
     }
 
     if (!localStorage.getItem("user")) {
@@ -205,10 +205,27 @@ export default async function store(args, files) {
     }
 
     if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
+      return "Engine must be quoted with double quotes.";
+    }
+
+    if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
       return "Store name must be quoted with double quotes.";
     }
 
-    const name = args[1].slice(1, -1);
+    const engine = args[1].slice(1, -1);
+    if (!engine) {
+      return "Invalid engine.";
+    }
+
+    const name = args[2].slice(1, -1);
+    if (!name) {
+      return "Invalid store name.";
+    }
+
+    const vaildEngines = ["mysql", "vectara"];
+    if (!vaildEngines.includes(engine)) {
+      return "Invalid engine. Valid engines are: " + vaildEngines.join(", ");
+    }
 
     try {
       const response = await fetch("/api/store/add", {
@@ -218,6 +235,7 @@ export default async function store(args, files) {
         },
         body: JSON.stringify({
           name,
+          engine,
         }),
       });
 
@@ -238,31 +256,34 @@ export default async function store(args, files) {
 
   // Initialize a store
   if (command === "init") {
-    if (args.length !== 2) {
-      return "Usage: :store init [engine]\n";
+    if (args.length !== 1 && args.length !== 2) {
+      return "Usage: :store init [name?]\n";
     }
 
     if (!localStorage.getItem("user")) {
       return "Please login.";
     }
 
-    const storeName = sessionStorage.getItem("store");
+    let storeName = "";
+    if (args.length === 2) {
+      // User use a store name
+      if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
+        return "Store name must be quoted with double quotes.";
+      }
+
+      const name = args[1].slice(1, -1);
+      if (!name) {
+        return "Invalid store name.";
+      }
+
+      storeName = args[1];
+    } else {
+      // Use current store
+      storeName = sessionStorage.getItem("store");
+    }
+
     if (!storeName) {
       return "No data store is set, please use command \`:store use [name]\` to set a store.";
-    }
-
-    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
-      return "Store engine must be quoted with double quotes.";
-    }
-
-    const engine = args[1].slice(1, -1);
-    if (!engine) {
-      return "Invalid engine.";
-    }
-
-    const vaildEngines = ["mysql", "vectara"];
-    if (!vaildEngines.includes(engine)) {
-      return "Invalid engine. Valid engines are: " + vaildEngines.join(", ");
     }
 
     try {
@@ -273,7 +294,6 @@ export default async function store(args, files) {
         },
         body: JSON.stringify({
           name: storeName,
-          engine,
         }),
       });
 

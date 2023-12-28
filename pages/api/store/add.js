@@ -7,7 +7,7 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
-  const { name } = req.body;
+  const { name, engine } = req.body;
 
   // Authentication
   const authResult = authenticate(req);
@@ -29,11 +29,33 @@ export default async function (req, res) {
     });
   }
 
-  // Store setting initialized as empty
-  // Use :store init [engine] to initialize the store
-  const engine = "";
-  const settings = JSON.stringify({});
-  insertStore(name, engine, settings, username);
+  let settings = {};
+  if (engine === "mysql") {
+    settings = {
+      host: "",
+      port: 3306,
+      user: "",
+      password: "",
+      database: "",
+      table: "",
+      schema: "",
+      tableColumnsDef: "",
+      description: "",
+    }
+  }
+
+  if (engine === "vectara") {
+    settings = {
+      apiKey: "",
+      customerId: "",
+      clientId: "",
+      clientSecret: "",
+      corpusId: "",
+      description: "",
+    }
+  }
+
+  insertStore(name, engine, JSON.stringify(settings), username);
   
   return res.status(200).json({ 
     success: true,

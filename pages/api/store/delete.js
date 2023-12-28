@@ -51,14 +51,14 @@ export default async function (req, res) {
 }
 
 async function deleteVectaraStore(settings) {
-  if (!settings.apiKey || !settings.corpusId) {
+  if (!settings.apiKey || !settings.corpusId || !settings.clientId || !settings.clientSecret || !settings.customerId) {
     return { 
       success: false, 
       error: "Store has invalid settings." 
     };
   }
 
-  const jwtToken = await createVectaraJtwToken();
+  const jwtToken = await createVectaraJtwToken(settings.clientId, settings.clientSecret, settings.customerId, settings.apiKey);
   if (!jwtToken) {
     console.log("Failed to create JWT token.");
     return {
@@ -67,7 +67,7 @@ async function deleteVectaraStore(settings) {
     };
   }
 
-  if (!await deleteVectaraApiKey(settings.apiKey, jwtToken)) {
+  if (!await deleteVectaraApiKey(settings.apiKey, jwtToken, settings.customerId)) {
     console.log("Failed to delete API key.");
     return {
       success: false,
@@ -75,7 +75,7 @@ async function deleteVectaraStore(settings) {
     };
   }
 
-  if (!await deleteVectaraCorpus(settings.corpusId, jwtToken)) {
+  if (!await deleteVectaraCorpus(settings.corpusId, jwtToken, settings.customerId)) {
     console.log("Failed to delete corpus.");
     return {
       success: false,
