@@ -721,7 +721,7 @@ export default function Home() {
         }
 
         // Print the output
-        printOutput(commandResult);
+        printOutput(commandResult.trim());
         resetInfo();
       } else {
         console.log("Not command output.")
