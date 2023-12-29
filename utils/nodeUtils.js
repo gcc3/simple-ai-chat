@@ -1,24 +1,25 @@
-export async function queryNodeAi(query, endpoint) {
-  if (!query) return {
+export async function queryNodeAi(input, settings) {
+  if (!input) return {
     success: false,
     error: "Invalid query.",
   }
 
-  const response = await fetch(endpoint + "?" + new URLSearchParams({ input: query }), {
+  if (!settings || !settings.endpoint || !settings.query_parameter_for_input) return {
+    success: false,
+    error: "Invalid settings.",
+  }
+
+  const endpoint = settings.endpoint;
+  const queryParameterForInput = settings.query_parameter_for_input;
+
+  const response = await fetch(endpoint + "?" + queryParameterForInput + "=" + input, {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
     },
   });
 
-  if (response.status !== 200) {
-    return {
-      success: false,
-      error: `Request failed with status ${response.status}`,
-    };
-  }
-
-  if (!response.ok) {
+  if (response.status !== 200 || !response.ok) {
     return {
       success: false,
       error: "An error occurred during your request.",
@@ -27,22 +28,9 @@ export async function queryNodeAi(query, endpoint) {
 
   try {
     const data = await response.json();
-    if (!data.result) {
-      return {
-        success: false,
-        error: "Unexpected node response format.",
-      };
-    }
 
     // Veryfy format
-    if (!data.result) {
-      return {
-        success: false,
-        error: "Unexpected node response format.",
-      };
-    }
-
-    if (typeof data.result !== "string" && !data.result.text) {
+    if (!data.result || (typeof data.result !== "string" && !data.result.text)) {
       return {
         success: false,
         error: "Unexpected node response format.",
@@ -67,7 +55,7 @@ export function isNodeConfigured(settings) {
     return false;
   }
 
-  if (settings.endpoint) {
+  if (settings.endpoint && settings.query_parameter_for_input) {
     isConfigured = true;
   }
   return isConfigured;

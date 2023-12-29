@@ -44,7 +44,7 @@ export default async function handler(req, res) {
 
     // Query
     console.log("Querying node...");
-    const queryResult = await queryNodeAi(input, settings.endpoint);
+    const queryResult = await queryNodeAi(input, settings);
 
     // Return result
     if (!queryResult.success) {
