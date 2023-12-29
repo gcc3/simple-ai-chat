@@ -1,12 +1,13 @@
 import { loglist } from './logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
 import { getRole, getStore, getNode } from './sqliteUtils.js';
-import { vectaraQuery } from "utils/vectaraUtils";
 import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 import { queryNodeAi, isNodeConfigured } from "utils/nodeUtils";
+import { isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
+
 const fetch = require('node-fetch');
 
 // Input output type
@@ -16,7 +17,7 @@ const TYPE = {
 };
 
 // configurations
-const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
+const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 // Generate messages for chatCompletion
 export async function generateMessages(user, model, input, inputType, files, images,
@@ -266,49 +267,30 @@ export async function generateMessages(user, model, input, inputType, files, ima
     token_ct["function"] = countToken(model, function_prompt);
   }
 
-  // 2. Vector data store result
+  // 2. Data store search result
   let store_prompt = "";
-  if (use_vector && store.engine === "vectara" && store) {
-    console.log("--- vector data store ---");
+  if (store) {
+    console.log("--- data store search ---");
 
     // Get store info
     const storeInfo = await getStore(store, user.username);
-
-    // Get settings
     const settings = JSON.parse(storeInfo.settings);
-    const corpusId = settings.corpusId;
-    const apiKey = settings.apiKey;
-    const threshold = settings.threshold;
-    const numberOfResults = settings.numberOfResults;
 
-    // Query
-    if (!apiKey || !corpusId || !threshold || !numberOfResults) {
-      console.log("response: (Store not configured)\n");
-    } else {
-      console.log("corpus_id: " + corpusId);
-      console.log("api_key: " + apiKey);
-      console.log("threshold: " + threshold);
-      console.log("number_of_results: " + numberOfResults);
-
-      const queryResult = await vectaraQuery(input, corpusId, apiKey, threshold, numberOfResults);
-      if (!queryResult) {
-        console.log("response: no result.\n");
-      } else {
-        console.log("response: " + JSON.stringify(queryResult, null, 2) + "\n");
-        queryResult.map(r => {
-          const content = "According to " +  r.document + ": " + r.content;
-          messages.push({
-            "role": "system",
-            "content": content,
-          });
-
-          store_prompt += content;
+    if (isInitialized(storeInfo.engine, settings)) {
+      let queryResult = null;
+      if (storeInfo.engine === "vectara") queryResult = await searchVectaraStore(settings, query);
+      if (storeInfo.engine === "mysql") queryResult = await searchMysqlStore(settings, query);
+      if (queryResult.success) {
+        store_prompt += queryResult.message;
+        messages.push({
+          "role": "system",
+          "content": store_prompt,
         });
+
+        // Count tokens
+        token_ct["store"] = countToken(model, store_prompt);
       }
     }
-
-    // Count tokens
-    token_ct["store"] = countToken(model, store_prompt);
   }
 
   // 3. Node AI result

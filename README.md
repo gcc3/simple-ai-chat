@@ -292,9 +292,6 @@ Get from https://products.wolframalpha.com/api
 [Simple AI Node](https://github.com/gcc3/simple-ai-node) is available to help the chat answer with data.
 To use multiple node, consider use [Simple AI Hub](https://github.com/gcc3/simple-ai-hub).  
 
-* USE_VECTOR  
-Control enable vectara (vector database), value should be `true` or `false`.  
-
 * VECTARA_API_KEY  
 The API key of the vectara, can generate from the console.  
 
