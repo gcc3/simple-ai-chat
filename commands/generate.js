@@ -35,7 +35,14 @@ export default async function generate(args) {
         if (typeof data.result === "string") {
           return data.result;
         } else if (data.result.text) {
-          return data.result.text;
+          let result = "";
+
+          if (data.result.image) {
+            return result += "+img[" + data.result.image + "]" + "\n\n";
+          }
+
+          result = data.result.text;
+          return result;
         } else {
           return "No result.";
         }
