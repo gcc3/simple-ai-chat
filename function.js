@@ -1,7 +1,6 @@
 import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import redirectToUrl from "./functions/redirect_to_url.js";
-import searchStore from "./functions/search_store.js";
 
 // `tools` is a generated json from OpenAI API
 export function toolsToFunctions(tools) {
@@ -90,10 +89,6 @@ export function executeFunction(functionName, argsString) {
 
   if (functionName === "redirect_to_url") {
     return redirectToUrl(paramObject);
-  }
-
-  if (functionName === "search_store") {
-    return searchStore(paramObject);
   }
 }
 

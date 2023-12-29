@@ -32,20 +32,22 @@ export default async function generate(args) {
 
     if (data.success) {
       if (data.result) {
+        let result = "";
+
         if (typeof data.result === "string") {
-          return data.result;
+          result += data.result;
         } else if (data.result.text) {
-          let result = "";
 
           if (data.result.image) {
             result += "+img[" + data.result.image + "]" + " ";
           }
 
           result += data.result.text;
-          return result;
         } else {
-          return "No result.";
+          result += "Result fomat error.";
         }
+
+        return result;
       } else {
         return "No result.";
       }

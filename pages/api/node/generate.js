@@ -3,14 +3,12 @@ import { authenticate } from "utils/authUtils";
 import { queryNodeAi, isNodeConfigured } from "utils/nodeUtils";
 
 export default async function handler(req, res) {
-  const { node, input } = req.body;
-  if (!node || !input) {
-    res.status(400).json({
-      success: false,
-      error: "Missing parameters.",
-    });
-    return;
+  // Check if the method is POST
+  if (req.method !== "POST") {
+    return res.status(405).end();
   }
+
+  const { node, input } = req.body;
 
   // Authentication
   const authResult = authenticate(req);

@@ -4,15 +4,15 @@ export default async function search(args) {
   }
 
   if (!args[0].startsWith("\"") || !args[0].endsWith("\"")) {
-    return "Word must be quoted with double quotes.";
+    return "Query text must be quoted with double quotes.";
   }
+  const query = args[0].slice(1, -1);
 
   const store = sessionStorage.getItem("store");
   if (!store) {
     return "No store selected.";
   }
 
-  const text = args[0].slice(1, -1);
   try {
     const response = await fetch("/api/store/search", {
       method: "POST",
@@ -20,7 +20,7 @@ export default async function search(args) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        text,
+        query,
         store,
       }),
     });

@@ -10,7 +10,6 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser, getNode, getStore } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { generateStoreFunction, isInitialized } from "utils/storeUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -22,7 +21,7 @@ const TYPE = {
 };
 
 // configurations
-const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
+const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 export default async function (req, res) {
   const session = req.query.session || "";
@@ -139,7 +138,6 @@ export default async function (req, res) {
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + use_function_calling + "\n"
     + "use_node_ai: " + use_node_ai + "\n"
-    + "use_vector: " + use_vector + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "(not set)" : location) : "(disabled)") + "\n"
     + "role: " + (role || "(not set)") + "\n"
@@ -213,19 +211,7 @@ export default async function (req, res) {
     mem = generateMessagesResult.mem;
 
     // Get tools
-    // system tools
     let tools = await getTools();
-
-    // store tools
-    if (user && store) {
-      const storeInfo = await getStore(store, user.username);
-      if (storeInfo && storeInfo.engine === "mysql" && isInitialized(storeInfo.engine, JSON.parse(storeInfo.settings))) {
-        tools.push({
-          type: "function",
-          function: await generateStoreFunction(storeInfo)
-        });
-      }
-    }
 
     console.log("--- tools ---");
     console.log(JSON.stringify(tools) + "\n");
