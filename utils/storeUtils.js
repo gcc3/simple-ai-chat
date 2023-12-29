@@ -14,7 +14,7 @@ export async function generateStoreFunction(store) {
   let function_ = null;
   if (store.engine === "mysql") {
     function_ = {
-      name: "search_store",
+      name: "store_search",
       description: engine_description + "\n" + settings.description,
       parameters: {
         type: "object",

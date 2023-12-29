@@ -1,4 +1,4 @@
-export default async function searchStore(paramObject) {
+export default async function storeSearch(paramObject) {
   const { store, query } = paramObject;
   const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
