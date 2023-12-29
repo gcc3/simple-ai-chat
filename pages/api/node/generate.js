@@ -1,6 +1,6 @@
 import { getNode } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
-import queryNodeAi from "utils/nodeUtils";
+import { queryNodeAi, isNodeConfigured } from "utils/nodeUtils";
 
 export default async function handler(req, res) {
   const { node, input } = req.body;
@@ -34,11 +34,10 @@ export default async function handler(req, res) {
     
     // Get settings
     const settings = JSON.parse(nodeInfo.settings);
-    const endpoint = settings.endpoint;
-    if (!endpoint) {
+    if (!isNodeConfigured(settings)) {
       res.status(400).json({
         success: false,
-        error: "Node not configured.",
+        error: "Node not configured. Use `:node set [key] [value]` to configure settings.",
       });
       return;
     }
