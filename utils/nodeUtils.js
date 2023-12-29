@@ -48,19 +48,10 @@ export async function queryNodeAi(query, endpoint) {
         error: "Unexpected node response format.",
       };
     }
-
-    // write result to message
-    let message = "";
-    if (typeof data.result === "string") {
-      message = data.result;
-    } else {
-      message = data.result.text;
-    }
     
     return {
       success: true,
-      message: message,
-      result: data,
+      result: data.result,
     };
   } catch (error) {
     return {

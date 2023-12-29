@@ -31,10 +31,16 @@ export default async function generate(args) {
     }
 
     if (data.success) {
-      if (data.message) {
-        return data.message;
+      if (data.result) {
+        if (typeof data.result === "string") {
+          return data.result;
+        } else if (data.result.text) {
+          return data.result.text;
+        } else {
+          return "No result.";
+        }
       } else {
-        return "No message response.";
+        return "No result.";
       }
     } else {
       return data.error;
