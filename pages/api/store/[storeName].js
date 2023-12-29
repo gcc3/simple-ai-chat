@@ -18,9 +18,22 @@ export default async function (req, res) {
       // Check if role exists in user roles
       const store = await getStore(storeName, authResult.user.username);
 
-      // Check store is initialized
-      const settings = JSON.parse(store.settings);
-      
+      // Mask settings
+      let settings = JSON.parse(store.settings);
+      if (store.engine === "vectara") {
+        settings = {
+          ...settings,
+          apiKey: maskString(settings.apiKey),
+          customerId: maskString(settings.customerId),
+          clientId: maskString(settings.clientId),
+          clientSecret: maskString(settings.clientSecret),
+        }
+      } else if (store.engine === "mysql") {
+        settings = {
+          ...settings,
+          password: maskString(settings.password, 0),
+        }
+      }
 
       if (store) {
         return res.status(200).json({ 
@@ -49,4 +62,11 @@ export default async function (req, res) {
       error: error
     });
   }
+}
+
+// Mask string to * except last 4 characters
+function maskString(str, suffixLength = 4) {
+  if (!str) return str;
+  if (str.length < suffixLength) return str;
+  return str.substring(0, str.length - suffixLength).replace(/./g, '*') + str.substring(str.length - suffixLength);
 }
