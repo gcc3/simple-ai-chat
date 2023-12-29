@@ -86,6 +86,7 @@ export async function searchMysqlStore(settings, input) {
   return {
     success: true,
     message: JSON.stringify(queryResult, null, 2),
+    query: query,
   };
 }
 

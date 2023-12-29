@@ -65,7 +65,7 @@ export default async function handler(req, res) {
 
       res.status(200).json({
         success: true,
-        message: queryResult.message,
+        message: "Query: " + queryResult.query + "\nResult: \n" + queryResult.message,
       });
       return;
     }
