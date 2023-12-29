@@ -31,10 +31,10 @@ export default async function generate(args) {
     }
 
     if (data.success) {
-      if (data.result) {
-        return JSON.stringify(data.result, null, 2);
+      if (data.message) {
+        return data.message;
       } else {
-        return "No response.";
+        return "No message response.";
       }
     } else {
       return data.error;
