@@ -174,6 +174,28 @@ export default async function store(args, files) {
       return "Invalid store name.";
     }
 
+    // Check if the store exists
+    try {
+      const response = await fetch("/api/store/" + storeName, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      if (!data.result) {
+        return "Store not found.";
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+
     sessionStorage.setItem("store", storeName);
 
     // Reset session to forget previous memory

@@ -171,6 +171,28 @@ export default async function node(args) {
       return "Invalid node name.";
     }
 
+    // Check if the node exists
+    try {
+      const response = await fetch("/api/node/" + nodeName, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      if (!data.result) {
+        return "Node not found.";
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+
     sessionStorage.setItem("node", nodeName);
 
     // Reset session to forget previous memory

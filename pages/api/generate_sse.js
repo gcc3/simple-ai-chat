@@ -219,7 +219,7 @@ export default async function (req, res) {
     // store tools
     if (user && store) {
       const storeInfo = await getStore(store, user.username);
-      if (storeInfo.engine === "mysql") {
+      if (storeInfo && storeInfo.engine === "mysql") {
         tools.push({
           type: "function",
           function: await generateStoreFunction(storeInfo)
