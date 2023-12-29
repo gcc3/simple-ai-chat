@@ -196,6 +196,7 @@ export default async function (req, res) {
     let messages = [];
     let raw_prompt = "";
     let mem = 0;
+    let node_images = [];
     let toolCalls = [];
 
     // Message base
@@ -209,6 +210,7 @@ export default async function (req, res) {
     input_token_ct += generateMessagesResult.token_ct.total;
     raw_prompt = generateMessagesResult.raw_prompt;
     mem = generateMessagesResult.mem;
+    node_images = generateMessagesResult.node_images;
 
     // Get tools
     let tools = await getTools();
@@ -237,6 +239,9 @@ export default async function (req, res) {
 
     res.write(`data: ###ENV###${model}\n\n`);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
+    node_images.map(image => {
+      res.write(`data: ###IMG###${image}\n\n`);
+    });
     res.flush();
 
     // Hanldle output
