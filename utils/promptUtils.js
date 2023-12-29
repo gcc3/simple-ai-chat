@@ -323,16 +323,25 @@ export async function generateMessages(user, model, input, inputType, files, ima
     if (!isNodeConfigured(settings)) {
       console.log("response: (Node not configured)\n");
     } else {
-      const queryResult = (await queryNodeAi(input, settings)).result;
+      const queryResult = (await queryNodeAi(input, settings));
       if (!queryResult) {
         console.log("response: (no result)\n");
       } else {
         console.log("response: " + JSON.stringify(queryResult, null, 2) + "\n");
         let content = "";
+
+        // Format result
         if (typeof queryResult.result === "string") {
-          content = queryResult.result;
+          content += queryResult.result;
+        } else if (queryResult.result.text) {
+          if (queryResult.result.image) {
+            content += "+img[" + queryResult.result.image + "]" + " ";
+          }
+
+          content += queryResult.result.text;
+          return result;
         } else {
-          content = queryResult.result.text;
+          return "No result.";
         }
 
         messages.push({
@@ -406,6 +415,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
       user_input_file: user_input_file_prompt,
       function: function_prompt,
       store: store_prompt,
+      node: node_prompt,
       location: location_prompt,
     }
   };
