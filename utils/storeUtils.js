@@ -1,5 +1,9 @@
 import { vectaraQuery } from "./vectaraUtils.js";
 import { mysqlQuery } from "./mysqlUtils.js";
+import OpenAI from "openai";
+
+// OpenAI
+const openai = new OpenAI();
 
 export async function searchVectaraStore(settings, query) {
   const corpusId = settings.corpusId;
@@ -37,12 +41,21 @@ export async function searchVectaraStore(settings, query) {
   }
 }
 
-export async function searchMysqlStore(settings, query) {
+export async function searchMysqlStore(settings, input) {
   const host = settings.host;
   const port = settings.port;
   const user = settings.user;
   const password = settings.password;
   const database = settings.database;
+
+  // Generate query
+  const query = await generateMysqlQuery(input, settings.schema, settings.tableColumnsDef);
+  if (!query) {
+    return {
+      success: false,
+      error: "Failed to generate SQL query.",
+    };
+  }
 
   // Check if settings are set
   if (!host || !port || !user || !password || !database) {
@@ -74,6 +87,53 @@ export async function searchMysqlStore(settings, query) {
     success: true,
     message: JSON.stringify(queryResult, null, 2),
   };
+}
+
+async function generateMysqlQuery(input, schema, tableColumnsDef) {
+  if (!input || input.trim().length === 0) {
+    return null;
+  }
+
+  let messages = [];
+  messages.push({ 
+    role: "system",
+    content: "You are an awesome MySQL query generator. " 
+          + "User provides you schema and table, column defination. "
+          + "You generate a valid MySQL query string and response with JSON format below: \n\n"
+          + "{" + "\n"
+          + "  \"query\": \"AWESOME_QUERY_STRING_TEXT\"" + "\n"
+          + "}" + "\n\n"
+          + "SQL should be written using this database schema: " + schema + "\n" +
+          + "The table and its columns are defined as follows: " + tableColumnsDef + "\n"
+          + "Note, sometimes the database is large, query with limit is recommended."
+  });
+
+  messages.push({
+    role: "user",
+    content: input,
+  });
+
+  try {
+    let chatCompletion;
+    chatCompletion = await openai.chat.completions.create({
+      model: "gpt-3.5-turbo-1106",
+      response_format: { type: "json_object" },
+      messages: messages,
+      temperature: 0,
+      top_p: 1,
+    });
+
+    // Get result
+    let result = null;
+    const choices = chatCompletion.choices;
+    if (choices && choices.length > 0) {
+      result = choices[0].message.content;
+    }
+    return JSON.parse(result).query;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
 }
 
 export async function generateStoreFunction(store) {

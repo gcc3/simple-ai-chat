@@ -20,7 +20,7 @@ export default async function search(args) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        text: query,
+        query,
         store,
       }),
     });
