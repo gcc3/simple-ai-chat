@@ -278,8 +278,8 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
     if (isInitialized(storeInfo.engine, settings)) {
       let queryResult = null;
-      if (storeInfo.engine === "vectara") queryResult = await searchVectaraStore(settings, query);
-      if (storeInfo.engine === "mysql") queryResult = await searchMysqlStore(settings, query);
+      if (storeInfo.engine === "vectara") queryResult = await searchVectaraStore(settings, input);
+      if (storeInfo.engine === "mysql") queryResult = await searchMysqlStore(settings, input);
       if (queryResult.success) {
         store_prompt += queryResult.message;
         messages.push({
