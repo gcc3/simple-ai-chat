@@ -27,6 +27,8 @@ export async function generateMessages(user, model, input, inputType, files, ima
                                        functionCalls, functionResults) {
   let messages = [];
   let token_ct = {};
+  let mem = 0;
+  let node_images = [];
   
   // -3. System master message, important
   let system_prompt = "";
@@ -64,7 +66,6 @@ export async function generateMessages(user, model, input, inputType, files, ima
   }
 
   // -1. Chat history
-  let mem = 0;
   let chat_history_prompt = "";
   const sessionLogs = await loglist(session, mem_limit);  // limit the memory length in the chat history
   if (sessionLogs && sessionLogs.length > 0) {
@@ -318,8 +319,10 @@ export async function generateMessages(user, model, input, inputType, files, ima
         if (typeof queryResult.result === "string") {
           content += queryResult.result;
         } else if (queryResult.result.text) {
+
+          // Node AI generated images
           if (queryResult.result.image) {
-            content += "+img[" + queryResult.result.image + "]" + " ";
+            node_images.push(queryResult.result.image);
           }
 
           content += queryResult.result.text;
@@ -391,6 +394,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
     messages,
     token_ct,
     mem,
+    node_images,
     raw_prompt: {
       system: system_prompt,
       role: role_prompt,

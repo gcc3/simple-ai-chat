@@ -113,6 +113,8 @@ export default function Home() {
 
   // Print image output
   const printImage = (image_url, targetRef, beforeOrAfter = "after") => {
+    console.log("Print Image: " + image_url);
+
     if (targetRef.current && elWrapperRef.current) {
       // Create a div to hold the image
       const imageDiv = document.createElement('div');
@@ -984,7 +986,16 @@ export default function Home() {
         return;
       }
 
-      // V. Handle the DONE signal
+      // V. Handle images
+      if (event.data.startsWith("###IMG###")) {
+        const _image_ = event.data.replace("###IMG###", "");
+
+        // Print image
+        printImage(_image_, elOutputRef, "before");
+        return;
+      }
+
+      // Handle the DONE signal
       if (event.data === '[DONE]') {
         openaiEssSrouce.close();
         console.log("Session closed.")

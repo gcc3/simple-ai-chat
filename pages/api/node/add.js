@@ -44,8 +44,6 @@ export default async function (req, res) {
   const settings = JSON.stringify({
     "endpoint": "",
     "queryParameterForInput": "input",
-    "description": "",
-    "inputDescription": "",
   });
 
   insertNode(name, settings, username);
