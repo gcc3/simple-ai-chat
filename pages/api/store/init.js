@@ -154,17 +154,15 @@ async function initializeMysqlStore(store) {
 async function initializeVectaraStore(store) {
   let settings = JSON.parse(store.settings);
 
-  if (!settings.vectaraApiKey || !settings.vectaraCustomerId || !settings.vectaraClientId || !settings.vectaraClientSecret) {
+  if (!settings.apiKey || !settings.customerId || !settings.clientId || !settings.clientSecret) {
     return { 
       success: false, 
       error: "Vectara API key, customer ID, client ID and client secret are required."
     };
   }
 
-  const { vectaraApiKey, vectaraCustomerId, vectaraClientId, vectaraClientSecret } = settings;
-
   // Get JWT token
-  const jwtToken = await createVectaraJtwToken(vectaraClientId, vectaraClientSecret, vectaraCustomerId, vectaraApiKey);
+  const jwtToken = await createVectaraJtwToken(settings.clientId, settings.clientSecret, settings.customerId, settings.apiKey);
   if (!jwtToken) {
     console.log("Failed to get JTW token.");
     return { 
@@ -178,7 +176,7 @@ async function initializeVectaraStore(store) {
   // Create store
   const corpusName = "i-" + Date.now();
   const description = "store: " + name + ", created by: " + username;
-  const corpusId = await createVectaraCorpus(corpusName, description, jwtToken, vectaraCustomerId);
+  const corpusId = await createVectaraCorpus(corpusName, description, jwtToken, settings.customerId);
   if (!corpusId) {
     console.log("Failed to create corpus.");
     return { 
@@ -190,7 +188,7 @@ async function initializeVectaraStore(store) {
   console.log("Created corpus: " + corpusId);
 
   // Get API key
-  const apiKey = await generateVectaraApiKey(corpusId, jwtToken, vectaraCustomerId);
+  const apiKey = await generateVectaraApiKey(corpusId, jwtToken, settings.customerId);
   if (!apiKey) {
     console.log("Failed to get API key.");
     return { 
