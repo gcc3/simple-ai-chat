@@ -278,19 +278,26 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
     if (isInitialized(storeInfo.engine, settings)) {
       let queryResult = null;
-      if (storeInfo.engine === "vectara") queryResult = await searchVectaraStore(settings, input);
-      if (storeInfo.engine === "mysql") queryResult = await searchMysqlStore(settings, input);
+      if (storeInfo.engine === "vectara") {
+        store_prompt += "After query data from a Vector database: \n";
+        queryResult = await searchVectaraStore(settings, input);
+      }
+      if (storeInfo.engine === "mysql") {
+        store_prompt += "After query data from a MySQL database: \n";
+        queryResult = await searchMysqlStore(settings, input);
+      }
       if (queryResult.success) {
-        store_prompt += queryResult.message;
         messages.push({
           "role": "system",
           "content": store_prompt,
         });
-
-        // Count tokens
-        token_ct["store"] = countToken(model, store_prompt);
+        store_prompt += queryResult.message;
       }
     }
+
+    // Count tokens
+    token_ct["store"] = countToken(model, store_prompt);
+    console.log("response: " + store_prompt + "\n");
   }
 
   // 3. Node AI result
@@ -302,14 +309,9 @@ export async function generateMessages(user, model, input, inputType, files, ima
     const nodeInfo = await getNode(node, user.username);
     const settings = JSON.parse(nodeInfo.settings);
 
-    if (!isNodeConfigured(settings)) {
-      console.log("response: (Node not configured)\n");
-    } else {
+    if (isNodeConfigured(settings)) {
       const queryResult = (await queryNodeAi(input, settings));
-      if (!queryResult) {
-        console.log("response: (no result)\n");
-      } else {
-        console.log("response: " + JSON.stringify(queryResult, null, 2) + "\n");
+      if (queryResult) {
         let content = "";
 
         // Format result
@@ -329,13 +331,13 @@ export async function generateMessages(user, model, input, inputType, files, ima
           "role": "system",
           "content": "Reference data: " + content,
         });
-
         node_prompt += content;
       }
-
-      // Count tokens
-      token_ct["node"] = countToken(model, node_prompt);
     }
+
+    // Count tokens
+    token_ct["node"] = countToken(model, node_prompt);
+    console.log("response: " + node_prompt + "\n");
   }
 
   // 4. Location info

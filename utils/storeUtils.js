@@ -49,11 +49,11 @@ export async function searchMysqlStore(settings, input) {
   const database = settings.database;
 
   // Generate query
-  const query = await generateMysqlQuery(input, settings.schema, settings.tableColumnsDef);
+  const query = await generateMysqlQuery(input, settings.description, settings.schema, settings.tableColumnsDef);
   if (!query) {
     return {
-      success: false,
-      error: "Failed to generate SQL query.",
+      success: true,
+      message: "No query generated.",
     };
   }
 
@@ -89,7 +89,7 @@ export async function searchMysqlStore(settings, input) {
   };
 }
 
-async function generateMysqlQuery(input, schema, tableColumnsDef) {
+async function generateMysqlQuery(input, description, schema, tableColumnsDef) {
   if (!input || input.trim().length === 0) {
     return null;
   }
@@ -98,14 +98,19 @@ async function generateMysqlQuery(input, schema, tableColumnsDef) {
   messages.push({ 
     role: "system",
     content: "You are an awesome MySQL query generator. " 
-          + "User provides you schema and table, column defination. "
+          + "User provides you, the database description, schema and table, column defination. "
           + "You generate a valid MySQL query string and response with JSON format below: \n\n"
           + "{" + "\n"
           + "  \"query\": \"AWESOME_QUERY_STRING_TEXT\"" + "\n"
           + "}" + "\n\n"
+          + "The database description is: " + description + "\n"
           + "SQL should be written using this database schema: " + schema + "\n" +
           + "The table and its columns are defined as follows: " + tableColumnsDef + "\n"
-          + "Note, sometimes the database is large, query with limit is recommended."
+          + "Remember if user asked a question not related to this database, you should response an empty query as follows: \n\n"
+          + "{" + "\n"
+          + "  \"query\": \"\"" + "\n"
+          + "}" + "\n\n"
+          + "Sometimes the database is very large, query with a limitation."
   });
 
   messages.push({
