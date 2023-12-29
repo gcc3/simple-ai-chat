@@ -1,6 +1,7 @@
 import { getStore, deleteStore } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
 import { createVectaraJtwToken, deleteVectaraCorpus, deleteVectaraApiKey } from "utils/vectaraUtils";
+import { isInitialized } from "utils/storeUtils";
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -32,7 +33,9 @@ export default async function (req, res) {
 
   const settings = JSON.parse(store.settings);
 
-  if (store.engine === "vectara") {
+  // Vectara store
+  // Delete store in vectara server if it is initialized
+  if (store.engine === "vectara" && isInitialized(store.engine, settings)) {
     const deleteResult = await deleteVectaraStore(settings);
     if (!deleteResult.success) {
       return res.status(400).json({ 

@@ -909,11 +909,11 @@ const updateRolePrompt = async (roleName, newPrompt, createdBy) => {
 
 // IV. stores
 // Get store by name
-const getStore = async (name, createdBy) => {
+const getStore = async (name, user) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM stores WHERE name = ? AND created_by = ?`, [name, createdBy], (err, rows) => {
+      db.get(`SELECT * FROM stores WHERE name = ? AND owner = ?`, [name, user], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -925,11 +925,11 @@ const getStore = async (name, createdBy) => {
   }
 };
 
-const getUserStores = async (createdBy) => {
+const getUserStores = async (user) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT * FROM stores WHERE created_by = ?`, [createdBy], (err, rows) => {
+      db.all(`SELECT * FROM stores WHERE owner = ? OR created_by = ?`, [user, user], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -941,11 +941,11 @@ const getUserStores = async (createdBy) => {
   }
 };
 
-const countUserStores = async (createdBy) => {
+const countUserStores = async (user) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT COUNT(*) AS count FROM stores WHERE created_by = ?`, [createdBy], (err, rows) => {
+      db.get(`SELECT COUNT(*) AS count FROM stores WHERE owner = ? OR created_by = ?`, [user, user], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -957,12 +957,12 @@ const countUserStores = async (createdBy) => {
   }
 };
 
-const insertStore = async (name, engine, settings, createdBy) => {
+const insertStore = async (name, engine, settings, creator) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
       // First, check if the username already exists
-      db.get(`SELECT id FROM stores WHERE name = ? AND created_by = ?`, [name, createdBy], (err, row) => {
+      db.get(`SELECT id FROM stores WHERE name = ? AND owner = ?`, [name, creator], (err, row) => {
         if (err) {
           reject(err);
           return;
@@ -976,7 +976,7 @@ const insertStore = async (name, engine, settings, createdBy) => {
 
         // If the username doesn't exist, proceed with the insertion
         const stmt = db.prepare(`INSERT INTO stores (name, owner, engine, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)`);
-        stmt.run([name, createdBy, engine, settings, createdBy, new Date(), null], function (err) {
+        stmt.run([name, creator, engine, settings, creator, new Date(), null], function (err) {
           if (err) {
             reject(err);
             return;
@@ -993,12 +993,12 @@ const insertStore = async (name, engine, settings, createdBy) => {
   }
 };
 
-const deleteStore = async (name, createdBy) => {
+const deleteStore = async (name, owner) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare(`DELETE FROM stores WHERE name = ? AND created_by = ?`);
-      stmt.run([name, createdBy], function (err) {
+      const stmt = db.prepare(`DELETE FROM stores WHERE name = ? AND owner = ?`);
+      stmt.run([name, owner], function (err) {
         if (err) {
           reject(err);
         }
@@ -1015,12 +1015,12 @@ const deleteStore = async (name, createdBy) => {
   }
 };
 
-const deleteUserStores = async (createdBy) => {
+const deleteUserStores = async (user) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("DELETE FROM stores WHERE created_by = ?");
-      stmt.run([createdBy], function (err) {
+      const stmt = db.prepare("DELETE FROM stores WHERE owner = ?");
+      stmt.run([user], function (err) {
         if (err) {
           reject(err);
         }
@@ -1037,12 +1037,12 @@ const deleteUserStores = async (createdBy) => {
   }
 };
 
-const updateStoreOwner = async (name, createdBy, newOwner) => {
+const updateStoreOwner = async (name, oldOwner, newOwner) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare(`UPDATE stores SET owner = ?, updated_at = ? WHERE name = ? AND created_by = ?`);
-      stmt.run([newOwner, new Date(), name, createdBy], function (err) {
+      const stmt = db.prepare(`UPDATE stores SET owner = ?, updated_at = ? WHERE name = ? AND owner = ?`);
+      stmt.run([newOwner, new Date(), name, oldOwner], function (err) {
         if (err) {
           reject(err);
         }
@@ -1059,9 +1059,9 @@ const updateStoreOwner = async (name, createdBy, newOwner) => {
   }
 };
 
-const updateStoreSetting = async (name, createdBy, key, value) => {
+const updateStoreSetting = async (name, user, key, value) => {
   const db = await getDatabaseConnection();
-  const store = await getStore(name, createdBy);
+  const store = await getStore(name, user);
 
   // Check if the store exists
   if (!store) {
@@ -1078,8 +1078,8 @@ const updateStoreSetting = async (name, createdBy, key, value) => {
 
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND created_by = ?");
-      stmt.run([settings, new Date(), name, createdBy], function (err) {
+      const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND owner = ?");
+      stmt.run([settings, new Date(), name, user], function (err) {
         if (err) {
           reject(err);
         }
@@ -1096,9 +1096,9 @@ const updateStoreSetting = async (name, createdBy, key, value) => {
   }
 };
 
-const updateStoreSettings = async (name, createdBy, newSettings) => {
+const updateStoreSettings = async (name, user, newSettings) => {
   const db = await getDatabaseConnection();
-  const store = await getStore(name, createdBy);
+  const store = await getStore(name, user);
 
   // Check if the store exists
   if (!store) {
@@ -1108,8 +1108,8 @@ const updateStoreSettings = async (name, createdBy, newSettings) => {
 
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND created_by = ?");
-      stmt.run([newSettings, new Date(), name, createdBy], function (err) {
+      const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND owner = ?");
+      stmt.run([newSettings, new Date(), name, user], function (err) {
         if (err) {
           reject(err);
         }
@@ -1128,11 +1128,11 @@ const updateStoreSettings = async (name, createdBy, newSettings) => {
 
 // V. Nodes
 // Get node by name
-const getNode = async (name, createdBy) => {
+const getNode = async (name, owner) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM nodes WHERE name = ? AND created_by = ?`, [name, createdBy], (err, rows) => {
+      db.get(`SELECT * FROM nodes WHERE name = ? AND owner = ?`, [name, owner], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -1144,11 +1144,11 @@ const getNode = async (name, createdBy) => {
   }
 };
 
-const getUserNodes = async (createdBy) => {
+const getUserNodes = async (user) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT * FROM nodes WHERE created_by = ?`, [createdBy], (err, rows) => {
+      db.all(`SELECT * FROM nodes WHERE owner = ? OR created_by = ?`, [user, user], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -1160,11 +1160,11 @@ const getUserNodes = async (createdBy) => {
   }
 };
 
-const countUserNodes = async (createdBy) => {
+const countUserNodes = async (user) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT COUNT(*) AS count FROM nodes WHERE created_by = ?`, [createdBy], (err, rows) => {
+      db.get(`SELECT COUNT(*) AS count FROM nodes WHERE owner = ? OR created_by = ?`, [user, user], (err, rows) => {
         if (err) {
           reject(err);
         }
@@ -1176,12 +1176,12 @@ const countUserNodes = async (createdBy) => {
   }
 };
 
-const insertNode = async (name, settings, createdBy) => {
+const insertNode = async (name, settings, creator) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
       // First, check if the username already exists
-      db.get(`SELECT id FROM nodes WHERE name = ? AND created_by = ?`, [name, createdBy], (err, row) => {
+      db.get(`SELECT id FROM nodes WHERE name = ? AND owner = ?`, [name, creator], (err, row) => {
         if (err) {
           reject(err);
           return;
@@ -1195,7 +1195,7 @@ const insertNode = async (name, settings, createdBy) => {
 
         // If the username doesn't exist, proceed with the insertion
         const stmt = db.prepare(`INSERT INTO nodes (name, owner, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`);
-        stmt.run([name, createdBy, settings, createdBy, new Date(), null], function (err) {
+        stmt.run([name, creator, settings, creator, new Date(), null], function (err) {
           if (err) {
             reject(err);
             return;
@@ -1212,12 +1212,12 @@ const insertNode = async (name, settings, createdBy) => {
   }
 };
 
-const deleteNode = async (name, createdBy) => {
+const deleteNode = async (name, owner) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare(`DELETE FROM nodes WHERE name = ? AND created_by = ?`);
-      stmt.run([name, createdBy], function (err) {
+      const stmt = db.prepare(`DELETE FROM nodes WHERE name = ? AND owner = ?`);
+      stmt.run([name, owner], function (err) {
         if (err) {
           reject(err);
         }
@@ -1234,12 +1234,12 @@ const deleteNode = async (name, createdBy) => {
   }
 };
 
-const deleteUserNodes = async (createdBy) => {
+const deleteUserNodes = async (owner) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("DELETE FROM nodes WHERE created_by = ?");
-      stmt.run([createdBy], function (err) {
+      const stmt = db.prepare("DELETE FROM nodes WHERE owner = ?");
+      stmt.run([owner], function (err) {
         if (err) {
           reject(err);
         }
@@ -1256,12 +1256,12 @@ const deleteUserNodes = async (createdBy) => {
   }
 };
 
-const updateNodeOwner = async (name, createdBy, newOwner) => {
+const updateNodeOwner = async (name, oldOwner, newOwner) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare(`UPDATE nodes SET owner = ?, updated_at = ? WHERE name = ? AND created_by = ?`);
-      stmt.run([newOwner, new Date(), name, createdBy], function (err) {
+      const stmt = db.prepare(`UPDATE nodes SET owner = ?, updated_at = ? WHERE name = ? AND owner = ?`);
+      stmt.run([newOwner, new Date(), name, oldOwner], function (err) {
         if (err) {
           reject(err);
         }
@@ -1278,9 +1278,9 @@ const updateNodeOwner = async (name, createdBy, newOwner) => {
   }
 };
 
-const updateNodeSettings = async (name, createdBy, key, value) => {
+const updateNodeSettings = async (name, owner, key, value) => {
   const db = await getDatabaseConnection();
-  const node = await getNode(name, createdBy);
+  const node = await getNode(name, owner);
 
   // Check if the node exists
   if (!node) {
@@ -1297,8 +1297,8 @@ const updateNodeSettings = async (name, createdBy, key, value) => {
 
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE nodes SET settings = ?, updated_at = ? WHERE name = ? AND created_by = ?");
-      stmt.run([settings, new Date(), name, createdBy], function (err) {
+      const stmt = db.prepare("UPDATE nodes SET settings = ?, updated_at = ? WHERE name = ? AND owner = ?");
+      stmt.run([settings, new Date(), name, owner], function (err) {
         if (err) {
           reject(err);
         }

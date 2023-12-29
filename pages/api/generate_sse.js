@@ -10,7 +10,6 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser, getNode, getStore } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { generateStoreFunction } from "utils/storeUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -22,7 +21,7 @@ const TYPE = {
 };
 
 // configurations
-const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
+const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 export default async function (req, res) {
   const session = req.query.session || "";
@@ -139,7 +138,6 @@ export default async function (req, res) {
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + use_function_calling + "\n"
     + "use_node_ai: " + use_node_ai + "\n"
-    + "use_vector: " + use_vector + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "(not set)" : location) : "(disabled)") + "\n"
     + "role: " + (role || "(not set)") + "\n"
@@ -198,6 +196,8 @@ export default async function (req, res) {
     let messages = [];
     let raw_prompt = "";
     let mem = 0;
+    let node_images = [];
+    let toolCalls = [];
 
     // Message base
     const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
@@ -210,21 +210,10 @@ export default async function (req, res) {
     input_token_ct += generateMessagesResult.token_ct.total;
     raw_prompt = generateMessagesResult.raw_prompt;
     mem = generateMessagesResult.mem;
+    node_images = generateMessagesResult.node_images;
 
     // Get tools
-    // system tools
     let tools = await getTools();
-
-    // store tools
-    if (user && store) {
-      const storeInfo = await getStore(store, user.username);
-      if (storeInfo.engine === "mysql") {
-        tools.push({
-          type: "function",
-          function: await generateStoreFunction(storeInfo)
-        });
-      }
-    }
 
     console.log("--- tools ---");
     console.log(JSON.stringify(tools) + "\n");
@@ -250,11 +239,23 @@ export default async function (req, res) {
 
     res.write(`data: ###ENV###${model}\n\n`);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
+    node_images.map(image => {
+      res.write(`data: ###IMG###${image}\n\n`);
+    });
     res.flush();
 
-    let toolCalls = [];
+    // Hanldle output
     for await (const part of chatCompletion) {
-      // handle tool calls output
+      // 1. handle message output
+      const content = part.choices[0].delta.content;
+      if (content) {
+        outputType = TYPE.NORMAL;
+        output += content;
+        let message = content.replaceAll("\n", "###RETURN###");
+        res.write(`data: ${message}\n\n`); res.flush();
+      }
+
+      // 2. handle tool calls output
       const tool_calls = part.choices[0].delta.tool_calls;
       if (tool_calls) {
         outputType = TYPE.TOOL_CALL;
@@ -269,15 +270,6 @@ export default async function (req, res) {
           // If not found, add the tool
           toolCalls.push(toolCall);
         }
-      }
-
-      // handle message output
-      const content = part.choices[0].delta.content;
-      if (content) {
-        outputType = TYPE.NORMAL;
-        output += content;
-        let message = content.replaceAll("\n", "###RETURN###");
-        res.write(`data: ${message}\n\n`); res.flush();
       }
     }
 

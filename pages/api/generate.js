@@ -18,7 +18,7 @@ const TYPE = {
 };
 
 // configurations
-const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
+const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 export default async function(req, res) {
   const session = req.body.session || "";
@@ -88,7 +88,6 @@ export default async function(req, res) {
   + "use_eval: " + use_eval + "\n"
   + "use_function_calling: " + use_function_calling + "\n"
   + "use_node_ai: " + use_node_ai + "\n"
-  + "use_vector: " + use_vector + "\n"
   + "use_lcation: " + use_location + "\n"
   + "location: " + (use_location ? (location === "" ? "(not set)" : location) : "(disabled)") + "\n"
   + "role: " + (role || "(not set)") + "\n"

@@ -1,5 +1,6 @@
 import { getStore } from 'utils/sqliteUtils';
 import { authenticate } from 'utils/authUtils';
+import { isInitialized } from 'utils/storeUtils';
 
 export default async function (req, res) {
   const { storeName } = req.query;
@@ -18,19 +19,19 @@ export default async function (req, res) {
       const store = await getStore(storeName, authResult.user.username);
 
       // Mask settings
-      let setting = JSON.parse(store.settings);
+      let settings = JSON.parse(store.settings);
       if (store.engine === "vectara") {
-        setting = {
-          ...setting,
-          apiKey: maskString(setting.apiKey),
-          customerId: maskString(setting.customerId),
-          clientId: maskString(setting.clientId),
-          clientSecret: maskString(setting.clientSecret),
+        settings = {
+          ...settings,
+          apiKey: maskString(settings.apiKey),
+          customerId: maskString(settings.customerId),
+          clientId: maskString(settings.clientId),
+          clientSecret: maskString(settings.clientSecret),
         }
       } else if (store.engine === "mysql") {
-        setting = {
-          ...setting,
-          password: maskString(setting.password, 0),
+        settings = {
+          ...settings,
+          password: maskString(settings.password, 0),
         }
       }
 
@@ -42,7 +43,8 @@ export default async function (req, res) {
             owner: store.owner,
             created_by: store.created_by,
             engine: store.engine,
-            settings: setting,
+            settings,
+            initialized: isInitialized(store.engine, settings)
           },
         });
       } else {

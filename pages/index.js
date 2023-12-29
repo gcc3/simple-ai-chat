@@ -113,6 +113,8 @@ export default function Home() {
 
   // Print image output
   const printImage = (image_url, targetRef, beforeOrAfter = "after") => {
+    console.log("Print Image: " + image_url);
+
     if (targetRef.current && elWrapperRef.current) {
       // Create a div to hold the image
       const imageDiv = document.createElement('div');
@@ -142,6 +144,8 @@ export default function Home() {
 
   // Print video output (support: YouTube)
   const printVideo = (video_url, targetRef, beforeOrAfter = "after") => {
+    console.log("Print Video: " + video_url);
+
     if (targetRef.current) {
       // Create a wrapper div to hold the iframe and control its aspect ratio
       const videoDiv = document.createElement('div');
@@ -684,14 +688,44 @@ export default function Home() {
 
       // Get command result
       const files = file_urls.concat(image_urls);
-      const commandResult = await command(input, files);
+      let commandResult = await command(input, files);
 
       // Use command return to bypass reset output and info
       if (commandResult !== null) {
         console.log("Command Output:\n" + commandResult);
 
+        // Print images in command output
+        let image_urls = [];
+        let matches = [...commandResult.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
+        matches.forEach(match => {
+          const block = match[1] + "[" + match[2] + "]";
+
+          // Extract the URL
+          const url = block.replace("+image[", "").replace("+img[", "").replace("]", "");
+
+          // Check if the URL is valid
+          if (!url.startsWith("http")) {
+            console.error("Invalid URL: " + url);
+            return;
+          }
+
+          // Add to the URL list
+          if (block.startsWith("+image[") || block.startsWith("+img[")) {
+            image_urls.push(url);
+          }
+
+          // Remove the block from the raw input
+          commandResult = commandResult.replace(block, "");
+        });
+        if (image_urls.length > 0) {
+          console.log("Images:\n" + image_urls.join("\n"));
+          image_urls.map((image_url) => {
+            printImage(image_url, elOutputRef, "before");
+          });
+        }
+
         // Print the output
-        printOutput(commandResult);
+        printOutput(commandResult.trim());
         resetInfo();
       } else {
         console.log("Not command output.")
@@ -888,9 +922,11 @@ export default function Home() {
         if (toolCallSameIndex) {
           // Found same index tool
           toolCallSameIndex.function.arguments += toolCall.function.arguments;
+          console.log(toolCall.function.arguments);
         } else {
           // If not found, add the tool
           toolCalls.push(toolCall);
+          console.log(JSON.stringify(toolCall));
         }
         return;
       }
@@ -952,7 +988,16 @@ export default function Home() {
         return;
       }
 
-      // V. Handle the DONE signal
+      // V. Handle images
+      if (event.data.startsWith("###IMG###")) {
+        const _image_ = event.data.replace("###IMG###", "");
+
+        // Print image
+        printImage(_image_, elOutputRef, "before");
+        return;
+      }
+
+      // Handle the DONE signal
       if (event.data === '[DONE]') {
         openaiEssSrouce.close();
         console.log("Session closed.")

@@ -43,11 +43,12 @@ export default async function (req, res) {
 
   const settings = JSON.stringify({
     "endpoint": "",
+    "queryParameterForInput": "input",
   });
 
   insertNode(name, settings, username);
   return res.status(200).json({ 
     success: true,
-    message: "Node \"" + name + "\" is created. You can use command `:node \"" + name + "\"` to check node status and settings.",
+    message: "Node \"" + name + "\" is created. You can use command `:node set [key] [value]` to configure it, and use command `:node \"" + name + "\"` to check node status and settings. Node `" + name + "` is now active.",
   });
 }

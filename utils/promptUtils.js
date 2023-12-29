@@ -1,12 +1,13 @@
 import { loglist } from './logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
 import { getRole, getStore, getNode } from './sqliteUtils.js';
-import { vectaraQuery } from "utils/vectaraUtils";
 import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import queryNodeAi from "utils/nodeUtils";
+import { queryNodeAi, isNodeConfigured } from "utils/nodeUtils";
+import { isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
+
 const fetch = require('node-fetch');
 
 // Input output type
@@ -16,7 +17,7 @@ const TYPE = {
 };
 
 // configurations
-const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_vector, use_payment, use_access_control, use_email } = getSystemConfigurations();
+const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 // Generate messages for chatCompletion
 export async function generateMessages(user, model, input, inputType, files, images,
@@ -26,6 +27,8 @@ export async function generateMessages(user, model, input, inputType, files, ima
                                        functionCalls, functionResults) {
   let messages = [];
   let token_ct = {};
+  let mem = 0;
+  let node_images = [];
   
   // -3. System master message, important
   let system_prompt = "";
@@ -63,7 +66,6 @@ export async function generateMessages(user, model, input, inputType, files, ima
   }
 
   // -1. Chat history
-  let mem = 0;
   let chat_history_prompt = "";
   const sessionLogs = await loglist(session, mem_limit);  // limit the memory length in the chat history
   if (sessionLogs && sessionLogs.length > 0) {
@@ -266,49 +268,37 @@ export async function generateMessages(user, model, input, inputType, files, ima
     token_ct["function"] = countToken(model, function_prompt);
   }
 
-  // 2. Vector data store result
+  // 2. Data store search result
   let store_prompt = "";
-  if (use_vector && store.engine === "vectara" && store) {
-    console.log("--- vector data store ---");
+  if (store) {
+    console.log("--- data store search ---");
 
     // Get store info
     const storeInfo = await getStore(store, user.username);
-
-    // Get settings
     const settings = JSON.parse(storeInfo.settings);
-    const corpusId = settings.corpusId;
-    const apiKey = settings.apiKey;
-    const threshold = settings.threshold;
-    const numberOfResults = settings.numberOfResults;
 
-    // Query
-    if (!apiKey || !corpusId || !threshold || !numberOfResults) {
-      console.log("response: (Store not configured)\n");
-    } else {
-      console.log("corpus_id: " + corpusId);
-      console.log("api_key: " + apiKey);
-      console.log("threshold: " + threshold);
-      console.log("number_of_results: " + numberOfResults);
-
-      const queryResult = await vectaraQuery(input, corpusId, apiKey, threshold, numberOfResults);
-      if (!queryResult) {
-        console.log("response: no result.\n");
-      } else {
-        console.log("response: " + JSON.stringify(queryResult, null, 2) + "\n");
-        queryResult.map(r => {
-          const content = "According to " +  r.document + ": " + r.content;
-          messages.push({
-            "role": "system",
-            "content": content,
-          });
-
-          store_prompt += content;
+    if (isInitialized(storeInfo.engine, settings)) {
+      let queryResult = null;
+      if (storeInfo.engine === "vectara") {
+        store_prompt += "Vector database query result: \n";
+        queryResult = await searchVectaraStore(settings, input);
+      }
+      if (storeInfo.engine === "mysql") {
+        store_prompt += "MySQL database query result: \n";
+        queryResult = await searchMysqlStore(settings, input);
+      }
+      if (queryResult.success) {
+        store_prompt += queryResult.message;
+        messages.push({
+          "role": "system",
+          "content": store_prompt,
         });
       }
     }
 
     // Count tokens
     token_ct["store"] = countToken(model, store_prompt);
+    console.log("response: " + store_prompt + "\n");
   }
 
   // 3. Node AI result
@@ -318,38 +308,39 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
     // Get node info
     const nodeInfo = await getNode(node, user.username);
-
-    // Get settings
     const settings = JSON.parse(nodeInfo.settings);
-    const endpoint = settings.endpoint;
-    if (!endpoint) {
-      console.log("response: (Node not configured)\n");
-    } else {
-      console.log("endpoint: " + endpoint);
 
-      const queryResult = (await queryNodeAi(input, endpoint)).result;
-      if (!queryResult) {
-        console.log("response: (no result)\n");
-      } else {
-        console.log("response: " + JSON.stringify(queryResult, null, 2) + "\n");
+    if (isNodeConfigured(settings)) {
+      const queryResult = (await queryNodeAi(input, settings));
+      if (queryResult) {
         let content = "";
+
+        // Format result
         if (typeof queryResult.result === "string") {
-          content = queryResult.result;
+          content += queryResult.result;
+        } else if (queryResult.result.text) {
+
+          // Node AI generated images
+          if (queryResult.result.image) {
+            node_images.push(queryResult.result.image);
+          }
+
+          content += queryResult.result.text;
         } else {
-          content = queryResult.result.text;
+          content += "No result.";
         }
 
         messages.push({
           "role": "system",
           "content": "Reference data: " + content,
         });
-
         node_prompt += content;
       }
     }
 
     // Count tokens
     token_ct["node"] = countToken(model, node_prompt);
+    console.log("response: " + node_prompt + "\n");
   }
 
   // 4. Location info
@@ -403,6 +394,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
     messages,
     token_ct,
     mem,
+    node_images,
     raw_prompt: {
       system: system_prompt,
       role: role_prompt,
@@ -410,6 +402,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
       user_input_file: user_input_file_prompt,
       function: function_prompt,
       store: store_prompt,
+      node: node_prompt,
       location: location_prompt,
     }
   };
