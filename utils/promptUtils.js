@@ -339,9 +339,8 @@ export async function generateMessages(user, model, input, inputType, files, ima
           }
 
           content += queryResult.result.text;
-          return result;
         } else {
-          return "No result.";
+          content += "No result.";
         }
 
         messages.push({
