@@ -267,7 +267,7 @@ export default async function store(args, files) {
       }
 
       if (data.success) {
-        sessionStorage.setItem("store", name);
+        sessionStorage.setItem("store", name);  // set store active
         return data.message;
       }
     } catch (error) {
