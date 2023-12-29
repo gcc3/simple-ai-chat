@@ -110,7 +110,7 @@ async function generateMysqlQuery(input, description, schema, tableColumnsDef) {
           + "{" + "\n"
           + "  \"query\": \"\"" + "\n"
           + "}" + "\n\n"
-          + "Sometimes the database is very large, query with a limitation."
+          + "Always query with a limitation, the max of limitation is 10."
   });
 
   messages.push({
