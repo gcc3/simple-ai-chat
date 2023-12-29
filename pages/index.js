@@ -144,6 +144,8 @@ export default function Home() {
 
   // Print video output (support: YouTube)
   const printVideo = (video_url, targetRef, beforeOrAfter = "after") => {
+    console.log("Print Video: " + video_url);
+
     if (targetRef.current) {
       // Create a wrapper div to hold the iframe and control its aspect ratio
       const videoDiv = document.createElement('div');
