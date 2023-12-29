@@ -44,3 +44,15 @@ export default async function queryNodeAi(query, endpoint) {
     result: data,
   };
 }
+
+export function isNodeConfigured(settings) {
+  let isConfigured = false;
+  if (!settings) {
+    return false;
+  }
+
+  if (settings.nodeEndpoint) {
+    isConfigured = true;
+  }
+  return isConfigured;
+}

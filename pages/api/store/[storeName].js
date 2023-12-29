@@ -1,5 +1,6 @@
 import { getStore } from 'utils/sqliteUtils';
 import { authenticate } from 'utils/authUtils';
+import { isInitialized } from 'utils/storeUtils';
 
 export default async function (req, res) {
   const { storeName } = req.query;
@@ -16,6 +17,11 @@ export default async function (req, res) {
     if (authResult.success) {
       // Check if role exists in user roles
       const store = await getStore(storeName, authResult.user.username);
+
+      // Check store is initialized
+      const settings = JSON.parse(store.settings);
+      
+
       if (store) {
         return res.status(200).json({ 
           result: {
@@ -24,7 +30,8 @@ export default async function (req, res) {
             owner: store.owner,
             created_by: store.created_by,
             engine: store.engine,
-            settings: JSON.parse(store.settings),
+            settings,
+            initialized: isInitialized(store.engine, settings)
           },
         });
       } else {

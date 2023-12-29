@@ -10,7 +10,7 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser, getNode, getStore } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { generateStoreFunction } from "utils/storeUtils";
+import { generateStoreFunction, isInitialized } from "utils/storeUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -198,6 +198,7 @@ export default async function (req, res) {
     let messages = [];
     let raw_prompt = "";
     let mem = 0;
+    let toolCalls = [];
 
     // Message base
     const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
@@ -218,7 +219,7 @@ export default async function (req, res) {
     // store tools
     if (user && store) {
       const storeInfo = await getStore(store, user.username);
-      if (storeInfo.engine === "mysql") {
+      if (storeInfo && storeInfo.engine === "mysql" && isInitialized(storeInfo.engine, JSON.parse(storeInfo.settings))) {
         tools.push({
           type: "function",
           function: await generateStoreFunction(storeInfo)
@@ -252,9 +253,18 @@ export default async function (req, res) {
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
     res.flush();
 
-    let toolCalls = [];
+    // Hanldle output
     for await (const part of chatCompletion) {
-      // handle tool calls output
+      // 1. handle message output
+      const content = part.choices[0].delta.content;
+      if (content) {
+        outputType = TYPE.NORMAL;
+        output += content;
+        let message = content.replaceAll("\n", "###RETURN###");
+        res.write(`data: ${message}\n\n`); res.flush();
+      }
+
+      // 2. handle tool calls output
       const tool_calls = part.choices[0].delta.tool_calls;
       if (tool_calls) {
         outputType = TYPE.TOOL_CALL;
@@ -269,15 +279,6 @@ export default async function (req, res) {
           // If not found, add the tool
           toolCalls.push(toolCall);
         }
-      }
-
-      // handle message output
-      const content = part.choices[0].delta.content;
-      if (content) {
-        outputType = TYPE.NORMAL;
-        output += content;
-        let message = content.replaceAll("\n", "###RETURN###");
-        res.write(`data: ${message}\n\n`); res.flush();
       }
     }
 

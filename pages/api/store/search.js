@@ -2,6 +2,7 @@ import { vectaraQuery } from "utils/vectaraUtils";
 import { getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 import { mysqlQuery } from "utils/mysqlUtils";
+import { isInitialized } from "utils/storeUtils";
 
 export default async function handler(req, res) {
   const { store, text } = req.body;
@@ -30,7 +31,7 @@ export default async function handler(req, res) {
     const settings = JSON.parse(storeInfo.settings);
 
     // Check is initialized
-    if (!storeInfo.engine) {
+    if (!isInitialized(storeInfo.engine, settings)) {
       res.status(400).json({
         success: false,
         error: "Store not initialized. Use `:store init [engine]` to initialize a data store.",
