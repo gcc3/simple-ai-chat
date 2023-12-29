@@ -36,6 +36,8 @@ export default async function generate(args) {
       } else {
         return "No response.";
       }
+    } else {
+      return data.error;
     }
   } catch (error) {
     console.error(error);

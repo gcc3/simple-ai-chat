@@ -43,8 +43,24 @@ export default async function handler(req, res) {
     }
 
     // Query
-    const queryResult = await queryNodeAi(input, endpoint);
-    res.status(200).json(queryResult);
+    console.log("Querying node...");
+    const queryResult = await queryNodeAi(input, settings.endpoint);
+
+    // Return result
+    if (!queryResult.success) {
+      res.status(400).json({
+        success: false,
+        error: "An error occurred during your request.",
+      });
+      return;
+    }
+    
+    console.log("Query Result:\n" + JSON.stringify(queryResult, null, 2));
+    res.status(200).json({
+      success: true,
+      message: queryResult.message,
+      result: queryResult.result
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
