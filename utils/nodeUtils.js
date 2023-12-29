@@ -12,21 +12,21 @@ export async function queryNodeAi(input, settings) {
   const endpoint = settings.endpoint;
   const queryParameterForInput = settings.query_parameter_for_input;
 
-  const response = await fetch(endpoint + "?" + queryParameterForInput + "=" + input, {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  if (response.status !== 200 || !response.ok) {
-    return {
-      success: false,
-      error: "An error occurred during your request.",
-    };
-  }
-
   try {
+    const response = await fetch(endpoint + "?" + queryParameterForInput + "=" + input, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+  
+    if (response.status !== 200 || !response.ok) {
+      return {
+        success: false,
+        error: "An error occurred during your request.",
+      };
+    }
+
     const data = await response.json();
 
     // Veryfy format

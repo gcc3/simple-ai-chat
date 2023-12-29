@@ -6,7 +6,7 @@ import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import queryNodeAi from "utils/nodeUtils";
+import { queryNodeAi, isNodeConfigured } from "utils/nodeUtils";
 const fetch = require('node-fetch');
 
 // Input output type
@@ -318,16 +318,12 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
     // Get node info
     const nodeInfo = await getNode(node, user.username);
-
-    // Get settings
     const settings = JSON.parse(nodeInfo.settings);
-    const endpoint = settings.endpoint;
-    if (!endpoint) {
+
+    if (!isNodeConfigured(settings)) {
       console.log("response: (Node not configured)\n");
     } else {
-      console.log("endpoint: " + endpoint);
-
-      const queryResult = (await queryNodeAi(input, endpoint)).result;
+      const queryResult = (await queryNodeAi(input, settings)).result;
       if (!queryResult) {
         console.log("response: (no result)\n");
       } else {
@@ -346,10 +342,10 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
         node_prompt += content;
       }
-    }
 
-    // Count tokens
-    token_ct["node"] = countToken(model, node_prompt);
+      // Count tokens
+      token_ct["node"] = countToken(model, node_prompt);
+    }
   }
 
   // 4. Location info
