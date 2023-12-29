@@ -5,7 +5,7 @@ import { mysqlQuery } from "utils/mysqlUtils";
 import { isInitialized } from "utils/storeUtils";
 
 export default async function handler(req, res) {
-  const { store, text } = req.body;
+  const { store, query } = req.body;
 
   // Authentication
   const authResult = authenticate(req);
@@ -40,7 +40,7 @@ export default async function handler(req, res) {
     }
 
     if (storeInfo.engine === "vectara") {
-      const queryResult = await searchVectaraStore(settings, text);
+      const queryResult = await searchVectaraStore(settings, query);
       if (!queryResult.success) {
         res.status(400).json({
           success: false,
@@ -56,7 +56,7 @@ export default async function handler(req, res) {
     }
 
     if (storeInfo.engine === "mysql") {
-      const queryResult = await searchMysqlStore(settings, text);
+      const queryResult = await searchMysqlStore(settings, query);
       if (!queryResult.success) {
         res.status(400).json({
           success: false,
@@ -85,7 +85,7 @@ export default async function handler(req, res) {
   }
 }
 
-async function searchMysqlStore(settings, text) {
+async function searchMysqlStore(settings, query) {
   const host = settings.host;
   const port = settings.port;
   const user = settings.user;
@@ -117,14 +117,14 @@ async function searchMysqlStore(settings, text) {
 
   // Query
   // TODO use generate instead
-  const queryResult = await mysqlQuery(dbConfig, text);
+  const queryResult = await mysqlQuery(dbConfig, query);
   return {
     success: true,
     message: JSON.stringify(queryResult, null, 2),
   };
 }
 
-async function searchVectaraStore(settings, text) {
+async function searchVectaraStore(settings, query) {
   const corpusId = settings.corpusId;
   const apiKey = settings.apiKey;
   const threshold = settings.threshold;
@@ -139,7 +139,7 @@ async function searchVectaraStore(settings, text) {
   }
 
   // Query
-  const queryResult = await vectaraQuery(text, corpusId, apiKey, threshold, numberOfResults, customerId);
+  const queryResult = await vectaraQuery(query, corpusId, apiKey, threshold, numberOfResults, customerId);
   if (queryResult && queryResult.length > 0) {
     let result = "";
     for (let i = 0; i < queryResult.length; i++) {
