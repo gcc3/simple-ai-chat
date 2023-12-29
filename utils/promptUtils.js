@@ -287,11 +287,11 @@ export async function generateMessages(user, model, input, inputType, files, ima
         queryResult = await searchMysqlStore(settings, input);
       }
       if (queryResult.success) {
+        store_prompt += queryResult.message;
         messages.push({
           "role": "system",
-          "content": queryResult.message,
+          "content": store_prompt,
         });
-        store_prompt += queryResult.message;
       }
     }
 
