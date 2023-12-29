@@ -10,7 +10,7 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser, getNode, getStore } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { generateStoreFunction } from "utils/storeUtils";
+import { generateStoreFunction, isInitialized } from "utils/storeUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -219,7 +219,7 @@ export default async function (req, res) {
     // store tools
     if (user && store) {
       const storeInfo = await getStore(store, user.username);
-      if (storeInfo && storeInfo.engine === "mysql") {
+      if (storeInfo && storeInfo.engine === "mysql" && isInitialized(storeInfo.engine, JSON.parse(storeInfo.settings))) {
         tools.push({
           type: "function",
           function: await generateStoreFunction(storeInfo)

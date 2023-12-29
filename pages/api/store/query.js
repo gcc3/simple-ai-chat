@@ -19,7 +19,7 @@ export default async function handler(req, res) {
     const settings = JSON.parse(storeInfo.settings);
 
     // Check is initialized
-    if (!storeInfo.engine) {
+    if (!isInitialized(storeInfo.engine, settings)) {
       res.status(400).json({
         success: false,
         error: "Store not initialized. Use `:store init [engine]` to initialize a data store.",
