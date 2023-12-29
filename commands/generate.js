@@ -32,10 +32,25 @@ export default async function generate(args) {
 
     if (data.success) {
       if (data.result) {
-        return JSON.stringify(data.result, null, 2);
+        if (typeof data.result === "string") {
+          return data.result;
+        } else if (data.result.text) {
+          let result = "";
+
+          if (data.result.image) {
+            result += "+img[" + data.result.image + "]" + " ";
+          }
+
+          result += data.result.text;
+          return result;
+        } else {
+          return "No result.";
+        }
       } else {
-        return "No response.";
+        return "No result.";
       }
+    } else {
+      return data.error;
     }
   } catch (error) {
     console.error(error);

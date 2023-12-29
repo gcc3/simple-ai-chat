@@ -684,14 +684,44 @@ export default function Home() {
 
       // Get command result
       const files = file_urls.concat(image_urls);
-      const commandResult = await command(input, files);
+      let commandResult = await command(input, files);
 
       // Use command return to bypass reset output and info
       if (commandResult !== null) {
         console.log("Command Output:\n" + commandResult);
 
+        // Print images in command output
+        let image_urls = [];
+        let matches = [...commandResult.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
+        matches.forEach(match => {
+          const block = match[1] + "[" + match[2] + "]";
+
+          // Extract the URL
+          const url = block.replace("+image[", "").replace("+img[", "").replace("]", "");
+
+          // Check if the URL is valid
+          if (!url.startsWith("http")) {
+            console.error("Invalid URL: " + url);
+            return;
+          }
+
+          // Add to the URL list
+          if (block.startsWith("+image[") || block.startsWith("+img[")) {
+            image_urls.push(url);
+          }
+
+          // Remove the block from the raw input
+          commandResult = commandResult.replace(block, "");
+        });
+        if (image_urls.length > 0) {
+          console.log("Images:\n" + image_urls.join("\n"));
+          image_urls.map((image_url) => {
+            printImage(image_url, elOutputRef, "before");
+          });
+        }
+
         // Print the output
-        printOutput(commandResult);
+        printOutput(commandResult.trim());
         resetInfo();
       } else {
         console.log("Not command output.")

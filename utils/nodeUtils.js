@@ -1,48 +1,52 @@
-export default async function queryNodeAi(query, endpoint) {
-  if (!query) return {
+export async function queryNodeAi(input, settings) {
+  if (!input) return {
     success: false,
     error: "Invalid query.",
   }
 
-  const response = await fetch(endpoint + "?" + new URLSearchParams({
-      input: query,
-    })
-  , {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
+  if (!settings || !settings.endpoint || !settings.query_parameter_for_input) return {
+    success: false,
+    error: "Invalid settings.",
+  }
+
+  const endpoint = settings.endpoint;
+  const queryParameterForInput = settings.query_parameter_for_input;
+
+  const response = await fetch(endpoint + "?" + queryParameterForInput + "=" + input, {
+    method: "GET",
+    headers: {
+      "Content-Type": "application/json",
+    },
   });
 
-  const data = await response.json();
-  
-  // Veryfy format
-  if (!data.result) {
+  if (response.status !== 200 || !response.ok) {
     return {
       success: false,
-      error: "Unexpected node response format.",
+      error: "An error occurred during your request.",
     };
   }
 
-  if (typeof data.result !== "string" && !data.result.text) {
+  try {
+    const data = await response.json();
+
+    // Veryfy format
+    if (!data.result || (typeof data.result !== "string" && !data.result.text)) {
+      return {
+        success: false,
+        error: "Unexpected node response format.",
+      };
+    }
+    
+    return {
+      success: true,
+      result: data.result,
+    };
+  } catch (error) {
     return {
       success: false,
-      error: "Unexpected node response format.",
+      error: error,
     };
   }
-
-  let message = "";
-  if (typeof data.result === "string") {
-    message = data.result;
-  } else {
-    message = data.result.text;
-  }
-
-  return {
-    success: true,
-    message: message,
-    result: data,
-  };
 }
 
 export function isNodeConfigured(settings) {
@@ -51,7 +55,7 @@ export function isNodeConfigured(settings) {
     return false;
   }
 
-  if (settings.nodeEndpoint) {
+  if (settings.endpoint && settings.query_parameter_for_input) {
     isConfigured = true;
   }
   return isConfigured;

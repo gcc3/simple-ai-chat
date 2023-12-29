@@ -1,5 +1,6 @@
 import { getNode } from 'utils/sqliteUtils';
 import { authenticate } from 'utils/authUtils';
+import { isNodeConfigured } from 'utils/nodeUtils';
 
 export default async function (req, res) {
   const { nodeName } = req.query;
@@ -16,13 +17,15 @@ export default async function (req, res) {
     if (authResult.success) {
       // Check if role exists in user roles
       const node = await getNode(nodeName, authResult.user.username);
+      const settings = JSON.parse(node.settings);
       if (node) {
         return res.status(200).json({ 
           result: {
             node: node.name,
             owner: node.owner,
             created_by: node.created_by,
-            settings: JSON.parse(node.settings),
+            settings: settings,
+            configured: isNodeConfigured(settings),
           },
         });
       } else {
