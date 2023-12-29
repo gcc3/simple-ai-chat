@@ -1,8 +1,6 @@
-import { vectaraQuery } from "utils/vectaraUtils";
 import { getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
-import { mysqlQuery } from "utils/mysqlUtils";
-import { isInitialized } from "utils/storeUtils";
+import { searchVectaraStore, searchMysqlStore, isInitialized } from "utils/storeUtils";
 
 export default async function handler(req, res) {
   const { store, query } = req.body;
@@ -82,80 +80,5 @@ export default async function handler(req, res) {
       success: false,
       error: "An error occurred during your request.",
     });
-  }
-}
-
-async function searchMysqlStore(settings, query) {
-  const host = settings.host;
-  const port = settings.port;
-  const user = settings.user;
-  const password = settings.password;
-  const database = settings.database;
-
-  // Check if settings are set
-  if (!host || !port || !user || !password || !database) {
-    let error = "";
-    if (!host) { error = "No `host`."; }
-    else if (!port) { error = "No `port`."; }
-    else if (!user) { error = "No `user`."; }
-    else if (!password) { error = "No `password`."; }
-    else if (!database) { error = "No `database`."; }
-
-    return {
-      success: false,
-      error: error + " Use `:store set [key] [value]` to configure the store settings.",
-    };
-  }
-
-  const dbConfig = {
-    host,
-    port,
-    user,
-    password,
-    database,
-  }
-
-  // Query
-  // TODO use generate instead
-  const queryResult = await mysqlQuery(dbConfig, query);
-  return {
-    success: true,
-    message: JSON.stringify(queryResult, null, 2),
-  };
-}
-
-async function searchVectaraStore(settings, query) {
-  const corpusId = settings.corpusId;
-  const apiKey = settings.apiKey;
-  const threshold = settings.threshold;
-  const numberOfResults = settings.numberOfResults;
-  const customerId = settings.customerId;
-
-  if (!apiKey || !corpusId || !threshold || !numberOfResults || !customerId) {
-    return {
-      success: false,
-      error: "Store not configured. Use `:store set [key] [value]` to configure the store settings.",
-    };
-  }
-
-  // Query
-  const queryResult = await vectaraQuery(query, corpusId, apiKey, threshold, numberOfResults, customerId);
-  if (queryResult && queryResult.length > 0) {
-    let result = "";
-    for (let i = 0; i < queryResult.length; i++) {
-      result += "Document: " + queryResult[i].document + "\n" +
-                (queryResult[i].title && "Title: " + queryResult[i].title) + "\n" +
-                "Score: " + queryResult[i].score + "\n" +
-                "Content:\n" + queryResult[i].content + "\n\n";
-    }
-    return {
-      success: true,
-      message: result,
-    };
-  } else {
-    return {
-      success: true,
-      message: "No results found.",
-    };
   }
 }
