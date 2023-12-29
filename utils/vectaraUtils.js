@@ -87,24 +87,24 @@ export async function vectaraQuery(query, corpusId, apiKey, scoreThreshold = 0.5
     "token_type": "Bearer"
 }
 */
-export async function createVectaraJtwToken(vectaraClientId, vectaraClientSecret, vectaraCustomerId, vectaraApiKey) {
-  if (!vectaraClientId || !vectaraClientSecret || !vectaraCustomerId || !vectaraApiKey) {
+export async function createVectaraJtwToken(clientId, clientSecret, customerId, apiKey) {
+  if (!clientId || !clientSecret || !customerId || !apiKey) {
     return null;
   }
 
   try {
     const params = new URLSearchParams();
     params.append("grant_type", "client_credentials");
-    params.append("client_id", vectaraClientId);
-    params.append("client_secret", vectaraClientSecret);
+    params.append("client_id", clientId);
+    params.append("client_secret", clientSecret);
 
-    const response = await fetch("https://vectara-prod-" + vectaraCustomerId + ".auth.us-west-2.amazoncognito.com/oauth2/token", {
+    const response = await fetch("https://vectara-prod-" + customerId + ".auth.us-west-2.amazoncognito.com/oauth2/token", {
       method: "POST",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
         "Accept": "application/json",
-        "customer-id": vectaraCustomerId,
-        "x-api-key": vectaraApiKey,
+        "customer-id": customerId,
+        "x-api-key": apiKey,
       },
       body: params.toString(),
     });
@@ -131,8 +131,8 @@ export async function createVectaraJtwToken(vectaraClientId, vectaraClientSecret
       }
   }
 */
-export async function createVectaraCorpus(name, description, jwtToken, vectaraCustomerId) {
-  if (!vectaraCustomerId) {
+export async function createVectaraCorpus(name, description, jwtToken, customerId) {
+  if (!customerId) {
     return null;
   };
 
@@ -143,7 +143,7 @@ export async function createVectaraCorpus(name, description, jwtToken, vectaraCu
         "Content-Type": "application/json",
         "Authorization": "Bearer " + jwtToken,
         "Accept": "application/json",
-        "customer-id": vectaraCustomerId,
+        "customer-id": customerId,
       },
       body: JSON.stringify({
         "corpus": {
@@ -191,8 +191,8 @@ export async function createVectaraCorpus(name, description, jwtToken, vectaraCu
     ]
 }
 */
-export async function generateVectaraApiKey(corpusId, jwtToken, vectaraCustomerId) {
-  if (!vectaraCustomerId) {
+export async function generateVectaraApiKey(corpusId, jwtToken, customerId) {
+  if (!customerId) {
     return null;
   };
 
@@ -202,7 +202,7 @@ export async function generateVectaraApiKey(corpusId, jwtToken, vectaraCustomerI
       "Content-Type": "application/json",
       "Authorization": "Bearer " + jwtToken,
       "Accept": "application/json",
-      "customer-id": vectaraCustomerId,
+      "customer-id": customerId,
     },
     body: JSON.stringify({
       "apiKeyData": [
@@ -235,8 +235,8 @@ export async function generateVectaraApiKey(corpusId, jwtToken, vectaraCustomerI
     }
   }
 */
-export async function deleteVectaraCorpus(corpusId, jwtToken, vectaraCustomerId) {
-  if (!vectaraCustomerId) {
+export async function deleteVectaraCorpus(corpusId, jwtToken, customerId) {
+  if (!customerId) {
     return false;
   };
 
@@ -246,7 +246,7 @@ export async function deleteVectaraCorpus(corpusId, jwtToken, vectaraCustomerId)
       "Content-Type": "application/json",
       "Authorization": "Bearer " + jwtToken,
       "Accept": "application/json",
-      "customer-id": vectaraCustomerId,
+      "customer-id": customerId,
     },
     body: JSON.stringify({
       "corpusId": corpusId
@@ -273,8 +273,8 @@ export async function deleteVectaraCorpus(corpusId, jwtToken, vectaraCustomerId)
     ]
   }
 */
-export async function deleteVectaraApiKey(keyId, jwtToken, vectaraCustomerId) {
-  if (!vectaraCustomerId) {
+export async function deleteVectaraApiKey(keyId, jwtToken, customerId) {
+  if (!customerId) {
     return false;
   };
 
@@ -284,7 +284,7 @@ export async function deleteVectaraApiKey(keyId, jwtToken, vectaraCustomerId) {
       "Content-Type": "application/json",
       "Authorization": "Bearer " + jwtToken,
       "Accept": "application/json",
-      "customer-id": vectaraCustomerId,
+      "customer-id": customerId,
     },
     body: JSON.stringify({
       "keyId": [
@@ -310,8 +310,8 @@ export async function deleteVectaraApiKey(keyId, jwtToken, vectaraCustomerId) {
     }
   }
 */
-export async function resetVectaraCorpus(corpusId, jwtToken, vectaraCustomerId) {
-  if (!vectaraCustomerId) {
+export async function resetVectaraCorpus(corpusId, jwtToken, customerId) {
+  if (!customerId) {
     return false;
   };
 
@@ -321,7 +321,7 @@ export async function resetVectaraCorpus(corpusId, jwtToken, vectaraCustomerId) 
       "Content-Type": "application/json",
       "Authorization": "Bearer " + jwtToken,
       "Accept": "application/json",
-      "customer-id": vectaraCustomerId,
+      "customer-id": customerId,
     },
     body: JSON.stringify({
       "corpusId": corpusId
@@ -348,8 +348,8 @@ export async function resetVectaraCorpus(corpusId, jwtToken, vectaraCustomerId) 
     }
   }
 */
-export async function uploadFileToVectaraCorpus(corpusId, files, jwtToken, vectaraCustomerId) {
-  if (!vectaraCustomerId) {
+export async function uploadFileToVectaraCorpus(corpusId, files, jwtToken, customerId) {
+  if (!customerId) {
     return false;
   };
 
@@ -367,7 +367,7 @@ export async function uploadFileToVectaraCorpus(corpusId, files, jwtToken, vecta
     contentType: fileResponse.headers.get('content-type'),
   });
 
-  const response = await fetch("https://api.vectara.io/v1/upload?c=" + vectaraCustomerId + "&o=" + corpusId, {
+  const response = await fetch("https://api.vectara.io/v1/upload?c=" + customerId + "&o=" + corpusId, {
     method: "POST",
     headers: {
       "Accept": "application/json",
