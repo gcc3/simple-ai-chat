@@ -1,6 +1,11 @@
 import { mysqlQuery } from "utils/mysqlUtils";
 
 export default async function handler(req, res) {
+  // Check if the method is POST
+  if (req.method !== "POST") {
+    return res.status(405).end();
+  }
+
   const { store, query } = req.body;
 
   try {
