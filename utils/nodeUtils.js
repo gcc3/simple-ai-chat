@@ -51,7 +51,7 @@ export function isNodeConfigured(settings) {
     return false;
   }
 
-  if (settings.nodeEndpoint) {
+  if (settings.endpoint) {
     isConfigured = true;
   }
   return isConfigured;
