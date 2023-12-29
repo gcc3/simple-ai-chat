@@ -16,6 +16,24 @@ export default async function (req, res) {
     if (authResult.success) {
       // Check if role exists in user roles
       const store = await getStore(storeName, authResult.user.username);
+
+      // Mask settings
+      let setting = JSON.parse(store.settings);
+      if (store.engine === "vectara") {
+        setting = {
+          ...setting,
+          apiKey: maskString(setting.apiKey),
+          customerId: maskString(setting.customerId),
+          clientId: maskString(setting.clientId),
+          clientSecret: maskString(setting.clientSecret),
+        }
+      } else if (store.engine === "mysql") {
+        setting = {
+          ...setting,
+          password: maskString(setting.password, 0),
+        }
+      }
+
       if (store) {
         return res.status(200).json({ 
           result: {
@@ -24,7 +42,7 @@ export default async function (req, res) {
             owner: store.owner,
             created_by: store.created_by,
             engine: store.engine,
-            settings: JSON.parse(store.settings),
+            settings: setting,
           },
         });
       } else {
@@ -42,4 +60,11 @@ export default async function (req, res) {
       error: error
     });
   }
+}
+
+// Mask string to * except last 4 characters
+function maskString(str, suffixLength = 4) {
+  if (!str) return str;
+  if (str.length < suffixLength) return str;
+  return str.substring(0, str.length - suffixLength).replace(/./g, '*') + str.substring(str.length - suffixLength);
 }
