@@ -1,20 +1,9 @@
-export default async function generate(args) {
-  if (args.length != 1) {
-    return "Usage: :generate [input]";
-  }
+export default async function nodeGenerate(paramObject) {
+  const { node, input } = paramObject;
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL;
 
-  if (!args[0].startsWith("\"") || !args[0].endsWith("\"")) {
-    return "Word must be quoted with double quotes.";
-  }
-
-  const node = sessionStorage.getItem("node");
-  if (!node) {
-    return "No node selected.";
-  }
-
-  const input = args[0].slice(1, -1);
   try {
-    const response = await fetch("/api/node/generate", {
+    const response = await fetch(baseUrl + "/api/node/generate", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -46,13 +35,22 @@ export default async function generate(args) {
         } else {
           result += "Result fomat error.";
         }
-
-        return result;
+        
+        return {
+          success: true,
+          message: result,
+        }
       } else {
-        return "No result.";
+        return {
+          success: false,
+          message: "No result.",
+        }
       }
     } else {
-      return data.error;
+      return {
+        success: false,
+        message: data.error,
+      }
     }
   } catch (error) {
     console.error(error);
