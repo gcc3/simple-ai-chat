@@ -64,6 +64,10 @@ export function markdownFormatter(elOutput) {
     // Set language name and highlight code blocks
     result = result.replace(/\x00/g, function(match, p1) {
       const codeBlock = codeBlocks.shift();
+      if (!codeBlock.includes('\n')) {
+        return "```" + codeBlock + "```";  // ignore single line code block
+      }
+
       let codeLines = codeBlock.split('\n');
       let language = codeLines.shift().trim();
       if (!language) language = 'plaintext';

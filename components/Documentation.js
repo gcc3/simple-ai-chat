@@ -197,7 +197,7 @@ const Documentation = () => {
       </div>
       <div id="feedback" className="mt-5">Feedback & Support</div>
       <div className="mt-2">
-        Simple AI is open-source; you can visit our GitHub issues (<a href="https://github.com/gcc3/simple-ai-chat/issues"><u>link</u></a>) to report any issues you encounter, share your ideas or contribute to the project.
+        Simple AI is open-source; you can visit our GitHub issues (<a href="https://github.com/gcc3/simple-ai-chat/issues"><u>link</u></a>) to report any issues you encounter, share your ideas or contribute to the project. Or you can join our Discord server (<a href="https://discord.gg/dRqBZjNu"><u>link</u></a>) to discuss with other users.
       </div>
       <div className="mt-2">
         You can also contact us via email `<a href="mailto:support@simple-ai.io"><u>support@simple-ai.io</u></a>`.
