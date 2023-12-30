@@ -213,7 +213,7 @@ async function initializeVectaraStore(store) {
     ...settings,
     corpusId: corpusId,
     apiKey: apiKey,
-    threshold: 0.6,
+    threshold: 0.1,
     numberOfResults: 5,
   };
 
