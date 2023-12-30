@@ -28,7 +28,11 @@ export function markdownFormatter(elOutput) {
     result = result.split('\n').map((line, i) => {
       // Replace `text` with <code>text</code>
       if (line.includes('`')) line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, function(match, p1) {
-        return `<code class="inline-code">${p1}</code>`;  // Inline code
+        // Escape HTML special characters
+        let code = p1.replace(/&/g, "&amp;")
+                     .replace(/</g, "&lt;").replace(/>/g, "&gt;")
+                     .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        return `<code class="inline-code">${code}</code>`;  // Inline code
       });
 
       // Temporarily replace text with a placeholder to avoid conflicts
