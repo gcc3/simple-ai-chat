@@ -54,8 +54,8 @@ export async function searchVectaraStore(settings, query) {
   if (queryResult && queryResult.length > 0) {
     let result = "";
     for (let i = 0; i < queryResult.length; i++) {
-      result += "Document: " + queryResult[i].document + "\n" +
-                (queryResult[i].title && "Title: " + queryResult[i].title) + "\n" +
+      result += "Document: " + queryResult[i].document.trim() + "\n" +
+                (queryResult[i].title && "Title: " + queryResult[i].title + "\n") +
                 "Score: " + queryResult[i].score + "\n" +
                 "Content:\n" + queryResult[i].content + "\n\n";
     }
