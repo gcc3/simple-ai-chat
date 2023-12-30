@@ -19,6 +19,7 @@ export function markdownFormatter(elOutput) {
 
     // Replace ```text``` with <pre><code>text</code></pre>
     // /```([^`]+)```/g, it won't match the code block with backtick in it
+    // /```((?:(?!```)[\s\S])+?)```/g, it will match the code block with backtick in it
     let codeBlocks = [];
     result = output.replace(/```((?:(?!```)[\s\S])+?)```/g, function(match, p1) {
       codeBlocks.push(p1);
@@ -68,8 +69,9 @@ export function markdownFormatter(elOutput) {
       if (!language) language = 'plaintext';
 
       // Remove empty lines at the beginning and the end
-      while (codeLines[0].trim() === '') codeLines.shift();
-      while (codeLines[codeLines.length - 1].trim() === '') codeLines.pop();
+      while (codeLines[0] && codeLines[0].trim() === '') codeLines.shift();
+      while (codeLines[codeLines.length - 1] 
+          && codeLines[codeLines.length - 1].trim() === '') codeLines.pop();
 
       // indent code blocks
       let indent = Infinity;
