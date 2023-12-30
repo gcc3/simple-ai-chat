@@ -152,6 +152,7 @@ async function initializeMysqlStore(store) {
 }
 
 async function initializeVectaraStore(store) {
+  const { name, owner } = store;
   let settings = JSON.parse(store.settings);
 
   if (!settings.apiKey || !settings.customerId || !settings.clientId || !settings.clientSecret) {
@@ -175,7 +176,7 @@ async function initializeVectaraStore(store) {
 
   // Create store
   const corpusName = "i-" + Date.now();
-  const description = "store: " + name + ", created by: " + username;
+  const description = "store: " + name + ", created by: " + owner;
   const corpusId = await createVectaraCorpus(corpusName, description, jwtToken, settings.customerId);
   if (!corpusId) {
     console.log("Failed to create corpus.");

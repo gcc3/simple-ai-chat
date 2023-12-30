@@ -4,6 +4,8 @@ import { clearUserWebStorage, generatePassword, setUserLocalStorage } from "util
 export default async function entry(args) {
   const command = args[0];
   const usage = "Usage: :user add [username] [email] [password?]" + "\n" +
+                "       :user delete [username]" + "\n" +
+                "       :user info" + "\n" +
                 "       :user set pass [value]" + "\n" +
                 "       :user set email [value]" + "\n" +
                 "       :user set [key] [value]" + "\n" +

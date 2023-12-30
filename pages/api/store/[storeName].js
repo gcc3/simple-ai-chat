@@ -15,44 +15,44 @@ export default async function (req, res) {
   }
   const authUesr = authResult.user;
 
-  try {
-    // Check if store exists
-    const store = await getStore(storeName, authUesr.username);
-    if (store) {
-      // Mask settings
-      let settings = JSON.parse(store.settings);
-      if (store.engine === "vectara") {
-        settings = {
-          ...settings,
-          apiKey: maskString(settings.apiKey),
-          customerId: maskString(settings.customerId),
-          clientId: maskString(settings.clientId),
-          clientSecret: maskString(settings.clientSecret),
-        }
-      } else if (store.engine === "mysql") {
-        settings = {
-          ...settings,
-          password: maskString(settings.password, 0),
-        }
-      }
+  // Check if store exists
+  const store = await getStore(storeName, authUesr.username);
+  if (!store) {
+    return res.status(200).json({
+      success: false,
+      message: "Store not exists."
+    });
+  }
 
-      return res.status(200).json({ 
-        result: {
-          id: store.id,
-          store: store.name,
-          owner: store.owner,
-          created_by: store.created_by,
-          engine: store.engine,
-          settings,
-          initialized: isInitialized(store.engine, settings)
-        },
-      });
-    } else {
-      return res.status(200).json({
-        success: false,
-        message: "Store not exists."
-      });
+  try {
+    // Mask settings
+    let settings = JSON.parse(store.settings);
+    if (store.engine === "vectara") {
+      settings = {
+        ...settings,
+        apiKey: maskString(settings.apiKey),
+        customerId: maskString(settings.customerId),
+        clientId: maskString(settings.clientId),
+        clientSecret: maskString(settings.clientSecret),
+      }
+    } else if (store.engine === "mysql") {
+      settings = {
+        ...settings,
+        password: maskString(settings.password, 0),
+      }
     }
+
+    return res.status(200).json({ 
+      result: {
+        id: store.id,
+        store: store.name,
+        owner: store.owner,
+        created_by: store.created_by,
+        engine: store.engine,
+        settings,
+        initialized: isInitialized(store.engine, settings)
+      },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
