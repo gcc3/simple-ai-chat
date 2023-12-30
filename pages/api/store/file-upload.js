@@ -40,7 +40,7 @@ export default async function (req, res) {
 
   const settings = JSON.parse(store.settings);
 
-  if (settings.engine === "vectara") {
+  if (store.engine === "vectara") {
     const uploadResult = await uploadFileToVectaraStore(settings, files[0]);
     if (!uploadResult.success) {
       return res.status(400).json({ 
@@ -88,6 +88,6 @@ async function uploadFileToVectaraStore(settings, file) {
 
   return {
     success: true,
-    message: "File uploaded to store \"" + name + "\", please wait for indexing.",
+    message: "File uploaded to store \"" + store.name + "\", please wait for indexing.",
   };
 }

@@ -348,39 +348,47 @@ export async function resetVectaraCorpus(corpusId, jwtToken, customerId) {
     }
   }
 */
-export async function uploadFileToVectaraCorpus(corpusId, files, jwtToken, customerId) {
+export async function uploadFileToVectaraCorpus(corpusId, file, jwtToken, customerId) {
   if (!customerId) {
     return false;
   };
 
-  const fileUrl = files[0];
+  try {
+    // Download the file from the URL
+    const fileResponse = await fetch(file);
+    if (!fileResponse.ok) throw new Error('Failed to download file.');
+    const buffer = await fileResponse.buffer();
 
-  // Download the file from the URL
-  const fileResponse = await fetch(fileUrl);
-  if (!fileResponse.ok) throw new Error('Failed to download file.');
-  const buffer = await fileResponse.buffer();
+    // Prepare the file for upload
+    const formData = new FormData();
+    formData.append('file', buffer, { 
+      filename: 'downloaded_file',
+      contentType: fileResponse.headers.get('content-type'),
+    });
 
-  // Prepare the file for upload
-  const formData = new FormData();
-  formData.append('file', buffer, { 
-    filename: 'downloaded_file',
-    contentType: fileResponse.headers.get('content-type'),
-  });
+    // Upload the file
+    const response = await fetch("https://api.vectara.io/v1/upload?c=" + customerId + "&o=" + corpusId, {
+      method: "POST",
+      headers: {
+        "Accept": "application/json",
+        "Authorization": "Bearer " + jwtToken,
+        ...formData.getHeaders(),
+      },
+      body: formData
+    });
 
-  const response = await fetch("https://api.vectara.io/v1/upload?c=" + customerId + "&o=" + corpusId, {
-    method: "POST",
-    headers: {
-      "Accept": "application/json",
-      "Authorization": "Bearer " + jwtToken,
-      ...formData.getHeaders(),
-    },
-    body: formData
-  });
+    if (!response.ok) {
+      throw new Error('Failed to upload file.');
+    }
 
-  const data = await response.json();
-  if (data && data.response && data.response.quotaConsumed && data.response.quotaConsumed.numChars > 0) {
-    return true;
-  } else {
+    const data = await response.json();
+    if (data && data.response && data.response.quotaConsumed && data.response.quotaConsumed.numChars > 0) {
+      return true;
+    } else {
+      return false;
+    }
+  } catch (error) {
+    console.log(error);
     return false;
   }
 }
