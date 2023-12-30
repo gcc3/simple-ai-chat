@@ -1,6 +1,5 @@
-import { getUser, getStore } from 'utils/sqliteUtils';
 import { authenticate } from 'utils/authUtils';
-import { isInitialized } from 'utils/storeUtils';
+import { findStore, isInitialized } from 'utils/storeUtils';
 
 export default async function (req, res) {
   const { storeName } = req.query;
@@ -15,33 +14,8 @@ export default async function (req, res) {
   }
   const authUesr = authResult.user;
 
-  // Get user
-  const user = await getUser(authUesr.username);
-
   // Find store
-  let store = null;
-
-  // 1. user stores
-  store = await getStore(storeName, user.username);
-
-  // 2. group stores
-  if (!store) {
-    const groups = user.group.split(',');
-    for (const group of groups) {
-      if (!group || group === user.username) {
-        continue;
-      }
-      store = await getStore(storeName, group);
-      if (store) {
-        break;
-      }
-    }
-  }
-
-  // 3. system stores
-  if (!store) {
-    store = await getStore(storeName, 'root');
-  }
+  let store = findStore(storeName, authUesr.username);
 
   if (!store) {
     return res.status(200).json({

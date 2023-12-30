@@ -1,3 +1,34 @@
+import { getUser, getNode } from './sqliteUtils.js';
+
+export async function findNode(nodeName, username) {
+  let node = null;
+  const user = await getUser(username);
+
+  // 1. user users
+  node = await getNode(nodeName, user.username);
+
+  // 2. group nodes
+  if (!node) {
+    const groups = user.group.split(',');
+    for (const group of groups) {
+      if (!group || group === user.username) {
+        continue;
+      }
+      node = await getNode(nodeName, group);
+      if (node) {
+        break;
+      }
+    }
+  }
+
+  // 3. system nodes
+  if (!node) {
+    node = await getNode(nodeName, 'root');
+  }
+
+  return node;
+}
+
 export async function queryNodeAi(input, settings) {
   if (!input) return {
     success: false,

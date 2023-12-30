@@ -1,5 +1,6 @@
-import { updateStoreOwner, getStore, getUser } from 'utils/sqliteUtils.js';
+import { updateStoreOwner, getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
+import { findStore } from 'utils/storeUtils.js';
 
 export default async function (req, res) {
   // Check if the method is POST.
@@ -37,11 +38,19 @@ export default async function (req, res) {
 
   try {
     // Check if the store exists
-    const store = await getStore(storeName, username);
+    const store = await findStore(storeName, username);
     if (!store) {
       return res.status(400).json({ 
         success: false, 
         error: 'Store not found.' 
+      });
+    }
+
+    // Check store ownership
+    if (store.owner !== username && store.created_by !== username) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'You are not the owner or creator of this store.'
       });
     }
 

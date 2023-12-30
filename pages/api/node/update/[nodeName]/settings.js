@@ -1,5 +1,6 @@
-import { updateNodeSettings, getNode } from 'utils/sqliteUtils.js';
+import { updateNodeSettings } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
+import { findNode } from 'utils/nodeUtils.js';
 
 export default async function (req, res) {
   // Check if the method is POST.
@@ -37,11 +38,19 @@ export default async function (req, res) {
 
   try {
     // Check if the node exists
-    const node = await getNode(nodeName, username);
+    const node = await findNode(nodeName, username);
     if (!node) {
       return res.status(400).json({ 
         success: false, 
         error: 'Node not found.' 
+      });
+    }
+
+    // Check node ownership
+    if (node.owner !== username && node.created_by !== username) {
+      return res.status(401).json({ 
+        success: false, 
+        error: 'You are not the owner or creator of this node.'
       });
     }
 

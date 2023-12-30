@@ -1,6 +1,6 @@
-import { getNode } from 'utils/sqliteUtils';
 import { authenticate } from 'utils/authUtils';
 import { isNodeConfigured } from 'utils/nodeUtils';
+import { findNode } from 'utils/nodeUtils';
 
 export default async function (req, res) {
   const { nodeName } = req.query;
@@ -13,27 +13,33 @@ export default async function (req, res) {
         error: authResult.error
       });
     }
+    const authUser = authResult.user;
 
-    if (authResult.success) {
-      // Check if role exists in user roles
-      const node = await getNode(nodeName, authResult.user.username);
-      const settings = JSON.parse(node.settings);
-      if (node) {
-        return res.status(200).json({ 
-          result: {
-            node: node.name,
-            owner: node.owner,
-            created_by: node.created_by,
-            settings: settings,
-            configured: isNodeConfigured(settings),
-          },
-        });
-      } else {
-        return res.status(200).json({
-          success: false,
-          message: "Node not exists."
-        });
-      }
+    // Check if role exists in user roles
+    const node = await findNode(nodeName, authUser.username);
+    if (!node) {
+      return res.status(404).json({ 
+        success: false,
+        message: "Node not exists."
+      });
+    }
+
+    const settings = JSON.parse(node.settings);
+    if (node) {
+      return res.status(200).json({ 
+        result: {
+          node: node.name,
+          owner: node.owner,
+          created_by: node.created_by,
+          settings: settings,
+          configured: isNodeConfigured(settings),
+        },
+      });
+    } else {
+      return res.status(200).json({
+        success: false,
+        message: "Node not exists."
+      });
     }
   } catch (error) {
     console.error(error);
