@@ -8,7 +8,7 @@ import { countToken, getMaxTokens } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
-import { getUser, getNode, getStore } from "utils/sqliteUtils";
+import { getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 
 // OpenAI

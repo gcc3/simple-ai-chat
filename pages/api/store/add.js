@@ -1,5 +1,6 @@
-import { getStore, insertStore } from "utils/sqliteUtils.js";
+import { insertStore } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
+import { findStore } from "utils/storeUtils.js";
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -21,7 +22,7 @@ export default async function (req, res) {
   const { id, username } = authResult.user;
 
   // Check store existance
-  const sameNameStore = await getStore(name, username);
+  const sameNameStore = await findStore(name, username);
   if (sameNameStore) {
     return res.status(400).json({ 
       success: false, 

@@ -913,7 +913,7 @@ const getStore = async (name, user) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM stores WHERE name = ? AND owner = ?`, [name, user], (err, rows) => {
+      db.get(`SELECT * FROM stores WHERE name = ? AND (owner = ? OR created_by = ?)`, [name, user, user], (err, rows) => {
         if (err) {
           reject(err);
         }

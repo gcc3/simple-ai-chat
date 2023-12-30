@@ -1,6 +1,6 @@
-import { getStore } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 import { searchVectaraStore, searchMysqlStore, isInitialized } from "utils/storeUtils";
+import { findStore } from "utils/storeUtils.js";
 
 export default async function handler(req, res) {
   const { store, query } = req.body;
@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   const { id, username } = authResult.user;
 
   try {
-    const storeInfo = await getStore(store, username);
+    const storeInfo = await findStore(store, username);
     if (!storeInfo) {
       res.status(404).json({
         success: false,

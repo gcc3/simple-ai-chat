@@ -1,9 +1,39 @@
-import { vectaraQuery } from "./vectaraUtils.js";
-import { mysqlQuery } from "./mysqlUtils.js";
+import { vectaraQuery } from "./vectaraUtils";
+import { mysqlQuery } from "./mysqlUtils";
+import { getUser, getStore } from "./sqliteUtils";
 import OpenAI from "openai";
 
 // OpenAI
 const openai = new OpenAI();
+
+export async function findStore(storeName, username) {
+  let store = null;
+  const user = await getUser(username);
+
+  // 1. user stores
+  store = await getStore(storeName, user.username);
+
+  // 2. group stores
+  if (!store) {
+    const groups = user.group.split(',');
+    for (const group of groups) {
+      if (!group || group === user.username) {
+        continue;
+      }
+      store = await getStore(storeName, group);
+      if (store) {
+        break;
+      }
+    }
+  }
+
+  // 3. system stores
+  if (!store) {
+    store = await getStore(storeName, 'root');
+  }
+
+  return store;
+}
 
 export async function searchVectaraStore(settings, query) {
   const corpusId = settings.corpusId;

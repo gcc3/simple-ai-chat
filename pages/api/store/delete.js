@@ -1,7 +1,8 @@
-import { getStore, deleteStore } from "utils/sqliteUtils.js";
+import { deleteStore } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
 import { createVectaraJtwToken, deleteVectaraCorpus, deleteVectaraApiKey } from "utils/vectaraUtils";
 import { isInitialized } from "utils/storeUtils";
+import { findStore } from "utils/storeUtils.js";
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -23,11 +24,19 @@ export default async function (req, res) {
   const { id, username } = authResult.user;
 
   // Check role existance
-  const store = await getStore(name, username);
+  const store = await findStore(name, username);
   if (!store) {
     return res.status(404).json({ 
       success: false, 
       error: "Store not exists." 
+    });
+  }
+
+  // Check store ownership
+  if (store.owner !== username && store.created_by !== username) {
+    return res.status(401).json({ 
+      success: false, 
+      error: "You are not the owner or creator of this store."
     });
   }
 

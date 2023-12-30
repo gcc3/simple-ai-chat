@@ -1,12 +1,12 @@
 import { loglist } from './logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
-import { getRole, getStore, getNode } from './sqliteUtils.js';
+import { getRole, getNode } from './sqliteUtils.js';
 import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 import { queryNodeAi, isNodeConfigured } from "utils/nodeUtils";
-import { isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
+import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
 
 const fetch = require('node-fetch');
 
@@ -274,7 +274,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
     console.log("--- data store search ---");
 
     // Get store info
-    const storeInfo = await getStore(store, user.username);
+    const storeInfo = await findStore(store, user.username);
     const settings = JSON.parse(storeInfo.settings);
 
     if (isInitialized(storeInfo.engine, settings)) {
