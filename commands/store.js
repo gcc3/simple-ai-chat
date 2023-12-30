@@ -327,7 +327,7 @@ export default async function store(args, files) {
       }
     } catch (error) {
       console.error(error);
-      return error;
+      return "An error occurred during your request.";
     }
   }
 

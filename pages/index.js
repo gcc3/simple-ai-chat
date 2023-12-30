@@ -691,7 +691,7 @@ export default function Home() {
       let commandResult = await command(input, files);
 
       // Use command return to bypass reset output and info
-      if (commandResult !== null) {
+      if (commandResult && typeof commandResult === "string") {
         console.log("Command Output:\n" + commandResult);
 
         // Print images in command output

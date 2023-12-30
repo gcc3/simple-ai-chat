@@ -5,55 +5,54 @@ import { isInitialized } from 'utils/storeUtils';
 export default async function (req, res) {
   const { storeName } = req.query;
 
+  // Authentication
+  const authResult = authenticate(req);
+  if (!authResult.success) {
+    return res.status(401).json({ 
+      success: false,
+      error: authResult.error
+    });
+  }
+  const authUesr = authResult.user;
+
+  // Check if store exists
+  const store = await getStore(storeName, authUesr.username);
+  if (!store) {
+    return res.status(200).json({
+      success: false,
+      message: "Store not exists."
+    });
+  }
+
   try {
-    const authResult = authenticate(req);
-    if (!authResult.success) {
-      return res.status(401).json({ 
-        success: false,
-        error: authResult.error
-      });
-    }
-
-    if (authResult.success) {
-      // Check if role exists in user roles
-      const store = await getStore(storeName, authResult.user.username);
-
-      // Mask settings
-      let settings = JSON.parse(store.settings);
-      if (store.engine === "vectara") {
-        settings = {
-          ...settings,
-          apiKey: maskString(settings.apiKey),
-          customerId: maskString(settings.customerId),
-          clientId: maskString(settings.clientId),
-          clientSecret: maskString(settings.clientSecret),
-        }
-      } else if (store.engine === "mysql") {
-        settings = {
-          ...settings,
-          password: maskString(settings.password, 0),
-        }
+    // Mask settings
+    let settings = JSON.parse(store.settings);
+    if (store.engine === "vectara") {
+      settings = {
+        ...settings,
+        apiKey: maskString(settings.apiKey),
+        customerId: maskString(settings.customerId),
+        clientId: maskString(settings.clientId),
+        clientSecret: maskString(settings.clientSecret),
       }
-
-      if (store) {
-        return res.status(200).json({ 
-          result: {
-            id: store.id,
-            store: store.name,
-            owner: store.owner,
-            created_by: store.created_by,
-            engine: store.engine,
-            settings,
-            initialized: isInitialized(store.engine, settings)
-          },
-        });
-      } else {
-        return res.status(200).json({
-          success: false,
-          message: "Store not exists."
-        });
+    } else if (store.engine === "mysql") {
+      settings = {
+        ...settings,
+        password: maskString(settings.password, 0),
       }
     }
+
+    return res.status(200).json({ 
+      result: {
+        id: store.id,
+        store: store.name,
+        owner: store.owner,
+        created_by: store.created_by,
+        engine: store.engine,
+        settings,
+        initialized: isInitialized(store.engine, settings)
+      },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
