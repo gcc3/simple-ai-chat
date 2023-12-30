@@ -344,7 +344,9 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
     // Count tokens
     token_ct["node"] = countToken(model, node_prompt);
-    console.log("response: " + node_prompt + "\n");
+    console.log("response: " + node_prompt);
+    if (node_images.length > 0) console.log("node image: " + node_images);
+    console.log("");
   }
 
   // 4. Location info

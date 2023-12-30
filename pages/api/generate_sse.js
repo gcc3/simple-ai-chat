@@ -141,7 +141,8 @@ export default async function (req, res) {
     + "use_lcation: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "(not set)" : location) : "(disabled)") + "\n"
     + "role: " + (role || "(not set)") + "\n"
-    + "store: " + (store || "(not set)") + "\n");
+    + "store: " + (store || "(not set)") + "\n"
+    + "node: " + (node || "(not set)") + "\n");
   }
 
   // Type II. Tool calls (function calling) input
