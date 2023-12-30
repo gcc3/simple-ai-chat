@@ -15,8 +15,7 @@ export default async function (req, res) {
   const authUesr = authResult.user;
 
   // Find store
-  let store = findStore(storeName, authUesr.username);
-
+  const store = await findStore(storeName, authUesr.username);
   if (!store) {
     return res.status(200).json({
       success: false,
