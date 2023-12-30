@@ -281,17 +281,19 @@ export async function generateMessages(user, model, input, inputType, files, ima
       let queryResult = null;
       if (storeInfo.engine === "vectara") {
         store_prompt += "Query Vector database\n";
-        store_prompt += "Database description:" + (settings.description || "No description") + "\n";
-        store_prompt += "Query result: \n";
+        store_prompt += "Database description: " + (settings.description || "No description") + "\n";
         queryResult = await searchVectaraStore(settings, input);
       }
       if (storeInfo.engine === "mysql") {
         store_prompt += "Query MySQL database\n";
-        store_prompt += "Database description:" + (settings.description || "No description") + "\n";
-        store_prompt += "Query result: \n";
+        store_prompt += "Database description: " + (settings.description || "No description") + "\n";
         queryResult = await searchMysqlStore(settings, input);
       }
       if (queryResult.success) {
+        if (queryResult.query) {
+          store_prompt += "Query: " + queryResult.query + "\n";
+        }
+        store_prompt += "Query result: \n";
         store_prompt += queryResult.message;
         messages.push({
           "role": "system",

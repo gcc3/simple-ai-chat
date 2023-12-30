@@ -61,7 +61,7 @@ export async function searchVectaraStore(settings, query) {
     }
     return {
       success: true,
-      message: result,
+      message: result.trim(),
     };
   } else {
     return {
