@@ -1,5 +1,6 @@
-import { getUser, getNode, countUserNodes, insertNode } from "utils/sqliteUtils.js";
+import { getUser, countUserNodes, insertNode } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
+import { findNode } from "utils/nodeUtils.js";
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -22,7 +23,7 @@ export default async function (req, res) {
   const user = await getUser(username);
 
   // Check node existance
-  const sameNameNode = await getNode(name, username);
+  const sameNameNode = await findNode(name, username);
   if (sameNameNode) {
     return res.status(400).json({ 
       success: false, 

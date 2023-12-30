@@ -1,6 +1,6 @@
-import { getNode } from "utils/sqliteUtils";
 import { authenticate } from "utils/authUtils";
 import { queryNodeAi, isNodeConfigured } from "utils/nodeUtils";
+import { findNode } from "utils/nodeUtils";
 
 export default async function handler(req, res) {
   // Check if the method is POST
@@ -21,7 +21,7 @@ export default async function handler(req, res) {
   const { id, username } = authResult.user;
 
   try {
-    const nodeInfo = await getNode(node, username);
+    const nodeInfo = await findNode(node, username);
     if (!nodeInfo) {
       res.status(404).json({
         success: false,

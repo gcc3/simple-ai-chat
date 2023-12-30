@@ -1128,11 +1128,11 @@ const updateStoreSettings = async (name, user, newSettings) => {
 
 // V. Nodes
 // Get node by name
-const getNode = async (name, owner) => {
+const getNode = async (name, user) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM nodes WHERE name = ? AND owner = ?`, [name, owner], (err, rows) => {
+      db.get(`SELECT * FROM nodes WHERE name = ? AND (owner = ? OR created_by = ?)`, [name, user, user], (err, rows) => {
         if (err) {
           reject(err);
         }
