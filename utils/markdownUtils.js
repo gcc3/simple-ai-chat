@@ -68,8 +68,9 @@ export function markdownFormatter(elOutput) {
       if (!language) language = 'plaintext';
 
       // Remove empty lines at the beginning and the end
-      while (codeLines[0].trim() === '') codeLines.shift();
-      while (codeLines[codeLines.length - 1].trim() === '') codeLines.pop();
+      while (codeLines[0] && codeLines[0].trim() === '') codeLines.shift();
+      while (codeLines[codeLines.length - 1] 
+          && codeLines[codeLines.length - 1].trim() === '') codeLines.pop();
 
       // indent code blocks
       let indent = Infinity;
