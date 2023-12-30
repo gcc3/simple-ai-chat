@@ -19,8 +19,10 @@ export function markdownFormatter(elOutput) {
 
     // Replace ```text``` with <pre><code>text</code></pre>
     // /```([^`]+)```/g, it won't match the code block with backtick in it
+    // /```((?:(?!```)[\s\S])+?)```/g matchs the code block with backtick in it
+    // /```((?:(?!```)[\s\S])*?\n[\s\S]*?)```/g ignore the single line
     let codeBlocks = [];
-    result = output.replace(/```((?:(?!```)[\s\S])+?)```/g, function(match, p1) {
+    result = output.replace(/```((?:(?!```)[\s\S])*?\n[\s\S]*?)```/g, function(match, p1) {
       codeBlocks.push(p1);
       return '\x00'; // Use a null character as a placeholder
     });
