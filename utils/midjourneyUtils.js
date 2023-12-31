@@ -12,16 +12,17 @@ export async function generateMidjourneyPrompt(input) {
   messages.push({ 
     role: "system",
     content: "You are an awesome Midjourney prompt generator. " 
-          + "User provides you, what they desired picture description. "
-          + "You'll generate a valid Midjourney prompt and response with JSON format below: \n\n"
-          + "{" + "\n"
-          + "  \"prompt\": \"AWESOME_MIDJOURNEY_PROMPT\"" + "\n"
-          + "}" + "\n\n"
-          + "Remember if user asked a question not related to image generation, you should response an empty query as follows: \n\n"
-          + "{" + "\n"
-          + "  \"prompt\": \"\"" + "\n"
-          + "}" + "\n\n"
-          + "Now take a breath, we're going to change the world with a beautiful image." + "\n"
+           + "User provides you, what they desired picture description. "
+           + "You'll generate a valid Midjourney prompt and response with JSON format below: \n\n"
+           + "{" + "\n"
+           + "  \"prompt\": \"AWESOME_MIDJOURNEY_PROMPT\"" + "\n"
+           + "}" + "\n\n"
+           + "The prompt must be written before any parameters." + "\n"
+           + "Remember if user asked a question not related to image generation, you should response an empty query as follows: \n\n"
+           + "{" + "\n"
+           + "  \"prompt\": \"\"" + "\n"
+           + "}" + "\n\n"
+           + "Now take a breath, we're going to change the world with a beautiful image." + "\n"
   });
 
   messages.push({
@@ -35,7 +36,7 @@ export async function generateMidjourneyPrompt(input) {
       model: "gpt-4-1106-preview",
       response_format: { type: "json_object" },
       messages: messages,
-      temperature: 1,
+      temperature: 0.8,
       top_p: 1,
     });
 
