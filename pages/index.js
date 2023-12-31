@@ -399,7 +399,6 @@ export default function Home() {
               updateUserSetting("fullscreen", "off");
             }
           }
-          
           console.log("Shortcut: F11");
           break;
         
@@ -422,7 +421,6 @@ export default function Home() {
                 updateUserSetting("fullscreen", "off");
               }
             }
-            
             console.log("Shortcut: ⌃|");
           }
           break;
