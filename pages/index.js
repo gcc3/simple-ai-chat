@@ -401,6 +401,27 @@ export default function Home() {
             }
           }
           break;
+
+        case "F11":  // fullscreen mode
+          event.preventDefault();
+
+          // Triggle fullscreen split
+          if (localStorage.getItem("fullscreen") !== "default") {
+            localStorage.setItem('fullscreen', "default");
+            dispatch(toggleFullscreen("default"));
+            if (localStorage.getItem("user")) {
+              updateUserSetting("fullscreen", "default");
+            }
+          } else {
+            localStorage.setItem('fullscreen', "off");
+            dispatch(toggleFullscreen("off"));
+            if (localStorage.getItem("user")) {
+              updateUserSetting("fullscreen", "off");
+            }
+          }
+          
+          console.log("Shortcut: F11");
+          break;
         
         case "\\":
         case "|":  // fullscreen split mode
@@ -408,10 +429,18 @@ export default function Home() {
             event.preventDefault();
 
             // Triggle fullscreen split
-            localStorage.setItem('fullscreen', "split");
-            dispatch(toggleFullscreen("split"));
-            if (localStorage.getItem("user")) {
-              updateUserSetting("fullscreen", "split");
+            if (localStorage.getItem("fullscreen") !== "split") {
+              localStorage.setItem('fullscreen', "split");
+              dispatch(toggleFullscreen("split"));
+              if (localStorage.getItem("user")) {
+                updateUserSetting("fullscreen", "split");
+              }
+            } else {
+              localStorage.setItem('fullscreen', "off");
+              dispatch(toggleFullscreen("off"));
+              if (localStorage.getItem("user")) {
+                updateUserSetting("fullscreen", "off");
+              }
             }
             
             console.log("Shortcut: ⌃|");
