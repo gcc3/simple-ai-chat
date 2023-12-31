@@ -394,9 +394,12 @@ export default function Home() {
             dispatch(toggleFullscreen("off"));
           }
 
+          const fullscreen = localStorage.getItem("fullscreen");
           if (localStorage.getItem("user")) {
-            updateUserSetting("fullscreen", localStorage.getItem("fullscreen"));
+            updateUserSetting("fullscreen", fullscreen);
           }
+
+          reAdjustInputHeight(fullscreen);
           console.log("Shortcut: F11");
           break;
         
@@ -414,9 +417,12 @@ export default function Home() {
               dispatch(toggleFullscreen("off"));
             }
 
+            const fullscreen = localStorage.getItem("fullscreen");
             if (localStorage.getItem("user")) {
-              updateUserSetting("fullscreen", localStorage.getItem("fullscreen"));
+              updateUserSetting("fullscreen", fullscreen);
             }
+
+            reAdjustInputHeight(fullscreen);
             console.log("Shortcut: ⌃|");
           }
           break;
@@ -1267,12 +1273,13 @@ export default function Home() {
     reAdjustInputHeight();
   };
 
-  const reAdjustInputHeight = () => {
+  const reAdjustInputHeight = (fullscreen_ = null) => {
     const elInput = elInputRef.current;
     if (elInput) {
+      if (!fullscreen_) fullscreen_ = fullscreen;
 
       // Fullscreen
-      if (fullscreen === "default") {
+      if (fullscreen_ === "default") {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
@@ -1294,12 +1301,12 @@ export default function Home() {
       }
 
       // Fullscreen split
-      if (fullscreen === "split") {
+      if (fullscreen_ === "split") {
         // Do nothing because the input height alwasy 100%
       }
 
       // Non-fullscreen
-      if (fullscreen === "off") {
+      if (fullscreen_ === "off") {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
