@@ -341,11 +341,6 @@ export async function generateMessages(user, model, input, inputType, files, ima
           if (queryResult.result.image) {
             node_images.push(queryResult.result.image);
           }
-
-          if (node_images.length > 0) {
-            content += "The image has been generated from prompt. \n";
-                     + "Please print the prompt to user without modify. \n";
-          }
           content += queryResult.result.text;
         } else {
           content += "No result.";

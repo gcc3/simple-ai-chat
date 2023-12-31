@@ -12,7 +12,8 @@ export async function generateMidjourneyPrompt(input) {
   messages.push({ 
     role: "system",
     content: "You are an awesome Midjourney prompt generator. " 
-           + "User provides you, what they desired picture description. "
+           + "User provides you, what they desired picture description. You'll add your imagination on it." + "\n"
+           + "The description maybe not English, please translate prompt to English." + "\n"
            + "You'll generate a valid Midjourney prompt and response with JSON format below: \n\n"
            + "{" + "\n"
            + "  \"prompt\": \"AWESOME_MIDJOURNEY_PROMPT\"" + "\n"
@@ -22,7 +23,6 @@ export async function generateMidjourneyPrompt(input) {
            + "{" + "\n"
            + "  \"prompt\": \"\"" + "\n"
            + "}" + "\n\n"
-           + "Now take a breath, we're going to change the world with a beautiful image." + "\n"
   });
 
   messages.push({
