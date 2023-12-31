@@ -168,7 +168,7 @@ const Documentation = () => {
           </tbody>
         </table>
         <div className="mt-2">
-          * Command shortcuts: Stop generating (⌃c), Clear output (⌃r), Clear output and reset session (⇧⌃r), Toggle fullscreen split mode (⌃|).
+          * Command shortcuts: Stop generating (⌃c), Clear output (⌃r), Clear output and reset session (⇧⌃r), Toggle fullscreen (F11) or split mode (⌃|).
         </div>
       </div>
       <div id="api" className="mt-5">APIs</div>
