@@ -389,15 +389,13 @@ export default function Home() {
           if (localStorage.getItem("fullscreen") !== "default") {
             localStorage.setItem('fullscreen', "default");
             dispatch(toggleFullscreen("default"));
-            if (localStorage.getItem("user")) {
-              updateUserSetting("fullscreen", "default");
-            }
           } else {
             localStorage.setItem('fullscreen', "off");
             dispatch(toggleFullscreen("off"));
-            if (localStorage.getItem("user")) {
-              updateUserSetting("fullscreen", "off");
-            }
+          }
+
+          if (localStorage.getItem("user")) {
+            updateUserSetting("fullscreen", localStorage.getItem("fullscreen"));
           }
           console.log("Shortcut: F11");
           break;
@@ -411,15 +409,13 @@ export default function Home() {
             if (localStorage.getItem("fullscreen") !== "split") {
               localStorage.setItem('fullscreen', "split");
               dispatch(toggleFullscreen("split"));
-              if (localStorage.getItem("user")) {
-                updateUserSetting("fullscreen", "split");
-              }
             } else {
               localStorage.setItem('fullscreen', "off");
               dispatch(toggleFullscreen("off"));
-              if (localStorage.getItem("user")) {
-                updateUserSetting("fullscreen", "off");
-              }
+            }
+
+            if (localStorage.getItem("user")) {
+              updateUserSetting("fullscreen", localStorage.getItem("fullscreen"));
             }
             console.log("Shortcut: ⌃|");
           }
@@ -1299,7 +1295,7 @@ export default function Home() {
 
       // Fullscreen split
       if (fullscreen === "split") {
-        // Do nothing
+        // Do nothing because the input height alwasy 100%
       }
 
       // Non-fullscreen
