@@ -96,7 +96,8 @@ export default async function (req, res) {
   }
 
   // Model switch
-  const use_vision = images.length > 0;
+  // For Midjourney node, use version model to input image to AI.
+  const use_vision = images.length > 0 || node === "Midjourney";
   const model = use_vision ? model_v : model_;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
