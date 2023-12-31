@@ -10,6 +10,7 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
+import { findNode } from "utils/nodeUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -97,7 +98,8 @@ export default async function (req, res) {
 
   // Model switch
   // For Midjourney node, use version model to input image to AI.
-  const use_vision = images.length > 0 || node === "Midjourney";
+  const nodeInfo = await findNode(node, user.username);
+  const use_vision = images.length > 0 || nodeInfo.settings.multimodality;
   const model = use_vision ? model_v : model_;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
