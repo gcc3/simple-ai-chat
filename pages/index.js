@@ -1462,6 +1462,7 @@ export default function Home() {
                   height={image.height}
                   quality={100}
                   style={{ width: '100%', height: '100%' }}
+                  unoptimized
                 />
               </div>
             ))}
