@@ -7,6 +7,7 @@ import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 import { findNode, queryNodeAi, isNodeConfigured } from "utils/nodeUtils";
 import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
+import { generateMidjourneyPrompt } from "utils/midjourneyUtils";
 
 const fetch = require('node-fetch');
 
@@ -317,7 +318,17 @@ export async function generateMessages(user, model, input, inputType, files, ima
     const settings = JSON.parse(nodeInfo.settings);
 
     if (isNodeConfigured(settings)) {
-      const queryResult = (await queryNodeAi(input, settings));
+      let nodeInput = input;
+
+      if (nodeInfo.name === "Midjourney") {
+        const generatedMidjourneyPrompt = await generateMidjourneyPrompt(input);
+        if (generatedMidjourneyPrompt) {
+          nodeInput = generatedMidjourneyPrompt;
+        }
+      }
+
+      console.log("node input: " + nodeInput)
+      const queryResult = (await queryNodeAi(nodeInput, settings));
       if (queryResult) {
         let content = "";
 
@@ -329,8 +340,24 @@ export async function generateMessages(user, model, input, inputType, files, ima
           // Node AI generated images
           if (queryResult.result.image) {
             node_images.push(queryResult.result.image);
-          }
 
+            // Give this image to ChatGPT
+            messages.push({
+              "role": "user",
+              "content": [
+                {
+                  type: "text",
+                  text: "Midjourney generated a image."
+                },
+                {
+                  type: "image",
+                  image_url: {
+                    url: queryResult.result.image
+                  }
+                }
+              ]
+            });
+          }
           content += queryResult.result.text;
         } else {
           content += "No result.";
@@ -338,7 +365,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
         messages.push({
           "role": "system",
-          "content": "Reference data: " + content,
+          "content": content,
         });
         node_prompt += content;
       }

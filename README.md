@@ -242,11 +242,6 @@ Setup
 .env
 ----
 
-* NEXT_PUBLIC_BASE_URL  
-Config for the base URL and public for the client side.  
-For local environment use, http://localhost:3000
-For production use, https://simple-ai.io
-
 * ROOT_PASS  
 System root password, will be set when database initialized.
 

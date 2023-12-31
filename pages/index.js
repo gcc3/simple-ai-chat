@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
-import command, { getHistoryCommand, getNextCommand, getPreviousCommand } from "command.js";
+import command, { getHistoryCommand } from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -21,6 +21,7 @@ import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
 import { generateFileURl } from "utils/awsUtils";
 import { initializeSession } from "utils/sessionUtils";
+import Image from 'next/image';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -59,6 +60,7 @@ export default function Home() {
   const [display, setDisplay] = useState(DISPLAY.FRONT);
   const [content, setContent] = useState(CONTENT.DOCUMENTATION);
   const [subscriptionDisplay, setSubscriptionDisplay] = useState(false);
+  const [outputImages, setOutputImages] = useState([]);
 
   // Refs
   const elInputRef = useRef(null);
@@ -113,34 +115,11 @@ export default function Home() {
   };
 
   // Print image output
-  const printImage = (image_url, targetRef, beforeOrAfter = "after") => {
+  const printImage = async (image_url) => {
     console.log("Print Image: " + image_url);
-
-    if (targetRef.current && elWrapperRef.current) {
-      // Create a div to hold the image
-      const imageDiv = document.createElement('div');
-      imageDiv.className = "mb-5 image-preview";
-
-      // Create an image and append it to div
-      const img = document.createElement('img');
-      img.className = "";
-      img.style.width = "100%";
-      img.style.height = "100%";
-      imageDiv.appendChild(img);
-
-      // Set the image attributes
-      img.src = image_url;  // The URL of the image
-      img.alt = image_url;  // Alternative text for the image
-
-      // Append the image to the div with the ref
-      if (beforeOrAfter === "after") {
-        elWrapperRef.current.appendChild(imageDiv);
-      } else if (beforeOrAfter === "before") {
-        elWrapperRef.current.insertBefore(imageDiv, targetRef.current);
-      }
-    } else {
-      console.error("Target ref is null.");
-    }
+    setOutputImages(currentImages => {
+      return [...currentImages, { src: image_url, alt: image_url, width: 500, height: 500, blurDataURL: image_url }];
+    });
   };
 
   // Print video output (support: YouTube)
@@ -410,17 +389,17 @@ export default function Home() {
           if (localStorage.getItem("fullscreen") !== "default") {
             localStorage.setItem('fullscreen', "default");
             dispatch(toggleFullscreen("default"));
-            if (localStorage.getItem("user")) {
-              updateUserSetting("fullscreen", "default");
-            }
           } else {
             localStorage.setItem('fullscreen', "off");
             dispatch(toggleFullscreen("off"));
-            if (localStorage.getItem("user")) {
-              updateUserSetting("fullscreen", "off");
-            }
           }
-          
+
+          const fullscreen = localStorage.getItem("fullscreen");
+          if (localStorage.getItem("user")) {
+            updateUserSetting("fullscreen", fullscreen);
+          }
+
+          reAdjustInputHeight(fullscreen);
           console.log("Shortcut: F11");
           break;
         
@@ -433,17 +412,17 @@ export default function Home() {
             if (localStorage.getItem("fullscreen") !== "split") {
               localStorage.setItem('fullscreen', "split");
               dispatch(toggleFullscreen("split"));
-              if (localStorage.getItem("user")) {
-                updateUserSetting("fullscreen", "split");
-              }
             } else {
               localStorage.setItem('fullscreen', "off");
               dispatch(toggleFullscreen("off"));
-              if (localStorage.getItem("user")) {
-                updateUserSetting("fullscreen", "off");
-              }
             }
-            
+
+            const fullscreen = localStorage.getItem("fullscreen");
+            if (localStorage.getItem("user")) {
+              updateUserSetting("fullscreen", fullscreen);
+            }
+
+            reAdjustInputHeight(fullscreen);
             console.log("Shortcut: ⌃|");
           }
           break;
@@ -580,25 +559,25 @@ export default function Home() {
     // Get system configurations
     const getSystemInfo = async () => {
       try {
-          console.log("Fetching system info...");
-          const response = await fetch('/api/info/list');
-          const result = (await response.json()).result;
-          if (result.init_placeholder) {
-            global.rawPlaceholder = result.init_placeholder;
-            setPlaceholder({ text: result.init_placeholder, height: null });  // Set placeholder text
-          }
-          if (result.enter) {
-            dispatch(toggleEnterChange(result.enter));
-          }
-          if (result.waiting) setWaiting(result.waiting);  // Set waiting text
-          if (result.querying) setQuerying(result.querying);  // Set querying text
-          if (result.generating) setGenerating(result.generating);  // Set generating text
-          if (result.use_payment) setSubscriptionDisplay(true);  // Set use payment
+        console.log("Fetching system info...");
+        const response = await fetch('/api/info/list');
+        const result = (await response.json()).result;
+        if (result.init_placeholder) {
+          global.rawPlaceholder = result.init_placeholder;
+          setPlaceholder({ text: result.init_placeholder, height: null });  // Set placeholder text
+        }
+        if (result.enter) {
+          dispatch(toggleEnterChange(result.enter));
+        }
+        if (result.waiting) setWaiting(result.waiting);  // Set waiting text
+        if (result.querying) setQuerying(result.querying);  // Set querying text
+        if (result.generating) setGenerating(result.generating);  // Set generating text
+        if (result.use_payment) setSubscriptionDisplay(true);  // Set use payment
 
-          // Set welcome message
-          if (result.welcome_message && !localStorage.getItem("user")) {
-            printOutput(result.welcome_message);
-          }
+        // Set welcome message
+        if (result.welcome_message && !localStorage.getItem("user")) {
+          printOutput(result.welcome_message);
+        }
       } catch (error) {
         console.error("There was an error fetching the data:", error);
       }
@@ -688,7 +667,7 @@ export default function Home() {
     if (image_urls.length > 0) {
       console.log("Images:\n" + image_urls.join("\n"));
       image_urls.map((image_url) => {
-        printImage(image_url, elOutputRef, "before");
+        printImage(image_url);
       });
     }
     if (file_urls.length > 0) {
@@ -756,7 +735,7 @@ export default function Home() {
         if (image_urls.length > 0) {
           console.log("Images:\n" + image_urls.join("\n"));
           image_urls.map((image_url) => {
-            printImage(image_url, elOutputRef, "before");
+            printImage(image_url);
           });
         }
 
@@ -908,6 +887,9 @@ export default function Home() {
       images: images,
       files: files
     };
+
+    // For node print "Generating...", because it will be slow.
+    if (node) printOutput(generating);
     
     console.log("Config: " + JSON.stringify(config));
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
@@ -928,6 +910,9 @@ export default function Home() {
 
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
+
+      // Clear output before receiving text
+      clearOutput();
     }
 
     openaiEssSrouce.onmessage = function(event) {
@@ -1029,7 +1014,7 @@ export default function Home() {
         const _image_ = event.data.replace("###IMG###", "");
 
         // Print image
-        printImage(_image_, elOutputRef, "before");
+        printImage(_image_);
         return;
       }
 
@@ -1294,12 +1279,13 @@ export default function Home() {
     reAdjustInputHeight();
   };
 
-  const reAdjustInputHeight = () => {
+  const reAdjustInputHeight = (fullscreen_ = null) => {
     const elInput = elInputRef.current;
     if (elInput) {
+      if (!fullscreen_) fullscreen_ = fullscreen;
 
       // Fullscreen
-      if (fullscreen === "default") {
+      if (fullscreen_ === "default") {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
@@ -1321,12 +1307,12 @@ export default function Home() {
       }
 
       // Fullscreen split
-      if (fullscreen === "split") {
-        // Do nothing
+      if (fullscreen_ === "split") {
+        // Do nothing because the input height alwasy 100%
       }
 
       // Non-fullscreen
-      if (fullscreen === "off") {
+      if (fullscreen_ === "off") {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
@@ -1478,6 +1464,21 @@ export default function Home() {
             />
           </form>
           <div id="wrapper" ref={elWrapperRef} className={styles.wrapper}>
+            {outputImages.map((image, index) => (
+              <div key={index} className="mb-5 image-preview">
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  placeholder="blur"
+                  blurDataURL={image.blurDataURL}
+                  width={image.width}
+                  height={image.height}
+                  quality={100}
+                  style={{ width: '100%', height: '100%' }}
+                  unoptimized
+                />
+              </div>
+            ))}
             <div 
               id="output" 
               ref={elOutputRef}

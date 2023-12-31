@@ -80,34 +80,6 @@ export async function queryNodeAi(input, settings) {
   }
 }
 
-export async function generateNodeFunction(node) {
-  const settings = JSON.parse(node.settings);
-
-  const description = settings.description || "";
-  const inputDescription = settings.inputDescription || "";
-
-  let function_ = null;
-  function_ = {
-    name: "node_generate",
-    description: description,
-    parameters: {
-      type: "object",
-      properties: {
-        node: {
-          type: "string",
-          description: "A JSON string of data source access configuration. In this case use \"" + JSON.stringify(node) + "\"",
-        },
-        input: {
-          type: "string",
-          description: inputDescription
-        },
-      },
-      required: ["node", "input"],
-    }
-  };
-  return function_;
-}
-
 export function isNodeConfigured(settings) {
   let isConfigured = false;
   if (!settings) {
