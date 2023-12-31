@@ -11,7 +11,10 @@ const nextConfig = {
         ],
       },
     ]
-  }
+  },
+  images: {
+    domains: ['simpleaibucket.s3.amazonaws.com'],
+  },
 }
 
 module.exports = nextConfig

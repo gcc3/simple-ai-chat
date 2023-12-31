@@ -21,6 +21,7 @@ import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
 import { generateFileURl } from "utils/awsUtils";
 import { initializeSession } from "utils/sessionUtils";
+import Image from 'next/image';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -59,6 +60,7 @@ export default function Home() {
   const [display, setDisplay] = useState(DISPLAY.FRONT);
   const [content, setContent] = useState(CONTENT.DOCUMENTATION);
   const [subscriptionDisplay, setSubscriptionDisplay] = useState(false);
+  const [outputImages, setOutputImages] = useState([]);
 
   // Refs
   const elInputRef = useRef(null);
@@ -113,34 +115,11 @@ export default function Home() {
   };
 
   // Print image output
-  const printImage = (image_url, targetRef, beforeOrAfter = "after") => {
+  const printImage = async (image_url) => {
     console.log("Print Image: " + image_url);
-
-    if (targetRef.current && elWrapperRef.current) {
-      // Create a div to hold the image
-      const imageDiv = document.createElement('div');
-      imageDiv.className = "mb-5 image-preview";
-
-      // Create an image and append it to div
-      const img = document.createElement('img');
-      img.className = "";
-      img.style.width = "100%";
-      img.style.height = "100%";
-      imageDiv.appendChild(img);
-
-      // Set the image attributes
-      img.src = image_url;  // The URL of the image
-      img.alt = image_url;  // Alternative text for the image
-
-      // Append the image to the div with the ref
-      if (beforeOrAfter === "after") {
-        elWrapperRef.current.appendChild(imageDiv);
-      } else if (beforeOrAfter === "before") {
-        elWrapperRef.current.insertBefore(imageDiv, targetRef.current);
-      }
-    } else {
-      console.error("Target ref is null.");
-    }
+    setOutputImages(currentImages => {
+      return [...currentImages, { src: image_url, alt: image_url, width: 500, height: 500, blurDataURL: image_url }];
+    });
   };
 
   // Print video output (support: YouTube)
@@ -688,7 +667,7 @@ export default function Home() {
     if (image_urls.length > 0) {
       console.log("Images:\n" + image_urls.join("\n"));
       image_urls.map((image_url) => {
-        printImage(image_url, elOutputRef, "before");
+        printImage(image_url);
       });
     }
     if (file_urls.length > 0) {
@@ -756,7 +735,7 @@ export default function Home() {
         if (image_urls.length > 0) {
           console.log("Images:\n" + image_urls.join("\n"));
           image_urls.map((image_url) => {
-            printImage(image_url, elOutputRef, "before");
+            printImage(image_url);
           });
         }
 
@@ -1029,7 +1008,7 @@ export default function Home() {
         const _image_ = event.data.replace("###IMG###", "");
 
         // Print image
-        printImage(_image_, elOutputRef, "before");
+        printImage(_image_);
         return;
       }
 
@@ -1478,6 +1457,20 @@ export default function Home() {
             />
           </form>
           <div id="wrapper" ref={elWrapperRef} className={styles.wrapper}>
+            {outputImages.map((image, index) => (
+              <div key={index} className="mb-5 image-preview">
+                <Image
+                  src={image.src}
+                  alt={image.alt}
+                  placeholder="blur"
+                  blurDataURL={image.blurDataURL}
+                  width={image.width}
+                  height={image.height}
+                  quality={100}
+                  style={{ width: '100%', height: '100%' }}
+                />
+              </div>
+            ))}
             <div 
               id="output" 
               ref={elOutputRef}
