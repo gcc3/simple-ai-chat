@@ -52,6 +52,7 @@ export default function Home() {
   const [placeholder, setPlaceholder] = useState("");
   const [waiting, setWaiting] = useState("");
   const [querying, setQuerying] = useState("Querying...");
+  const [generating, setGenerating] = useState("Generating...");
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
@@ -591,6 +592,7 @@ export default function Home() {
           }
           if (result.waiting) setWaiting(result.waiting);  // Set waiting text
           if (result.querying) setQuerying(result.querying);  // Set querying text
+          if (result.generating) setGenerating(result.generating);  // Set generating text
           if (result.use_payment) setSubscriptionDisplay(true);  // Set use payment
 
           // Set welcome message
@@ -714,6 +716,11 @@ export default function Home() {
     // Command input
     if (input.startsWith(":")) {
       console.log("Command Input:\n" + input);
+
+      // If heavy command, show waiting text
+      if (input.startsWith(":generate")) {
+        printOutput(generating);
+      }
 
       // Get command result
       const files = file_urls.concat(image_urls);

@@ -8,6 +8,7 @@ export function getSystemConfigurations() {
   const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
   const init_placeholder = process.env.INIT_PLACEHOLDER ? process.env.INIT_PLACEHOLDER : "";
   const waiting = process.env.WAITING ? process.env.WAITING : "";
+  const generating = process.env.GENERATING ? process.env.GENERATING : "";
   const querying = process.env.QUERYING ? process.env.QUERYING : "Querying...";
   const enter = process.env.ENTER ? process.env.ENTER : "";
   const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
@@ -24,6 +25,7 @@ export function getSystemConfigurations() {
     role_content_system: role_content_system,
     welcome_message: welcome_message,
     querying: querying,
+    generating: generating,
     waiting: waiting,
     init_placeholder: init_placeholder,
     enter: enter,
