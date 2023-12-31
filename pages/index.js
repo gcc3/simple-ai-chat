@@ -887,6 +887,9 @@ export default function Home() {
       images: images,
       files: files
     };
+
+    // For node print "Generating...", because it will be slow.
+    if (node) printOutput(generating);
     
     console.log("Config: " + JSON.stringify(config));
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
@@ -907,6 +910,9 @@ export default function Home() {
 
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
+
+      // Clear output before receiving text
+      clearOutput();
     }
 
     openaiEssSrouce.onmessage = function(event) {
