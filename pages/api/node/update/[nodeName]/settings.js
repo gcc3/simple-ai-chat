@@ -36,6 +36,13 @@ export default async function (req, res) {
     });
   }
 
+  if (key !== 'endpoint' && key !== 'queryParameterForInput' && key !== 'multimodality') {
+    return res.status(400).json({ 
+      success: false,
+      error: 'Invalid key.' 
+    });
+  }
+
   try {
     // Check if the node exists
     const node = await findNode(nodeName, username);
