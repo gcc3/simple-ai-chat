@@ -320,7 +320,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
     if (isNodeConfigured(settings)) {
       let nodeInput = input;
 
-      if (nodeInfo.name === "Midjourney") {
+      if (nodeInfo.name.toLowerCase() === "midjourney") {
         const generatedMidjourneyPrompt = await generateMidjourneyPrompt(input);
         if (generatedMidjourneyPrompt) {
           nodeInput = generatedMidjourneyPrompt;
@@ -347,7 +347,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
               "content": [
                 {
                   type: "text",
-                  text: "Midjourney generated a image."
+                  text: "This is a generated image."
                 },
                 {
                   type: "image",
