@@ -340,6 +340,23 @@ export async function generateMessages(user, model, input, inputType, files, ima
           // Node AI generated images
           if (queryResult.result.image) {
             node_images.push(queryResult.result.image);
+
+            // Give this image to ChatGPT
+            messages.push({
+              "role": "user",
+              "content": [
+                {
+                  type: "text",
+                  text: "Midjourney generated a image."
+                },
+                {
+                  type: "image",
+                  image_url: {
+                    url: queryResult.result.image
+                  }
+                }
+              ]
+            });
           }
           content += queryResult.result.text;
         } else {
