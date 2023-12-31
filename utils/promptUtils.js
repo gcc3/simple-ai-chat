@@ -347,7 +347,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
               "content": [
                 {
                   type: "text",
-                  text: "Midjourney generated a image."
+                  text: "This is a generated image."
                 },
                 {
                   type: "image",

@@ -29,6 +29,21 @@ export async function findNode(nodeName, username) {
   return node;
 }
 
+export function getNodeSettings(node) {
+  if (!node) {
+    return null;
+  }
+
+  let settings = null;
+  try {
+    settings = JSON.parse(node.settings);
+  } catch (error) {
+    console.log(error);
+  }
+
+  return settings;
+}
+
 export async function queryNodeAi(input, settings) {
   if (!input) return {
     success: false,
