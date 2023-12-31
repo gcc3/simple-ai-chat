@@ -553,25 +553,25 @@ export default function Home() {
     // Get system configurations
     const getSystemInfo = async () => {
       try {
-          console.log("Fetching system info...");
-          const response = await fetch('/api/info/list');
-          const result = (await response.json()).result;
-          if (result.init_placeholder) {
-            global.rawPlaceholder = result.init_placeholder;
-            setPlaceholder({ text: result.init_placeholder, height: null });  // Set placeholder text
-          }
-          if (result.enter) {
-            dispatch(toggleEnterChange(result.enter));
-          }
-          if (result.waiting) setWaiting(result.waiting);  // Set waiting text
-          if (result.querying) setQuerying(result.querying);  // Set querying text
-          if (result.generating) setGenerating(result.generating);  // Set generating text
-          if (result.use_payment) setSubscriptionDisplay(true);  // Set use payment
+        console.log("Fetching system info...");
+        const response = await fetch('/api/info/list');
+        const result = (await response.json()).result;
+        if (result.init_placeholder) {
+          global.rawPlaceholder = result.init_placeholder;
+          setPlaceholder({ text: result.init_placeholder, height: null });  // Set placeholder text
+        }
+        if (result.enter) {
+          dispatch(toggleEnterChange(result.enter));
+        }
+        if (result.waiting) setWaiting(result.waiting);  // Set waiting text
+        if (result.querying) setQuerying(result.querying);  // Set querying text
+        if (result.generating) setGenerating(result.generating);  // Set generating text
+        if (result.use_payment) setSubscriptionDisplay(true);  // Set use payment
 
-          // Set welcome message
-          if (result.welcome_message && !localStorage.getItem("user")) {
-            printOutput(result.welcome_message);
-          }
+        // Set welcome message
+        if (result.welcome_message && !localStorage.getItem("user")) {
+          printOutput(result.welcome_message);
+        }
       } catch (error) {
         console.error("There was an error fetching the data:", error);
       }
