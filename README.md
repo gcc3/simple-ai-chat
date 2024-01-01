@@ -337,7 +337,11 @@ The value should be `true` or `false`.
 Use hunter API to verify email.  
 
 * GOOGLE_API_KEY  
-Use for detect accurate address.  
+Use for detect accurate address.   
+
+* MINIMALIST  
+Although the Simple AI is simple, but still not for minimalist.  
+The value should be `true` or `false`.  
 
 
 Coding rules
