@@ -44,6 +44,19 @@ export function getNodeSettings(node) {
   return settings;
 }
 
+export function isMultimodalityNode(node) {
+  if (!node) {
+    return false;
+  }
+
+  const settings = getNodeSettings(node);
+  if (!settings) {
+    return false;
+  }
+
+  return settings.multimodality;
+}
+
 export async function queryNodeAi(input, settings) {
   if (!input) return {
     success: false,
