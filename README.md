@@ -188,10 +188,10 @@ Or more complex:
 {
     "result": {
       "text": "Sample result text.",
-      "image": [
+      "images": [
          {
             "name": "file_name.file_extension",
-            "image_url": "",
+            "image_url": "image_url",
          },
       ],
       "files": [
