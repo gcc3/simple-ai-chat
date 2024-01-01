@@ -286,10 +286,20 @@ export default function Home() {
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", 0);
 
     // Set styles and themes
-    dispatch(toggleFullscreen(localStorage.getItem("fullscreen")));
-    if (enter === "enter" && localStorage.getItem("fullscreen") === "split") {
-      dispatch(toggleEnterChange("⌃enter"));  // For fullscreen split mode, use ⌃enter to submit
+    const dispatchFullscreen = (mode) => {
+      localStorage.setItem('fullscreen', mode);
+      dispatch(toggleFullscreen(mode));
+      if (enter === "enter" && mode === "split") {
+        dispatch(toggleEnterChange("⌃enter"));  // For fullscreen split mode, use ⌃enter to submit
+      }
+      // User logged in
+      if (localStorage.getItem("user")) {
+        updateUserSetting("fullscreen", fullscreen);
+      }
+      reAdjustInputHeight(mode); // Adjust input height
     }
+    dispatchFullscreen(localStorage.getItem("fullscreen"));
+
     setTheme(localStorage.getItem("theme"))
     hljs.highlightAll();  // highlight.js
 
@@ -388,19 +398,11 @@ export default function Home() {
 
           // Triggle fullscreen split
           if (localStorage.getItem("fullscreen") !== "default") {
-            localStorage.setItem('fullscreen', "default");
-            dispatch(toggleFullscreen("default"));
+            dispatchFullscreen("default");
           } else {
-            localStorage.setItem('fullscreen', "off");
-            dispatch(toggleFullscreen("off"));
+            dispatchFullscreen("off");
           }
 
-          const fullscreen = localStorage.getItem("fullscreen");
-          if (localStorage.getItem("user")) {
-            updateUserSetting("fullscreen", fullscreen);
-          }
-
-          reAdjustInputHeight(fullscreen);
           console.log("Shortcut: F11");
           break;
         
@@ -411,19 +413,11 @@ export default function Home() {
 
             // Triggle fullscreen split
             if (localStorage.getItem("fullscreen") !== "split") {
-              localStorage.setItem('fullscreen', "split");
-              dispatch(toggleFullscreen("split"));
+              dispatchFullscreen("split");
             } else {
-              localStorage.setItem('fullscreen', "off");
-              dispatch(toggleFullscreen("off"));
+              dispatchFullscreen("off");
             }
-
-            const fullscreen = localStorage.getItem("fullscreen");
-            if (localStorage.getItem("user")) {
-              updateUserSetting("fullscreen", fullscreen);
-            }
-
-            reAdjustInputHeight(fullscreen);
+            
             console.log("Shortcut: ⌃|");
           }
           break;
