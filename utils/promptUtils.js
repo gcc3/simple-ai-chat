@@ -335,7 +335,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
         // Format result
         if (typeof queryResult.result === "string") {
           content += queryResult.result;
-        } else if (queryResult.result.text) {
+        } else if (queryResult.result.text || queryResult.result.image) {
 
           // Node AI generated images
           if (queryResult.result.image) {
