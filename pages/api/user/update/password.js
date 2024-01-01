@@ -23,7 +23,7 @@ export default async function (req, res) {
   try {
     const wasSuccessful = await updateUserPassword(username, password);
     if (wasSuccessful) {
-      return res.status(200).json({ success: true, message: "Password updated successfully" });
+      return res.status(200).json({ success: true, message: "Password updated." });
     } else {
       return res.status(400).json({ error: 'Failed to update password.' });
     }

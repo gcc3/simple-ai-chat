@@ -11,5 +11,5 @@ export default (req, res) => {
 
   // Clear the auth token cookie
   res.setHeader('Set-Cookie', `auth=; HttpOnly; Path=/; Max-Age=0`);
-  res.status(200).json({ success: true, message: 'Logged out successfully' });
+  res.status(200).json({ success: true, message: 'Logged out' });
 };
