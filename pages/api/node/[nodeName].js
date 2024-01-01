@@ -20,7 +20,7 @@ export default async function (req, res) {
     if (!node) {
       return res.status(404).json({ 
         success: false,
-        message: "Node not exists."
+        error: "Node not exists."
       });
     }
 
@@ -38,15 +38,14 @@ export default async function (req, res) {
     } else {
       return res.status(200).json({
         success: false,
-        message: "Node not exists."
+        error: "Node not exists."
       });
     }
   } catch (error) {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "An error occurred during your request.",
-      error: error
+      error: "An error occurred during your request."
     });
   }
 }

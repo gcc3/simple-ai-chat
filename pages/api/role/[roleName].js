@@ -31,8 +31,7 @@ export default async function (req, res) {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "An error occurred during your request.",
-      error: error
+      error: "An error occurred during your request.",
     });
   }
 }

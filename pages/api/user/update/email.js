@@ -17,7 +17,6 @@ export default async function (req, res) {
   if (!authResult.success) {
     return res.status(401).json({ 
       success: false,
-      message: 'Authentication failed.',
       error: authResult.error
     });
   }
@@ -95,15 +94,14 @@ export default async function (req, res) {
     .then((data) => {
       res.status(200).json({ 
         success: true,
-        message: 'Verification email sent, please check your inbox.', 
-        data 
+        message: 'Verification email sent, please check your inbox.',
+        data
       });
     }).catch((err) => {
       console.error(err, err.stack);
-      res.status(500).json({ 
-        success: false, 
-        message: 'Failed to send email', 
-        error: err 
+      res.status(500).json({
+        success: false,
+        error: "Failed to send email",
       });
     });
 }

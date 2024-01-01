@@ -18,7 +18,7 @@ export async function generateFileURl(blob, file_id) {
   } else {
     return {
       success: false,
-      message: 'Invalid file type. Supported type: JPEG/JPG, PNG, PDF, DOCX, TXT, CSV, JSON.'
+      error: 'Invalid file type. Supported type: JPEG/JPG, PNG, PDF, DOCX, TXT, CSV, JSON.'
     };
   }
 
@@ -59,14 +59,14 @@ export async function generateFileURl(blob, file_id) {
       console.error('Upload failed:', await uploadResult.text());
       return {
         success: false,
-        message: 'Upload failed'
+        error: "Upload failed"
       };
     }
   } else {
     console.error('Pre-signed URL invalid.');
     return {
       success: false,
-      message: 'Pre-signed URL invalid.'
+      error: "Pre-signed URL invalid."
     };
   }
 }

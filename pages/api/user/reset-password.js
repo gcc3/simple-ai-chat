@@ -73,8 +73,7 @@ export default async function handler(req, res) {
       console.error(error, error.stack);
       res.status(500).json({
         success: false,
-        message: "Failed to send email",
-        error,
+        error: "Failed to send email",
       });
     });
 }

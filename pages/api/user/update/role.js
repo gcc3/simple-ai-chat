@@ -96,8 +96,7 @@ export default async function (req, res) {
           console.error(error, error.stack);
           return res.status(500).json({ 
             success: false, 
-            message: 'Subscription updated, failed to send email to user.', 
-            error: error
+            error: "Subscription updated, failed to send email to user.", 
           });
         });
     } else {

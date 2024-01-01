@@ -27,21 +27,21 @@ export function verifySessionId(session) {
   if (!session) {
     return {
       success: false,
-      message: "Session is required." 
+      error: "Session is required." 
     };
   }
 
   if (!containsOnlyNumbers(session)) {
     return {
       success: false,
-      message: "Session must be a number." 
+      error: "Session must be a number." 
     };
   }
 
   if (session.length != 13 || session <= 1669766400000 || session >= 2016921600000) {
     return {
       success: false,
-      message: "Time traveler detected."
+      error: "Time traveler detected."
     };
   }
 

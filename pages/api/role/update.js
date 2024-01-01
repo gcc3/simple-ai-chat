@@ -14,7 +14,6 @@ export default async function (req, res) {
   if (!authResult.success) {
     return res.status(401).json({ 
       success: false,
-      message: 'Authentication failed.',
       error: authResult.error
     });
   }
@@ -25,7 +24,7 @@ export default async function (req, res) {
   if (!role) {
     return res.status(200).json({ 
         success: false, 
-        message: "Role not exists." 
+        error: "Role not exists." 
       });
   }
 
