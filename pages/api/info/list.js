@@ -3,7 +3,7 @@ import { getSystemConfigurations } from "utils/sysUtils";
 export default async function (req, res) {
   try {
     // configurations
-    const { model, model_v, role_content_system, welcome_message, querying, generating, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
+    const { model, model_v, role_content_system, welcome_message, querying, generating, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email, minimalist } = getSystemConfigurations();
 
     res.status(200).json({
       result: {
@@ -21,6 +21,7 @@ export default async function (req, res) {
         use_node_ai: use_node_ai,
         use_payment: use_payment,
         use_email: use_email,
+        minimalist: minimalist,
       },
     });
   } catch (error) {

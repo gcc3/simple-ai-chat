@@ -18,6 +18,7 @@ export function getSystemConfigurations() {
   const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
   const use_email = process.env.USE_EMAIL == "true" ? true : false;
   const welcome_message = process.env.WELCOME_MESSAGE ? process.env.WELCOME_MESSAGE : "";
+  const minimalist = process.env.MINIMALIST == "true" ? true : false;
 
   return {
     model: model,
@@ -37,5 +38,6 @@ export function getSystemConfigurations() {
     use_payment: use_payment,
     use_access_control: use_access_control,
     use_email: use_email,
+    minimalist: minimalist,
   };
 }

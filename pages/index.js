@@ -61,6 +61,7 @@ export default function Home() {
   const [content, setContent] = useState(CONTENT.DOCUMENTATION);
   const [subscriptionDisplay, setSubscriptionDisplay] = useState(false);
   const [outputImages, setOutputImages] = useState([]);
+  const [minimalist, setMinimalist] = useState(false);
 
   // Refs
   const elInputRef = useRef(null);
@@ -205,7 +206,7 @@ export default function Home() {
     printOutput(log["output"]);
     global.rawOutput = log["output"];
 
-    setInfo((
+    !minimalist && setInfo((
       <div>
         model: {log["model"]}<br></br>
       </div>
@@ -573,6 +574,7 @@ export default function Home() {
         if (result.querying) setQuerying(result.querying);  // Set querying text
         if (result.generating) setGenerating(result.generating);  // Set generating text
         if (result.use_payment) setSubscriptionDisplay(true);  // Set use payment
+        if (result.minimalist) setMinimalist(true);  // Set minimalist
 
         // Set welcome message
         if (result.welcome_message && !localStorage.getItem("user")) {
@@ -693,7 +695,7 @@ export default function Home() {
     reAdjustInputHeight();
 
     // Command input
-    if (input.startsWith(":")) {
+    if (!minimalist && input.startsWith(":")) {
       console.log("Command Input:\n" + input);
 
       // If heavy command, show waiting text
@@ -756,7 +758,7 @@ export default function Home() {
     // Example: !get_weather({ "location":"Tokyo" })
     // Support multple functions: !function_name({ "arg1":"value1", "arg2":"value2", ... }),!function_name({ "arg1":"value1", "arg2":"value2", ... })
     // Example: !get_weather({ "location":"Tokyo" }),!get_time({ "timezone":"America/Los_Angeles" })
-    if (input.startsWith("!")) {
+    if (!minimalist && input.startsWith("!")) {
       const functions = input.substring(1).split(",!");
       console.log("Function CLI: " + JSON.stringify(functions));
 
@@ -926,7 +928,7 @@ export default function Home() {
       if (event.data.startsWith("###ENV###")) {
         const _env_ = event.data.replace("###ENV###", "").split(',');
         const model = _env_[0];
-        setInfo((
+        !minimalist && setInfo((
           <div>
             model: {model}<br></br>
           </div>
@@ -961,7 +963,7 @@ export default function Home() {
         if (val >= 7)      valColor = "green";   // green
         else if (val >= 4) valColor = "#CC7722"; // orange
         else if (val >= 0) valColor = "#DE3163"; // red
-        setEvaluation(
+        !minimalist && setEvaluation(
           <div>
             self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
           </div>
@@ -986,14 +988,14 @@ export default function Home() {
           const mem = _stats_[8];
 
           if (use_eval === "true" && !done_evaluating) {
-            setEvaluation(
+            !minimalist && setEvaluation(
               <div>
                 self_eval_score: evaluating...<br></br>
               </div>
             );
           }
 
-          setStats(
+          !minimalist && setStats(
             <div>
               func: {func.replaceAll('|', ", ") || "none"}<br></br>
               temperature: {temperature}<br></br>
@@ -1174,7 +1176,7 @@ export default function Home() {
       hljs.highlightAll();
 
       if (localStorage.getItem('useStats') === "true") {
-        setStats((
+        !minimalist && setStats((
           <div>
             func: {data.result.stats.func.replaceAll('|', ", ") || "none"}<br></br>
             temperature: {data.result.stats.temperature}<br></br>
@@ -1188,7 +1190,7 @@ export default function Home() {
         ));
       }
 
-      setInfo((
+      !minimalist && setInfo((
         <div>
           model: {data.result.info.model}
           <br></br>
@@ -1438,7 +1440,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>
+        {!minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>}
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>
