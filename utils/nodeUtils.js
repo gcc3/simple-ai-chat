@@ -54,6 +54,10 @@ export function isMultimodalityNode(node) {
     return false;
   }
 
+  if (!settings.multimodality) {
+    return false;
+  }
+
   return settings.multimodality;
 }
 
