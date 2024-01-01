@@ -347,7 +347,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
               "content": [
                 {
                   type: "text",
-                  text: queryResult.result.text
+                  text: queryResult.result.text || "Here it is a generated image."
                 },
                 {
                   type: "image",
