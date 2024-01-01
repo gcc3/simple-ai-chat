@@ -178,7 +178,7 @@ Simply use text:
 
 ```json
 {
-    "result": "Sample result text."
+  "result": "Sample result text."
 }
 ```
 
@@ -186,21 +186,19 @@ Or more complex:
 
 ```json
 {
-    "result": {
-      "text": "Sample result text.",
-      "images": [
-         {
-            "name": "file_name.file_extension",
-            "image_url": "image_url",
-         },
-      ],
-      "files": [
-         {
-            "name": "file_name.file_extension",
-            "url": "file_url",
-         },
-      ]
-    }
+  "result": {
+    "text": "Sample result text.",
+    "images": [
+      {
+        "image_url": "image_url",
+      },
+    ],
+    "files": [
+      {
+        "url": "file_url",
+      },
+    ]
+  }
 }
 ```
 
