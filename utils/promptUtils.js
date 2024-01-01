@@ -347,7 +347,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
               "content": [
                 {
                   type: "text",
-                  text: "This is a generated image."
+                  text: queryResult.result.text
                 },
                 {
                   type: "image",
@@ -357,16 +357,24 @@ export async function generateMessages(user, model, input, inputType, files, ima
                 }
               ]
             });
+
+            // add to node prompt for token count
+            node_prompt += queryResult.result.text;
+
+            // TODO, count image token
+          } else {
+            content += queryResult.result.text;
           }
-          content += queryResult.result.text;
         } else {
           content += "No result.";
         }
 
-        messages.push({
-          "role": "system",
-          "content": content,
-        });
+        if (content) {
+          messages.push({
+            "role": "system",
+            "content": content,
+          });
+        }
         node_prompt += content;
       }
     }
