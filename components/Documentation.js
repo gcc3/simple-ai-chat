@@ -34,6 +34,8 @@ const Documentation = () => {
     { action: "Repeat last input.", shortcut: "Tab", condition: "Focused on the input area, input area is cleared." },
     { action: "Navigate to the previous session history(log).", shortcut: "← or K", condition: "Unfocused from the input area， or input box is empty when using `←`." },
     { action: "Navigate to the next session history(log).", shortcut: "→ or J", condition: "Unfocused from the input area, or input box is empty when using `→`" },
+    { action: "Input the previous command.", shortcut: "↑", condition: "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history." },
+    { action: "Input the next command.", shortcut: "↓", condition: "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history." },
     { action: "Change focus to input area.", shortcut: "Tab or /", condition: "Unfocused from the input area." },
   ];
 
@@ -168,7 +170,7 @@ const Documentation = () => {
           </tbody>
         </table>
         <div className="mt-2">
-          * Command shortcuts: Stop generating (⌃c), Clear output (⌃r), Clear output and reset session (⇧⌃r), Toggle fullscreen (F11) or split mode (⌃|).
+          * Command shortcuts: Stop generating (⌃c), Clear output (⌃r), Clear output and reset session (⇧⌃r), Toggle fullscreen (F11) or split mode (⌃|). In macOS you may use ⌃F11 because F11 is a system shortcut.
         </div>
       </div>
       <div id="api" className="mt-5">APIs</div>

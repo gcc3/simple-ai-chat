@@ -178,7 +178,7 @@ Simply use text:
 
 ```json
 {
-    "result": "Sample result text."
+  "result": "Sample result text."
 }
 ```
 
@@ -186,21 +186,19 @@ Or more complex:
 
 ```json
 {
-    "result": {
-      "text": "Sample result text.",
-      "image": [
-         {
-            "name": "file_name.file_extension",
-            "image_url": "",
-         },
-      ],
-      "files": [
-         {
-            "name": "file_name.file_extension",
-            "url": "file_url",
-         },
-      ]
-    }
+  "result": {
+    "text": "Sample result text.",
+    "images": [
+      {
+        "image_url": "image_url",
+      },
+    ],
+    "files": [
+      {
+        "url": "file_url",
+      },
+    ]
+  }
 }
 ```
 
@@ -337,7 +335,11 @@ The value should be `true` or `false`.
 Use hunter API to verify email.  
 
 * GOOGLE_API_KEY  
-Use for detect accurate address.  
+Use for detect accurate address.   
+
+* MINIMALIST  
+Although the Simple AI is simple, but still not for minimalist.  
+The value should be `true` or `false`.  
 
 
 Coding rules

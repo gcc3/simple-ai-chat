@@ -54,6 +54,10 @@ export function isMultimodalityNode(node) {
     return false;
   }
 
+  if (!settings.multimodality) {
+    return false;
+  }
+
   return settings.multimodality;
 }
 
@@ -89,7 +93,7 @@ export async function queryNodeAi(input, settings) {
     const data = await response.json();
 
     // Veryfy format
-    if (!data.result || (typeof data.result !== "string" && !data.result.text)) {
+    if (!data.result || (typeof data.result !== "string" && !data.result.text && !data.result.image)) {
       return {
         success: false,
         error: "Unexpected node response format.",
