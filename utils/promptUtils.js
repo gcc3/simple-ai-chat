@@ -329,7 +329,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
       console.log("node input: " + nodeInput)
       const queryResult = (await queryNodeAi(nodeInput, settings));
-      if (queryResult) {
+      if (queryResult && queryResult.success) {
         let content = "";
 
         // Format result
