@@ -26,7 +26,7 @@ export default async function logout(args) {
     // Clear user data
     clearUserWebStorage();
 
-    return "Logout successful.";
+    return "Logged out.";
   } catch (error) {
 
     // Logout failed
