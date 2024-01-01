@@ -19,7 +19,7 @@ export default async function (req, res) {
   if (!store) {
     return res.status(200).json({
       success: false,
-      message: "Store not exists."
+      error: "Store not exists."
     });
   }
 
@@ -56,8 +56,7 @@ export default async function (req, res) {
     console.error(error);
     res.status(500).json({
       success: false,
-      message: "An error occurred during your request.",
-      error: error
+      error: "An error occurred during your request.",
     });
   }
 }

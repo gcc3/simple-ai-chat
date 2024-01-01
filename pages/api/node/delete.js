@@ -15,7 +15,6 @@ export default async function (req, res) {
   if (!authResult.success) {
     return res.status(401).json({ 
       success: false,
-      message: 'Authentication failed.',
       error: authResult.error
     });
   }

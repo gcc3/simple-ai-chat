@@ -8,7 +8,6 @@ export default async function (req, res) {
   if (!authResult.success) {
     return res.status(401).json({ 
       success: false,
-      message: 'Authentication failed.',
       error: authResult.error
     });
   }
@@ -16,7 +15,7 @@ export default async function (req, res) {
   if (user !== username) {
     return res.status(403).json({ 
       success: false,
-      message: 'Permission denied.',
+      error: 'Permission denied.',
     });
   }
 
@@ -51,9 +50,7 @@ export default async function (req, res) {
     console.error(error);
     res.status(500).json({
       success: false,
-      error: {
-        message: "An error occurred during your request.",
-      },
+      error: "An error occurred during your request.",
     });
   }
 }

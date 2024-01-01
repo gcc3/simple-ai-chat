@@ -116,8 +116,7 @@ export default async function (req, res) {
 
     res.status(500).json({
       success: false,
-      message: 'Internal Server Error',
-      error: error,
+      error: "Internal Server Error",
     });
   }
 }

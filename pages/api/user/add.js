@@ -117,12 +117,11 @@ export default async function (req, res) {
           data,
         });
       })
-      .catch((err) => {
-        console.error(err, err.stack);
+      .catch((error) => {
+        console.error(error, error.stack);
         res.status(500).json({
           success: false,
-          message: "Failed to send email.",
-          error: err,
+          error: error,
         });
       });
   } else {
