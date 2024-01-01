@@ -98,7 +98,7 @@ export default async function (req, res) {
 
   // Model switch
   // For Midjourney node, use version model to input image to AI.
-  const nodeInfo = await findNode(node, user.username);
+  const nodeInfo = user && await findNode(node, user.username);
   const use_vision = images.length > 0 || isMultimodalityNode(nodeInfo);
   const model = use_vision ? model_v : model_;
   const use_eval = use_eval_ && use_stats && !use_vision;
