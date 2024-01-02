@@ -62,7 +62,7 @@ export default async function (req, res) {
                                 // IMPORTANT! without this the stream not working on remote server
   });
 
-  res.write(`data: ###STATUS###START\n\n`);
+  res.write(`data: ###STATUS###START\n\n`); res.flush();
   
   // Query ID, same as session ID
   const verifyResult = verifySessionId(session);
@@ -197,7 +197,7 @@ export default async function (req, res) {
     }
   }
 
-  res.write(`data: ###STATUS###START\n\n`);
+  res.write(`data: ###STATUS###START\n\n`); res.flush();
 
   try {
     let token_ct = [];  // detailed token count
