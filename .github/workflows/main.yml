@@ -19,7 +19,7 @@ jobs:
           cd /var/www/simple-ai.io
           git checkout master
           git pull
-          export PATH=$PATH:~/.nvm/versions/node/v21.4.0/bin/
+          export PATH=$PATH:/root/.nvm/versions/node/v21.5.0/bin/
           npm install
           npm run build
           pm2 restart simple-ai.io
