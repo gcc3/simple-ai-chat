@@ -35,8 +35,9 @@ export default async function (req, res) {
       error: 'Key and value are required.' 
     });
   }
-  if (value === "true") value = true;
-  if (value === "false") value = false;
+  let value_ = value;
+  if (value === "true") value_ = true;
+  if (value === "false") value_ = false;
 
   if (key !== 'endpoint' 
    && key !== 'queryParameterForInput' 
@@ -67,7 +68,7 @@ export default async function (req, res) {
     }
 
     // TODO check if key and value is valid
-    const wasSuccessful = await updateNodeSettings(nodeName, username, key, value);
+    const wasSuccessful = await updateNodeSettings(nodeName, username, key, value_);
     if (wasSuccessful) {
       return res.status(200).json({ 
         success: true, 
