@@ -12,6 +12,7 @@ import { getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 import { doNodeOverrideOutput, findNode, isMultimodalityNode } from "utils/nodeUtils";
 import update from "./role/update";
+import { use } from "react";
 
 // OpenAI
 const openai = new OpenAI();
@@ -23,7 +24,7 @@ const TYPE = {
 };
 
 // configurations
-const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
+const { model: model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling: use_function_calling_, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 export default async function (req, res) {
   const session = req.query.session || "";
@@ -112,6 +113,13 @@ export default async function (req, res) {
   const model = use_vision ? model_v : model_;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
+  // Use function calling
+  // Function calling is not supported in vision models
+  let use_function_calling = use_function_calling_;
+  if (use_vision) {
+    use_function_calling = false;
+  }
+
   // User access control
   if (use_access_control) {
     const uacResult = await getUacResult(user, ip);
@@ -164,6 +172,13 @@ export default async function (req, res) {
   let functionCalls = [];
   let functionResults = [];
   if (input.startsWith("!")) {
+    if (!use_function_calling) {
+      res.write(`data: Function calling is disabled. This may be due to the use of a vision model.\n\n`); res.flush();
+      res.write(`data: [DONE]\n\n`); res.flush();
+      res.end();
+      return;
+    }
+
     inputType = TYPE.TOOL_CALL;
     console.log(chalk.cyanBright("Tool calls (session = " + session + "):"));
  
