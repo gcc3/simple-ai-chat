@@ -250,17 +250,18 @@ export default async function (req, res) {
     node_output = generateMessagesResult.node_output;
     node_output_images = generateMessagesResult.node_output_images;
 
-
     if (node && nodeInfo) {
       // Add log for node
       // Use node as model name, TODO, use node response model name
       // For each image add a log
-      if (node_output_images.length > 0) {
-        for (let i = 0; i < node_output_images.length; i++) {
-          await logadd(user, session, node, 0, node_input, 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
+      if (node_input) {
+        if (node_output_images.length > 0) {
+          for (let i = 0; i < node_output_images.length; i++) {
+            await logadd(user, session, node, 0, node_input, 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
+          }
+        } else {
+          await logadd(user, session, node, 0, node_input, 0, node_output, [], ip, browser);
         }
-      } else {
-        await logadd(user, session, node, 0, node_input, 0, node_output, [], ip, browser);
       }
 
       // Node taken output override
