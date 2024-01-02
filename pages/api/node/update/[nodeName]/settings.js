@@ -36,7 +36,10 @@ export default async function (req, res) {
     });
   }
 
-  if (key !== 'endpoint' && key !== 'queryParameterForInput' && key !== 'multimodality') {
+  if (key !== 'endpoint' 
+   && key !== 'queryParameterForInput' 
+   && key !== 'multimodality'
+   && key !== 'overrideOutputWithNodeResponse') {
     return res.status(400).json({ 
       success: false,
       error: 'Invalid key.' 

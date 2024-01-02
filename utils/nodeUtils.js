@@ -61,6 +61,23 @@ export function isMultimodalityNode(node) {
   return settings.multimodality;
 }
 
+export function doNodeOverrideOutput(node) {
+  if (!node) {
+    return false;
+  }
+
+  const settings = getNodeSettings(node);
+  if (!settings) {
+    return false;
+  }
+
+  if (!settings.overrideOutputWithNodeResponse) {
+    return false;
+  }
+
+  return settings.overrideOutputWithNodeResponse;
+}
+
 export async function queryNodeAi(input, settings) {
   if (!input) return {
     success: false,
