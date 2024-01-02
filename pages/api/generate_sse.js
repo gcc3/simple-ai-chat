@@ -10,7 +10,7 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { findNode, isMultimodalityNode } from "utils/nodeUtils";
+import { doNodeOverrideOutput, findNode, isMultimodalityNode } from "utils/nodeUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -96,9 +96,11 @@ export default async function (req, res) {
     }
   }
 
+  // Load node
+  const nodeInfo = user && await findNode(node, user.username);
+
   // Model switch
   // For Midjourney node, use version model to input image to AI.
-  const nodeInfo = user && await findNode(node, user.username);
   const use_vision = images.length > 0 || isMultimodalityNode(nodeInfo);
   const model = use_vision ? model_v : model_;
   const use_eval = use_eval_ && use_stats && !use_vision;
@@ -216,6 +218,27 @@ export default async function (req, res) {
     mem = generateMessagesResult.mem;
     node_images = generateMessagesResult.node_images;
 
+    if (node && nodeInfo) {
+      // Add log for node
+      // Use node as model name, TODO, use node response model name
+      await logadd(user, session, node, input_token_ct, input, output_token_ct, output, JSON.stringify(node_images), ip, browser);
+
+      // Node taken output override
+      if (doNodeOverrideOutput(nodeInfo)) {
+        res.write(`data: ###ENV###${node.toLowerCase()}\n\n`);
+        node_images.map(image => {
+          res.write(`data: ###IMG###${image}\n\n`);
+        });
+        res.flush();
+
+        const noddOutput = raw_prompt["node"];
+        res.write(`data: ${noddOutput}\n\n`); res.flush();
+        res.write(`data: [DONE]\n\n`); res.flush();
+        res.end();
+        return;
+      }
+    }
+
     // Get tools
     let tools = await getTools();
 
@@ -321,7 +344,7 @@ export default async function (req, res) {
           let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
           const input_token_ct_f = countToken(model, input_f);
           const output_token_ct_f = countToken(model, output_f);
-          await logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, ip, browser);
+          await logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, "", ip, browser);
         }
       }
     }
@@ -337,7 +360,7 @@ export default async function (req, res) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }
-    await logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
+    await logadd(user, session, model, input_token_ct, input, output_token_ct, output, JSON.stringify(images), ip, browser);
 
     // Final stats
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
