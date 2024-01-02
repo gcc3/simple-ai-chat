@@ -407,7 +407,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
     // Count tokens
     token_ct["node"] = countToken(model, node_prompt);
-    console.log("response: " + node_prompt);
+    console.log("response: " + node_output);
     if (node_output_images.length > 0) console.log("image: " + JSON.stringify(node_output_images));
     console.log("");
   }
