@@ -220,6 +220,7 @@ export default async function (req, res) {
 
     if (node && nodeInfo) {
       // Add log for node
+      // Use node as model name, TODO, use node response model name
       await logadd(user, session, node, input_token_ct, input, output_token_ct, output, ip, browser);
 
       // Node taken output override

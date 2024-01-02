@@ -211,7 +211,7 @@ export default function Home() {
 
     !minimalist && setInfo((
       <div>
-        model: {log["model"]}<br></br>
+        model: {log["model"].toLowerCase()}<br></br>
       </div>
     ));
     markdownFormatter(elOutputRef.current);
