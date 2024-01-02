@@ -25,12 +25,13 @@ export async function generateMessages(user, model, input, inputType, files, ima
                                        session, mem_limit = 7,
                                        role, store, node,
                                        use_location, location,
-                                       functionCalls, functionResults) {
+                                       functionCalls, functionResults,
+                                       updateStatus = null) {
   let messages = [];
   let token_ct = {};
   let mem = 0;
   let input_images = [];
-  let node_input = input;
+  let node_input = "";
   let node_output = "";
   let node_output_images = [];
   
@@ -276,6 +277,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
   // 2. Data store search result
   let store_prompt = "";
   if (store) {
+    updateStatus && updateStatus("Data store searching...");
     console.log("--- data store search ---");
     console.log("store: " + store);
 
@@ -316,6 +318,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
   // 3. Node AI result
   let node_prompt = "";
   if (use_node_ai && node) {
+    updateStatus && updateStatus("Node AI generating...");
     console.log("--- node ai ---");
     console.log("node: " + node);
 
@@ -324,18 +327,24 @@ export async function generateMessages(user, model, input, inputType, files, ima
     const settings = JSON.parse(nodeInfo.settings);
 
     if (isNodeConfigured(settings)) {
+      node_input = input;
 
       // Override node_input
       if (nodeInfo.name.toLowerCase() === "midjourney") {
+        updateStatus && updateStatus("Midjourney prompt generating...");
         console.log("Midjourney prompt generating...");
         const mjPrompt = await generateMidjourneyPrompt(input);
+
         if (mjPrompt) {
           node_input = mjPrompt;
         }
       }
 
       console.log("input: " + node_input.replace(/\n/g, " "));
+      updateStatus && updateStatus("Node AI querying, prompt = " + node_input.replace(/\n/g, " "));
       const queryResult = (await queryNodeAi(node_input, settings));
+      updateStatus && updateStatus("Node AI responsed, result = " + JSON.stringify(queryResult));
+
       if (queryResult && queryResult.success) {
         let content = "";
 
@@ -406,6 +415,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
   // 4. Location info
   let location_prompt = "";
   if (use_location && location) {
+    updateStatus && updateStatus("Location info generating...");
     console.log("--- location info ---");
 
     // localtion example: (40.7128, -74.0060)

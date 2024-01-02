@@ -11,6 +11,7 @@ import { getUacResult } from "utils/uacUtils";
 import { getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 import { doNodeOverrideOutput, findNode, isMultimodalityNode } from "utils/nodeUtils";
+import update from "./role/update";
 
 // OpenAI
 const openai = new OpenAI();
@@ -62,7 +63,11 @@ export default async function (req, res) {
                                 // IMPORTANT! without this the stream not working on remote server
   });
 
-  res.write(`data: ###STATUS###Preparing...\n\n`); res.flush();
+  // Update stats callback
+  const updateStatus = (status) => {
+    res.write(`data: ###STATUS###${status}\n\n`); res.flush();
+  }
+  updateStatus("Preparing...");
   
   // Query ID, same as session ID
   const verifyResult = verifySessionId(session);
@@ -210,14 +215,16 @@ export default async function (req, res) {
     let node_output_images = [];
     let toolCalls = [];
 
-    res.write(`data: ###STATUS###Start pre-generating.\n\n`); res.flush();
-
     // Message base
+    updateStatus("Start pre-generating...");
     const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
                                                           session, mem_length,
                                                           role, store, node, 
                                                           use_location, location,
-                                                          functionCalls, functionResults);
+                                                          functionCalls, functionResults,
+                                                          updateStatus);
+
+    updateStatus("Pre-generating finished.");
     token_ct.push(generateMessagesResult.token_ct);
     messages = generateMessagesResult.messages;
     input_token_ct += generateMessagesResult.token_ct.total;
@@ -228,7 +235,6 @@ export default async function (req, res) {
     node_output = generateMessagesResult.node_output;
     node_output_images = generateMessagesResult.node_output_images;
 
-    res.write(`data: ###STATUS###Pre-generating finished.\n\n`); res.flush();
 
     if (node && nodeInfo) {
       // Add log for node
@@ -267,9 +273,8 @@ export default async function (req, res) {
     console.log("--- messages ---");
     console.log(JSON.stringify(messages) + "\n");
 
-    res.write(`data: ###STATUS###Start chat comletion streaming.\n\n`); res.flush();
-
     // endpoint: /v1/chat/completions
+    updateStatus("Start chat comletion streaming.");
     const chatCompletion = await openai.chat.completions.create({
       model,
       // response_format: { type: "json_object" },
@@ -385,8 +390,9 @@ export default async function (req, res) {
 
     // Final stats
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
-
+    
     // Done message
+    updateStatus("Finished.");
     res.write(`data: [DONE]\n\n`); res.flush();
     res.end();
     return;
