@@ -38,8 +38,10 @@ export default async function generate(args) {
           result += data.result;
         } else if (data.result.text) {
 
-          if (data.result.image) {
-            result += "+img[" + data.result.image + "]" + " ";
+          if (data.result.images) {
+            for (let i = 0; i < data.result.images.length; i++) {
+              result += "+img[" + data.result.images[i] + "]" + " ";
+            }
           }
 
           result += data.result.text;
