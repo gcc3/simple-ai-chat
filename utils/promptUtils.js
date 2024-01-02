@@ -335,9 +335,8 @@ export async function generateMessages(user, model, input, inputType, files, ima
         console.log("Midjourney prompt generating...");
         const mjPrompt = await generateMidjourneyPrompt(input);
 
-        if (mjPrompt) {
-          node_input = mjPrompt;
-        }
+        // It maybe empty, it's AI decided to put it empty, so override it anyway
+        node_input = mjPrompt;  
       }
 
       console.log("input: " + node_input.replace(/\n/g, " "));

@@ -1142,7 +1142,7 @@ export default function Home() {
     };
 
     openaiEssSrouce.onerror = function(error) {
-      console.log("Other stream error: " + error);
+      console.error("Other stream error: ", error);
       openaiEssSrouce.close();
       return;
     };
