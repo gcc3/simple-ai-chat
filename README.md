@@ -226,7 +226,6 @@ Setup
    `$ npm install next -g`  
 
 2. Create necessary files.  
-   Create `log.config`  
    Create `.env` from `.env.example`  
    Create `role.csv` from `role.csv.example` (optional)  
    `role.csv.example` is got from https://github.com/f/awesome-chatgpt-prompts  
@@ -374,13 +373,5 @@ res.status(200).json({
    some_additonal_obj,
 });
 ```
-
-
-log.config
-----------
-
-Can setup output log filter rules for not storing testing messages.  
-One row one rule.  
-Example:  `IP=127.0.0.1`, `USER=username`  
 
 _Originally Forked from https://github.com/openai/openai-quickstart-node_  
