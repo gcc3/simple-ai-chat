@@ -209,6 +209,14 @@ export default function Home() {
     printOutput(log["output"]);
     global.rawOutput = log["output"];
 
+    // Print images
+    if (log["images"]) {
+      const images = JSON.parse(log["images"]);
+      images.map((image_url) => {
+        printImage(image_url);
+      });
+    }
+
     !minimalist && setInfo((
       <div>
         model: {log["model"].toLowerCase()}<br></br>
