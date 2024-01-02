@@ -218,7 +218,7 @@ export default async function (req, res) {
     mem = generateMessagesResult.mem;
     node_images = generateMessagesResult.node_images;
 
-    if (node) {
+    if (node && nodeInfo) {
       // Add log for node
       await logadd(user, session, node, input_token_ct, input, output_token_ct, output, ip, browser);
 
