@@ -136,7 +136,7 @@ export default async function(req, res) {
     // Log
     const input_token_ct = token_ct.total;
     const output_token_ct = countToken(model, output);
-    logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
+    logadd(user, session, model, input_token_ct, input, output_token_ct, output, JSON.stringify(images), ip, browser);
 
     res.status(200).json({
       result: {

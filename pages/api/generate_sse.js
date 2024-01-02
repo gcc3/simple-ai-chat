@@ -221,7 +221,7 @@ export default async function (req, res) {
     if (node && nodeInfo) {
       // Add log for node
       // Use node as model name, TODO, use node response model name
-      await logadd(user, session, node, input_token_ct, input, output_token_ct, output, ip, browser);
+      await logadd(user, session, node, input_token_ct, input, output_token_ct, output, JSON.stringify(node_images), ip, browser);
 
       // Node taken output override
       if (doNodeOverrideOutput(nodeInfo)) {
@@ -344,7 +344,7 @@ export default async function (req, res) {
           let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
           const input_token_ct_f = countToken(model, input_f);
           const output_token_ct_f = countToken(model, output_f);
-          await logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, ip, browser);
+          await logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, "", ip, browser);
         }
       }
     }
@@ -360,7 +360,7 @@ export default async function (req, res) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }
-    await logadd(user, session, model, input_token_ct, input, output_token_ct, output, ip, browser);
+    await logadd(user, session, model, input_token_ct, input, output_token_ct, output, JSON.stringify(images), ip, browser);
 
     // Final stats
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
