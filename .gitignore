@@ -34,9 +34,6 @@ yarn-error.log*
 # vscode
 .vscode
 
-# log
-log.config
-
 # roleplay
 role.csv
 
