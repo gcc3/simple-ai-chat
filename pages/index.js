@@ -305,7 +305,7 @@ export default function Home() {
       }
       // User logged in
       if (localStorage.getItem("user")) {
-        updateUserSetting("fullscreen", fullscreen);
+        updateUserSetting("fullscreen", mode);
       }
       reAdjustInputHeight(mode); // Adjust input height
     }
