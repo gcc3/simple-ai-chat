@@ -202,7 +202,7 @@ export default function Home() {
     const placeholder = log["input"];
     global.rawPlaceholder = log["input"];
 
-    const placeholderShortern = ((fullscreen === "default" || fullscreen === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
+    const placeholderShortern = ((fullscreen === "default" || fullscreen === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
     setPlaceholder({ text: placeholderShortern, height: null });
 
     // Print output
@@ -673,7 +673,7 @@ export default function Home() {
       console.log("Files:\n" + file_urls.join("\n"));
     }
 
-    // 2. Replace the full-width characters
+    // 2. Replace the full-width characters with half-width
     const input = global.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
@@ -686,7 +686,7 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     global.rawPlaceholder = placeholder;
-    const placeholderShorten = ((fullscreen === "default" || fullscreen === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
+    const placeholderShorten = ((fullscreen === "default" || fullscreen === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
     setPlaceholder({ text: placeholderShorten, height: elInput.style.height });
     clearInput();
     reAdjustInputHeight();
