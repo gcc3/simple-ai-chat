@@ -227,7 +227,14 @@ export default async function (req, res) {
     if (node && nodeInfo) {
       // Add log for node
       // Use node as model name, TODO, use node response model name
-      await logadd(user, session, node, 0, node_input, 0, node_output, JSON.stringify(node_output_images), ip, browser);
+      // For each image add a log
+      if (node_output_images.length > 0) {
+        await Promise.all(node_output_images.map(async (image) => {
+          await logadd(user, session, node, 0, node_input, 0, node_output, JSON.stringify([image]), ip, browser);
+        }));
+      } else {
+        await logadd(user, session, node, 0, node_input, 0, node_output, [], ip, browser);
+      }
 
       // Node taken output override
       if (doNodeOverrideOutput(nodeInfo)) {

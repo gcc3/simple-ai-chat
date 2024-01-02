@@ -342,11 +342,10 @@ export async function generateMessages(user, model, input, inputType, files, ima
         } else if (queryResult.result.text || queryResult.result.image) {
 
           // Node AI generated images
-          if (queryResult.result.image) {
+          if (queryResult.result.images && queryResult.result.images.length > 0) {
 
-            node_output = queryResult.result.text || "Here it is a generated image.";
-            let node_output_image = queryResult.result.image;
-            node_output_images.push(node_output_image);
+            node_output = queryResult.result.text || "Here it is, a generated image.";
+            node_output_images = queryResult.result.images;
 
             // Give this image to ChatGPT
             messages.push({
@@ -359,15 +358,15 @@ export async function generateMessages(user, model, input, inputType, files, ima
                 {
                   type: "image",
                   image_url: {
-                    url: node_output_image
+                    url: node_output_images[0]
                   }
                 }
               ]
             });
-            input_images.push(queryResult.result.image);
+            input_images.push(node_output_images[0]);
 
             // add to node prompt for token count
-            node_prompt += queryResult.result.text;
+            node_prompt += node_output;
 
             // TODO, count image token
           } else {
@@ -390,7 +389,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
     // Count tokens
     token_ct["node"] = countToken(model, node_prompt);
     console.log("response: " + node_prompt);
-    if (node_output_images.length > 0) console.log("image: " + node_output_images);
+    if (node_output_images.length > 0) console.log("image: " + JSON.stringify(node_output_images));
     console.log("");
   }
 
