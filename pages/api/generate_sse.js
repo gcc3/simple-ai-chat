@@ -228,7 +228,7 @@ export default async function (req, res) {
     node_output = generateMessagesResult.node_output;
     node_output_images = generateMessagesResult.node_output_images;
 
-    res.write(`data: ###STATUS###Messages generated.\n\n`); res.flush();
+    res.write(`data: ###STATUS###Generated.\n\n`); res.flush();
 
     if (node && nodeInfo) {
       // Add log for node
