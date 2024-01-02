@@ -210,7 +210,7 @@ export default async function (req, res) {
     let node_output_images = [];
     let toolCalls = [];
 
-    res.write(`data: ###STATUS###Start generating.\n\n`); res.flush();
+    res.write(`data: ###STATUS###Start pre-generating.\n\n`); res.flush();
 
     // Message base
     const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
@@ -228,7 +228,7 @@ export default async function (req, res) {
     node_output = generateMessagesResult.node_output;
     node_output_images = generateMessagesResult.node_output_images;
 
-    res.write(`data: ###STATUS###Generated.\n\n`); res.flush();
+    res.write(`data: ###STATUS###Pre-generating finished.\n\n`); res.flush();
 
     if (node && nodeInfo) {
       // Add log for node
