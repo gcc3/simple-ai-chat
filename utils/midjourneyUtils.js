@@ -17,11 +17,12 @@ export async function generateMidjourneyPrompt(input) {
            + "You'll generate a valid Midjourney prompt and response with JSON format below: \n\n"
            + "{" + "\n"
            + "  \"prompt\": \"AWESOME_MIDJOURNEY_PROMPT\"" + "\n"
+           + "  \"parameters\": \"INVALID_MIDJOURNEY_PARAMETERS\"" + "\n"
            + "}" + "\n\n"
-           + "The prompt must be written before any parameters." + "\n"
            + "Remember if user asked a question not related to image generation, you should response an empty query as follows: \n\n"
            + "{" + "\n"
            + "  \"prompt\": \"\"" + "\n"
+           + "  \"parameters\": \"\"" + "\n"
            + "}" + "\n\n"
   });
 
@@ -46,7 +47,7 @@ export async function generateMidjourneyPrompt(input) {
     if (choices && choices.length > 0) {
       result = choices[0].message.content;
     }
-    return JSON.parse(result).prompt;
+    return JSON.parse(result);
   } catch (error) {
     console.error(error);
     return null;

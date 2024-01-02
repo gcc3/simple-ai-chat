@@ -328,9 +328,9 @@ export async function generateMessages(user, model, input, inputType, files, ima
       // Override node_input
       if (nodeInfo.name.toLowerCase() === "midjourney") {
         console.log("Midjourney prompt generating...");
-        const generatedMidjourneyPrompt = await generateMidjourneyPrompt(input);
-        if (generatedMidjourneyPrompt) {
-          node_input = generatedMidjourneyPrompt;
+        const mjPrompt = await generateMidjourneyPrompt(input);
+        if (mjPrompt) {
+          node_input = mjPrompt.prompt.replaceALl("--", " ") + generateMidjourneyPrompt.parameters;
         }
       }
 
