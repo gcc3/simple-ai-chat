@@ -229,9 +229,9 @@ export default async function (req, res) {
       // Use node as model name, TODO, use node response model name
       // For each image add a log
       if (node_output_images.length > 0) {
-        await Promise.all(node_output_images.map(async (image) => {
-          await logadd(user, session, node, 0, node_input, 0, node_output, JSON.stringify([image]), ip, browser);
-        }));
+        for (let i = 0; i < node_output_images.length; i++) {
+          await logadd(user, session, node, 0, node_input, 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
+        }
       } else {
         await logadd(user, session, node, 0, node_input, 0, node_output, [], ip, browser);
       }
