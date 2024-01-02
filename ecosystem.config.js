@@ -1,8 +1,8 @@
 module.exports = {
   apps : [{
     name: 'simple-ai.io',
-    script: 'npm',
-    args: 'start',
+    script: 'app.js',
+    args: 'run',
     interpreter: '/root/.nvm/versions/node/v21.5.0/bin/node',
     // watch: true,   // restart on file changes
     env: {
