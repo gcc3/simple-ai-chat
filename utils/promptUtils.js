@@ -334,7 +334,8 @@ export async function generateMessages(user, model, input, inputType, files, ima
         console.log("Midjourney prompt generating...");
         
         // Get last Midjourney prompt
-        const lastMjPrompt = (await getLastLogBySessionAndModel(session, "Midjourney")).input;
+        const lastMjLog = await getLastLogBySessionAndModel(session, "Midjourney");
+        const lastMjPrompt = lastMjLog ? lastMjLog.input : null;
         if (lastMjPrompt) {
           updateStatus && updateStatus("Last Midjourney prompt: " + lastMjPrompt);
           console.log("Last Midjourney prompt: " + lastMjPrompt);
