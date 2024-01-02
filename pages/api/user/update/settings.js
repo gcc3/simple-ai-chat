@@ -104,18 +104,29 @@ export default async function (req, res) {
     } else if (key === 'store') {
       const userStores = await getUserStores(username);
       const groups = user.group.split(',');
-      if (Object.entries(userStores).length === 0) {
+      const groupStores = [];
+      await groups.map(async g => {
+        if (g === username) return;
+        const groupStores = await getUserStores(g);
+        groupStores.push(groupStores);
+      });
+
+      let systemStores = [];
+      if (username != "root") {
+        systemStores = await getUserStores('root');
+      }
+
+      const allStores = userStores.concat(groupStores).concat(systemStores);
+      if (Object.entries(allStores).length === 0) {
         return res.status(400).json({ 
           success: false,
-          error: 'No user store found.'
+          error: 'No store found.'
         });
       }
-      console.log(JSON.stringify(userStores));
 
-      // TODO include group too
       const validValues = [];
       validValues.push("\"\"");
-      Object.values(userStores).map(s => {
+      Object.values(allStores).map(s => {
         const value = "\"" + s.name + "\""
         validValues.push(value);
       });
@@ -128,18 +139,29 @@ export default async function (req, res) {
     } else if (key === 'node') {
       const userNodes = await getUserNodes(username);
       const groups = user.group.split(',');
-      if (Object.entries(userNodes).length === 0) {
+      const groupNodes = [];
+      await groups.map(async g => {
+        if (g === username) return;
+        const groupNodes = await getUserNodes(g);
+        groupNodes.push(groupNodes);
+      });
+
+      let systemNodes = [];
+      if (username != "root") {
+        systemNodes = await getUserNodes('root');
+      }
+
+      const allNodes = userNodes.concat(groupNodes).concat(systemNodes);
+      if (Object.entries(allNodes).length === 0) {
         return res.status(400).json({ 
           success: false,
           error: 'No user node found.'
         });
       }
-      console.log(JSON.stringify(userNodes));
 
-      // TODO include group too
       const validValues = [];
       validValues.push("\"\"");
-      Object.values(userNodes).map(s => {
+      Object.values(allNodes).map(s => {
         const value = "\"" + s.name + "\""
         validValues.push(value);
       });

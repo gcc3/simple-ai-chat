@@ -894,9 +894,6 @@ export default function Home() {
       images: images,
       files: files
     };
-
-    // For node print "Generating...", because it will be slow.
-    if (node) printOutput(generating);
     
     console.log("Config: " + JSON.stringify(config));
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
@@ -1029,6 +1026,14 @@ export default function Home() {
       if (event.data.startsWith("###STATUS###")) {
         const _status_ = event.data.replace("###STATUS###", "");
         console.log("Status: " + _status_);
+
+        // For node print "Generating...", because it will be slow.
+        if (node && _status_.startsWith("Start generating."))
+          printOutput(generating);
+
+        if (_status_.startsWith("Start chat comletion streaming.")) 
+          clearOutput();
+
         return;        
       }
 
