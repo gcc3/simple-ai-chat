@@ -279,7 +279,7 @@ export default async function (req, res) {
 
     res.write(`data: ###ENV###${model}\n\n`);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
-    node_output_images.map(image => {
+    input_images.map(image => {
       res.write(`data: ###IMG###${image}\n\n`);
     });
     res.flush();
