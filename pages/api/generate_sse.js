@@ -197,8 +197,6 @@ export default async function (req, res) {
     }
   }
 
-  res.write(`data: ###STATUS###Start.\n\n`); res.flush();
-
   try {
     let token_ct = [];  // detailed token count
     let input_token_ct = 0;
@@ -211,6 +209,8 @@ export default async function (req, res) {
     let node_output = "";
     let node_output_images = [];
     let toolCalls = [];
+
+    res.write(`data: ###STATUS###Start generating.\n\n`); res.flush();
 
     // Message base
     const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
@@ -227,6 +227,8 @@ export default async function (req, res) {
     node_input = generateMessagesResult.node_input;
     node_output = generateMessagesResult.node_output;
     node_output_images = generateMessagesResult.node_output_images;
+
+    res.write(`data: ###STATUS###Messages generated.\n\n`); res.flush();
 
     if (node && nodeInfo) {
       // Add log for node
@@ -264,6 +266,8 @@ export default async function (req, res) {
 
     console.log("--- messages ---");
     console.log(JSON.stringify(messages) + "\n");
+
+    res.write(`data: ###STATUS###Start chat comletion streaming.\n\n`); res.flush();
 
     // endpoint: /v1/chat/completions
     const chatCompletion = await openai.chat.completions.create({

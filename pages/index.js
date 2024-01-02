@@ -1028,7 +1028,12 @@ export default function Home() {
         console.log("Status: " + _status_);
 
         // For node print "Generating...", because it will be slow.
-        if (node) printOutput(generating);
+        if (node && _status_.startsWith("Start generating."))
+          printOutput(generating);
+
+        if (_status_.startsWith("Start chat comletion streaming.")) 
+          clearOutput();
+
         return;        
       }
 
