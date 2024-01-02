@@ -1,4 +1,5 @@
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
+
 const imageSize = require('image-size');
 
 export async function fetchImageSize(url) {

@@ -8,8 +8,7 @@ import { getSystemConfigurations } from "utils/sysUtils";
 import { findNode, queryNodeAi, isNodeConfigured, doNodeOverrideOutput } from "utils/nodeUtils";
 import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
 import { generateMidjourneyPrompt } from "utils/midjourneyUtils";
-
-const fetch = require('node-fetch');
+import fetch from 'node-fetch';
 
 // Input output type
 const TYPE = {
