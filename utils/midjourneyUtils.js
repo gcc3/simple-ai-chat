@@ -14,20 +14,20 @@ export async function generateMidjourneyPrompt(input) {
     content: "You are an awesome Midjourney prompt generator. " 
            + "User provides you, what they desired picture description. You'll add your imagination on it." + "\n"
            + "The description maybe not English, please translate prompt to English." + "\n"
-           + "You'll generate a valid Midjourney prompt and response with JSON format below: \n\n"
+           + "You'll generate a valid Midjourney prompt with parameters (optional) and response with JSON format below: \n\n"
            + "{" + "\n"
            + "  \"prompt\": \"AWESOME_MIDJOURNEY_PROMPT\"" + "\n"
-           + "  \"parameters\": \"INVALID_MIDJOURNEY_PARAMETERS\"" + "\n"
            + "}" + "\n\n"
+           + "The prompt must be written before any parameters." + "\n"
            + "Parameters example: \"--ar 2:3 --no sky\" \n\n"
            + "Available parameters: --ar : Change the aspect ratio of a generation.\n"
            + "                      --no : Negative prompting, --no plants would try to remove plants from the image.\n"
            + "                      --chaos <number 0–100> Change how varied the results will be. Higher values produce more unusual and unexpected generations.\n"
            + "                      --iw <0–2> Sets image prompt weight relative to text weight. The default value is 1.\n"
+           + "If you know how to use Midjourney, please add your parameters to the prompt. \n"
            + "Remember if user asked a question not related to image generation, you should response an empty query as follows: \n\n"
            + "{" + "\n"
            + "  \"prompt\": \"\"" + "\n"
-           + "  \"parameters\": \"\"" + "\n"
            + "}" + "\n\n"
   });
 
@@ -52,7 +52,7 @@ export async function generateMidjourneyPrompt(input) {
     if (choices && choices.length > 0) {
       result = choices[0].message.content;
     }
-    return JSON.parse(result);
+    return (JSON.parse(result)).prompt;
   } catch (error) {
     console.error(error);
     return null;
