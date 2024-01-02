@@ -204,6 +204,7 @@ export default async function (req, res) {
     let mem = 0;
     let input_images = [];
     let node_input = "";
+    let node_output = "";
     let node_output_images = [];
     let toolCalls = [];
 
@@ -220,12 +221,13 @@ export default async function (req, res) {
     mem = generateMessagesResult.mem;
     input_images = generateMessagesResult.input_images;
     node_input = generateMessagesResult.node_input;
+    node_output = generateMessagesResult.node_output;
     node_output_images = generateMessagesResult.node_output_images;
 
     if (node && nodeInfo) {
       // Add log for node
       // Use node as model name, TODO, use node response model name
-      await logadd(user, session, node, 0, node_input, 0, output, JSON.stringify(node_output_images), ip, browser);
+      await logadd(user, session, node, 0, node_input, 0, node_output, JSON.stringify(node_output_images), ip, browser);
 
       // Node taken output override
       if (doNodeOverrideOutput(nodeInfo)) {

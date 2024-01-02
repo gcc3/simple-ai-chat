@@ -31,6 +31,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
   let mem = 0;
   let input_images = [];
   let node_input = input;
+  let node_output = "";
   let node_output_images = [];
   
   // -3. System master message, important
@@ -342,7 +343,10 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
           // Node AI generated images
           if (queryResult.result.image) {
-            node_output_images.push(queryResult.result.image);
+
+            node_output = queryResult.result.text || "Here it is a generated image.";
+            let node_output_image = queryResult.result.image;
+            node_output_images.push(node_output_image);
 
             // Give this image to ChatGPT
             messages.push({
@@ -350,12 +354,12 @@ export async function generateMessages(user, model, input, inputType, files, ima
               "content": [
                 {
                   type: "text",
-                  text: queryResult.result.text || "Here it is a generated image."
+                  text: node_output
                 },
                 {
                   type: "image",
                   image_url: {
-                    url: queryResult.result.image
+                    url: node_output_image
                   }
                 }
               ]
@@ -443,6 +447,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
     mem,
     input_images,
     node_input,
+    node_output,
     node_output_images,
     raw_prompt: {
       system: system_prompt,
