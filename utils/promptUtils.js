@@ -277,6 +277,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
   let store_prompt = "";
   if (store) {
     console.log("--- data store search ---");
+    console.log("store: " + store);
 
     // Get store info
     const storeInfo = await findStore(store, user.username);
@@ -316,6 +317,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
   let node_prompt = "";
   if (use_node_ai && node) {
     console.log("--- node ai ---");
+    console.log("node: " + node);
 
     // Get node info
     const nodeInfo = await findNode(node, user.username);
@@ -325,6 +327,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
       // Override node_input
       if (nodeInfo.name.toLowerCase() === "midjourney") {
+        console.log("Midjourney prompt generating...");
         const generatedMidjourneyPrompt = await generateMidjourneyPrompt(input);
         if (generatedMidjourneyPrompt) {
           node_input = generatedMidjourneyPrompt;
