@@ -152,8 +152,6 @@ export default async function (req, res) {
       }
 
       const allNodes = userNodes.concat(groupNodes).concat(systemNodes);
-      console.log(systemNodes);
-
       if (Object.entries(allNodes).length === 0) {
         return res.status(400).json({ 
           success: false,
