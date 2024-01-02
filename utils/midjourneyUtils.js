@@ -13,7 +13,7 @@ export async function generateMidjourneyPrompt(input) {
     role: "system",
     content: "You are an awesome Midjourney prompt generator. " 
            + "User provides you, what they desired picture description. You'll add your imagination on it." + "\n"
-           + "The description maybe not English, please translate prompt to English." + "\n"
+           + "The input maybe not English, please translate and always use English as prompt." + "\n"
            + "You'll generate a valid Midjourney prompt with parameters (optional) and response with JSON format below: \n\n"
            + "{" + "\n"
            + "  \"prompt\": \"AWESOME_MIDJOURNEY_PROMPT\"" + "\n"
