@@ -236,7 +236,7 @@ export default async function (req, res) {
                                                           session, mem_length,
                                                           role, store, node, 
                                                           use_location, location,
-                                                          functionCalls, functionResults,
+                                                          use_function_calling, functionCalls, functionResults,
                                                           updateStatus);
 
     updateStatus("Pre-generating finished.");
@@ -385,7 +385,7 @@ export default async function (req, res) {
           let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
           const input_token_ct_f = countToken(model, input_f);
           const output_token_ct_f = countToken(model, output_f);
-          await logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, "", ip, browser);
+          await logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, [], ip, browser);
         }
       }
     }
