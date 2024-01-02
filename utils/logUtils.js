@@ -1,7 +1,4 @@
-import { isPageStatic } from "next/dist/build/utils.js";
 import { getLogs, insertLog } from "./sqliteUtils.js"
-
-const fs = require('fs');
 
 export async function logadd(user, session, model, input_token_ct, input, output_token_ct, output, images, ip, browser) {
   // Get username

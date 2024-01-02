@@ -31,7 +31,6 @@
     "next-redux-wrapper": "^8.1.0",
     "openai": "^4.14.1",
     "pdf-parse": "^1.1.1",
-    "plaiceholder": "^3.0.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-redux": "^8.1.3",
