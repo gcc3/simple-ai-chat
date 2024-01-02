@@ -771,12 +771,14 @@ export default function Home() {
     // Example: !get_weather({ "location":"Tokyo" }),!get_time({ "timezone":"America/Los_Angeles" })
     if (!minimalist && input.startsWith("!")) {
       const functionString = input.substring(1);
-      if (functionString.length === 0) {
+      const functions = functionString.split(",!");
+      if (functionString.length === 0
+       || !functionString.includes("(") || !functionString.includes(")")
+       || functions.length === 0) {
         printOutput("Function invalid.");
         return;
       }
 
-      const functions = functionString.split(",!");
       console.log("Function CLI: " + JSON.stringify(functions));
 
       try {
