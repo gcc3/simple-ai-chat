@@ -52,7 +52,7 @@ export async function generateMidjourneyPrompt(input) {
     if (choices && choices.length > 0) {
       result = choices[0].message.content;
     }
-    return JSON.parse(result);
+    return (JSON.parse(result)).prompt;
   } catch (error) {
     console.error(error);
     return null;

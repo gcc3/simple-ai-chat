@@ -330,7 +330,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
         console.log("Midjourney prompt generating...");
         const mjPrompt = await generateMidjourneyPrompt(input);
         if (mjPrompt) {
-          node_input = mjPrompt.prompt;
+          node_input = mjPrompt;
         }
       }
 
