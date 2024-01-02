@@ -24,7 +24,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
                                        session, mem_limit = 7,
                                        role, store, node,
                                        use_location, location,
-                                       functionCalls, functionResults,
+                                       use_function_calling, functionCalls, functionResults,
                                        updateStatus = null) {
   let messages = [];
   let token_ct = {};
@@ -240,7 +240,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
   // 1. Function calling result
   // The latest function calling result, not the history
   let function_prompt = "";
-  if (inputType === TYPE.TOOL_CALL && functionResults && functionResults.length > 0) {
+  if (use_function_calling && inputType === TYPE.TOOL_CALL && functionResults && functionResults.length > 0) {
     for (let i = 0; i < functionResults.length; i++) {
       const f = functionResults[i];
       const c = functionCalls[i];
