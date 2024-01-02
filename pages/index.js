@@ -701,6 +701,12 @@ export default function Home() {
 
     // Command input
     if (!minimalist && input.startsWith(":")) {
+      const commandString = input.substring(1);
+      if (commandString.length === 0) {
+        printOutput("Invalid command.");
+        return;
+      }
+
       console.log("Command Input:\n" + input);
 
       // If heavy command, show waiting text
@@ -764,7 +770,13 @@ export default function Home() {
     // Support multple functions: !function_name({ "arg1":"value1", "arg2":"value2", ... }),!function_name({ "arg1":"value1", "arg2":"value2", ... })
     // Example: !get_weather({ "location":"Tokyo" }),!get_time({ "timezone":"America/Los_Angeles" })
     if (!minimalist && input.startsWith("!")) {
-      const functions = input.substring(1).split(",!");
+      const functionString = input.substring(1);
+      if (functionString.length === 0) {
+        printOutput("Function invalid.");
+        return;
+      }
+
+      const functions = functionString.split(",!");
       console.log("Function CLI: " + JSON.stringify(functions));
 
       try {
