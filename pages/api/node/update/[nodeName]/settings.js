@@ -35,6 +35,8 @@ export default async function (req, res) {
       error: 'Key and value are required.' 
     });
   }
+  if (value === "true") value = true;
+  if (value === "false") value = false;
 
   if (key !== 'endpoint' 
    && key !== 'queryParameterForInput' 
