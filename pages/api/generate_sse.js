@@ -61,6 +61,8 @@ export default async function (req, res) {
     'X-Accel-Buffering': 'no',  // disables proxy buffering for NGINX
                                 // IMPORTANT! without this the stream not working on remote server
   });
+
+  res.write(`data: ###STATUS###START\n\n`);
   
   // Query ID, same as session ID
   const verifyResult = verifySessionId(session);
@@ -194,6 +196,8 @@ export default async function (req, res) {
       }
     }
   }
+
+  res.write(`data: ###STATUS###START\n\n`);
 
   try {
     let token_ct = [];  // detailed token count

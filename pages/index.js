@@ -1025,6 +1025,13 @@ export default function Home() {
         return;
       }
 
+      // VI. Handle status
+      if (event.data.startsWith("###STATUS###")) {
+        const _status_ = event.data.replace("###STATUS###", "");
+        console.log("Status: " + _status_);
+        return;        
+      }
+
       // Handle the DONE signal
       if (event.data === '[DONE]') {
         openaiEssSrouce.close();
