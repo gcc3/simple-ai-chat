@@ -202,7 +202,10 @@ export default async function (req, res) {
     let messages = [];
     let raw_prompt = "";
     let mem = 0;
-    let node_images = [];
+    let input_images = [];
+    let node_input = "";
+    let node_output = "";
+    let node_output_images = [];
     let toolCalls = [];
 
     // Message base
@@ -216,17 +219,27 @@ export default async function (req, res) {
     input_token_ct += generateMessagesResult.token_ct.total;
     raw_prompt = generateMessagesResult.raw_prompt;
     mem = generateMessagesResult.mem;
-    node_images = generateMessagesResult.node_images;
+    input_images = generateMessagesResult.input_images;
+    node_input = generateMessagesResult.node_input;
+    node_output = generateMessagesResult.node_output;
+    node_output_images = generateMessagesResult.node_output_images;
 
     if (node && nodeInfo) {
       // Add log for node
       // Use node as model name, TODO, use node response model name
-      await logadd(user, session, node, input_token_ct, input, output_token_ct, output, JSON.stringify(node_images), ip, browser);
+      // For each image add a log
+      if (node_output_images.length > 0) {
+        for (let i = 0; i < node_output_images.length; i++) {
+          await logadd(user, session, node, 0, node_input, 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
+        }
+      } else {
+        await logadd(user, session, node, 0, node_input, 0, node_output, [], ip, browser);
+      }
 
       // Node taken output override
       if (doNodeOverrideOutput(nodeInfo)) {
         res.write(`data: ###ENV###${node.toLowerCase()}\n\n`);
-        node_images.map(image => {
+        node_output_images.map(image => {
           res.write(`data: ###IMG###${image}\n\n`);
         });
         res.flush();
@@ -266,7 +279,7 @@ export default async function (req, res) {
 
     res.write(`data: ###ENV###${model}\n\n`);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
-    node_images.map(image => {
+    input_images.map(image => {
       res.write(`data: ###IMG###${image}\n\n`);
     });
     res.flush();
@@ -360,7 +373,7 @@ export default async function (req, res) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }
-    await logadd(user, session, model, input_token_ct, input, output_token_ct, output, JSON.stringify(images), ip, browser);
+    await logadd(user, session, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
 
     // Final stats
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);

@@ -196,10 +196,9 @@ export default async function store(args, files) {
       return error;
     }
 
+    // Set store
     sessionStorage.setItem("store", storeName);
 
-    // Reset session to forget previous memory
-    initializeSession();
     return "Store is set to \`" + storeName + "\`, you can use command \`:store\` to show current store information";
   }
 

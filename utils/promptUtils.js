@@ -29,7 +29,10 @@ export async function generateMessages(user, model, input, inputType, files, ima
   let messages = [];
   let token_ct = {};
   let mem = 0;
-  let node_images = [];
+  let input_images = [];
+  let node_input = input;
+  let node_output = "";
+  let node_output_images = [];
   
   // -3. System master message, important
   let system_prompt = "";
@@ -224,6 +227,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
                   url: images[i]
                 }
               });
+              input_images.push(images[i]);
             }
           }
           token_ct["user_input_image"] = image_token_ct;
@@ -318,17 +322,17 @@ export async function generateMessages(user, model, input, inputType, files, ima
     const settings = JSON.parse(nodeInfo.settings);
 
     if (isNodeConfigured(settings)) {
-      let nodeInput = input;
 
+      // Override node_input
       if (nodeInfo.name.toLowerCase() === "midjourney") {
         const generatedMidjourneyPrompt = await generateMidjourneyPrompt(input);
         if (generatedMidjourneyPrompt) {
-          nodeInput = generatedMidjourneyPrompt;
+          node_input = generatedMidjourneyPrompt;
         }
       }
 
-      console.log("input: " + nodeInput.replace(/\n/g, " "));
-      const queryResult = (await queryNodeAi(nodeInput, settings));
+      console.log("input: " + node_input.replace(/\n/g, " "));
+      const queryResult = (await queryNodeAi(node_input, settings));
       if (queryResult && queryResult.success) {
         let content = "";
 
@@ -338,8 +342,10 @@ export async function generateMessages(user, model, input, inputType, files, ima
         } else if (queryResult.result.text || queryResult.result.image) {
 
           // Node AI generated images
-          if (queryResult.result.image) {
-            node_images.push(queryResult.result.image);
+          if (queryResult.result.images && queryResult.result.images.length > 0) {
+
+            node_output = queryResult.result.text || "Here it is, a generated image.";
+            node_output_images = queryResult.result.images;
 
             // Give this image to ChatGPT
             messages.push({
@@ -347,19 +353,20 @@ export async function generateMessages(user, model, input, inputType, files, ima
               "content": [
                 {
                   type: "text",
-                  text: queryResult.result.text || "Here it is a generated image."
+                  text: node_output
                 },
                 {
                   type: "image",
                   image_url: {
-                    url: queryResult.result.image
+                    url: node_output_images[0]
                   }
                 }
               ]
             });
+            input_images.push(node_output_images[0]);
 
             // add to node prompt for token count
-            node_prompt += queryResult.result.text;
+            node_prompt += node_output;
 
             // TODO, count image token
           } else {
@@ -382,7 +389,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
     // Count tokens
     token_ct["node"] = countToken(model, node_prompt);
     console.log("response: " + node_prompt);
-    if (node_images.length > 0) console.log("image: " + node_images);
+    if (node_output_images.length > 0) console.log("image: " + JSON.stringify(node_output_images));
     console.log("");
   }
 
@@ -437,7 +444,10 @@ export async function generateMessages(user, model, input, inputType, files, ima
     messages,
     token_ct,
     mem,
-    node_images,
+    input_images,
+    node_input,
+    node_output,
+    node_output_images,
     raw_prompt: {
       system: system_prompt,
       role: role_prompt,
