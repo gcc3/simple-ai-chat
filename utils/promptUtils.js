@@ -327,7 +327,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
         }
       }
 
-      console.log("node input: " + nodeInput)
+      console.log("input: " + nodeInput.replace(/\n/g, " "));
       const queryResult = (await queryNodeAi(nodeInput, settings));
       if (queryResult && queryResult.success) {
         let content = "";
@@ -382,7 +382,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
     // Count tokens
     token_ct["node"] = countToken(model, node_prompt);
     console.log("response: " + node_prompt);
-    if (node_images.length > 0) console.log("node image: " + node_images);
+    if (node_images.length > 0) console.log("image: " + node_images);
     console.log("");
   }
 
