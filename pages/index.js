@@ -199,8 +199,11 @@ export default function Home() {
     clearOutput();
 
     // Print input
-    setPlaceholder({ text: log["input"], height: null });
+    const placeholder = log["input"];
     global.rawPlaceholder = log["input"];
+
+    const placeholderShortern = ((fullscreen === "default" || fullscreen === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
+    setPlaceholder({ text: placeholderShortern, height: null });
 
     // Print output
     printOutput(log["output"]);
@@ -556,23 +559,23 @@ export default function Home() {
       try {
         console.log("Fetching system info...");
         const response = await fetch('/api/info/list');
-        const result = (await response.json()).result;
-        if (result.init_placeholder) {
-          global.rawPlaceholder = result.init_placeholder;
-          setPlaceholder({ text: result.init_placeholder, height: null });  // Set placeholder text
+        const info = (await response.json()).result;
+        if (info.init_placeholder) {
+          global.rawPlaceholder = info.init_placeholder;
+          setPlaceholder({ text: info.init_placeholder, height: null });  // Set placeholder text
         }
-        if (result.enter) {
-          dispatch(toggleEnterChange(result.enter));
+        if (info.enter) {
+          dispatch(toggleEnterChange(info.enter));
         }
-        if (result.waiting) setWaiting(result.waiting);  // Set waiting text
-        if (result.querying) setQuerying(result.querying);  // Set querying text
-        if (result.generating) setGenerating(result.generating);  // Set generating text
-        if (result.use_payment) setSubscriptionDisplay(true);  // Set use payment
-        if (result.minimalist) setMinimalist(true);  // Set minimalist
+        if (info.waiting) setWaiting(info.waiting);  // Set waiting text
+        if (info.querying) setQuerying(info.querying);  // Set querying text
+        if (info.generating) setGenerating(info.generating);  // Set generating text
+        if (info.use_payment) setSubscriptionDisplay(true);  // Set use payment
+        if (info.minimalist) setMinimalist(true);  // Set minimalist
 
         // Set welcome message
-        if (result.welcome_message && !localStorage.getItem("user")) {
-          printOutput(result.welcome_message);
+        if (info.welcome_message && !localStorage.getItem("user")) {
+          printOutput(info.welcome_message);
         }
       } catch (error) {
         console.error("There was an error fetching the data:", error);
@@ -683,8 +686,8 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     global.rawPlaceholder = placeholder;
-    const placeholderText = ((fullscreen === "default" || fullscreen === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
-    setPlaceholder({ text: placeholderText, height: elInput.style.height });
+    const placeholderShorten = ((fullscreen === "default" || fullscreen === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 40) + " ..." : placeholder;
+    setPlaceholder({ text: placeholderShorten, height: elInput.style.height });
     clearInput();
     reAdjustInputHeight();
 
