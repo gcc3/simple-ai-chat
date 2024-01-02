@@ -293,6 +293,23 @@ const getSessionLog = async (session, time = null, direction = ">") => {
   }
 };
 
+// Use for getting node prompt
+const getLastLogBySessionAndModel = async (session, model) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM logs WHERE session = ? AND model = ? ORDER BY id DESC`, [session, model], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
 // Count how many chats for a IP address for a date range
 const countChatsForIP = async (ip, start, end) => {
   const db = await getDatabaseConnection();
@@ -1323,6 +1340,7 @@ export {
   getSessions,
   getUserSessions,
   getSessionLog,
+  getLastLogBySessionAndModel,
   countChatsForIP,
   countChatsForUser,
   countTokenForUserByModel,

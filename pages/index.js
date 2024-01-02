@@ -1095,9 +1095,13 @@ export default function Home() {
 
       // VI. Handle error
       if (event.data.startsWith("###ERR###") || event.data.startsWith('[ERR]')) {
+        global.STATE = STATES.IDLE;
+        window.speechSynthesis.cancel();
         openaiEssSrouce.close();
-        printOutput("Server error.");
-        console.log(event.data);
+
+        const err = event.data.replace("###ERR###", "").replace("[ERR]", "");
+        printOutput(err);
+        console.error(err);
         return;
       }
 

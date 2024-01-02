@@ -1,11 +1,11 @@
 import { loglist } from './logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
-import { getRole } from './sqliteUtils.js';
+import { getRole, getLastLogBySessionAndModel } from './sqliteUtils.js';
 import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { findNode, queryNodeAi, isNodeConfigured, doNodeOverrideOutput } from "utils/nodeUtils";
+import { findNode, queryNodeAi, isNodeConfigured } from "utils/nodeUtils";
 import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
 import { generateMidjourneyPrompt } from "utils/midjourneyUtils";
 import fetch from 'node-fetch';
@@ -332,10 +332,20 @@ export async function generateMessages(user, model, input, inputType, files, ima
       if (nodeInfo.name.toLowerCase() === "midjourney") {
         updateStatus && updateStatus("Midjourney prompt generating...");
         console.log("Midjourney prompt generating...");
-        const mjPrompt = await generateMidjourneyPrompt(input);
+        
+        // Get last Midjourney prompt
+        const lastMjLog = await getLastLogBySessionAndModel(session, "Midjourney");
+        const lastMjPrompt = lastMjLog ? lastMjLog.input : null;
+        if (lastMjPrompt) {
+          updateStatus && updateStatus("Last Midjourney prompt: " + lastMjPrompt);
+          console.log("Last Midjourney prompt: " + lastMjPrompt);
+        }
+
+        // Generate Midjourney prompt
+        const mjPrompt = await generateMidjourneyPrompt(input, lastMjPrompt);
 
         // It maybe empty, it's AI decided to put it empty, so override it anyway
-        node_input = mjPrompt;  
+        node_input = mjPrompt;
       }
 
       console.log("input: " + node_input.replace(/\n/g, " "));
