@@ -193,10 +193,9 @@ export default async function node(args) {
       return error;
     }
 
+    // Set node
     sessionStorage.setItem("node", nodeName);
 
-    // Reset session to forget previous memory
-    initializeSession();
     return "Node is set to \`" + nodeName + "\`, you can use command \`:node\` to show current node information";
   }
 
