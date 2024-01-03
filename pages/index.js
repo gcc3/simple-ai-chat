@@ -116,10 +116,12 @@ export default function Home() {
   };
 
   // Print image output
-  const printImage = async (image_url) => {
+  const printImage = async (image_url, ar = 1) => {
     console.log("Print Image: " + image_url);
+    const width = 500;
+    const height = width / ar;
     setOutputImages(currentImages => {
-      return [...currentImages, { src: image_url, alt: image_url, width: 500, height: 500, blurDataURL: image_url }];
+      return [...currentImages, { src: image_url, alt: image_url, width, height, blurDataURL: image_url }];
     });
   };
 

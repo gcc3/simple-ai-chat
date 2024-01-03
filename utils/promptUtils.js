@@ -329,6 +329,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
       node_input = input;
 
       // Override node_input
+      let ar = 1;
       if (nodeInfo.name.toLowerCase() === "midjourney") {
         updateStatus && updateStatus("Midjourney prompt generating...");
         console.log("Midjourney prompt generating...");
@@ -344,12 +345,19 @@ export async function generateMessages(user, model, input, inputType, files, ima
         // Generate Midjourney prompt
         const mjPrompt = await generateMidjourneyPrompt(input, lastMjPrompt);
 
+        // Get aspect ratio from the prompt
+        const arPrompt = mjPrompt.match(/--ar\s+\d+:\d+/g);
+        if (arPrompt && arPrompt.length > 0) {
+          const wh = arPrompt[0].split(" ")[1].split(":").map(x => parseInt(x));
+          ar = (wh[0] / wh[1]).toFixed(2);
+        }
+
         // It maybe empty, it's AI decided to put it empty, so override it anyway
         node_input = mjPrompt;
       }
 
       console.log("input: " + node_input.replace(/\n/g, " "));
-      updateStatus && updateStatus("Node AI querying, prompt = " + node_input.replace(/\n/g, " "));
+      updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
       const queryResult = (await queryNodeAi(node_input, settings));
       updateStatus && updateStatus("Node AI responsed, result = " + JSON.stringify(queryResult));
 
@@ -366,6 +374,13 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
             node_output = queryResult.result.text || "Here it is, a generated image.";
             node_output_images = queryResult.result.images;
+
+            // Add aspect ratio to each image
+            for (let i = 0; i < node_output_images.length; i++) {
+              if (!node_output_images[i].includes("?ar=")) {
+                node_output_images[i] += "?ar=" + ar;
+              }
+            }
 
             // Give this image to ChatGPT
             messages.push({
