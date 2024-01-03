@@ -258,7 +258,7 @@ export default async function (req, res) {
             await logadd(user, session, node, 0, node_input, 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
           }
         } else {
-          await logadd(user, session, node, 0, node_input, 0, node_output, [], ip, browser);
+          await logadd(user, session, node, 0, node_input, 0, node_output, JSON.stringify([]), ip, browser);
         }
       }
 
@@ -388,7 +388,7 @@ export default async function (req, res) {
           let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
           const input_token_ct_f = countToken(model, input_f);
           const output_token_ct_f = countToken(model, output_f);
-          await logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, [], ip, browser);
+          await logadd(user, session, model, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
         }
       }
     }
