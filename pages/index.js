@@ -1328,6 +1328,8 @@ export default function Home() {
     reAdjustInputHeight();
   };
 
+  // The placeholder should be shorten if fullscreen off or default
+  // For fullscreen split, the placeholder shouldn't be shorten
   const reAdjustPlaceholder = (fullscreen_ = null) => {
     if (!fullscreen_) fullscreen_ = localStorage.getItem("fullscreen");
     
