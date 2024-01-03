@@ -77,33 +77,31 @@ export async function generateMessages(user, model, input, inputType, files, ima
       mem += 1;
 
       if (log.input.startsWith("F=") && log.output.startsWith("F=")) {
-        // If it is version model, function calling will be disabled as it is not supported
-        if (use_function_calling) {
-          // Each Tool call query and response log
-          // The input will add "F=" as prefix
-          // The output will add "F=" as prefix
-          const c = JSON.parse(log.input.slice(2));
-          
-          // Find tool call id in messages
-          let isFound = false;
-          messages.map(m => {
-            if (m.role === "assistant" && m.tool_calls && m.tool_calls.length > 0) {
-              m.tool_calls.map(t => {
-                if (t.id === c.id) isFound = true;
-              });
-            }
-          });
-
-          // Add tool call query
-          // only if the tool call id is found in messages
-          if (isFound) {
-            const message = log.output.slice(2);
-            messages.push({ 
-              role: "tool",
-              content: message,
-              tool_call_id: c.id,
+        // Each Tool call query and response log
+        // The input will add "F=" as prefix
+        // The output will add "F=" as prefix
+        const c = JSON.parse(log.input.slice(2));
+        
+        // Find tool call id in messages
+        let isFound = false;
+        messages.map(m => {
+          if (m.role === "assistant" && m.tool_calls && m.tool_calls.length > 0) {
+            m.tool_calls.map(t => {
+              if (t.id === c.id) isFound = true;
             });
           }
+        });
+
+        // Add tool call query
+        // only if the tool call id is found in messages
+        // If it is version model, function calling will be disabled as it is not supported
+        if (isFound && use_function_calling) {
+          const message = log.output.slice(2);
+          messages.push({ 
+            role: "tool",
+            content: message,
+            tool_call_id: c.id,
+          });
         }
       } else {
         // Normal log
@@ -126,10 +124,13 @@ export async function generateMessages(user, model, input, inputType, files, ima
             // Tool call output log
             // The output will add "T=" as prefix
             // AI generated the tool call
-            messages.push({ 
-              role: "assistant",
-              tool_calls: JSON.parse(log.output.slice(2)),
-            });
+            // If it is version model, function calling will be disabled as it is not supported
+            if (use_function_calling) {
+              messages.push({ 
+                role: "assistant",
+                tool_calls: JSON.parse(log.output.slice(2)),
+              });
+            }
           } else {
             // Normal output log
             messages.push({ 
