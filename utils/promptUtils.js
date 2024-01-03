@@ -328,6 +328,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
     if (isNodeConfigured(settings)) {
       node_input = input;
 
+      // Midjourney
       // Override node_input
       let ar = 1;
       if (nodeInfo.name.toLowerCase() === "midjourney") {
