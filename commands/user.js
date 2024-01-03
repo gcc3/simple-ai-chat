@@ -37,6 +37,10 @@ export default async function entry(args) {
 
     if (user) {
       setUserLocalStorage(user);
+
+      // Remove usage in user object as too long
+      delete user.usage;
+
       return JSON.stringify(user, null, 2)
     } else {
       return "User removed.";
