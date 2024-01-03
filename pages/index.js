@@ -209,7 +209,9 @@ export default function Home() {
     const placeholder = log["input"];
     global.rawPlaceholder = log["input"];
 
-    const placeholderShortern = ((fullscreen === "default" || fullscreen === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
+    const fullscreen = localStorage.getItem("fullscreen");
+    const placeholderShortern = ((fullscreen === "default" || fullscreen === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? 
+                                 placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
     setPlaceholder({ text: placeholderShortern, height: null });
 
     // Print output
