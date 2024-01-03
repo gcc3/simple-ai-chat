@@ -1047,6 +1047,12 @@ export default function Home() {
         if (node && _status_.startsWith("Start pre-generating..."))
           printOutput(generating);
 
+        if (_status_.startsWith("Node AI querying, prompt: ")) {
+          const prompt = _status_.replace("Node AI querying, prompt: ", "");
+          printOutput("Generating with prompt: \"" + prompt + "\"...");
+          return;
+        }
+
         if (_status_.startsWith("Start chat comletion streaming.")) 
           clearOutput();
 
