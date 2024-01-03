@@ -357,7 +357,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
       }
 
       console.log("input: " + node_input.replace(/\n/g, " "));
-      updateStatus && updateStatus("Node AI querying, prompt = " + node_input.replace(/\n/g, " "));
+      updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
       const queryResult = (await queryNodeAi(node_input, settings));
       updateStatus && updateStatus("Node AI responsed, result = " + JSON.stringify(queryResult));
 
