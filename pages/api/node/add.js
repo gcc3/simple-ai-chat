@@ -32,10 +32,10 @@ export default async function (req, res) {
 
   // Node count limit
   const sameUserNodesCount = (await countUserNodes(username)).count;
-  if (sameUserNodesCount >= 99) {
+  if (sameUserNodesCount >= 10) {
     return res.status(400).json({ 
       success: false,
-      error: "Your can create at most 99 nodes."
+      error: "Your can create at most 10 nodes."
     });
   }
 

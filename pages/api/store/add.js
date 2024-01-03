@@ -1,4 +1,4 @@
-import { insertStore } from "utils/sqliteUtils.js";
+import { insertStore, countUserStores } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
 import { findStore } from "utils/storeUtils.js";
 
@@ -26,6 +26,15 @@ export default async function (req, res) {
     return res.status(400).json({ 
       success: false, 
       error: "Store already exists." 
+    });
+  }
+
+  // Store count limit
+  const sameUserStoresCount = (await countUserStores(username)).count;
+  if (sameUserStoresCount >= 10) {
+    return res.status(400).json({ 
+      success: false,
+      error: "Your can create at most 10 stores."
     });
   }
 

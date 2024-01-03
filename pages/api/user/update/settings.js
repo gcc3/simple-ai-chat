@@ -1,5 +1,7 @@
-import { updateUserSettings, getUser, getUserRoles, getUserStores, getUserNodes } from 'utils/sqliteUtils.js';
+import { updateUserSettings, getUser, getUserRoles } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
+import { getAvailableStoresForUser } from 'utils/storeUtils';
+import { getAvailableNodesForUser } from 'utils/nodeUtils';
 
 export default async function (req, res) {
   // Check if the method is POST.
@@ -102,21 +104,7 @@ export default async function (req, res) {
         });
       }
     } else if (key === 'store') {
-      const userStores = await getUserStores(username);
-      const groups = user.group.split(',');
-      const groupStores = [];
-      await groups.map(async g => {
-        if (g === username) return;
-        const groupStores = await getUserStores(g);
-        groupStores.push(groupStores);
-      });
-
-      let systemStores = [];
-      if (username != "root") {
-        systemStores = await getUserStores('root');
-      }
-
-      const allStores = userStores.concat(groupStores).concat(systemStores);
+      const allStores = await getAvailableStoresForUser(user);
       if (Object.entries(allStores).length === 0) {
         return res.status(400).json({ 
           success: false,
@@ -137,21 +125,7 @@ export default async function (req, res) {
         });
       }
     } else if (key === 'node') {
-      const userNodes = await getUserNodes(username);
-      const groups = user.group.split(',');
-      const groupNodes = [];
-      await groups.map(async g => {
-        if (g === username) return;
-        const groupNodes = await getUserNodes(g);
-        groupNodes.push(groupNodes);
-      });
-
-      let systemNodes = [];
-      if (username != "root") {
-        systemNodes = await getUserNodes('root');
-      }
-
-      const allNodes = userNodes.concat(groupNodes).concat(systemNodes);
+      const allNodes = await getAvailableNodesForUser(user);
       if (Object.entries(allNodes).length === 0) {
         return res.status(400).json({ 
           success: false,

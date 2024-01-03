@@ -1,6 +1,6 @@
 import { vectaraQuery } from "./vectaraUtils";
 import { mysqlQuery } from "./mysqlUtils";
-import { getUser, getStore } from "./sqliteUtils";
+import { getUser, getStore, getUserStores } from "./sqliteUtils";
 import OpenAI from "openai";
 
 // OpenAI
@@ -224,4 +224,22 @@ export function isInitialized(engine, settings) {
     }
   }
   return isInitialized;
+}
+
+export async function getAvailableStoresForUser(user) {
+  const userStores = await getUserStores(user.username);
+  const groups = user.group.split(',');
+  const groupStores = [];
+  await groups.map(async g => {
+    if (g === user.username) return;
+    const groupStores = await getUserStores(g);
+    groupStores.push(groupStores);
+  });
+
+  let systemStores = [];
+  if (user.username != "root") {
+    systemStores = await getUserStores('root');
+  }
+
+  return userStores.concat(groupStores).concat(systemStores);
 }

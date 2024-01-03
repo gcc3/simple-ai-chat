@@ -1,4 +1,4 @@
-import { getUser, getNode } from './sqliteUtils.js';
+import { getUser, getNode, getUserNodes } from './sqliteUtils.js';
 
 export async function findNode(nodeName, username) {
   let node = null;
@@ -139,4 +139,22 @@ export function isNodeConfigured(settings) {
     isConfigured = true;
   }
   return isConfigured;
+}
+
+export async function getAvailableNodesForUser(user) {
+  const userNodes = await getUserNodes(user.username);
+  const groups = user.group.split(',');
+  const groupNodes = [];
+  await groups.map(async g => {
+    if (g === user.username) return;
+    const groupNodes = await getUserNodes(g);
+    groupNodes.push(groupNodes);
+  });
+
+  let systemNodes = [];
+  if (user.username != "root") {
+    systemNodes = await getUserNodes('root');
+  }
+
+  return userNodes.concat(groupNodes).concat(systemNodes);
 }
