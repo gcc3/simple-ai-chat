@@ -265,6 +265,8 @@ export default async function (req, res) {
       // Node taken output override
       if (doNodeOverrideOutput(nodeInfo)) {
         res.write(`data: ###ENV###${node.toLowerCase()}\n\n`);
+
+        // Print node output images
         node_output_images.map(image => {
           res.write(`data: ###IMG###${image}\n\n`);
         });
@@ -306,6 +308,8 @@ export default async function (req, res) {
 
     res.write(`data: ###ENV###${model}\n\n`);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
+
+    // Print input images
     input_images.map(image => {
       res.write(`data: ###IMG###${image}\n\n`);
     });

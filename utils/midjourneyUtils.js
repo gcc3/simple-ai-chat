@@ -27,6 +27,7 @@ export async function generateMidjourneyPrompt(input, lastMjPrompt) {
              + "                      --no : Negative prompting, --no plants would try to remove plants from the image.\n"
              + "                      --chaos <number 0–100> Change how varied the results will be. Higher values produce more unusual and unexpected generations.\n"
              + "                      --iw <0–2> Sets image prompt weight relative to text weight. The default value is 1.\n"
+             + "--ar is required, please must include this parameter. \n"
              + "If you know how to use Midjourney, please add your parameters to the prompt. \n"
              + "Remember if user asked a question not related to image generation, you should response an empty query as follows: \n\n"
              + "{" + "\n"
