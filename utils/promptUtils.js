@@ -5,7 +5,7 @@ import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { findNode, queryNodeAi, isNodeConfigured } from "utils/nodeUtils";
+import { findNode, queryNodeAI, isNodeConfigured } from "utils/nodeUtils";
 import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
 import { generateMidjourneyPrompt } from "utils/midjourneyUtils";
 import fetch from 'node-fetch';
@@ -379,25 +379,25 @@ export async function generateMessages(user, model, input, inputType, files, ima
       const stopKeepAlive = await sendKeepAlive(updateStatus);
 
       // Perform the query
-      const queryResult = (await queryNodeAi(node_input, settings));
+      const queryNodeAIResult = (await queryNodeAI(node_input, settings));
 
       // Stop sending keep-alive messages
       stopKeepAlive();
-      updateStatus && updateStatus("Node AI responsed, result = " + JSON.stringify(queryResult));
+      updateStatus && updateStatus("Node AI responsed, result = " + JSON.stringify(queryNodeAIResult));
 
-      if (queryResult && queryResult.success) {
+      if (queryNodeAIResult && queryNodeAIResult.success) {
         let content = "";
 
         // Format result
-        if (typeof queryResult.result === "string") {
-          content += queryResult.result;
-        } else if (queryResult.result.text || queryResult.result.image) {
+        if (typeof queryNodeAIResult.result === "string") {
+          content += queryNodeAIResult.result;
+        } else if (queryNodeAIResult.result.text || queryNodeAIResult.result.image) {
 
           // Node AI generated images
-          if (queryResult.result.images && queryResult.result.images.length > 0) {
+          if (queryNodeAIResult.result.images && queryNodeAIResult.result.images.length > 0) {
 
-            node_output = queryResult.result.text || "Here it is, a generated image.";
-            node_output_images = queryResult.result.images;
+            node_output = queryNodeAIResult.result.text || "Here it is, a generated image.";
+            node_output_images = queryNodeAIResult.result.images;
 
             // Add aspect ratio to each image
             for (let i = 0; i < node_output_images.length; i++) {
@@ -436,7 +436,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
             // TODO, count image token
           } else {
-            content += queryResult.result.text;
+            content += queryNodeAIResult.result.text;
           }
         } else {
           content += "No result.";
