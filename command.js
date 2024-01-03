@@ -164,6 +164,12 @@ export function getCommands() {
 }
 
 export function pushCommandHistory(command) {
+  // ignore masked commands
+  if (command.startsWith(":login")) return;
+  if (command.startsWith(":user add")) return;
+  if (command.startsWith(":user join")) return;
+  if (command.startsWith(":user set pass")) return;
+
   // Get the existing history or initialize a new array
   let commandHistories = JSON.parse(sessionStorage.getItem("history")) || [];
 
