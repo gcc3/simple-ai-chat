@@ -295,7 +295,7 @@ export default function Home() {
     if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");  // default store
     if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");    // default node
     if (sessionStorage.getItem("time") === null) sessionStorage.setItem("time", Date.now());
-    if (sessionStorage.getItem("history") === null) sessionStorage.setItem("history", JSON.stringify({}));
+    if (sessionStorage.getItem("history") === null) sessionStorage.setItem("history", JSON.stringify([]));
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", 0);
 
     // Set styles and themes

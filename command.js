@@ -164,24 +164,17 @@ export function getCommands() {
 }
 
 function pushCommandHistory(command) {
-  let commandHistory = JSON.parse(sessionStorage.getItem("history"));
+  // Get the existing history or initialize a new array
+  let commandHistories = JSON.parse(sessionStorage.getItem("history")) || [];
 
-  // All command index shift + 1
-  let keys = Object.keys(commandHistory).sort().reverse();
-  keys.forEach((key) => {
-    commandHistory[parseInt(key) + 1] = commandHistory[key];
-  });
+  // Add new command to the front of the array
+  commandHistories.unshift(command);
 
-  // Push to command history
-  commandHistory[1] = command;
+  // Ensure that only the latest 10 commands are kept
+  commandHistories = commandHistories.slice(0, 10);
 
-  // Remove the oldest command
-  while (Object.entries(commandHistory).length > 10) {
-    // Remove the oldest command
-    delete commandHistory[Object.keys(commandHistory).sort().reverse()[0]];
-  }
-
-  sessionStorage.setItem("history", JSON.stringify(commandHistory));
+  // Save the updated history
+  sessionStorage.setItem("history", JSON.stringify(commandHistories));
 }
 
 export function getHistoryCommand(index) {
