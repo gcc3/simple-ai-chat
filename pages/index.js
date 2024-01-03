@@ -939,9 +939,6 @@ export default function Home() {
 
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
-
-      // Clear output before receiving text
-      clearOutput();
     }
 
     openaiEssSrouce.onmessage = function(event) {
@@ -1063,9 +1060,6 @@ export default function Home() {
           return;
         }
 
-        if (_status_.startsWith("Start chat comletion streaming.")) 
-          clearOutput();
-
         return;        
       }
 
@@ -1154,7 +1148,7 @@ export default function Home() {
       }
 
       // Clear the waiting or querying text
-      if (getOutput() === waiting || getOutput() === querying) {
+      if (getOutput() === waiting || getOutput() === querying || getOutput() === generating) {
         clearOutput();
       }
 
