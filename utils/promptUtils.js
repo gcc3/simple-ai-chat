@@ -358,7 +358,31 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
       console.log("input: " + node_input.replace(/\n/g, " "));
       updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
+
+      // Prepare a keep alive
+      async function sendKeepAlive(updateStatus) {
+        let keepAlive = true;
+        const keepAliveInterval = setInterval(() => {
+          if (keepAlive) {
+            updateStatus("Node AI is still processing...");
+          }
+        }, 1000);
+      
+        // Return a function to stop the keep-alive messages
+        return () => {
+          keepAlive = false;
+          clearInterval(keepAliveInterval);
+        };
+      }
+
+      // Start sending keep-alive messages
+      const stopKeepAlive = await sendKeepAlive(updateStatus);
+
+      // Perform the query
       const queryResult = (await queryNodeAi(node_input, settings));
+
+      // Stop sending keep-alive messages
+      stopKeepAlive();
       updateStatus && updateStatus("Node AI responsed, result = " + JSON.stringify(queryResult));
 
       if (queryResult && queryResult.success) {
