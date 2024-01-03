@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
-import command, { getHistoryCommand } from "command.js";
+import command, { getHistoryCommand, pushCommandHistory } from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -436,7 +436,7 @@ export default function Home() {
           break;
 
         case "ArrowUp":
-          if ((global.rawInput === "" && global.rawPlaceholder.startsWith(":") || global.rawInput.startsWith(":")) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if ((global.rawInput === "" && (global.rawPlaceholder.startsWith(":") || global.rawPlaceholder.startsWith("!")) || (global.rawInput.startsWith(":") || global.rawInput.startsWith("!"))) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ↑");
 
@@ -451,7 +451,7 @@ export default function Home() {
           break;
 
         case "ArrowDown":
-          if ((global.rawInput === "" && global.rawPlaceholder.startsWith(":") || global.rawInput.startsWith(":")) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if ((global.rawInput === "" && (global.rawPlaceholder.startsWith(":") || global.rawPlaceholder.startsWith("!")) || (global.rawInput.startsWith(":") || global.rawInput.startsWith("!"))) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ↓");
 
@@ -782,6 +782,7 @@ export default function Home() {
       }
 
       console.log("Function CLI: " + JSON.stringify(functions));
+      pushCommandHistory(input);
 
       try {
         const response = await fetch("/api/function/exec", {

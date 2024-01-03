@@ -163,7 +163,7 @@ export function getCommands() {
   return commands;
 }
 
-function pushCommandHistory(command) {
+export function pushCommandHistory(command) {
   // Get the existing history or initialize a new array
   let commandHistories = JSON.parse(sessionStorage.getItem("history")) || [];
 
