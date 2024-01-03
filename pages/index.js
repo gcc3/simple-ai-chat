@@ -296,7 +296,7 @@ export default function Home() {
     if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");    // default node
     if (sessionStorage.getItem("time") === null) sessionStorage.setItem("time", Date.now());
     if (sessionStorage.getItem("history") === null) sessionStorage.setItem("history", JSON.stringify([]));
-    if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", 0);
+    if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);
 
     // Set styles and themes
     const dispatchFullscreen = (mode) => {
@@ -464,7 +464,7 @@ export default function Home() {
             } else {
               // Clear input
               setInput("");
-              sessionStorage.setItem("historyIndex", 0);
+              sessionStorage.setItem("historyIndex", -1);
             }
           }
           break;
@@ -628,7 +628,7 @@ export default function Home() {
     if (global.STATE === STATES.DOING) return;
     event.preventDefault();
     sessionStorage.setItem("time", Date.now());  // reset time
-    sessionStorage.setItem("historyIndex", 0);   // reset history index
+    sessionStorage.setItem("historyIndex", -1);   // reset history index
 
     // Clear output and preview images
     clearOutput();
