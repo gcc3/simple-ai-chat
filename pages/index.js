@@ -1049,7 +1049,7 @@ export default function Home() {
 
         if (_status_.startsWith("Node AI querying, prompt: ")) {
           const prompt = _status_.replace("Node AI querying, prompt: ", "");
-          printOutput("Generating with prompt: \"" + prompt + "\"...");
+          printOutput("Generating with prompt \"" + prompt + "\"...");
           return;
         }
 
