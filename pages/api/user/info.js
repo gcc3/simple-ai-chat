@@ -97,8 +97,8 @@ export default async function (req, res) {
           },
           balance: user.balance,
           user_role_count: (await countUserRoles(user.username)).count,
-          store_count: (await countUserStores(user.username)).count,
-          node_count: (await countUserNodes(user.username)).count,
+          store_count: (await countUserStores(user.username)).count + (await countUserStores("root")).count,
+          node_count: (await countUserNodes(user.username)).count + (await countUserNodes("root")).count,
         }
       });
     } else {
