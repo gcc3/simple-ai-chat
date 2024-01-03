@@ -55,7 +55,7 @@ export default async function (req, res) {
   // Check if the IP alread used for another user
   const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
   const countUserWithSameIP = await countUserByIP(ip);
-  if (countUserWithSameIP > 0) {
+  if (countUserWithSameIP >= 3) {
     return res.status(400).json({
       success: false,
       error: "Your IP address has been used too frequently. For assistance, please contact our support at `support@simple-ai.io`.",
