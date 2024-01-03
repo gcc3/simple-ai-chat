@@ -55,6 +55,7 @@ const initializeDatabase = (db) => {
             balance INTEGER,
             usage INTEGER,
             settings TEXT,
+            ip_addr TEXT,
             last_login TEXT,
             status TEXT NOT NULL,
             created_at TEXT NOT NULL,
