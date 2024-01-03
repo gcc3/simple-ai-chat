@@ -22,6 +22,7 @@ import hljs from 'highlight.js';
 import { generateFileURl } from "utils/awsUtils";
 import { initializeSession } from "utils/sessionUtils";
 import Image from 'next/image';
+import { getQueryParameterValue } from "utils/urlUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -118,7 +119,12 @@ export default function Home() {
   // Print image output
   const printImage = async (image_url, ar = 1) => {
     console.log("Print Image: " + image_url);
-    const width = 500;
+    
+    // Get aspect ratio from URL
+    const arParam = getQueryParameterValue(image_url, "ar")
+    if (arParam) ar = parseFloat(arParam);
+
+    const width = 1000;
     const height = width / ar;
     setOutputImages(currentImages => {
       return [...currentImages, { src: image_url, alt: image_url, width, height, blurDataURL: image_url }];
