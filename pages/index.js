@@ -1051,15 +1051,19 @@ export default function Home() {
         console.log("Status: " + _status_);
 
         // For node print "Generating...", because it will be slow.
-        if (node && _status_.startsWith("Start pre-generating..."))
+        if (node && _status_.startsWith("Start pre-generating...")) {
           printOutput(generating);
+        }
 
         if (_status_.startsWith("Node AI querying, prompt: ")) {
           const prompt = _status_.replace("Node AI querying, prompt: ", "");
           printOutput("Generating with prompt \"" + prompt + "\"...");
-          return;
         }
 
+        // Sometime the function calling make it pause
+        if (_status_.startsWith("Create chat completion.")) {
+          printOutput(generating);
+        }
         return;        
       }
 

@@ -290,7 +290,7 @@ export default async function (req, res) {
     console.log(JSON.stringify(messages) + "\n");
 
     // endpoint: /v1/chat/completions
-    updateStatus("Start chat comletion streaming.");
+    updateStatus("Create chat completion.");
     const chatCompletion = await openai.chat.completions.create({
       model,
       // response_format: { type: "json_object" },
