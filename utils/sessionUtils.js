@@ -3,7 +3,7 @@ export function initializeSession() {
   const time = Date.now()
   sessionStorage.setItem("time", time);
   sessionStorage.setItem("session", time);
-  sessionStorage.setItem("historyIndex", 0);
+  sessionStorage.setItem("historyIndex", -1);
 }
 
 // Session ID is a string of number.
