@@ -10,6 +10,14 @@ export function gpt4vFeeCal(input_token_ct, output_token_ct) {
   return npre(fee); // Rounds to 5 decimal places
 }
 
+export function plusFeeCal(user, totalFee) {
+  let plusSystemFee = 0;
+  if (user.role === "user") plusSystemFee = totalFee * 0.5;
+  if (user.role === "pro_user") plusSystemFee = totalFee * 0.3;
+  if (user.role === "super_user") plusSystemFee = totalFee * 0.1;
+  return npre(plusSystemFee);
+}
+
 export function dbFeeCal(sizeInKb) {
   return sizeInKb * (5 * 1024 / 1.25);
 }

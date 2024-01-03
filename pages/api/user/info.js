@@ -1,8 +1,11 @@
 import { authenticate } from 'utils/authUtils.js';
-import { getUser, countChatsForUser, countTokenForUserByModel, countUserRoles, countUserStores, countUserNodes } from 'utils/sqliteUtils.js';
+import { getUser, countChatsForUser, countTokenForUserByModel, countUserRoles } from 'utils/sqliteUtils.js';
 import { createToken } from 'utils/authUtils.js';
 import { getRoleFequencyLimit } from 'utils/usageUtils.js';
 import { gpt4FeeCal, gpt4vFeeCal } from "utils/usageUtils";
+import { getAvailableStoresForUser } from 'utils/storeUtils';
+import { getAvailableNodesForUser } from 'utils/nodeUtils';
+
 const moment = require('moment');
 
 export default async function (req, res) {
@@ -97,8 +100,8 @@ export default async function (req, res) {
           },
           balance: user.balance,
           user_role_count: (await countUserRoles(user.username)).count,
-          store_count: (await countUserStores(user.username)).count,
-          node_count: (await countUserNodes(user.username)).count,
+          store_count: (await getAvailableStoresForUser(user)).length,
+          node_count: (await getAvailableNodesForUser(user)).length,
         }
       });
     } else {

@@ -10,7 +10,7 @@ const Documentation = () => {
     { name: "Roles", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
     { name: "Data Stores", description: "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers." },
     { name: "Node (Node AI)", description: "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI." },
-    { name: "Midjourney (in progress)", description: "Midjourney is the first node AI. It utilizes the most advanced image generation AI in combination with ChatGPT prompts to generate high-quality certified images." },
+    { name: "Midjourney", description: "Midjourney is the first system node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images." },
   ];
 
   const sub_features = [
