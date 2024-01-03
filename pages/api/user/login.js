@@ -1,4 +1,4 @@
-import { getUser, updateUserLastLogin, updateUserStatus } from "utils/sqliteUtils.js";
+import { getUser, updateUserIPAddr, updateUserLastLogin, updateUserStatus } from "utils/sqliteUtils.js";
 import { createToken } from "utils/authUtils.js";
 
 export default async (req, res) => {
@@ -56,6 +56,7 @@ export default async (req, res) => {
   // Update user last login
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
+  await updateUserIPAddr(user.username, ip);  // for blocking one user registering multiple accounts
   await updateUserLastLogin(user.username, "T=" + (new Date()) + " IP=" + ip + " BSR=" + browser);
 
   // Set the token as a cookie
