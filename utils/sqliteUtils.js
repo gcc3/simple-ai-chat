@@ -382,6 +382,23 @@ const getUser = async (username) => {
   }
 };
 
+// Count user by IP
+const countUserByIP = async (ip) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT COUNT(*) AS count FROM users WHERE ip_addr = ?`, [ip], (err, row) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(row.count);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const insertUser = async (username, role, role_expires_at, password, email, balance, settings) => {
   const db = await getDatabaseConnection();
 
@@ -452,8 +469,8 @@ const softDeleteUser = async (username) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET username = ?, updated_at = ? WHERE username = ?");
-      stmt.run(["__deleted__", new Date(), username], function (err) {
+      const stmt = db.prepare("UPDATE users SET username = ?, ip = ?, updated_at = ? WHERE username = ?");
+      stmt.run(["__deleted__", null, new Date(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -688,6 +705,28 @@ const getUserByEmail = async (email) => {
           reject(err);
         }
         resolve(row);
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateUserIPAddr = async (username, ip) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET ip_addr = ? WHERE username = ?");
+      stmt.run([ip, username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
       });
       stmt.finalize();
     });
@@ -1346,6 +1385,7 @@ export {
   countChatsForUser,
   countTokenForUserByModel,
   getUser,
+  countUserByIP,
   insertUser,
   deleteUser,
   softDeleteUser,
@@ -1358,6 +1398,7 @@ export {
   updateUserEmailVerifiedAt,
   updateUserRole,
   extendUserRole,
+  updateUserIPAddr,
   updateUserLastLogin,
   updateUserSettings,
   updateUserStatus,
