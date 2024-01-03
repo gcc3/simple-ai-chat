@@ -184,6 +184,18 @@ export function pushCommandHistory(command) {
 }
 
 export function getHistoryCommand(index) {
+  if (sessionStorage.getItem("history") === null) {
+    sessionStorage.setItem("history", JSON.stringify([]));
+  }
+
   let commandHistory = JSON.parse(sessionStorage.getItem("history"));
   return commandHistory[index];
+}
+
+export function getHistoryCommandIndex() {
+  if (sessionStorage.getItem("historyIndex") === null) {
+    sessionStorage.setItem("historyIndex", -1);
+  }
+
+  return parseInt(sessionStorage.getItem("historyIndex"));
 }

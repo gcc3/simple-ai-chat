@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
-import command, { getHistoryCommand, pushCommandHistory } from "command.js";
+import command, { getHistoryCommand, getHistoryCommandIndex, pushCommandHistory } from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
@@ -441,7 +441,7 @@ export default function Home() {
             console.log("Shortcut: ↑");
 
             // Set input to previous command history
-            const historyIndex = parseInt(sessionStorage.getItem("historyIndex"));
+            const historyIndex = getHistoryCommandIndex();
             const command = getHistoryCommand(historyIndex + 1);
             if (command) {
               setInput(command);
@@ -456,7 +456,7 @@ export default function Home() {
             console.log("Shortcut: ↓");
 
             // Set input to previous command history
-            const historyIndex = parseInt(sessionStorage.getItem("historyIndex"));
+            const historyIndex = getHistoryCommandIndex();
             const command = getHistoryCommand(historyIndex - 1);
             if (command) {
               setInput(command);
