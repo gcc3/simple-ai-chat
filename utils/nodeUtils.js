@@ -78,7 +78,7 @@ export function doNodeOverrideOutput(node) {
   return settings.overrideOutputWithNodeResponse;
 }
 
-export async function queryNodeAi(input, settings) {
+export async function queryNodeAI(input, settings) {
   if (!input) return {
     success: false,
     error: "Invalid query.",
@@ -110,7 +110,9 @@ export async function queryNodeAi(input, settings) {
     const data = await response.json();
 
     // Veryfy format
-    if (!data.result || (typeof data.result !== "string" && !data.result.text && !data.result.image)) {
+    if (!data.result 
+    || (typeof data.result !== "string" && !data.result.text && !data.result.images)
+    || (data.result.images && !Array.isArray(data.result.images))) {
       return {
         success: false,
         error: "Unexpected node response format.",
