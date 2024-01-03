@@ -10,7 +10,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
 import { passwordFormatter, maskPassword } from "utils/passwordUtils";
-import ReactDOMServer from 'react-dom/server';
 import UserDataPrivacy from "components/UserDataPrivacy";
 import Usage from "components/Usage";
 import Subscription from "components/Subscription";
