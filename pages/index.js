@@ -678,9 +678,6 @@ export default function Home() {
     });
     if (image_urls.length > 0) {
       console.log("Images (input):\n" + image_urls.join("\n"));
-      image_urls.map((image_url) => {
-        printImage(image_url);
-      });
     }
     if (file_urls.length > 0) {
       console.log("Files:\n" + file_urls.join("\n"));
