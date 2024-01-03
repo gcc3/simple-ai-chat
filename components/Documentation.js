@@ -113,7 +113,10 @@ const Documentation = () => {
       </div>
       <div>
         {commands.map((item, index) => (<div key={index}>
-            {item.id && <div id={item.id} className="mt-3">- {item.title}</div>}
+            {item.id && <div id={item.id} className="mt-3">
+              - {item.title}
+              {item.annotation && <div className="mt-2">{item.annotation}</div>}
+            </div>}
             <div className="mt-2">
               <div>{item.command}</div>
               <div>Short description: {item.short_description || "-"}</div>
