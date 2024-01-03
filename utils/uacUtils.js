@@ -1,5 +1,5 @@
 import { countChatsForIP, countChatsForUser, countTokenForUserByModel } from './sqliteUtils';
-import { getRoleFequencyLimit, gpt4FeeCal, gpt4vFeeCal, dbFeeCal } from './usageUtils';
+import { getRoleFequencyLimit, gpt4FeeCal, gpt4vFeeCal, dbFeeCal, plusFeeCal } from './usageUtils';
 
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
@@ -92,7 +92,10 @@ async function checkUsageExceeded(user) {
   // Total fee
   const totalFee = gpt4Fee + gpt4vFee;
 
-  if (totalFee > user.balance) {
+  // Add plus system fee
+  const plusFee = plusFeeCal(user, totalFee);
+
+  if (totalFee + plusFee > user.balance) {
     // Usage exceeded
     return true;
   } else {
