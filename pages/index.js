@@ -714,6 +714,14 @@ export default function Home() {
 
       console.log("Command Input:\n" + input);
 
+      // Clear command
+      if (commandString.startsWith(":clear") || commandString.startsWith(":reset")) {
+        clearOutput();
+        setInfo();
+        setStats();
+        setEvaluation();
+      }
+
       // If heavy command, show waiting text
       if (input.startsWith(":generate")) {
         printOutput(generating);
