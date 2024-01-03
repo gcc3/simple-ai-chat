@@ -677,10 +677,7 @@ export default function Home() {
       global.rawInput = global.rawInput.replace(block, "");
     });
     if (image_urls.length > 0) {
-      console.log("Images:\n" + image_urls.join("\n"));
-      image_urls.map((image_url) => {
-        printImage(image_url);
-      });
+      console.log("Images (input):\n" + image_urls.join("\n"));
     }
     if (file_urls.length > 0) {
       console.log("Files:\n" + file_urls.join("\n"));
@@ -759,7 +756,7 @@ export default function Home() {
           commandResult = commandResult.replace(block, "");
         });
         if (image_urls.length > 0) {
-          console.log("Images:\n" + image_urls.join("\n"));
+          console.log("Images (command output):\n" + image_urls.join("\n"));
           image_urls.map((image_url) => {
             printImage(image_url);
           });
@@ -942,9 +939,6 @@ export default function Home() {
 
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
-
-      // Clear output before receiving text
-      clearOutput();
     }
 
     openaiEssSrouce.onmessage = function(event) {
@@ -1044,6 +1038,7 @@ export default function Home() {
       // V. Handle images
       if (event.data.startsWith("###IMG###")) {
         const _image_ = event.data.replace("###IMG###", "");
+        console.log("Image (###IMG###): " + _image_);
 
         // Print image
         printImage(_image_);
@@ -1056,18 +1051,19 @@ export default function Home() {
         console.log("Status: " + _status_);
 
         // For node print "Generating...", because it will be slow.
-        if (node && _status_.startsWith("Start pre-generating..."))
+        if (node && _status_.startsWith("Start pre-generating...")) {
           printOutput(generating);
+        }
 
         if (_status_.startsWith("Node AI querying, prompt: ")) {
           const prompt = _status_.replace("Node AI querying, prompt: ", "");
           printOutput("Generating with prompt \"" + prompt + "\"...");
-          return;
         }
 
-        if (_status_.startsWith("Start chat comletion streaming.")) 
-          clearOutput();
-
+        // Sometime the function calling make it pause
+        if (_status_.startsWith("Create chat completion.")) {
+          printOutput(generating);
+        }
         return;        
       }
 
@@ -1156,7 +1152,7 @@ export default function Home() {
       }
 
       // Clear the waiting or querying text
-      if (getOutput() === waiting || getOutput() === querying) {
+      if (getOutput() === waiting || getOutput() === querying || getOutput() === generating) {
         clearOutput();
       }
 

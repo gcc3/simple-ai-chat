@@ -98,7 +98,7 @@ export function getFunctions() {
   // Get time
   functions.push({
     name: 'get_time',
-    description: 'Provide the current time.',
+    description: 'Provide the current time. If user ask question related to time, this function should be called.',
     parameters: {
       type: "object",
       properties: {
