@@ -677,7 +677,7 @@ export default function Home() {
       global.rawInput = global.rawInput.replace(block, "");
     });
     if (image_urls.length > 0) {
-      console.log("Images:\n" + image_urls.join("\n"));
+      console.log("Images (input):\n" + image_urls.join("\n"));
       image_urls.map((image_url) => {
         printImage(image_url);
       });
@@ -759,7 +759,7 @@ export default function Home() {
           commandResult = commandResult.replace(block, "");
         });
         if (image_urls.length > 0) {
-          console.log("Images:\n" + image_urls.join("\n"));
+          console.log("Images (command output):\n" + image_urls.join("\n"));
           image_urls.map((image_url) => {
             printImage(image_url);
           });
