@@ -350,7 +350,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
         const arPrompt = mjPrompt.match(/--ar\s+\d+:\d+/g);
         if (arPrompt && arPrompt.length > 0) {
           const wh = arPrompt[0].split(" ")[1].split(":").map(x => parseInt(x));
-          ar = (wh[0] / wh[1]).toFixed(7);
+          ar = parseFloat((wh[0] / wh[1]).toFixed(6)).toString();
         }
 
         // It maybe empty, it's AI decided to put it empty, so override it anyway
