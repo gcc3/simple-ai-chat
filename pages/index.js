@@ -206,13 +206,8 @@ export default function Home() {
     clearOutput();
 
     // Print input
-    const placeholder = log["input"];
     global.rawPlaceholder = log["input"];
-
-    const fullscreen = localStorage.getItem("fullscreen");
-    const placeholderShortern = ((fullscreen === "default" || fullscreen === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? 
-                                 placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
-    setPlaceholder({ text: placeholderShortern, height: null });
+    reAdjustPlaceholder();
 
     // Print output
     printOutput(log["output"]);
@@ -317,6 +312,7 @@ export default function Home() {
         updateUserSetting("fullscreen", mode);
       }
       reAdjustInputHeight(mode); // Adjust input height
+      reAdjustPlaceholder(mode);  // Adjust placeholder
     }
     dispatchFullscreen(localStorage.getItem("fullscreen"));
 
@@ -703,8 +699,8 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     global.rawPlaceholder = placeholder;
-    const placeholderShorten = ((fullscreen === "default" || fullscreen === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
-    setPlaceholder({ text: placeholderShorten, height: elInput.style.height });
+    reAdjustPlaceholder();
+
     clearInput();
     reAdjustInputHeight();
 
@@ -1331,6 +1327,15 @@ export default function Home() {
     // Re-adjust input height
     reAdjustInputHeight();
   };
+
+  const reAdjustPlaceholder = (fullscreen_ = null) => {
+    if (!fullscreen_) fullscreen_ = localStorage.getItem("fullscreen");
+    
+    const placeholder = global.rawPlaceholder;
+    const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? 
+                                 placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
+    setPlaceholder({ text: placeholderShortern, height: null });
+  }
 
   const reAdjustInputHeight = (fullscreen_ = null) => {
     const elInput = elInputRef.current;
