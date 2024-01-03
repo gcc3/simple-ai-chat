@@ -2,7 +2,6 @@ import { setTheme } from "./themeUtils";
 import store from '../store.js';
 import { toggleFullscreen } from '../states/fullscreenSlice.js';
 import { initializeSession } from "./sessionUtils";
-import session from "commands/session";
 
 export function setUserLocalStorage(user) {
   localStorage.setItem("user", user.username);

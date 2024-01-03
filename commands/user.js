@@ -1,5 +1,5 @@
 import { verifiyEmailAddress } from "utils/emailUtils";
-import { clearUserWebStorage, generatePassword, setUserLocalStorage } from "utils/userUtils";
+import { refreshUserInfo, clearUserWebStorage, generatePassword, setUserLocalStorage } from "utils/userUtils";
 
 export default async function entry(args) {
   const command = args[0];
@@ -250,7 +250,12 @@ export default async function entry(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return data.message;
+      if (data.success) {
+        refreshUserInfo();
+        return data.message;
+      } else {
+        return data.error;
+      }
     } catch (error) {
       console.error(error);
       return error;
