@@ -8,17 +8,19 @@ const moment = require('moment');
 
 function Usage() {
   const [user, setUser] = useState(null);
-  const [tokenFequencies, setTokenFequencies] = useState(null);
-  const [tokenMonthly, setTokenMonthly] = useState(null);
-  const [useCountFequencies, setUseCountFequencies] = useState(null);
-  const [useCountMonthly, setUseCountMonthly] = useState(null);
-  const [gpt4FeeLastMonth, setGpt4FeeLastMonth] = useState(null);
-  const [gpt4vFeeLastMonth, setGpt4vFeeLastMonth] = useState(null);
-  const [totalFeeLastMonth, setTotalFeeLastMonth] = useState(null);
-  const [gpt4FeeThisMonth, setGpt4FeeThisMonth] = useState(null);
-  const [gpt4vFeeThisMonth, setGpt4vFeeThisMonth] = useState(null);
-  const [totalFeeThisMonth, setTotalFeeThisMonth] = useState(null);
   const [message, setMessage] = useState(null);
+  
+  const [tokenFequencies, setTokenFequencies] = useState(0);
+  const [tokenMonthly, setTokenMonthly] = useState(0);
+  const [useCountFequencies, setUseCountFequencies] = useState(0);
+  const [useCountMonthly, setUseCountMonthly] = useState(0);
+  const [gpt4FeeLastMonth, setGpt4FeeLastMonth] = useState(0);
+  const [gpt4vFeeLastMonth, setGpt4vFeeLastMonth] = useState(0);
+  const [totalFeeLastMonth, setTotalFeeLastMonth] = useState(0);
+  const [gpt4FeeThisMonth, setGpt4FeeThisMonth] = useState(0);
+  const [gpt4vFeeThisMonth, setGpt4vFeeThisMonth] = useState(0);
+  const [totalFeeThisMonth, setTotalFeeThisMonth] = useState(0);
+  const [plusFeeThisMonth, setPlusFeeThisMonth] = useState(0);  // x% of total fee
   const [amount, setAmount] = useState(0);
 
   const onSuccess = useCallback(async (details) => {
@@ -85,6 +87,14 @@ function Usage() {
       setGpt4FeeThisMonth(npre(user.usage.gpt4_fee_this_month));
       setGpt4vFeeThisMonth(npre(user.usage.gpt4v_fee_this_month));
       setTotalFeeThisMonth(npre(user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month));
+
+      // Plus fee
+      if (user.role === "user")
+        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.05));
+      else if (user.role === "pro_user")
+        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.03));
+      else if (user.role === "super_user")
+        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.01));
     }
 
     if (localStorage.getItem("user") && !user) {
@@ -236,8 +246,8 @@ function Usage() {
           </div>}
           <div className="mt-3">
             <div>- Fees and Balance</div>
-            <ProgressBar label={"Usage"} progress={totalFeeThisMonth} progressMax={npre(user.balance)} />
-            <div className="mt-3">Total Fees: ${totalFeeThisMonth}</div>
+            <ProgressBar label={"Usage"} progress={totalFeeThisMonth + plusFeeThisMonth} progressMax={npre(user.balance)} />
+            <div className="mt-3">Total Fees: ${totalFeeThisMonth + plusFeeThisMonth} (${totalFeeThisMonth} + ${plusFeeThisMonth})</div>
             <div>Balance: ${npre(user.balance)}</div>
           </div>
         </div>

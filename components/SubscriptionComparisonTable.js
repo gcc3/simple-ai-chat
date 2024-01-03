@@ -1,13 +1,19 @@
 import React from "react";
 
 // Get amount
-function getPrice(subscriptions, role) {
+function getPriceString(subscriptions, role) {
   let price = "";
   if (subscriptions.hasOwnProperty(role)) {
     if (subscriptions[role].price == 0) {
       price = "Free";
     }
-    price = "$" + subscriptions[role].price + "/month + (usage fee)";
+
+    if (role === "user")
+       price = "$" + subscriptions[role].price + "/month+(usage fee +5%)";
+    else if (role === "pro_user")
+      price = "$" + subscriptions[role].price + "/month+(usage fee +3%)";
+    else if (role === "super_user")
+      price = "$" + subscriptions[role].price + "/month+(usage fee +1%)";
   }
   return price;
 }
@@ -15,13 +21,13 @@ function getPrice(subscriptions, role) {
 const SubscriptionComparisonTable = ({ subscriptions }) => {
   const comparison = [
     { name: "GPT-4 Turbo", user: "100/day", pro_user: "200/day", super_user: "300/day" },
-    { name: "GPT-4 Vision (Image Input)", user: "Yes", pro_user: "Yes", super_user: "Yes" },
+    { name: "GPT-4 Vision (Image Input)", user: "No limit", pro_user: "No limit", super_user: "No limit" },
     { name: "File Input", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Role", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "Data Store", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "Node (Node AI)", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "Midjourney", user: "╳", pro_user: "╳", super_user: "Yes" },
-    { name: "Pricing", user: getPrice(subscriptions, "user"), pro_user: getPrice(subscriptions, "pro_user"), super_user: getPrice(subscriptions, "super_user")},
+    { name: "Data Store", user: "Yes", pro_user: "Yes +support", super_user: "Yes +support" },
+    { name: "Node (Node AI)", user: "Yes", pro_user: "Yes", super_user: "Yes +support" },
+    { name: "Midjourney", user: "╳", pro_user: "20/day", super_user: "50/day" },
+    { name: "Pricing", user: getPriceString(subscriptions, "user"), pro_user: getPriceString(subscriptions, "pro_user"), super_user: getPriceString(subscriptions, "super_user")},
   ];
 
   return (
