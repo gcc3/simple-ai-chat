@@ -4,13 +4,13 @@ import { getFunctions } from '../function';
 
 const Documentation = () => {
   const features = [
-    { name: "GPT-4 Turbo", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
-    { name: "GPT-4 Vision (Image Input)", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box." },
-    { name: "File Input", description: "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference." },
-    { name: "Roles", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
-    { name: "Data Stores", description: "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers." },
-    { name: "Node (Node AI)", description: "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI." },
-    { name: "Midjourney", description: "Midjourney is the first system node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images." },
+    { id: "features-gpt4turbo", name: "GPT-4 Turbo", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
+    { id: "features-gpt4vision-imageinput", name: "Image Input (GPT-4 Vision)", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box." },
+    { id: "features-fileinput", name: "File Input", description: "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference." },
+    { id: "features-roles", name: "Roles", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
+    { id: "features-stores", name: "Data Stores", description: "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers." },
+    { id: "features-nodes", name: "Nodes (Node AI)", description: "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI." },
+    { id: "features-midjourney", name: "Midjourney", description: "Midjourney is the first system node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images." },
   ];
 
   const sub_features = [
@@ -49,7 +49,19 @@ const Documentation = () => {
       <div>
         <div className="mt-2"><a href="#introduction"><u>Introduction</u></a></div>
         <div className="mt-2"><a href="#quick-start"><u>Quick Start</u></a></div>
-        <div className="mt-2"><a href="#features"><u>Features</u></a></div>
+        <div>
+          <div className="mt-2"><a href="#features"><u>Features</u></a></div>
+          <div className="ml-3">
+            <div><a href="#features-gpt4turbo">- <u>GPT-4 Turbo</u></a></div>
+            <div><a href="#features-gpt4vision-imageinput">- <u>Image Input (GPT-4 Vision)</u></a></div>
+            <div><a href="#features-fileinput">- <u>File Input</u></a></div>
+            <div><a href="#features-roles">- <u>Roles</u></a></div>
+            <div><a href="#features-stores">- <u>Data Stores</u></a></div>
+            <div><a href="#features-nodes">- <u>Nodes (Node AI)</u></a></div>
+            <div><a href="#features-midjourney">- <u>Midjourney</u></a></div>
+            <div><a href="#features-more">- <u>More...</u></a></div>
+          </div>
+        </div>
         <div>
           <div className="mt-2"><a href="#commands"><u>Commands</u></a></div>
           <div className="ml-3">
@@ -81,12 +93,12 @@ const Documentation = () => {
       <div>
         {features.map((item, index) => (
           <div key={index} className="mt-2">
-            <div>- {item.name}</div>
+            <div id={item.id}>- {item.name}</div>
             <div>{item.description}</div>
           </div>
         ))}
       </div>
-      <div className="mt-2">Sub features:</div>
+      <div id="features-more" className="mt-2">More features:</div>
       <div>
         {sub_features.map((item, index) => (
           <div key={index} className="mt-2">
