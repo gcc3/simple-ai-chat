@@ -1044,6 +1044,7 @@ export default function Home() {
       // V. Handle images
       if (event.data.startsWith("###IMG###")) {
         const _image_ = event.data.replace("###IMG###", "");
+        console.log("Image (###IMG###): " + _image_);
 
         // Print image
         printImage(_image_);
