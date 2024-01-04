@@ -117,7 +117,7 @@ export default async function (req, res) {
           message = "Welcome back! we've resumed your subscription status." + passwordGuide;
         } else {
           insertUser(username, role, role_expires_at, password_, email, balance, settings);
-          message = "User \"" + username + "\" is created." + passwordGuide + loginComamndGuide;
+          message = "User \"" + username + "\" is created." + passwordGuide + loginComamndGuide + " Please check your email for verification.";
         }
 
         res.status(200).json({
@@ -135,6 +135,7 @@ export default async function (req, res) {
         });
       });
   } else {
+    // No email validation
     let message = "";
     let passwordGuide = !password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "";
     if (userResume) {
