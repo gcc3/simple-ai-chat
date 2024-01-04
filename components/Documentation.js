@@ -18,9 +18,10 @@ const Documentation = () => {
     { name: "De-hallucination", description: "Detect hallucinations in chat to provide more trustworthiness. When the AI exhibits hallucination, it can sometimes generate completely fabricated answers. By enabling the dehallucination feature, a message in stats (`self_eval_score`) will be displayed along with statistics to allow users to judge the accuracy of the information. Essentially, this feature resends the user's input and the AI's output, along with reference information, back to AI for self-evaluation. Use command \`:stats on\`, and `:eval on` to turn on it." },
     { name: "TTS voice", description: "Reading with an option to select from the system's local TTS voice library, use command \`:speak on\` to enable." },
     { name: "Themes", description: "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode." },
-    { name: "Function calls", description: "GPT will choise function to use to get information he need. Such as weather and time queries. Functions can be called by user directlly from the input as well. Refer: #functions" },
-    { name: "Page redirection", description: "As one of the function, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously." },
+    { name: "Function calls", description: "GPT will choise function to use to get information he need. Such as weather and time queries. Functions can be called by user directlly from the input as well. To list all available functions use `:function ls`. Also refer: Functions" },
+    { name: "Page redirection", description: "As one of the `functions calls`, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously." },
     { name: "Location-based query", description: "Questioning based on user's geographic location information. e.g., answering \"How's the weather today?\" by automatically obtaining the location. To use location feature, use command \`:location on\`." },
+    { name: "Code highlighting", description: "Code highting for different themes, support all programming languages." },
     { name: "Shortcuts", description: "Supports convenient shortcut operations. Refer: `Shortcuts`" },
   ];
 
