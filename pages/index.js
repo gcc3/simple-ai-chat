@@ -116,7 +116,7 @@ export default function Home() {
   };
 
   // Print image output
-  const printImage = async (image_url, ar = 1) => {
+  const printImage = async (image_url, ar = 1.7) => {
     console.log("Print Image: " + image_url);
     
     // Get aspect ratio from URL
