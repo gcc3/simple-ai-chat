@@ -761,7 +761,7 @@ const updateUserIPAndLastLogin = async (username, ip, lastLogin) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET ip = ?, last_login = ? WHERE username = ?");
+      const stmt = db.prepare("UPDATE users SET ip_addr = ?, last_login = ? WHERE username = ?");
       stmt.run([ip, lastLogin, username], function (err) {
         if (err) {
           reject(err);
