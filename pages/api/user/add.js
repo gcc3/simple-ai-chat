@@ -70,7 +70,7 @@ export default async function (req, res) {
   const role_expires_at = moment().add(7, "days").valueOf();  // 7 days for trial
   const balance = 1;  // $1 for trial
   const password_ = password ? password : generatedPassword;
-  const loginComamndGuide = " You can login with command: `:login [username] [password]`";
+  const loginComamndGuide = " You can login with command: `:login [username] [password]`.";
 
   // Email validation
   if (process.env.USE_EMAIL == "true") {
