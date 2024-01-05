@@ -33,6 +33,6 @@ export default async function (req, res) {
   // No error
   return res.status(200).json({ 
     success: true,
-    message: "Role \"" + roleName + "\" is created.",
+    message: "Role \"" + roleName + "\" is updated.",
   });
 }
