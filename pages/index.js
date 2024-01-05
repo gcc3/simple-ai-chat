@@ -771,6 +771,10 @@ export default function Home() {
 
       // For some command apply immediately
       if (input.startsWith(":theme")) setTheme(localStorage.getItem("theme"));
+
+      // Readjust UI
+      reAdjustInputHeight(localStorage.getItem("fullscreen"));
+      reAdjustPlaceholder(localStorage.getItem("fullscreen"));
       return;
     }
 
@@ -1375,6 +1379,7 @@ export default function Home() {
       // Fullscreen split
       if (fullscreen_ === "split") {
         // Do nothing because the input height alwasy 100%
+        elInput.style.height = "100%";
       }
 
       // Non-fullscreen
