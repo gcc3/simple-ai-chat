@@ -89,7 +89,7 @@ const Documentation = () => {
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
-        <div className="youtube-container">
+        <div className="w-full p-1 max-w-screen-sm">
           <YouTube videoId="U7l8GmFHHmM" opts={{ width: '100%' }} />
         </div>
       </div>
