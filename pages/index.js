@@ -617,6 +617,10 @@ export default function Home() {
     // Handle hash tag auto removing
     window.addEventListener('hashchange', removeHashTag, false);
 
+    // Readjust UI
+    reAdjustInputHeight(localStorage.getItem("fullscreen"));
+    reAdjustPlaceholder(localStorage.getItem("fullscreen"));
+
     // Cleanup
     return () => {
       // Remove event listener, this is necessary
