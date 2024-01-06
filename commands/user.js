@@ -341,6 +341,8 @@ export default async function entry(args) {
 
       if (data.success) {
         return data.message;
+      } else {
+        return data.error;
       }
     } catch (error) {
       console.error(error);

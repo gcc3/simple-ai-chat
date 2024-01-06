@@ -23,7 +23,7 @@ export default async function (req, res) {
   // Check store existance
   const sameNameStore = await findStore(name, username);
   if (sameNameStore) {
-    return res.status(400).json({ 
+    return res.status(409).json({ 
       success: false, 
       error: "Store already exists." 
     });
