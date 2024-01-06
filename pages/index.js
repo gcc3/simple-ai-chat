@@ -724,7 +724,7 @@ export default function Home() {
       }
 
       // If heavy command, show waiting text
-      if (input.startsWith(":generate")) {
+      if (commandString.startsWith("generate")) {
         printOutput(generating);
       }
 
@@ -774,7 +774,7 @@ export default function Home() {
       }
 
       // For some command apply immediately
-      if (input.startsWith(":theme")) setTheme(localStorage.getItem("theme"));
+      if (commandString.startsWith("theme")) setTheme(localStorage.getItem("theme"));
 
       // Readjust UI
       reAdjustInputHeight(localStorage.getItem("fullscreen"));
