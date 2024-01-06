@@ -702,10 +702,10 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     global.rawPlaceholder = placeholder;
-    reAdjustPlaceholder();
-
+    
     clearInput();
     reAdjustInputHeight();
+    reAdjustPlaceholder();
 
     // Command input
     if (!minimalist && input.startsWith(":")) {
@@ -718,15 +718,13 @@ export default function Home() {
       console.log("Command Input:\n" + (!isCommandMusked(commandString) ? input : "(musked)"));
 
       // Clear command
-      if (commandString.startsWith(":clear") || commandString.startsWith(":reset")) {
+      if (commandString.startsWith("clear") || commandString.startsWith("reset")) {
         clearOutput();
-        setInfo();
-        setStats();
-        setEvaluation();
+        resetInfo();
       }
 
       // If heavy command, show waiting text
-      if (input.startsWith(":generate")) {
+      if (commandString.startsWith("generate")) {
         printOutput(generating);
       }
 
@@ -776,7 +774,7 @@ export default function Home() {
       }
 
       // For some command apply immediately
-      if (input.startsWith(":theme")) setTheme(localStorage.getItem("theme"));
+      if (commandString.startsWith("theme")) setTheme(localStorage.getItem("theme"));
 
       // Readjust UI
       reAdjustInputHeight(localStorage.getItem("fullscreen"));
