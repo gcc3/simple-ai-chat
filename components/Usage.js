@@ -90,9 +90,9 @@ function Usage() {
 
       // Plus fee
       if (user.role === "user")
-        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.05));
+        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.01));
       else if (user.role === "pro_user")
-        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.03));
+        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.01));
       else if (user.role === "super_user")
         setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.01));
     }

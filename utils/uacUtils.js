@@ -93,7 +93,7 @@ async function checkUsageExceeded(user) {
   const totalFee = gpt4Fee + gpt4vFee;
 
   // Add plus system fee
-  const plusFee = plusFeeCal(user, totalFee);
+  const plusFee = plusFeeCal(user.role, totalFee);
 
   if (totalFee + plusFee > user.balance) {
     // Usage exceeded

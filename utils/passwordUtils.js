@@ -54,3 +54,13 @@ export function maskPassword(input) {
   // if the input doesn't match the pattern, return it as is
   return input;
 }
+
+export function isCommandMusked(command) {
+  if (command.startsWith(":")) {
+    command = command.substring(1);
+  }
+  if (command.startsWith("login") || command.startsWith("user set pass") || command.startsWith("user add") || command.startsWith("user join")) {
+    return true;
+  }
+  return false;
+}

@@ -27,6 +27,7 @@ import search from "commands/search.js";
 import node from "commands/node.js";
 import set from "commands/set.js";
 import generate from "commands/generate.js";
+import { isCommandMusked } from "utils/passwordUtils.js";
 
 export default function commands(input, files) {
   let command = input;
@@ -41,7 +42,7 @@ export default function commands(input, files) {
 
     args = extractArgs(input.substring(input.indexOf(' ') + 1));
     if (args.length > 0) {
-      console.log("Command Arguments: " + args);
+      console.log("Command Arguments: " + (!isCommandMusked(command) ? args : "(masked)"));
     }
   }
   

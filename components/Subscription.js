@@ -118,10 +118,10 @@ function Subscription() {
       <div className="mt-3">
         <div>- Subscription plans</div>
         <div className="mt-1">
-          1. `user`: offer a general user package for only $1/month for accessing the most advanced AI.<br></br>
-          2. `pro_user`: provide advanced features for professonal uses.<br></br>
-          3. `super_user`: provide accessability for all latest features.<br></br>
-          <div className="mt-1">* New users has a 7-day free trial with a $1 usage (≈ 100K token for input or 33K token for output).</div>
+          1. `user`: offer a general user package for free. For accessing the most advanced AI.<br></br>
+          2. `pro_user`: provide advanced features and support for professonal uses.<br></br>
+          3. `super_user`: provide accessability for all latest features and support.<br></br>
+          <div className="mt-1">* New `user` has a $1 usage (≈ 100K token for input or 33K token for output).</div>
         </div>
       </div>
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
