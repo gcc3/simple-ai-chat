@@ -1,4 +1,5 @@
 import React from "react";
+import { getRoleFequencyLimit } from "utils/usageUtils";
 
 // Get amount
 function getPriceString(subscriptions, role) {
@@ -12,9 +13,15 @@ function getPriceString(subscriptions, role) {
   return price;
 }
 
+function getRoleFequencyLimits(role) {
+  const limit = getRoleFequencyLimit(role);
+  console.log("limit", limit);
+  return limit.daily_limit + "/day";
+}
+
 const SubscriptionComparisonTable = ({ subscriptions }) => {
   const comparison = [
-    { name: "GPT-4 Turbo", user: "120/day", pro_user: "500/day", super_user: "No limit" },
+    { name: "GPT-4 Turbo", user: getRoleFequencyLimits(`user`), pro_user: getRoleFequencyLimits(`pro_user`), super_user: getRoleFequencyLimits(`super_user`) },
     { name: "GPT-4 Vision (Image Input)", user: "No limit", pro_user: "No limit", super_user: "No limit" },
     { name: "File Input", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Role", user: "Yes", pro_user: "Yes", super_user: "Yes" },

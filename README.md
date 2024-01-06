@@ -319,7 +319,7 @@ In production set to `SameSite=Lax; Secure`
 Use email to reset password or notifications.  
 The value should be `true` or `false`.  
 
-* ROLE_USAGE_LIMIT and ROLE_AMOUNT  
+* NEXT_PUBLIC_ROLE_USAGE_LIMIT and NEXT_PUBLIC_ROLE_AMOUNT  
 Useage limit is for seting limit for different roles.  
 Format: `role:daily_limit,weekly_limit,monthly_limit`.  
 Role amount is for setting price.  

@@ -30,7 +30,7 @@ export default async function(req, res) {
 }
 
 function getRolePrice(role) {
-  const role_amount = process.env.ROLE_AMOUNT ? process.env.ROLE_AMOUNT : "";
+  const role_amount = process.env.NEXT_PUBLIC_ROLE_AMOUNT ? process.env.NEXT_PUBLIC_ROLE_AMOUNT : "";
   const amount = role_amount.split(";").find((item) => item.split(":")[0] === role).split(":")[1];
   return amount;
 }
