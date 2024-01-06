@@ -7,9 +7,6 @@ const moment = require('moment');
 // Get amount
 function getPrice(subscriptions, role) {
   if (subscriptions.hasOwnProperty(role)) {
-    if (subscriptions[role].price == 0) {
-      return "Free";
-    }
     return subscriptions[role].price;
   }
 }
@@ -144,7 +141,7 @@ function Subscription() {
             && <div>
               - You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.
               </div>}
-            {amount > 0 && <div className="mt-1">
+            {<div className="mt-1">
               {process.env.USE_PROMO_CODE === "true" && <div className="mt-3 flex items-center">Promotion code:
                 <input
                   className="ml-1 pl-2 pr-2 h-8 border"
