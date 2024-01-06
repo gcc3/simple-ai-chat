@@ -327,7 +327,9 @@ export default function Home() {
 
     // Handle window resize
     const handleResize = () => {
-      reAdjustInputHeight();
+      // Readjust UI
+      reAdjustInputHeight(localStorage.getItem("fullscreen"));
+      reAdjustPlaceholder(localStorage.getItem("fullscreen"));
     };
     window.addEventListener('resize', handleResize);
     handleResize();
