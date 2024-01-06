@@ -15,7 +15,6 @@ function getPriceString(subscriptions, role) {
 
 function getRoleFequencyLimits(role) {
   const limit = getRoleFequencyLimit(role);
-  console.log("limit", limit);
   return limit.daily_limit + "/day";
 }
 
