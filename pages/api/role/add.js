@@ -22,7 +22,7 @@ export default async function (req, res) {
   // Check role existance
   const role = await getRole(roleName, username);
   if (role) {
-    return res.status(200).json({ 
+    return res.status(409).json({ 
       success: false, 
       error: "Role already exists." 
     });

@@ -24,7 +24,7 @@ export default async function (req, res) {
   // Check node existance
   const sameNameNode = await findNode(name, username);
   if (sameNameNode) {
-    return res.status(400).json({ 
+    return res.status(409).json({ 
       success: false, 
       error: "Node already exists." 
     });
