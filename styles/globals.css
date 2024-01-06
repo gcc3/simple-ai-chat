@@ -130,6 +130,12 @@ input:focus {
   outline: none;
 }
 
+.youtube-container {
+  width: 100%;
+  padding: 2px;
+  max-width: 640px;
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
