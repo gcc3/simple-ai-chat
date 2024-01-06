@@ -1,6 +1,7 @@
 import React from 'react';
 import { getCommands } from '/command';
 import { getFunctions } from '../function';
+import YouTube from 'react-youtube';
 
 const Documentation = () => {
   const features = [
@@ -88,7 +89,9 @@ const Documentation = () => {
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
-        <div>(Here insert the introduction video.)</div>
+        <div className="youtube-container">
+          <YouTube videoId="U7l8GmFHHmM" opts={{ width: '100%' }} />
+        </div>
       </div>
       <div id="features" className="mt-5">Features</div>
       <div>
