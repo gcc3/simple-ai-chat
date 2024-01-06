@@ -8,7 +8,12 @@ function getPriceString(subscriptions, role) {
     if (subscriptions[role].price == 0) {
       price = "Free";
     }
-    price = "$" + subscriptions[role].price + "/month +usage fee(+1%)";
+    if (role === "user")
+       price = "$" + subscriptions[role].price + "/month +usage fee(+1%)";
+    else if (role === "pro_user")
+      price = "$" + subscriptions[role].price + "/month +usage fee(+1%)";
+    else if (role === "super_user")
+      price = "$" + subscriptions[role].price + "/month +usage fee(+1%)";
   }
   return price;
 }

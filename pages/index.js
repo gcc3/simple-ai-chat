@@ -9,7 +9,7 @@ import { setTheme } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
-import { passwordFormatter, maskPassword } from "utils/passwordUtils";
+import { passwordFormatter, maskPassword, isCommandMusked } from "utils/passwordUtils";
 import UserDataPrivacy from "components/UserDataPrivacy";
 import Usage from "components/Usage";
 import Subscription from "components/Subscription";
@@ -715,7 +715,7 @@ export default function Home() {
         return;
       }
 
-      console.log("Command Input:\n" + input);
+      console.log("Command Input:\n" + (!isCommandMusked(commandString) ? input : "(musked)"));
 
       // Clear command
       if (commandString.startsWith(":clear") || commandString.startsWith(":reset")) {
