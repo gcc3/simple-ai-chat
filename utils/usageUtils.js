@@ -12,8 +12,8 @@ export function gpt4vFeeCal(input_token_ct, output_token_ct) {
 
 export function plusFeeCal(role, totalFee) {
   let plusSystemFee = 0;
-  if (role === "user") plusSystemFee = totalFee * 0.01;
-  if (role === "pro_user") plusSystemFee = totalFee * 0.01;
+  if (role === "user") plusSystemFee = totalFee * 0.03;
+  if (role === "pro_user") plusSystemFee = totalFee * 0.02;
   if (role === "super_user") plusSystemFee = totalFee * 0.01;
   return npre(plusSystemFee);
 }

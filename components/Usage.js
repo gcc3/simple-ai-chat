@@ -4,6 +4,7 @@ import { getRoleLevel } from "utils/userUtils";
 import PayPalButton from "./PayPalButton";
 import { refreshUserInfo } from "utils/userUtils";
 import { npre } from "utils/numberUtils";
+import { plusFeeCal } from "utils/usageUtils";
 const moment = require('moment');
 
 function Usage() {
@@ -89,12 +90,7 @@ function Usage() {
       setTotalFeeThisMonth(npre(user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month));
 
       // Plus fee
-      if (user.role === "user")
-        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.03));
-      else if (user.role === "pro_user")
-        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.02));
-      else if (user.role === "super_user")
-        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.01));
+      setPlusFeeThisMonth(plusFeeCal(user.role, user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month));
     }
 
     if (localStorage.getItem("user") && !user) {
