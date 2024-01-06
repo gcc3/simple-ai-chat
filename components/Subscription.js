@@ -118,7 +118,7 @@ function Subscription() {
           1. `user`: offer a general user package for free. For accessing the most advanced AI.<br></br>
           2. `pro_user`: provide advanced features and support for professonal uses.<br></br>
           3. `super_user`: provide accessability for all latest features and support.<br></br>
-          <div className="mt-1">* New `user` has a $1 usage (≈ 100K token for input or 33K token for output).</div>
+          <div className="mt-1">* New `user` has a $0.1 free usage (≈ 10K token for input or 3.3K token for output).</div>
         </div>
       </div>
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}

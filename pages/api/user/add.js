@@ -67,8 +67,8 @@ export default async function (req, res) {
 
   // New user info
   const role = "user";
-  const role_expires_at = moment().add(7, "days").valueOf();  // 7 days for trial
-  const balance = 1;  // $1 for trial
+  const role_expires_at = null;  // for `user` there is no expiration
+  const balance = 0.1;  // for trial
   const password_ = password ? password : generatedPassword;
   const loginComamndGuide = " You can login with command: `:login [username] [password]`.";
 
