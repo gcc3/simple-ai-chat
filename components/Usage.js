@@ -90,9 +90,9 @@ function Usage() {
 
       // Plus fee
       if (user.role === "user")
-        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.01));
+        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.03));
       else if (user.role === "pro_user")
-        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.01));
+        setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.02));
       else if (user.role === "super_user")
         setPlusFeeThisMonth(npre((user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month) * 0.01));
     }
@@ -249,6 +249,7 @@ function Usage() {
             <ProgressBar label={"Usage"} progress={npre(totalFeeThisMonth + plusFeeThisMonth)} progressMax={npre(user.balance)} />
             <div className="mt-3">Total Fees: ${npre(totalFeeThisMonth + plusFeeThisMonth)}</div>
             <div>Balance: ${npre(user.balance)}</div>
+            <div className="mt-3">* To maintain service, we will retain up to 3% of usage fees.</div>
           </div>
         </div>
         <div className="mt-4">

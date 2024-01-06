@@ -6,11 +6,11 @@ function getPriceString(subscriptions, role) {
   let price = "";
   if (subscriptions.hasOwnProperty(role)) {
     if (role === "user")
-       price = "$" + subscriptions[role].price + "/month +usage fee(+1%)";
+       price = "$" + subscriptions[role].price + "/month +usage fee";
     else if (role === "pro_user")
-      price = "$" + subscriptions[role].price + "/month +usage fee(+1%)";
+      price = "$" + subscriptions[role].price + "/month +usage fee";
     else if (role === "super_user")
-      price = "$" + subscriptions[role].price + "/month +usage fee(+1%)";
+      price = "$" + subscriptions[role].price + "/month +usage fee";
   }
   return price;
 }
@@ -62,7 +62,8 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
           </tbody>
         </table>
       </div>
-      <div className="mt-2">* For enterprise use, please contact us at `<a href="mailto:support@simple-ai.io"><u>support@simple-ai.io</u></a>`.</div>
+      <div className="mt-2">* For details of the usage fee, please refer to the Usage page.</div>
+      <div>* For enterprise use, please contact us at `<a href="mailto:support@simple-ai.io"><u>support@simple-ai.io</u></a>`.</div>
     </div>
   );
 };
