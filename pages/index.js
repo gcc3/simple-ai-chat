@@ -702,10 +702,10 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     global.rawPlaceholder = placeholder;
-    reAdjustPlaceholder();
-
+    
     clearInput();
     reAdjustInputHeight();
+    reAdjustPlaceholder();
 
     // Command input
     if (!minimalist && input.startsWith(":")) {
@@ -718,11 +718,9 @@ export default function Home() {
       console.log("Command Input:\n" + (!isCommandMusked(commandString) ? input : "(musked)"));
 
       // Clear command
-      if (commandString.startsWith(":clear") || commandString.startsWith(":reset")) {
+      if (commandString.startsWith("clear") || commandString.startsWith("reset")) {
         clearOutput();
-        setInfo();
-        setStats();
-        setEvaluation();
+        resetInfo();
       }
 
       // If heavy command, show waiting text
