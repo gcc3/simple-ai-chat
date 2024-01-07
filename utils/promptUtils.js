@@ -293,35 +293,41 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
       if (isInitialized(storeInfo.engine, settings)) {
         let queryResult = null;
+        console.log("store: " + storeInfo.name);
+
+        let prompt = "";
 
         // Query
         if (storeInfo.engine === "vectara") {
-          store_prompt += "Query Vector database\n";
-          store_prompt += "Database description: " + (settings.description || "No description") + "\n";
+          prompt += "\nQuery Vector database\n";
+          prompt += "Database description: " + (settings.description || "No description") + "\n";
           queryResult = await searchVectaraStore(settings, input);
         } else if (storeInfo.engine === "mysql") {
-          store_prompt += "Query MySQL database\n";
-          store_prompt += "Database description: " + (settings.description || "No description") + "\n";
+          prompt += "\nQuery MySQL database\n";
+          prompt += "Database description: " + (settings.description || "No description") + "\n";
           queryResult = await searchMysqlStore(settings, input);
         }
 
         if (queryResult.success) {
           if (queryResult.query) {
-            store_prompt += "Query: " + queryResult.query + "\n";
+            prompt += "Query: " + queryResult.query + "\n";
           }
-          store_prompt += "Query result: \n";
-          store_prompt += queryResult.message;
+          prompt += "Query result: \n";
+          prompt += queryResult.message.trim();
           messages.push({
             "role": "system",
-            "content": store_prompt,
+            "content": prompt,
           });
+          
+          store_prompt += prompt;
+          console.log("response: " + prompt.trim());
         }
       }
     }
+    console.log("");  // add new line
 
     // Count tokens
     token_ct["store"] = countToken(model, store_prompt);
-    console.log("response: " + store_prompt + "\n");
   }
 
   // 3. Node AI result
