@@ -1,5 +1,5 @@
 import { initializeSession } from "utils/sessionUtils";
-import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils";
+import { addStoreToSessionStorage, countStoresInSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils";
 
 export default async function store(args, files) {
   const command = args[0];
@@ -103,15 +103,18 @@ export default async function store(args, files) {
        && Object.entries(data.result.system_stores).length === 0) {
         return "No available store found.";
       } else {
+        // For adding star to current store
+        const activeStores = getActiveStores();
+
         // User stores
         let userStores = "";
         if (data.result.user_stores && Object.entries(data.result.user_stores).length > 0) {
           let stores = [];
           Object.entries(data.result.user_stores).forEach(([key, value]) => {
-            stores.push(value.name);
+            stores.push((activeStores.includes(value.name) ? "*\\" : "\\") + value.name);
           });
           userStores = "User stores: \n" 
-                     + "\\" + stores.join(" \\") + "\n\n";
+                     + stores.join(" ") + "\n\n";
         } else {
           userStores = "User stores: \n" 
                      + "No store found." + "\n\n";
@@ -122,10 +125,10 @@ export default async function store(args, files) {
         if (data.result.group_stores && Object.entries(data.result.group_stores).length > 0) {
           let stores = [];
           Object.entries(data.result.group_stores).forEach(([key, value]) => {
-            stores.push(value.name);
+            stores.push((activeStores.includes(value.name) ? "*\\" : "\\") + value.name);
           });
           groupStores = "Group Stores: \n" 
-                    + "\\" + stores.join(" \\") + "\n\n"; 
+                      + stores.join(" ") + "\n\n"; 
         } else {
           groupStores = "Group Stores: \n" 
                       + "No store found." + "\n\n";
@@ -136,22 +139,16 @@ export default async function store(args, files) {
         if (data.result.system_stores && Object.entries(data.result.system_stores).length > 0) {
           let stores = [];
           Object.entries(data.result.system_stores).forEach(([key, value]) => {
-            stores.push(value.name);
+            stores.push((activeStores.includes(value.name) ? "*\\" : "\\") + value.name);
           });
           systemStores = "System Stores: \n" 
-                       + "\\" + stores.join(" \\") + "\n\n"; 
+                       + stores.join(" ") + "\n\n"; 
         } else {
           systemStores = "System Stores: \n" 
                        + "No store found." + "\n\n";
         }
 
-        // Add star to current store
-        let result = userStores + groupStores + systemStores;
-        if (sessionStorage.getItem("store")) {
-          const currentStore = sessionStorage.getItem("store");
-          result = result.replace("\\" + currentStore, "*\\" + currentStore);
-        }
-        return result;
+        return userStores + groupStores + systemStores;
       }
     } catch (error) {
       console.error(error);
