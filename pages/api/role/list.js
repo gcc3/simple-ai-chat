@@ -1,4 +1,4 @@
-import { roleListing } from 'utils/roleUtils';
+import { getSystemRoles } from 'utils/roleUtils';
 import { authenticate } from 'utils/authUtils';
 import { getUserRoles } from 'utils/sqliteUtils';
 
@@ -15,13 +15,13 @@ export default async function (req, res) {
     }
 
     // System roles
-    const roles = await roleListing();
+    const systemRoles = await getSystemRoles();
 
     // Output the result
     res.status(200).json({
       result: {
         user_roles: userRoles,
-        roles : roles,
+        system_roles : systemRoles,
       },
     });
   } catch (error) {

@@ -87,7 +87,7 @@ export default async function role(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (data.result.roles.length === 0 && (!data.result.user_roles || Object.entries(data.result.user_roles).length === 0)) {
+      if (data.result.system_roles.length === 0 && (!data.result.user_roles || Object.entries(data.result.user_roles).length === 0)) {
         return "No role found.";
       } else {
         let userRoles = "";
@@ -106,7 +106,7 @@ export default async function role(args) {
         }
 
         const defaultRoles = "System roles: \n" 
-                     + "\\" + data.result.roles.join(" \\");
+                     + "\\" + data.result.system_roles.join(" \\");
 
         // Add star to current role
         let result = userRoles + defaultRoles;
@@ -149,7 +149,7 @@ export default async function role(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (!data.result.roles.includes(roleName) 
+      if (!data.result.system_roles.includes(roleName) 
       && (!data.result.user_roles || !Object.entries(data.result.user_roles).some(([key, value]) => value.role === roleName))) {
         return "Role \"" + roleName + "\" does not exist.";
       }
