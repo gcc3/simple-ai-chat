@@ -3,9 +3,9 @@ import { refreshUserInfo, clearUserWebStorage, generatePassword, setUserLocalSto
 
 export default async function entry(args) {
   const command = args[0];
-  const usage = "Usage: :user add [username] [email] [password?]" + "\n" +
+  const usage = "Usage: :user [info?]" + "\n" +
+                "       :user add [username] [email] [password?]" + "\n" +
                 "       :user delete [username]" + "\n" +
-                "       :user info" + "\n" +
                 "       :user set pass [value]" + "\n" +
                 "       :user set email [value]" + "\n" +
                 "       :user set [key] [value]" + "\n" +
@@ -16,7 +16,11 @@ export default async function entry(args) {
                 "       :user leave [group]";
 
   // Get user info, configurations
-  if (command === "info") {
+  if (!command || command === "info") {
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
     let user = null;
     try {
       const response = await fetch(`/api/user/info`, {
