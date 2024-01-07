@@ -18,6 +18,7 @@ export function getSystemConfigurations() {
   const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
   const use_email = process.env.USE_EMAIL == "true" ? true : false;
   const welcome_message = process.env.WELCOME_MESSAGE ? process.env.WELCOME_MESSAGE : "";
+  const video_id = process.env.VIDEO_ID ? process.env.VIDEO_ID : "";
   const minimalist = process.env.MINIMALIST == "true" ? true : false;
 
   return {
@@ -25,6 +26,7 @@ export function getSystemConfigurations() {
     model_v: model_v,
     role_content_system: role_content_system,
     welcome_message: welcome_message,
+    video_id: video_id,
     querying: querying,
     generating: generating,
     waiting: waiting,
