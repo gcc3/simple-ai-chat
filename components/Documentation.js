@@ -3,7 +3,7 @@ import { getCommands } from '/command';
 import { getFunctions } from '../function';
 import YouTube from 'react-youtube';
 
-const Documentation = () => {
+const Documentation = ({ country }) => {
   const features = [
     { id: "features-gpt4turbo", name: "GPT-4 Turbo", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
     { id: "features-gpt4vision-imageinput", name: "Image Input (GPT-4 Vision)", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling." },
@@ -89,7 +89,7 @@ const Documentation = () => {
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
-        <div className="max-w-screen-lg">
+        {country && country !== "CN" && <div className="max-w-screen-lg">
           <YouTube 
             videoId="U7l8GmFHHmM" 
             className="youtube-video"
@@ -101,7 +101,12 @@ const Documentation = () => {
               }
             }}
           />
-        </div>
+        </div>}
+        {country && country === "CN" && <div>
+          <div className="max-w-screen-lg">
+            (Introduction video is not available.)
+          </div>
+        </div>}
       </div>
       <div id="features" className="mt-5">Features</div>
       <div>

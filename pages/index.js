@@ -62,6 +62,7 @@ export default function Home() {
   const [subscriptionDisplay, setSubscriptionDisplay] = useState(false);
   const [outputImages, setOutputImages] = useState([]);
   const [minimalist, setMinimalist] = useState(false);
+  const [country, setCountry] = useState(false);
 
   // Refs
   const elInputRef = useRef(null);
@@ -584,6 +585,7 @@ export default function Home() {
         if (info.generating) setGenerating(info.generating);  // Set generating text
         if (info.use_payment) setSubscriptionDisplay(true);  // Set use payment
         if (info.minimalist) setMinimalist(true);  // Set minimalist
+        if (info.country) setCountry(info.country);  // Set country
 
         // Set welcome message
         if (info.welcome_message && !localStorage.getItem("user")) {
@@ -1586,7 +1588,7 @@ export default function Home() {
               </div>
               <div className={styles.content}>
                 {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
-                  <Documentation />
+                  <Documentation country={country} />
                 </div>}
                 {content === CONTENT.USAGE && <div className={styles.contentitem}>
                   <Usage />
