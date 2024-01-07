@@ -90,7 +90,17 @@ const Documentation = () => {
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
         <div className="max-w-screen-lg">
-          <YouTube videoId="U7l8GmFHHmM" className="youtube-video" />
+          <YouTube 
+            videoId="U7l8GmFHHmM" 
+            className="youtube-video"
+            opts={{ 
+              playerVars: {
+                controls: 1,
+                rel: 0,
+                hl: "en",
+              }
+            }}
+          />
         </div>
       </div>
       <div id="features" className="mt-5">Features</div>
