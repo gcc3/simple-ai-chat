@@ -1,4 +1,5 @@
 import { initializeSession } from "utils/sessionUtils";
+import { addStoreToSessionStorage, removeStoreFromSessionStorage } from "utils/storageUtils";
 
 export default async function store(args, files) {
   const command = args[0];
@@ -196,8 +197,8 @@ export default async function store(args, files) {
       return error;
     }
 
-    // Set store
-    sessionStorage.setItem("store", storeName);
+    // Add to storage
+    addStoreToSessionStorage(storeName);
     return "Use store \`" + storeName + "\`. You can use command \`:store\` to show current store information";
   }
 
@@ -216,8 +217,8 @@ export default async function store(args, files) {
       return "Invalid store name.";
     }
 
-    // Set store
-    sessionStorage.setItem("store", "");
+    // Remove from storage
+    removeStoreFromSessionStorage(storeName);
     return "Store \`" + storeName + "\` unused.";
   }
 
@@ -282,7 +283,7 @@ export default async function store(args, files) {
       }
 
       if (data.success) {
-        sessionStorage.setItem("store", name);  // set active
+        addStoreToSessionStorage(name);  // set active
         return data.message;
       }
     } catch (error) {
@@ -470,9 +471,7 @@ export default async function store(args, files) {
       }
 
       if (data.success) {
-        if (sessionStorage.getItem("store") === name) {
-          sessionStorage.setItem("store", "");
-        }
+        removeStoreFromSessionStorage(name);  // inactive
         return data.message;
       }
     } catch (error) {
