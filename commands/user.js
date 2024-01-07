@@ -340,6 +340,7 @@ export default async function entry(args) {
       }
 
       if (data.success) {
+        sessionStorage.setItem("role", roleName);  // set active
         return data.message;
       } else {
         return data.error;

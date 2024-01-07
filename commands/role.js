@@ -164,7 +164,7 @@ export default async function role(args) {
       // Reset session to forget previous memory
       initializeSession();
 
-      return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show current role and prompt";
+      return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show current role and prompt.";
     } else {
       return "Invalid role name.";
     }

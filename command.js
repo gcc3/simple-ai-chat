@@ -127,7 +127,7 @@ export function getCommands() {
     { id: "commands-store", title: "Data Store", annotation: "", command: ":search [text]", short_description: "Search from current data store.", description: "Search to get inforamtion from the current data store with nature language." },
     { id: "", title: "", annotation: "", command: ":store [name?]", short_description: "Show data store detail.", description: "Show detail of a data store. The store name is optional. If no name is input, it will return the current data store details." },
     { id: "", title: "", annotation: "", command: ":store [ls|list]", short_description: "List available data stores.", description: "Include the user data stores and shared data stores." },
-    { id: "", title: "", annotation: "", command: ":store use [name]", short_description: "Use a data store.", description: "" },
+    { id: "", title: "", annotation: "", command: ":store [use|unuse] [name]", short_description: "Use/unuse a data store.", description: "" },
     { id: "", title: "", annotation: "", command: ":store reset", short_description: "Reset data store to empty.", description: "Reset the current data store to empty. This will not reset data store data, to reset data use `:store data reset`" },
     { id: "", title: "", annotation: "", command: ":store add [engine] [name]", short_description: "Create a data store.", description: "Create a database with engine and store name. Supported engines: \"vectara\", \"mysql\". Engine and store name must be enclosed in double quotes." },
     { id: "", title: "", annotation: "", command: ":store init [name?]", short_description: "Initialize a data store.", description: "Initialize the current data store. Store name (optional) should be enclosed in double quotes." },

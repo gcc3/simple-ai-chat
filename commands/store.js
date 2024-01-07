@@ -4,7 +4,7 @@ export default async function store(args, files) {
   const command = args[0];
   const usage = "Usage: :store [name?]\n" +
                 "       :store [ls|list]\n" +
-                "       :store use [name]\n" +
+                "       :store [use|unuse] [name]\n" +
                 "       :store reset\n" +
                 "       :store add [engine] [name]\n" +
                 "       :store init [name?]\n" +
@@ -162,7 +162,7 @@ export default async function store(args, files) {
   // Use store
   if (command === "use") {
     if (args.length != 2) {
-      return "Usage: :store use [name]\n"
+      return "Usage: :store [use|unuse] [name]\n"
     }
 
     if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
@@ -199,7 +199,27 @@ export default async function store(args, files) {
     // Set store
     sessionStorage.setItem("store", storeName);
 
-    return "Store is set to \`" + storeName + "\`, you can use command \`:store\` to show current store information";
+    return "Use store \`" + storeName + "\`. You can use command \`:store\` to show current store information";
+  }
+
+  // Use store
+  if (command === "unuse") {
+    if (args.length != 2) {
+      return "Usage: :store [use|unuse] [name]\n"
+    }
+
+    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
+      return "Store name must be quoted with double quotes.";
+    }
+
+    const storeName = args[1].slice(1, -1);
+    if (!storeName) {
+      return "Invalid store name.";
+    }
+
+    // Set store
+    sessionStorage.setItem("store", "");
+    return "Store \`" + storeName + "\` unused.";
   }
 
   // Reset store
@@ -209,9 +229,6 @@ export default async function store(args, files) {
     }
 
     sessionStorage.setItem("store", "");  // reset store
-
-    // Reset session to forget previous memory
-    initializeSession();
     return "Store reset.";
   }
 
@@ -266,7 +283,7 @@ export default async function store(args, files) {
       }
 
       if (data.success) {
-        sessionStorage.setItem("store", name);  // set store active
+        sessionStorage.setItem("store", name);  // set active
         return data.message;
       }
     } catch (error) {
