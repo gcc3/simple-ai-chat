@@ -1,4 +1,5 @@
 
+import { isCommandMusked } from "utils/passwordUtils.js";
 import help from "./commands/help.js";
 import stats from "./commands/stats.js";
 import eval_ from "./commands/eval.js";
@@ -27,7 +28,6 @@ import search from "commands/search.js";
 import node from "commands/node.js";
 import set from "commands/set.js";
 import generate from "commands/generate.js";
-import { isCommandMusked } from "utils/passwordUtils.js";
 
 export default function commands(input, files) {
   let command = input;
@@ -166,10 +166,9 @@ export function getCommands() {
 
 export function pushCommandHistory(command) {
   // ignore masked commands
-  if (command.startsWith(":login")) return;
-  if (command.startsWith(":user add")) return;
-  if (command.startsWith(":user join")) return;
-  if (command.startsWith(":user set pass")) return;
+  if (isCommandMusked(command)) {
+    return;
+  }
 
   // Get the existing history or initialize a new array
   let commandHistories = JSON.parse(sessionStorage.getItem("history")) || [];
