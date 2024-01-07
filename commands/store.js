@@ -198,7 +198,6 @@ export default async function store(args, files) {
 
     // Set store
     sessionStorage.setItem("store", storeName);
-
     return "Use store \`" + storeName + "\`. You can use command \`:store\` to show current store information";
   }
 
