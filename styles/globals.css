@@ -131,13 +131,13 @@ input:focus {
 }
 
 /* Awosome YouTube container */
-.youtube-container {
+.youtube-video {
   width: 100%;
   position: relative;
   padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
   height: 0;
 }
-.youtube-container iframe {
+.youtube-video iframe {
   position: absolute;
   top: 0;
   left: 0;
