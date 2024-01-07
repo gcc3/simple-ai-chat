@@ -89,7 +89,9 @@ const Documentation = () => {
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
-        <YouTube videoId="U7l8GmFHHmM" className="youtube-container" />
+        <div className="max-w-screen-lg">
+          <YouTube videoId="U7l8GmFHHmM" className="youtube-video" />
+        </div>
       </div>
       <div id="features" className="mt-5">Features</div>
       <div>
