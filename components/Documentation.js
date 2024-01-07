@@ -89,9 +89,9 @@ const Documentation = ({ country }) => {
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
-        {country && country !== "CN" && <div className="max-w-screen-lg">
-          <YouTube 
-            videoId="U7l8GmFHHmM" 
+        {country && country !== "CN" && process.env.NEXT_PUBLIC_VIDEO_ID && <div className="max-w-screen-lg">
+          <YouTube
+            videoId={process.env.NEXT_PUBLIC_VIDEO_ID}
             className="youtube-video"
             opts={{ 
               playerVars: {
@@ -102,9 +102,9 @@ const Documentation = ({ country }) => {
             }}
           />
         </div>}
-        {country && country === "CN" && <div>
+        {((country && country === "CN") || !process.env.NEXT_PUBLIC_VIDEO_ID) && <div>
           <div className="max-w-screen-lg">
-            (Introduction video is not available.)
+            (Quick start video preparing...)
           </div>
         </div>}
       </div>
