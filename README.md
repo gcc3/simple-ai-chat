@@ -337,8 +337,11 @@ Use hunter API to verify email.
 Use for detect accurate address.   
 
 * MINIMALIST  
-Although the Simple AI is simple, but still not for minimalist.  
+For minimalist, a more simple UI.  
 The value should be `true` or `false`.  
+
+* WELCOME_MESSAGE and VIDEO_ID  
+Set a welcome message and introduction video in front page.  
 
 
 Coding rules
