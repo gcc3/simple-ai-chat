@@ -48,7 +48,8 @@ export default async function handler(req, res) {
       }
       res.status(200).json({
         success: true,
-        message: queryResult.message,
+        message: "Engine: " + storeInfo.engine + "\n"
+               + "Result: \n" + queryResult.message,
       });
       return;
     }
@@ -65,7 +66,9 @@ export default async function handler(req, res) {
 
       res.status(200).json({
         success: true,
-        message: "Query: " + queryResult.query + "\nResult: \n" + queryResult.message,
+        message: "Engine: " + storeInfo.engine + "\n"
+               + "Query: " + queryResult.query + "\n"
+               + "Result: \n" + queryResult.message,
       });
       return;
     }

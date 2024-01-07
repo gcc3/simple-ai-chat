@@ -36,7 +36,8 @@ export default async function search(args) {
       }
   
       if (data.success) {
-        const message = "Store: " + store + "\n" + data.message;
+        const message = "Store: " + store + "\n"
+                       + data.message;
         results.push(message.trim());
       } else {
         return data.error;
