@@ -15,6 +15,7 @@ export default async function search(args) {
     return "No store selected.";
   }
 
+  // TODO, use Promise.all() to make this faster
   let results = [];
   for (const store of activeStores) {
     try {
