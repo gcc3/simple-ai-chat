@@ -590,12 +590,15 @@ export default function Home() {
         // Set welcome message
         if (info.welcome_message && !localStorage.getItem("user")) {
           printOutput(info.welcome_message);
-          if (info.video_id && localStorage.getItem("fullscreen") === "off") {
+
+          // Print welcome video
+          const video_id = process.env.NEXT_PUBLIC_VIDEO_ID;
+          if (video_id && localStorage.getItem("fullscreen") === "off") {
             if (info.country && info.country === "CN") {
               // TODO use Bilibili
               console.log("Video not available in China.");
             } else {
-              printVideo(info.video_id, elOutputRef, "before");
+              printVideo(video_id, elOutputRef, "before");
             }
           }
         }
