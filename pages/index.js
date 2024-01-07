@@ -1025,7 +1025,7 @@ export default function Home() {
           const use_eval = _stats_[3];
           const func = _stats_[4];
           const role = _stats_[5];
-          const store = _stats_[6];
+          const store = _stats_[6].replaceAll('|', ", ");
           const node = _stats_[7];
           const mem = _stats_[8];
 

@@ -85,8 +85,9 @@ User :store to setup a data store
 1. Vector database search  
 Query data from vector database engine.  
 Support [Vectara](https://vectara.com/).  
-2. Relational database
-Support `MySQL`
+2. Relational database  
+Support `MySQL`  
+Multiple data store can be used simultaneously.  
 
 * Themes  
 Provide light theme by default, a dark theme, and a terminal style theme.  

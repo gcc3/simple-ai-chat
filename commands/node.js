@@ -99,15 +99,18 @@ export default async function node(args) {
        && Object.entries(data.result.system_nodes).length === 0) {
         return "No available node found.";
       } else {
+        // For adding star to current store
+        const currentNode = sessionStorage.getItem("node");
+
         // User nodes
         let userNodes = "";
         if (data.result.user_nodes && Object.entries(data.result.user_nodes).length > 0) {
           let nodes = [];
           Object.entries(data.result.user_nodes).forEach(([key, value]) => {
-            nodes.push(value.name);
+            nodes.push((currentNode === value.name ? "*\\" : "\\") + value.name);
           });
           userNodes = "User nodes: \n" 
-                     + "\\" + nodes.join(" \\") + "\n\n";
+                     + nodes.join(" ") + "\n\n";
         } else {
           userNodes = "User nodes: \n" 
                      + "No node found." + "\n\n";
@@ -118,10 +121,10 @@ export default async function node(args) {
         if (data.result.group_nodes && Object.entries(data.result.group_nodes).length > 0) {
           let nodes = [];
           Object.entries(data.result.group_nodes).forEach(([key, value]) => {
-            nodes.push(value.name);
+            nodes.push((currentNode === value.name ? "*\\" : "\\") + value.name);
           });
           groupNodes = "Group nodes: \n" 
-                    + "\\" + nodes.join(" \\") + "\n\n"; 
+                    + nodes.join(" ") + "\n\n"; 
         } else {
           groupNodes = "Group nodes: \n" 
                       + "No node found." + "\n\n";
@@ -132,22 +135,16 @@ export default async function node(args) {
         if (data.result.system_nodes && Object.entries(data.result.system_nodes).length > 0) {
           let nodes = [];
           Object.entries(data.result.system_nodes).forEach(([key, value]) => {
-            nodes.push(value.name);
+            nodes.push((currentNode === value.name ? "*\\" : "\\") + value.name);
           });
           systemNodes = "System nodes: \n" 
-                      + "\\" + nodes.join(" \\") + "\n\n"; 
+                      + nodes.join(" ") + "\n\n"; 
         } else {
           systemNodes = "System nodes: \n" 
                       + "No node found." + "\n\n";
         }
 
-        // Add star to current node
-        let result = userNodes + groupNodes + systemNodes;
-        if (sessionStorage.getItem("node")) {
-          const currentNode = sessionStorage.getItem("node");
-          result = result.replace("\\" + currentNode, "*\\" + currentNode);
-        }
-        return result;
+        return userNodes + groupNodes + systemNodes;
       }
     } catch (error) {
       console.error(error);
@@ -245,7 +242,7 @@ export default async function node(args) {
       }
 
       if (data.success) {
-        sessionStorage.setItem("node", name);   // set node active
+        sessionStorage.setItem("node", name);  // set active
         return data.message;
       }
     } catch (error) {

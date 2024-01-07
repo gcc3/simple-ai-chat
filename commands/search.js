@@ -1,3 +1,5 @@
+import { getActiveStores } from "utils/storageUtils";
+
 export default async function search(args) {
   if (args.length != 1) {
     return "Usage: :search [text]";
@@ -8,35 +10,43 @@ export default async function search(args) {
   }
   const query = args[0].slice(1, -1);
 
-  const store = sessionStorage.getItem("store");
-  if (!store) {
+  const activeStores = getActiveStores();
+  if (activeStores.length === 0) {
     return "No store selected.";
   }
 
-  try {
-    const response = await fetch("/api/store/search", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        query,
-        store,
-      }),
-    });
-
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
+  // TODO, use Promise.all() to make this faster
+  let results = [];
+  for (const store of activeStores) {
+    try {
+      const response = await fetch("/api/store/search", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          query,
+          store,
+        }),
+      });
+  
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+  
+      if (data.success) {
+        const message = "Store: " + store + "\n"
+                       + data.message;
+        results.push(message.trim());
+      } else {
+        return data.error;
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
     }
-
-    if (data.success) {
-      return data.message;
-    } else {
-      return data.error;
-    }
-  } catch (error) {
-    console.error(error);
-    return error;
   }
+
+  return results.join("\n\n");
 }
