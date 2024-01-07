@@ -284,32 +284,38 @@ export async function generateMessages(user, model, input, inputType, files, ima
     console.log("--- data store search ---");
     console.log("store: " + store);
 
-    // Get store info
-    const storeInfo = await findStore(store, user.username);
-    const settings = JSON.parse(storeInfo.settings);
+    // Search all active stores
+    const activeStores = store.split(",").filter(s => s !== "");
+    for (const store of activeStores) {
+      // Get store info
+      const storeInfo = await findStore(store, user.username);
+      const settings = JSON.parse(storeInfo.settings);
 
-    if (isInitialized(storeInfo.engine, settings)) {
-      let queryResult = null;
-      if (storeInfo.engine === "vectara") {
-        store_prompt += "Query Vector database\n";
-        store_prompt += "Database description: " + (settings.description || "No description") + "\n";
-        queryResult = await searchVectaraStore(settings, input);
-      }
-      if (storeInfo.engine === "mysql") {
-        store_prompt += "Query MySQL database\n";
-        store_prompt += "Database description: " + (settings.description || "No description") + "\n";
-        queryResult = await searchMysqlStore(settings, input);
-      }
-      if (queryResult.success) {
-        if (queryResult.query) {
-          store_prompt += "Query: " + queryResult.query + "\n";
+      if (isInitialized(storeInfo.engine, settings)) {
+        let queryResult = null;
+
+        // Query
+        if (storeInfo.engine === "vectara") {
+          store_prompt += "Query Vector database\n";
+          store_prompt += "Database description: " + (settings.description || "No description") + "\n";
+          queryResult = await searchVectaraStore(settings, input);
+        } else if (storeInfo.engine === "mysql") {
+          store_prompt += "Query MySQL database\n";
+          store_prompt += "Database description: " + (settings.description || "No description") + "\n";
+          queryResult = await searchMysqlStore(settings, input);
         }
-        store_prompt += "Query result: \n";
-        store_prompt += queryResult.message;
-        messages.push({
-          "role": "system",
-          "content": store_prompt,
-        });
+
+        if (queryResult.success) {
+          if (queryResult.query) {
+            store_prompt += "Query: " + queryResult.query + "\n";
+          }
+          store_prompt += "Query result: \n";
+          store_prompt += queryResult.message;
+          messages.push({
+            "role": "system",
+            "content": store_prompt,
+          });
+        }
       }
     }
 

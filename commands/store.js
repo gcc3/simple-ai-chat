@@ -183,7 +183,7 @@ export default async function store(args, files) {
     }
 
     // Check if stores counter
-    if (countStoresInSessionStorage() > 3) {
+    if (countStoresInSessionStorage() >= 3) {
       return "You can only use 3 stores at the same time. Please unuse one of them first.";
     }
 
