@@ -584,7 +584,6 @@ export default function Home() {
         if (info.generating) setGenerating(info.generating);  // Set generating text
         if (info.use_payment) setSubscriptionDisplay(true);  // Set use payment
         if (info.minimalist) setMinimalist(true);  // Set minimalist
-        console.log(info.country);
 
         // Set welcome message
         if (info.welcome_message && !localStorage.getItem("user")) {
