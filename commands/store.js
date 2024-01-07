@@ -1,5 +1,5 @@
 import { initializeSession } from "utils/sessionUtils";
-import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils";
+import { addStoreToSessionStorage, countStoresInSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils";
 
 export default async function store(args, files) {
   const command = args[0];
@@ -16,39 +16,44 @@ export default async function store(args, files) {
                 "       :store set [key] [value]\n";
 
   // Get store info
-  // :store [name?]
+  // :store [name?], no name
   if (!command) {
     if (!localStorage.getItem("user")) {
       return "Please login.";
     }
 
-    const storeName = sessionStorage.getItem("store");
-    if (!storeName) {
+    const store = sessionStorage.getItem("store");
+    if (!store) {
       return "No data store is set, please use command \`:store use [name]\` to set a store.";
     }
 
-    try {
-      const response = await fetch("/api/store/" + storeName, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const storeNames = store.split(",").filter((store) => store !== "");
+    let results = [];
+    for (let i = 0; i < storeNames.length; i++) {
+      try {
+        const response = await fetch("/api/store/" + storeNames[i], {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.error || new Error(`Request failed with status ${response.status}`);
+        }
+
+        results.push(JSON.stringify(data.result, null, 2));
+      } catch (error) {
+        console.error(error);
+        return error;
       }
-
-      return JSON.stringify(data.result, null, 2);
-    } catch (error) {
-      console.error(error);
-      return error;
     }
+    return results.join(",\n");
   }
 
   // Get store info by name
-  // :store [name?]
+  // :store [name?], has name
   if (args.length === 1 && args[0].startsWith("\"") && args[0].endsWith("\"")) {
     const storeName = args[0].slice(1, -1);
     if (!storeName) {
@@ -103,15 +108,18 @@ export default async function store(args, files) {
        && Object.entries(data.result.system_stores).length === 0) {
         return "No available store found.";
       } else {
+        // For adding star to current store
+        const activeStores = getActiveStores();
+
         // User stores
         let userStores = "";
         if (data.result.user_stores && Object.entries(data.result.user_stores).length > 0) {
           let stores = [];
           Object.entries(data.result.user_stores).forEach(([key, value]) => {
-            stores.push(value.name);
+            stores.push((activeStores.includes(value.name) ? "*\\" : "\\") + value.name);
           });
           userStores = "User stores: \n" 
-                     + "\\" + stores.join(" \\") + "\n\n";
+                     + stores.join(" ") + "\n\n";
         } else {
           userStores = "User stores: \n" 
                      + "No store found." + "\n\n";
@@ -122,10 +130,10 @@ export default async function store(args, files) {
         if (data.result.group_stores && Object.entries(data.result.group_stores).length > 0) {
           let stores = [];
           Object.entries(data.result.group_stores).forEach(([key, value]) => {
-            stores.push(value.name);
+            stores.push((activeStores.includes(value.name) ? "*\\" : "\\") + value.name);
           });
           groupStores = "Group Stores: \n" 
-                    + "\\" + stores.join(" \\") + "\n\n"; 
+                      + stores.join(" ") + "\n\n"; 
         } else {
           groupStores = "Group Stores: \n" 
                       + "No store found." + "\n\n";
@@ -136,22 +144,16 @@ export default async function store(args, files) {
         if (data.result.system_stores && Object.entries(data.result.system_stores).length > 0) {
           let stores = [];
           Object.entries(data.result.system_stores).forEach(([key, value]) => {
-            stores.push(value.name);
+            stores.push((activeStores.includes(value.name) ? "*\\" : "\\") + value.name);
           });
           systemStores = "System Stores: \n" 
-                       + "\\" + stores.join(" \\") + "\n\n"; 
+                       + stores.join(" ") + "\n\n"; 
         } else {
           systemStores = "System Stores: \n" 
                        + "No store found." + "\n\n";
         }
 
-        // Add star to current store
-        let result = userStores + groupStores + systemStores;
-        if (sessionStorage.getItem("store")) {
-          const currentStore = sessionStorage.getItem("store");
-          result = result.replace("\\" + currentStore, "*\\" + currentStore);
-        }
-        return result;
+        return userStores + groupStores + systemStores;
       }
     } catch (error) {
       console.error(error);
@@ -181,7 +183,7 @@ export default async function store(args, files) {
     }
 
     // Check if stores counter
-    if (countStoresInSessionStorage() > 3) {
+    if (countStoresInSessionStorage() >= 3) {
       return "You can only use 3 stores at the same time. Please unuse one of them first.";
     }
 

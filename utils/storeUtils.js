@@ -52,16 +52,18 @@ export async function searchVectaraStore(settings, query) {
   // Query
   const queryResult = await vectaraQuery(query, corpusId, apiKey, threshold, numberOfResults, customerId);
   if (queryResult && queryResult.length > 0) {
-    let result = "";
+    let result = [];
     for (let i = 0; i < queryResult.length; i++) {
-      result += "Document: " + queryResult[i].document.trim() + "\n" +
-                (queryResult[i].title && "Title: " + queryResult[i].title + "\n") +
-                "Score: " + queryResult[i].score + "\n" +
-                "Content:\n" + queryResult[i].content + "\n\n";
+      result.push({
+        "document": queryResult[i].document.trim(),
+        "title": queryResult[i].title.trim(),
+        "Score": queryResult[i].score,
+        "Content": queryResult[i].content.trim(),
+      });
     }
     return {
       success: true,
-      message: result.trim(),
+      message: JSON.stringify(result, null, 2),
     };
   } else {
     return {
@@ -83,7 +85,8 @@ export async function searchMysqlStore(settings, input) {
   if (!query) {
     return {
       success: true,
-      message: "No query generated.",
+      message: "No result found.",
+      query: "No query generated.",
     };
   }
 

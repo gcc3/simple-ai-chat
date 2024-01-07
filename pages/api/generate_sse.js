@@ -307,7 +307,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###ENV###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
 
     // Print input images
     input_images.map(image => {
@@ -407,7 +407,7 @@ export default async function (req, res) {
     await logadd(user, session, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
 
     // Final stats
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store},${node},${mem}\n\n`);
+    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
     
     // Done message
     updateStatus("Finished.");

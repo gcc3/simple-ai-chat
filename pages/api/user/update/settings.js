@@ -2,6 +2,7 @@ import { updateUserSettings, getUser, getUserRoles } from 'utils/sqliteUtils.js'
 import { authenticate } from 'utils/authUtils.js';
 import { getAvailableStoresForUser } from 'utils/storeUtils';
 import { getAvailableNodesForUser } from 'utils/nodeUtils';
+import { getSystemRoles } from 'utils/roleUtils';
 
 export default async function (req, res) {
   // Check if the method is POST.
@@ -85,18 +86,29 @@ export default async function (req, res) {
       }
     } else if (key === 'role') {
       const userRoles = await getUserRoles(username);
-      if (Object.entries(userRoles).length === 0) {
-        return res.status(400).json({ 
-          success: false, 
-          error: 'No user role found.'
+      const systemRoles = await getSystemRoles(); 
+
+      if (Object.entries(userRoles).length === 0 && systemRoles.length === 0) {
+        return res.status(400).json({
+          success: false,
+          error: 'No role found.'
         });
       }
-      const validValues = [];
+
+      let validValues = [];
+
+      // Add empty role
       validValues.push("\"\"");
+
+      // Add user roles
       Object.values(userRoles).map(s => {
         const value = "\"" + s.role + "\""
         validValues.push(value);
       });
+
+      // Add system roles
+      validValues = validValues.concat(systemRoles.map(s => "\"" + s + "\""));
+
       if (!validValues.includes("\"" + value + "\"")) {
         return res.status(400).json({ 
           success: false, 
@@ -118,11 +130,16 @@ export default async function (req, res) {
         const value = "\"" + s.name + "\""
         validValues.push(value);
       });
-      if (!validValues.includes("\"" + value + "\"")) {
-        return res.status(400).json({ 
-          success: false, 
-          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
-        });
+
+      // Store can be multiple
+      const values = value.split(',');
+      for (let i = 0; i < values.length; i++) {
+        if (!validValues.includes("\"" + values[i] + "\"")) {
+          return res.status(400).json({ 
+            success: false, 
+            error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+          });
+        }
       }
     } else if (key === 'node') {
       const allNodes = await getAvailableNodesForUser(user);

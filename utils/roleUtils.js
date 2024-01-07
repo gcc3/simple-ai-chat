@@ -2,7 +2,7 @@ import { parse } from 'csv-parse';
 import fs from 'fs';
 import { fixLastRowNotEmpty } from './fileUtils';
 
-export async function roleListing() {
+export async function getSystemRoles() {
   fixLastRowNotEmpty('role.csv');
   let roles = [];
 

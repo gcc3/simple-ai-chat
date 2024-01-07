@@ -25,3 +25,9 @@ export function countStoresInSessionStorage() {
   const localStorageStores = storeLocalStorage.split(",").filter((store) => store !== "");
   return localStorageStores.length;
 }
+
+export function getActiveStores() {
+  const storeLocalStorage = sessionStorage.getItem("store");
+  const localStorageStores = storeLocalStorage.split(",").filter((store) => store !== "");
+  return localStorageStores;
+}
