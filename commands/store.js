@@ -1,5 +1,5 @@
 import { initializeSession } from "utils/sessionUtils";
-import { addStoreToSessionStorage, removeStoreFromSessionStorage } from "utils/storageUtils";
+import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils";
 
 export default async function store(args, files) {
   const command = args[0];
@@ -175,6 +175,16 @@ export default async function store(args, files) {
       return "Invalid store name.";
     }
 
+    // Check store active
+    if (isStoreActive(storeName)) {
+      return "Store \`" + storeName + "\` is already active.";
+    }
+
+    // Check if stores counter
+    if (countStoresInSessionStorage() > 3) {
+      return "You can only use 3 stores at the same time. Please unuse one of them first.";
+    }
+
     // Check if the store exists
     try {
       const response = await fetch("/api/store/" + storeName, {
@@ -215,6 +225,11 @@ export default async function store(args, files) {
     const storeName = args[1].slice(1, -1);
     if (!storeName) {
       return "Invalid store name.";
+    }
+
+    // Check store active
+    if (!isStoreActive(storeName)) {
+      return "Store \`" + storeName + "\` is not active";
     }
 
     // Remove from storage

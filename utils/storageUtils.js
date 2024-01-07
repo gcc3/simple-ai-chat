@@ -19,3 +19,9 @@ export function isStoreActive(storeName) {
   const localStorageStores = storeLocalStorage.split(",").filter((store) => store !== "");
   return localStorageStores.includes(storeName);
 }
+
+export function countStoresInSessionStorage() {
+  const storeLocalStorage = sessionStorage.getItem("store");
+  const localStorageStores = storeLocalStorage.split(",").filter((store) => store !== "");
+  return localStorageStores.length;
+}
