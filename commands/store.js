@@ -16,39 +16,44 @@ export default async function store(args, files) {
                 "       :store set [key] [value]\n";
 
   // Get store info
-  // :store [name?]
+  // :store [name?], no name
   if (!command) {
     if (!localStorage.getItem("user")) {
       return "Please login.";
     }
 
-    const storeName = sessionStorage.getItem("store");
-    if (!storeName) {
+    const store = sessionStorage.getItem("store");
+    if (!store) {
       return "No data store is set, please use command \`:store use [name]\` to set a store.";
     }
 
-    try {
-      const response = await fetch("/api/store/" + storeName, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    const storeNames = store.split(",").filter((store) => store !== "");
+    let results = [];
+    for (let i = 0; i < storeNames.length; i++) {
+      try {
+        const response = await fetch("/api/store/" + storeNames[i], {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.error || new Error(`Request failed with status ${response.status}`);
+        }
+
+        results.push(JSON.stringify(data.result, null, 2));
+      } catch (error) {
+        console.error(error);
+        return error;
       }
-
-      return JSON.stringify(data.result, null, 2);
-    } catch (error) {
-      console.error(error);
-      return error;
     }
+    return results.join(",\n");
   }
 
   // Get store info by name
-  // :store [name?]
+  // :store [name?], has name
   if (args.length === 1 && args[0].startsWith("\"") && args[0].endsWith("\"")) {
     const storeName = args[0].slice(1, -1);
     if (!storeName) {
