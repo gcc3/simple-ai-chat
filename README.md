@@ -343,6 +343,9 @@ The value should be `true` or `false`.
 * WELCOME_MESSAGE and VIDEO_ID  
 Set a welcome message and introduction video in front page.  
 
+* IPINFO_TOKEN  
+`ipinfo.io` token for getting country from IP.
+
 
 Coding rules
 ------------
