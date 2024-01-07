@@ -21,7 +21,7 @@ export default async function search(args) {
       },
       body: JSON.stringify({
         query,
-        store,
+        store,  // this can be multple stores separated by `,`
       }),
     });
 
