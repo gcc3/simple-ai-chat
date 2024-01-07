@@ -132,8 +132,6 @@ export default function Home() {
 
   // Print video output (support: YouTube)
   const printVideo = (videoId, targetRef, beforeOrAfter = "after") => {
-    console.log("Print Video: " + videoId);
-
     if (targetRef.current) {
       // Create a wrapper div to hold the iframe and control its aspect ratio
       const videoDiv = document.createElement('div');
@@ -586,12 +584,18 @@ export default function Home() {
         if (info.generating) setGenerating(info.generating);  // Set generating text
         if (info.use_payment) setSubscriptionDisplay(true);  // Set use payment
         if (info.minimalist) setMinimalist(true);  // Set minimalist
+        console.log(info.country);
 
         // Set welcome message
         if (info.welcome_message && !localStorage.getItem("user")) {
           printOutput(info.welcome_message);
           if (info.video_id && localStorage.getItem("fullscreen") === "off") {
-            printVideo(info.video_id, elOutputRef, "before");
+            if (info.country && info.country === "CN") {
+              // TODO use Bilibili
+              console.log("Video not available in China.");
+            } else {
+              printVideo(info.video_id, elOutputRef, "before");
+            }
           }
         }
       } catch (error) {
