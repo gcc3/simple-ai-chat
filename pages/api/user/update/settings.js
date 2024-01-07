@@ -118,11 +118,16 @@ export default async function (req, res) {
         const value = "\"" + s.name + "\""
         validValues.push(value);
       });
-      if (!validValues.includes("\"" + value + "\"")) {
-        return res.status(400).json({ 
-          success: false, 
-          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
-        });
+
+      // Store can be multiple
+      const values = value.split(',');
+      for (let i = 0; i < values.length; i++) {
+        if (!validValues.includes("\"" + values[i] + "\"")) {
+          return res.status(400).json({ 
+            success: false, 
+            error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+          });
+        }
       }
     } else if (key === 'node') {
       const allNodes = await getAvailableNodesForUser(user);
