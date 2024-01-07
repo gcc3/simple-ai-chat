@@ -177,8 +177,8 @@ export function pushCommandHistory(command) {
   // Add new command to the front of the array
   commandHistories.unshift(command);
 
-  // Ensure that only the latest 10 commands are kept
-  commandHistories = commandHistories.slice(0, 10);
+  // Ensure that only the latest 100 commands are kept
+  commandHistories = commandHistories.slice(0, 100);
 
   // Save the updated history
   sessionStorage.setItem("history", JSON.stringify(commandHistories));
