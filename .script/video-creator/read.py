@@ -2,14 +2,14 @@ import requests
 import os
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
-load_dotenv(dotenv_path='../../.env')
-BEARER_TOKEN = os.getenv('OPENAI_API_KEY')
+# Load the OpenAI API key from the .env file
+load_dotenv('../../.env')
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
 
 # Function to call OpenAI API and generate speech from text
 def generate_speech(input_text, filename):
     headers = {
-        'Authorization': f'Bearer {BEARER_TOKEN}',
+        'Authorization': f'Bearer {OPENAI_API_KEY}',
         'Content-Type': 'application/json',
     }
 
@@ -28,34 +28,60 @@ def generate_speech(input_text, filename):
         print(f"Audio saved to '{filename}'")
     else:
         print(f"Error: {response.text}")
+        
+def format_number(n):
+    return int(n) if n.is_integer() else n
+
+def find_next_index(i_from, sentences):
+    for i, sentence in enumerate(sentences, start=1):
+        if i > i_from and sentence:
+            # ignore lines that are already numbered
+            if not sentence.startswith('['):
+                # ignore lines that are already numbered
+                continue
+            return float(sentence[1: sentence.index(']')])
+    return -1
 
 def main():
     input_filename = 'content.txt'
     output_filename = 'content.txt'
-    
-    # Check if input file exists
-    if not os.path.exists(input_filename):
-        print(f"Input file '{input_filename}' not found")
-        return
     
     # Read sentences from the input file
     with open(input_filename, 'r') as file:
         sentences = file.read().strip().split('\n')
 
     # Generate speech for each sentence and write back to the file with numbering
-    numbered_sentences = []
-    for index, sentence in enumerate(sentences, start=1):
+    result_sentences = []
+    index = float(1)
+    for i, sentence in enumerate(sentences, start=1):
         if sentence:
-            # Generate speech and save as MP3 file
-            mp3_filename = f"{index}.mp3"
-            generate_speech(sentence, mp3_filename)
+            if sentence.startswith('['):
+                # found a numbered sentence
+                result_sentences.append(sentence)
+                
+                # Read index from the []
+                index = float(sentence[1: sentence.index(']')])
+                next_index = find_next_index(i, sentences)
+                if not next_index == -1:
+                    index = float(index + next_index) / 2
+                else: index += 1.0
+                continue
             
-            # Append numbering to the sentence
-            numbered_sentences.append(f"[{index}]{sentence}")
+            # Sentence not numbered, generate speech
+            generate_speech(sentence, f"{format_number(index)}.mp3")
+            result_sentences.append(f"[{format_number(index)}]{sentence}")
+            
+            next_index = find_next_index(i, sentences)
+            if not next_index == -1:
+                index = (index + next_index) / 2
+            else: index += 1.0
+        else:
+            # Add empty line
+            result_sentences.append('')
 
     # Write the numbered sentences back to the output file
     with open(output_filename, 'w') as file:
-        file.write('\n'.join(numbered_sentences))
+        file.write('\n'.join(result_sentences))
 
 if __name__ == "__main__":
     main()

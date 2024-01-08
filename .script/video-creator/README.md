@@ -3,6 +3,9 @@ Video Creator
 =============
 
 
+Video creator tools.
+
+
 Setup
 -----
 
@@ -11,7 +14,8 @@ pip install -r requirements.txt
 ```
 
 
-Read
-----
+read.py
+------0
 
-Input `content.txt`, output `content.txt`, and mp3 files.
+Input `content.txt`, output `content.txt`, and mp3 files.  
+There is an auto indexing for sentences and mp3 file names.  
