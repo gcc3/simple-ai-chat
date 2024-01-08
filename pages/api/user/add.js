@@ -27,7 +27,7 @@ export default async function (req, res) {
   }
 
   // Check if the username adheres to Unix naming conventions
-  if (!/^[a-z][a-z0-9_-]*$/.test(username)) {
+  if (!/^[a-zA-Z][a-zA-Z0-9_-]*$/.test(username)) {
     return res.status(400).json({
       success: false,
       error: "Invalid username.",
