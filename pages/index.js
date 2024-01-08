@@ -1274,7 +1274,7 @@ export default function Home() {
   }
   
   // Handle input key down
-  const handleInputKeyDown = (event) => {
+  const handleInputKeyDown = async (event) => {
     const elInput = elInputRef.current;
 
     // Enter key event
@@ -1325,12 +1325,67 @@ export default function Home() {
     }
 
     // Tab key event
-    // Input from placeholder when pressing tab
     if (event.keyCode === 9 || event.which === 9) {
       event.preventDefault();
+
+      // Input from placeholder when pressing tab
       if (elInput.value.length === 0) {
         setInput(global.rawPlaceholder);
         reAdjustInputHeight();
+      }
+
+      // Auto complete
+      if (elInput.value.startsWith(":")) {
+        // Auto complete role
+        if (elInput.value.startsWith(":role use ")) {
+          const nameToBeComleted = elInput.value.replace(":role use ", "").replace(/^\"+/, '').replace(/\"$/, '');
+          if (nameToBeComleted) {
+            const response = await fetch("/api/role/list");
+            const data = await response.json();
+            if (response.status === 200 && data.success) {
+              const role = [].concat(data.result.user_roles, data.result.system_roles).flat()
+                             .find((n) => n.name.startsWith(nameToBeComleted));
+              if (role) {
+                setInput(":role use \"" + role.name + "\"");
+                reAdjustInputHeight();
+              }
+            }
+          }
+        }
+
+        // Auto complete store
+        if (elInput.value.startsWith(":store use ")) {
+          const nameToBeComleted = elInput.value.replace(":store use ", "").replace(/^\"+/, '').replace(/\"$/, '');
+          if (nameToBeComleted) {
+            const response = await fetch("/api/store/list");
+            const data = await response.json();
+            if (response.status === 200 && data.success) {
+              const store = [].concat(data.result.user_stores, data.result.group_stores, data.result.system_stores).flat()
+                              .find((n) => n.name.startsWith(nameToBeComleted));
+              if (store) {
+                setInput(":store use \"" + store.name + "\"");
+                reAdjustInputHeight();
+              }
+            }
+          }
+        }
+
+        // Auto complete node
+        if (elInput.value.startsWith(":node use ")) {
+          const nameToBeComleted = elInput.value.replace(":node use ", "").replace(/^\"+/, '').replace(/\"$/, '');
+          if (nameToBeComleted) {
+            const response = await fetch("/api/node/list");
+            const data = await response.json();
+            if (response.status === 200 && data.success) {
+              const node = [].concat(data.result.user_nodes, data.result.group_nodes, data.result.system_nodes).flat()
+                             .find((n) => n.name.startsWith(nameToBeComleted));
+              if (node) {
+                setInput(":node use \"" + node.name + "\"");
+                reAdjustInputHeight();
+              }
+            }
+          }
+        }
       }
     }
   };
