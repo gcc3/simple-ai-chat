@@ -106,7 +106,11 @@ export default async function entry(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return data.message;
+      if (data.success) {
+        return data.message;
+      } else {
+        return data.error;
+      }
     } catch (error) {
       console.error("Error:", error);
       return error;
