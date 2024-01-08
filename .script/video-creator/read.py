@@ -1,6 +1,7 @@
 import requests
 import os
 from dotenv import load_dotenv
+import time
 
 # Load the OpenAI API key from the .env file
 load_dotenv('../../.env')
@@ -74,6 +75,10 @@ def main():
             
             # Sentence not numbered, generate speech
             generate_speech(sentence, f"{format_number(index)}.mp3")
+            
+            # Sleep for 3 second to avoid hitting the OpenAI API rate limit
+            time.sleep(3)
+            
             result_sentences.append(f"[{format_number(index)}]{sentence}")
             
             next_index = find_next_index(i, sentences)
