@@ -55,6 +55,11 @@ def main():
     index = float(1)
     for i, sentence in enumerate(sentences, start=1):
         if sentence:
+            if sentence.startswith('#'):
+                # found a comment
+                result_sentences.append(sentence)
+                continue
+            
             if sentence.startswith('['):
                 # found a numbered sentence
                 result_sentences.append(sentence)
