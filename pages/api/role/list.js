@@ -19,6 +19,7 @@ export default async function (req, res) {
 
     // Output the result
     res.status(200).json({
+      success: true,
       result: {
         user_roles: userRoles,
         system_roles : systemRoles,
@@ -27,9 +28,8 @@ export default async function (req, res) {
   } catch (error) {
     console.error(error);
     res.status(500).json({
-      error: {
-        message: "An error occurred during your request.",
-      },
+      success: false,
+      error: "An error occurred during your request.",
     });
   }
 }

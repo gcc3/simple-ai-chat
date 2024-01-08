@@ -31,6 +31,7 @@ export default async function(req, res) {
 
     // Output the result
     res.status(200).json({
+      success: true,
       result: {
         user_stores: userStores,
         group_stores: groupStores,

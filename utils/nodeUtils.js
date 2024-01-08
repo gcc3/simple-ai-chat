@@ -144,7 +144,10 @@ export function isNodeConfigured(settings) {
 }
 
 export async function getAvailableNodesForUser(user) {
+  // Get user nodes
   const userNodes = await getUserNodes(user.username);
+
+  // Get group nodes
   const groups = user.group.split(',');
   const groupNodes = [];
   await groups.map(async g => {
@@ -153,6 +156,7 @@ export async function getAvailableNodesForUser(user) {
     groupNodes.push(groupNodes);
   });
 
+  // Get system nodes
   let systemNodes = [];
   if (user.username != "root") {
     systemNodes = await getUserNodes('root');
