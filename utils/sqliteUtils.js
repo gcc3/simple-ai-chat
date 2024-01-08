@@ -402,11 +402,6 @@ const countUserByIP = async (ip) => {
 const insertUser = async (username, role, role_expires_at, password, email, balance, settings) => {
   const db = await getDatabaseConnection();
 
-  // Check if the username adheres to Unix naming conventions
-  if (!/^[a-z][a-z0-9_-]*$/.test(username)) {
-    throw new Error("Invalid username."); // the username must adhere to Unix naming conventions.
-  }
-
   try {
     return await new Promise((resolve, reject) => {
       // First, check if the username already exists
