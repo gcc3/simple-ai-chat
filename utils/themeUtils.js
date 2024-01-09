@@ -112,3 +112,7 @@ export function setTheme(theme) {
     disableCSSRulesBySelector('.hljs');
   }
 }
+
+export function getThemes() {
+  return ["light", "dark", "terminal"];
+}
