@@ -20,6 +20,7 @@ const Documentation = ({ country }) => {
     { name: "TTS voice", description: "Reading with an option to select from the system's local TTS voice library, use command \`:speak on\` to enable." },
     { name: "Themes", description: "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode." },
     { name: "Function calls", description: "GPT will choise function to use to get information he need. Such as weather and time queries. Functions can be called by user directlly from the input as well. To list all available functions use `:function ls`. Also refer: Functions" },
+    { name: "WolframAlpha", description: "As one of the function calling function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided." },
     { name: "Page redirection", description: "As one of the `functions calls`, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously." },
     { name: "Location-based query", description: "Questioning based on user's geographic location information. e.g., answering \"How's the weather today?\" by automatically obtaining the location. To use location feature, use command \`:location on\`." },
     { name: "Code highlighting", description: "Code highting for different themes, support all programming languages." },
@@ -31,14 +32,14 @@ const Documentation = ({ country }) => {
   const functions = getFunctions();
 
   const shortcuts = [
-    { action: "Clear the input.", shortcut: "ESC", condition: "Focused on the input area, input area has content." },
-    { action: "Unfocus from the input box.", shortcut: "ESC", condition: "Focused on the input area, input area is cleared." },
-    { action: "Repeat last input.", shortcut: "Tab", condition: "Focused on the input area, input area is cleared." },
-    { action: "Auto complete.", shortcut: "Tab", condition: "Focused on the input area, input area is starts with `:role use`, `:store use`, `:node use`." },
-    { action: "Navigate to the previous session history(log).", shortcut: "← or K", condition: "Unfocused from the input area， or input box is empty when using `←`." },
-    { action: "Navigate to the next session history(log).", shortcut: "→ or J", condition: "Unfocused from the input area, or input box is empty when using `→`" },
-    { action: "Input the previous command.", shortcut: "↑", condition: "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history." },
-    { action: "Input the next command.", shortcut: "↓", condition: "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history." },
+    { action: "Clear the input.", shortcut: "ESC", condition: "Focused on the input area. Input area not empty." },
+    { action: "Unfocus from the input box.", shortcut: "ESC", condition: "Focused on the input area. Input area is empty/cleared." },
+    { action: "Repeat last input.", shortcut: "Tab", condition: "Focused on the input area. Input area is empty/cleared." },
+    { action: "Command autocomplete.", shortcut: "Tab", condition: "Focused on the input area. Input commands `:role use`, `:store use`, `:node use`, `:theme` and type the starts characters of the value." },
+    { action: "Previous log (same session).", shortcut: "← or K", condition: "Unfocused from the input area or input box is empty when using `←`." },
+    { action: "Next log (same session).", shortcut: "→ or J", condition: "Unfocused from the input area or input box is empty when using `→`" },
+    { action: "Previous command.", shortcut: "↑", condition: "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history." },
+    { action: "Next command.", shortcut: "↓", condition: "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history." },
     { action: "Change focus to input area.", shortcut: "Tab or /", condition: "Unfocused from the input area." },
   ];
 
@@ -197,7 +198,7 @@ const Documentation = ({ country }) => {
           <tbody>
             {shortcuts.map((item, index) => (
               <tr key={index}>
-                <td>{item.shortcut}</td>
+                <td className="text-center">{item.shortcut}</td>
                 <td>{item.action}</td>
                 <td>{item.condition}</td>
               </tr>

@@ -24,6 +24,8 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
   const comparison = [
     { name: "GPT-4 Turbo", user: getRoleFequencyLimits(`user`), pro_user: getRoleFequencyLimits(`pro_user`), super_user: getRoleFequencyLimits(`super_user`) },
     { name: "GPT-4 Vision (Image Input)", user: "No limit", pro_user: "No limit", super_user: "No limit" },
+    { name: "Function Calling", user: "Yes", pro_user: "Yes", super_user: "Yes" },
+    { name: "WolframAlpha", user: "x", pro_user: "Yes", super_user: "Yes" },
     { name: "File Input", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Role", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Data Store", user: "Yes", pro_user: "Yes +support", super_user: "Yes +support" },

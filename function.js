@@ -1,6 +1,7 @@
 import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import redirectToUrl from "./functions/redirect_to_url.js";
+import askWolframalpha from "functions/ask_wolframalpha.js";
 
 // `tools` is a generated json from OpenAI API
 export function toolsToFunctions(tools) {
@@ -87,6 +88,10 @@ export function executeFunction(functionName, argsString) {
     return getWeather(paramObject);
   }
 
+  if (functionName === "ask_wolframalpha") {
+    return askWolframalpha(paramObject);
+  }
+
   if (functionName === "redirect_to_url") {
     return redirectToUrl(paramObject);
   }
@@ -124,6 +129,22 @@ export function getFunctions() {
         }
       },
       required: ["location"],
+    }
+  });
+
+  // Ask Wolfram Alpha
+  functions.push({
+    name: 'ask_wolframalpha',
+    description: 'Ask Wolfram Alpha a question. Wolfram Alpha is a computational knowledge engine. It can answer questions like "What is the weather in San Francisco?" or "What is the population of China?".',
+    parameters: {
+      type: "object",
+      properties: {
+        query: {
+          type: "string",
+          description: "The question to ask.",
+        }
+      },
+      required: ["query"],
     }
   });
 

@@ -18,4 +18,4 @@ read.py
 -------
 
 Input `content.txt`, output `content.txt`, and mp3 files.  
-There is an auto indexing for sentences and mp3 file names.  
+There is an auto indexing for sentences and for the mp3 file.  
