@@ -37,8 +37,5 @@ yarn-error.log*
 # roleplay
 role.csv
 
-# .script
-/.script/
-
 # sqlite
 *.sqlite
