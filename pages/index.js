@@ -649,10 +649,15 @@ export default function Home() {
     sessionStorage.setItem("time", Date.now());  // reset time
     sessionStorage.setItem("historyIndex", -1);   // reset history index
 
-    // Clear output and preview images
-    clearOutput();
-    clearPreviewImages();
-    clearPreviewVideos();
+    if (global.rawInput === "") return;
+    if (global.rawInput.startsWith(":fullscreen") || global.rawInput.startsWith(":theme")) {
+      // Don't clean output and input
+    } else {
+      // Clear output and preview images
+      clearOutput();
+      clearPreviewImages();
+      clearPreviewVideos();
+    }
 
     // Clear info, stats, evaluation
     const resetInfo = () => {
@@ -776,9 +781,13 @@ export default function Home() {
           });
         }
 
-        // Print the output
-        printOutput(commandResult.trim());
-        resetInfo();
+        if (global.rawInput.startsWith(":fullscree") || global.rawInput.startsWith(":theme")) {
+          // Do't print and clean info
+        } else {
+          // Print the output
+          printOutput(commandResult.trim());
+          resetInfo();
+        }
       } else {
         console.log("Not command output.")
       }

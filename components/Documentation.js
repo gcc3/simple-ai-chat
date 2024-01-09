@@ -5,13 +5,13 @@ import YouTube from 'react-youtube';
 
 const Documentation = ({ country }) => {
   const features = [
-    { id: "features-gpt4turbo", name: "GPT-4 Turbo", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
+    { id: "features-gpt4turbo", name: "Text Generation (GPT-4 Turbo)", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
     { id: "features-gpt4vision-imageinput", name: "Image Input (GPT-4 Vision)", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling." },
     { id: "features-fileinput", name: "File Input", description: "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference." },
     { id: "features-roles", name: "Roles", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
     { id: "features-stores", name: "Data Stores", description: "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously." },
     { id: "features-nodes", name: "Nodes (Node AI)", description: "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI." },
-    { id: "features-midjourney", name: "Midjourney", description: "Midjourney is the first system node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images." },
+    { id: "features-midjourney", name: "Image Generation (Midjourney)", description: "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:node use \"Midjourney\"`." },
   ];
 
   const sub_features = [
@@ -20,7 +20,7 @@ const Documentation = ({ country }) => {
     { name: "TTS voice", description: "Reading with an option to select from the system's local TTS voice library, use command \`:speak on\` to enable." },
     { name: "Themes", description: "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode." },
     { name: "Function calls", description: "GPT will choise function to use to get information he need. Such as weather and time queries. Functions can be called by user directlly from the input as well. To list all available functions use `:function ls`. Also refer: Functions" },
-    { name: "WolframAlpha", description: "As one of the function calling function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided." },
+    { name: "Enhanced Mathematics and Knowledge (WolframAlpha)", description: "As one of the function calling function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided." },
     { name: "Page redirection", description: "As one of the `functions calls`, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously." },
     { name: "Location-based query", description: "Questioning based on user's geographic location information. e.g., answering \"How's the weather today?\" by automatically obtaining the location. To use location feature, use command \`:location on\`." },
     { name: "Code highlighting", description: "Code highting for different themes, support all programming languages." },
