@@ -11,7 +11,7 @@ const Documentation = ({ country }) => {
     { id: "features-roles", name: "Roles", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
     { id: "features-stores", name: "Data Stores", description: "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously." },
     { id: "features-nodes", name: "Nodes (Node AI)", description: "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI." },
-    { id: "features-midjourney", name: "Image Generation (Midjourney)", description: "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images." },
+    { id: "features-midjourney", name: "Image Generation (Midjourney)", description: "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:node use "Midjourney"`." },
   ];
 
   const sub_features = [
