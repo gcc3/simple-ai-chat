@@ -31,14 +31,14 @@ const Documentation = ({ country }) => {
   const functions = getFunctions();
 
   const shortcuts = [
-    { action: "Clear the input.", shortcut: "ESC", condition: "Focused on the input area, input area has content." },
-    { action: "Unfocus from the input box.", shortcut: "ESC", condition: "Focused on the input area, input area is cleared." },
-    { action: "Repeat last input.", shortcut: "Tab", condition: "Focused on the input area, input area is cleared." },
-    { action: "Auto complete.", shortcut: "Tab", condition: "Focused on the input area, input area is starts with `:role use`, `:store use`, `:node use`." },
-    { action: "Navigate to the previous session history(log).", shortcut: "← or K", condition: "Unfocused from the input area， or input box is empty when using `←`." },
-    { action: "Navigate to the next session history(log).", shortcut: "→ or J", condition: "Unfocused from the input area, or input box is empty when using `→`" },
-    { action: "Input the previous command.", shortcut: "↑", condition: "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history." },
-    { action: "Input the next command.", shortcut: "↓", condition: "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history." },
+    { action: "Clear the input.", shortcut: "ESC", condition: "Focused on the input area. Input area not empty." },
+    { action: "Unfocus from the input box.", shortcut: "ESC", condition: "Focused on the input area. Input area is empty/cleared." },
+    { action: "Repeat last input.", shortcut: "Tab", condition: "Focused on the input area. Input area is empty/cleared." },
+    { action: "Command autocomplete.", shortcut: "Tab", condition: "Focused on the input area. Input commands `:role use`, `:store use`, `:node use`, `:theme` and type the starts characters of the value." },
+    { action: "Previous log (same session).", shortcut: "← or K", condition: "Unfocused from the input area or input box is empty when using `←`." },
+    { action: "Next log (same session).", shortcut: "→ or J", condition: "Unfocused from the input area or input box is empty when using `→`" },
+    { action: "Previous command.", shortcut: "↑", condition: "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history." },
+    { action: "Next command.", shortcut: "↓", condition: "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history." },
     { action: "Change focus to input area.", shortcut: "Tab or /", condition: "Unfocused from the input area." },
   ];
 
@@ -197,7 +197,7 @@ const Documentation = ({ country }) => {
           <tbody>
             {shortcuts.map((item, index) => (
               <tr key={index}>
-                <td>{item.shortcut}</td>
+                <td className="text-center">{item.shortcut}</td>
                 <td>{item.action}</td>
                 <td>{item.condition}</td>
               </tr>
