@@ -5,7 +5,7 @@ import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
 import command, { getHistoryCommand, getHistoryCommandIndex, pushCommandHistory } from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
-import { setTheme } from "utils/themeUtils.js";
+import { setTheme, getThemes } from "utils/themeUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
@@ -1383,6 +1383,18 @@ export default function Home() {
                 setInput(":node use \"" + node.name + "\"");
                 reAdjustInputHeight();
               }
+            }
+          }
+        }
+
+        // Auto complete themes
+        if (elInput.value.startsWith(":theme ")) {
+          const nameToBeComleted = elInput.value.replace(":theme ", "");
+          if (nameToBeComleted) {
+            const theme = getThemes().find((n) => n.startsWith(nameToBeComleted));
+            if (theme) {
+              setInput(":theme " + theme);
+              reAdjustInputHeight();
             }
           }
         }
