@@ -82,7 +82,7 @@ export default async function(req, res) {
   + "model: " + model + "\n"
   + "temperature: " + temperature + "\n"
   + "top_p: " + top_p + "\n"
-  + "role_content_system (chat): " + role_content_system + "\n"
+  + "role_content_system (chat): " + role_content_system.replaceAll("\n", " ") + "\n"
   + "max_tokens: " + max_tokens + "\n"
   + "use_vision: " + use_vision + "\n"
   + "use_eval: " + use_eval + "\n"
