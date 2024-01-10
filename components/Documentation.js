@@ -12,7 +12,7 @@ const Documentation = ({ country }) => {
     { id: "features-roles", name: "Roles", description: "Allow GPT to act in a role to provide more satisfactory answers, or provide your own instruction prompts to fit your needs." },
     { id: "features-stores", name: "Data Stores", description: "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously." },
     { id: "features-nodes", name: "Nodes (Node AI)", description: "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI." },
-    { id: "feature-mathematics-wolframalpha", name: "Enhanced Mathematics (WolframAlpha)", description: "As one of the function calling function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided." },
+    { id: "feature-mathematics-wolframalpha", name: "Enhanced Knowledge & Mathematics (WolframAlpha)", description: "As one of the function calling function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided." },
   ];
 
   const sub_features = [
@@ -63,7 +63,7 @@ const Documentation = ({ country }) => {
             <div><a href="#features-roles">- <u>Roles</u></a></div>
             <div><a href="#features-stores">- <u>Data Stores</u></a></div>
             <div><a href="#features-nodes">- <u>Nodes (Node AI)</u></a></div>
-            <div><a href="#feature-mathematics-wolframalpha">- <u>Enhanced Mathematics (WolframAlpha)</u></a></div>
+            <div><a href="#feature-mathematics-wolframalpha">- <u>Enhanced Knowledge & Mathematics (WolframAlpha)</u></a></div>
             <div><a href="#features-more">- <u>More...</u></a></div>
           </div>
         </div>

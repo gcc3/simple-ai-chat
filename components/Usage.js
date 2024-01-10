@@ -221,7 +221,7 @@ function Usage() {
             </div>
           </div>}
           {getRoleLevel(user.role) >= 2 && <div className="mt-3">
-            <div>- Database usage</div>
+            <div>- File storage usage</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
@@ -235,7 +235,10 @@ function Usage() {
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
-                  <td className="mr-3 mt-1">Midjourney: 0</td>
+                  <td className="mr-3 mt-1">Midjourney Images: 0</td>
+                </tr>
+                <tr>
+                  <td className="mr-3 mt-1">WolframAlpha API: 0</td>
                 </tr>
               </tbody>
             </table>
