@@ -1,5 +1,5 @@
 import { decode } from "utils/authUtils"
-import { getUser, updateUserLastLogin, updateUserEmailVerifiedAt, updateUserIPAndLastLogin } from "utils/sqliteUtils"
+import { getUser, updateUserEmailVerifiedAt, updateUserStatus, updateUserIPAndLastLogin } from "utils/sqliteUtils"
 import { createToken } from "utils/authUtils"
 import { getUserByEmail } from "utils/sqliteUtils"
 
@@ -57,7 +57,6 @@ export default async function (req, res) {
 
     // Update user status
     await updateUserStatus(user.username, 'active');
-    await updateUserLastLogin(user.username, "T=" + (new Date()) + " IP=" + ip + " BSR=" + browser);
 
     // Update user last login
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
