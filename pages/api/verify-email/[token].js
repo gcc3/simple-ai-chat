@@ -1,5 +1,5 @@
 import { decode } from "utils/authUtils"
-import { getUser, updateUserLastLogin, updateUserEmailVerifiedAt } from "utils/sqliteUtils"
+import { getUser, updateUserLastLogin, updateUserEmailVerifiedAt, updateUserIPAndLastLogin } from "utils/sqliteUtils"
 import { createToken } from "utils/authUtils"
 import { getUserByEmail } from "utils/sqliteUtils"
 
@@ -35,11 +35,6 @@ export default async function (req, res) {
 
     // Update email verified at
     await updateUserEmailVerifiedAt(data.username);
-    
-    // Update user last login
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const browser = req.headers['user-agent'];
-    await updateUserLastLogin(user.username, "T=" + (new Date()) + " IP=" + ip + " BSR=" + browser);
 
     // Redirect and login
     // Refresh user auth token
@@ -54,8 +49,22 @@ export default async function (req, res) {
     // A login token
     const loginToken = createToken(payload);
     if (!loginToken) {
-      return res.status(500).json({ error: 'Failed to create token.' });
+      return res.status(500).json({
+        success: false,
+        error: 'Failed to create token.'
+      });
     }
+
+    // Update user status
+    await updateUserStatus(user.username, 'active');
+    await updateUserLastLogin(user.username, "T=" + (new Date()) + " IP=" + ip + " BSR=" + browser);
+
+    // Update user last login
+    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+    const browser = req.headers['user-agent'];
+
+    // for blocking one user registering multiple accounts
+    await updateUserIPAndLastLogin(user.username, ip, "T=" + (new Date()) + " IP=" + ip + " BSR=" + browser);
 
     // Set the token as a cookie
     const sameSiteCookie = process.env.SAME_SITE_COOKIE;
