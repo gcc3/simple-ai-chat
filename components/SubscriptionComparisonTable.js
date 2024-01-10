@@ -29,7 +29,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
     { name: "Roles", user: "Yes", pro_user: "Yes", super_user: "Yes" },
     { name: "Data Stores", user: "Yes", pro_user: "Yes +support", super_user: "Yes +support" },
     { name: "Nodes (Node AI)", user: "Yes", pro_user: "Yes", super_user: "Yes +support" },
-    { name: "Enhanced Mathematics (WolframAlpha)", user: "Yes(trial)", pro_user: "Yes", super_user: "Yes" },
+    { name: "Enhanced Knowledge & Mathematics (WolframAlpha)", user: "Yes(trial)", pro_user: "Yes", super_user: "Yes" },
     { name: "Pricing", user: getPriceString(subscriptions, "user"), pro_user: getPriceString(subscriptions, "pro_user"), super_user: getPriceString(subscriptions, "super_user")},
   ];
 
