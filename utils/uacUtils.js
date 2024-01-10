@@ -13,7 +13,7 @@ export async function getUacResult(user, ip) {
     if (chatCount >= 7) {
       return {
         success: false,
-        error: "You haven't registered as a user yet, please register with command \`:user add [username] [email] [password?]\` to continue. Example: `:user add myusername myemail@mail.com ********`. Or if you're already a user, login with command \`:user login [username] [password]\`."
+        error: "You haven't registered as a user yet, please register with command \`:user add [username] [email] [password?]\` to continue. Example: `:user add myusername myemail@mail.com`. Or if you're already a user, login with command \`:user login [username] [password]\`."
       };
     }
   }
