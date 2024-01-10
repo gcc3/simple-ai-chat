@@ -18,8 +18,17 @@ export default async function (req, res) {
 
     // Get user
     const user = await getUser(data.username);
+    if (!user) {
+      return res.status(400).send("User not exists.");
+    }
+
     if (user.email !== data.email) {
-      return res.status(400).send("Verification failed.");
+      return res.status(400).send("User has a different email.");
+    }
+
+    const sameEmailUser = await getUserByEmail(data.email);
+    if (sameEmailUser && sameEmailUser.username !== data.username) {
+      return res.status(400).send("Email already used by another user.");
     }
 
     // Update email verified at
