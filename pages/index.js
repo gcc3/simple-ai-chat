@@ -303,7 +303,11 @@ export default function Home() {
       localStorage.setItem('fullscreen', mode);
       dispatch(toggleFullscreen(mode));
       if (enter === "enter" && mode === "split") {
-        dispatch(toggleEnterChange("⌃enter"));  // For fullscreen split mode, use ⌃enter to submit
+        // fullscreen split mode  use ⌃enter
+        dispatch(toggleEnterChange("⌃enter"));
+      } else {
+        // fullscreen default mode use enter
+        dispatch(toggleEnterChange("enter"));
       }
       // User logged in
       if (localStorage.getItem("user")) {
