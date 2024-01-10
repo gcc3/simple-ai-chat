@@ -66,17 +66,6 @@ export default async function entry(args) {
       return "Email is invalid.";
     }
 
-    // Check the password length.
-    if (password.length === 0) {
-      return "Password empty.";
-    } else if (password.length < 8) {
-      return "Password must be at least 8 characters long.";
-    } else if (password.length > 64) {
-      return "Password must be less than 64 characters long.";
-    } else if (password.replaceAll("*", "").length === 0) {
-      return "Password cannot only contain asterisks.";
-    }
-
     try {
       const response = await fetch("/api/user/add", {
         method: "POST",
