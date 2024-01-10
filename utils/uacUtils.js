@@ -13,7 +13,7 @@ export async function getUacResult(user, ip) {
     if (chatCount >= 5) {
       return {
         success: false,
-        error: "Please login with command `:login [username] [password]`, if you haven't registered as a user yet, please register with command \`:user add [username] [email] [password?]\`. Example: `:user add myusername myemail@simple-ai.io ********`"
+        error: "Please login with command `:login [username] [password]`, if you haven't registered as a user yet, please register with command \`:user add [username] [email] [password?]\`. Example: `:user add myusername myemail@mail.com ********`"
       };
     }
   }
