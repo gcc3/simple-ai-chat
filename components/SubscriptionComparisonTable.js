@@ -22,15 +22,14 @@ function getRoleFequencyLimits(role) {
 
 const SubscriptionComparisonTable = ({ subscriptions }) => {
   const comparison = [
-    { name: "GPT-4 Turbo", user: getRoleFequencyLimits(`user`), pro_user: getRoleFequencyLimits(`pro_user`), super_user: getRoleFequencyLimits(`super_user`) },
-    { name: "GPT-4 Vision (Image Input)", user: "No limit", pro_user: "No limit", super_user: "No limit" },
-    { name: "Function Calling", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "WolframAlpha", user: "x", pro_user: "Yes", super_user: "Yes" },
+    { name: "Text Generation (GPT-4 Turbo)", user: getRoleFequencyLimits(`user`), pro_user: getRoleFequencyLimits(`pro_user`), super_user: getRoleFequencyLimits(`super_user`) },
+    { name: "Image Generation (Midjourney)", user: "1/day(trial)", pro_user: "20/day", super_user: "50/day +fast" },
+    { name: "Image Input (GPT-4 Vision)", user: "No limit", pro_user: "No limit", super_user: "No limit" },
     { name: "File Input", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "Role", user: "Yes", pro_user: "Yes", super_user: "Yes" },
-    { name: "Data Store", user: "Yes", pro_user: "Yes +support", super_user: "Yes +support" },
-    { name: "Node (Node AI)", user: "Yes", pro_user: "Yes", super_user: "Yes +support" },
-    { name: "Midjourney", user: "1/day(trial)", pro_user: "20/day", super_user: "50/day +fast" },
+    { name: "Roles", user: "Yes", pro_user: "Yes", super_user: "Yes" },
+    { name: "Data Stores", user: "Yes", pro_user: "Yes +support", super_user: "Yes +support" },
+    { name: "Nodes (Node AI)", user: "Yes", pro_user: "Yes", super_user: "Yes +support" },
+    { name: "Enhanced Knowledge & Mathematics (WolframAlpha)", user: "Yes(trial)", pro_user: "Yes", super_user: "Yes" },
     { name: "Pricing", user: getPriceString(subscriptions, "user"), pro_user: getPriceString(subscriptions, "pro_user"), super_user: getPriceString(subscriptions, "super_user")},
   ];
 

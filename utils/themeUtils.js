@@ -1,4 +1,4 @@
-import { enableCSSRulesBySelector, disableCSSRulesBySelector, setHighlightjsTheme } from './cssUtils.js';
+import { enableCSSRulesBySelector, disableCSSRulesBySelector, setHighlightjsTheme, unsetHighlightjsTheme } from './cssUtils.js';
 
 export function setTheme(theme) {
   if (theme == "light") {
@@ -109,6 +109,7 @@ export function setTheme(theme) {
   }
   
   if (theme == "terminal") {
+    unsetHighlightjsTheme();
     disableCSSRulesBySelector('.hljs');
   }
 }
