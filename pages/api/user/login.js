@@ -1,4 +1,4 @@
-import { getUser, updateUserIPAndLastLogin, updateUserLastLogin, updateUserStatus } from "utils/sqliteUtils.js";
+import { getUser, updateUserIPAndLastLogin, updateUserStatus } from "utils/sqliteUtils.js";
 import { createToken } from "utils/authUtils.js";
 
 export default async (req, res) => {
@@ -52,7 +52,6 @@ export default async (req, res) => {
 
   // Update user status
   await updateUserStatus(user.username, 'active');
-  await updateUserLastLogin(user.username, "T=" + (new Date()) + " IP=" + ip + " BSR=" + browser);
 
   // Update user last login
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
