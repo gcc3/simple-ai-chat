@@ -58,3 +58,13 @@ export function setHighlightjsTheme(themeUrl) {
     document.head.appendChild(themeLink);
   }
 }
+
+export function unsetHighlightjsTheme() {
+  // Check if the link element for the theme exists
+  let themeLink = document.getElementById("highlightjs-theme");
+
+  if (themeLink) {
+    // If it exists, remove it
+    themeLink.remove();
+  }
+}
