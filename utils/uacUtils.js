@@ -10,10 +10,10 @@ export async function getUacResult(user, ip) {
   if (!isLogin) {
     // Not a user, urge register a user
     const chatCount = await countChatsForIP(ip, Date.now() - 86400000 * 3, Date.now());
-    if (chatCount >= 5) {
+    if (chatCount >= 7) {
       return {
         success: false,
-        error: "Please login with command `:login [username] [password]`, if you haven't registered as a user yet, please register with command \`:user add [username] [email] [password?]\`. Example: `:user add myusername myemail@mail.com ********`"
+        error: "You haven't registered as a user yet, please register with command \`:user add [username] [email] [password?]\` to continue. Example: `:user add myusername myemail@mail.com ********`. Or if you're already a user, login with command \`:user login [username] [password]\`."
       };
     }
   }
