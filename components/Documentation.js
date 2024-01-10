@@ -12,7 +12,7 @@ const Documentation = ({ country }) => {
     { id: "features-roles", name: "Roles", description: "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements." },
     { id: "features-stores", name: "Data Stores", description: "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously." },
     { id: "features-nodes", name: "Nodes (Node AI)", description: "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI." },
-    { id: "feature-mathematics-wolframalpha", name: "Enhanced Knowledge & Mathematics (WolframAlpha)", description: "As one of the function calling function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided." },
+    { id: "feature-mathematics-wolframalpha", name: "Enhanced Knowledge & Mathematics (WolframAlpha)", description: "As one of the AI callable function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided." },
   ];
 
   const sub_features = [
