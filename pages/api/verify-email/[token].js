@@ -9,6 +9,7 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
+  // The verification token
   const { token } = req.query;
 
   try {
@@ -57,9 +58,12 @@ export default async function (req, res) {
       }
     }
 
+    // A login token
+    const loginToken = createToken(user);
+
     // Set the token as a cookie
     const sameSiteCookie = process.env.SAME_SITE_COOKIE;
-    res.setHeader('Set-Cookie', `auth=${token}; HttpOnly; Path=/; Max-Age=86400; ${sameSiteCookie}`);
+    res.setHeader('Set-Cookie', `auth=${loginToken}; HttpOnly; Path=/; Max-Age=86400; ${sameSiteCookie}`);
 
     // Redirect to the home page
     res.redirect(301, "/");
