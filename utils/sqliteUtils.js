@@ -730,28 +730,6 @@ const updateUserIPAddr = async (username, ip) => {
   }
 };
 
-const updateUserLastLogin = async (username, lastLogin) => {
-  const db = await getDatabaseConnection();
-  try {
-    return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET last_login = ? WHERE username = ?");
-      stmt.run([lastLogin, username], function (err) {
-        if (err) {
-          reject(err);
-        }
-        if (this.changes > 0) {
-          resolve(true);
-        } else {
-          resolve(false);
-        }
-      });
-      stmt.finalize();
-    });
-  } finally {
-    db.close();
-  }
-};
-
 const updateUserIPAndLastLogin = async (username, ip, lastLogin) => {
   const db = await getDatabaseConnection();
   try {
@@ -1416,7 +1394,6 @@ export {
   updateUserRole,
   extendUserRole,
   updateUserIPAddr,
-  updateUserLastLogin,
   updateUserIPAndLastLogin,
   updateUserSettings,
   updateUserStatus,

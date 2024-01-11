@@ -34,18 +34,24 @@ export const createToken = (payload) => {
   }
 }
 
-// Also use JWK to generate token for id, username, email, role
-// Function to generate a token
-export function encode(username, email) {
+// Also can use JWK to generate token for username, email
+// Generate a token
+export function encode(username, email, expiresIn = null) {
   // Create a payload with the id and username
   const payload = {
     username: username,
     email: email,
   };
 
+  // No expiration
+  if (!expiresIn) {
+    const token = jwt.sign(payload, process.env.JWT_SECRET);
+    return token;
+  }
+
   // Sign the token with the secret key
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: '1h', // Token expires in 1 hour
+    expiresIn,  // by default 1h
   });
 
   return token;

@@ -279,7 +279,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
   // 2. Data store search result
   let store_prompt = "";
-  if (store) {
+  if (store && user) {
     updateStatus && updateStatus("Data store searching...");
     console.log("--- data store search ---");
     console.log("store: " + store);
@@ -332,7 +332,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
   // 3. Node AI result
   let node_prompt = "";
-  if (use_node_ai && node) {
+  if (use_node_ai && node && user) {
     updateStatus && updateStatus("Node AI generating...");
     console.log("--- node ai ---");
     console.log("node: " + node);

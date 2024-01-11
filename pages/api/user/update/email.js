@@ -57,7 +57,7 @@ export default async function (req, res) {
     });
   }
 
-  // Generate a jwt token contains id, username, role, and email
+  // Generate a jwt token contains username, email
   const token = encode(username, email);
 
   // Email is valid, verify the email.

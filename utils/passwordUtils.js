@@ -64,3 +64,26 @@ export function isCommandMusked(command) {
   }
   return false;
 }
+
+export function passwordCheck(password) {
+  if (password.length < 8) {
+    return {
+      success: false,
+      error: "Password must be at least 8 characters long."
+    }
+  } else if (password.length > 64) {
+    return {
+      success: false,
+      error: "Password must be less than 64 characters long."
+    }
+  } else if (password.replaceAll("*", "").length === 0) {
+    return {
+      success: false,
+      error: "Password cannot only contain asterisks."
+    }
+  }
+  
+  return {
+    success: true,
+  };
+}

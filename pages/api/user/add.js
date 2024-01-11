@@ -3,6 +3,7 @@ import { insertUser, getUser, getUserByEmail, updateUsername, countUserByIP } fr
 import { generatePassword } from "utils/userUtils.js";
 import AWS from "aws-sdk";
 import { encode } from "utils/authUtils";
+import { passwordCheck } from "utils/passwordUtils"
 const moment = require("moment");
 
 export default async function (req, res) {
@@ -11,10 +12,20 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
-  let generatedPassword = "";
   const { username, email, password, settings } = req.body;
+
+  let generatedPassword = "";
   if (!password) {
     generatedPassword = generatePassword();
+  } else {
+    // Check password
+    const passwordCheckResult = passwordCheck(password);
+    if (!passwordCheckResult.success) {
+      return res.status(400).json({
+        success: false,
+        error: passwordCheckResult.error,
+      });
+    }
   }
 
   // Check user existance
@@ -93,7 +104,7 @@ export default async function (req, res) {
     const to = email;
     const subject = "Welcome to simple-ai.io";
     const body =
-      "Your account has been created successfully." +
+      "Your account, username is \"" + username + "\", has been created successfully." +
       (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") +
       "<br><br>" +
       `Please click the following link to verify your email: <a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>`;
