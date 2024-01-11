@@ -24,6 +24,7 @@ const Documentation = ({ country }) => {
     { name: "Page redirection", description: "As one of the `functions calls`, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously." },
     { name: "Location-based query", description: "Questioning based on user's geographic location information. e.g., answering \"How's the weather today?\" by automatically obtaining the location. To use location feature, use command \`:location on\`." },
     { name: "Code highlighting", description: "Code highting for different themes, support all programming languages." },
+    { name: "Mathematical Equation", description: "Supports the display of mathematical equations in LaTeX format in the results." },
     { name: "Shortcuts", description: "Supports convenient shortcut operations. Refer: `Shortcuts`" },
   ];
 
