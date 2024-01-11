@@ -25,7 +25,7 @@ export default async function askWolframalpha(paramObject) {
   let result = "";
   const data = await parseStringPromise.parseStringPromise(responseText);  // XML to object
   if (!data.queryresult || !data.queryresult.pod || data.queryresult.pod.length === 0) {
-    result = "No response.";
+    result = "Not found any knowledge from the WolframAlpha.";
   } else {
     let plaintext = "";
     data.queryresult.pod.map((pod) => {

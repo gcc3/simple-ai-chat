@@ -1,3 +1,5 @@
+import katex from 'katex';
+
 // To test: Repeat me *text* **text** `text` ```text``` **test`test`** *test`test`*
 export function markdownFormatter(elOutput) {
   if (!elOutput) return;
@@ -51,6 +53,25 @@ export function markdownFormatter(elOutput) {
       // Remove the ### at first
       if (line.startsWith('### ')) {
         line = line.slice(4);
+      }
+
+      // Math equation (LaTeX) support
+      // Equation block, e.g. \[  \]
+      if (line.trim().startsWith("\\[") && line.trim().endsWith("\\]")) {
+        line = line.trim().slice(2, -2);
+        line = katex.renderToString(line.trim(), { throwOnError: false });
+      }
+      // Sometimes the equation block is not at the beginning of the line
+      if (line.includes("\\[") && line.includes("\\]")) {
+        line = line.replace(/\\\[(.*?)\\\]/g, function(match, p1) {
+          return katex.renderToString(p1.trim(), { throwOnError: false });
+        });
+      }
+      // Inline equation, e.g. /(  /)
+      if (line.includes("\\(") && line.includes("\\)")) {
+        line = line.replace(/\\\((.*?)\\\)/g, function(match, p1) {
+          return katex.renderToString(p1.trim(), { throwOnError: false });
+        });
       }
 
       // Restore text from placeholders
