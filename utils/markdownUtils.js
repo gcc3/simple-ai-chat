@@ -1,3 +1,5 @@
+import katex from 'katex';
+
 // To test: Repeat me *text* **text** `text` ```text``` **test`test`** *test`test`*
 export function markdownFormatter(elOutput) {
   if (!elOutput) return;
@@ -51,6 +53,12 @@ export function markdownFormatter(elOutput) {
       // Remove the ### at first
       if (line.startsWith('### ')) {
         line = line.slice(4);
+      }
+
+      // Math equation (LaTeX) support
+      if (line.trim().startsWith("\\[") && line.trim().endsWith("\\]")) {
+        line = line.trim().slice(2, -2);
+        line = katex.renderToString(line.trim(), { throwOnError: false });
       }
 
       // Restore text from placeholders

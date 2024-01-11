@@ -22,6 +22,7 @@ import { generateFileURl } from "utils/awsUtils";
 import { initializeSession } from "utils/sessionUtils";
 import Image from 'next/image';
 import { getQueryParameterValue } from "utils/urlUtils";
+import 'katex/dist/katex.min.css';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
