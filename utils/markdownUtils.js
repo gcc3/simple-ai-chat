@@ -61,6 +61,12 @@ export function markdownFormatter(elOutput) {
         line = line.trim().slice(2, -2);
         line = katex.renderToString(line.trim(), { throwOnError: false });
       }
+      // Sometimes the equation block is not at the beginning of the line
+      if (line.includes("\\[") && line.includes("\\]")) {
+        line = line.replace(/\\\[(.*?)\\\]/g, function(match, p1) {
+          return katex.renderToString(p1.trim(), { throwOnError: false });
+        });
+      }
       // Inline equation, e.g. /(  /)
       if (line.includes("\\(") && line.includes("\\)")) {
         line = line.replace(/\\\((.*?)\\\)/g, function(match, p1) {
