@@ -62,9 +62,11 @@ export function markdownFormatter(elOutput) {
         line = katex.renderToString(line.trim(), { throwOnError: false });
       }
       // Inline equation, e.g. /(  /)
-      line = line.replace(/\$(.*?)\$/g, function(match, p1) {
-        return katex.renderToString(p1.trim(), { throwOnError: false });
-      });
+      if (line.includes("\\(") && line.includes("\\)")) {
+        line = line.replace(/\\\((.*?)\\\)/g, function(match, p1) {
+          return katex.renderToString(p1.trim(), { throwOnError: false });
+        });
+      }
 
       // Restore text from placeholders
       placeholders.forEach(function(placeholder) {
