@@ -275,6 +275,19 @@ export default function Home() {
     history.pushState(null, null, ' ' + window.location.href.split('#')[0]);
   };
 
+  // Load script
+  function loadScript(src, integrity, crossorigin) {
+    return new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = src;
+      script.integrity = integrity;
+      script.crossOrigin = crossorigin;
+      script.onload = () => resolve(script);
+      script.onerror = () => reject(new Error(`Script load error for ${src}`));
+      document.head.appendChild(script);
+    });
+  }
+
   // Initializing
   useEffect(() => { 
     initializeSession();
@@ -637,6 +650,13 @@ export default function Home() {
     // Readjust UI
     reAdjustInputHeight(localStorage.getItem("fullscreen"));
     reAdjustPlaceholder(localStorage.getItem("fullscreen"));
+
+    // Load additional scripts
+    // KaTeX copy module
+    const src = "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js";
+    const integrity = "sha384-ww/583aHhxWkz5DEVn6OKtNiIaLi2iBRNZXfJRiY1Ai7tnJ9UXpEsyvOITVpTl4A";
+    const crossorigin = "anonymous";
+    loadScript(src, integrity, crossorigin);
 
     // Cleanup
     return () => {
