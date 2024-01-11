@@ -21,39 +21,20 @@ export default async function (req, res) {
     // Get user
     const user = await getUser(data.username);
     if (!user) {
-      return res.status(400).send("User not exists.");
+      return res.status(400).send("User not found.");
     }
 
     if (user.email !== data.email) {
-      return res.status(400).send("User has a different email.");
+      return res.status(400).send("Email error.");
     }
 
     const sameEmailUser = await getUserByEmail(data.email);
     if (sameEmailUser && sameEmailUser.username !== data.username) {
-      return res.status(400).send("Email already used by another user.");
+      return res.status(400).send("Email address conflict.");
     }
 
     // Update email verified at
     await updateUserEmailVerifiedAt(data.username);
-
-    // Redirect and login
-    // Refresh user auth token
-    // Create JWT token
-    const payload = { 
-      id: user.id, 
-      username: user.username,
-      role: user.role,
-      email: user.email,
-    };
-
-    // A login token
-    const loginToken = createToken(payload);
-    if (!loginToken) {
-      return res.status(500).json({
-        success: false,
-        error: 'Failed to create token.'
-      });
-    }
 
     // Update user status
     await updateUserStatus(user.username, 'active');
@@ -61,16 +42,9 @@ export default async function (req, res) {
     // Update user last login
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const browser = req.headers['user-agent'];
-
-    // for blocking one user registering multiple accounts
     await updateUserIPAndLastLogin(user.username, ip, "T=" + (new Date()) + " IP=" + ip + " BSR=" + browser);
 
-    // Set the token as a cookie
-    const sameSiteCookie = process.env.SAME_SITE_COOKIE;
-    res.setHeader('Set-Cookie', `auth=${loginToken}; HttpOnly; Path=/; Max-Age=86400; ${sameSiteCookie}`);
-
-    // Redirect to the home page
-    res.redirect(301, "/");
+    return res.status(200).send("Email verified.");
   } catch (error) {
     console.error(error);
     res.status(500).json({
