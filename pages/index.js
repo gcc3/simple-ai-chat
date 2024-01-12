@@ -1672,11 +1672,16 @@ export default function Home() {
             </div>
             {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
             {stats && <div className={styles.stats}>{stats}</div>}
-            <div className={styles.info} onClick={() => {
-              // Copy attach session command to share
-              const attachCommand = ":session attach " + sessionStorage.getItem("session");
-              navigator.clipboard.writeText(attachCommand);
-              console.log("Copied command:\n" + attachCommand);
+            <div className={styles.info} onClick={(event) => {
+              let copyText = "";
+              if (event.ctrlKey) {
+                // Copy attach session command to share
+                copyText = ":session attach " + sessionStorage.getItem("session");
+              } else {
+                copyText = global.rawOutput;
+              }
+              navigator.clipboard.writeText(copyText);
+              console.log("Copied:\n" + copyText);
             }}>{info}</div>
           </div>
         </div>

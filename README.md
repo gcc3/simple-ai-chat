@@ -37,16 +37,13 @@ To execute a function from input, use `!function_name({ "argument": "value" })`
 Example: `!get_time({ "timezone": "UTC" })`  
 !get_weather({ "location": "kyoto" })
 Function call be called simultaneously, add `,` between functions.  
-Example: !get_time({ "timezone": "UTC" }),!get_weather({ "location": "kyoto" })
+Example: !get_time({ "timezone": "UTC" }),!get_weather({ "location": "kyoto" })  
 Below tools are to be supported.  
 2. Code Interpreter  
 3. Knowledge Retrieval  
 4. Supported files
 
-* Function Calling  
-Refer `Function Calling`
-
-* Sessions and ogs  
+* Sessions and logs  
 to continue the previous talk, use `:session attach [session_id]` to attach to a session.  
 Use `:info` to check the current session ID.  
 Use `:log` to show the current conversation(session) history.  
@@ -77,8 +74,8 @@ Use `:speak on` to turn on the speak after generating.
 Use `:speak stop` to stop the speaking.  
 To change language use `:lang use [language code]`  
 
-* AI links (Node AI)   
-Refer AI Links below.  
+* Nodes (Node AI)   
+Refer `Node AI` below.  
 
 * Data Stores  
 User :store to setup a data store  
@@ -110,7 +107,10 @@ When user re-add himself use same email address, user subscription will be resum
 
 * Formatters  
 Support code block display with a markdown formatter.  
-Support URL formatter to add href.  
+
+* Mathematical Equation  
+Support LaTeX format equation display.  
+Support copy the orignal LaTex string from the displayed equation.  
 
 * Multiple Lines Input  
 It's possible to input multiple lines. Use `crtl` or `alt` with `enter` key to break new line.
