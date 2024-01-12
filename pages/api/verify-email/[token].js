@@ -48,8 +48,32 @@ export default async function (req, res) {
       <!DOCTYPE html>
       <html lang="en">
       <head>
-      <meta charset="UTF-8">
-      <meta http-equiv="refresh" content="3;url=/" />
+        <meta charset="UTF-8">
+        <meta http-equiv="refresh" content="3;url=/" />
+        <title>simple ai - chat</title>
+        <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
+        <style>
+          body { 
+            font-size: 16px;
+            font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
+          }
+        </style>
+      </head>
+      <body>
+        Email verified!<br />
+        Redirecting in 3 seconds...
+      </body>
+      </html>
+    `);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      success: false,
+      error: "An error occurred during your request.",
+    });
+  }
+}
+      
       <title>simple ai - chat</title>
       <style>
         body { font-family: Arial, sans-serif; text-align: center; padding-top: 50px; }
