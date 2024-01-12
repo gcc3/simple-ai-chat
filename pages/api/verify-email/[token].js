@@ -73,26 +73,3 @@ export default async function (req, res) {
     });
   }
 }
-      
-      <title>simple ai - chat</title>
-      <style>
-        body { font-family: Arial, sans-serif; text-align: center; padding-top: 50px; }
-        .message { font-size: 1.5em; }
-      </style>
-      </head>
-      <body>
-      <div class="message">
-        <h1>Email Successfully Verified!</h1>
-        <p>Redirecting to the homepage...</p>
-      </div>
-      </body>
-      </html>
-    `);
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({
-      success: false,
-      error: "An error occurred during your request.",
-    });
-  }
-}
