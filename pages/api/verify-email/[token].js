@@ -44,7 +44,26 @@ export default async function (req, res) {
     const browser = req.headers['user-agent'];
     await updateUserIPAndLastLogin(user.username, ip, "T=" + (new Date()) + " IP=" + ip + " BSR=" + browser);
 
-    return res.status(200).send("Email verified.");
+    return res.status(200).send(`
+      <!DOCTYPE html>
+      <html lang="en">
+      <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="refresh" content="3;url=/" />
+      <title>simple ai - chat</title>
+      <style>
+        body { font-family: Arial, sans-serif; text-align: center; padding-top: 50px; }
+        .message { font-size: 1.5em; }
+      </style>
+      </head>
+      <body>
+      <div class="message">
+        <h1>Email Successfully Verified!</h1>
+        <p>Redirecting to the homepage...</p>
+      </div>
+      </body>
+      </html>
+    `);
   } catch (error) {
     console.error(error);
     res.status(500).json({
