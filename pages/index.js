@@ -773,7 +773,10 @@ export default function Home() {
           asciiframe(elOutputRef.current);
         }, 50);
       } else {
-        clearInterval(dunutIntervalId);
+        // Clear donut
+        if (dunutIntervalId && !commandString.startsWith("theme")) {
+          clearInterval(dunutIntervalId);
+        }
       }
 
       // If heavy command, show waiting text
