@@ -258,6 +258,7 @@ function Usage() {
               <div>- Add Balance</div>
               <div className="flex flex-wrap items-center mt-1">
                 <div>Select amount:</div>
+                <button className="ml-2 w-11" onClick={handleSetAmount(1)}>$1</button>
                 <button className="ml-2 w-11" onClick={handleSetAmount(5)}>$5</button>
                 <button className="ml-2 w-11" onClick={handleSetAmount(10)}>$10</button>
                 <button className="ml-2 w-11" onClick={handleSetAmount(20)}>$20</button>
