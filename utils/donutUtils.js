@@ -12,10 +12,10 @@ export function asciiframe(targetElement) {
   let cB = Math.cos(global.B);
   let sB = Math.sin(global.B);
 
-  const width = 65;
+  const width = 62;
   const height = 22;
   const donutHeight = 15; // higher is toller
-  const donutWidth = -5;  // lower is wider
+  const donutWidth = -8;  // lower is wider
   const donutY = 12;     // center of donut
 
   for (let k = 0; k < width * height; k++) {
