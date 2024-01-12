@@ -23,6 +23,7 @@ import { initializeSession } from "utils/sessionUtils";
 import Image from 'next/image';
 import { getQueryParameterValue } from "utils/urlUtils";
 import 'katex/dist/katex.min.css';
+import { asciiframe } from "utils/donutUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -48,6 +49,9 @@ global.outputMutationObserver = null;
 global.rawInput = "";
 global.rawOutput = "";
 global.rawPlaceholder = "";
+
+// Donut interval id
+let dunutIntervalId = null;
 
 export default function Home() { 
   // States
@@ -763,6 +767,15 @@ export default function Home() {
         resetInfo();
       }
 
+      // A donut
+      if (commandString.startsWith("donut")) {
+        dunutIntervalId = setInterval(() => {
+          asciiframe(elOutputRef.current);
+        }, 50);
+      } else {
+        clearInterval(dunutIntervalId);
+      }
+
       // If heavy command, show waiting text
       if (commandString.startsWith("generate")) {
         printOutput(generating);
@@ -824,6 +837,9 @@ export default function Home() {
       reAdjustInputHeight(localStorage.getItem("fullscreen"));
       reAdjustPlaceholder(localStorage.getItem("fullscreen"));
       return;
+    } else {
+      // Clear donut
+      clearInterval(dunutIntervalId);
     }
 
     // Function CLI
