@@ -12,10 +12,19 @@ export function markdownFormatter(elOutput) {
   });
   if (codeBlockOpen) return;
 
+  // Check equation block is closed or not
+  let equationBlockOpen = false;
+  output.split('\n').forEach((line, i) => {
+    if (line.trim().startsWith("\\[")) equationBlockOpen = true;
+    if (line.trim().endsWith("\\]")) equationBlockOpen = false;
+  });
+  if (equationBlockOpen) return;
+
   // Temporarily stop observing
   global.outputMutationObserver.disconnect();
 
   // Format the output
+  let omitLines = [];
   elOutput.innerHTML = ((output) => {
     let result = "";
 
@@ -67,6 +76,18 @@ export function markdownFormatter(elOutput) {
           return katex.renderToString(p1.trim(), { throwOnError: false });
         });
       }
+      // Sometimes the equation block is multple lines
+      if (line.trim().startsWith("\\[") && !line.trim().endsWith("\\]")) {
+        let equation = "";
+        while (i < output.split('\n').length) {
+          i++;
+          omitLines.push(i);
+          const l = output.split('\n')[i];
+          if (l.trim() === "\\]") break;
+          equation += l + '\n';
+        }
+        line = katex.renderToString(equation.trim(), { throwOnError: false });
+      }
       // Inline equation, e.g. /(  /)
       if (line.includes("\\(") && line.includes("\\)")) {
         line = line.replace(/\\\((.*?)\\\)/g, function(match, p1) {
@@ -79,6 +100,11 @@ export function markdownFormatter(elOutput) {
           line = line.replace('\x00', placeholder);
       });
       return line;
+    }).join('<br>');
+
+    // Omit lines
+    result = result.split('<br>').filter((line, i) => {
+      return !omitLines.includes(i);
     }).join('<br>');
 
     // Restore code blocks
