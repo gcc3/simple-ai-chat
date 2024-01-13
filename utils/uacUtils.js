@@ -13,7 +13,7 @@ export async function getUacResult(user, ip) {
     if (chatCount >= 7) {
       return {
         success: false,
-        error: "Apologies for the inconvenience, but currently, unregistered users have a limit of 7 queries per day. If you're not yet registered, we warmly invite you to join us! Simply use the command `:user add [username] [email] [optional password]` to register. For example, `:user add myusername myemail@mail.com`. Alternatively, if you are already a member, please log in using `:user login [username] [password].` We appreciate your understanding and look forward to your participation!"
+        error: "Apologies for the inconvenience, but currently, unregistered users have a limit of 7 queries per day. If you're not yet registered, we warmly invite you to join us! Simply use the command `:user add [username] [email] [password?]` to register. For example, `:user add myusername myemail@mail.com`. Alternatively, if you are already a member, please log in using `:user login [username] [password].` We appreciate your understanding and look forward to your participation!"
       };
     }
   }
