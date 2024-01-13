@@ -155,6 +155,7 @@ export default function Home() {
       iframe.style.height = '100%';
       iframe.style.left = '0';
       iframe.style.top = '0';
+      iframe.style.outline = 'none';
       
       // Extract the YouTube video ID from the URL
       iframe.src = `https://www.youtube.com/embed/${videoId}`; // The URL for the YouTube video embed
