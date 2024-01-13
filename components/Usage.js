@@ -23,6 +23,7 @@ function Usage() {
   const [totalFeeThisMonth, setTotalFeeThisMonth] = useState(0);
   const [plusFeeThisMonth, setPlusFeeThisMonth] = useState(0);  // x% of total fee
   const [amount, setAmount] = useState(0);
+  const [bankingFee, setBankingFee] = useState(0);
 
   const onSuccess = useCallback(async (details) => {
     console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
@@ -98,10 +99,14 @@ function Usage() {
     }
   });
 
-  function handleSetAmount(amount) {
+  function handleSetAmount(newAmount) {
     return () => {
-      setAmount(amount);
-      console.log("Targe amount is set to:", amount);
+      // Banking fee
+      const paypalFee = newAmount > 0 ? npre(0.029 * newAmount + 0.3, 2) : 0;
+
+      setAmount(newAmount + paypalFee);
+      setBankingFee(paypalFee);
+      console.log("Targe amount is set to:", newAmount);
     };
   }
 
@@ -267,7 +272,7 @@ function Usage() {
               </div>
             </div>}
             {amount !== null && amount > 0 && <div className="mt-3">
-              <div>Pay: {"$" + amount}</div>
+              <div>Pay: {"$" + amount} (banking fee ${bankingFee} included)</div>
               <div className="mt-3">Payment methods:</div>
               <div className="mt-1">
                 <table>
