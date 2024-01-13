@@ -146,6 +146,9 @@ input:focus {
   width: 100%;
   height: 100%;
 }
+iframe ::focus {
+  outline: none;
+}
 
 @keyframes fadeIn {
   from {
