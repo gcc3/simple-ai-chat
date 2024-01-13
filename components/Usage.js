@@ -267,7 +267,7 @@ function Usage() {
               </div>
             </div>}
             {amount !== null && amount > 0 && <div className="mt-3">
-              <div>Pay: {amount === 0 ? "Free" : "$" + amount}</div>
+              <div>Pay: {"$" + amount}</div>
               <div className="mt-3">Payment methods:</div>
               <div className="mt-1">
                 <table>

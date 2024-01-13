@@ -5,7 +5,7 @@ const PayPalButton = ({ amount, targetRole = null, onSuccess }) => {
     // Set amount
     if (targetRole) {
       if (targetRole === "pro_user") amount = "5.00";
-      if (targetRole === "super_user") amount = "15.00";
+      if (targetRole === "super_user") amount = "20.00";
     }
 
     let scriptAdded = false;
