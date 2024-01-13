@@ -102,7 +102,7 @@ function Usage() {
   function handleSetAmount(newAmount) {
     return () => {
       // Banking fee
-      const paypalFee = newAmount > 0 ? npre(0.029 * newAmount + 0.3, 2) : 0;
+      const paypalFee = newAmount > 0 ? npre(0.044 * newAmount + 0.3, 2) : 0;
 
       setAmount(newAmount + paypalFee);
       setBankingFee(paypalFee);

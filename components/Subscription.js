@@ -98,7 +98,7 @@ function Subscription() {
       const newAmount = getPrice(subscriptions, role);
 
       // Banking fee
-      const paypalFee = newAmount > 0 ? npre(0.029 * newAmount + 0.3, 2) : 0;
+      const paypalFee = newAmount > 0 ? npre(0.044 * newAmount + 0.3, 2) : 0;
 
       // Set amount
       setAmount(newAmount + paypalFee);
