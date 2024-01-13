@@ -172,7 +172,7 @@ function Subscription() {
                     <tbody>
                       <tr>
                         <td className="p-1">
-                        <PayPalButton targetRole={targetRole} amount={amount} onSuccess={onSuccess} />
+                        <PayPalButton amount={amount} onSuccess={onSuccess} />
                         </td>
                       </tr>
                     </tbody>
