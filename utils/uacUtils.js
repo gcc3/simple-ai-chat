@@ -52,7 +52,7 @@ export async function getUacResult(user, ip) {
     if (usageExceeded) {
       return {
         success: false,
-        error: "Your usage fee has been exceeded. Please add funds to your balance to continue using our services.",
+        error: "We regret to inform you that you have exceeded your usage limit. While Simple AI offers free features, the OpenAI API and associated tokens incur costs. To resume uninterrupted service, please add funds to your balance. If you have any questions, please contact us at `support@simple-ai.io` or join our Discord server at `https://discord.gg/aqAnYwWB`.",
       }
     }
   }
