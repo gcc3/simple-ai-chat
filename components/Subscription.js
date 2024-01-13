@@ -2,12 +2,13 @@ import React, { useEffect, useState, useCallback } from "react";
 import PayPalButton from "./PayPalButton";
 import { refreshUserInfo, getRoleLevel } from "utils/userUtils";
 import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
+import { npre } from "utils/numberUtils";
 const moment = require('moment');
 
 // Get amount
 function getPrice(subscriptions, role) {
   if (subscriptions.hasOwnProperty(role)) {
-    return subscriptions[role].price;
+    return Number(subscriptions[role].price);
   }
 }
 
@@ -20,6 +21,7 @@ function Subscription() {
   const [message, setMessage] = useState(null);
   const [targetRole, setTargetRole] = useState(null);
   const [amount, setAmount] = useState(null);
+  const [bankingFee, setBankingFee] = useState(0);
   const [subscriptions, setSubscriptions] = useState(null);
   const [promotionCode, setPromotionCode] = useState('');
 
@@ -92,8 +94,15 @@ function Subscription() {
       setTargetRole(role);
       console.log("Target role set to:", role);
 
+      // Get price by role
+      const newAmount = getPrice(subscriptions, role);
+
+      // Banking fee
+      const paypalFee = newAmount > 0 ? npre(0.044 * newAmount + 0.3, 2) : 0;
+
       // Set amount
-      setAmount(getPrice(subscriptions, role));
+      setAmount(newAmount + paypalFee);
+      setBankingFee(paypalFee);
     };
   }
 
@@ -160,7 +169,7 @@ function Subscription() {
                || (getRoleLevel(targetRole) < getRoleLevel(user.role) && (user.role_expires_at !== null && user.role_expires_at < new Date())))
                 && <div>
                 <div>{user.role == targetRole ? "Extend 1 month for" : (getRoleLevel(user.role) < getRoleLevel(targetRole) ? "Upgrade" : "Downgrade") + " to"} `{targetRole}`</div>
-                <div>Pay: {amount === 0 ? "Free" : "$" + amount}</div>
+                <div>Pay: {"$" + amount} (banking fee ${bankingFee} included)</div>
                 <div className="mt-3">Payment methods:</div>
                 <div className="mt-1">
                   <table>
@@ -172,7 +181,7 @@ function Subscription() {
                     <tbody>
                       <tr>
                         <td className="p-1">
-                        <PayPalButton targetRole={targetRole} amount={amount} onSuccess={onSuccess} />
+                        <PayPalButton amount={amount} onSuccess={onSuccess} />
                         </td>
                       </tr>
                     </tbody>
