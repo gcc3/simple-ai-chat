@@ -4,6 +4,7 @@ import { generatePassword } from "utils/userUtils.js";
 import AWS from "aws-sdk";
 import { encode } from "utils/authUtils";
 import { passwordCheck } from "utils/passwordUtils"
+import { generateInviteCode } from "utils/invitesUtils";
 const moment = require("moment");
 
 export default async function (req, res) {
@@ -91,6 +92,26 @@ export default async function (req, res) {
   const password_ = password ? password : generatedPassword;
   const loginComamndGuide = " You can login with command: `:login [username] [password]`.";
 
+  // Insert new user
+  if (userResume) {
+    // Resume the deleted user
+    await updateUsername(username, email, password_);
+  } else {
+    await insertUser(username, role, role_expires_at, password_, email, balance, settings);
+  }
+
+  // Get new user
+  const newUser = await getUser(username);
+  if (!newUser) {
+    return res.status(500).json({
+      success: false,
+      error: "Failed to create user.",
+    });
+  }
+
+  // Generate invite code
+  const inviteCode = generateInviteCode(newUser);
+
   // Email validation
   if (process.env.USE_EMAIL == "true") {
     AWS.config.update({
@@ -108,12 +129,21 @@ export default async function (req, res) {
                + "<br>"
                + `Please click the following link to verify your email before using our services. <a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a><br>`
                + "<br>"
+               + "Get Started Now!" + "<br>"
+               + "Explore Simple AI today: https://simple-ai.io" + "<br>"
+               + `Quick Start Guide: https://youtu.be/${process.env.NEXT_PUBLIC_VIDEO_ID}` + "<br>"
+               + "<br>"
                + "Join the Community & Get Support" + "<br>"
                + "1. For support, email us at `support@simple-ai.io`." + "<br>"
                + `2. Join our discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>"
                + "<br>"
-               + "Simple AI Developer";
-      
+               + "Share Simple AI with friends and earn rewards!" + "<br>"
+               + "Any new user who new joined and clicked the invitation link below will grant $1 usage to both you and themselves." + "<br>"
+               + `Invitation Link: https://simple-ai.io/api/invite/complete/${inviteCode}` + "<br>"
+               + "Quick Invite Command: :invite [email] (e.g., `:invite thisisasample@email.com`)" + "<br>"
+               + "<br>"
+               + "Simple AI Developers";
+    
     const emailParams = {
       Source: "Simple AI <" + from + ">",
       Destination: {
@@ -138,10 +168,8 @@ export default async function (req, res) {
       .then((data) => {
         let message = "";
         if (userResume) {
-          updateUsername(username, email, password_);
           message = "Welcome back! we've resumed your subscription status." + passwordGuide;
         } else {
-          insertUser(username, role, role_expires_at, password_, email, balance, settings);
           message = "User \"" + username + "\" is created." + passwordGuide + loginComamndGuide + " Please check your email for verification.";
         }
 
@@ -164,11 +192,9 @@ export default async function (req, res) {
     let message = "";
     let passwordGuide = !password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "";
     if (userResume) {
-      updateUsername(username, email, password_);
       message = "Welcome back! we've resumed your subscription status." + passwordGuide;
     } else {
       // No email provided, send password to console
-      insertUser(username, role, role_expires_at, password_, email, balance, settings);
       message = "User \"" + username + "\" is created." + passwordGuide + loginComamndGuide;
     }
 
