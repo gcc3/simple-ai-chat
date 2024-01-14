@@ -725,6 +725,24 @@ const getUserByEmail = async (email) => {
   }
 };
 
+const getUserByCreatedAt = async (createdAt) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("SELECT * FROM users WHERE created_at = ?");
+      stmt.get([createdAt], function (err, row) {
+        if (err) {
+          reject(err);
+        }
+        resolve(row);
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
 const updateUserIPAddr = async (username, ip) => {
   const db = await getDatabaseConnection();
   try {
@@ -1385,6 +1403,23 @@ const updateNodeSettings = async (name, owner, key, value) => {
   }
 };
 
+// VI. Invites
+const countInvites = async (user) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT COUNT(*) AS count FROM invites WHERE user = ? OR invited_by = ?`, [user], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
 export {
   getLogs,
   insertLog,
@@ -1415,6 +1450,7 @@ export {
   updateUserSettings,
   updateUserStatus,
   getUserByEmail,
+  getUserByCreatedAt,
   createDatabaseFile,
   initializeDatabase,
   getDatabaseConnection,
@@ -1442,4 +1478,5 @@ export {
   deleteUserNodes,
   updateNodeOwner,
   updateNodeSettings,
+  countInvites,
 };
