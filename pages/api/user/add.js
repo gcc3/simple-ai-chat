@@ -127,22 +127,18 @@ export default async function (req, res) {
     const body = `Your account, username is \"${username}\", has been created successfully.` + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + "<br>"
                + "Please log in with command `:login [username] [password]`" + "<br>"
                + "<br>"
-               + `Please click the following link to verify your email before using our services. <a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a><br>`
+               + `Please click the following link to verify your email before using our services.` + "<br>" 
+               + `<a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>` + "<br>"
                + "<br>"
-               + "Get Started Now!" + "<br>"
-               + "Explore Simple AI today: https://simple-ai.io" + "<br>"
                + `Quick Start Guide: https://youtu.be/${process.env.NEXT_PUBLIC_VIDEO_ID}` + "<br>"
+               + "For support, email us at `support@simple-ai.io`." + "<br>"
+               + `Join our discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>"
                + "<br>"
-               + "Join the Community & Get Support" + "<br>"
-               + "1. For support, email us at `support@simple-ai.io`." + "<br>"
-               + `2. Join our discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>"
-               + "<br>"
-               + "Share Simple AI with friends and earn rewards!" + "<br>"
-               + "Any new user who new joined and clicked the invitation link below will grant $1 usage to both you and themselves." + "<br>"
+               + "Share Simple AI with friends and earn $1 rewards/invite!" + "<br>"
+               + "Invite friend to joined and click the invitation link below will grant $1 usage to both of you." + "<br>"
                + `Invitation Link: https://simple-ai.io/api/invite/complete/${inviteCode}` + "<br>"
-               + "Quick Invite Command: :invite [email] (e.g., `:invite thisisasample@email.com`)" + "<br>"
                + "<br>"
-               + "Simple AI Developers";
+               + "- Simple AI Developers";
     
     const emailParams = {
       Source: "Simple AI <" + from + ">",
