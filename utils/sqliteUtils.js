@@ -121,7 +121,7 @@ const initializeDatabase = (db) => {
                             user TEXT NOT NULL,
                             code TEXT NOT NULL,
                             invited_by TEXT NOT NULL,
-                            created_at TEXT NOT NULL,
+                            created_at TEXT NOT NULL
                           );`,
                           (err) => {
                             if (err) {
