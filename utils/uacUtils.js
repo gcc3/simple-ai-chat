@@ -13,7 +13,7 @@ export async function getUacResult(user, ip) {
     if (chatCount >= 7) {
       return {
         success: false,
-        error: "Sorry for the inconvenience, unregistered users have a limit of 7 queries per day. If you're not yet registered, simply use the command `:user add [username] [email] [password?]` to register. For example, `:user add myusername myemail@mail.com`. If you are already a member, please log in using `:user login [username] [password]`."
+        error: "Please use command `:user add [username] [email] [password?]` (no need brackets) to register as user to continue. If you are already a member, please log in using `:user login [username] [password]`."
       };
     }
   }
@@ -52,7 +52,7 @@ export async function getUacResult(user, ip) {
     if (usageExceeded) {
       return {
         success: false,
-        error: "We regret to inform you that you have exceeded your usage limit. While Simple AI offers free features, the OpenAI API and associated tokens incur costs. To resume uninterrupted service, please add funds to your balance. If you have any questions, please contact us at `support@simple-ai.io` or join our Discord server at `https://discord.gg/aqAnYwWB`.",
+        error: "You have exceeded your usage limit. While Simple AI offers free features, the OpenAI API and associated tokens incur costs. Please add funds to your balance to continue.",
       }
     }
   }

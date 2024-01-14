@@ -9,7 +9,7 @@ export default async function (req, res) {
   try {
     const authResult = authenticate(req);
     if (!authResult.success) {
-      res.status(401).send(getRedirectableHtml("Please login. To register a user, use the command \`:user add [username] [email] [password?]\`."));
+      res.status(401).send(getRedirectableHtml("Please login. To register a user, use the command \`:user add [username] [email] [password?]\` (no need brackets)."));
       return;
     }
 
