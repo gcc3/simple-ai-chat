@@ -6,6 +6,7 @@ import os
 import sys
 import argparse
 from datetime import datetime
+from time import sleep
 
 # Load environment variables
 load_dotenv('../../.env')
@@ -33,7 +34,7 @@ with open('content.txt', 'r') as file:
     email_subject = lines[0].strip()  # Remove any leading/trailing whitespace
     email_content = ''.join(lines[1:])  # Join the remaining content
     logadd(f"Email subject: {email_subject}")
-    logadd(f"Email content: {email_content}")
+    logadd(f"Email content:\n{email_content}")
 
 # Function to send email using AWS SES
 def send_email_ses(recipient_email, subject, body, test_mode=False):
@@ -93,6 +94,8 @@ if args.test:
     # Test mode: print logs without sending
     cursor.execute(query)
     emails = cursor.fetchall()
+    
+    logadd("Sending emails...")
     for email in emails:
         send_email_ses(email[0], email_subject, email_content, test_mode=True)
         counter += 1
@@ -114,9 +117,11 @@ else:
             emails = cursor.fetchall()
 
             # Send an email to each address
+            logadd("Sending emails...")
             for email in emails:
                 send_email_ses(email[0], email_subject, email_content)
                 counter += 1
+                sleep(1)  # Sleep for 1 second to avoid throttling
 
         finally:
             logadd(f"Total: {counter} emails. (sent)")
