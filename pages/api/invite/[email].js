@@ -41,7 +41,7 @@ export default async function (req, res) {
     const ses = new AWS.SES();
     const from = "support@simple-ai.io";
     const to = email;
-    const subject = "Simple AI Invitation";
+    const subject = "Simple AI: Invitation";
     const emailParams = {
       Source: "Simple AI <" + from + ">",
       Destination: {
@@ -53,7 +53,8 @@ export default async function (req, res) {
         },
         Body: {
           Html: {
-            Data: `Hi, this is Simple AI. You have been invited by user \`${invitor.username}\` to join our AI platform.<br><br>`
+            Data: `Hi, this is Simple AI.<br><br>`
+                + `You have been invited by user \`${invitor.username}\` to join our AI platform.<br><br>`
                 + `You can access it by clicking this link: <a href="https://simple-ai.io">https://simple-ai.io</a>.<br><br>`
                 + `Register as a user and use the following link to complete your invitation. You can get an additional $1 of usage for free.<br><br>`
                 + `Invitation link: ${process.env.NEXT_PUBLIC_BASE_URL}/api/invite/complete/${code}`,
