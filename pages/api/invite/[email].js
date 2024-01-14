@@ -53,7 +53,7 @@ export default async function (req, res) {
         },
         Body: {
           Html: {
-            Data: `You are invited by user \`${invitor.username}\` to join Simple AI (simple-ai.io).<br><br>Invitation code: \`${code}\` ($1).`,
+            Data: `You are invited by user \`${invitor.username}\` to join Simple AI (simple-ai.io).<br><br>Invitation code: ${code} ($1).`,
           },
         },
       },
