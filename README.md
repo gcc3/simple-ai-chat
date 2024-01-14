@@ -344,7 +344,10 @@ The value should be `true` or `false`.
 Set a welcome message and introduction video in front page.  
 
 * IPINFO_TOKEN  
-`ipinfo.io` token for getting country from IP.
+`ipinfo.io` token for getting country from IP.  
+
+* NEXT_PUBLIC_DISCORD
+Discord invitation link, the last part.  
 
 
 Coding rules

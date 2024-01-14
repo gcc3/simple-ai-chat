@@ -103,11 +103,18 @@ export default async function (req, res) {
     const from = "support@simple-ai.io";
     const to = email;
     const subject = "Welcome to simple-ai.io";
-    const body =
-      "Your account, username is \"" + username + "\", has been created successfully." +
-      (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") +
-      " Please log in with command `:login [username] [password]`<br><br>" +
-      `Please click the following link to verify your email before using our services. <a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>`;
+    const body = `Your account, username is \"${username}\", has been created successfully.` + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + "<br>"
+               + "Please log in with command `:login [username] [password]`" + "<br>"
+               + "<br>"
+               + `Please click the following link to verify your email before using our services. <a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a><br>`
+               + "<br>"
+               + "<Join the Community & Get Support>" + "<br>"
+               + "1. For support, email us at `support@simple-ai.io`." + "<br>"
+               + `2. Join our discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>";
+               + "<br>"
+               + "Best regards," + "<br>"
+               + "Simple AI Team";
+      
     const emailParams = {
       Source: "Simple AI <" + from + ">",
       Destination: {
