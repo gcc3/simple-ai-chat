@@ -124,7 +124,9 @@ export default async function (req, res) {
     const from = "support@simple-ai.io";
     const to = email;
     const subject = "Welcome to simple-ai.io";
-    const body = `Your account, username is \"${username}\", has been created successfully.` + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + "<br>"
+    const body = "Thank you for joining Simple AI!" + "<br>"
+               + "<br>"
+               + `Your account, username is \"${username}\", has been created successfully.` + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + "<br>"
                + "Please log in with command `:login [username] [password]` (no need brackets, e.g :login simpleUser1 ********)" + "<br>"
                + "<br>"
                + `Please click the following link to verify your email before using our services.` + "<br>" 
