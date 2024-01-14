@@ -5,6 +5,7 @@ from dotenv import load_dotenv
 import os
 import sys
 import argparse
+from datetime import datetime
 
 # Load environment variables
 load_dotenv('../../.env')
@@ -17,16 +18,27 @@ AWS_REGION = os.getenv('AWS_REGION')
 # Sender email address
 SENDER = 'Simple AI <support@simple-ai.io>'
 
+# Log file path, set to None to disable Logging
+timestamp = datetime.now().strftime("%Y-%m-%d_%H-%M-%S")
+LOG_FILE = timestamp + '.log'
+def logadd(log):
+    print(log)
+    if LOG_FILE:
+        with open(LOG_FILE, 'a') as file:
+            file.write(log + '\n')
+
 # Read email subject and content
 with open('content.txt', 'r') as file:
     lines = file.readlines()
     email_subject = lines[0].strip()  # Remove any leading/trailing whitespace
     email_content = ''.join(lines[1:])  # Join the remaining content
+    logadd(f"Email subject: {email_subject}")
+    logadd(f"Email content: {email_content}")
 
 # Function to send email using AWS SES
 def send_email_ses(recipient_email, subject, body, test_mode=False):
     if test_mode:
-        print(f"Test Mode: Email to {recipient_email} would have been sent.")
+        logadd(f"Test Mode: Email to {recipient_email} would have been sent.")
         return
 
     client = boto3.client(
@@ -54,9 +66,9 @@ def send_email_ses(recipient_email, subject, body, test_mode=False):
             Source=SENDER
         )
     except ClientError as e:
-        print(f"Error sending email: {e.response['Error']['Message']}")
+        logadd(f"Error sending email: {e.response['Error']['Message']}")
     else:
-        print(f"Email sent! Message ID: {response['MessageId']}")
+        logadd(f"Email sent! Message ID: {response['MessageId']}")
 
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description='Send emails using AWS SES.')
@@ -76,11 +88,16 @@ WHERE username != 'root' AND email IS NOT NULL
 
 # Execute based on arguments
 if args.test:
+    counter = 0
+    
     # Test mode: print logs without sending
     cursor.execute(query)
     emails = cursor.fetchall()
     for email in emails:
         send_email_ses(email[0], email_subject, email_content, test_mode=True)
+        counter += 1
+        
+    logadd(f"Total: {counter} emails. (not sent)")
 
 elif args.email:
     # Send a single email
@@ -91,6 +108,7 @@ else:
     print("(Important) This will send emails to all users, Use --test to test first.")
     confirm = input("Are you sure you want to send emails to all users? (yes/no): ")
     if confirm.lower() == 'yes':
+        counter = 0
         try:
             cursor.execute(query)
             emails = cursor.fetchall()
@@ -98,8 +116,10 @@ else:
             # Send an email to each address
             for email in emails:
                 send_email_ses(email[0], email_subject, email_content)
+                counter += 1
 
         finally:
+            logadd(f"Total: {counter} emails. (sent)")
             conn.close()
     else:
         print("Operation canceled.")
