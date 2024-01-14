@@ -1,7 +1,7 @@
 import AWS from "aws-sdk";
-import { getUser } from 'utils/sqliteUtils';
+import { getUser, getUserByEmail } from 'utils/sqliteUtils';
 import { authenticate } from 'utils/authUtils';
-import { encodeTimestamp } from 'utils/invitesUtils';
+import { generateInviteCode } from 'utils/invitesUtils';
 
 export default async function (req, res) {
   const { email } = req.query;
@@ -18,8 +18,18 @@ export default async function (req, res) {
 
     // Check if userd invitation already
     const authUser = authResult.user;
-    const invitor = getUser(authUser.username);
-    const code = encodeTimestamp(invitor.created_at);
+    const invitor = await getUser(authUser.username);
+    const code = generateInviteCode(invitor);
+
+    // Try find user
+    const user = await getUserByEmail(email);
+    if (user) {
+      res.status(404).json({
+        success: false,
+        error: "User already joined.",
+      });
+      return;
+    }
 
     // Send invitation email
     AWS.config.update({
@@ -43,7 +53,7 @@ export default async function (req, res) {
         },
         Body: {
           Html: {
-            Data: `You are invited by \`${user.username}\` to join Simple AI (simple-ai.io). Your invitation code: \`${code}\` ($1).`,
+            Data: `You are invited by user \`${invitor.username}\` to join Simple AI (simple-ai.io).<br><br>Invitation code: \`${code}\` ($1).`,
           },
         },
       },
@@ -55,7 +65,7 @@ export default async function (req, res) {
       .then((data) => {
         res.status(200).json({
           success: true,
-          message: "Invitation email is sent.",
+          message: "Invitation email sent.",
           data,
         });
       })
