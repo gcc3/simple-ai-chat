@@ -24,7 +24,7 @@ export default async function (req, res) {
 
     const createdAt = decodeTimestamp(code);
     const invitor = await getUserByCreatedAt(createdAt);
-    if (!invitor && invitor.name === "__deleted__") {
+    if (!invitor && invitor.username === "__deleted__") {
       res.status(404).send(getRedirectableHtml("Invitation invalid."));
       return;
     }
