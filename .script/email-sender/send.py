@@ -28,13 +28,31 @@ def logadd(log):
         with open(LOG_FILE, 'a') as file:
             file.write(log + '\n')
 
+
 # Read email subject and content
 with open('content.txt', 'r') as file:
     lines = file.readlines()
     email_subject = lines[0].strip()  # Remove any leading/trailing whitespace
-    email_content = ''.join(lines[1:])  # Join the remaining content
+    email_base_content = ''.join(lines[1:])  # Join the remaining content
     logadd(f"Email subject: {email_subject}")
-    logadd(f"Email content:\n{email_content}")
+    logadd(f"Email base content:\n{email_base_content}")
+    
+
+def get_email_content(user, email_base_content):
+    content = email_base_content
+    
+    if content.find('{username}'):
+        username = user[1]
+        content = content.replace('{username}', username)
+        logadd(f"{{username}}: {username}")
+    
+    if content.find('{promotion_code}'):
+        promotion_code = user[14]
+        content = content.replace('{promotion_code}', promotion_code)
+        logadd(f"{{promotion_code}}: {promotion_code}")
+        
+    return content
+    
 
 # Function to send email using AWS SES
 def send_email_ses(recipient_email, subject, body, test_mode=False):
@@ -104,17 +122,24 @@ if args.test:
         logadd(f"Email address: {email}")
         
         # content
-        logadd(f"Prepare email content: " + email_content[:50])
+        logadd(f"Preparing email content...")
+        content = get_email_content(user, email_base_content)
         
         # send email
-        send_email_ses(email, email_subject, email_content, test_mode=True)
+        send_email_ses(email, email_subject, content, test_mode=True)
         counter += 1
     
     logadd(f"-\nTotal: {counter} emails. (not sent)")
 
 elif args.email:
     # Send a single email
-    send_email_ses(args.email, email_subject, email_content)
+    # Get user
+    cursor.execute("SELECT * FROM users WHERE email=?", (args.email,))
+    user = cursor.fetchone()
+    
+    # content
+    content = get_email_content(user, email_base_content)
+    send_email_ses(args.email, email_subject, content)
 
 else:
     # Confirm before sending to all users
@@ -136,10 +161,11 @@ else:
                 logadd(f"Email address: {email}")
                 
                 # content
-                logadd(f"Prepared email content:\n" + email_content[:50])
+                logadd(f"Preparing email content...")
+                content = get_email_content(user, email_base_content)
                 
                 # send email
-                send_email_ses(email, email_subject, email_content, test_mode=True)
+                send_email_ses(email, email_subject, content, test_mode=True)
                 counter += 1
                 sleep(1)  # Sleep for 1 second to avoid throttling
 
