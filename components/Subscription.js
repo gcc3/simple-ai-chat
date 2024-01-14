@@ -12,10 +12,6 @@ function getPrice(subscriptions, role) {
   }
 }
 
-function getDiscount(promotionCode) {
-  return 0;
-}
-
 function Subscription() {
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
@@ -23,7 +19,6 @@ function Subscription() {
   const [amount, setAmount] = useState(null);
   const [bankingFee, setBankingFee] = useState(0);
   const [subscriptions, setSubscriptions] = useState(null);
-  const [promotionCode, setPromotionCode] = useState('');
 
   const onSuccess = useCallback(async (details) => {
     console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
@@ -106,11 +101,6 @@ function Subscription() {
     };
   }
 
-  function handleApplyPromotionCode(e) {
-    const discount = getDiscount(promotionCode);
-    setAmount(Math.max(amount - discount, 0));
-  }
-
   const content = (
     <>
       {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]`.</div>}
@@ -151,16 +141,6 @@ function Subscription() {
               - You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.
               </div>}
             {<div className="mt-1">
-              {process.env.USE_PROMO_CODE === "true" && <div className="mt-3 flex items-center">Promotion code:
-                <input
-                  className="ml-1 pl-2 pr-2 h-8 border"
-                  id="promotion-code"
-                  type="text"
-                  value={promotionCode}
-                  onChange={(e) => setPromotionCode(e.target.value)}
-                />
-                <button onClick={handleApplyPromotionCode} className="ml-2">Apply</button>
-              </div>}
               {user.role_expires_at === null && getRoleLevel(user.role) >= getRoleLevel(targetRole) && <div>
                   - You already have an unlimited expiration date for `{user.role}`.
                 </div>}

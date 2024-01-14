@@ -330,10 +330,6 @@ Role amount is for setting price.
 Format `role:amount`.  
 Roles are separated by `;`.  
 
-* USE_PROMO_CODE  
-Control use promotion code or not.  
-The value should be `true` or `false`.  
-
 * HUNTER_API_KEY  
 Use hunter API to verify email.  
 
