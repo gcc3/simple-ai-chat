@@ -1429,7 +1429,7 @@ const countInvites = async (user) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT COUNT(*) AS count FROM invites WHERE user = ? OR invited_by = ?`, [user], (err, rows) => {
+      db.get(`SELECT COUNT(*) AS count FROM invites WHERE user = ? OR invited_by = ?`, [user, user], (err, rows) => {
         if (err) {
           reject(err);
         }
