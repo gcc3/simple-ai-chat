@@ -125,7 +125,7 @@ export default async function (req, res) {
     const to = email;
     const subject = "Welcome to simple-ai.io";
     const body = `Your account, username is \"${username}\", has been created successfully.` + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + "<br>"
-               + "Please log in with command `:login [username] [password]`" + "<br>"
+               + "Please log in with command `:login [username] [password]` (no need brackets, e.g :login simpleUser1 ********)" + "<br>"
                + "<br>"
                + `Please click the following link to verify your email before using our services.` + "<br>" 
                + `<a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>` + "<br>"
@@ -134,7 +134,7 @@ export default async function (req, res) {
                + "For support, email us at `support@simple-ai.io`." + "<br>"
                + `Join our discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>"
                + "<br>"
-               + "Share Simple AI with friends and earn $1 rewards/invite!" + "<br>"
+               + "Share Simple AI with friends and earn $1 rewards per invite!" + "<br>"
                + "Invite friend to joined and click the invitation link below will grant $1 usage to both of you." + "<br>"
                + `Invitation Link: https://simple-ai.io/api/invite/complete/${inviteCode}` + "<br>"
                + "<br>"
