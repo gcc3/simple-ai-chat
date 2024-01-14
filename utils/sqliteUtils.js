@@ -122,7 +122,6 @@ const initializeDatabase = (db) => {
                             code TEXT NOT NULL,
                             invited_by TEXT NOT NULL,
                             created_at TEXT NOT NULL,
-                            updated_at TEXT
                           );`,
                           (err) => {
                             if (err) {
@@ -1404,6 +1403,27 @@ const updateNodeSettings = async (name, owner, key, value) => {
 };
 
 // VI. Invites
+const insertInvite = async (user, invitedBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare(`INSERT INTO invites (user, invited_by, created_at) VALUES (?, ?, ?)`);
+      stmt.run([user, invitedBy, new Date()], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        
+        // This `this.lastID` provides the ID of the last inserted row.
+        resolve(this.lastID);
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+}
+
 const countInvites = async (user) => {
   const db = await getDatabaseConnection();
   try {
@@ -1478,5 +1498,6 @@ export {
   deleteUserNodes,
   updateNodeOwner,
   updateNodeSettings,
+  insertInvite,
   countInvites,
 };

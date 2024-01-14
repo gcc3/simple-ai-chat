@@ -1,4 +1,4 @@
-import { countInvites, getUser, getUserByCreatedAt, updateUserBalance } from 'utils/sqliteUtils';
+import { countInvites, getUser, getUserByCreatedAt, insertInvite, updateUserBalance } from 'utils/sqliteUtils';
 import { authenticate } from 'utils/authUtils';
 import { decodeTimestamp } from 'utils/invitesUtils';
 
@@ -45,6 +45,9 @@ export default async function (req, res) {
     } else if (invitor.role === "super_user") {
       add = 5;
     }
+
+    // Update invites
+    insertInvite(user.username, invitor.username);
 
     // Update user balance
     updateUserBalance(user.name, user.balance + add);
