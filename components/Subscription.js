@@ -113,7 +113,7 @@ function Subscription() {
 
   const content = (
     <>
-      {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]`</div>}
+      {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]`.</div>}
       {user && <div>
         <div>- Subcription Status</div>
         <div className="mt-1">User: {user.username}</div>

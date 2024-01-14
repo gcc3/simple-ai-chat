@@ -240,6 +240,9 @@ Setup
 .env
 ----
 
+* NEXT_PUBLIC_BASE_URL  
+Fill in the base URL, for example: `http://localhost:3000`  
+
 * ROOT_PASS  
 System root password, will be set when database initialized.
 

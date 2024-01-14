@@ -1,6 +1,7 @@
 import { countInvites, getUser, getUserByCreatedAt, insertInvite, updateUserBalance } from 'utils/sqliteUtils';
 import { authenticate } from 'utils/authUtils';
 import { decodeTimestamp } from 'utils/invitesUtils';
+import { getRedirectableHtml } from 'utils/emailUtils';
 
 export default async function (req, res) {
   const { code } = req.query;
@@ -8,56 +9,39 @@ export default async function (req, res) {
   try {
     const authResult = authenticate(req);
     if (!authResult.success) {
-      res.status(401).json({
-        success: false,
-        error: authResult.error,
-      });
+      res.status(401).send(getRedirectableHtml("Please login. To register a user, use the command \`:user add [username] [email] [password?]\`."));
       return;
     }
 
     // Check if userd invitation already
     const authUser = authResult.user;
-    const user = getUser(authUser.username);
-    const invites = countInvites(user.username);
-    if (invites > 0) {
-      res.status(403).json({
-        success: false,
-        error: "You've already used invitation.",
-      });
+    const user = await getUser(authUser.username);
+    const invites = await countInvites(user.username);
+    if (invites.count > 0) {
+      res.status(403).send(getRedirectableHtml("You've already used the invitation."));
       return;
     }
 
     const createdAt = decodeTimestamp(code);
     const invitor = await getUserByCreatedAt(createdAt);
     if (!invitor && invitor.name === "__deleted__") {
-      res.status(404).json({
-        success: false,
-        error: "Invitation invalid.",
-      });
+      res.status(404).send(getRedirectableHtml("Invitation invalid."));
+      return;
+    }
+    if (invitor.username === user.username) {
+      res.status(403).send(getRedirectableHtml("You cannot invite yourself."));
       return;
     }
 
-    let add = 0;
-    if (invitor.role !== "user") {
-      add = 1;
-    } else if (invitor.role === "pro_user") {
-      add = 3;
-    } else if (invitor.role === "super_user") {
-      add = 5;
-    }
-
     // Update invites
-    insertInvite(user.username, invitor.username);
+    await insertInvite(user.username, code, invitor.username);
 
     // Update user balance
-    updateUserBalance(user.name, user.balance + add);
-    updateUserBalance(invitor.name, invitor.balance + add);
+    await updateUserBalance(user.username, user.balance + 1);
+    await updateUserBalance(invitor.username, invitor.balance + 1);
 
     // Output the result
-    res.status(200).json({
-      success: true,
-      message: "Accepted.",
-    });
+    res.status(200).send(getRedirectableHtml("Accepted."));
   } catch (error) {
     console.error(error);
     res.status(500).json({

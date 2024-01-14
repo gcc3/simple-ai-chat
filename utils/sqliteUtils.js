@@ -1403,12 +1403,12 @@ const updateNodeSettings = async (name, owner, key, value) => {
 };
 
 // VI. Invites
-const insertInvite = async (user, invitedBy) => {
+const insertInvite = async (user, code, invitedBy) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare(`INSERT INTO invites (user, invited_by, created_at) VALUES (?, ?, ?)`);
-      stmt.run([user, invitedBy, new Date()], function (err) {
+      const stmt = db.prepare(`INSERT INTO invites (user, code, invited_by, created_at) VALUES (?, ?, ?, ?)`);
+      stmt.run([user, code, invitedBy, new Date()], function (err) {
         if (err) {
           reject(err);
           return;

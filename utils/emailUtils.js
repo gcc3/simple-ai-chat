@@ -52,3 +52,27 @@ export async function evalEmailAddress(email) {
     }
   }
 }
+
+export function getRedirectableHtml(message) {
+  return `
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta http-equiv="refresh" content="3;url=/" />
+      <title>simple ai - chat</title>
+      <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
+      <style>
+        body { 
+          font-size: 16px;
+          font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
+        }
+      </style>
+    </head>
+    <body>
+      ${message}<br />
+      Redirecting in 3 seconds...
+    </body>
+    </html>
+  `;
+}
