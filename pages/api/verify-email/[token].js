@@ -16,22 +16,22 @@ export default async function (req, res) {
   try {
     const data = decode(token);
     if (!data) {
-      return res.status(400).send("Verification failed.");
+      return res.status(400).send(getRedirectableHtml("Verification failed."));
     }
 
     // Get user
     const user = await getUser(data.username);
     if (!user) {
-      return res.status(400).send("User not found.");
+      return res.status(400).send(getRedirectableHtml("User not found."));
     }
 
     if (user.email !== data.email) {
-      return res.status(400).send("Email error.");
+      return res.status(400).send(getRedirectableHtml("Email address not match."));
     }
 
     const sameEmailUser = await getUserByEmail(data.email);
     if (sameEmailUser && sameEmailUser.username !== data.username) {
-      return res.status(400).send("Email address conflict.");
+      return res.status(400).send(getRedirectableHtml("Email address conflict."));
     }
 
     // Update email verified at
