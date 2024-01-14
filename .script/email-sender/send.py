@@ -37,22 +37,41 @@ with open('content.txt', 'r') as file:
     logadd(f"Email subject: {email_subject}")
     logadd(f"Email base content:\n{email_base_content}")
     
+    
+def encode_timestamp(timestamp, shift):
+    # Convert the timestamp to a string to work with individual characters
+    timestamp_str = str(timestamp)
+    encoded = ''
+
+    # Loop through each character in the string
+    for char in timestamp_str:
+        # Convert the current character to a number
+        digit = int(char)
+
+        # Apply the cipher shift
+        shifted_digit = (digit + shift) % 10
+
+        # Concatenate the shifted digit to the encoded string
+        encoded += str(shifted_digit)
+
+    return encoded
+    
 
 def get_email_content(user, email_base_content):
     content = email_base_content
     
-    if content.find('{username}'):
+    if "{username}" in content:
         username = user[1]
         content = content.replace('{username}', username)
         logadd(f"{{username}}: {username}")
     
-    if content.find('{promotion_code}'):
-        promotion_code = user[14]
-        content = content.replace('{promotion_code}', promotion_code)
-        logadd(f"{{promotion_code}}: {promotion_code}")
+    if "{invite_code}" in content:
+        invite_code = encode_timestamp(user[14], 3)
+        content = content.replace('{invite_code}', invite_code)
+        logadd(f"{{invite_code}}: {invite_code}")
         
     return content
-    
+
 
 # Function to send email using AWS SES
 def send_email_ses(recipient_email, subject, body, test_mode=False):

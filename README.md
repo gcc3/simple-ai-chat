@@ -240,6 +240,9 @@ Setup
 .env
 ----
 
+* NEXT_PUBLIC_BASE_URL  
+Fill in the base URL, for example: `http://localhost:3000`  
+
 * ROOT_PASS  
 System root password, will be set when database initialized.
 
@@ -326,10 +329,6 @@ Format: `role:daily_limit,weekly_limit,monthly_limit`.
 Role amount is for setting price.  
 Format `role:amount`.  
 Roles are separated by `;`.  
-
-* USE_PROMO_CODE  
-Control use promotion code or not.  
-The value should be `true` or `false`.  
 
 * HUNTER_API_KEY  
 Use hunter API to verify email.  

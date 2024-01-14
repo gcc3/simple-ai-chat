@@ -5,7 +5,6 @@ import { getRoleFequencyLimit } from 'utils/usageUtils.js';
 import { gpt4FeeCal, gpt4vFeeCal } from "utils/usageUtils";
 import { getAvailableStoresForUser } from 'utils/storeUtils';
 import { getAvailableNodesForUser } from 'utils/nodeUtils';
-import { generateInviteCode } from 'utils/invitesUtils';
 
 const moment = require('moment');
 
@@ -103,7 +102,6 @@ export default async function (req, res) {
           user_role_count: (await countUserRoles(user.username)).count,
           store_count: (await getAvailableStoresForUser(user)).length,
           node_count: (await getAvailableNodesForUser(user)).length,
-          invite_code: generateInviteCode(user),
           created_at_h: moment.unix(user.created_at / 1000).format('MM/DD/YYYY'),
         }
       });

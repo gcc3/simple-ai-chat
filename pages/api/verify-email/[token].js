@@ -2,6 +2,7 @@ import { decode } from "utils/authUtils"
 import { getUser, updateUserEmailVerifiedAt, updateUserStatus, updateUserIPAndLastLogin } from "utils/sqliteUtils"
 import { createToken } from "utils/authUtils"
 import { getUserByEmail } from "utils/sqliteUtils"
+import { getRedirectableHtml } from "utils/emailUtils";
 
 export default async function (req, res) {
   // Check if the method is GET
@@ -44,27 +45,7 @@ export default async function (req, res) {
     const browser = req.headers['user-agent'];
     await updateUserIPAndLastLogin(user.username, ip, "T=" + (new Date()) + " IP=" + ip + " BSR=" + browser);
 
-    return res.status(200).send(`
-      <!DOCTYPE html>
-      <html lang="en">
-      <head>
-        <meta charset="UTF-8">
-        <meta http-equiv="refresh" content="3;url=/" />
-        <title>simple ai - chat</title>
-        <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
-        <style>
-          body { 
-            font-size: 16px;
-            font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
-          }
-        </style>
-      </head>
-      <body>
-        Email verified!<br />
-        Redirecting in 3 seconds...
-      </body>
-      </html>
-    `);
+    return res.status(200).send(getRedirectableHtml("Email verified!"));
   } catch (error) {
     console.error(error);
     res.status(500).json({
