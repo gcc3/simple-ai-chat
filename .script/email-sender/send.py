@@ -15,7 +15,7 @@ AWS_SECRET_ACCESS_KEY = os.getenv('AWS_SECRET_ACCESS_KEY')
 AWS_REGION = os.getenv('AWS_REGION')
 
 # Sender email address
-SENDER_EMAIL = 'support@simple-ai.io'
+SENDER = 'Simple AI <support@simple-ai.io>'
 
 # Read email subject and content
 with open('content.txt', 'r') as file:
@@ -51,7 +51,7 @@ def send_email_ses(recipient_email, subject, body, test_mode=False):
                     'Data': subject,
                 },
             },
-            Source=SENDER_EMAIL
+            Source=SENDER
         )
     except ClientError as e:
         print(f"Error sending email: {e.response['Error']['Message']}")
