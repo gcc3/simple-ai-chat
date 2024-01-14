@@ -185,7 +185,7 @@ else:
                 content = get_email_content(user, email_base_content)
                 
                 # send email
-                send_email_ses(email, email_subject, content, test_mode=True)
+                send_email_ses(email, email_subject, content, test_mode=False)
                 counter += 1
                 sleep(1)  # Sleep for 1 second to avoid throttling
 
