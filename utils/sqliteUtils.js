@@ -114,7 +114,24 @@ const initializeDatabase = (db) => {
                           return reject(err);
                         }
 
-                        resolve();
+                        // Create invites table
+                        db.run(
+                          `CREATE TABLE IF NOT EXISTS invites (
+                            id INTEGER PRIMARY KEY,
+                            user TEXT NOT NULL,
+                            code TEXT NOT NULL,
+                            invited_by TEXT NOT NULL,
+                            created_at TEXT NOT NULL,
+                            updated_at TEXT
+                          );`,
+                          (err) => {
+                            if (err) {
+                              return reject(err);
+                            }
+    
+                            resolve();
+                          }
+                        );
                       }
                     );
                   }
