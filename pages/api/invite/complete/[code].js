@@ -41,7 +41,7 @@ export default async function (req, res) {
     await updateUserBalance(invitor.username, invitor.balance + 1);
 
     // Output the result
-    res.status(200).send(getRedirectableHtml("Accepted."));
+    res.status(200).send(getRedirectableHtml("Accepted! $1 has been added to your balance, enjoy!"));
   } catch (error) {
     console.error(error);
     res.status(500).json({
