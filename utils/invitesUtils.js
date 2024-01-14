@@ -1,27 +1,44 @@
-export function generateInviteCode(user) {
-  let invite_code = compressToBase64(BigInt(Number(user.created_at)));
+export function generateInviteCode(user, shift = 3) {
+  let invite_code = encodeTimestamp(Number(user.created_at), shift);
   return invite_code;
 }
 
-export function compressToBase64(bigInt) {
-  // Convert BigInt to a hex string
-  const hexStr = bigInt.toString(16);
+export function encodeTimestamp(timestamp, shift) {
+  // Convert the timestamp to a string to work with individual characters
+  const timestampStr = timestamp.toString();
+  let encoded = '';
 
-  // Encode the hex string to Base64
-  const encoder = new TextEncoder();
-  const binaryStr = encoder.encode(hexStr);
-  const base64Str = btoa(String.fromCharCode(...binaryStr));
-  return base64Str;
+  // Loop through each character in the string
+  for (let char of timestampStr) {
+    // Convert the current character to a number
+    let digit = parseInt(char);
+
+    // Apply the cipher shift
+    let shiftedDigit = (digit + shift) % 10;
+
+    // Concatenate the shifted digit to the encoded string
+    encoded += shiftedDigit.toString();
+  }
+
+  return encoded;
 }
 
-export function decompressFromBase64(base64Str) {
-  const binaryStr = atob(base64Str);  // Decode the Base64 string to a binary string
+export function decodeTimestamp(encodedTimestamp, shift = 3) {
+  // Convert the encoded timestamp to a string to work with individual characters
+  const encodedStr = encodedTimestamp.toString();
+  let decoded = '';
 
-  // Convert the binary string back to a hex string
-  const decoder = new TextDecoder();
-  const hexStr = decoder.decode(new Uint8Array(binaryStr.split('').map(c => c.charCodeAt(0))));
-  const bigInt = BigInt('0x' + hexStr);  // Convert the hex string back to the original BigInt
+  // Loop through each character in the string
+  for (let char of encodedStr) {
+    // Convert the current character to a number
+    let digit = parseInt(char);
 
-  // Convert BigInt to string to avoid serialization error
-  return bigInt.toString();
+    // Apply the reverse cipher shift
+    let shiftedDigit = (digit - shift + 10) % 10;
+
+    // Concatenate the shifted digit to the decoded string
+    decoded += shiftedDigit.toString();
+  }
+
+  return decoded;
 }
