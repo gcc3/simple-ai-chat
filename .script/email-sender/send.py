@@ -89,6 +89,7 @@ def send_email_ses(recipient_email, subject, body, test_mode=False):
     else:
         logadd(f"Email sent! Message ID: {response['MessageId']}")
 
+
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description='Send emails using AWS SES.')
 parser.add_argument('--test', action='store_true', help='Run in test mode without sending emails.')
