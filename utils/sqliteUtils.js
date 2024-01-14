@@ -1,6 +1,6 @@
 import sqlite3 from "sqlite3";
 import { promises as fs } from "fs";
-import { formatUnixTimestamp } from "./timeUtils.js";
+import { formatUnixTimestamp, getTimestamp } from "./timeUtils.js";
 import { generatePassword } from "./userUtils.js";
 
 const createDatabaseFile = () => {
@@ -438,7 +438,7 @@ const insertUser = async (username, role, role_expires_at, password, email, bala
         const stmt = db.prepare(
           "INSERT INTO users (username, \"group\", role, role_expires_at, password, email, balance, usage, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
         );
-        stmt.run([username, group, role, role_expires_at, password, email, balance, 0, settings, "inactive", new Date()], function (err) {
+        stmt.run([username, group, role, role_expires_at, password, email, balance, 0, settings, "inactive", getTimestamp()], function (err) {
           if (err) {
             reject(err);
             return;
@@ -481,7 +481,7 @@ const softDeleteUser = async (username) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET username = ?, ip = ?, updated_at = ? WHERE username = ?");
-      stmt.run(["__deleted__", null, new Date(), username], function (err) {
+      stmt.run(["__deleted__", null, getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -507,7 +507,7 @@ const userJoinGroup = async (username, groupName) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET \"group\" = ?, updated_at = ? WHERE username = ?");
-      stmt.run([newGroups, new Date(), username], function (err) {
+      stmt.run([newGroups, getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -533,7 +533,7 @@ const userLeaveGroup = async (username, groupName) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET \"group\" = ?, updated_at = ? WHERE username = ?");
-      stmt.run([newGroups, new Date(), username], function (err) {
+      stmt.run([newGroups, getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -557,7 +557,7 @@ const updateUsername = async (username, email, password) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET username = ?, password = ?, updated_at = ? WHERE email = ?");
-      stmt.run([username, password, new Date(), email], function (err) {
+      stmt.run([username, password, getTimestamp(), email], function (err) {
         if (err) {
           reject(err);
         }
@@ -579,7 +579,7 @@ const updateUserPassword = async (username, newPassword) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET password = ?, updated_at = ? WHERE username = ?");
-      stmt.run([newPassword, new Date(), username], function (err) {
+      stmt.run([newPassword, getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -601,7 +601,7 @@ const updateUserBalance = async (username, newBalance) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET balance = ?, updated_at = ? WHERE username = ?");
-      stmt.run([newBalance, new Date(), username], function (err) {
+      stmt.run([newBalance, getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -623,7 +623,7 @@ const updateUserEmail = async (username, newEmail) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET email = ?, updated_at = ? WHERE username = ?");
-      stmt.run([newEmail, new Date(), username], function (err) {
+      stmt.run([newEmail, getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -642,10 +642,11 @@ const updateUserEmail = async (username, newEmail) => {
 
 const updateUserEmailVerifiedAt = async (username) => {
   const db = await getDatabaseConnection();
+  const timestamp = getTimestamp();
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET email_verified_at = ?, updated_at = ? WHERE username = ?");
-      stmt.run([new Date(), new Date(), username], function (err) {
+      stmt.run([timestamp, timestamp, username], function (err) {
         if (err) {
           reject(err);
         }
@@ -667,7 +668,7 @@ const updateUserRole = async (username, newRole) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET role = ?, updated_at = ? WHERE username = ?");
-      stmt.run([newRole, new Date(), username], function (err) {
+      stmt.run([newRole, getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -689,7 +690,7 @@ const extendUserRole = async (username, extendTo) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET role_expires_at = ?, updated_at = ? WHERE username = ?");
-      stmt.run([extendTo, new Date(), username], function (err) {
+      stmt.run([extendTo, getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -805,7 +806,7 @@ const updateUserSettings = async (username, key, value) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET settings = ?, updated_at = ? WHERE username = ?");
-      stmt.run([settings, new Date(), username], function (err) {
+      stmt.run([settings, getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }
@@ -912,7 +913,7 @@ const insertRole = async (roleName, prompt, createdBy) => {
 
         // If the username doesn't exist, proceed with the insertion
         const stmt = db.prepare("INSERT INTO roles (role, prompt, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?)");
-        stmt.run([roleName, prompt, createdBy, new Date(), null], function (err) {
+        stmt.run([roleName, prompt, createdBy, getTimestamp(), null], function (err) {
           if (err) {
             reject(err);
             return;
@@ -977,7 +978,7 @@ const updateRolePrompt = async (roleName, newPrompt, createdBy) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE roles SET prompt = ?, updated_at = ? WHERE role = ? AND created_by = ?");
-      stmt.run([newPrompt, new Date(), roleName, createdBy], function (err) {
+      stmt.run([newPrompt, getTimestamp(), roleName, createdBy], function (err) {
         if (err) {
           reject(err);
         }
@@ -1063,7 +1064,7 @@ const insertStore = async (name, engine, settings, creator) => {
 
         // If the username doesn't exist, proceed with the insertion
         const stmt = db.prepare(`INSERT INTO stores (name, owner, engine, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)`);
-        stmt.run([name, creator, engine, settings, creator, new Date(), null], function (err) {
+        stmt.run([name, creator, engine, settings, creator, getTimestamp(), null], function (err) {
           if (err) {
             reject(err);
             return;
@@ -1129,7 +1130,7 @@ const updateStoreOwner = async (name, oldOwner, newOwner) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare(`UPDATE stores SET owner = ?, updated_at = ? WHERE name = ? AND owner = ?`);
-      stmt.run([newOwner, new Date(), name, oldOwner], function (err) {
+      stmt.run([newOwner, getTimestamp(), name, oldOwner], function (err) {
         if (err) {
           reject(err);
         }
@@ -1166,7 +1167,7 @@ const updateStoreSetting = async (name, user, key, value) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND owner = ?");
-      stmt.run([settings, new Date(), name, user], function (err) {
+      stmt.run([settings, getTimestamp(), name, user], function (err) {
         if (err) {
           reject(err);
         }
@@ -1196,7 +1197,7 @@ const updateStoreSettings = async (name, user, newSettings) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE stores SET settings = ?, updated_at = ? WHERE name = ? AND owner = ?");
-      stmt.run([newSettings, new Date(), name, user], function (err) {
+      stmt.run([newSettings, getTimestamp(), name, user], function (err) {
         if (err) {
           reject(err);
         }
@@ -1282,7 +1283,7 @@ const insertNode = async (name, settings, creator) => {
 
         // If the username doesn't exist, proceed with the insertion
         const stmt = db.prepare(`INSERT INTO nodes (name, owner, settings, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`);
-        stmt.run([name, creator, settings, creator, new Date(), null], function (err) {
+        stmt.run([name, creator, settings, creator, getTimestamp(), null], function (err) {
           if (err) {
             reject(err);
             return;
@@ -1348,7 +1349,7 @@ const updateNodeOwner = async (name, oldOwner, newOwner) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare(`UPDATE nodes SET owner = ?, updated_at = ? WHERE name = ? AND owner = ?`);
-      stmt.run([newOwner, new Date(), name, oldOwner], function (err) {
+      stmt.run([newOwner, getTimestamp(), name, oldOwner], function (err) {
         if (err) {
           reject(err);
         }
@@ -1385,7 +1386,7 @@ const updateNodeSettings = async (name, owner, key, value) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE nodes SET settings = ?, updated_at = ? WHERE name = ? AND owner = ?");
-      stmt.run([settings, new Date(), name, owner], function (err) {
+      stmt.run([settings, getTimestamp(), name, owner], function (err) {
         if (err) {
           reject(err);
         }
@@ -1408,7 +1409,7 @@ const insertInvite = async (user, code, invitedBy) => {
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare(`INSERT INTO invites (user, code, invited_by, created_at) VALUES (?, ?, ?, ?)`);
-      stmt.run([user, code, invitedBy, new Date()], function (err) {
+      stmt.run([user, code, invitedBy, getTimestamp()], function (err) {
         if (err) {
           reject(err);
           return;
