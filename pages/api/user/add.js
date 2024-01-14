@@ -108,12 +108,11 @@ export default async function (req, res) {
                + "<br>"
                + `Please click the following link to verify your email before using our services. <a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a><br>`
                + "<br>"
-               + "<Join the Community & Get Support>" + "<br>"
+               + "Join the Community & Get Support" + "<br>"
                + "1. For support, email us at `support@simple-ai.io`." + "<br>"
-               + `2. Join our discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>";
+               + `2. Join our discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>"
                + "<br>"
-               + "Best regards," + "<br>"
-               + "Simple AI Team";
+               + "Simple AI Developer";
       
     const emailParams = {
       Source: "Simple AI <" + from + ">",
