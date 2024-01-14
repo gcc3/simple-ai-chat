@@ -28,18 +28,36 @@ def logadd(log):
         with open(LOG_FILE, 'a') as file:
             file.write(log + '\n')
 
+
 # Read email subject and content
 with open('content.txt', 'r') as file:
     lines = file.readlines()
     email_subject = lines[0].strip()  # Remove any leading/trailing whitespace
-    email_content = ''.join(lines[1:])  # Join the remaining content
+    email_base_content = ''.join(lines[1:])  # Join the remaining content
     logadd(f"Email subject: {email_subject}")
-    logadd(f"Email content:\n{email_content}")
+    logadd(f"Email base content:\n{email_base_content}")
+    
+
+def get_email_content(user, email_base_content):
+    content = email_base_content
+    
+    if content.find('{username}'):
+        username = user[1]
+        content = content.replace('{username}', username)
+        logadd(f"{{username}}: {username}")
+    
+    if content.find('{promotion_code}'):
+        promotion_code = user[14]
+        content = content.replace('{promotion_code}', promotion_code)
+        logadd(f"{{promotion_code}}: {promotion_code}")
+        
+    return content
+    
 
 # Function to send email using AWS SES
 def send_email_ses(recipient_email, subject, body, test_mode=False):
     if test_mode:
-        logadd(f"Test Mode: Email to {recipient_email} would have been sent.")
+        logadd(f"Test Mode: Email to `{recipient_email}` would have been sent.")
         return
 
     client = boto3.client(
@@ -71,6 +89,7 @@ def send_email_ses(recipient_email, subject, body, test_mode=False):
     else:
         logadd(f"Email sent! Message ID: {response['MessageId']}")
 
+
 # Parse command-line arguments
 parser = argparse.ArgumentParser(description='Send emails using AWS SES.')
 parser.add_argument('--test', action='store_true', help='Run in test mode without sending emails.')
@@ -83,7 +102,7 @@ cursor = conn.cursor()
 
 # Query to select all emails except root user
 query = """
-SELECT email FROM users
+SELECT * FROM users
 WHERE username != 'root' AND email IS NOT NULL
 """
 
@@ -93,18 +112,35 @@ if args.test:
     
     # Test mode: print logs without sending
     cursor.execute(query)
-    emails = cursor.fetchall()
+    users = cursor.fetchall()
     
-    logadd("Sending emails...")
-    for email in emails:
-        send_email_ses(email[0], email_subject, email_content, test_mode=True)
-        counter += 1
+    logadd("Start sending emails...")
+    for user in users:
+        logadd(f"-\nSending email to user: {user[1]}...")
         
-    logadd(f"Total: {counter} emails. (not sent)")
+        # email address
+        email = user[6]
+        logadd(f"Email address: {email}")
+        
+        # content
+        logadd(f"Preparing email content...")
+        content = get_email_content(user, email_base_content)
+        
+        # send email
+        send_email_ses(email, email_subject, content, test_mode=True)
+        counter += 1
+    
+    logadd(f"-\nTotal: {counter} emails. (not sent)")
 
 elif args.email:
     # Send a single email
-    send_email_ses(args.email, email_subject, email_content)
+    # Get user
+    cursor.execute("SELECT * FROM users WHERE email=?", (args.email,))
+    user = cursor.fetchone()
+    
+    # content
+    content = get_email_content(user, email_base_content)
+    send_email_ses(args.email, email_subject, content)
 
 else:
     # Confirm before sending to all users
@@ -114,17 +150,28 @@ else:
         counter = 0
         try:
             cursor.execute(query)
-            emails = cursor.fetchall()
+            users = cursor.fetchall()
 
             # Send an email to each address
-            logadd("Sending emails...")
-            for email in emails:
-                send_email_ses(email[0], email_subject, email_content)
+            logadd("Start sending emails...")
+            for user in users:
+                logadd(f"-\nSending email to user: {user[1]}...")
+                
+                # email address
+                email = user[6]
+                logadd(f"Email address: {email}")
+                
+                # content
+                logadd(f"Preparing email content...")
+                content = get_email_content(user, email_base_content)
+                
+                # send email
+                send_email_ses(email, email_subject, content, test_mode=True)
                 counter += 1
                 sleep(1)  # Sleep for 1 second to avoid throttling
 
         finally:
-            logadd(f"Total: {counter} emails. (sent)")
+            logadd(f"-\nTotal: {counter} emails. (sent)")
             conn.close()
     else:
         print("Operation canceled.")

@@ -59,10 +59,8 @@ export function markdownFormatter(elOutput) {
           line = line.replace(/\*([^*]+?)\*/g, '<em>$1</em>');  // Emphasis
       }
 
-      // Remove the ### at first
-      if (line.startsWith('### ')) {
-        line = line.slice(4);
-      }
+      // Remove the # at first
+      line = line.replace(/^###\s|^####\s|^#####\s/, '');
 
       // Math equation (LaTeX) support
       // Equation block, e.g. \[  \]
