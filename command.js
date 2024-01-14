@@ -28,6 +28,7 @@ import search from "commands/search.js";
 import node from "commands/node.js";
 import set from "commands/set.js";
 import generate from "commands/generate.js";
+import invite from "commands/invite.js";
 
 export default function commands(input, files) {
   let command = input;
@@ -74,6 +75,7 @@ export default function commands(input, files) {
   if (command.startsWith(":node")) return node(args);
   if (command.startsWith(":set")) return set(args);
   if (command.startsWith(":generate")) return generate(args);
+  if (command.startsWith(":invite")) return invite(args);
   return "Unknown command.";
 }
 
@@ -156,6 +158,7 @@ export function getCommands() {
     { id: "", title: "", annotation: "", command: ":user join [group] [password]", short_description: "Join a group.", description: "Join a group. When creating a user, a group with the same name will also be created, and owned by this user. A user can join any group to access shared data. The password is generated and set in the user's settings." },
     { id: "", title: "", annotation: "", command: ":user leave [group]", short_description: "Leave a group.", description: "" },
     { id: "", title: "", annotation: "", command: ":user [del|delete] [username]", short_description: "Delete user with data.", description: "" },
+    { id: "", title: "", annotation: "", command: ":invite [email]", short_description: "Send invitation email.", description: "Send an invitation email (with a invitation code) to your friends or family to register as users, and both of you will get a reward." },
     { id: "", title: "", annotation: "", command: ":login [username] [password]", short_description: "Login user.", description: "Login user and load configurations from user settings." },
     { id: "", title: "", annotation: "", command: ":logout", short_description: "Logout user.", description: "" },
     { id: "commands-config", title: "Information", annotation: "", command: ":info", short_description: "Show local config.", description: "Show local configurations and session configurations that saved in browser session storage or local storage." },
