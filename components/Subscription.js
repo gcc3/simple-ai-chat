@@ -114,10 +114,9 @@ function Subscription() {
       <div className="mt-3">
         <div>- Subscription plans</div>
         <div className="mt-1">
-          1. `user`: provide a general user package that's free of charge; you only pay for token usage fees.<br></br>
+          1. `user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)<br></br>
           2. `pro_user`: provide advanced features and support for professonal uses.<br></br>
           3. `super_user`: provide accessability for all latest features and support.<br></br>
-          <div className="mt-1">* New `user` has a $1 free usage (≈ 100K token for input or 33K token for output).</div>
         </div>
       </div>
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
