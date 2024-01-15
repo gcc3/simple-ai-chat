@@ -5,7 +5,7 @@ import { getRoleFequencyLimit } from "utils/usageUtils";
 function getPriceString(subscriptions, role) {
   let price = "";
   if (subscriptions.hasOwnProperty(role)) {
-    price = (Number(subscriptions[role].price) === 0 ? "Free" : "$" + subscriptions[role].price + "/month") + " + usage_fee";
+    price = (Number(subscriptions[role].price) === 0 ? "Free" : "$" + subscriptions[role].price + "/month") + " +usage_fee";
   }
   return price;
 }
