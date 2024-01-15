@@ -253,7 +253,6 @@ function Usage() {
             <ProgressBar label={"Usage"} progress={npre(totalFeeThisMonth + plusFeeThisMonth)} progressMax={npre(user.balance)} />
             <div className="mt-3">Total Fees: ${npre(totalFeeThisMonth + plusFeeThisMonth)}</div>
             <div>Balance: ${npre(user.balance)}</div>
-            <div className="mt-3">* To maintain service, we will retain up to 3% of usage fees.</div>
           </div>
         </div>
         <div className="mt-4">
