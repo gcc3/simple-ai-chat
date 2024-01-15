@@ -53,11 +53,15 @@ export default async function (req, res) {
         },
         Body: {
           Html: {
-            Data: `Hi, this is Simple AI.<br><br>`
-                + `You have been invited by user \`${invitor.username}\` to join our AI platform.<br><br>`
-                + `You can access it by clicking this link: <a href="https://simple-ai.io">https://simple-ai.io</a>.<br><br>`
-                + `Register as a user and use the following link to complete your invitation. You can get an additional $1 of usage for free.<br><br>`
-                + `Invitation link: ${process.env.NEXT_PUBLIC_BASE_URL}/api/invite/complete/${code}`,
+            Data: `Hi, this is Simple AI.<br>`
+                + `You have been invited by user \`${invitor.username}\` to join our AI platform.<br>`
+                + `<br>`
+                + `Please access it by clicking this link: <a href="https://simple-ai.io">https://simple-ai.io</a>.<br>`
+                + `<br>`
+                + `Register as a user and then use the following link to complete your invitation. You can get an 100k token usage for free.<br>`
+                + `Invitation link: ${process.env.NEXT_PUBLIC_BASE_URL}/api/invite/complete/${code}` + `<br>`
+                + `<br>`
+                + `- Simple AI Developers`
           },
         },
       },
