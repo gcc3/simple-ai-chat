@@ -101,7 +101,7 @@ export default async function (req, res) {
       console.error(err, err.stack);
       res.status(500).json({
         success: false,
-        error: "Failed to send email",
+        error: "Failed to send email.",
       });
     });
 }
