@@ -173,6 +173,7 @@ function Usage() {
               </tbody>
             </table>
             <div className="mt-2">* For token pricing, refer to the OpenAI official pricing document. (<a href="https://openai.com/pricing#language-models"><u>link</u></a>) </div>
+            <div>* A small amount (1%~3%) for maintaince service.</div>
             <div className="mt-3">- Fequencies</div>
             <table className="table-fixed mt-1">
               <tbody>
@@ -236,7 +237,7 @@ function Usage() {
             </table>
           </div>}
           {getRoleLevel(user.role) >= 3 && <div className="mt-3">
-            <div>- Service Usage</div>
+            <div>- Services Usage</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
