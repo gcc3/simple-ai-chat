@@ -68,6 +68,6 @@ export default async function (req, res) {
   
   return res.status(200).json({ 
     success: true,
-    message: "Store \"" + name + "\" is created. You can use command `:store \"" + name + "\"` to check store status and settings, and use `:store init [engine]` to initialize the store. Store `" + name + "` is now active.",
+    message: "Store \"" + name + "\" is created. You can use command `:store \"" + name + "\"` to check store status and settings. Use \`:store set [key] [value]\` to configure the connection and then use `:store init [engine]` to initialize from the configuration. Store `" + name + "` is now active.",
   });
 }

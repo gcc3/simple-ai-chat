@@ -193,7 +193,7 @@ export default async function node(args) {
     // Set node
     sessionStorage.setItem("node", nodeName);
 
-    return "Node is set to \`" + nodeName + "\`, you can use command \`:node\` to show current node information.";
+    return "Node is set to \`" + nodeName + "\`, you can directly talk to it, or use command \`:generate\` to generate from it. Command \`:node\` shows current node information.";
   }
 
   // Reset node
