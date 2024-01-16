@@ -744,11 +744,10 @@ export default function Home() {
     }
 
     // Add touch event listener
-    const elOutput = elOutputRef.current;
-    elOutput.addEventListener('touchstart', handleTouchStart, false);
-    elOutput.addEventListener('touchmove', handleTouchMove, false);
-    elOutput.addEventListener('touchend', handleTouchEnd, false);
-    elOutput.addEventListener('touchcancel', handleTouchCancel, false);
+    window.addEventListener('touchstart', handleTouchStart, false);
+    window.addEventListener('touchmove', handleTouchMove, false);
+    window.addEventListener('touchend', handleTouchEnd, false);
+    window.addEventListener('touchcancel', handleTouchCancel, false);
 
     // Cleanup
     return () => {
@@ -758,10 +757,10 @@ export default function Home() {
       window.removeEventListener('hashchange', removeHashTag);
 
       // Remove touch event listener
-      elOutput.removeEventListener('touchstart', handleTouchStart, false);
-      elOutput.removeEventListener('touchmove', handleTouchMove, false);
-      elOutput.removeEventListener('touchend', handleTouchEnd, false);
-      elOutput.removeEventListener('touchcancel', handleTouchCancel, false);
+      window.removeEventListener('touchstart', handleTouchStart, false);
+      window.removeEventListener('touchmove', handleTouchMove, false);
+      window.removeEventListener('touchend', handleTouchEnd, false);
+      window.removeEventListener('touchcancel', handleTouchCancel, false);
     }
   }, []);
 
