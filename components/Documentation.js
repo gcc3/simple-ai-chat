@@ -93,16 +93,17 @@ const Documentation = ({ country }) => {
       </div>
       <div id="introduction" className="mt-5">Overview</div>
       <div className="mt-2">
-        What you can do with Simple AI:<br/>
-        1. Chat, ask complex questions.<br/>
-        2. Upload an image and inquire about it.<br/>
-        3. Upload text file, Word, PDF and ask questions about it.<br/>
-        4. Access a wide range of knowledge.<br/>
-        5. Solve mathematical problems.<br/>
-        6. Generate high-quality images.<br/>
-        7. Participate in role-playing activities.<br/>
-        8. Integrate with your own datasets.<br/>
-        9. Connect with other AI systems.<br/>
+        - What you can do with Simple AI:<br/>
+        * Chat or ask complex questions.<br/>
+        * Generate text or translate text to any languages.<br/>
+        * Upload an image and inquire about it.<br/>
+        * Upload text file, word or PDF and ask about it.<br/>
+        * Access a wide range of knowledge.<br/>
+        * Solve mathematical problems.<br/>
+        * Generate high-quality images.<br/>
+        * Give GPT a preset instruction, like do a role play.<br/>
+        * Link with your own data.<br/>
+        * Link with other AI systems.<br/>
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
