@@ -53,6 +53,7 @@ const Documentation = ({ country }) => {
     <>
       <div>
         <div className="mt-2"><a href="#introduction"><u>Introduction</u></a></div>
+        <div className="mt-2"><a href="#overview"><u>Overview</u></a></div>
         <div className="mt-2"><a href="#quick-start"><u>Quick Start</u></a></div>
         <div>
           <div className="mt-2"><a href="#features"><u>Features</u></a></div>
@@ -91,17 +92,19 @@ const Documentation = ({ country }) => {
       <div className="mt-2">
         Simple AI (`simple-ai.io`) is an AI chat application. It focuses on improving the user experience of interacting with AI models. It provides a command-based and easy-to-use shell interface to interact with the AI models.
       </div>
-      <div id="introduction" className="mt-5">Overview</div>
+      <div id="overview" className="mt-5">Overview</div>
       <div className="mt-2">
         - What you can do with Simple AI:<br/>
-        * Chat or ask complex questions.<br/>
-        * Generate text or translate text to any languages.<br/>
+        * Chat, or ask complex questions.<br/>
+        * Generate text or translate text, for any languages.<br/>
+        * Summarize long text.<br/>
+        * Generate source code from nature language.<br/>
         * Upload an image and inquire about it.<br/>
-        * Upload text file, word or PDF and ask about it.<br/>
+        * Upload a text, Word or PDF file and ask about the content.<br/>
         * Access a wide range of knowledge.<br/>
         * Solve mathematical problems.<br/>
         * Generate high-quality images.<br/>
-        * Give GPT a preset instruction, like do a role play.<br/>
+        * Give GPT a preset instruction, or role play.<br/>
         * Link with your own data.<br/>
         * Link with other AI systems.<br/>
       </div>
