@@ -136,9 +136,11 @@ export default async function (req, res) {
                + "For support, email us at `support@simple-ai.io`." + "<br>"
                + `Join our discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>"
                + "<br>"
-               + "Share Simple AI with friends and earn $1 rewards per invite!" + "<br>"
-               + "Invite friend to joined and click the invitation link below will grant $1 usage to both of you." + "<br>"
+               + "Share Simple AI with friends and earn 100K tokens rewards per invite!" + "<br>"
+               + "Invite friend to joined and click the invitation link below will grant 100K tokens usage to both of you." + "<br>"
                + `Invitation Link: https://simple-ai.io/api/invite/complete/${inviteCode}` + "<br>"
+               + "<br>"
+               + "* Please do not register multiple accounts or use temporary email addresses, as it will result in your account being banned." + "<br>"
                + "<br>"
                + "- Simple AI Developers";
     
