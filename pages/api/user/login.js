@@ -34,6 +34,14 @@ export default async (req, res) => {
     });
   }
 
+  // Check user status
+  if (user.status === 'suspend') {
+    return res.status(401).json({
+      success: false,
+      error: 'Your account is being suspended. Please contact support at `support@simple-ai.io` for help.'
+    });
+  }
+
   // Create JWT token
   const payload = { 
     id: user.id, 
