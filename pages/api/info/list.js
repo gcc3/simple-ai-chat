@@ -8,8 +8,8 @@ export default async function (req, res) {
 
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
     const ipInfo = await getIpInfo(ip);
-    const country = ipInfo.country === undefined ? "Unknown" : ipInfo.country;
-    const city = ipInfo.city === undefined ? "Unknown" : ipInfo.city;
+    const country = ipInfo.country === undefined ? "unknown" : ipInfo.country;
+    const city = ipInfo.city === undefined ? "unknown" : ipInfo.city;  // no need
 
     res.status(200).json({
       result: {
@@ -28,9 +28,8 @@ export default async function (req, res) {
         use_payment: use_payment,
         use_email: use_email,
         minimalist: minimalist,
-        ip: ip,
-        country: country,
-        city: city,
+        user_ip: ip,
+        user_country: country,
       },
     });
   } catch (error) {

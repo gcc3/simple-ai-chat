@@ -608,7 +608,7 @@ export default function Home() {
         if (info.generating) setGenerating(info.generating);  // Set generating text
         if (info.use_payment) setSubscriptionDisplay(true);  // Set use payment
         if (info.minimalist) setMinimalist(true);  // Set minimalist
-        if (info.country) setCountry(info.country);  // Set country
+        if (info.user_country) setCountry(info.user_country);  // Set country
 
         // Set welcome message
         if (info.welcome_message && !localStorage.getItem("user")) {
@@ -617,7 +617,7 @@ export default function Home() {
           // Print welcome video
           const video_id = process.env.NEXT_PUBLIC_VIDEO_ID;
           if (video_id && localStorage.getItem("fullscreen") === "off") {
-            if (info.country && info.country === "CN") {
+            if (info.user_country && info.user_country === "CN") {
               // TODO use Bilibili
               console.log("Video not available in China.");
             } else {
