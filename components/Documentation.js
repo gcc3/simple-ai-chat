@@ -91,6 +91,19 @@ const Documentation = ({ country }) => {
       <div className="mt-2">
         Simple AI (`simple-ai.io`) is an AI chat application. It focuses on improving the user experience of interacting with AI models. It provides a command-based and easy-to-use shell interface to interact with the AI models.
       </div>
+      <div id="introduction" className="mt-5">Overview</div>
+      <div className="mt-2">
+        What you can do with Simple AI:<br/>
+        1. Chat, ask complex questions.<br/>
+        2. Upload an image and inquire about it.<br/>
+        3. Upload text file, Word, PDF and ask questions about it.<br/>
+        4. Access a wide range of knowledge.<br/>
+        5. Solve mathematical problems.<br/>
+        6. Generate high-quality images.<br/>
+        7. Participate in role-playing activities.<br/>
+        8. Integrate with your own datasets.<br/>
+        9. Connect with other AI systems.<br/>
+      </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
         {country && country !== "CN" && process.env.NEXT_PUBLIC_VIDEO_ID && <div className="max-w-screen-lg">
