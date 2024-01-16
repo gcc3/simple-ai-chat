@@ -1,5 +1,5 @@
 export default async function system(args) {
-  const response = await fetch("/api/info/list", {
+  const response = await fetch("/api/info/system", {
     method: "GET",
     headers: {
       "Content-Type": "application/json",

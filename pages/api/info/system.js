@@ -1,15 +1,9 @@
 import { getSystemConfigurations } from "utils/sysUtils";
-import { getIpInfo } from "utils/ipUtils";
 
 export default async function (req, res) {
   try {
     // configurations
     const { model, model_v, role_content_system, welcome_message, querying, generating, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email, minimalist } = getSystemConfigurations();
-
-    const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    const ipInfo = await getIpInfo(ip);
-    const country = ipInfo.country === undefined ? "unknown" : ipInfo.country;
-    const city = ipInfo.city === undefined ? "unknown" : ipInfo.city;  // no need
 
     res.status(200).json({
       result: {
@@ -28,8 +22,6 @@ export default async function (req, res) {
         use_payment: use_payment,
         use_email: use_email,
         minimalist: minimalist,
-        user_ip: ip,
-        user_country: country,
       },
     });
   } catch (error) {
