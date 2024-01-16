@@ -211,7 +211,7 @@ export default async function store(args, files) {
 
     // Add to storage
     addStoreToSessionStorage(storeName);
-    return "Store \`" + storeName + "\` is being used. You can directly talk to it, or \`:search [query]\` to search data from the store. Use command \`:store\` to show current store information.";
+    return "Store \`" + storeName + "\` is being used. You can directly talk to it, or use \`:search [text]\` to search data from it. You can use command \`:store\` to show current store information.";
   }
 
   // Use store

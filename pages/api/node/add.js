@@ -51,6 +51,6 @@ export default async function (req, res) {
   insertNode(name, settings, username);
   return res.status(200).json({ 
     success: true,
-    message: "Node \"" + name + "\" is created. You can use command `:node set [key] [value]` to configure it, and use command `:node \"" + name + "\"` to check node status and settings. Node `" + name + "` is now active.",
+    message: "Node \"" + name + "\" is created. You can use command `:node set [key] [value]` to configure it. Use command `:node [name?]` to check node status and settings. Node `" + name + "` is now active.",
   });
 }
