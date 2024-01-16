@@ -112,7 +112,7 @@ function Usage() {
 
   const content = (
     <>
-      {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]`.</div>}
+      {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]` (no need brackets).</div>}
       {user && <div>
         <div>
           <div className="mb-1">- Subcription Status</div>

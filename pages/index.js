@@ -590,34 +590,40 @@ export default function Home() {
     };
     window.addEventListener("keydown", handleKeyDown, true);
 
-    // Get system configurations
+    // Get system configurations and IP info
     const getSystemInfo = async () => {
       try {
         console.log("Fetching system info...");
-        const response = await fetch('/api/info/list');
-        const info = (await response.json()).result;
-        if (info.init_placeholder) {
-          global.rawPlaceholder = info.init_placeholder;
-          setPlaceholder({ text: info.init_placeholder, height: null });  // Set placeholder text
+
+        // System info
+        const systemInfoResponse = await fetch('/api/info/system');
+        const systemInfo = (await systemInfoResponse.json()).result;
+        if (systemInfo.init_placeholder) {
+          global.rawPlaceholder = systemInfo.init_placeholder;
+          setPlaceholder({ text: systemInfo.init_placeholder, height: null });  // Set placeholder text
         }
-        if (info.enter) {
-          dispatch(toggleEnterChange(info.enter));
+        if (systemInfo.enter) {
+          dispatch(toggleEnterChange(systemInfo.enter));
         }
-        if (info.waiting) setWaiting(info.waiting);  // Set waiting text
-        if (info.querying) setQuerying(info.querying);  // Set querying text
-        if (info.generating) setGenerating(info.generating);  // Set generating text
-        if (info.use_payment) setSubscriptionDisplay(true);  // Set use payment
-        if (info.minimalist) setMinimalist(true);  // Set minimalist
-        if (info.country) setCountry(info.country);  // Set country
+        if (systemInfo.waiting) setWaiting(systemInfo.waiting);  // Set waiting text
+        if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
+        if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
+        if (systemInfo.use_payment) setSubscriptionDisplay(true);  // Set use payment
+        if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
+
+        // IP Info
+        const ipInfoResponse = await fetch('/api/info/ip');
+        const ipInfo = (await ipInfoResponse.json()).result;
+        if (ipInfo.country) setCountry(ipInfo.country);  // Set country
 
         // Set welcome message
-        if (info.welcome_message && !localStorage.getItem("user")) {
-          printOutput(info.welcome_message);
+        if (systemInfo.welcome_message && !localStorage.getItem("user")) {
+          printOutput(systemInfo.welcome_message);
 
           // Print welcome video
           const video_id = process.env.NEXT_PUBLIC_VIDEO_ID;
           if (video_id && localStorage.getItem("fullscreen") === "off") {
-            if (info.country && info.country === "CN") {
+            if (ipInfo.country && ipInfo.country === "CN") {
               // TODO use Bilibili
               console.log("Video not available in China.");
             } else {
