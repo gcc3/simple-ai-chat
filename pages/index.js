@@ -596,7 +596,7 @@ export default function Home() {
         console.log("Fetching system info...");
 
         // System info
-        const systemInfoResponse = await fetch('/api/info/system');
+        const systemInfoResponse = await fetch('/api/system/info');
         const systemInfo = (await systemInfoResponse.json()).result;
         if (systemInfo.init_placeholder) {
           global.rawPlaceholder = systemInfo.init_placeholder;
@@ -612,7 +612,7 @@ export default function Home() {
         if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
 
         // IP Info
-        const ipInfoResponse = await fetch('/api/info/ip');
+        const ipInfoResponse = await fetch('/api/system/ip-info');
         const ipInfo = (await ipInfoResponse.json()).result;
         if (ipInfo.country) setCountry(ipInfo.country);  // Set country
 
