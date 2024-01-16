@@ -140,7 +140,7 @@ export default async function (req, res) {
                + "Invite friend to joined and click the invitation link below will grant 100K tokens usage to both of you." + "<br>"
                + `Invitation Link: https://simple-ai.io/api/invite/complete/${inviteCode}` + "<br>"
                + "<br>"
-               + "* Please do not register multiple accounts or use temporary email addresses, as it will result in your account being banned." + "<br>"
+               + "* Please do not register multiple accounts or use temporary email addresses, as it will result in your account being suspended." + "<br>"
                + "<br>"
                + "- Simple AI Developers";
     
