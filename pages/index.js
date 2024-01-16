@@ -669,12 +669,99 @@ export default function Home() {
     const crossorigin = "anonymous";
     loadScript(src, integrity, crossorigin);
 
+    // Touch event handler
+    let xDown = null;
+    let yDown = null;
+    const handleTouchStart = (event) => {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+      xDown = event.touches[0].clientX;
+      yDown = event.touches[0].clientY;
+    };
+    const handleTouchMove = (event) => {
+      if (!xDown || !yDown) {
+        return;
+      }
+      var xUp = event.touches[0].clientX;
+      var yUp = event.touches[0].clientY;
+      var xDiff = xDown - xUp;
+      var yDiff = yDown - yUp;
+      if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        if (xDiff > 0) {
+          // Left swipe show next log
+          if (global.STATE === STATES.IDLE) {
+            getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
+              .then((r) => {
+                if (Object.entries(r.result).length === 0) {
+                  console.log("No next log.");
+                  return;
+                } else {
+                  const log = r.result["log"];
+                  printSessionLog(log);
+                }
+            });
+          } else {
+            console.log("Aborted as generating.");
+          }
+        } else {
+          // Right swipe show previous log
+          if (global.STATE === STATES.IDLE) {
+            getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
+              .then((r) => {
+                if (Object.entries(r.result).length === 0) {
+                  console.log("No previous log.");
+                  return;
+                } else {
+                  const log = r.result["log"];
+                  printSessionLog(log);
+                }
+              });
+          } else {
+            console.log("Aborted as generating.");
+          }
+        }
+      } else {
+        if (yDiff > 0) {
+          // Up swipe
+        } else {
+          // Down swipe
+        }
+      }
+      /* reset values */
+      xDown = null;
+      yDown = null;
+    }
+    const handleTouchEnd = (event) => {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    }
+    const handleTouchCancel = (event) => {
+      if (event.touches.length > 1) {
+        event.preventDefault();
+      }
+    }
+
+    // Add touch event listener
+    const elOutput = elOutputRef.current;
+    elOutput.addEventListener('touchstart', handleTouchStart, false);
+    elOutput.addEventListener('touchmove', handleTouchMove, false);
+    elOutput.addEventListener('touchend', handleTouchEnd, false);
+    elOutput.addEventListener('touchcancel', handleTouchCancel, false);
+
     // Cleanup
     return () => {
       // Remove event listener, this is necessary
       window.removeEventListener("keydown", handleKeyDown, true);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('hashchange', removeHashTag);
+
+      // Remove touch event listener
+      elOutput.removeEventListener('touchstart', handleTouchStart, false);
+      elOutput.removeEventListener('touchmove', handleTouchMove, false);
+      elOutput.removeEventListener('touchend', handleTouchEnd, false);
+      elOutput.removeEventListener('touchcancel', handleTouchCancel, false);
     }
   }, []);
 
