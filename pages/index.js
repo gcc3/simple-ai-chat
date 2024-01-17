@@ -472,6 +472,7 @@ export default function Home() {
             if (command) {
               setInput(command);
               sessionStorage.setItem("historyIndex", historyIndex + 1);
+              reAdjustInputHeight(localStorage.getItem("fullscreen"));
             }
           }
           break;
@@ -487,10 +488,12 @@ export default function Home() {
             if (command) {
               setInput(command);
               sessionStorage.setItem("historyIndex", historyIndex - 1);
+              reAdjustInputHeight(localStorage.getItem("fullscreen"));
             } else {
               // Clear input
               setInput("");
               sessionStorage.setItem("historyIndex", -1);
+              reAdjustInputHeight(localStorage.getItem("fullscreen"));
             }
           }
           break;
