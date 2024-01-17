@@ -19,35 +19,32 @@ export default async function use(args) {
   }
 
   // 1. Find node
-  const node = findNode(name);
-  if (node) {
+  if (await findNode(name)) {
     // Set node
     sessionStorage.setItem("node", name);
     return "Node is set to \`" + name + "\`, you can directly talk to it, or use command \`:generate [input]\` to generate from it. Command \`:node\` shows current node information.";
   }
   
   // 2. Find store
-  const store = findStore(name);
-  if (store) {
+  if (await findStore(name)) {
     // Check if stores counter
     if (countStoresInSessionStorage() >= 3) {
       return "You can only use 3 stores at the same time. Please unuse one of them first.";
     }
 
     // Add to storage
-    addStoreToSessionStorage(storeName);
-    return "Store \`" + storeName + "\` is being used. You can directly talk to it, or use \`:search [text]\` to search data from it. You can use command \`:store\` to show current store information.";
+    addStoreToSessionStorage(name);
+    return "Store \`" + name + "\` is being used. You can directly talk to it, or use \`:search [text]\` to search data from it. You can use command \`:store\` to show current store information.";
   }
 
   // 3. Find role
-  const role = findRole(name);
-  if (role) {
-    sessionStorage.setItem("role", roleName);
+  if (await findRole(name)) {
+    sessionStorage.setItem("role", name);
 
     // Reset session to forget previous memory
     initializeMemory();
 
-    return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show current role and prompt. Memory is reset.";
+    return "Role is set to \`" + name + "\`, you can use command \`:role\` to show current role and prompt. Memory is reset.";
   }
 
   return "Not found.";
