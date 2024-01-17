@@ -688,6 +688,22 @@ export default function Home() {
       var xDiff = xDown - xUp;
       var yDiff = yDown - yUp;
       if (Math.abs(xDiff) > Math.abs(yDiff)) {
+        // Ignore if touch on code block
+        const elTouch = event.target;
+        if (elTouch.className && (elTouch.className.indexOf("hljs") !== -1 || elTouch.className.indexOf("code-block") !== -1)) {
+          // If touch on code block, do nothing
+          return;
+        }
+        if (elTouch.tagName && elTouch.tagName.toLowerCase() === "pre") {
+          for (var i = 0; i < elTouch.childNodes.length; i++) {
+            const child = elTouch.childNodes[i];
+            if (child.className.indexOf("hljs") !== -1 || child.className.indexOf("code-block") !== -1) {
+              // If touch on pre, contains code block, do nothing
+              return;
+            }
+          }
+        }
+
         if (xDiff > 0) {
           // Left swipe show next log
           if (global.STATE === STATES.IDLE) {
