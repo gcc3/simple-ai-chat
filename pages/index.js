@@ -839,7 +839,14 @@ export default function Home() {
     const input = global.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
-    if (input.length == 0) return;
+
+    // Check if the input is empty
+    if (image_urls.length == 0 
+     && file_urls.length == 0
+     && input.trim().length == 0) {
+      console.log("Input is empty.");
+      return;
+     }
 
     // Clear input and put it to placeholder
     const elInput = elInputRef.current;
@@ -1499,9 +1506,9 @@ export default function Home() {
             const data = await response.json();
             if (response.status === 200 && data.success) {
               const role = [].concat(data.result.user_roles, data.result.system_roles).flat()
-                             .find((n) => n.name.startsWith(nameToBeComleted));
+                             .find((n) => n.role.startsWith(nameToBeComleted));
               if (role) {
-                setInput(":role use \"" + role.name + "\"");
+                setInput(":role use \"" + role.role + "\"");
                 reAdjustInputHeight();
               }
             }

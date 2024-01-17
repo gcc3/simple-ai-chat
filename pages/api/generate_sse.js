@@ -80,7 +80,6 @@ export default async function (req, res) {
   // Input
   input = req.query.user_input.replaceAll("%", "％").trim();  // escape %
   input = decodeURIComponent(input) || "";
-  if (input.trim().length === 0) return;
 
   // Images & files
   const decodedImages = decodeURIComponent(images_) || "";
@@ -101,6 +100,14 @@ export default async function (req, res) {
       files.push(decodedFiles);
     }
   }
+
+  // If input is all empty, return
+  if (input.trim().length === 0 
+   && images.length == 0
+   && files.length == 0) {
+    console.log("Input is empty.");
+    return;
+   }
 
   // Load node
   const nodeInfo = user && await findNode(node, user.username);
