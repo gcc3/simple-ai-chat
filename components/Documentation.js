@@ -63,7 +63,6 @@ const Documentation = ({ country }) => {
     <>
       <div>
         <div className="mt-2"><a href="#introduction"><u>Introduction</u></a></div>
-        <div className="mt-2"><a href="#overview"><u>Overview</u></a></div>
         <div className="mt-2"><a href="#quick-start"><u>Quick Start</u></a></div>
         <div>
           <div className="mt-2"><a href="#features"><u>Features</u></a></div>
@@ -100,11 +99,10 @@ const Documentation = ({ country }) => {
       </div>
       <div id="introduction" className="mt-5">Introduction</div>
       <div className="mt-2">
-        Simple AI (`simple-ai.io`) is an AI chat application. It focuses on improving the user experience of interacting with AI models. It provides a command-based and easy-to-use shell interface to interact with the AI models.
+        Simple AI (simple-ai.io) is an AI chat application based on OpenAI's latest GPT-4 Turbo model, the most advanced AI model in the world. We focus on improving user experience and providing powerful features for interacting with AI models. Simple AI is the first AI chat application to support both OpenAI's GPT models and to offer integration with other AI systems, such as Midjourney for image generation, and Wolfram Alpha for knowledge and mathematics. Additionally, we provide a command-based and easy-to-use shell interface, along with shortcuts and gestures, to facilitate user interactions with the AI models. With all these features, Simple AI stands as one of the most powerful AI chat applications in the world.
       </div>
-      <div id="overview" className="mt-5">Overview</div>
       <div className="mt-2">
-        - What you can do with Simple AI:<br/>
+        - What you can do with Simple AI?<br/>
         * Chat, or ask complex questions.<br/>
         * Generate text or translate text, for any languages.<br/>
         * Summarize long text.<br/>
@@ -117,6 +115,12 @@ const Documentation = ({ country }) => {
         * Give GPT a preset instruction, or role play.<br/>
         * Link with your own data.<br/>
         * Link with other AI systems.<br/>
+        <div className="ml-5">And more...</div>
+      </div>
+      <div className="mt-2">
+        - Is Simple AI free?<br/>
+        * Yes, most of the services are free for `user`; however, the OpenAI token fee is not free. You can pay-as-you-use.<br/>
+        * For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.<br/>
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
