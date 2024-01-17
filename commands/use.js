@@ -123,7 +123,7 @@ async function findRole(roleName) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    if (!data.result.system_roles.includes(roleName) 
+    if (!data.result.system_roles.some((role) => role.role === roleName) 
     && (!data.result.user_roles || !Object.entries(data.result.user_roles).some(([key, value]) => value.role === roleName))) {
       return false;
     } else {

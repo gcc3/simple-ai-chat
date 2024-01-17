@@ -105,11 +105,15 @@ export default async function role(args) {
           }
         }
 
-        const defaultRoles = "System roles: \n" 
-                     + "\\" + data.result.system_roles.join(" \\");
+        let roles = [];
+        Object.entries(data.result.system_roles).forEach(([key, value]) => {
+          roles.push(value.role);
+        });
+        const systemRoles = "System roles: \n" 
+                          + "\\" + roles.join(" \\") + "\n\n"; 
 
         // Add star to current role
-        let result = userRoles + defaultRoles;
+        let result = userRoles + systemRoles;
         if (sessionStorage.getItem("role")) {
           const currentStore = sessionStorage.getItem("role");
           result = result.replace("\\" + currentStore, "*\\" + currentStore);
@@ -149,7 +153,7 @@ export default async function role(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (!data.result.system_roles.includes(roleName) 
+      if (!data.result.system_roles.some((role) => role.role === roleName)
       && (!data.result.user_roles || !Object.entries(data.result.user_roles).some(([key, value]) => value.role === roleName))) {
         return "Role \"" + roleName + "\" does not exist.";
       }

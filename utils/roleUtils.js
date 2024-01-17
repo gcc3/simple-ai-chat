@@ -12,7 +12,10 @@ export async function getSystemRoles() {
 
   // push role
   for await (const [role, prompt] of csvRows) {
-    roles.push(role);
+    roles.push({
+      role: role,
+      prompt: prompt,
+    });
   }
   return roles;
 }

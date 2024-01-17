@@ -1509,6 +1509,7 @@ export default function Home() {
               if (role) {
                 setInput(":role use \"" + role.role + "\"");
                 reAdjustInputHeight();
+                return;
               }
             }
           }
@@ -1526,6 +1527,7 @@ export default function Home() {
               if (store) {
                 setInput(":store use \"" + store.name + "\"");
                 reAdjustInputHeight();
+                return;
               }
             }
           }
@@ -1543,6 +1545,7 @@ export default function Home() {
               if (node) {
                 setInput(":node use \"" + node.name + "\"");
                 reAdjustInputHeight();
+                return;
               }
             }
           }
@@ -1556,6 +1559,52 @@ export default function Home() {
             if (theme) {
               setInput(":theme " + theme);
               reAdjustInputHeight();
+              return;
+            }
+          }
+        }
+
+        // Auto complete use
+        if (elInput.value.startsWith(":use ")) {
+          const nameToBeComleted = elInput.value.replace(":use ", "");
+          if (nameToBeComleted) {
+            // Get node
+            const responseNode = await fetch("/api/node/list");
+            const dataNode = await responseNode.json();
+            if (responseNode.status === 200 && dataNode.success) {
+              const node = [].concat(dataNode.result.user_nodes, dataNode.result.group_nodes, dataNode.result.system_nodes).flat()
+                             .find((n) => n.name.startsWith(nameToBeComleted));
+              if (node) {
+                setInput(":use \"" + node.name + "\"");
+                reAdjustInputHeight();
+                return;
+              }
+            }
+
+            // Get store
+            const responseStore = await fetch("/api/store/list");
+            const dataStore = await responseStore.json();
+            if (responseStore.status === 200 && dataStore.success) {
+              const store = [].concat(dataStore.result.user_stores, dataStore.result.group_stores, dataStore.result.system_stores).flat()
+                              .find((n) => n.name.startsWith(nameToBeComleted));
+              if (store) {
+                setInput(":use \"" + store.name + "\"");
+                reAdjustInputHeight();
+                return;
+              }
+            }
+
+            // Get role
+            const responseRole = await fetch("/api/role/list");
+            const dataRole = await responseRole.json();
+            if (responseRole.status === 200 && dataRole.success) {
+              const role = [].concat(dataRole.result.user_roles, dataRole.result.system_roles).flat()
+                             .find((n) => n.role.startsWith(nameToBeComleted));
+              if (role) {
+                setInput(":use \"" + role.role + "\"");
+                reAdjustInputHeight();
+                return;
+              }
             }
           }
         }
