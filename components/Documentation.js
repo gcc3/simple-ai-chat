@@ -33,6 +33,11 @@ const Documentation = ({ country }) => {
   const functions = getFunctions();
 
   const shortcuts = [
+    { action: "Stop generating.", shortcut: "⌃C", condition: "Generating." },
+    { action: "Clear output.", shortcut: "⌃R", condition: "Has output." },
+    { action: "Clear output and reset session.", shortcut: "⇧⌃R", condition: "-" },
+    { action: "Fullscreen.", shortcut: "F11(*)", condition: "-" },
+    { action: "Split screen.", shortcut: "⌃|", condition: "-" },
     { action: "Clear the input.", shortcut: "ESC", condition: "Focused on the input area. Input area not empty." },
     { action: "Unfocus from the input box.", shortcut: "ESC", condition: "Focused on the input area. Input area is empty/cleared." },
     { action: "Repeat last input.", shortcut: "Tab", condition: "Focused on the input area. Input area is empty/cleared." },
@@ -42,6 +47,11 @@ const Documentation = ({ country }) => {
     { action: "Previous command.", shortcut: "↑", condition: "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history." },
     { action: "Next command.", shortcut: "↓", condition: "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history." },
     { action: "Change focus to input area.", shortcut: "Tab or /", condition: "Unfocused from the input area." },
+  ];
+
+  const gestures = [
+    { action: "Previous log (same session).", gesture: "Swipe Right", condition: "-" },
+    { action: "Next log (same session).", gesture: "Swipe Left", condition: "-" },
   ];
 
   const apis = [
@@ -84,7 +94,7 @@ const Documentation = ({ country }) => {
           </div>
         </div>
         <div className="mt-2"><a href="#functions"><u>Functions</u></a></div>
-        <div className="mt-2"><a href="#shortcuts"><u>Shortcuts</u></a></div>
+        <div className="mt-2"><a href="#shortcuts"><u>Shortcuts & Gestures</u></a></div>
         <div className="mt-2"><a href="#api"><u>APIs</u></a></div>
         <div className="mt-2"><a href="#feedback"><u>Feedback & Support</u></a></div>
       </div>
@@ -167,7 +177,7 @@ const Documentation = ({ country }) => {
       </div>
       <div id="functions" className="mt-5">Functions</div>
       <div className="mt-2">
-        We provide some built-in functions to get information from the Internet. Both user and AI can use these functions. To get a list of available functions, use the `:function ls` command.
+        We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.
       </div>
       <div className="mt-3 table-container">
         <table>
@@ -204,8 +214,9 @@ const Documentation = ({ country }) => {
           * Weather data is provided by WolframAlpha.
         </div>
       </div>
-      <div id="shortcuts" className="mt-5">Shortcuts</div>
-      <div className="mt-3 table-container">
+      <div id="shortcuts" className="mt-5">Shortcuts & Gestures</div>
+      <div className="mt-3">Shortcuts</div>
+      <div className="mt-1 table-container">
         <table>
           <thead>
             <tr>
@@ -224,10 +235,32 @@ const Documentation = ({ country }) => {
             ))}
           </tbody>
         </table>
-        <div className="mt-2">
-          * Command shortcuts: Stop generating (⌃c), Clear output (⌃r), Clear output and reset session (⇧⌃r), Toggle fullscreen (F11) or split mode (⌃|). In macOS you may use ⌃F11 because F11 is a system shortcut.
-        </div>
       </div>
+      <div className="mt-1">
+        * In macOS you may use ⌃F11 because F11 is a system shortcut.
+      </div>
+      <div className="mt-3">Gestures</div>
+      <div className="mt-1 table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Gesture</th>
+              <th>Action</th>
+              <th>Condition</th>
+            </tr>
+          </thead>
+          <tbody>
+            {gestures.map((item, index) => (
+              <tr key={index}>
+                <td>{item.gesture}</td>
+                <td>{item.action}</td>
+                <td>{item.condition}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <div className="mt-2">Gestures can be used on touch screens, such as smartphones and tablets.</div>
       <div id="api" className="mt-5">APIs</div>
       <div className="mt-2">
         Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)
