@@ -969,6 +969,11 @@ export default function Home() {
         return;
       }
 
+      if (!localStorage.getItem("user")) {
+        printOutput("Please login.");
+        return;
+      }
+
       console.log("Function CLI: " + JSON.stringify(functions));
       pushCommandHistory(input);
 
