@@ -118,6 +118,7 @@ function Subscription() {
           2. `pro_user`: provide advanced features and support for professonal uses.<br></br>
           3. `super_user`: provide accessability for all latest features and support.<br></br>
         </div>
+        <div className="mt-1">* Non-registered users are limited to 12 text generations per day.</div>
       </div>
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
       {user && <div className="mt-4">
