@@ -626,6 +626,7 @@ export default function Home() {
               // TODO use Bilibili
               console.log("Video not available in China.");
             } else {
+              clearPreviewVideos();
               printVideo(video_id, elOutputRef, "before");
             }
           }
