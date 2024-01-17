@@ -25,6 +25,24 @@ export default async function redirectToUrl(paramObject) {
   }
 
   let message = "";
+
+  // Test the URL
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      return {
+        success: false,
+        error: "The URL has returned a " + response.status + " error."
+      }
+    }
+  } catch (error) {
+    return {
+      success: false,
+      error: "The URL is not accessable."
+    }
+  }
+
+  // Redirect
   if (blank) message = "The browser has been redirected to `" + url + "` and has opened in a new tab.";
   else message = "The browser has been redirected to `" + url;
   return {
