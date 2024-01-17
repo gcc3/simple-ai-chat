@@ -50,8 +50,8 @@ const Documentation = ({ country }) => {
   ];
 
   const gestures = [
-    { action: "Previous log (same session).", gesture: "Swipe Right", condition: "-" },
-    { action: "Next log (same session).", gesture: "Swipe Left", condition: "-" },
+    { action: "Previous log (same session).", gesture: "Swipe Right", condition: "Not on code block." },
+    { action: "Next log (same session).", gesture: "Swipe Left", condition: "Not on code block." },
   ];
 
   const apis = [
