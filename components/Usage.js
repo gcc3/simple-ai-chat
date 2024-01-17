@@ -173,7 +173,7 @@ function Usage() {
               </tbody>
             </table>
             <div className="mt-2">* For token pricing, refer to the OpenAI official pricing document. (<a href="https://openai.com/pricing#language-models"><u>link</u></a>) </div>
-            <div>* A small amount (1%~3%) for maintaince service.</div>
+            <div>* 1% ~ 3% for maintaince service.</div>
             <div className="mt-3">- Fequencies</div>
             <table className="table-fixed mt-1">
               <tbody>

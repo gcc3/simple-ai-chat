@@ -99,7 +99,7 @@ const Documentation = ({ country }) => {
       </div>
       <div id="introduction" className="mt-5">Introduction</div>
       <div className="mt-2">
-        Simple AI (`simple-ai.io`) is an AI chat application. It focuses on improving the user experience of interacting with AI models. It provides a command-based and easy-to-use shell interface to interact with the AI models.
+        Simple AI (simple-ai.io) is an AI chat application based on OpenAI's latest GPT-4 Turbo model, the most advanced AI model in the world. We focus on improving user experience and providing powerful features for interacting with AI models. Simple AI is the first AI chat application to support both OpenAI's GPT models and to offer integration with other AI systems, such as Midjourney for image generation, and Wolfram Alpha for knowledge and mathematics. Additionally, we provide a command-based and easy-to-use shell interface, along with shortcuts and gestures, to facilitate user interactions with the AI models. With all these features, Simple AI stands as one of the most powerful AI chat applications in the world.
       </div>
       <div className="mt-2">
         - What you can do with Simple AI?<br/>
@@ -115,7 +115,7 @@ const Documentation = ({ country }) => {
         * Give GPT a preset instruction, or role play.<br/>
         * Link with your own data.<br/>
         * Link with other AI systems.<br/>
-        And more...<br/>
+        <div className="ml-5">And more...</div>
       </div>
       <div className="mt-2">
         - Is Simple AI free?<br/>
