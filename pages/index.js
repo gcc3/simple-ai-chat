@@ -422,10 +422,6 @@ export default function Home() {
           if (event.ctrlKey && event.shiftKey) {
             if (global.STATE === STATES.IDLE) {
               event.preventDefault();
-              clearOutput();
-              setInfo();
-              setStats();
-              setEvaluation();
               command(":reset");
               console.log("Shortcut: ⇧⌃r");
             }
@@ -874,7 +870,7 @@ export default function Home() {
       console.log("Command Input:\n" + (!isCommandMusked(commandString) ? input : "(musked)"));
 
       // Clear command
-      if (commandString.startsWith("clear") || commandString.startsWith("reset")) {
+      if (commandString.startsWith("clear")) {
         clearOutput();
         resetInfo();
       }

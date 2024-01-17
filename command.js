@@ -107,7 +107,7 @@ export function getCommands() {
     { id: "commands-general", title: "General", annotation: "", command: ":help [command?]", short_description: "Show command help.", description: "Show command help. The command should be enclosed in double quotes." },
     { id: "", title: "", annotation: "", command: ":stop", short_description: "Stop generating. (⌃c)", description: "Stop generating. Same as in a shell, use control + c can stop executing." },
     { id: "", title: "", annotation: "", command: ":clear", short_description: "Clear output. (⌃r)", description: "Clear output. This will only reset output to empty." },
-    { id: "", title: "", annotation: "", command: ":reset", short_description: "Clear output and reset session. (⇧⌃r)", description: "Clear output and reset session. This will reset the AI memory as session is reset. It will not reset role, store and node." },
+    { id: "", title: "", annotation: "", command: ":reset", short_description: "Reset memory, uses. (⇧⌃r)", description: "Reset session with memory. It will also reset role, store and node." },
     { id: "", title: "", annotation: "", command: ":fullscreen [off?]", short_description: "Fullscreen default mode (F11).", description: "Fullscreen default mode, or turn it off" },
     { id: "", title: "", annotation: "", command: ":fullscreen split", short_description: "Fullscreen split mode (⌃|).", description: "Use fullscreen split mode, to split screen left and right. Or use off to turn fullscreen off. Fullscreen split mode will makes easier to input data and review output, especially when dealing with lengthy responses." },
     { id: "", title: "", annotation: "", command: ":theme [light/dark/terminal]", short_description: "Change color theme.", description: "" },
