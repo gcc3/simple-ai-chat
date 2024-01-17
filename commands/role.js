@@ -1,4 +1,4 @@
-import { initializeSession } from "utils/sessionUtils";
+import { initializeMemory } from "utils/sessionUtils";
 
 export default async function role(args) {
   const command = args[0];
@@ -68,8 +68,8 @@ export default async function role(args) {
     sessionStorage.setItem("role", "");  // reset role
 
     // Reset session to forget previous memory
-    initializeSession();
-    return "Role reset.";
+    initializeMemory();
+    return "Role reset with memory.";
   }
 
   // List available roles
@@ -105,11 +105,15 @@ export default async function role(args) {
           }
         }
 
-        const defaultRoles = "System roles: \n" 
-                     + "\\" + data.result.system_roles.join(" \\");
+        let roles = [];
+        Object.entries(data.result.system_roles).forEach(([key, value]) => {
+          roles.push(value.role);
+        });
+        const systemRoles = "System roles: \n" 
+                          + "\\" + roles.join(" \\") + "\n\n"; 
 
         // Add star to current role
-        let result = userRoles + defaultRoles;
+        let result = userRoles + systemRoles;
         if (sessionStorage.getItem("role")) {
           const currentStore = sessionStorage.getItem("role");
           result = result.replace("\\" + currentStore, "*\\" + currentStore);
@@ -149,7 +153,7 @@ export default async function role(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      if (!data.result.system_roles.includes(roleName) 
+      if (!data.result.system_roles.some((role) => role.role === roleName)
       && (!data.result.user_roles || !Object.entries(data.result.user_roles).some(([key, value]) => value.role === roleName))) {
         return "Role \"" + roleName + "\" does not exist.";
       }
@@ -162,9 +166,9 @@ export default async function role(args) {
       sessionStorage.setItem("role", roleName);
 
       // Reset session to forget previous memory
-      initializeSession();
+      initializeMemory();
 
-      return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show current role and prompt.";
+      return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show current role and prompt. Memory is reset.";
     } else {
       return "Invalid role name.";
     }

@@ -33,11 +33,11 @@ const Documentation = ({ country }) => {
   const functions = getFunctions();
 
   const shortcuts = [
-    { action: "Stop generating.", shortcut: "⌃C", condition: "Generating." },
-    { action: "Clear output.", shortcut: "⌃R", condition: "Has output." },
-    { action: "Clear output and reset session.", shortcut: "⇧⌃R", condition: "-" },
-    { action: "Fullscreen.", shortcut: "F11(*)", condition: "-" },
-    { action: "Split screen.", shortcut: "⌃|", condition: "-" },
+    { action: "Stop generating. (`:stop`)", shortcut: "⌃C", condition: "Generating." },
+    { action: "Clear output. (`:clear`)", shortcut: "⌃R", condition: "Has output." },
+    { action: "Clear output and reset session. (`:reset`)", shortcut: "⇧⌃R", condition: "-" },
+    { action: "Fullscreen. (`:fullscreen [off?]`)", shortcut: "F11(*)", condition: "-" },
+    { action: "Split screen. (`:fullscreen split`)", shortcut: "⌃|", condition: "-" },
     { action: "Clear the input.", shortcut: "ESC", condition: "Focused on the input area. Input area not empty." },
     { action: "Unfocus from the input box.", shortcut: "ESC", condition: "Focused on the input area. Input area is empty/cleared." },
     { action: "Repeat last input.", shortcut: "Tab", condition: "Focused on the input area. Input area is empty/cleared." },

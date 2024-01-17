@@ -29,6 +29,8 @@ import node from "commands/node.js";
 import set from "commands/set.js";
 import generate from "commands/generate.js";
 import invite from "commands/invite.js";
+import attach from "commands/attach.js";
+import use from "commands/use.js";
 
 export default function commands(input, files) {
   let command = input;
@@ -76,6 +78,8 @@ export default function commands(input, files) {
   if (command.startsWith(":set")) return set(args);
   if (command.startsWith(":generate")) return generate(args);
   if (command.startsWith(":invite")) return invite(args);
+  if (command.startsWith(":attach")) return attach(args);
+  if (command.startsWith(":use")) return use(args);
   return "Unknown command.";
 }
 
@@ -103,7 +107,7 @@ export function getCommands() {
     { id: "commands-general", title: "General", annotation: "", command: ":help [command?]", short_description: "Show command help.", description: "Show command help. The command should be enclosed in double quotes." },
     { id: "", title: "", annotation: "", command: ":stop", short_description: "Stop generating. (⌃c)", description: "Stop generating. Same as in a shell, use control + c can stop executing." },
     { id: "", title: "", annotation: "", command: ":clear", short_description: "Clear output. (⌃r)", description: "Clear output. This will only reset output to empty." },
-    { id: "", title: "", annotation: "", command: ":reset", short_description: "Clear output and reset session. (⇧⌃r)", description: "Clear output and reset session. This will reset the AI memory as session is reset. It will not reset role, store and node." },
+    { id: "", title: "", annotation: "", command: ":reset", short_description: "Reset memory, uses. (⇧⌃r)", description: "Reset session with memory. It will also reset role, store and node." },
     { id: "", title: "", annotation: "", command: ":fullscreen [off?]", short_description: "Fullscreen default mode (F11).", description: "Fullscreen default mode, or turn it off" },
     { id: "", title: "", annotation: "", command: ":fullscreen split", short_description: "Fullscreen split mode (⌃|).", description: "Use fullscreen split mode, to split screen left and right. Or use off to turn fullscreen off. Fullscreen split mode will makes easier to input data and review output, especially when dealing with lengthy responses." },
     { id: "", title: "", annotation: "", command: ":theme [light/dark/terminal]", short_description: "Change color theme.", description: "" },
@@ -111,10 +115,12 @@ export function getCommands() {
     { id: "", title: "", annotation: "", command: ":location [on|off]", short_description: "Switch on/off location service.", description: "When you turn on the location service, the AI can provide answers based on your location." },
     { id: "", title: "", annotation: "", command: ":stream [on|off]", short_description: "Switch on/off stream mode.", description: "When the stream is off, the text will be displayed once the answer is fully generated." },
     { id: "", title: "", annotation: "", command: ":set [key] [value]", short_description: "Set local configurations.", description: "Set session configurations and local configurations, the key must be one of session storage or local storage key, case-insensitive. For values include space(s) must be enclosed in double quotes. To check the available keys, use command `:info`. Example: `set memlength 0`, this can set the memory to 0 and save a lots of tokens. If you want to use function calling don't set to 0, 1 call = 1 mem, and response also increase 1 mem." },
+    { id: "", title: "", annotation: "", command: ":use [node|store|role]", short_description: "Use a node, store or role.", description: "Use a node, store or role. Same as `:role use`, `:store use` or `:node use`, just for reducing some typing. If a node, store or role has same name, will first try to find node, then store, then role." },
     { id: "commands-session", title: "Sessions & Logs", annotation: "", command: ":log", short_description: "Show logs for current session.", description: "" },
     { id: "", title: "", annotation: "", command: ":ls", short_description: "List sessions, same as `:session ls`.", description: "" },
+    { id: "", title: "", annotation: "", command: ":attach [session_id]", short_description: "Attach to a session.", description: "Attach to a session, same as :session attach [session_id]. When attached to a session, you can use left/right arraw key or J/K key to navigate between session logs." },
     { id: "", title: "", annotation: "", command: ":session [ls|list]", short_description: "List sessions.", description: "List sessions with short user input." },
-    { id: "", title: "", annotation: "", command: ":session attach [session_id]", short_description: "Attach to a session.", description: "When attached to a session, you can use left/right arraw key or J/K key to navigate between session logs." },
+    { id: "", title: "", annotation: "", command: ":session attach [session_id]", short_description: "Attach to a session.", description: "Attach to a session. When attached to a session, you can use left/right arraw key or J/K key to navigate between session logs." },
     { id: "commands-eval", title: "Stats & Self-evaluation", annotation: "", command: ":stats [on|off]", short_description: "Show stats info.", description: "A stats information will show below." },
     { id: "", title: "", annotation: "", command: ":eval [on|off]", short_description: "Enable the self evaluation score.", description: "" },
     { id: "commands-speak", title: "Speak", annotation: "", command: ":speak [on|off]", short_description: "Switch on/off auto speak.", description: "Auto read the result with system TTS voice." },

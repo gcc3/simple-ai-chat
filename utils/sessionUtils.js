@@ -1,3 +1,10 @@
+export function initializeMemory() {
+  console.log("Memory initializing...");
+  const time = Date.now()
+  sessionStorage.setItem("time", time);
+  sessionStorage.setItem("session", time);
+}
+
 export function initializeSession() {
   console.log("Session initializing...");
   const time = Date.now()
