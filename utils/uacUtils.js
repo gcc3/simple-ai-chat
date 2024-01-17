@@ -17,6 +17,14 @@ export async function getUacResult(user, ip) {
       };
     }
   }
+  
+  // Check user status
+  if (isLogin && user.status === 'suspend') {
+    return {
+      success: false,
+      error: "Your account is being suspended. Please contact support at `support@simple-ai.io` for help."
+    }
+  }
 
   // Verify email
   if (isLogin && use_email && !user.email_verified_at) {
