@@ -753,17 +753,11 @@ export default function Home() {
         event.preventDefault();
       }
     }
-    const handleTouchCancel = (event) => {
-      if (event.touches.length > 1) {
-        event.preventDefault();
-      }
-    }
 
     // Add touch event listener
     window.addEventListener('touchstart', handleTouchStart, false);
     window.addEventListener('touchmove', handleTouchMove, false);
     window.addEventListener('touchend', handleTouchEnd, false);
-    window.addEventListener('touchcancel', handleTouchCancel, false);
 
     // Cleanup
     return () => {
@@ -776,7 +770,6 @@ export default function Home() {
       window.removeEventListener('touchstart', handleTouchStart, false);
       window.removeEventListener('touchmove', handleTouchMove, false);
       window.removeEventListener('touchend', handleTouchEnd, false);
-      window.removeEventListener('touchcancel', handleTouchCancel, false);
     }
   }, []);
 
