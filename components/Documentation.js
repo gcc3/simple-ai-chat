@@ -63,7 +63,6 @@ const Documentation = ({ country }) => {
     <>
       <div>
         <div className="mt-2"><a href="#introduction"><u>Introduction</u></a></div>
-        <div className="mt-2"><a href="#overview"><u>Overview</u></a></div>
         <div className="mt-2"><a href="#quick-start"><u>Quick Start</u></a></div>
         <div>
           <div className="mt-2"><a href="#features"><u>Features</u></a></div>
@@ -120,8 +119,8 @@ const Documentation = ({ country }) => {
       </div>
       <div className="mt-2">
         - Is Simple AI free?<br/>
-        * Yes, most of the services are free for `user`; however, the OpenAI token fee is not free—you can pay as you use.<br/>
-        * For professional use, please consider using our `pro_user` or `super_user`.<br/>
+        * Yes, most of the services are free for `user`; however, the OpenAI token fee is not free. You can pay-as-you-use.<br/>
+        * For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.<br/>
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
       <div className="mt-2">
