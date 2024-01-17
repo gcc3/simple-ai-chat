@@ -1,4 +1,4 @@
-import { initializeSession } from "utils/sessionUtils";
+import { initializeMemory } from "utils/sessionUtils";
 
 export default async function role(args) {
   const command = args[0];
@@ -68,8 +68,8 @@ export default async function role(args) {
     sessionStorage.setItem("role", "");  // reset role
 
     // Reset session to forget previous memory
-    initializeSession();
-    return "Role reset.";
+    initializeMemory();
+    return "Role reset with memory.";
   }
 
   // List available roles
@@ -162,9 +162,9 @@ export default async function role(args) {
       sessionStorage.setItem("role", roleName);
 
       // Reset session to forget previous memory
-      initializeSession();
+      initializeMemory();
 
-      return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show current role and prompt.";
+      return "Role is set to \`" + roleName + "\`, you can use command \`:role\` to show current role and prompt. Memory is reset.";
     } else {
       return "Invalid role name.";
     }

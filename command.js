@@ -29,6 +29,8 @@ import node from "commands/node.js";
 import set from "commands/set.js";
 import generate from "commands/generate.js";
 import invite from "commands/invite.js";
+import attach from "commands/attach.js";
+import use from "commands/use.js";
 
 export default function commands(input, files) {
   let command = input;
@@ -76,6 +78,8 @@ export default function commands(input, files) {
   if (command.startsWith(":set")) return set(args);
   if (command.startsWith(":generate")) return generate(args);
   if (command.startsWith(":invite")) return invite(args);
+  if (command.startsWith(":attach")) return attach(args);
+  if (command.startsWith(":use")) return use(args);
   return "Unknown command.";
 }
 
@@ -111,10 +115,12 @@ export function getCommands() {
     { id: "", title: "", annotation: "", command: ":location [on|off]", short_description: "Switch on/off location service.", description: "When you turn on the location service, the AI can provide answers based on your location." },
     { id: "", title: "", annotation: "", command: ":stream [on|off]", short_description: "Switch on/off stream mode.", description: "When the stream is off, the text will be displayed once the answer is fully generated." },
     { id: "", title: "", annotation: "", command: ":set [key] [value]", short_description: "Set local configurations.", description: "Set session configurations and local configurations, the key must be one of session storage or local storage key, case-insensitive. For values include space(s) must be enclosed in double quotes. To check the available keys, use command `:info`. Example: `set memlength 0`, this can set the memory to 0 and save a lots of tokens. If you want to use function calling don't set to 0, 1 call = 1 mem, and response also increase 1 mem." },
+    { id: "", title: "", annotation: "", command: ":use [node|store|role]", short_description: "Use a node, store or role.", description: "Use a node, store or role. Same as `:role use`, `:store use` or `:node use`, just for reducing some typing. If a node, store or role has same name, will first try to find node, then store, then role." },
     { id: "commands-session", title: "Sessions & Logs", annotation: "", command: ":log", short_description: "Show logs for current session.", description: "" },
     { id: "", title: "", annotation: "", command: ":ls", short_description: "List sessions, same as `:session ls`.", description: "" },
+    { id: "", title: "", annotation: "", command: ":attach [session_id]", short_description: "Attach to a session.", description: "Attach to a session, same as :session attach [session_id]. When attached to a session, you can use left/right arraw key or J/K key to navigate between session logs." },
     { id: "", title: "", annotation: "", command: ":session [ls|list]", short_description: "List sessions.", description: "List sessions with short user input." },
-    { id: "", title: "", annotation: "", command: ":session attach [session_id]", short_description: "Attach to a session.", description: "When attached to a session, you can use left/right arraw key or J/K key to navigate between session logs." },
+    { id: "", title: "", annotation: "", command: ":session attach [session_id]", short_description: "Attach to a session.", description: "Attach to a session. When attached to a session, you can use left/right arraw key or J/K key to navigate between session logs." },
     { id: "commands-eval", title: "Stats & Self-evaluation", annotation: "", command: ":stats [on|off]", short_description: "Show stats info.", description: "A stats information will show below." },
     { id: "", title: "", annotation: "", command: ":eval [on|off]", short_description: "Enable the self evaluation score.", description: "" },
     { id: "commands-speak", title: "Speak", annotation: "", command: ":speak [on|off]", short_description: "Switch on/off auto speak.", description: "Auto read the result with system TTS voice." },

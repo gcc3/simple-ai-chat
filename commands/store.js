@@ -1,4 +1,3 @@
-import { initializeSession } from "utils/sessionUtils";
 import { addStoreToSessionStorage, countStoresInSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils";
 
 export default async function store(args, files) {
@@ -157,7 +156,6 @@ export default async function store(args, files) {
       }
     } catch (error) {
       console.error(error);
-      alert(error.message);
     }
     return "";
   }
