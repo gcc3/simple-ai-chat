@@ -429,6 +429,9 @@ export default function Home() {
               setStats();
               setEvaluation();
               
+              // Focus on input
+              const elInput = elInputRef.current;
+              elInput.focus();
               command(":clear");
               console.log("Shortcut: ⌃r");
             }
