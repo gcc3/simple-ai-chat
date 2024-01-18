@@ -319,9 +319,10 @@ export default function Home() {
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);
 
     // Set styles and themes
-    const dispatchFullscreen = (mode) => {
-      localStorage.setItem('fullscreen', mode);
+    const dispatchFullscreen = (mode, force = false) => {
+      localStorage.setItem('fullscreen', mode + (force ? " force" : ""));
       dispatch(toggleFullscreen(mode));
+
       if (enter === "enter" && mode === "split") {
         // fullscreen split mode  use ⌃enter
         dispatch(toggleEnterChange("⌃enter"));
@@ -329,8 +330,9 @@ export default function Home() {
         // fullscreen default mode use enter
         dispatch(toggleEnterChange("enter"));
       }
+      
       // User logged in
-      if (localStorage.getItem("user")) {
+      if (localStorage.getItem("user") && !force) {
         updateUserSetting("fullscreen", mode);
       }
       reAdjustInputHeight(mode); // Adjust input height
@@ -341,7 +343,7 @@ export default function Home() {
       console.log("Mobile device detected, window size is " + window.innerWidth + " x " + window.innerHeight + ".");
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode
-        dispatchFullscreen("off");
+        dispatchFullscreen("off", true);
         console.log("Force fullscreen off: mobile device widht < 768.");
       }
     } else {

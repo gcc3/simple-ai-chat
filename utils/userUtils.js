@@ -30,7 +30,7 @@ export function setUserLocalStorage(user) {
       localStorage.setItem("useStats", settings.stats == "on" ? "true" : "false");
     }
 
-    if (settings.fullscreen) {
+    if (settings.fullscreen && localStorage.getItem("fullscreen").indexOf("force") === -1) {
       localStorage.setItem("fullscreen", settings.fullscreen);
       store.dispatch(toggleFullscreen(settings.fullscreen));
     }
