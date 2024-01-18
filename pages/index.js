@@ -418,10 +418,17 @@ export default function Home() {
           if (event.ctrlKey && !event.shiftKey) {
             if (global.STATE === STATES.IDLE) {
               event.preventDefault();
+              
+              // Clear output and previews
               clearOutput();
+              clearPreviewImages();
+              clearPreviewVideos();
+
+              // Clear info
               setInfo();
               setStats();
               setEvaluation();
+              
               command(":clear");
               console.log("Shortcut: ⌃r");
             }
