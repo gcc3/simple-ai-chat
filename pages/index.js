@@ -24,6 +24,7 @@ import Image from 'next/image';
 import { getQueryParameterValue } from "utils/urlUtils";
 import 'katex/dist/katex.min.css';
 import { asciiframe } from "utils/donutUtils";
+import { isMobileDevice } from "utils/mobileUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -316,6 +317,13 @@ export default function Home() {
     if (sessionStorage.getItem("time") === null) sessionStorage.setItem("time", Date.now());
     if (sessionStorage.getItem("history") === null) sessionStorage.setItem("history", JSON.stringify([]));
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);
+
+    if (isMobileDevice()) {
+      console.log("Mobile device detected, window size is " + window.innerWidth + " x " + window.innerHeight + ".");
+      if (window.innerWidth < 768) {
+        // Don't use fullscreen mode
+      }
+    }
 
     // Set styles and themes
     const dispatchFullscreen = (mode) => {

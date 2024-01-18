@@ -9,13 +9,12 @@ export function isMobileDevice() {
       /iPad/i,
       /iPod/i,
       /BlackBerry/i,
-      /Windows Phone/i
+      /Windows Phone/i,
+      /webOS/i,
+      /IEMobile/i,
+      /Opera Mini/i,
   ];
 
   // Check if any of the patterns match the user agent string
   return mobileRegexPatterns.some((pattern) => pattern.test(userAgent));
-}
-
-export function isScreenSmallerThan(width) {
-  return window.innerWidth < width;
 }

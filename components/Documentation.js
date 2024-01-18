@@ -95,31 +95,41 @@ const Documentation = ({ country }) => {
         <div className="mt-2"><a href="#functions"><u>Functions</u></a></div>
         <div className="mt-2"><a href="#shortcuts"><u>Shortcuts & Gestures</u></a></div>
         <div className="mt-2"><a href="#api"><u>APIs</u></a></div>
+        <div className="mt-2"><a href="#faqs"><u>FAQs</u></a></div>
         <div className="mt-2"><a href="#feedback"><u>Feedback & Support</u></a></div>
       </div>
       <div id="introduction" className="mt-5">Introduction</div>
       <div className="mt-2">
-        Simple AI (simple-ai.io) is an AI chat application based on OpenAI's latest GPT-4 Turbo model, the most advanced AI model in the world. We focus on improving user experience and providing powerful features for interacting with AI models. Simple AI is the first AI chat application to support both OpenAI's GPT models and to offer integration with other AI systems, such as Midjourney for image generation, and Wolfram Alpha for knowledge and mathematics. Additionally, we provide a command-based and easy-to-use shell interface, along with shortcuts and gestures, to facilitate user interactions with the AI models. With all these features, Simple AI stands as one of the most powerful AI chat applications in the world.
+        Simple AI (simple-ai.io) is an AI chat application based on OpenAI's latest GPT-4 Turbo model, the most advanced AI model in the world. We focus on improving user experience and providing powerful features for interacting with AI models. Simple AI is the first AI chat application to support both OpenAI's GPT models and to offer integration with other AI systems, such as Midjourney for image generation, and WolframAlpha for knowledge and mathematics. Additionally, we provide a command-based and easy-to-use shell interface, along with shortcuts and gestures, to facilitate user interactions with the AI models. With all these features, Simple AI stands as one of the most powerful AI chat applications in the world.
       </div>
       <div className="mt-2">
         - What you can do with Simple AI?<br/>
-        * Chat, or ask complex questions.<br/>
-        * Generate text or translate text, for any languages.<br/>
-        * Summarize long text.<br/>
-        * Generate source code from nature language.<br/>
-        * Upload an image and inquire about it.<br/>
-        * Upload a text, Word or PDF file and ask about the content.<br/>
-        * Access a wide range of knowledge.<br/>
-        * Solve mathematical problems.<br/>
-        * Generate high-quality images.<br/>
-        * Give GPT a preset instruction, or role play.<br/>
-        * Link with your own data.<br/>
-        * Link with other AI systems.<br/>
-        <div className="ml-5">And more...</div>
+        <div className="mt-1">
+          1. Basic Use<br/>
+          * Chat. Ask complex questions.<br/>
+          * Generate text or translate text, for any languages.<br/>
+          * Summarize long text.<br/>
+          * Upload an image and inquire about it.<br/>
+          * Upload a text, Word or PDF file and ask about the content.<br/>
+          * Access a wide range of knowledge.<br/>
+        </div>
+        <div className="mt-1">
+          2. Advanced Use<br/>
+          * Give GPT a preset instruction, or role play.<br/>
+          * Generate source code from nature language.<br/>
+          * Solve mathematical problems. (with WolframAlpha)<br/>
+          * Generate high-quality images. (with Midjourney)<br/>
+        </div>
+        <div className="mt-1">
+          3. Professional Use<br/>
+          * Link with your own data. We support link to relational database and vector database.<br/>
+          * Build to link with other AI systems, or your own APIs.<br/>
+          <div className="ml-5">And more...</div>
+        </div>
       </div>
       <div className="mt-2">
         - Is Simple AI free?<br/>
-        * Yes, most of the services are free for `user`; however, the OpenAI token fee is not free. You can pay-as-you-use.<br/>
+        * Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-use.<br/>
         * For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.<br/>
       </div>
       <div id="quick-start" className="mt-5">Quick Start</div>
@@ -288,6 +298,15 @@ const Documentation = ({ country }) => {
             ))}
           </tbody>
         </table>
+      </div>
+      <div id="faqs" className="mt-5">FAQs</div>
+      <div className="mt-2">
+        <div>Q: How to copy the result?</div>
+        <div>A: You can click the model name to copy the whole result (raw).</div>
+      </div>
+      <div className="mt-2">
+        <div>Q: How to share a session?</div>
+        <div>A: You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.</div>
       </div>
       <div id="feedback" className="mt-5">Feedback & Support</div>
       <div className="mt-2">
