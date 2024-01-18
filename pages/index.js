@@ -342,6 +342,7 @@ export default function Home() {
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode
         dispatchFullscreen("off");
+        console.log("Force fullscreen off: mobile device widht < 768.");
       }
     } else {
       dispatchFullscreen(localStorage.getItem("fullscreen"));
