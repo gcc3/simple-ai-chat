@@ -319,7 +319,7 @@ export default function Home() {
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);
 
     if (isMobileDevice()) {
-      console.log("Mobile device detected, window size is " + window.innerWidth + "x" + window.innerHeight + ".");
+      console.log("Mobile device detected, window size is " + window.innerWidth + " x " + window.innerHeight + ".");
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode
       }
