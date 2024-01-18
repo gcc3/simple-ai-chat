@@ -318,13 +318,6 @@ export default function Home() {
     if (sessionStorage.getItem("history") === null) sessionStorage.setItem("history", JSON.stringify([]));
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);
 
-    if (isMobileDevice()) {
-      console.log("Mobile device detected, window size is " + window.innerWidth + " x " + window.innerHeight + ".");
-      if (window.innerWidth < 768) {
-        // Don't use fullscreen mode
-      }
-    }
-
     // Set styles and themes
     const dispatchFullscreen = (mode) => {
       localStorage.setItem('fullscreen', mode);
@@ -343,7 +336,16 @@ export default function Home() {
       reAdjustInputHeight(mode); // Adjust input height
       reAdjustPlaceholder(mode);  // Adjust placeholder
     }
-    dispatchFullscreen(localStorage.getItem("fullscreen"));
+
+    if (isMobileDevice()) {
+      console.log("Mobile device detected, window size is " + window.innerWidth + " x " + window.innerHeight + ".");
+      if (window.innerWidth < 768) {
+        // Don't use fullscreen mode
+        dispatchFullscreen("off");
+      }
+    } else {
+      dispatchFullscreen(localStorage.getItem("fullscreen"));
+    }
 
     setTheme(localStorage.getItem("theme"))
     hljs.highlightAll();  // highlight.js
