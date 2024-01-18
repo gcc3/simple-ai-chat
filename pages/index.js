@@ -161,7 +161,6 @@ export default function Home() {
       // Extract the YouTube video ID from the URL
       iframe.src = `https://www.youtube.com/embed/${videoId}`; // The URL for the YouTube video embed
       iframe.title = "YouTube video player";
-      iframe.frameBorder = "0";
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
       iframe.allowFullscreen = true;
       
