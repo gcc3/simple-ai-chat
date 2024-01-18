@@ -722,6 +722,11 @@ export default function Home() {
           }
         }
 
+        // Ignore if select text
+        if (window.getSelection().toString() !== "") {
+          return;
+        }
+
         if (xDiff > 0) {
           // Left swipe show next log
           if (global.STATE === STATES.IDLE) {
