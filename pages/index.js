@@ -331,6 +331,7 @@ export default function Home() {
       }
       
       // User logged in
+      // If mode is forced, do not update user setting
       if (localStorage.getItem("user") && !force) {
         updateUserSetting("fullscreen", mode);
       }
