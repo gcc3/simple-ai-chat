@@ -37,7 +37,7 @@ e.g. [
 export function executeFunctions(functions) {
   return Promise.all(functions.map(async (f) => {
     const funcName = f.split("(")[0];
-    const funcArgs = f.split("(")[1].split(")")[0];
+    const funcArgs = f.slice(funcName.length + 1, -1);
     try {
       const result = await executeFunction(funcName, funcArgs);
       if (!result.success) {
