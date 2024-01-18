@@ -20,6 +20,10 @@ export default async function use(args) {
 
   // 1. Find node
   if (await findNode(name)) {
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
     // Set node
     sessionStorage.setItem("node", name);
     return "Node is set to \`" + name + "\`, you can directly talk to it, or use command \`:generate [input]\` to generate from it. Command \`:node\` shows current node information.";
@@ -27,6 +31,10 @@ export default async function use(args) {
   
   // 2. Find store
   if (await findStore(name)) {
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
     // Check if stores counter
     if (countStoresInSessionStorage() >= 3) {
       return "You can only use 3 stores at the same time. Please unuse one of them first.";
