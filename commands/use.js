@@ -47,7 +47,7 @@ export default async function use(args) {
     return "Role is set to \`" + name + "\`, you can use command \`:role\` to show current role and prompt. Memory is reset.";
   }
 
-  return "Not found.";
+  return "Resource not found.";
 }
 
 async function findNode(nodeName) {
