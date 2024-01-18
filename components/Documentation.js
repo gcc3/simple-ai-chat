@@ -106,18 +106,18 @@ const Documentation = ({ country }) => {
         - What you can do with Simple AI?<br/>
         <div className="mt-1">
           1. Basic Use<br/>
-          * Chat. Ask complex questions.<br/>
+          * Chat. Ask complex questions. Problem Solving.<br/>
           * Generate text or translate text, for any languages.<br/>
           * Summarize long text.<br/>
           * Upload an image and inquire about it.<br/>
           * Upload a text, Word or PDF file and ask about the content.<br/>
           * Access a wide range of knowledge.<br/>
+          * Generate source code from nature language.<br/>
+          * Give GPT a preset instruction, or role play.<br/>
         </div>
         <div className="mt-1">
           2. Advanced Use<br/>
-          * Give GPT a preset instruction, or role play.<br/>
-          * Generate source code from nature language.<br/>
-          * Solve mathematical problems. (with WolframAlpha)<br/>
+          * Solve complex mathematical problems. (with WolframAlpha)<br/>
           * Generate high-quality images. (with Midjourney)<br/>
         </div>
         <div className="mt-1">
