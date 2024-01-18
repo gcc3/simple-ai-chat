@@ -418,10 +418,20 @@ export default function Home() {
           if (event.ctrlKey && !event.shiftKey) {
             if (global.STATE === STATES.IDLE) {
               event.preventDefault();
+              
+              // Clear output and previews
               clearOutput();
+              clearPreviewImages();
+              clearPreviewVideos();
+
+              // Clear info
               setInfo();
               setStats();
               setEvaluation();
+              
+              // Focus on input
+              const elInput = elInputRef.current;
+              elInput.focus();
               command(":clear");
               console.log("Shortcut: ⌃r");
             }
