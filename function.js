@@ -135,7 +135,7 @@ export function getFunctions() {
   // Ask Wolfram Alpha
   functions.push({
     name: 'ask_wolframalpha',
-    description: 'Ask Wolfram Alpha a question. Wolfram Alpha is a computational knowledge engine. It can answer questions like "What is the weather in San Francisco?" or "What is the population of China?".',
+    description: 'Ask Wolfram Alpha a question. Wolfram Alpha is a computational knowledge engine mainly for resoving mathematical questions.',
     parameters: {
       type: "object",
       properties: {
