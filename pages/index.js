@@ -227,7 +227,7 @@ export default function Home() {
 
     !minimalist && setInfo((
       <div>
-        model: {log["model"].toLowerCase()}<br></br>
+        model: {log && log["model"].toLowerCase()}<br></br>
       </div>
     ));
     markdownFormatter(elOutputRef.current);
@@ -313,7 +313,6 @@ export default function Home() {
     if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");    // default role
     if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");  // default store
     if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");    // default node
-    if (sessionStorage.getItem("time") === null) sessionStorage.setItem("time", Date.now());
     if (sessionStorage.getItem("history") === null) sessionStorage.setItem("history", JSON.stringify([]));
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);
 
@@ -525,7 +524,7 @@ export default function Home() {
             if (global.STATE === STATES.IDLE) {
               getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
-                  if (Object.entries(r.result).length === 0) {
+                  if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
                     return;
                   } else {
@@ -548,7 +547,7 @@ export default function Home() {
             if (global.STATE === STATES.IDLE) {
               getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
-                  if (Object.entries(r.result).length === 0) {
+                  if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
                     return;
                   } else {
@@ -571,7 +570,7 @@ export default function Home() {
             if (global.STATE === STATES.IDLE) {
               getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
-                  if (Object.entries(r.result).length === 0) {
+                  if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
                     return;
                   } else {
@@ -594,7 +593,7 @@ export default function Home() {
             if (global.STATE === STATES.IDLE) {
               getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
-                  if (Object.entries(r.result).length === 0) {
+                  if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
                     return;
                   } else {
@@ -736,7 +735,7 @@ export default function Home() {
           if (global.STATE === STATES.IDLE) {
             getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
               .then((r) => {
-                if (Object.entries(r.result).length === 0) {
+                if (!r.result || Object.entries(r.result).length === 0) {
                   console.log("No next log.");
                   return;
                 } else {
@@ -752,7 +751,7 @@ export default function Home() {
           if (global.STATE === STATES.IDLE) {
             getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
               .then((r) => {
-                if (Object.entries(r.result).length === 0) {
+                if (!r.result || Object.entries(r.result).length === 0) {
                   console.log("No previous log.");
                   return;
                 } else {
@@ -804,8 +803,28 @@ export default function Home() {
   async function onSubmit(event) {
     if (global.STATE === STATES.DOING) return;
     event.preventDefault();
-    sessionStorage.setItem("time", Date.now());  // reset time
-    sessionStorage.setItem("historyIndex", -1);   // reset history index
+
+    // Detect subsession
+    if (sessionStorage.getItem("head") !== null && sessionStorage.getItem("head") !== "") {
+      const head = Number(sessionStorage.getItem("head"));
+      const timelineTime = Number(sessionStorage.getItem("time"));  // time in the timeline
+      const session = Number(sessionStorage.getItem("session"));  // session ID
+      if (timelineTime < head) {
+        // Subsession detected
+        // The session ID is one of the log time (not head log of session)
+        console.log("Detected possible sub session " + timelineTime + " of parent session " + session + ".");
+        
+        // TODO, check subsession is valid in session
+        // If valid, set session ID to subsession
+        sessionStorage.setItem("session", timelineTime);
+        console.log("Session is set to subsession " + timelineTime + ".");
+      }
+    }
+
+    const timeNow = Date.now();
+    sessionStorage.setItem("time", timeNow);
+    sessionStorage.setItem("head", timeNow);
+    sessionStorage.setItem("historyIndex", -1);
 
     if (global.rawInput === "") return;
     if (global.rawInput.startsWith(":fullscreen") || global.rawInput.startsWith(":theme")) {
@@ -1105,6 +1124,8 @@ export default function Home() {
     var textSpoken = "";
 
     const session = sessionStorage.getItem("session");
+    const time = sessionStorage.getItem("time");
+
     const mem_length = sessionStorage.getItem("memLength");
     const role = sessionStorage.getItem("role");
     const store = sessionStorage.getItem("store");
@@ -1135,6 +1156,7 @@ export default function Home() {
     console.log("Config: " + JSON.stringify(config));
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
                                                            + "&session=" + session
+                                                           + "&time=" + time
                                                            + "&mem_length=" + mem_length
                                                            + "&role=" + role
                                                            + "&store=" + store
@@ -1402,6 +1424,7 @@ export default function Home() {
     const config = {
       user_input: input, 
       session: sessionStorage.getItem("session"),
+      time: sessionStorage.getItem("time"),
       mem_length: sessionStorage.getItem("memLength"),
       role: sessionStorage.getItem("role"),
       store: sessionStorage.getItem("store"),

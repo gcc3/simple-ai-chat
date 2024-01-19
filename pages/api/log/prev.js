@@ -1,4 +1,4 @@
-import { getSessionLog } from "utils/sqliteUtils";
+import { getSessionLog, getLogs, getSession } from "utils/sqliteUtils";
 
 export default async function (req, res) {
   try {
@@ -7,17 +7,69 @@ export default async function (req, res) {
       return res.status(405).end();
     }
 
-    const { session, time } = req.query;
-    
-    // Get the log
-    const log = await getSessionLog(session, time, "<");
+    const { session: initId, time } = req.query;
 
-    // Output the result
-    res.status(200).json({
-      success: true,
-      result: {
-        log,
-      },
+    let session = await getSession(initId);
+    if (!session) {
+      return res.status(404).json({
+        success: false,
+        error: "Log not found.",
+      });
+    }
+
+    let log = null;
+
+    // Find in current session
+    const logs = await getLogs(session.id, 1000);
+    logs.map((l) => {
+      if (l.time < time) {
+        log = l;
+        if (log) {
+          res.status(200).json({
+            success: true,
+            result: {
+              log,
+            },
+          });
+          return;
+        }
+      }
+    });
+
+    // Find in parent sessions
+    while (session) {
+      if (session.id == session.parent_id) {
+        // Root session, break
+        break;
+      }
+
+      // Set branch point
+      const branchPoint = session.id;
+
+      // Go to next parent session
+      session = await getSession(session.parent_id);
+      
+      // Get logs
+      const logs = await getLogs(session.id);
+      logs.map((l) => {
+        if (l.time < time && l.time <= branchPoint) {
+          log = l;
+          if (log) {
+            res.status(200).json({
+              success: true,
+              result: {
+                log,
+              },
+            });
+            return;
+          }
+        }
+      });
+    }
+
+    res.status(404).json({
+      success: false,
+      error: "Log not found.",
     });
   } catch (error) {
     console.error(error);

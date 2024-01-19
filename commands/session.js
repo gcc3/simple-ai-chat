@@ -5,8 +5,31 @@ export default async function session(args) {
                 "       :session attach [session_id]\n";
 
   const command = args[0];
+
   if (args.length === 0) {
-    return usage;
+    if (sessionStorage.getItem("session") === "" || sessionStorage.getItem("session") === null) {
+      return "No session attached.";
+    }
+
+    // Get session
+    const response = await fetch("/api/session/" + sessionStorage.getItem("session"), {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (response.status !== 200) {
+      return data.error || new Error(`Request failed with status ${response.status}`);
+    }
+
+    const session = data.result.session;
+    if (session) {
+      return JSON.stringify(session, null, 2);
+    } else {
+      return "Not found.\n";
+    }
   }
   
   // :session list
