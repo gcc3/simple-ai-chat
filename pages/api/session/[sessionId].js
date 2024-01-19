@@ -9,14 +9,14 @@ export default async function (req, res) {
     if (!session) {
       return res.status(404).json({ 
         success: false,
-        error: "Session not exists."
+        error: "Session is empty."
       });
     }
 
     return res.status(200).json({
       success: true,
       result: {
-        session: JSON.stringify(session),
+        session: session,
       },
     });
   } catch (error) {
