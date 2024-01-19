@@ -1479,8 +1479,8 @@ const insertSession = async (id, parentId, createdBy) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare(`INSERT INTO sessions (id, parent_id, text, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?)`);
-      stmt.run([id, parentId, "", createdBy, getTimestamp(), ""], function (err) {
+      const stmt = db.prepare(`INSERT INTO sessions (id, parent_id, text, created_by, created_at) VALUES (?, ?, ?, ?, ?)`);
+      stmt.run([id, parentId, "", createdBy, getTimestamp()], function (err) {
         if (err) {
           reject(err);
           return;
