@@ -1,4 +1,4 @@
-import { getLogs, insertLog, insertSession } from "./sqliteUtils.js"
+import { getLogs, getSession, getLog, insertLog, insertSession } from "./sqliteUtils.js"
 
 export async function logadd(user, session, time, model, input_token_ct, input, output_token_ct, output, images, ip, browser) {
   // Get username
@@ -7,17 +7,62 @@ export async function logadd(user, session, time, model, input_token_ct, input, 
     username = user.username;
   }
 
-  // Insert a root session
+  // Insert a session
+  // If session is a log time, then it is a subssion
+  // If not then it is a root session
   if ((await getLogs(session, 1)).length == 0) {
-    await insertSession(session, session, username);
+    let parent = session;
+
+    const time = session;
+    const log = await getLog(time)
+    if (log) {
+      // This has a subsession
+      parent = log.session;
+    }
+
+    await insertSession(session, parent, username);
   }
 
   // Insert log
   await insertLog(session, time, username, model, input_token_ct, input, output_token_ct, output, images, ip, browser);
 }
 
-export async function loglist(session, limit = 50) {
-  let loglines = "";
-  if (!session) return loglines;  // don't show anything if no session is given
-  return await getLogs(session, limit);
+export async function loglist(initId, limit = 50) {
+  let loglines = [];
+
+  // Get current session logs
+  let session = await getSession(initId);
+  if (!session) {
+    return loglines;
+  }
+  loglines = await getLogs(initId, limit);
+
+  if (loglines.length >= limit) return loglines;
+
+  // Get parent session logs
+  while (session) {
+    if (session.id == session.parent_id) {
+      // Root session, break
+      break;
+    }
+
+    // Set branch point
+    const branchPoint = session.id;
+
+    // Go to parent session
+    session = await getSession(session.parent_id);
+
+    // Get parent session logs
+    const logs = await getLogs(session.id, limit);
+
+    for (let i = 0; i < logs.length; i++) {
+      if (loglines.length >= limit) return loglines;
+
+      // Add log
+      if (logs[i].time <= branchPoint)
+        loglines.push(logs[i]);
+    }
+  }
+  
+  return loglines;
 }
