@@ -524,7 +524,7 @@ export default function Home() {
             if (global.STATE === STATES.IDLE) {
               getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
-                  if (Object.entries(r.result).length === 0) {
+                  if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
                     return;
                   } else {
@@ -547,7 +547,7 @@ export default function Home() {
             if (global.STATE === STATES.IDLE) {
               getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
-                  if (Object.entries(r.result).length === 0) {
+                  if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
                     return;
                   } else {
@@ -570,7 +570,7 @@ export default function Home() {
             if (global.STATE === STATES.IDLE) {
               getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
-                  if (Object.entries(r.result).length === 0) {
+                  if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
                     return;
                   } else {
@@ -593,7 +593,7 @@ export default function Home() {
             if (global.STATE === STATES.IDLE) {
               getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
-                  if (Object.entries(r.result).length === 0) {
+                  if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
                     return;
                   } else {
@@ -735,7 +735,7 @@ export default function Home() {
           if (global.STATE === STATES.IDLE) {
             getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
               .then((r) => {
-                if (Object.entries(r.result).length === 0) {
+                if (!r.result || Object.entries(r.result).length === 0) {
                   console.log("No next log.");
                   return;
                 } else {
@@ -751,7 +751,7 @@ export default function Home() {
           if (global.STATE === STATES.IDLE) {
             getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
               .then((r) => {
-                if (Object.entries(r.result).length === 0) {
+                if (!r.result || Object.entries(r.result).length === 0) {
                   console.log("No previous log.");
                   return;
                 } else {

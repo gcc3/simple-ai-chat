@@ -14,16 +14,24 @@ export function initializeSession() {
 }
 
 // Session ID is a string of number.
-export function attachSession(sessionId) {
+export async function attachSession(sessionId) {
   const verifyResult = verifySessionId(sessionId);
 
   if (!verifyResult.success) {
     return verifyResult.message;
   }
 
-  sessionStorage.setItem("time", sessionId);
-  sessionStorage.setItem("session", sessionId);
-  console.log("Session attached to " + sessionId + ".");
+  // Get session with API
+  const response = await fetch("/api/session/" + sessionId);
+  const result = await response.json();
+  if (!result.success) {
+    return result.error;
+  }
+  const session = JSON.parse(result.result.session);
+
+  sessionStorage.setItem("time", session.created_at);
+  sessionStorage.setItem("session", session.id);
+  console.log("Session attached to " + session.id + ".");
   return "Session attached. Use `→` or `←` to navigate between session logs.";
 }
 
