@@ -1105,6 +1105,8 @@ export default function Home() {
     var textSpoken = "";
 
     const session = sessionStorage.getItem("session");
+    const time = sessionStorage.getItem("time");
+
     const mem_length = sessionStorage.getItem("memLength");
     const role = sessionStorage.getItem("role");
     const store = sessionStorage.getItem("store");
@@ -1135,6 +1137,7 @@ export default function Home() {
     console.log("Config: " + JSON.stringify(config));
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
                                                            + "&session=" + session
+                                                           + "&time=" + time
                                                            + "&mem_length=" + mem_length
                                                            + "&role=" + role
                                                            + "&store=" + store
@@ -1402,6 +1405,7 @@ export default function Home() {
     const config = {
       user_input: input, 
       session: sessionStorage.getItem("session"),
+      time: sessionStorage.getItem("time"),
       mem_length: sessionStorage.getItem("memLength"),
       role: sessionStorage.getItem("role"),
       store: sessionStorage.getItem("store"),
