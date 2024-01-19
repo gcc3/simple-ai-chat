@@ -2,14 +2,13 @@ export function initializeMemory() {
   console.log("Memory initializing...");
   const time = Date.now()
   sessionStorage.setItem("time", time);
-  sessionStorage.setItem("session", time);
+  sessionStorage.setItem("session", time);  // new session
 }
 
 export function initializeSession() {
   console.log("Session initializing...");
-  const time = Date.now()
-  sessionStorage.setItem("time", time);
-  sessionStorage.setItem("session", time);
+  initializeMemory();
+  sessionStorage.setItem("head", "");
   sessionStorage.setItem("historyIndex", -1);
 }
 

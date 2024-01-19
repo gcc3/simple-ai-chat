@@ -313,7 +313,6 @@ export default function Home() {
     if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");    // default role
     if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");  // default store
     if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");    // default node
-    if (sessionStorage.getItem("time") === null) sessionStorage.setItem("time", Date.now());
     if (sessionStorage.getItem("history") === null) sessionStorage.setItem("history", JSON.stringify([]));
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);
 
@@ -804,8 +803,23 @@ export default function Home() {
   async function onSubmit(event) {
     if (global.STATE === STATES.DOING) return;
     event.preventDefault();
-    sessionStorage.setItem("time", Date.now());  // reset time
-    sessionStorage.setItem("historyIndex", -1);   // reset history index
+
+    if (sessionStorage.getItem("head") !== null && sessionStorage.getItem("head") !== "") {
+      const head = Number(sessionStorage.getItem("head"));
+      const time = Number(sessionStorage.getItem("time"));  // time in the timeline
+      const session = Number(sessionStorage.getItem("session"));  // session ID
+      if (time < head) {
+        // New sub session
+        // The session ID is one of the log time (not head log of session)
+        console.log("New sub session " + time + " of parent session " + session + ".");
+        sessionStorage.setItem("session", time);
+      }
+    }
+
+    const timeNow = Date.now();
+    sessionStorage.setItem("time", timeNow);
+    sessionStorage.setItem("head", timeNow);
+    sessionStorage.setItem("historyIndex", -1);
 
     if (global.rawInput === "") return;
     if (global.rawInput.startsWith(":fullscreen") || global.rawInput.startsWith(":theme")) {
