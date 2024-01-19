@@ -127,8 +127,26 @@ const initializeDatabase = (db) => {
                             if (err) {
                               return reject(err);
                             }
-    
-                            resolve();
+
+                            // Create sessions table
+                            db.run(
+                              `CREATE TABLE IF NOT EXISTS sessions (
+                                id INTEGER PRIMARY KEY,
+                                parent_id INTEGER,
+                                counter INTEGER NOT NULL,
+                                text TEXT NOT NULL,
+                                created_by TEXT NOT NULL,
+                                created_at TEXT NOT NULL,
+                                updated_at TEXT
+                              );`,
+                              (err) => {
+                                if (err) {
+                                  return reject(err);
+                                }
+        
+                                resolve();
+                              }
+                            );
                           }
                         );
                       }
