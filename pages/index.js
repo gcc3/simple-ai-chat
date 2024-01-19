@@ -804,15 +804,16 @@ export default function Home() {
     if (global.STATE === STATES.DOING) return;
     event.preventDefault();
 
+    // Detect subsession
     if (sessionStorage.getItem("head") !== null && sessionStorage.getItem("head") !== "") {
       const head = Number(sessionStorage.getItem("head"));
       const time = Number(sessionStorage.getItem("time"));  // time in the timeline
       const session = Number(sessionStorage.getItem("session"));  // session ID
       if (time < head) {
-        // New sub session
+        // Subsession detected
         // The session ID is one of the log time (not head log of session)
-        console.log("New sub session " + time + " of parent session " + session + ".");
-        sessionStorage.setItem("session", time);
+        console.log("Detected sub session " + time + " of parent session " + session + ".");
+        // sessionStorage.setItem("session", time);  // TODO
       }
     }
 
