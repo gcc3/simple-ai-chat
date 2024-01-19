@@ -37,10 +37,7 @@ export async function loglist(initId, limit = 50) {
   }
   loglines = await getLogs(initId, limit);
 
-  if (loglines.length >= limit) {
-    // Limit reached, return
-    return loglines;
-  }
+  if (loglines.length >= limit) return loglines;
 
   // Get parent session logs
   while (session) {
@@ -49,17 +46,22 @@ export async function loglist(initId, limit = 50) {
       break;
     }
 
-    if (loglines.length >= limit) {
-      // Limit reached, break
-      break;
-    }
+    // Set branch point
+    const branchPoint = session.id;
 
     // Go to parent session
     session = await getSession(session.parent_id);
 
     // Get parent session logs
     const logs = await getLogs(session.id, limit);
-    loglines = logs.concat(loglines);
+
+    for (let i = 0; i < logs.length; i++) {
+      if (loglines.length >= limit) return loglines;
+
+      // Add log
+      if (logs[i].time <= branchPoint)
+        loglines.push(logs[i]);
+    }
   }
   
   return loglines;
