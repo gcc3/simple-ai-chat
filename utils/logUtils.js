@@ -61,5 +61,6 @@ export async function loglist(initId, limit = 50) {
     const logs = await getLogs(session.id, limit);
     loglines = logs.concat(loglines);
   }
-  return 
+  
+  return loglines;
 }
