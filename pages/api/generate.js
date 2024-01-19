@@ -45,6 +45,10 @@ export default async function(req, res) {
     user = await getUser(authResult.user.username);
   }
 
+  // Ensure session
+  // In sessions table, create session if not exists
+  await ensureSession(session, user ? user.username : "");
+
   // Input & output
   let input = "";
   let inputType = TYPE.NORMAL;

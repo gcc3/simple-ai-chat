@@ -11,6 +11,7 @@ import { getUacResult } from "utils/uacUtils";
 import { getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 import { doNodeOverrideOutput, findNode, isMultimodalityNode } from "utils/nodeUtils";
+import { ensureSession } from "utils/logUtils";
 
 // OpenAI
 const openai = new OpenAI();
@@ -48,6 +49,10 @@ export default async function (req, res) {
     authUser = authResult.user;
     user = await getUser(authResult.user.username);
   }
+
+  // Ensure session
+  // In sessions table, create session if not exists
+  await ensureSession(session, user ? user.username : "");
 
   // Input & output
   let input = "";
