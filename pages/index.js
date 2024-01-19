@@ -161,7 +161,6 @@ export default function Home() {
       // Extract the YouTube video ID from the URL
       iframe.src = `https://www.youtube.com/embed/${videoId}`; // The URL for the YouTube video embed
       iframe.title = "YouTube video player";
-      iframe.frameBorder = "0";
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
       iframe.allowFullscreen = true;
       
@@ -319,9 +318,10 @@ export default function Home() {
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);
 
     // Set styles and themes
-    const dispatchFullscreen = (mode) => {
-      localStorage.setItem('fullscreen', mode);
+    const dispatchFullscreen = (mode, force = false) => {
+      localStorage.setItem('fullscreen', mode + (force ? " force" : ""));
       dispatch(toggleFullscreen(mode));
+
       if (enter === "enter" && mode === "split") {
         // fullscreen split mode  use ⌃enter
         dispatch(toggleEnterChange("⌃enter"));
@@ -329,8 +329,10 @@ export default function Home() {
         // fullscreen default mode use enter
         dispatch(toggleEnterChange("enter"));
       }
+      
       // User logged in
-      if (localStorage.getItem("user")) {
+      // If mode is forced, do not update user setting
+      if (localStorage.getItem("user") && !force) {
         updateUserSetting("fullscreen", mode);
       }
       reAdjustInputHeight(mode); // Adjust input height
@@ -341,7 +343,7 @@ export default function Home() {
       console.log("Mobile device detected, window size is " + window.innerWidth + " x " + window.innerHeight + ".");
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode
-        dispatchFullscreen("off");
+        dispatchFullscreen("off", true);
         console.log("Force fullscreen off: mobile device widht < 768.");
       }
     } else {
@@ -453,7 +455,7 @@ export default function Home() {
           event.preventDefault();
 
           // Triggle fullscreen split
-          if (localStorage.getItem("fullscreen") !== "default") {
+          if (!localStorage.getItem("fullscreen").startsWith("default")) {
             dispatchFullscreen("default");
           } else {
             dispatchFullscreen("off");
@@ -468,7 +470,7 @@ export default function Home() {
             event.preventDefault();
 
             // Triggle fullscreen split
-            if (localStorage.getItem("fullscreen") !== "split") {
+            if (!localStorage.getItem("fullscreen").startsWith("split")) {
               dispatchFullscreen("split");
             } else {
               dispatchFullscreen("off");
@@ -642,7 +644,7 @@ export default function Home() {
 
           // Print welcome video
           const video_id = process.env.NEXT_PUBLIC_VIDEO_ID;
-          if (video_id && localStorage.getItem("fullscreen") === "off") {
+          if (video_id && localStorage.getItem("fullscreen").startsWith("off")) {
             if (ipInfo.country && ipInfo.country === "CN") {
               // TODO use Bilibili
               console.log("Video not available in China.");
