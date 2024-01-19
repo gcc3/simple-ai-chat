@@ -122,6 +122,7 @@ export function getCommands() {
     { id: "commands-session", title: "Sessions & Logs", annotation: "", command: ":log", short_description: "Show logs for current session.", description: "" },
     { id: "", title: "", annotation: "", command: ":ls", short_description: "List sessions, same as `:session ls`.", description: "" },
     { id: "", title: "", annotation: "", command: ":attach [session_id]", short_description: "Attach to a session.", description: "Attach to a session, same as :session attach [session_id]. When attached to a session, you can use left/right arraw key or J/K key to navigate between session logs." },
+    { id: "", title: "", annotation: "", command: ":session", short_description: "Show session info.", description: "Check current session infromation, like parent session ID, created by." },
     { id: "", title: "", annotation: "", command: ":session [ls|list]", short_description: "List sessions.", description: "List sessions with short user input." },
     { id: "", title: "", annotation: "", command: ":session attach [session_id]", short_description: "Attach to a session.", description: "Attach to a session. When attached to a session, you can use left/right arraw key or J/K key to navigate between session logs." },
     { id: "commands-eval", title: "Stats & Self-evaluation", annotation: "", command: ":stats [on|off]", short_description: "Show stats info.", description: "A stats information will show below." },
