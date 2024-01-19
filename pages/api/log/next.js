@@ -1,4 +1,4 @@
-import { getSessionLog, getSession } from "utils/sqliteUtils";
+import { getLogs, getSession } from "utils/sqliteUtils";
 
 export default async function (req, res) {
   try {
@@ -16,34 +16,61 @@ export default async function (req, res) {
         error: "Session not found.",
       });
     }
+    const sessionBranchPoint = session.id;
 
-    while (session) {
-      // Get the log
-      const log = await getSessionLog(session.id, time, ">");
-      if (log) {
-        // Output the result
-        res.status(200).json({
-          success: true,
-          result: {
-            log,
-          },
-        });
-        return;
-      } else {
-        if (session.id == session.parent_id) {
-          // Root session, break
-          break;
-        }
-
-        // Go to parent session
-        session = await getSession(session.parent_id);
+    // Find in current session
+    let log = null;
+    const logs = await getLogs(session.id, 1000);
+    logs.map((l) => {
+      if (!log) log = l;
+      
+      if (l.time > time && l.time < log.time) {
+        log = l;
       }
+    });
+    
+    if (!log) {
+      res.status(404).json({
+        success: false,
+        error: "Log not found.",
+      });
     }
 
-    res.status(404).json({
-      success: false,
-      error: "Log not found.",
-    });
+    // Find in parent sessions
+    while (session) {
+      if (session.id == session.parent_id) {
+        // Root session, break
+        break;
+      }
+
+      // Go to parent session
+      session = await getSession(session.parent_id);
+
+      // Find the earliest log
+      const logs = await getLogs(session.id, 1000);
+      logs.map((l) => {
+        if (!log) log = l;
+
+        if (l.time > time && l.time <= sessionBranchPoint && l.time < log.time) {
+          log = l;
+        }
+      });
+    }
+
+    if (log) {
+      // Output the result
+      res.status(200).json({
+        success: true,
+        result: {
+          log,
+        },
+      });
+    } else {
+      res.status(404).json({
+        success: false,
+        error: "Log not found.",
+      });
+    }
   } catch (error) {
     console.error(error);
     res.status(500).json({

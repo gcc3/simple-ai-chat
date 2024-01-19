@@ -211,7 +211,7 @@ const getLogs = async (session, limit = 50) => {
   try {
     return await new Promise((resolve, reject) => {
       db.all(
-        `SELECT time, time_h, user, input, output FROM logs WHERE session = ? ORDER BY time DESC LIMIT ?`,
+        `SELECT * FROM logs WHERE session = ? ORDER BY time DESC LIMIT ?`,
         [session, limit],
         (err, rows) => {
           if (err) {
