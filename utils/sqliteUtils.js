@@ -23,9 +23,9 @@ const initializeDatabase = (db) => {
     db.run(
       `CREATE TABLE IF NOT EXISTS logs (
         id INTEGER PRIMARY KEY,
+        session INTEGER NOT NULL,
         time INTEGER NOT NULL,
         time_h TEXT,
-        session INTEGER NOT NULL,
         user TEXT,
         model TEXT,
         input_l INTEGER,
@@ -233,9 +233,9 @@ const insertLog = async (session, time, username, model, input_l, input, output_
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare(
-        "INSERT INTO logs (time, time_h, session, user, model, input_l, input, output_l, output, images, ip_addr, browser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO logs (session, time, time_h, user, model, input_l, input, output_l, output, images, ip_addr, browser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
       );
-      stmt.run([time, time_h, session, username, model, input_l, input, output_l, output, images, ip, browser], function (err) {
+      stmt.run([session, time, time_h, username, model, input_l, input, output_l, output, images, ip, browser], function (err) {
         if (err) {
           reject(err);
         }
