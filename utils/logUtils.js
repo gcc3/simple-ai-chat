@@ -1,41 +1,25 @@
 import { getLogs, getSession, getLog, insertLog, insertSession } from "./sqliteUtils.js"
 
-export async function logadd(user, session, time, model, input_token_ct, input, output_token_ct, output, images, ip, browser) {
+export async function logadd(user, sessionId, time, model, input_token_ct, input, output_token_ct, output, images, ip, browser) {
   // Get username
   let username = "";
   if (user) {
     username = user.username;
   }
 
-  // Insert a session
-  // If session is a log time, then it is a subssion
-  // If not then it is a root session
-  if ((await getLogs(session, 1)).length == 0) {
-    let parent = session;
-
-    const time = session;
-    const log = await getLog(time)
-    if (log) {
-      // This has a subsession
-      parent = log.session;
-    }
-
-    await insertSession(session, parent, username);
-  }
-
   // Insert log
-  await insertLog(session, time, username, model, input_token_ct, input, output_token_ct, output, images, ip, browser);
+  await insertLog(sessionId, time, username, model, input_token_ct, input, output_token_ct, output, images, ip, browser);
 }
 
-export async function loglist(initId, limit = 50) {
+export async function loglist(sessionId, limit = 50) {
   let loglines = [];
 
   // Get current session logs
-  let session = await getSession(initId);
+  let session = await getSession(sessionId);
   if (!session) {
     return loglines;
   }
-  loglines = await getLogs(initId, limit);
+  loglines = await getLogs(sessionId, limit);
 
   if (loglines.length >= limit) return loglines;
 
@@ -65,4 +49,21 @@ export async function loglist(initId, limit = 50) {
   }
   
   return loglines;
+}
+
+export async function ensureSession(sessionId, username = "") {
+  // If session is a log time, then it is a subssion
+  // If not then it is a root session
+  if ((await getLogs(sessionId, 1)).length == 0) {
+    let parentId = sessionId;  // for root session
+
+    const time = sessionId;
+    const log = await getLog(time)
+    if (log) {
+      parentId = log.session;  // for sub session
+    }
+
+    // Insert a session
+    await insertSession(sessionId, parentId, username);
+  }
 }
