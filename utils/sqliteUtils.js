@@ -1459,6 +1459,45 @@ const countInvites = async (user) => {
   }
 };
 
+// VII. Sessions
+const getSession = async (id) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM sessions WHERE id = ?`, [id], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
+// Insert a session to sessions table
+const insertSession = async (id, parentId, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare(`INSERT INTO sessions (id, parent_od, counter, text, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)`);
+      stmt.run([id, parentId, "", createdBy, getTimestamp(), ""], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        
+        // This `this.lastID` provides the ID of the last inserted row.
+        resolve(this.lastID);
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+}
+
 export {
   getLogs,
   insertLog,
@@ -1519,4 +1558,6 @@ export {
   updateNodeSettings,
   insertInvite,
   countInvites,
+  getSession,
+  insertSession,
 };
