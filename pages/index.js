@@ -340,7 +340,6 @@ export default function Home() {
     }
 
     if (isMobileDevice()) {
-      console.log("Mobile device detected, window size is " + window.innerWidth + " x " + window.innerHeight + ".");
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode
         dispatchFullscreen("off", true);
