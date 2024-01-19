@@ -161,7 +161,6 @@ export default function Home() {
       // Extract the YouTube video ID from the URL
       iframe.src = `https://www.youtube.com/embed/${videoId}`; // The URL for the YouTube video embed
       iframe.title = "YouTube video player";
-      iframe.frameBorder = "0";
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
       iframe.allowFullscreen = true;
       
@@ -332,6 +331,7 @@ export default function Home() {
       }
       
       // User logged in
+      // If mode is forced, do not update user setting
       if (localStorage.getItem("user") && !force) {
         updateUserSetting("fullscreen", mode);
       }
@@ -455,7 +455,7 @@ export default function Home() {
           event.preventDefault();
 
           // Triggle fullscreen split
-          if (localStorage.getItem("fullscreen") !== "default") {
+          if (!localStorage.getItem("fullscreen").startsWith("default")) {
             dispatchFullscreen("default");
           } else {
             dispatchFullscreen("off");
@@ -470,7 +470,7 @@ export default function Home() {
             event.preventDefault();
 
             // Triggle fullscreen split
-            if (localStorage.getItem("fullscreen") !== "split") {
+            if (!localStorage.getItem("fullscreen").startsWith("split")) {
               dispatchFullscreen("split");
             } else {
               dispatchFullscreen("off");
@@ -644,7 +644,7 @@ export default function Home() {
 
           // Print welcome video
           const video_id = process.env.NEXT_PUBLIC_VIDEO_ID;
-          if (video_id && localStorage.getItem("fullscreen") === "off") {
+          if (video_id && localStorage.getItem("fullscreen").startsWith("off")) {
             if (ipInfo.country && ipInfo.country === "CN") {
               // TODO use Bilibili
               console.log("Video not available in China.");
