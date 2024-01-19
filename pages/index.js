@@ -807,15 +807,17 @@ export default function Home() {
     // Detect subsession
     if (sessionStorage.getItem("head") !== null && sessionStorage.getItem("head") !== "") {
       const head = Number(sessionStorage.getItem("head"));
-      const time = Number(sessionStorage.getItem("time"));  // time in the timeline
+      const timelineTime = Number(sessionStorage.getItem("time"));  // time in the timeline
       const session = Number(sessionStorage.getItem("session"));  // session ID
-      if (time < head) {
+      if (timelineTime < head) {
         // Subsession detected
         // The session ID is one of the log time (not head log of session)
-        console.log("Detected possible sub session " + time + " of parent session " + session + ".");
+        console.log("Detected possible sub session " + timelineTime + " of parent session " + session + ".");
+        
         // TODO, check subsession is valid in session
         // If valid, set session ID to subsession
-        // sessionStorage.setItem("session", time);  // TODO
+        sessionStorage.setItem("session", timelineTime);
+        console.log("Session is set to subsession " + timelineTime + ".");
       }
     }
 

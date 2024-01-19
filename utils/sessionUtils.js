@@ -3,6 +3,7 @@ export function initializeMemory() {
   const time = Date.now()
   sessionStorage.setItem("time", time);
   sessionStorage.setItem("session", time);  // new session
+  console.log("Session is initialized to " + time + ".");
 }
 
 export function initializeSession() {
@@ -22,6 +23,7 @@ export function attachSession(sessionId) {
 
   sessionStorage.setItem("time", sessionId);
   sessionStorage.setItem("session", sessionId);
+  console.log("Session attached to " + sessionId + ".");
   return "Session attached. Use `→` or `←` to navigate between session logs.";
 }
 

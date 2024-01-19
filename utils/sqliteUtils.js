@@ -226,6 +226,23 @@ const getLogs = async (session, limit = 50) => {
   }
 };
 
+// Get log by time
+const getLog = async (time) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM logs WHERE time = ?`, [time], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
 const insertLog = async (session, time, username, model, input_l, input, output_l, output, images, ip, browser) => {
   const db = await getDatabaseConnection();
   const time_h = formatUnixTimestamp(time);
@@ -1498,6 +1515,7 @@ const insertSession = async (id, parentId, createdBy) => {
 
 export {
   getLogs,
+  getLog,
   insertLog,
   deleteUserLogs,
   getSessions,

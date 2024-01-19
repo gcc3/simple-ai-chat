@@ -1,4 +1,4 @@
-import { getLogs, insertLog, insertSession } from "./sqliteUtils.js"
+import { getLogs, getLog, insertLog, insertSession } from "./sqliteUtils.js"
 
 export async function logadd(user, session, time, model, input_token_ct, input, output_token_ct, output, images, ip, browser) {
   // Get username
@@ -7,9 +7,20 @@ export async function logadd(user, session, time, model, input_token_ct, input, 
     username = user.username;
   }
 
-  // Insert a root session
+  // Insert a session
+  // If session is a log time, then it is a subssion
+  // If not then it is a root session
   if ((await getLogs(session, 1)).length == 0) {
-    await insertSession(session, session, username);
+    let parent = session;
+
+    const time = session;
+    const log = await getLog(time)
+    if (log) {
+      // This has a subsession
+      parent = log.session;
+    }
+
+    await insertSession(session, parent, username);
   }
 
   // Insert log
