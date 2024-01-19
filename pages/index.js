@@ -812,7 +812,7 @@ export default function Home() {
       if (time < head) {
         // Subsession detected
         // The session ID is one of the log time (not head log of session)
-        console.log("Detected sub session " + time + " of parent session " + session + ".");
+        console.log("Detected possible sub session " + time + " of parent session " + session + ".");
         // sessionStorage.setItem("session", time);  // TODO
       }
     }
