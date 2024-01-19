@@ -227,9 +227,8 @@ const getLogs = async (session, limit = 50) => {
   }
 };
 
-const insertLog = async (session, username, model, input_l, input, output_l, output, images, ip, browser) => {
+const insertLog = async (session, time, username, model, input_l, input, output_l, output, images, ip, browser) => {
   const db = await getDatabaseConnection();
-  const time = Date.now();
   const time_h = formatUnixTimestamp(time);
 
   try {
@@ -1481,7 +1480,7 @@ const insertSession = async (id, parentId, createdBy) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare(`INSERT INTO sessions (id, parent_od, counter, text, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)`);
+      const stmt = db.prepare(`INSERT INTO sessions (id, parent_id, counter, text, created_by, created_at, updated_at) VALUES (?, ?, ?, ?, ?, ?, ?)`);
       stmt.run([id, parentId, "", createdBy, getTimestamp(), ""], function (err) {
         if (err) {
           reject(err);

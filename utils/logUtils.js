@@ -1,4 +1,4 @@
-import { getLogs, insertLog } from "./sqliteUtils.js"
+import { getLogs, insertLog, insertSession } from "./sqliteUtils.js"
 
 export async function logadd(user, session, model, input_token_ct, input, output_token_ct, output, images, ip, browser) {
   // Get username
@@ -7,8 +7,14 @@ export async function logadd(user, session, model, input_token_ct, input, output
     username = user.username;
   }
 
+  // Insert a root session
+  if ((await getLogs(session, 1)).length == 0) {
+    await insertSession(session, session, username);
+  }
+
   // Insert log
-  await insertLog(session, username, model, input_token_ct, input, output_token_ct, output, images, ip, browser);
+  const time = Date.now();
+  await insertLog(session, time, username, model, input_token_ct, input, output_token_ct, output, images, ip, browser);
 }
 
 export async function loglist(session, limit = 50) {
