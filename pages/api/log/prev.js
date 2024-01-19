@@ -16,70 +16,55 @@ export default async function (req, res) {
         error: "Log not found.",
       });
     }
-    const sessionBranchPoint = session.id;
 
     let log = null;
 
-    // The current session
-    // Get the log
-    log = await getSessionLog(session.id, time, "<");
-    if (log) {
-      // Output the result
-      res.status(200).json({
-        success: true,
-        result: {
-          log,
-        },
-      });
-      return;
-    }
-
-    // The first parent
-    session = await getSession(session.parent_id);
-    if (!session) {
-      return res.status(404).json({
-        success: false,
-        error: "Log not found.",
-      });
-    }
+    // Find in current session
     const logs = await getLogs(session.id, 1000);
     logs.map((l) => {
-      if (l.time < time && l.time <= sessionBranchPoint) {
+      if (l.time < time) {
         log = l;
-
-        // Output the result
-        res.status(200).json({
-          success: true,
-          result: {
-            log,
-          },
-        });
-        return;
+        if (log) {
+          res.status(200).json({
+            success: true,
+            result: {
+              log,
+            },
+          });
+          return;
+        }
       }
     });
 
-    // From the first parent's next parent to the root
+    // Find in parent sessions
     while (session) {
-      // Get the log
-      const log = await getSessionLog(session.id, time, "<");
-      if (log) {
-        // Output the result
-        res.status(200).json({
-          success: true,
-          result: {
-            log,
-          },
-        });
-        return;
-      } else {
-        if (session.id == session.parent_id) {
-          // Root session, break
-          break;
-        }
-
-        // Go to parent session
-        session = await getSession(session.parent_id);
+      if (session.id == session.parent_id) {
+        // Root session, break
+        break;
       }
+
+      // Set branch point
+      const branchPoint = session.id;
+
+      // Go to next parent session
+      session = await getSession(session.parent_id);
+      
+      // Get logs
+      const logs = await getLogs(session.id);
+      logs.map((l) => {
+        if (l.time < time && l.time <= branchPoint) {
+          log = l;
+          if (log) {
+            res.status(200).json({
+              success: true,
+              result: {
+                log,
+              },
+            });
+            return;
+          }
+        }
+      });
     }
 
     res.status(404).json({

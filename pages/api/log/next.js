@@ -16,7 +16,6 @@ export default async function (req, res) {
         error: "Session not found.",
       });
     }
-    const sessionBranchPoint = session.id;
 
     // Find in current session
     let log = null;
@@ -43,6 +42,9 @@ export default async function (req, res) {
         break;
       }
 
+      // Set branch point
+      const branchPoint = session.id;
+
       // Go to parent session
       session = await getSession(session.parent_id);
 
@@ -51,7 +53,7 @@ export default async function (req, res) {
       logs.map((l) => {
         if (!log) log = l;
 
-        if (l.time > time && l.time <= sessionBranchPoint && l.time < log.time) {
+        if (l.time > time && l.time < log.time && l.time <= branchPoint) {
           log = l;
         }
       });
