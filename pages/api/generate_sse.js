@@ -268,7 +268,8 @@ export default async function (req, res) {
       if (node_input) {
         if (node_output_images.length > 0) {
           for (let i = 0; i < node_output_images.length; i++) {
-            await logadd(user, session, time, node, 0, node_input, 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
+            // The time cannot be same, so every image add 1 millisecond
+            await logadd(user, session, Number(time) + 1 + i, node, 0, ":generate \"" + node_input + "\"", 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
           }
         } else {
           await logadd(user, session, time, node, 0, node_input, 0, node_output, JSON.stringify([]), ip, browser);
