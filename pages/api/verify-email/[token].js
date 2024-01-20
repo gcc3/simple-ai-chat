@@ -1,6 +1,5 @@
 import { decode } from "utils/authUtils"
-import { getUser, updateUserEmailVerifiedAt, updateUserStatus, updateUserIPAndLastLogin } from "utils/sqliteUtils"
-import { createToken } from "utils/authUtils"
+import { getUser, updateUserEmailVerifiedAt, updateUserIPAndLastLogin, updateUserEmail } from "utils/sqliteUtils"
 import { getUserByEmail } from "utils/sqliteUtils"
 import { getRedirectableHtml } from "utils/emailUtils";
 
@@ -26,7 +25,10 @@ export default async function (req, res) {
     }
 
     if (user.email !== data.email) {
-      console.log("User `" + user.username + "` is setting email from " + user.email + " to " + data.email);
+      console.log("User `" + user.username + "` is setting email from `" + user.email + "` to `" + data.email + "`.");
+
+      // Update user email
+      await updateUserEmail(data.username, data.email);
     }
 
     const sameEmailUser = await getUserByEmail(data.email);
@@ -36,9 +38,6 @@ export default async function (req, res) {
 
     // Update email verified at
     await updateUserEmailVerifiedAt(data.username);
-
-    // Update user status
-    await updateUserStatus(user.username, 'active');
 
     // Update user last login
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;

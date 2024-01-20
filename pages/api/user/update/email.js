@@ -21,7 +21,7 @@ export default async function (req, res) {
     });
   }
   const { id, username, role } = authResult.user;
-  console.log('Set email request for user `' + username + '`' + ', email "' + email + '".');
+  console.log('Set email request for user `' + username + '`' + ', email `' + email + '`.');
 
   // Input and validation
   if (!email) {
@@ -42,7 +42,7 @@ export default async function (req, res) {
   // Check if the email already exists in the database.
   const emailUser = await getUserByEmail(email);
   if (emailUser && emailUser.username !== username) {
-    console.log('Email address conflict: ' + emailUser.username + ' and ' + username);
+    console.log("Email address conflict, already used by `" + emailUser.username + "`.");
     return res.status(400).json({ 
       success: false,
       error: 'Email already used by another user.',
