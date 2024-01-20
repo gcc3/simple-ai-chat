@@ -476,7 +476,7 @@ export async function generateMessages(user, model, input, inputType, files, ima
 
   // 4. Location info
   let location_prompt = "";
-  if (use_location && location) {
+  if (use_location && location && location !== "null") {
     updateStatus && updateStatus("Location info generating...");
     console.log("--- location info ---");
 
