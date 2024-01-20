@@ -79,4 +79,6 @@ export default async function session(args) {
 
     return attachSession(args[1]);
   }
+
+  return usage;
 }
