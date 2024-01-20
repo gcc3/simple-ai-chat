@@ -26,7 +26,7 @@ export default async function (req, res) {
     }
 
     if (user.email !== data.email) {
-      return res.status(400).send(getRedirectableHtml("Email address not match."));
+      console.log("User `" + user.username + "` is setting email from " + user.email + " to " + data.email);
     }
 
     const sameEmailUser = await getUserByEmail(data.email);
