@@ -52,18 +52,21 @@ export async function loglist(sessionId, limit = 50) {
 }
 
 export async function ensureSession(sessionId, username = "") {
+  // Check if session exists
+  const session = await getSession(sessionId);
+  if (session) {
+    return;
+  }
+
   // If session is a log time, then it is a subssion
   // If not then it is a root session
-  if ((await getLogs(sessionId, 1)).length == 0) {
-    let parentId = sessionId;  // for root session
+  let parentId = sessionId;  // for root session
 
-    const time = sessionId;
-    const log = await getLog(time)
-    if (log) {
-      parentId = log.session;  // for sub session
-    }
-
-    // Insert a session
-    await insertSession(sessionId, parentId, username);
+  const log = await getLog(sessionId)
+  if (log) {
+    parentId = log.session;  // for sub session
   }
+
+  // Insert a session
+  await insertSession(sessionId, parentId, username);
 }

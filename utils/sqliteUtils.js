@@ -226,6 +226,23 @@ const getLogs = async (session, limit = 50) => {
   }
 };
 
+// Count session logs
+const countLogs = async (session) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT COUNT(*) AS count FROM logs WHERE session = ?`, [session], (err, row) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(row.count);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
 // Get log by time
 const getLog = async (time) => {
   const db = await getDatabaseConnection();
@@ -1515,6 +1532,7 @@ const insertSession = async (id, parentId, createdBy) => {
 
 export {
   getLogs,
+  countLogs,
   getLog,
   insertLog,
   deleteUserLogs,
