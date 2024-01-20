@@ -308,6 +308,10 @@ const Documentation = ({ country }) => {
         <div>Q: How to share a session?</div>
         <div>A: You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.</div>
       </div>
+      <div className="mt-2">
+        <div>Q: Does Simple AI store my credit card information?</div>
+        <div>A: No, we do not store any credit card numbers. Payments are securely processed through an embedded page provided by the payment service provider, and the information is sent directly to the banking system.</div>
+      </div>
       <div id="feedback" className="mt-5">Feedback & Support</div>
       <div className="mt-2">
         Simple AI is open-source; you can visit our GitHub issues (<a href="https://github.com/gcc3/simple-ai-chat/issues"><u>link</u></a>) to report any issues you encounter, share your ideas or contribute to the project. Or you can join our Discord server (<a href="https://discord.gg/dRqBZjNu"><u>link</u></a>) to discuss with other users.
