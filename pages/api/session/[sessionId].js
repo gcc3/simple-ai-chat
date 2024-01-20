@@ -1,4 +1,4 @@
-import { getSession } from "utils/sqliteUtils";
+import { countLogs, getSession } from "utils/sqliteUtils";
 
 export default async function (req, res) {
   const { sessionId: id } = req.query;
@@ -12,6 +12,9 @@ export default async function (req, res) {
         error: "Session is empty."
       });
     }
+
+    // Get session length
+    session.length = await countLogs(id);
 
     return res.status(200).json({
       success: true,
