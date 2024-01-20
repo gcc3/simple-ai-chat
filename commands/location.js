@@ -1,14 +1,21 @@
-export default function location(args) {
+export default async function location(args) {
   const onoff = args[0];
   
   if (onoff === "on") {
     // Get geo location
-    navigator.geolocation.getCurrentPosition((position) => {
-      console.log("Location: (" + position.coords.latitude + "," + position.coords.longitude + ")");
-      localStorage.setItem("location", "(" + position.coords.latitude + "," + position.coords.longitude + ")");
-    });
+    try {
+      await new Promise((resolve, reject) => {
+        navigator.geolocation.getCurrentPosition((position) => {
+          console.log("Location: (" + position.coords.latitude + "," + position.coords.longitude + ")");
+          localStorage.setItem("location", "(" + position.coords.latitude + "," + position.coords.longitude + ")");
+          resolve();
+        }, reject);
+      });
+    } catch (e) {
+      localStorage.setItem("useLocation", "false");
+      return "Location service failed.";
+    }
 
-    localStorage.setItem("useLocation", "true");
     return "Location service enabled.";
   } else if (onoff === "off") {
     localStorage.setItem("location", "");
