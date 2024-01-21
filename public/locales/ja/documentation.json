@@ -127,5 +127,8 @@
   "FAQs": "よくある質問",
   "Feedback & Support": "フィードバック＆サポート",
   "Documentation": "ドキュメント",
-  "Sessions & Logs": "セッション＆ログ"
+  "Sessions & Logs": "セッション＆ログ",
+  "github_issues": "Simple AIはオープンソースです。GitHubのイシュー（<1>link</1>）にアクセスして、遭遇した問題を報告したり、アイディアを共有したり、プロジェクトに貢献したりすることができます。",
+  "discord_server": "あるいは、私たちのDiscordサーバー（<1>link</1>）に参加して他のユーザーと議論することができます。",
+  "email_support": "カスタマーサポートメールだドレスは `<1>support@simple-ai.io</1>`。"
 }

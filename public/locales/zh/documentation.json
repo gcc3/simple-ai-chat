@@ -127,5 +127,8 @@
   "FAQs": "常见问题解答",
   "Feedback & Support": "反馈与支持",
   "Documentation": "帮助文档",
-  "Sessions & Logs": "会话 & 日志"
+  "Sessions & Logs": "会话 & 日志",
+  "github_issues": "Simple AI 是开源的；您可以访问我们的 GitHub 问题（<1>link</1>）来报告您遇到的任何问题，分享您的想法，或为项目做出贡献。",
+  "discord_server": "您可以加入我们的 Discord 服务器（<1>link</1>）与其他用户讨论。",
+  "email_support": "或者您可以通过客服邮箱与我们联系 `<1>support@simple-ai.io</1>`。"
 }
