@@ -366,7 +366,6 @@ export default function Home() {
       }
     }
     
-
     // Theme
     setTheme(localStorage.getItem("theme"))
     hljs.highlightAll();  // highlight.js
@@ -1949,7 +1948,7 @@ export default function Home() {
               </div>
               <div className={styles.content}>
                 {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
-                  <Documentation country={country} language={localStorage.getItem("lang")} />
+                  <Documentation country={country} />
                 </div>}
                 {content === CONTENT.USAGE && <div className={styles.contentitem}>
                   <Usage />
