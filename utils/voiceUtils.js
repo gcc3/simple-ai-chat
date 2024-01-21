@@ -1,7 +1,9 @@
 export async function getVoice(voiceName) {
   const voices = await getVoices();
+  const currentLang = localStorage.getItem("lang").replace(" force", "");
+  
   for (let i = 0; i < voices.length ; i++) {
-    if (voices[i].lang === localStorage.getItem("lang") && voices[i].name === voiceName) {
+    if (voices[i].lang === currentLang && voices[i].name === voiceName) {
       return voices[i]
     }
   }

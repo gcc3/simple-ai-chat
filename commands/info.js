@@ -9,7 +9,7 @@ export default function info(args) {
                "Stream (key: `useStream`): " + localStorage.getItem("useStream") + "\n" +
                "Speak (key: `useSpeak`): " + localStorage.getItem("useSpeak") + "\n" +
                "Voice (key: `voice`): " + (localStorage.getItem("voice") || "default") + "\n" +
-               "Language (key: `lang`): " + (localStorage.getItem("lang") || "en-US") + "\n" +
+               "Language (key: `lang`): " + (localStorage.getItem("lang") || "(not set)") + "\n" +
                "Location service (key: `useLocation`): " + localStorage.getItem("useLocation") + "\n" +
                "Location (key: `location`): " + (localStorage.getItem("location") || "(not set)") + "\n";
 

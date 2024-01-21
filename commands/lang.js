@@ -1,34 +1,15 @@
+import { getLangCodes } from "utils/langUtils";
+
 export default async function lang(args) {
   const command = args[0];
-
-  const langCodes = [
-    "de-DE",
-    "en-US",
-    "en-GB",
-    "en-GB",
-    "es-ES",
-    "es-US",
-    "fr-FR",
-    "hi-IN",
-    "id-ID",
-    "it-IT",
-    "ja-JP",
-    "ko-KR",
-    "nl-NL",
-    "pl-PL",
-    "pt-BR",
-    "ru-RU",
-    "zh-CN",
-    "zh-HK",
-    "zh-TW",
-  ];
+  const langCodes = getLangCodes();
 
   if (command === "ls" || command === "list") {
     // Add star to current lang
     let result = "\\" + langCodes.join(" \\");
     if (localStorage.getItem("lang")) {
-      const currentStore = localStorage.getItem("lang");
-      result = result.replace("\\" + currentStore, "*\\" + currentStore);
+      const currentLang = localStorage.getItem("lang").replace(" force", "");
+      result = result.replace("\\" + currentLang, "*\\" + currentLang);
     }
     return result;
   }
@@ -38,9 +19,14 @@ export default async function lang(args) {
       return "Usage: :lang use [language code]";
     }
 
-    if (langCodes.includes(args[1])) {
-      localStorage.setItem("lang", args[1]);
-      return "Language set to " + args[1] + ".";
+    let newLang = args[1].trim();
+    if (newLang.startsWith("\"") && newLang.endsWith("\"")) {
+      newLang = newLang.slice(1, -1);
+    }
+
+    if (langCodes.includes(newLang)) {
+      localStorage.setItem("lang", newLang + " force");
+      return "Language set to `" + newLang + "`.";
     } else {
       return "Language code not found.";
     }

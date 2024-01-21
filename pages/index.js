@@ -25,6 +25,8 @@ import { getQueryParameterValue } from "utils/urlUtils";
 import 'katex/dist/katex.min.css';
 import { asciiframe } from "utils/donutUtils";
 import { isMobileDevice } from "utils/mobileUtils";
+import { getLangCodes } from "utils/langUtils";
+import { useTranslation } from 'react-i18next';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -79,6 +81,9 @@ export default function Home() {
   const dispatch = useDispatch();
   const fullscreen = useSelector(state => state.fullscreen);
   const enter = useSelector(state => state.enter);
+
+  // i18n
+  const { t, i18n } = useTranslation();
 
   // Toggle display
   const toggleDisplay = () => {
@@ -338,6 +343,7 @@ export default function Home() {
       reAdjustPlaceholder(mode);  // Adjust placeholder
     }
 
+    // Mobile device
     if (isMobileDevice()) {
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode
@@ -348,6 +354,30 @@ export default function Home() {
       dispatchFullscreen(localStorage.getItem("fullscreen"));
     }
 
+    // Lanuage
+    let lang = "en-US";
+    if (localStorage.getItem("lang").includes("force")) {
+      // Use forced language
+      lang = localStorage.getItem("lang").replace("force", "").trim();
+    } else {
+      // Use browser language
+      const browserLang = navigator.language || navigator.userLanguage;
+      if (getLangCodes().includes(browserLang)) {
+        lang = browserLang;
+        localStorage.setItem("lang", lang);
+      } else {
+        lang = localStorage.getItem("lang");
+      }
+    }
+
+    const i18nLang = lang.split("-")[0];  // i18n language, e.g. en for en-US
+    i18n.changeLanguage(i18nLang)
+      .then(() => {
+        console.log("Language: " + lang + ", i18n: " + i18n.language);
+        console.log('Language test:', t('hello'));
+      });
+    
+    // Theme
     setTheme(localStorage.getItem("theme"))
     hljs.highlightAll();  // highlight.js
 
