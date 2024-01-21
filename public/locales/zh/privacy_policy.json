@@ -13,8 +13,8 @@
   "Changes to This Policy": "此政策的变更",
   "We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.": "我们可能随时修改此隐私政策，因此请经常查看。变更一经在网站上发布，将立即生效。",
   "Contact Us": "联系我们",
-  "If you have any questions or concerns about this privacy policy, please contact us at `support@simple-ai.io`.": "如果您对这个隐私政策有任何疑问或担忧，请通过 `support@simple-ai.io` 与我们联系。",
   "Privacy Policy": "隐私政策",
   "This information may include": "这些信息可能包括",
-  "- Usage data: email address will be used for account registeration, password recovery and service updates notification.": "- 使用数据：电子邮件地址将用于帐户注册、密码恢复和服务更新通知。"
+  "- Usage data: email address will be used for account registeration, password recovery and service updates notification.": "- 使用数据：电子邮件地址将用于帐户注册、密码恢复和服务更新通知。",
+  "email_support": "如果您对这个隐私政策有任何疑问或担忧，请通过 `<1><2>support@simple-ai.io</2></1>` 与我们联系。"
 }

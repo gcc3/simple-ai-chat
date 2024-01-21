@@ -12,7 +12,7 @@
   "Non-registered users are limited to 12 text generations per day.": "未登録のユーザーは1日に12回のテキスト生成に限られています。",
   "Extend, Upgrade or Downgrade": "延長、アップグレード、またはダウングレード",
   "Select plan": "プランを選択",
-  "Cancel": "キャンセル",
+  "Cancel": "取消し",
   "You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.": "あなたは `{{role}}` です。現在のサブスクリプションの有効期限後に `{{targetRole}}` にダウングレードできます。",
   "You already have an unlimited expiration date for `{user.role}`.": "あなたはすでに `{{role}}` の無期限の有効期限を持っています。",
   "Pay": "支払う",

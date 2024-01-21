@@ -13,8 +13,8 @@
   "Changes to This Policy": "このポリシーの変更",
   "We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.": "私たちは、このプライバシーポリシーを随時変更することがありますので、頻繁にご確認ください。変更は、ウェブサイトに投稿された直後に有効になります。",
   "Contact Us": "お問い合わせ",
-  "If you have any questions or concerns about this privacy policy, please contact us at `support@simple-ai.io`.": "このプライバシーポリシーについてご質問や懸念がある場合は、`support@simple-ai.io` までご連絡ください。",
   "Privacy Policy": "プライバシーポリシー",
   "This information may include": "この情報には以下が含まれます",
-  "- Usage data: email address will be used for account registeration, password recovery and service updates notification.": "- 利用データ：メールアドレスはアカウント登録、パスワード回復、サービス更新の通知に使用されます。"
+  "- Usage data: email address will be used for account registeration, password recovery and service updates notification.": "- 利用データ：メールアドレスはアカウント登録、パスワード回復、サービス更新の通知に使用されます。",
+  "email_support": "このプライバシーポリシーについてご質問や懸念がある場合は、`<1><2>support@simple-ai.io</2></1>` までご連絡ください。"
 }

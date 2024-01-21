@@ -1,4 +1,4 @@
-import { useTranslation } from 'react-i18next';
+import { useTranslation, Trans } from 'react-i18next';
 
 function UserDataPrivacy() {
   const { t } = useTranslation("privacy_policy");
@@ -21,7 +21,11 @@ function UserDataPrivacy() {
       <div className="mt-3">- { t("Changes to This Policy") }</div>
       { t("We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.") }<br></br>
       <div className="mt-3">- { t("Contact Us") }</div>
-      { t("If you have any questions or concerns about this privacy policy, please contact us at `support@simple-ai.io`.") }<br></br>
+      <Trans
+        i18nKey="email_support"
+        components={{ 1: <a href="mailto:support@simple-ai.io" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
+        ns="documentation"
+      />
     </div>
   )
 
