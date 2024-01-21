@@ -2,10 +2,8 @@ import React from 'react';
 import { getCommands } from '/command';
 import { getFunctions } from '../function';
 import YouTube from 'react-youtube';
-import { useTranslation } from 'react-i18next';
 
 const Documentation = ({ country }) => {
-  const { t } = useTranslation("documentation");
 
   const features = [
     { id: "features-gpt4turbo", name: "Text Generation (GPT-4 Turbo)", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
