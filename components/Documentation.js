@@ -321,7 +321,7 @@ const Documentation = ({ country }) => {
       <div className="mt-2">
         <Trans
           i18nKey="discord_server"
-          components={{ 1: <a href="https://discord.gg/dRqBZjNu" target="_blank" rel="noopener noreferrer"><u>{ t('link') }</u></a> }}
+          components={{ 1: <a href="https://discord.gg/sRcj4HZyzU" target="_blank" rel="noopener noreferrer"><u>{ t('link') }</u></a> }}
           ns="documentation"
         />
       </div>
