@@ -1,3 +1,7 @@
 {
-  "hello": "世界、こんにちは。"
+  "hello": "世界、こんにちは。",
+  "Documentation": "ドキュメント",
+  "Usage": "使用量",
+  "Subcriptions": "サブスクリプション",
+  "Privacy Policy": "個人情報保護方針"
 }

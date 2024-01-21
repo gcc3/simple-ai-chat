@@ -1,3 +1,7 @@
 {
-  "hello": "你好，世界！"
+  "hello": "你好，世界！",
+  "Documentation": "帮助文档",
+  "Usage": "用量",
+  "Subcriptions": "订阅",
+  "Privacy Policy": "隐私政策"
 }
