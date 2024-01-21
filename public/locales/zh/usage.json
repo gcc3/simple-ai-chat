@@ -8,12 +8,12 @@
   "This Month": "本月",
   "Last Month": "上月",
   "Usage Fees": "使用费用",
-  "For token pricing, refer to the OpenAI official pricing document.": "关于代币定价，请参阅 OpenAI 官方定价文件。",
+  "For token pricing, refer to the OpenAI official pricing document.": "关于 Token 定价，请参阅 OpenAI 官方定价文件。",
   "1% ~ 3% for maintaince service.": "1％ ~ 3％ 用于维护服务。",
   "Fequencies": "频率",
   "Use Count": "使用次数",
-  "GPT-4 Turbo Token": "GPT-4 Turbo 令牌",
-  "GPT-4 Vision Token": "GPT-4 Vision 令牌",
+  "GPT-4 Turbo Token": "GPT-4 Turbo Token",
+  "GPT-4 Vision Token": "GPT-4 Vision Token",
   "Input": "输入",
   "Output": "输出",
   "Daily": "每日",
@@ -33,5 +33,8 @@
   "Select amount": "选择支付额",
   "Pay": "支付金额",
   "Payment methods": "支付方式",
-  "Cancel": "取消"
+  "Cancel": "取消",
+  "Daily usage": "本日用量",
+  "Weekly usage": "过去7日用量",
+  "Monthly usage": "过去30日用量"
 }

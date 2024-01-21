@@ -98,7 +98,7 @@
   "* Build to link with other AI systems, or your own APIs.": "* 构建与其他AI系统的链接，或者链接到您自己的API。",
   "And more...": "等等...",
   "- Is Simple AI free?": "- Simple AI是否免费？",
-  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-use.": "* 是的，大多数服务对`用户`来说是免费的；然而，OpenAI令牌不是免费的。你需要按使用付费。",
+  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-use.": "* 是的，大多数服务对`用户`来说是免费的；然而，OpenA Token不是免费的。你需要按使用付费。",
   "* For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.": "* 对于专业使用，请考虑使用我们的`专业用户`或`超级用户`，参见订阅页面。",
   "Quick Start": "快速开始",
   "Features": "功能",
