@@ -8,8 +8,8 @@ export default async function lang(args) {
     // Add star to current lang
     let result = "\\" + langCodes.join(" \\");
     if (localStorage.getItem("lang")) {
-      const currentStore = localStorage.getItem("lang");
-      result = result.replace("\\" + currentStore, "*\\" + currentStore);
+      const currentLang = localStorage.getItem("lang").replace(" force", "");
+      result = result.replace("\\" + currentLang, "*\\" + currentLang);
     }
     return result;
   }
@@ -20,7 +20,7 @@ export default async function lang(args) {
     }
 
     if (langCodes.includes(args[1])) {
-      localStorage.setItem("lang", args[1]);
+      localStorage.setItem("lang", args[1] + " force");
       return "Language set to " + args[1] + ".";
     } else {
       return "Language code not found.";

@@ -6,15 +6,16 @@ export default async function voice(args) {
   if (command === "ls" || command === "list") {
     const voices = await getVoices();
     let langVoiceList = [];
+    const currentLang = localStorage.getItem("lang").replace(" force", "");
     for (let i = 0; i < voices.length ; i++) {
-      if (voices[i].lang === localStorage.getItem("lang")) {
+      if (voices[i].lang === currentLang) {
         console.log(`Voice ${i+1}: ${voices[i].name}, ${voices[i].lang}`);
         langVoiceList.push(voices[i].name);
       }
     }
     
     if (langVoiceList.length === 0) {
-      return "No voices found for language " + localStorage.getItem("lang") + ".";
+      return "No voices found for language `" + currentLang + "`.";
     } else {
       // Add star to current voice
       let result = "\\" + langVoiceList.join(" \\");

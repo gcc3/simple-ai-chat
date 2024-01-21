@@ -351,14 +351,21 @@ export default function Home() {
     }
 
     // Lanuage
-    const browserLanguage = navigator.language || navigator.userLanguage;
-    const langCodes = getLangCodes();
-    if (langCodes.includes(browserLanguage)) {
-      localStorage.setItem("lang", browserLanguage);
-      console.log('Language:', browserLanguage);
-    } else {
+    if (localStorage.getItem("lang").includes("force")) {
+      // Force language
       console.log('Language:', localStorage.getItem("lang"));
+    } else {
+      // Use browser language
+      const browserLanguage = navigator.language || navigator.userLanguage;
+      const langCodes = getLangCodes();
+      if (langCodes.includes(browserLanguage)) {
+        localStorage.setItem("lang", browserLanguage);
+        console.log('Language:', browserLanguage);
+      } else {
+        console.log('Language:', localStorage.getItem("lang"));
+      }
     }
+    
 
     // Theme
     setTheme(localStorage.getItem("theme"))
@@ -1942,7 +1949,7 @@ export default function Home() {
               </div>
               <div className={styles.content}>
                 {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
-                  <Documentation country={country} />
+                  <Documentation country={country} language={localStorage.getItem("lang")} />
                 </div>}
                 {content === CONTENT.USAGE && <div className={styles.contentitem}>
                   <Usage />
