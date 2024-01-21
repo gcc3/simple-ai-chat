@@ -1,3 +1,7 @@
 {
-  "hello, world": "hello world!"
+  "hello": "hello world!",
+  "Documentation": "Documentation",
+  "Usage": "Usage",
+  "Subcriptions": "Subcriptions",
+  "Privacy Policy": "Privacy Policy"
 }
