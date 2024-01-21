@@ -1,8 +1,8 @@
 {
   "hello": "世界、こんにちは。",
+  "welcome": "Simple AIへようこそ！🚀 ChatGPTの代替品です。\n1. ユーザー登録方法：コマンド `:user add [username] [email] [password?]` を使用してください（かっこは不要です）✅。\n2. ログイン：コマンド `:user login [password]` を使用してください。\n3. ドキュメントへのアクセス、使用の確認：画面の角にあるドット • をクリックしてください 📄。\n4. ログをナビゲートするには、← と → の矢印キーを使用してください 🗂️。\n5. ショートカット：分割画面には Control + | を、フルスクリーンモードの切り替えには Control + F11 を使用してください 🖥️。\n6. テーマの変更：`:theme [light|dark|terminal]` コマンドを使用してください 🌈。\n* 一般的な `user` は無料ですが、トークンの支払いが必要です 💰。使用料ページへのアクセスにより、トークン料金を支払うことができます 💳。\n* 気分が良いですか？コマンド `:invite [email]` により他の人を簡単に招待し、あなたと招待した人の両方に100Kの報酬トークンを獲得しましょう！🎉",
   "Documentation": "ドキュメント",
   "Usage": "使用量",
   "Subcriptions": "サブスクリプション",
-  "Privacy Policy": "個人情報保護方針",
-  "Welcome to Simple AI! 🚀 An alternative to ChatGPT.\n1. Register user: use command `:user add [username] [email] [password?]` (no need brackets) ✅.\n2. Login: use command `:user login [password]`\n3. Access Documentation, confirm Usage: click the `•` in the screen corner 📄.\n4. Use the ← and → arrow keys to navigate between logs 🗂️.\n5. Shortcut: `Control + |` to use split screen, Control + F11 to toggle fullscreen mode 🖥️.\n6. Change theme: use `:theme [light|dark|terminal]` 🌈.\n* General `user` is free, only need to pay tokens 💰. You can charge token fee by accessing Usage page 💳.\n* Feel great? Invite others simply with command `:invite [email]`, earn 100K award tokens for both of you! 🎉": "Simple AIへようこそ！🚀 ChatGPTの代替品です。\n1. ユーザー登録方法：コマンド `:user add [username] [email] [password?]` を使用してください（かっこは不要です）✅。\n2. ログイン：コマンド `:user login [password]` を使用してください。\n3. ドキュメントへのアクセス、使用の確認：画面の角にある `•` をクリックしてください 📄。\n4. ログをナビゲートするには、← と → の矢印キーを使用してください 🗂️。\n5. ショートカット：分割画面には Control + | を、フルスクリーンモードの切り替えには Control + F11 を使用してください 🖥️。\n6. テーマの変更：`:theme [light|dark|terminal]` コマンドを使用してください 🌈。\n* 一般的な `user` は無料ですが、トークンの支払いが必要です 💰。使用料ページへのアクセスにより、トークン料金を支払うことができます 💳。\n* 気分が良いですか？コマンド `:invite [email]` により他の人を簡単に招待し、あなたと招待した人の両方に100Kの報酬トークンを獲得しましょう！🎉"
+  "Privacy Policy": "個人情報保護方針"
 }
