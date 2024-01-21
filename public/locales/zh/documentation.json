@@ -10,7 +10,7 @@
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "允许GPT扮演角色以提供更满意的答案。您可以使用预先定义的系统角色，或创建自定义指令提示来定制用户角色以满足您的特定需求。",
   "Data Stores": "数据存储",
   "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "支持向量数据库和关系数据库的搜索和查询。对于向量数据库用户，可以将文件上传到您的个人数据库。当使用存储时，结果将被插入为提示，以提供知识性答案。可以同时使用多个数据存储。",
-  "Nodes (Node AI)": "节点（节点AI）",
+  "Nodes (Node AI)": "节点（Node AI）",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "连接到另一个AI或任何数据源以使用其数据。当使用节点时，结果将被用作为AI提供的提示。",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "增强型知识与数学（WolframAlpha）",
   "As one of the AI callable function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided.": "作为AI可调用功能之一，WolframAlpha是一个高度能力的计算知识引擎，提高了所提供答案的可靠性。",
