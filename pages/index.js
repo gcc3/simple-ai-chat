@@ -668,7 +668,11 @@ export default function Home() {
 
         // Set welcome message
         if (systemInfo.welcome_message && !localStorage.getItem("user")) {
-          printOutput(systemInfo.welcome_message);
+          if (systemInfo.welcome_message === "default") {
+            printOutput(t('Welcome to Simple AI! 🚀 An alternative to ChatGPT.\n1. Register user: use command `:user add [username] [email] [password?]` (no need brackets) ✅.\n2. Login: use command `:user login [password]`\n3. Access Documentation, confirm Usage: click the • in the screen corner 📄.\n4. Use the ← and → arrow keys to navigate between logs 🗂️.\n5. Shortcut: Control + | to use split screen, Control + F11 to toggle fullscreen mode 🖥️.\n6. Change theme: use `:theme [light|dark|terminal]` 🌈.\n* General `user` is free, only need to pay tokens 💰. You can charge token fee by accessing Usage page 💳.\n* Feel great? Invite others simply with command `:invite [email]`, earn 100K award tokens for both of you! 🎉'))
+          } else {
+            printOutput(systemInfo.welcome_message);
+          }
 
           // Print welcome video
           const video_id = process.env.NEXT_PUBLIC_VIDEO_ID;
