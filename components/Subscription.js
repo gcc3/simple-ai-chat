@@ -3,6 +3,8 @@ import PayPalButton from "./PayPalButton";
 import { refreshUserInfo, getRoleLevel } from "utils/userUtils";
 import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
 import { npre } from "utils/numberUtils";
+import { useTranslation } from "react-i18next";
+
 const moment = require('moment');
 
 // Get amount
@@ -19,6 +21,8 @@ function Subscription() {
   const [amount, setAmount] = useState(null);
   const [bankingFee, setBankingFee] = useState(0);
   const [subscriptions, setSubscriptions] = useState(null);
+
+  const { t } = useTranslation("subscriptions");
 
   const onSuccess = useCallback(async (details) => {
     console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
@@ -103,59 +107,59 @@ function Subscription() {
 
   const content = (
     <>
-      {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]` (no need brackets).</div>}
+      {!user && <div>{ t("Please login. To register a user, use the command `:user add [username] [email] [password?]` (no need brackets).") }</div>}
       {user && <div>
-        <div>- Subcription Status</div>
-        <div className="mt-1">User: {user.username}</div>
-        <div>Email: {user.email}</div>
-        <div>Subscription: `{user.role}`</div>
-        <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
+        <div>- { t("Subcription Status") }</div>
+        <div className="mt-1">{ t("User") }: {user.username}</div>
+        <div>{ t("Email") }: {user.email}</div>
+        <div>{ t("Subscription") }: `{user.role}`</div>
+        <div>{ t("Expire at") }: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
       </div>}
       <div className="mt-3">
-        <div>- Subscription plans</div>
+        <div>- { t("Subscription plans") }</div>
         <div className="mt-1">
-          1. `user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)<br></br>
-          2. `pro_user`: provide advanced features and support for professonal uses.<br></br>
-          3. `super_user`: provide accessability for all latest features and support.<br></br>
+          1. { t("`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)") }<br></br>
+          2. { t("`pro_user`: provide advanced features and support for professonal uses.") }<br></br>
+          3. { t("`super_user`: provide accessability for all latest features and support.") }<br></br>
         </div>
-        <div className="mt-1">* Non-registered users are limited to 12 text generations per day.</div>
+        <div className="mt-1">* { t("Non-registered users are limited to 12 text generations per day.") }</div>
       </div>
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
       {user && <div className="mt-4">
         {message && <div>- {message}</div>}
         {!message && <div>
           {user.role !== "root_user" && <div>
-            <div>- Extend, Upgrade or Downgrade</div>
+            <div>- { t("Extend, Upgrade or Downgrade") }</div>
             <div className="flex flex-wrap items-center mt-2">
-              <div>Select plan:</div>
-              <button className="ml-2" onClick={handleSetTargetRole("user")}>`user`</button>
-              <button className="ml-2" onClick={handleSetTargetRole("pro_user")}>`pro_user`</button>
-              <button className="ml-2" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
-              {targetRole && <button className="ml-2 w-20" onClick={handleSetTargetRole(null)}>Cancel</button>}
+              <div>{ t("Select plan") }:</div>
+              <button className="ml-2" onClick={handleSetTargetRole("user") }>`user`</button>
+              <button className="ml-2" onClick={handleSetTargetRole("pro_user") }>`pro_user`</button>
+              <button className="ml-2" onClick={handleSetTargetRole("super_user") }>`super_user`</button>
+              {targetRole && <button className="ml-2 w-20" onClick={handleSetTargetRole(null)}>{ t("Cancel") }</button>}
             </div>
           </div>}
           {targetRole && <div className="mt-3">
             {((user.role_expires_at !== null && getRoleLevel(user.role) > getRoleLevel(targetRole) && user.role_expires_at > new Date()) 
            || (user.role_expires_at === null && getRoleLevel(user.role) > getRoleLevel(targetRole)))
             && <div>
-              - You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.
+              - { t("You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.") }
               </div>}
             {<div className="mt-1">
               {user.role_expires_at === null && getRoleLevel(user.role) >= getRoleLevel(targetRole) && <div>
-                  - You already have an unlimited expiration date for `{user.role}`.
+                  - { t("You already have an unlimited expiration date for `{user.role}`.") }
                 </div>}
               {((getRoleLevel(targetRole) > getRoleLevel(user.role))
                || (targetRole === user.role && user.role_expires_at !== null)
                || (getRoleLevel(targetRole) < getRoleLevel(user.role) && (user.role_expires_at !== null && user.role_expires_at < new Date())))
                 && <div>
                 <div>{user.role == targetRole ? "Extend 1 month for" : (getRoleLevel(user.role) < getRoleLevel(targetRole) ? "Upgrade" : "Downgrade") + " to"} `{targetRole}`</div>
-                <div>Pay: {"$" + amount} (banking fee ${bankingFee} included)</div>
-                <div className="mt-3">Payment methods:</div>
+                <div>{ t("Pay") }: {"$" + amount} (banking fee ${bankingFee} included)</div>
+                <div className="mt-3">{ t("Payment methods") }:</div>
                 <div className="mt-1">
                   <table>
                     <thead>
                       <tr>
-                        <th>Paypal or Credit Card</th>
+                        <th>{ t("Paypal or Credit Card") }</th>
                       </tr>
                     </thead>
                     <tbody>
@@ -166,7 +170,7 @@ function Subscription() {
                       </tr>
                     </tbody>
                   </table>
-                  <div className="mt-2">* Your payment will be securely handled through the banking system; we do not store or collect your payment details.</div>
+                  <div className="mt-2">* { t("Your payment will be securely handled through the banking system; we do not store or collect your payment details.") }</div>
                 </div>
               </div>}
             </div>}
@@ -179,7 +183,7 @@ function Subscription() {
   return (
     <div className="Subcription">
       <div className="text-center mb-4">
-        <div>Subcriptions</div>
+        <div>{ t("Subcriptions") }</div>
       </div>
       <div>{content}</div>
     </div>
