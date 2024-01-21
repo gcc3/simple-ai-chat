@@ -109,7 +109,7 @@ const Documentation = ({ country }) => {
       </div>
       <div id="introduction" className="mt-5">{ t("Introduction") }</div>
       <div className="mt-2">
-        { t("Simple AI (simple-ai.io) is an AI chat application based on OpenAI's latest GPT-4 Turbo model, the most advanced AI model in the world. We focus on improving user experience and providing powerful features for interacting with AI models. Simple AI is the first AI chat application to support both OpenAI's GPT models and to offer integration with other AI systems, such as Midjourney for image generation, and WolframAlpha for knowledge and mathematics. Additionally, we provide a command-based and easy-to-use shell interface, along with shortcuts and gestures, to facilitate user interactions with the AI models. With all these features, Simple AI stands as one of the most powerful AI chat applications in the world.") }
+        { t("Simple AI (simple-ai.io) is an AI chat application based on OpenAI's latest GPT-4 Turbo model, the most advanced AI model in the world. We focus on improving user experience and providing powerful features for interacting with AI models. Simple AI is the first AI chat application to support both OpenAI's GPT models and to offer integration with other AI systems, such as Midjourney for image generation, and WolframAlpha for knowledge and mathematics. Additionally, we provide a command-based and easy-to-use shell interface, along with shortcuts and gestures, to facilitate user interactions with the AI models. With all these features, Simple AI stands as one of the most powerful AI chat applications.") }
       </div>
       <div className="mt-2">
         - { t("What I can do with Simple AI?") }<br/>
