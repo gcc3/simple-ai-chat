@@ -231,7 +231,7 @@ function Usage() {
             </div>
           </div>}
           {getRoleLevel(user.role) >= 2 && <div className="mt-3">
-            <div>- { t("File Storage usage") }</div>
+            <div>- { t("File Storage Usage") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
