@@ -1,0 +1,23 @@
+{
+  "Please login. To register a user, use the command `:user add [username] [email] [password?]` (no need brackets).": "请登录。要注册用户，请使用命令 `:user add [用户名] [电子邮箱] [密码?]`（无需括号）。",
+  "Subcription Status": "订阅状态",
+  "User": "用户",
+  "Email": "电子邮件",
+  "Subscription": "订阅",
+  "Expire at": "到期时间",
+  "Subscription plans": "订阅计划",
+  "`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`：提供普通用户。它是免费的。（你仍然需要支付你使用的代币费用。）",
+  "`pro_user`: provide advanced features and support for professonal uses.": "`pro_user`：为专业使用提供高级功能和支持。",
+  "`super_user`: provide accessability for all latest features and support.": "`super_user`：提供所有最新功能和支持的可访问性。",
+  "Non-registered users are limited to 12 text generations per day.": "未注册用户每天限制生成12次文本。",
+  "Extend, Upgrade or Downgrade": "延长、升级或降级",
+  "Select plan": "选择计划",
+  "Cancel": "取消",
+  "You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.": "你是一个 `{{user.role}}`，你可以在当前订阅过期后降级到 `{{targetRole}}`。",
+  "You already have an unlimited expiration date for `{user.role}`.": "你已经有了 `{{user.role}}` 的无限期过期日期。",
+  "Pay": "支付",
+  "Payment methods": "支付方式",
+  "Paypal or Credit Card": "贝宝或信用卡",
+  "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "您的支付将通过银行系统安全处理；我们不会存储或收集您的支付详情。",
+  "Subcriptions": "订阅"
+}

@@ -5,6 +5,8 @@ import PayPalButton from "./PayPalButton";
 import { refreshUserInfo } from "utils/userUtils";
 import { npre } from "utils/numberUtils";
 import { plusFeeCal } from "utils/usageUtils";
+import { useTranslation } from "react-i18next";
+
 const moment = require('moment');
 
 function Usage() {
@@ -25,10 +27,12 @@ function Usage() {
   const [amount, setAmount] = useState(0);
   const [bankingFee, setBankingFee] = useState(0);
 
+  const { t } = useTranslation("usage");
+
   const onSuccess = useCallback(async (details) => {
     console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
     console.log("Detail: ", details);
-  
+
     // Update user role
     const response = await fetch("/api/user/update/balance", {
       method: "POST",
@@ -112,110 +116,110 @@ function Usage() {
 
   const content = (
     <>
-      {!user && <div>Please login. To register a user, use the command `:user add [username] [email] [password?]` (no need brackets).</div>}
+      {!user && <div>{ t("Please login. To register a user, use the command `:user add [username] [email] [password?]` (no need brackets).") }</div>}
       {user && <div>
         <div>
-          <div className="mb-1">- Subcription Status</div>
-          <div>User: {localStorage.getItem("user")}</div>
-          <div>Email: {localStorage.getItem("userEmail")}</div>
-          <div>Subscription: `{localStorage.getItem("userRole")}`</div>
-          <div>Expire at: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
+          <div className="mb-1">- { t("Subcription Status") }</div>
+          <div>{ t("User") }: {localStorage.getItem("user") }</div>
+          <div>{ t("Email") }: {localStorage.getItem("userEmail") }</div>
+          <div>{ t("Subscription") }: `{localStorage.getItem("userRole") }`</div>
+          <div>{ t("Expire at") }: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
           {user.usage && getRoleLevel(user.role) >= 1 && <div className="mt-3">
-            <div>- Monthly Usage</div>
+            <div>- { t("Monthly Usage") }</div>
             <div className="mt-1">Use Count</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
-                  <td className="mr-3">Use Count</td>
-                  <td className="mr-3">This Month: {useCountMonthly.this_month}</td>
-                  <td className="mr-3">Last Month: {useCountMonthly.last_month}</td>
+                  <td className="mr-3">{ t("Use Count") }</td>
+                  <td className="mr-3">{ t("This Month") }: {useCountMonthly.this_month}</td>
+                  <td className="mr-3">{ t("Last Month") }: {useCountMonthly.last_month}</td>
                 </tr>
               </tbody>
             </table>
-            <div className="mt-3">GPT-4 Turbo Token</div>
+            <div className="mt-3">{ t("GPT-4 Turbo Token") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
-                  <td className="mr-3">Input</td>
-                  <td className="mr-3">This Month: {tokenMonthly.token.this_month.input}</td>
-                  <td className="mr-3">Last Month: {tokenMonthly.token.last_month.input}</td>
+                  <td className="mr-3">{ t("Input") }</td>
+                  <td className="mr-3">{ t("This Month") }: {tokenMonthly.token.this_month.input}</td>
+                  <td className="mr-3">{ t("Last Month") }: {tokenMonthly.token.last_month.input}</td>
                 </tr>
                 <tr>
-                  <td className="mr-3">Output</td>
-                  <td className="mr-3">This Month: {tokenMonthly.token.this_month.output}</td>
-                  <td className="mr-3">Last Month: {tokenMonthly.token.last_month.output}</td>
+                  <td className="mr-3">{ t("Output") }</td>
+                  <td className="mr-3">{ t("This Month") }: {tokenMonthly.token.this_month.output}</td>
+                  <td className="mr-3">{ t("Last Month") }: {tokenMonthly.token.last_month.output}</td>
                 </tr>
                 <tr>
-                  <td className="mr-3">Usage Fees:</td>
+                  <td className="mr-3">{ t("Usage Fees") }:</td>
                   <td className="mr-3"> ${gpt4FeeThisMonth}</td>
                   <td className="mr-3"> ${gpt4FeeLastMonth}</td>
                 </tr>
               </tbody>
             </table>
-            <div className="mt-3">GPT-4 Vision Token</div>
+            <div className="mt-3">{ t("GPT-4 Vision Token") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
-                  <td className="mr-3">Input</td>
-                  <td className="mr-3">This Month: {tokenMonthly.token_v.this_month.input}</td>
-                  <td className="mr-3">Last Month: {tokenMonthly.token_v.last_month.input}</td>
+                  <td className="mr-3">{ t("Input") }</td>
+                  <td className="mr-3">{ t("This Month") }: {tokenMonthly.token_v.this_month.input}</td>
+                  <td className="mr-3">{ t("Last Month") }: {tokenMonthly.token_v.last_month.input}</td>
                 </tr>
                 <tr>
-                  <td className="mr-3">Output</td>
-                  <td className="mr-3">This Month: {tokenMonthly.token_v.this_month.output}</td>
-                  <td className="mr-3">Last Month: {tokenMonthly.token_v.last_month.output}</td>
+                  <td className="mr-3">{ t("Output") }</td>
+                  <td className="mr-3">{ t("This Month") }: {tokenMonthly.token_v.this_month.output}</td>
+                  <td className="mr-3">{ t("Last Month") }: {tokenMonthly.token_v.last_month.output}</td>
                 </tr>
                 <tr>
-                  <td className="mr-3">Usage Fees:</td>
+                  <td className="mr-3">{ t("Usage Fees") }:</td>
                   <td className="mr-3"> ${gpt4vFeeThisMonth}</td>
                   <td className="mr-3"> ${gpt4vFeeLastMonth}</td>
                 </tr>
               </tbody>
             </table>
-            <div className="mt-2">* For token pricing, refer to the OpenAI official pricing document. (<a href="https://openai.com/pricing#language-models"><u>link</u></a>) </div>
-            <div>* 1% ~ 3% for maintaince service.</div>
-            <div className="mt-3">- Fequencies</div>
+            <div className="mt-2">* { t("For token pricing, refer to the OpenAI official pricing document.") } (<a href="https://openai.com/pricing#language-models"><u>link</u></a>) </div>
+            <div>* { t("1% ~ 3% for maintaince service.") }</div>
+            <div className="mt-3">- { t("Fequencies") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
-                  <td className="mr-3">Use Count</td>
-                  <td className="mr-3">Daily: {useCountFequencies.daily}</td>
-                  <td className="mr-3">Weekly: {useCountFequencies.weekly}</td>
-                  <td className="mr-3">Monthly: {useCountFequencies.monthly}</td>
+                  <td className="mr-3">{ t("Use Count") }</td>
+                  <td className="mr-3">{ t("Daily") }: {useCountFequencies.daily}</td>
+                  <td className="mr-3">{ t("Weekly") }: {useCountFequencies.weekly}</td>
+                  <td className="mr-3">{ t("Monthly") }: {useCountFequencies.monthly}</td>
                 </tr>
               </tbody>
             </table>
-            <div className="mt-3">GPT-4 Turbo Token</div>
+            <div className="mt-3">{ t("GPT-4 Turbo Token") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
-                  <td className="mr-3">Input</td>
-                  <td className="mr-3">Daily: {tokenFequencies.token.daily.input}</td>
-                  <td className="mr-3">Weekly: {tokenFequencies.token.weekly.input}</td>
-                  <td className="mr-3">Monthly: {tokenFequencies.token.monthly.input}</td>
+                  <td className="mr-3">{ t("Input") }</td>
+                  <td className="mr-3">{ t("Daily") }: {tokenFequencies.token.daily.input}</td>
+                  <td className="mr-3">{ t("Weekly") }: {tokenFequencies.token.weekly.input}</td>
+                  <td className="mr-3">{ t("Monthly") }: {tokenFequencies.token.monthly.input}</td>
                 </tr>
                 <tr>
-                  <td className="mr-3">Output</td>
-                  <td className="mr-3">Daily: {tokenFequencies.token.daily.output}</td>
-                  <td className="mr-3">Weekly: {tokenFequencies.token.weekly.output}</td>
-                  <td className="mr-3">Monthly: {tokenFequencies.token.monthly.output}</td>
+                  <td className="mr-3">{ t("Output") }</td>
+                  <td className="mr-3">{ t("Daily") }: {tokenFequencies.token.daily.output}</td>
+                  <td className="mr-3">{ t("Weekly") }: {tokenFequencies.token.weekly.output}</td>
+                  <td className="mr-3">{ t("Monthly") }: {tokenFequencies.token.monthly.output}</td>
                 </tr>
               </tbody>
             </table>
-            <div className="mt-3">GPT-4 Vision Token</div>
+            <div className="mt-3">{ t("GPT-4 Vision Token") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
-                  <td className="mr-3">Input</td>
-                  <td className="mr-3">Daily: {tokenFequencies.token_v.daily.input}</td>
-                  <td className="mr-3">Weekly: {tokenFequencies.token_v.weekly.input}</td>
-                  <td className="mr-3">Monthly: {tokenFequencies.token_v.monthly.input}</td>
+                  <td className="mr-3">{ t("Input") }</td>
+                  <td className="mr-3">{ t("Daily") }: {tokenFequencies.token_v.daily.input}</td>
+                  <td className="mr-3">{ t("Weekly") }: {tokenFequencies.token_v.weekly.input}</td>
+                  <td className="mr-3">{ t("Monthly") }: {tokenFequencies.token_v.monthly.input}</td>
                 </tr>
                 <tr>
-                  <td className="mr-3">Output</td>
-                  <td className="mr-3">Daily: {tokenFequencies.token_v.daily.output}</td>
-                  <td className="mr-3">Weekly: {tokenFequencies.token_v.weekly.output}</td>
-                  <td className="mr-3">Monthly: {tokenFequencies.token_v.monthly.output}</td>
+                  <td className="mr-3">{ t("Output") }</td>
+                  <td className="mr-3">{ t("Daily") }: {tokenFequencies.token_v.daily.output}</td>
+                  <td className="mr-3">{ t("Weekly") }: {tokenFequencies.token_v.weekly.output}</td>
+                  <td className="mr-3">{ t("Monthly") }: {tokenFequencies.token_v.monthly.output}</td>
                 </tr>
               </tbody>
             </table>
@@ -227,17 +231,17 @@ function Usage() {
             </div>
           </div>}
           {getRoleLevel(user.role) >= 2 && <div className="mt-3">
-            <div>- File Storage usage</div>
+            <div>- { t("File Storage usage") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
-                  <td className="mr-3 mt-1">Size: 0MB</td>
+                  <td className="mr-3 mt-1">{ t("Size") }: 0MB</td>
                 </tr>
               </tbody>
             </table>
           </div>}
           {getRoleLevel(user.role) >= 3 && <div className="mt-3">
-            <div>- Services Usage</div>
+            <div>- { t("Services Usage") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
@@ -250,10 +254,10 @@ function Usage() {
             </table>
           </div>}
           <div className="mt-3">
-            <div>- Fees and Balance</div>
+            <div>- { t("Fees and Balance") }</div>
             <ProgressBar label={"Usage"} progress={npre(totalFeeThisMonth + plusFeeThisMonth)} progressMax={npre(user.balance)} />
-            <div className="mt-3">Total Fees: ${npre(totalFeeThisMonth + plusFeeThisMonth)}</div>
-            <div>Balance: ${npre(user.balance)}</div>
+            <div className="mt-3">{ t("Total Fees") }: ${npre(totalFeeThisMonth + plusFeeThisMonth)}</div>
+            <div>{ t("Balance") }: ${npre(user.balance)}</div>
           </div>
         </div>
         <div className="mt-4">
@@ -278,7 +282,7 @@ function Usage() {
                 <table>
                   <thead>
                     <tr>
-                      <th>Paypal or Credit Card</th>
+                      <th>{ t("Paypal or Credit Card") }</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -289,7 +293,7 @@ function Usage() {
                     </tr>
                   </tbody>
                 </table>
-                <div className="mt-2">* Your payment will be securely handled through the banking system; we do not store or collect your payment details.</div>
+                <div className="mt-2">* { t("Your payment will be securely handled through the banking system; we do not store or collect your payment details.") }</div>
               </div>
             </div>}
           </div>}
@@ -301,7 +305,7 @@ function Usage() {
   return (
     <div className="Subcription">
       <div className="text-center mb-4">
-        <div>Usage</div>
+        <div>{ t("Usage") }</div>
       </div>
       <div>{content}</div>
     </div>
