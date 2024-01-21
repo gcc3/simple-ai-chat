@@ -7,7 +7,7 @@ const Documentation = ({ country, language }) => {
   console.log("country", country);
   console.log("language", language);
 
-  const features = !language.startsWith("zh") ? [
+  const features = [
     { id: "features-gpt4turbo", name: "Text Generation (GPT-4 Turbo)", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
     { id: "features-imagegeneration-midjourney", name: "Image Generation (Midjourney)", description: "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:node use \"Midjourney\"`." },
     { id: "features-gpt4vision-imageinput", name: "Image Input (GPT-4 Vision)", description: "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling." },
@@ -16,15 +16,6 @@ const Documentation = ({ country, language }) => {
     { id: "features-stores", name: "Data Stores", description: "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously." },
     { id: "features-nodes", name: "Nodes (Node AI)", description: "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI." },
     { id: "feature-mathematics-wolframalpha", name: "Enhanced Knowledge & Mathematics (WolframAlpha)", description: "As one of the AI callable function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided." },
-  ] : [
-    { id: "features-gpt4turbo", name: "文本生成 (GPT-4 Turbo)", description: "使用 OpenAI 提供的最先进的 GPT-4 Turbo 模型进行聊天。" },
-    { id: "features-imagegeneration-midjourney", name: "图像生成 (Midjourney)", description: "Midjourney 是第一个 Node AI 系统。它结合了最先进的图像生成 AI Midjourney 和 ChatGPT prompts 生成高质量的认证图像。要使用此功能，请使用命令 `:node use \"Midjourney\"`。" },
-    { id: "features-gpt4vision-imageinput", name: "图像输入 (GPT-4 Vision)", description: "与强大的视觉模型 GPT-4 Vision 进行交互。要使用 Vision 模型，只需将图像粘贴到输入框中。* GPT-4 Vision 模型不支持函数调用。" },
-    { id: "features-fileinput", name: "文件输入", description: "上传文件（支持纯文本、DOCX、PDF、JSON），它们将被处理为文本。结果将被插入到提示中，并提供 GPT 引用。" },
-    { id: "features-roles", name: "角色", description: "允许 GPT 扮演角色，提供更令人满意的答案。您可以使用预定义的系统角色，也可以创建自定义指令提示，以根据您的特定要求定制用户角色。" },
-    { id: "features-stores", name: "数据存储", description: "支持向量数据库和关系数据库搜索和查询。对于向量数据库，用户可以将文件上传到您的个人数据库。使用存储时，结果将被插入为提示，以提供知识性答案。可以同时使用多个数据存储。" },
-    { id: "features-nodes", name: "节点 (Node AI)", description: "连接到另一个 AI 或任何数据源以使用其数据。使用节点时，结果将被用作提示，提供给 AI。" },
-    { id: "feature-mathematics-wolframalpha", name: "增强的知识和数学 (WolframAlpha)", description: "作为 AI 可调用函数之一，WolframAlpha 是一个功能强大的计算知识引擎，可以增强提供的答案的可靠性。" },
   ];
 
   const sub_features = [

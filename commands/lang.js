@@ -19,9 +19,14 @@ export default async function lang(args) {
       return "Usage: :lang use [language code]";
     }
 
-    if (langCodes.includes(args[1])) {
-      localStorage.setItem("lang", args[1] + " force");
-      return "Language set to " + args[1] + ".";
+    let newLang = args[1].trim();
+    if (newLang.startsWith("\"") && newLang.endsWith("\"")) {
+      newLang = newLang.slice(1, -1);
+    }
+
+    if (langCodes.includes(newLang)) {
+      localStorage.setItem("lang", newLang + " force");
+      return "Language set to `" + newLang + "`.";
     } else {
       return "Language code not found.";
     }
