@@ -28,5 +28,10 @@
   "Paypal or Credit Card": "Paypal 或信用卡",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "您的付款将通过银行系统安全处理；我们不存储或收集您的付款详情。",
   "Usage": "使用情况",
-  "Subcription Status": "订阅状态"
+  "Subcription Status": "订阅状态",
+  "Add Balance": "添加余额",
+  "Select amount": "选择支付额",
+  "Pay": "支付金额",
+  "Payment methods": "支付方式",
+  "Cancel": "取消"
 }

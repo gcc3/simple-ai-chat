@@ -126,7 +126,7 @@ function Usage() {
           <div>{ t("Expire at") }: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
           {user.usage && getRoleLevel(user.role) >= 1 && <div className="mt-3">
             <div>- { t("Monthly Usage") }</div>
-            <div className="mt-1">Use Count</div>
+            <div className="mt-1">{ t("Use Count") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
@@ -264,20 +264,20 @@ function Usage() {
           {message && <div>{message}</div>}
           {!message && <div>
             {user.role !== "root_user" && <div>
-              <div>- Add Balance</div>
+              <div>- { t("Add Balance") }</div>
               <div className="flex flex-wrap items-center mt-1">
-                <div>Select amount:</div>
+                <div>{ t("Select amount") }:</div>
                 <button className="ml-2 w-11" onClick={handleSetAmount(1)}>$1</button>
                 <button className="ml-2 w-11" onClick={handleSetAmount(5)}>$5</button>
                 <button className="ml-2 w-11" onClick={handleSetAmount(10)}>$10</button>
                 <button className="ml-2 w-11" onClick={handleSetAmount(20)}>$20</button>
                 <button className="ml-2 w-11" onClick={handleSetAmount(50)}>$50</button>
-                {amount > 0 && <button className="ml-2 w-20" onClick={handleSetAmount(0)}>Cancel</button>}
+                {amount > 0 && <button className="ml-2 w-20" onClick={handleSetAmount(0)}>{ t("Cancel") }</button>}
               </div>
             </div>}
             {amount !== null && amount > 0 && <div className="mt-3">
-              <div>Pay: {"$" + amount} (banking fee ${bankingFee} included)</div>
-              <div className="mt-3">Payment methods:</div>
+              <div>{ t("Pay") }: {"$" + amount} (banking fee ${bankingFee} included)</div>
+              <div className="mt-3">{ t("Payment methods") }:</div>
               <div className="mt-1">
                 <table>
                   <thead>

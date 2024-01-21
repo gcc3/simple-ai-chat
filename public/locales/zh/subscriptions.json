@@ -17,7 +17,7 @@
   "You already have an unlimited expiration date for `{user.role}`.": "你已经有了 `{{user.role}}` 的无限期过期日期。",
   "Pay": "支付",
   "Payment methods": "支付方式",
-  "Paypal or Credit Card": "贝宝或信用卡",
+  "Paypal or Credit Card": "Paypal 或信用卡",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "您的支付将通过银行系统安全处理；我们不会存储或收集您的支付详情。",
   "Subcriptions": "订阅"
 }
