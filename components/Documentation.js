@@ -59,6 +59,12 @@ const Documentation = ({ country }) => {
     { endpoint: "POST /api/generate", parameters: "session, mem_length, role, store, node, use_stats, use_eval, use_location, location, images, files", description: "Generate a response from the AI model." },
   ];
 
+  const faqs = [
+    { question: "How to copy the result?", answer: "You can click the model name to copy the whole result (raw)." },
+    { question: "How to share a session?", answer: "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard." },
+    { question: "Does Simple AI store my credit card information?", answer: "No, we do not store any credit card numbers. Payments are securely processed through an embedded page provided by the payment service provider, and the information is sent directly to the banking system." },
+  ];
+
   const content = (
     <>
       <div>
@@ -103,7 +109,7 @@ const Documentation = ({ country }) => {
         Simple AI (simple-ai.io) is an AI chat application based on OpenAI's latest GPT-4 Turbo model, the most advanced AI model in the world. We focus on improving user experience and providing powerful features for interacting with AI models. Simple AI is the first AI chat application to support both OpenAI's GPT models and to offer integration with other AI systems, such as Midjourney for image generation, and WolframAlpha for knowledge and mathematics. Additionally, we provide a command-based and easy-to-use shell interface, along with shortcuts and gestures, to facilitate user interactions with the AI models. With all these features, Simple AI stands as one of the most powerful AI chat applications in the world.
       </div>
       <div className="mt-2">
-        - What you can do with Simple AI?<br/>
+        - What I can do with Simple AI?<br/>
         <div className="mt-1">
           1. Basic Use<br/>
           * Chat. Ask complex questions. Problem Solving.<br/>
@@ -301,16 +307,12 @@ const Documentation = ({ country }) => {
       </div>
       <div id="faqs" className="mt-5">FAQs</div>
       <div className="mt-2">
-        <div>Q: How to copy the result?</div>
-        <div>A: You can click the model name to copy the whole result (raw).</div>
-      </div>
-      <div className="mt-2">
-        <div>Q: How to share a session?</div>
-        <div>A: You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.</div>
-      </div>
-      <div className="mt-2">
-        <div>Q: Does Simple AI store my credit card information?</div>
-        <div>A: No, we do not store any credit card numbers. Payments are securely processed through an embedded page provided by the payment service provider, and the information is sent directly to the banking system.</div>
+        {faqs.map((item, index) => (
+          <div key={index} className="mt-2">
+            <div>- {item.question}</div>
+            <div>{item.answer}</div>
+          </div>
+        ))}
       </div>
       <div id="feedback" className="mt-5">Feedback & Support</div>
       <div className="mt-2">
