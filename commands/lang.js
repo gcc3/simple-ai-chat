@@ -1,27 +1,8 @@
+import { getLangCodes } from "utils/langUtils";
+
 export default async function lang(args) {
   const command = args[0];
-
-  const langCodes = [
-    "de-DE",
-    "en-US",
-    "en-GB",
-    "en-GB",
-    "es-ES",
-    "es-US",
-    "fr-FR",
-    "hi-IN",
-    "id-ID",
-    "it-IT",
-    "ja-JP",
-    "ko-KR",
-    "nl-NL",
-    "pl-PL",
-    "pt-BR",
-    "ru-RU",
-    "zh-CN",
-    "zh-HK",
-    "zh-TW",
-  ];
+  const langCodes = getLangCodes();
 
   if (command === "ls" || command === "list") {
     // Add star to current lang

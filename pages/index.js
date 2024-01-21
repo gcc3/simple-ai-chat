@@ -25,6 +25,7 @@ import { getQueryParameterValue } from "utils/urlUtils";
 import 'katex/dist/katex.min.css';
 import { asciiframe } from "utils/donutUtils";
 import { isMobileDevice } from "utils/mobileUtils";
+import { getLangCodes } from "utils/langUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -338,6 +339,7 @@ export default function Home() {
       reAdjustPlaceholder(mode);  // Adjust placeholder
     }
 
+    // Mobile device
     if (isMobileDevice()) {
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode
@@ -348,6 +350,17 @@ export default function Home() {
       dispatchFullscreen(localStorage.getItem("fullscreen"));
     }
 
+    // Lanuage
+    const browserLanguage = navigator.language || navigator.userLanguage;
+    const langCodes = getLangCodes();
+    if (langCodes.includes(browserLanguage)) {
+      localStorage.setItem("lang", browserLanguage);
+      console.log('Language:', browserLanguage);
+    } else {
+      console.log('Language:', localStorage.getItem("lang"));
+    }
+
+    // Theme
     setTheme(localStorage.getItem("theme"))
     hljs.highlightAll();  // highlight.js
 
