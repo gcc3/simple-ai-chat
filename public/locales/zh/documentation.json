@@ -40,7 +40,7 @@
   "Has output.": "已有输出。",
   "Clear output and reset session. (`:reset`)": "清除输出并重置会话。(`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "全屏。(`:fullscreen [off?]`)",
-  "Split screen. (`:fullscreen split`)": "分屏。(`:fullscreen split`)",
+  "Split screen. (`:fullscreen split`)": "左右分屏。(`:fullscreen split`)",
   "Clear the input.": "清除输入。",
   "Focused on the input area. Input area not empty.": "专注于输入区域。输入区域不为空。",
   "Unfocus from the input box.": "从输入框取消聚焦。",
@@ -106,9 +106,9 @@
   "Commands": "命令",
   "Simple AI is command-based; most operations can be executed with commands. To distinguish from general input, commands must start with a `:`. For example, to change the theme, use the `:theme` command; to enter full-screen mode, use the `:fullscreen` command. Use `:help` to list all available commands.": "Simple AI是基于命令的；大多数操作都可以通过命令执行。为了与一般输入区分开，命令必须以 `:` 开头。例如，要改变主题，使用 `:theme` 命令；要进入全屏模式，使用 `:fullscreen` 命令。使用 `:help` 列出所有可用的命令。",
   "Short description": "简短描述",
-  "Functions": "功能",
-  "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.": "我们提供一些内置功能来获取API的信息或执行一些任务。用户和AI都可以调用这些功能。要获取可用功能的列表，使用 `:function ls` 命令。",
-  "Function": "功能",
+  "Functions": "函数调用",
+  "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.": "我们提供一些内置函数来获取API的信息或执行一些任务。用户和AI都可以调用这些功能。要获取可用功能的列表，使用 `:function ls` 命令。",
+  "Function": "函数",
   "Execute": "执行",
   "Weather data is provided by WolframAlpha.": "天气数据由WolframAlpha提供。",
   "Shortcuts & Gestures": "快捷方式 & 手势",
@@ -130,5 +130,5 @@
   "Sessions & Logs": "会话 & 日志",
   "github_issues": "您可以访问我们的 GitHub 问题（<1><2>链接</2></1>）来报告您遇到的任何问题，分享您的想法，或为项目做出贡献。",
   "discord_server": "您可以加入我们的 Discord 服务器（<1><2>链接</2></1>）与其他用户讨论。",
-  "email_support": "或者您可以通过客服邮箱与我们联系 `<1><2>support@simple-ai.io</2></1>`。"
+  "email_support": "您可以通过客服邮箱与我们联系 `<1><2>support@simple-ai.io</2></1>`。"
 }
