@@ -19,7 +19,7 @@
   "Daily": "日次",
   "Weekly": "週次",
   "Monthly": "月次",
-  "File Storage usage": "ファイルストレージの使用量",
+  "File Storage Usage": "ファイルストレージの使用量",
   "Size": "サイズ",
   "Services Usage": "サービスの使用",
   "Fees and Balance": "料金と残高",
@@ -33,5 +33,8 @@
   "Select amount": "金額を選択",
   "Pay": "支払い金額",
   "Payment methods": "支払い方法",
-  "Cancel": "取消し"
+  "Cancel": "取消し",
+  "Daily usage": "本日の使用量",
+  "Weekly usage": "過去７日間の使用量",
+  "Monthly usage": "過去３０日間の使用量"
 }

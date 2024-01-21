@@ -38,7 +38,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
           <thead>
             <tr>
               <th rowSpan="2">Features</th>
-              <th colSpan="3">Subcriptions(Roles)</th>
+              <th colSpan="3">Subcriptions</th>
             </tr>
             <tr>
               <th>`user`</th>

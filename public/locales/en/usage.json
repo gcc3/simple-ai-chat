@@ -19,7 +19,7 @@
   "Daily": "Daily",
   "Weekly": "Weekly",
   "Monthly": "Monthly",
-  "File Storage usage": "File Storage usage",
+  "File Storage Usage": "File Storage Usage",
   "Size": "Size",
   "Services Usage": "Services Usage",
   "Fees and Balance": "Fees and Balance",
@@ -33,5 +33,8 @@
   "Select amount": "Select amount",
   "Pay": "Pay",
   "Payment methods": "Payment methods",
-  "Cancel": "Cancel"
+  "Cancel": "Cancel",
+  "Daily usage": "Daily usage",
+  "Weekly usage": "Weekly usage",
+  "Monthly usage": "Monthly usage"
 }

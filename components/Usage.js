@@ -224,14 +224,14 @@ function Usage() {
               </tbody>
             </table>
             <div className="mt-3">
-              {useCountFequencies.daily_limit && <ProgressBar label={"Daily usage"} progress={useCountFequencies.daily} progressMax={useCountFequencies.daily_limit} />}
-              {useCountFequencies.weekly_limit && <ProgressBar label={"Weekly usage"} progress={useCountFequencies.weekly} progressMax={useCountFequencies.weekly_limit} />}
-              {useCountFequencies.monthly_limit && <ProgressBar label={"Monthly usage"} progress={useCountFequencies.monthly} progressMax={useCountFequencies.monthly_limit} />}
+              {useCountFequencies.daily_limit && <ProgressBar label={ t("Daily usage") } progress={useCountFequencies.daily} progressMax={useCountFequencies.daily_limit} />}
+              {useCountFequencies.weekly_limit && <ProgressBar label={ t("Weekly usage") } progress={useCountFequencies.weekly} progressMax={useCountFequencies.weekly_limit} />}
+              {useCountFequencies.monthly_limit && <ProgressBar label={ t("Monthly usage") } progress={useCountFequencies.monthly} progressMax={useCountFequencies.monthly_limit} />}
               {useCountFequencies.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
             </div>
           </div>}
           {getRoleLevel(user.role) >= 2 && <div className="mt-3">
-            <div>- { t("File Storage usage") }</div>
+            <div>- { t("File Storage Usage") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
@@ -255,7 +255,7 @@ function Usage() {
           </div>}
           <div className="mt-3">
             <div>- { t("Fees and Balance") }</div>
-            <ProgressBar label={"Usage"} progress={npre(totalFeeThisMonth + plusFeeThisMonth)} progressMax={npre(user.balance)} />
+            <ProgressBar label={ t("Usage") } progress={npre(totalFeeThisMonth + plusFeeThisMonth)} progressMax={npre(user.balance)} />
             <div className="mt-3">{ t("Total Fees") }: ${npre(totalFeeThisMonth + plusFeeThisMonth)}</div>
             <div>{ t("Balance") }: ${npre(user.balance)}</div>
           </div>
