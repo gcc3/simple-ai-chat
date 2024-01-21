@@ -1,0 +1,20 @@
+{
+  "Introduction": "はじめに",
+  "Welcome to Simple AI (simple-ai.io). We are committed to protecting your personal information and your right to privacy.": "Simple AI（simple-ai.io）へようこそ。私たちは、お客様の個人情報とプライバシーの権利を守ることに尽力しています。",
+  "What Information We Collect": "収集する情報",
+  "We collect minimal user information strictly necessary to provide and improve our services.": "私たちは、サービスの提供および改善に絶対に必要な最小限のユーザー情報のみを収集します。",
+  "- Basic account information: email address for account creation.": "- 基本的なアカウント情報：アカウント作成のためのメールアドレス。",
+  "How We Use Your Information": "情報の使用方法",
+  "We use your information to provide, improve, and customize our services. We do not sell, rent, or trade your information to any third parties.": "私たちは、お客様の情報を使用してサービスを提供、改善、カスタマイズします。お客様の情報を第三者に売却、貸与、または交換することはありません。",
+  "How We Store and Protect Your Information": "情報の保管と保護方法",
+  "Your data is securely stored in our website's database. We implement a variety of security measures to maintain the safety of your personal information.": "お客様のデータは、当社のウェブサイトのデータベースに安全に保管されています。お客様の個人情報の安全を維持するために、さまざまなセキュリティ対策を実施しています。",
+  "Your Rights": "お客様の権利",
+  "You have the right to access, update, or delete your personal information at any time. When you delele your account, we will delete all your personal information from our database.": "お客様はいつでも個人情報にアクセスしたり、更新したり、削除する権利があります。アカウントを削除すると、当社のデータベースからお客様のすべての個人情報が削除されます。",
+  "Changes to This Policy": "このポリシーの変更",
+  "We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.": "私たちは、このプライバシーポリシーを随時変更することがありますので、頻繁にご確認ください。変更は、ウェブサイトに投稿された直後に有効になります。",
+  "Contact Us": "お問い合わせ",
+  "If you have any questions or concerns about this privacy policy, please contact us at `support@simple-ai.io`.": "このプライバシーポリシーについてご質問や懸念がある場合は、`support@simple-ai.io` までご連絡ください。",
+  "Privacy Policy": "プライバシーポリシー",
+  "This information may include": "この情報には以下が含まれます",
+  "- Usage data: email address will be used for account registeration, password recovery and service updates notification.": "- 利用データ：メールアドレスはアカウント登録、パスワード回復、サービス更新の通知に使用されます。"
+}
