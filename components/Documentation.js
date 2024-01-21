@@ -4,9 +4,6 @@ import { getFunctions } from '../function';
 import YouTube from 'react-youtube';
 
 const Documentation = ({ country, language }) => {
-  console.log("country", country);
-  console.log("language", language);
-
   const features = [
     { id: "features-gpt4turbo", name: "Text Generation (GPT-4 Turbo)", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
     { id: "features-imagegeneration-midjourney", name: "Image Generation (Midjourney)", description: "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:node use \"Midjourney\"`." },
