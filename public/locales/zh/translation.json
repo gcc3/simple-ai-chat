@@ -1,6 +1,6 @@
 {
   "hello": "你好，世界！",
-  "welcome": "欢迎来到 Simple AI！🚀 一个 ChatGPT 的替代品。\n1. 注册用户：使用命令 `:user add [username] [email] [password?]`（不需要括号）✅。\n（例）:user add aaa xxxx@zzzz.vv ********\n * 密码需 8 位以上🔑\n2. 登录：使用命令 `:user login [password]`\n3. 访问文档，确认使用方法：点击屏幕角落的小圆点 •📄。\n4. 使用左(←)右(→)箭头键在日志之间导航 🗂️。\n5. 快捷键：`Ctrl + |` 使用分屏，`Ctrl + F11` 切换全屏模式 🖥️。\n6. 更改主题：使用 `:theme [light|dark|terminal]` 🌈。\n* 普通 `user` 免费，只需支付 Token 使用費 💰。您可以通过访问用量页面来给 Token 充值 💳。\n* 感觉很棒？轻松地使用命令 `:invite [email]` 来邀请其他人，你和对方都能获得10万奖励 Token！🎉",
+  "welcome": "欢迎来到 Simple AI！🚀 一个 ChatGPT 的替代品。\n1. 注册用户：使用命令 `:user add [username] [email] [password?]`（不需要括号）✅。\n（例）:user add aaa xxxx@zzzz.vv ********\n * 密码需 8 位以上🔑\n2. 登录：使用命令 `:user login [password]`\n3. 访问文档，确认使用方法：点击屏幕角落的小圆点 •📄。\n4. 使用左(←)右(→)箭头键在日志之间导航 🗂️。\n5. 快捷键：`Ctrl + |` 使用分屏，`Ctrl + F11` 切换全屏模式 🖥️。\n6. 更改主题：使用 `:theme [light|dark|terminal]` 🌈。\n* 普通 `user` 免费，只需支付 Token 使用費 💰。您可以通过访问用量页面来给 Token 充值 💳。\n* 感觉很棒？想要邀请朋友一起使用，可通过使用命令 `:invite [email]` 来邀请其他人，你和对方都能获得10万奖励 Token！🎉",
   "Documentation": "帮助文档",
   "Usage": "用量",
   "Subcriptions": "订阅",
