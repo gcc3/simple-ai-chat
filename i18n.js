@@ -14,8 +14,7 @@ if (!i18n.isInitialized) {
         loadPath: '/locales/{{lng}}/{{ns}}.json',
       },
       react: {
-        wait: true,
-        useSuspense: false, // Set to true if you want to use React Suspense
+        useSuspense: false, // Set to true to use React Suspense
       },
     });
 }
