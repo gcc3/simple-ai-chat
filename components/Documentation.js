@@ -147,7 +147,7 @@ const Documentation = ({ country }) => {
           <YouTube
             videoId={process.env.NEXT_PUBLIC_VIDEO_ID}
             className="youtube-video"
-            opts={{ 
+            opts={{
               playerVars: {
                 controls: 1,
                 rel: 0,
@@ -187,7 +187,7 @@ const Documentation = ({ country }) => {
       <div>
         {commands.map((item, index) => (<div key={index}>
             {item.id && <div id={item.id} className="mt-3">
-              - {item.title}
+              - { t(item.title) }
               {item.annotation && <div className="mt-2">{item.annotation}</div>}
             </div>}
             <div className="mt-2">
