@@ -5,7 +5,7 @@ import YouTube from 'react-youtube';
 import { useTranslation } from 'react-i18next';
 
 const Documentation = ({ country }) => {
-  const { t } = useTranslation();
+  const { t } = useTranslation("documentation");
 
   const features = [
     { id: "features-gpt4turbo", name: "Text Generation (GPT-4 Turbo)", description: "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI." },
@@ -15,7 +15,7 @@ const Documentation = ({ country }) => {
     { id: "features-roles", name: "Roles", description: "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements." },
     { id: "features-stores", name: "Data Stores", description: "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously." },
     { id: "features-nodes", name: "Nodes (Node AI)", description: "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI." },
-    { id: "feature-mathematics-wolframalpha", name: "Enhanced Knowledge & Mathematics (WolframAlpha)", description: "As one of the AI callable function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided." },
+    { id: "features-mathematics-wolframalpha", name: "Enhanced Knowledge & Mathematics (WolframAlpha)", description: "As one of the AI callable function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided." },
   ];
 
   const sub_features = [
@@ -83,7 +83,7 @@ const Documentation = ({ country }) => {
             <div><a href="#features-roles">- <u>Roles</u></a></div>
             <div><a href="#features-stores">- <u>Data Stores</u></a></div>
             <div><a href="#features-nodes">- <u>Nodes (Node AI)</u></a></div>
-            <div><a href="#feature-mathematics-wolframalpha">- <u>Enhanced Knowledge & Mathematics (WolframAlpha)</u></a></div>
+            <div><a href="#features-mathematics-wolframalpha">- <u>Enhanced Knowledge & Mathematics (WolframAlpha)</u></a></div>
             <div><a href="#features-more">- <u>More...</u></a></div>
           </div>
         </div>
