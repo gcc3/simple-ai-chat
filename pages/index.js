@@ -1363,6 +1363,11 @@ export default function Home() {
             input = input.split("Q=")[1];
           }
 
+          // Reset time
+          const timeNow = Date.now();
+          sessionStorage.setItem("time", timeNow);
+          sessionStorage.setItem("head", timeNow);
+
           // Call generate with function
           generate_sse(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
           return;
