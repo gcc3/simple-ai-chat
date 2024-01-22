@@ -27,7 +27,7 @@ const { model: model_, model_v, role_content_system, welcome_message, querying, 
 
 export default async function (req, res) {
   const session = req.query.session || "";
-  const time = req.query.time || "";
+  const time_ = req.query.time || "";
   const mem_length = req.query.mem_length || 0;
   const role = req.query.role || "";
   const store = req.query.store || "";
@@ -40,6 +40,9 @@ export default async function (req, res) {
   const files_ = req.query.files || "";
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
+
+  // Time
+  let time = Number(time_);
 
   // Authentication
   const authResult = authenticate(req);
@@ -269,10 +272,10 @@ export default async function (req, res) {
         if (node_output_images.length > 0) {
           for (let i = 0; i < node_output_images.length; i++) {
             // The time cannot be same, so every image add 1 millisecond
-            await logadd(user, session, Number(time) + 1 + i, node, 0, ":generate \"" + node_input + "\"", 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
+            await logadd(user, session, time++, node, 0, ":generate \"" + node_input + "\"", 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
           }
         } else {
-          await logadd(user, session, time, node, 0, node_input, 0, node_output, JSON.stringify([]), ip, browser);
+          await logadd(user, session, time++, node, 0, node_input, 0, node_output, JSON.stringify([]), ip, browser);
         }
       }
 
@@ -402,7 +405,7 @@ export default async function (req, res) {
           let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
           const input_token_ct_f = countToken(model, input_f);
           const output_token_ct_f = countToken(model, output_f);
-          await logadd(user, session, time, model, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
+          await logadd(user, session, time++, model, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
         }
       }
     }
@@ -418,7 +421,7 @@ export default async function (req, res) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }
-    await logadd(user, session, time, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
+    await logadd(user, session, time++, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
 
     // Final stats
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
