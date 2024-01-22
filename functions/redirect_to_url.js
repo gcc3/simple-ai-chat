@@ -29,7 +29,7 @@ export default async function redirectToUrl(paramObject) {
   // Test the URL
   try {
     const response = await fetch(url);
-    if (!response.ok) {
+    if (!response) {
       return {
         success: false,
         error: "The URL has returned a " + response.status + " error."
