@@ -1705,6 +1705,19 @@ export default function Home() {
             }
           }
         }
+
+        // Auto complete lang use
+        if (elInput.value.startsWith(":lang use ")) {
+          const nameToBeComleted = elInput.value.replace(":lang use ", "");
+          if (nameToBeComleted) {
+            const langCode = getLangCodes().find((n) => n.startsWith(nameToBeComleted));
+            if (langCode) {
+              setInput(":lang use " + langCode);
+              reAdjustInputHeight();
+              return;
+            }
+          }
+        }
       }
     }
   };
