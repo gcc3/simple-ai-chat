@@ -135,7 +135,7 @@ export function getFunctions() {
   // Ask Wolfram Alpha
   functions.push({
     name: 'ask_wolframalpha',
-    description: 'Ask Wolfram Alpha a question. Wolfram Alpha is a computational knowledge engine mainly for resoving mathematical questions. It also can search for what you want to know about, such as "What is the population of San Francisco?" or "What is the capital of France?".',
+    description: 'This function send request to WolframAlpha, a computational knowledge engine mainly for resoving mathematical questions. It also can search for what you want to know about, such as "What is the population of San Francisco?" or "What is the capital of France?".',
     parameters: {
       type: "object",
       properties: {
