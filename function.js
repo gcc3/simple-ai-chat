@@ -153,7 +153,7 @@ export function getFunctions(functions_ = null) {
         properties: {
           query: {
             type: "string",
-            description: "The question to ask.",
+            description: "The key word or question to ask. Generally a sentific question or a teminology word.",
           }
         },
         required: ["query"],
