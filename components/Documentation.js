@@ -184,6 +184,9 @@ const Documentation = ({ country }) => {
       <div className="mt-2">
         { t("Simple AI is command-based; most operations can be executed with commands. To distinguish from general input, commands must start with a `:`. For example, to change the theme, use the `:theme` command; to enter full-screen mode, use the `:fullscreen` command. Use `:help` to list all available commands.") }
       </div>
+      <div className="mt-1">
+        { t("The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.") }
+      </div>
       <div>
         {commands.map((item, index) => (<div key={index}>
             {item.id && <div id={item.id} className="mt-3">

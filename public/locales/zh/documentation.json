@@ -104,7 +104,8 @@
   "Features": "功能",
   "More features": "更多功能",
   "Commands": "命令",
-  "Simple AI is command-based; most operations can be executed with commands. To distinguish from general input, commands must start with a `:`. For example, to change the theme, use the `:theme` command; to enter full-screen mode, use the `:fullscreen` command. Use `:help` to list all available commands.": "Simple AI 是基于命令的；大多数操作都可以通过命令执行。为了与一般输入区分开，命令必须以 `:` 开头。例如，要改变主题，使用 `:theme` 命令；要进入全屏模式，使用 `:fullscreen` 命令。使用 `:help` 列出所有可用的命令。",
+  "Simple AI is command-based; most operations can be executed with commands. To distinguish from general input, commands must start with a `:`. For example, to change the theme, use the `:theme` command; to enter full-screen mode, use the `:fullscreen` command. Use `:help` to list all available commands.": "Simple AI 是基于命令的；大多数操作可以通过命令来执行。为了与普通输入区分开来，命令必须以 `:` 开头。例如，要更改主题，请使用 `:theme` 命令；要进入全屏模式，请使用 `:fullscreen` 命令。使用 `:help` 可以列出所有可用的命令。",
+  "The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.": "命令的设计模仿了 Unix shell。您可以使用 `Tab` 键进行自动补全。使用 ↑ 和 ↓ 键来在命令历史记录之间导航。按 Control + C 来停止。",
   "Short description": "简短描述",
   "Functions": "函数调用",
   "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.": "我们提供一些内置函数来获取API的信息或执行一些任务。用户和 AI 都可以调用这些功能。要获取可用功能的列表，使用 `:function ls` 命令。",
@@ -130,5 +131,6 @@
   "Sessions & Logs": "会话 & 日志",
   "github_issues": "您可以访问我们的 GitHub 问题（<1><2>链接</2></1>）来报告您遇到的任何问题，分享您的想法，或为项目做出贡献。",
   "discord_server": "您可以加入我们的 Discord 服务器（<1><2>链接</2></1>）与其他用户讨论。",
-  "email_support": "您可以通过客服邮箱与我们联系 `<1><2>support@simple-ai.io</2></1>`。"
+  "email_support": "您可以通过客服邮箱与我们联系 `<1><2>support@simple-ai.io</2></1>`。",
+  "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourney 是首个系统节点 AI。它利用最先进的图像生成 AI —— Midjourney，结合 ChatGPT 提示来生成高质量、认证的图像。要启用此功能，请使用命令 `:use \"Midjourney\"`。"
 }

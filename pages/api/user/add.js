@@ -5,7 +5,6 @@ import AWS from "aws-sdk";
 import { encode } from "utils/authUtils";
 import { passwordCheck } from "utils/passwordUtils"
 import { generateInviteCode } from "utils/invitesUtils";
-const moment = require("moment");
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -124,25 +123,36 @@ export default async function (req, res) {
     const from = "support@simple-ai.io";
     const to = email;
     const subject = "Welcome to simple-ai.io";
-    const body = "Thank you for joining Simple AI!" + "<br>"
-               + "<br>"
-               + `Your account, username is \"${username}\", has been created successfully.` + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + "<br>"
-               + "Please log in with command `:login [username] [password]` (no need brackets, e.g :login simpleUser1 ********)" + "<br>"
-               + "<br>"
-               + `Please click the following link to verify your email before using our services.` + "<br>" 
-               + `<a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>` + "<br>"
-               + "<br>"
-               + `Quick Start Guide: https://youtu.be/${process.env.NEXT_PUBLIC_VIDEO_ID}` + "<br>"
-               + "For support, email us at `support@simple-ai.io`." + "<br>"
-               + `Join our discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>"
-               + "<br>"
-               + "Share Simple AI with friends and earn 100K tokens rewards per invite!" + "<br>"
-               + "Invite friend to joined and click the invitation link below will grant 100K tokens usage to both of you." + "<br>"
-               + `Invitation Link: https://simple-ai.io/api/invite/complete/${inviteCode}` + "<br>"
-               + "<br>"
-               + "* Please do not register multiple accounts or use temporary email addresses, as it will result in your account being suspended." + "<br>"
-               + "<br>"
-               + "- Simple AI Developers";
+    const body
+    = "Welcome to Simple AI! 🚀 An alternative to ChatGPT." + "<br>"
+    + "<br>"
+    + `Your account, username is \"${username}\", has been created successfully.` + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + "<br>"
+    + "Please log in with command `:login [username] [password]` (no need brackets, e.g :login simpleUser1 ********)" + "<br>"
+    + "<br>"
+    + `Please click the following link to verify your email before using our services.` + "<br>" 
+    + `<a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>` + "<br>"
+    + "<br>"
+    + `Quick Start Guide: https://youtu.be/${process.env.NEXT_PUBLIC_VIDEO_ID}` + "<br>"
+    + "1. Register user: use command `:user add [username] [email] [password?]` (no need brackets) ✅." + "<br>"
+    + "2. Login: use command `:user login [password]`" + "<br>"
+    + "3. Access Documentation, confirm Usage: click the • in the screen corner 📄." + "<br>"
+    + "4. Use the ← and → arrow keys to navigate between logs 🗂️." + "<br>"
+    + "5. Shortcut: `Control + |` to use split screen, `Control + F11` to toggle fullscreen mode 🖥️." + "<br>"
+    + "6. Change theme: use `:theme [light|dark|terminal]` 🌈." + "<br>"
+    + "* General `user` is free, only need to pay tokens 💰. You can charge token fee by accessing Usage page 💳." + "<br>"
+    + "* Feel great? Invite others simply with command `:invite [email]`, earn 100K award tokens for both of you! 🎉" + "<br>"
+    + "<br>"
+    + "For support, email us at `support@simple-ai.io`." + "<br>"
+    + `Join our discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>"
+    + "<br>"
+    + "Share Simple AI with friends and earn 100K tokens rewards per invite!" + "<br>"
+    + "Invite friend to joined, and let him click the invitation link below, will grant 100K tokens usage to both of you." + "<br>"
+    + `Invitation Link: https://simple-ai.io/api/invite/complete/${inviteCode}` + "<br>"
+    + "You can also use command `:invite [email]` to invite your friends, your invitation link will be send to him via email." + "<br>"
+    + "<br>"
+    + "* Please do not register multiple accounts or use temporary email addresses, as it will result in your account being suspended." + "<br>"
+    + "<br>"
+    + "- Simple AI Developers";
     
     const emailParams = {
       Source: "Simple AI <" + from + ">",
