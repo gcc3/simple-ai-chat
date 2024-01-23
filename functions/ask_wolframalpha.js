@@ -48,7 +48,8 @@ async function queryWolframAlpha(query) {
     });
     return {
       success: true,
-      message: plaintext
+      message: "Query: " + query + "\n\n" 
+             + "Result: " + plaintext
     }
   }
 }
