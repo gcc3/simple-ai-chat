@@ -14,7 +14,7 @@ export async function getUacResult(user, ip) {
     if (chatCount >= 0) {
       return {
         success: false,
-        error: "Please use command `:user add [username] [email] [password?]` (no need brackets) to register as user to continue. If you are already a member, please log in using `:user login [username] [password]`."
+        error: "Please use command `:user add [username] [email] [password?]` (no bracktes needed) to register as user to continue. If you are already a member, please log in using `:user login [username] [password]`."
       };
     }
   }

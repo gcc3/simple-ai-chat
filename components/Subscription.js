@@ -107,7 +107,7 @@ function Subscription() {
 
   const content = (
     <>
-      {!user && <div>{ t("Please login. To register a user, use the command `:user add [username] [email] [password?]` (no need brackets).") }</div>}
+      {!user && <div>{ t("Please login. To register a user, use the command `:user add [username] [email] [password?]` (no bracktes needed).") }</div>}
       {user && <div>
         <div>- { t("Subcription Status") }</div>
         <div className="mt-1">{ t("User") }: {user.username}</div>

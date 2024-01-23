@@ -1,5 +1,5 @@
 {
-  "Please login. To register a user, use the command `:user add [username] [email] [password?]` (no need brackets).": "Please login. To register a user, use the command `:user add [username] [email] [password?]` (no need brackets).",
+  "Please login. To register a user, use the command `:user add [username] [email] [password?]` (no bracktes needed).": "Please login. To register a user, use the command `:user add [username] [email] [password?]` (no bracktes needed).",
   "User": "User",
   "Email": "Email",
   "Subscription": "Subscription",
