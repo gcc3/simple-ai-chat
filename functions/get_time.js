@@ -1,5 +1,6 @@
 import timezone from 'moment-timezone';
 
+// Friendly name: Time
 export default async function getTime(paramObject) {
   let timeZone = paramObject.timezone;
   if (!timeZone) timeZone = "UTC";

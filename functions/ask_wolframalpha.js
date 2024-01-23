@@ -1,5 +1,6 @@
 import parseStringPromise from 'xml2js';
 
+// Friendly name: WolframAlpha
 export default async function askWolframalpha(paramObject) {
   const query = paramObject.query;
   if (!query) return {

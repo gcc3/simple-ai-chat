@@ -1,5 +1,6 @@
 import parseStringPromise from 'xml2js';
 
+// Friendly name: Weather
 export default async function getWeather(paramObject) {
   const location = paramObject.location;
   if (!location) return {
