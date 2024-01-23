@@ -2,12 +2,22 @@ import parseStringPromise from 'xml2js';
 
 // Friendly name: WolframAlpha
 export default async function askWolframalpha(paramObject) {
-  const query = paramObject.query;
+  const { query, keyword } = paramObject;
+
   if (!query) return {
     success: false,
     error: "Invalid query.",
   }
 
+  let result = await queryWolframAlpha(query);
+  if (!result.success) {
+    // Try again with keyword
+    return await queryWolframAlpha(keyword);
+  }
+  return result
+}
+
+async function queryWolframAlpha(query) {
   const response = await fetch("http://api.wolframalpha.com/v2/query?" + new URLSearchParams({
       appid: process.env.WOLFRAM_ALPHA_APPID,
       input: query,
@@ -22,11 +32,13 @@ export default async function askWolframalpha(paramObject) {
   });
 
   const responseText = await response.text();
-
-  let result = "";
   const data = await parseStringPromise.parseStringPromise(responseText);  // XML to object
+
   if (!data.queryresult || !data.queryresult.pod || data.queryresult.pod.length === 0) {
-    result = "Not found any knowledge from the WolframAlpha.";
+    return {
+      success: false,
+      error: "Not found any knowledge from the WolframAlpha."
+    }
   } else {
     let plaintext = "";
     data.queryresult.pod.map((pod) => {
@@ -34,11 +46,9 @@ export default async function askWolframalpha(paramObject) {
         plaintext += subpod["$"]["title"] + subpod.plaintext[0] + "\n\n";
       });
     });
-    result = plaintext;
-  }
-
-  return {
-    success: true,
-    message: result,
+    return {
+      success: true,
+      message: plaintext
+    }
   }
 }
