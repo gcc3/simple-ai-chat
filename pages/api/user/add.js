@@ -137,7 +137,7 @@ export default async function (req, res) {
     + "<br>"
     + `Quick Start Guide:` + "<br>"
     + "1. Register user: use command `:user add [username] [email] [password?]` (no need brackets) ✅." + "<br>"
-    + "2. Login: use command `:user login [password]`" + "<br>"
+    + "2. Login: use command `:user login [password]` 🔑" + "<br>"
     + "3. Access Documentation, confirm Usage: click the • in the screen corner 📄." + "<br>"
     + "4. Use the ← and → arrow keys to navigate between logs 🗂️." + "<br>"
     + "5. Shortcut: `Control + |` to use split screen, `Control + F11` to toggle fullscreen mode 🖥️." + "<br>"
