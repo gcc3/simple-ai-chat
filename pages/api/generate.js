@@ -25,6 +25,7 @@ export default async function(req, res) {
   const session = req.body.session || "";
   const time = req.body.time || "";
   const mem_length = req.body.mem_length || 0;
+  const functions_ = req.body.functions || "";
   const role = req.body.role || "";
   const store = req.body.store || "";
   const node = req.body.node || "";
@@ -96,6 +97,7 @@ export default async function(req, res) {
   + "use_node_ai: " + use_node_ai + "\n"
   + "use_lcation: " + use_location + "\n"
   + "location: " + (use_location ? (location === "" ? "(not set)" : location) : "(disabled)") + "\n"
+  + "functions: " + (functions_ || "(not set)") + "\n"
   + "role: " + (role || "(not set)") + "\n"
   + "store: " + (store || "(not set)") + "\n"
   + "node: " + (node || "(not set)") + "\n");
