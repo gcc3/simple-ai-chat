@@ -131,5 +131,6 @@
   "Sessions & Logs": "Sessions & Logs",
   "github_issues": "You can visit our GitHub issues (<1><2>link</2></1>) to report any issues you encounter, share your ideas, or contribute to the project.",
   "discord_server": "You can join our Discord server (<1><2>link</2></1>) to discuss with other users.",
-  "email_support": "You can contact us via email `<1><2>support@simple-ai.io</2></1>`."
+  "email_support": "You can contact us via email `<1><2>support@simple-ai.io</2></1>`.",
+  "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`."
 }
