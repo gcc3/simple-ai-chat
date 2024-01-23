@@ -1,5 +1,5 @@
 {
-  "Please login. To register a user, use the command `:user add [username] [email] [password?]` (no need brackets).": "ログインしてください。ユーザーを登録するには、`:user add [username] [email] [password?]` コマンドを使用してください（括弧は不要です）。",
+  "Please login. To register a user, use the command `:user add [username] [email] [password?]` (no bracktes needed).": "ログインしてください。ユーザーを登録するには、`:user add [username] [email] [password?]` コマンドを使用してください（括弧は不要です）。",
   "Subcription Status": "サブスクリプションの状況",
   "User": "ユーザー",
   "Email": "メール",
