@@ -10,7 +10,8 @@ export async function getUacResult(user, ip) {
   if (!isLogin) {
     // Not a user, urge register a user
     const chatCount = await countChatsForIP(ip, Date.now() - 86400000 * 3, Date.now());
-    if (chatCount >= 12) {
+    // Forbidden as noticed some user user can use fake IP to bypass the limit
+    if (chatCount >= 0) {
       return {
         success: false,
         error: "Please use command `:user add [username] [email] [password?]` (no need brackets) to register as user to continue. If you are already a member, please log in using `:user login [username] [password]`."
