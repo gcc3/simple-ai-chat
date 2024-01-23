@@ -28,6 +28,7 @@ import { isMobileDevice } from "utils/mobileUtils";
 import { getLangCodes } from "utils/langUtils";
 import { useTranslation } from 'react-i18next';
 import { getFunctions } from "function";
+import { simulateKeyPress } from "utils/keyboardUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -769,6 +770,11 @@ export default function Home() {
         }
 
         if (xDiff > 0) {
+          if (elTouch.className && (elTouch.className.indexOf("input") !== -1)) {
+            simulateKeyPress("esc", document.getElementById('input'));
+            return;
+          }
+
           // Left swipe show next log
           if (global.STATE === STATES.IDLE) {
             getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
@@ -785,6 +791,11 @@ export default function Home() {
             console.log("Aborted as generating.");
           }
         } else {
+          if (elTouch.className && (elTouch.className.indexOf("input") !== -1)) {
+            simulateKeyPress("tab", document.getElementById('input'));
+            return;
+          }
+
           // Right swipe show previous log
           if (global.STATE === STATES.IDLE) {
             getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
