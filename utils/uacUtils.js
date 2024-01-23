@@ -9,7 +9,7 @@ export async function getUacResult(user, ip) {
 
   if (!isLogin) {
     // Not a user, urge register a user
-    const chatCount = await countChatsForIP(ip, Date.now() - 86400000 * 3, Date.now());
+    const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());
     // Forbidden as noticed some user user can use fake IP to bypass the limit
     if (chatCount >= 0) {
       return {

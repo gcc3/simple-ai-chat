@@ -27,6 +27,7 @@ import { asciiframe } from "utils/donutUtils";
 import { isMobileDevice } from "utils/mobileUtils";
 import { getLangCodes } from "utils/langUtils";
 import { useTranslation } from 'react-i18next';
+import { getFunctions } from "function";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -312,6 +313,7 @@ export default function Home() {
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
+    if (localStorage.getItem("functions") === null) localStorage.setItem("functions", "Time,Weather,Redirection");  // default functions
 
     // Set default sessionStorage values
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
@@ -1163,6 +1165,8 @@ export default function Home() {
     const time = sessionStorage.getItem("time");
 
     const mem_length = sessionStorage.getItem("memLength");
+
+    const functions = localStorage.getItem("functions");
     const role = sessionStorage.getItem("role");
     const store = sessionStorage.getItem("store");
     const node = sessionStorage.getItem("node");
@@ -1178,6 +1182,7 @@ export default function Home() {
     const config = {
       session: session,
       mem_length: mem_length,
+      functions: functions,
       role: role,
       store: store,
       node: node,
@@ -1194,6 +1199,7 @@ export default function Home() {
                                                            + "&session=" + session
                                                            + "&time=" + time
                                                            + "&mem_length=" + mem_length
+                                                           + "&functions=" + functions
                                                            + "&role=" + role
                                                            + "&store=" + store
                                                            + "&node=" + node
@@ -1594,6 +1600,21 @@ export default function Home() {
 
       // Auto complete
       if (elInput.value.startsWith(":")) {
+        // Auto complete function
+        if (elInput.value.startsWith(":function use ")) {
+          const nameToBeComleted = elInput.value.replace(":function use ", "").replace(/^\"+/, '').replace(/\"$/, '');
+          if (nameToBeComleted) {
+            const founds = getFunctions().filter((f) => f.name.startsWith(nameToBeComleted) || f.friendly_name.startsWith(nameToBeComleted));
+            if (founds.length > 0) {
+              const f = founds[0];
+              if (f.name.startsWith(nameToBeComleted)) setInput(":function use \"" + f.name + "\"");
+              if (f.friendly_name.startsWith(nameToBeComleted)) setInput(":function use \"" + f.friendly_name + "\"");
+              reAdjustInputHeight();
+              return;
+            }
+          }
+        }
+
         // Auto complete role
         if (elInput.value.startsWith(":role use ")) {
           const nameToBeComleted = elInput.value.replace(":role use ", "").replace(/^\"+/, '').replace(/\"$/, '');
@@ -1663,8 +1684,18 @@ export default function Home() {
 
         // Auto complete use
         if (elInput.value.startsWith(":use ")) {
-          const nameToBeComleted = elInput.value.replace(":use ", "");
+          const nameToBeComleted = elInput.value.replace(":use ", "").replace(/^\"+/, '').replace(/\"$/, '');
           if (nameToBeComleted) {
+            // Get functions
+            const founds = getFunctions().filter((f) => f.name.startsWith(nameToBeComleted) || f.friendly_name.startsWith(nameToBeComleted));
+            if (founds.length > 0) {
+              const f = founds[0];
+              if (f.name.startsWith(nameToBeComleted)) setInput(":use \"" + f.name + "\"");
+              if (f.friendly_name.startsWith(nameToBeComleted)) setInput(":use \"" + f.friendly_name + "\"");
+              reAdjustInputHeight();
+              return;
+            }
+
             // Get node
             const responseNode = await fetch("/api/node/list");
             const dataNode = await responseNode.json();

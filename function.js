@@ -97,83 +97,100 @@ export function executeFunction(functionName, argsString) {
   }
 }
 
-export function getFunctions() {
+// Get functions
+// `functions_` is a list of function callable, in browser storage
+// If `functions_` is null, return all functions
+export function getFunctions(functions_ = null) {
   let functions = []
+  let callables = functions_ ? functions_.split(",") : [];
 
   // Get time
-  functions.push({
-    name: 'get_time',
-    description: 'Provide the current time. If user ask question related to time, this function should be called.',
-    parameters: {
-      type: "object",
-      properties: {
-        timezone: {
-          type: "string",
-          description: "The timezone to get the time for. Use tz database timezone names. If unknown, the time will be in UTC.",
-        }
-      },
-      required: ["timezone"],
-    }
-  });
+  if (!functions_ || callables.includes("get_time") || callables.includes("Time")) {
+    functions.push({
+      name: 'get_time',
+      friendly_name: 'Time',
+      description: 'Provide the current time. If user ask question related to time, this function should be called.',
+      parameters: {
+        type: "object",
+        properties: {
+          timezone: {
+            type: "string",
+            description: "The timezone to get the time for. Use tz database timezone names. If unknown, the time will be in UTC.",
+          }
+        },
+        required: ["timezone"],
+      }
+    });
+  }
 
   // Get weather
-  functions.push({
-    name: 'get_weather',
-    description: 'Get current weather for a given location or city, e.g. San Francisco, CA.',
-    parameters: {
-      type: "object",
-      properties: {
-        location: {
-          type: "string",
-          description: "The city and state, e.g. San Francisco, CA. If the city is not in English, translate it to English first.",
-        }
-      },
-      required: ["location"],
-    }
-  });
+  if (!functions_ || callables.includes("get_weather") || callables.includes("Weather")) {
+    functions.push({
+      name: 'get_weather',
+      friendly_name: 'Weather',
+      description: 'Get current weather for a given location or city, e.g. San Francisco, CA.',
+      parameters: {
+        type: "object",
+        properties: {
+          location: {
+            type: "string",
+            description: "The city and state, e.g. San Francisco, CA. If the city is not in English, translate it to English first.",
+          }
+        },
+        required: ["location"],
+      }
+    });
+  }
 
   // Ask Wolfram Alpha
-  functions.push({
-    name: 'ask_wolframalpha',
-    description: 'This function send request to WolframAlpha, a computational knowledge engine mainly for resoving mathematical questions. It also can search for what you want to know about, such as "What is the population of San Francisco?" or "What is the capital of France?".',
-    parameters: {
-      type: "object",
-      properties: {
-        query: {
-          type: "string",
-          description: "The question to ask.",
-        }
-      },
-      required: ["query"],
-    }
-  });
+  if (!functions_ || callables.includes("ask_wolframalpha") || callables.includes("WolframAlpha")) {
+    functions.push({
+      name: 'ask_wolframalpha',
+      friendly_name: 'WolframAlpha',
+      description: 'This function send request to WolframAlpha, a computational knowledge engine mainly for resoving mathematical questions. I can answer questions in these field: Mathematical Problems, Statistics and Data Analysis, Physics, Chemistry, Biology, History and Geography, Units and Measurements, Weather and Astronomy, Economics and Finance, Computational Sciences, Health and Medicine, Technology and Engineering, Music and Arts, Everyday Life. Here is a example question, "What is the population of San Francisco?", "What is the capital of France?".',
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "The question to ask.",
+          }
+        },
+        required: ["query"],
+      }
+    });
+  }
 
   // Redirect to url
-  functions.push({
-    name: 'redirect_to_url',
-    description: 'Redirect to a URL.',
-    parameters: {
-      type: "object",
-      properties: {
-        url: {
-          type: "string",
-          description: "The URL to redirect to.",
+  if (!functions_ || callables.includes("redirect_to_url") || callables.includes("Redirection")) {
+    functions.push({
+      name: 'redirect_to_url',
+      friendly_name: 'Redirection',
+      description: 'Redirect to a URL.',
+      parameters: {
+        type: "object",
+        properties: {
+          url: {
+            type: "string",
+            description: "The URL to redirect to.",
+          },
+          blank: {
+            type: "boolean",
+            description: "Whether to open the URL in a new tab. Open in new tab except user request to open in same tab.",
+          }
         },
-        blank: {
-          type: "boolean",
-          description: "Whether to open the URL in a new tab. Open in new tab except user request to open in same tab.",
-        }
-      },
-      required: ["url"],
-    }
-  });
+        required: ["url"],
+      }
+    });
+  }
 
   return functions;
 }
 
 // A tools wrapper for functions
-export async function getTools() {
-  let functions = getFunctions();
+// `functions_` is a list of function callable
+export async function getTools(functions_) {
+  let functions = getFunctions(functions_);
 
   let tools = []
   for (let i = 0; i < functions.length; i++) {

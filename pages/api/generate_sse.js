@@ -29,6 +29,7 @@ export default async function (req, res) {
   const session = req.query.session || "";
   const time_ = req.query.time || "";
   const mem_length = req.query.mem_length || 0;
+  const functions_ = req.query.functions || "";
   const role = req.query.role || "";
   const store = req.query.store || "";
   const node = req.query.node || "";
@@ -174,6 +175,7 @@ export default async function (req, res) {
     + "use_node_ai: " + use_node_ai + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "(not set)" : location) : "(disabled)") + "\n"
+    + "functions: " + (functions_ || "(not set)") + "\n"
     + "role: " + (role || "(not set)") + "\n"
     + "store: " + (store || "(not set)") + "\n"
     + "node: " + (node || "(not set)") + "\n");
@@ -298,7 +300,7 @@ export default async function (req, res) {
     }
 
     // Get tools
-    let tools = await getTools();
+    let tools = await getTools(functions_);
 
     console.log("--- tools ---");
     console.log(JSON.stringify(tools) + "\n");
