@@ -61,7 +61,7 @@ export default async function function_(args) {
       return "Invalid function name.";
     }
 
-    // Check if the node exists
+    // Check if the function exists
     const functions = getFunctions();
     const function_ = functions.find((f) => f.name === functionName || f.friendly_name === functionName);
     if (!function_) {
