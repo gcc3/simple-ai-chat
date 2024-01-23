@@ -1614,6 +1614,19 @@ export default function Home() {
             }
           }
         }
+        if (elInput.value.startsWith(":function unuse ")) {
+          const nameToBeComleted = elInput.value.replace(":function unuse ", "").replace(/^\"+/, '').replace(/\"$/, '');
+          if (nameToBeComleted) {
+            const founds = getFunctions().filter((f) => f.name.startsWith(nameToBeComleted) || f.friendly_name.startsWith(nameToBeComleted));
+            if (founds.length > 0) {
+              const f = founds[0];
+              if (f.name.startsWith(nameToBeComleted)) setInput(":function unuse \"" + f.name + "\"");
+              if (f.friendly_name.startsWith(nameToBeComleted)) setInput(":function unuse \"" + f.friendly_name + "\"");
+              reAdjustInputHeight();
+              return;
+            }
+          }
+        }
 
         // Auto complete role
         if (elInput.value.startsWith(":role use ")) {

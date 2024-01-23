@@ -1,8 +1,9 @@
 import { initializeMemory } from "utils/sessionUtils";
 import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } from "utils/storageUtils";
+import { getFunctions } from "function";
 
 export default async function use(args) {
-  const usage = "Usage: :use [node|store|role]\n";
+  const usage = "Usage: :use [function|node|store|role]\n";
 
   // Use node
   if (args.length != 1) {
@@ -18,7 +19,22 @@ export default async function use(args) {
     return "Invalid name.";
   }
 
-  // 1. Find node
+  // Find function
+  const functions = getFunctions();
+  const function_ = functions.find((f) => f.name === name || f.friendly_name === name);
+  if (function_) {
+    // Add to localhostStorage
+    const currentFunctions = (localStorage.getItem("functions")).split(",");
+    if (currentFunctions.includes(name)) {
+      return "Function already in use.";
+    } else {
+      currentFunctions.push(name)
+      localStorage.setItem("functions", currentFunctions.join(","));
+    }
+    return "Function \`" + name + "\` is enabled for calling. You can use command \`:function [ls|list]\` to show all enabled functions.";
+  }
+
+  // Find node
   if (await findNode(name)) {
     if (!localStorage.getItem("user")) {
       return "Please login.";
@@ -29,7 +45,7 @@ export default async function use(args) {
     return "Node is set to \`" + name + "\`, you can directly talk to it, or use command \`:generate [input]\` to generate from it. Command \`:node\` shows current node information.";
   }
   
-  // 2. Find store
+  // Find store
   if (await findStore(name)) {
     if (!localStorage.getItem("user")) {
       return "Please login.";
@@ -45,7 +61,7 @@ export default async function use(args) {
     return "Store \`" + name + "\` is being used. You can directly talk to it, or use \`:search [text]\` to search data from it. You can use command \`:store\` to show current store information.";
   }
 
-  // 3. Find role
+  // Find role
   if (await findRole(name)) {
     sessionStorage.setItem("role", name);
 

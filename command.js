@@ -32,6 +32,7 @@ import invite from "commands/invite.js";
 import attach from "commands/attach.js";
 import use from "commands/use.js";
 import split from "commands/split.js";
+import unuse from "commands/unuse.js";
 
 export default function commands(input, files) {
   let command = input;
@@ -82,6 +83,7 @@ export default function commands(input, files) {
   if (command.startsWith(":attach")) return attach(args);
   if (command.startsWith(":use")) return use(args);
   if (command.startsWith(":split")) return split(args);
+  if (command.startsWith(":unuse")) return unuse(args);
   return "Unknown command.";
 }
 
@@ -121,7 +123,8 @@ export function getCommands() {
     { id: "", title: "", annotation: "", command: ":location [on|off]", short_description: "Switch on/off location service.", description: "When you turn on the location service, the AI can provide answers based on your location." },
     { id: "", title: "", annotation: "", command: ":stream [on|off]", short_description: "Switch on/off stream mode.", description: "When the stream is off, the text will be displayed once the answer is fully generated." },
     { id: "", title: "", annotation: "", command: ":set [key] [value]", short_description: "Set local configurations.", description: "Set session configurations and local configurations, the key must be one of session storage or local storage key, case-insensitive. For values include space(s) must be enclosed in double quotes. To check the available keys, use command `:info`. Example: `set memlength 0`, this can set the memory to 0 and save a lots of tokens. If you want to use function calling don't set to 0, 1 call = 1 mem, and response also increase 1 mem." },
-    { id: "", title: "", annotation: "", command: ":use [name]", short_description: "Use a node, store or role.", description: "Use a node, store or role. Same as `:function use`, `:role use`, `:store use` or `:node use`, just for reducing some typing. If a function, node, store or role has same name, will first try to find function, then node, then store, then role." },
+    { id: "", title: "", annotation: "", command: ":use [name]", short_description: "Use a function, node, store or role.", description: "Use a function, node, store or role. Same as `:function use`, `:role use`, `:store use` or `:node use`, just for reducing some typing. If a function, node, store or role has same name, will first try to find function, then node, then store, then role." },
+    { id: "", title: "", annotation: "", command: ":unuse [name]", short_description: "Unuse a function, node, store or role.", description: "Unuse a function, node, store or role. Same as `:function unuse`, `:role reset`, `:store unuse` or `:node reset`, just for reducing some typing. If a function, node, store or role has same name, will first try to find function, then node, then store, then role." },
     { id: "commands-session", title: "Sessions & Logs", annotation: "", command: ":log", short_description: "Show logs for current session.", description: "" },
     { id: "", title: "", annotation: "", command: ":ls", short_description: "List sessions, same as `:session ls`.", description: "" },
     { id: "", title: "", annotation: "", command: ":attach [session_id]", short_description: "Attach to a session.", description: "Attach to a session, same as :session attach [session_id]. When attached to a session, you can use left/right arraw key or J/K key to navigate between session logs." },
