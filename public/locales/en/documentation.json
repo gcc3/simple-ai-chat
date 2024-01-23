@@ -105,6 +105,7 @@
   "More features": "More features",
   "Commands": "Commands",
   "Simple AI is command-based; most operations can be executed with commands. To distinguish from general input, commands must start with a `:`. For example, to change the theme, use the `:theme` command; to enter full-screen mode, use the `:fullscreen` command. Use `:help` to list all available commands.": "Simple AI is command-based; most operations can be executed with commands. To distinguish from general input, commands must start with a `:`. For example, to change the theme, use the `:theme` command; to enter full-screen mode, use the `:fullscreen` command. Use `:help` to list all available commands.",
+  "The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.": "The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.",
   "Short description": "Short description",
   "Functions": "Functions",
   "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.": "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.",
