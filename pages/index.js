@@ -312,7 +312,7 @@ export default function Home() {
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
-    if (localStorage.getItem("functions") === null) localStorage.setItem("functions", "");  // default functions
+    if (localStorage.getItem("functions") === null) localStorage.setItem("functions", "Time,Weather,Redirection");  // default functions
 
     // Set default sessionStorage values
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
