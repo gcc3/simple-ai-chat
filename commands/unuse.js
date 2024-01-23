@@ -25,10 +25,10 @@ export default async function unuse(args) {
   if (function_) {
     // Remove from localhostStorage
     const currentFunctions = (localStorage.getItem("functions")).split(",");
-    if (!currentFunctions.includes(functionName)) {
+    if (!currentFunctions.includes(name)) {
       return "Function not in use.";
     } else {
-      const index = currentFunctions.indexOf(functionName);
+      const index = currentFunctions.indexOf(name);
       currentFunctions.splice(index, 1);
       localStorage.setItem("functions", currentFunctions.join(","));
     }
@@ -55,13 +55,13 @@ export default async function unuse(args) {
     }
 
     /// Check store active
-    if (!isStoreActive(storeName)) {
-      return "Store \`" + storeName + "\` is not active";
+    if (!isStoreActive(name)) {
+      return "Store \`" + name + "\` is not active";
     }
 
     // Remove from storage
-    removeStoreFromSessionStorage(storeName);
-    return "Store \`" + storeName + "\` unused.";
+    removeStoreFromSessionStorage(name);
+    return "Store \`" + name + "\` unused.";
   }
 
   // Find role

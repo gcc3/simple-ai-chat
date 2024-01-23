@@ -1750,6 +1750,61 @@ export default function Home() {
           }
         }
 
+        // Auto complete unuse
+        if (elInput.value.startsWith(":unuse ")) {
+          const nameToBeComleted = elInput.value.replace(":unuse ", "").replace(/^\"+/, '').replace(/\"$/, '');
+          if (nameToBeComleted) {
+            // Get functions
+            const founds = getFunctions().filter((f) => f.name.startsWith(nameToBeComleted) || f.friendly_name.startsWith(nameToBeComleted));
+            if (founds.length > 0) {
+              const f = founds[0];
+              if (f.name.startsWith(nameToBeComleted)) setInput(":unuse \"" + f.name + "\"");
+              if (f.friendly_name.startsWith(nameToBeComleted)) setInput(":unuse \"" + f.friendly_name + "\"");
+              reAdjustInputHeight();
+              return;
+            }
+
+            // Get node
+            const responseNode = await fetch("/api/node/list");
+            const dataNode = await responseNode.json();
+            if (responseNode.status === 200 && dataNode.success) {
+              const node = [].concat(dataNode.result.user_nodes, dataNode.result.group_nodes, dataNode.result.system_nodes).flat()
+                             .find((n) => n.name.startsWith(nameToBeComleted));
+              if (node) {
+                setInput(":unuse \"" + node.name + "\"");
+                reAdjustInputHeight();
+                return;
+              }
+            }
+
+            // Get store
+            const responseStore = await fetch("/api/store/list");
+            const dataStore = await responseStore.json();
+            if (responseStore.status === 200 && dataStore.success) {
+              const store = [].concat(dataStore.result.user_stores, dataStore.result.group_stores, dataStore.result.system_stores).flat()
+                              .find((n) => n.name.startsWith(nameToBeComleted));
+              if (store) {
+                setInput(":unuse \"" + store.name + "\"");
+                reAdjustInputHeight();
+                return;
+              }
+            }
+
+            // Get role
+            const responseRole = await fetch("/api/role/list");
+            const dataRole = await responseRole.json();
+            if (responseRole.status === 200 && dataRole.success) {
+              const role = [].concat(dataRole.result.user_roles, dataRole.result.system_roles).flat()
+                             .find((n) => n.role.startsWith(nameToBeComleted));
+              if (role) {
+                setInput(":unuse \"" + role.role + "\"");
+                reAdjustInputHeight();
+                return;
+              }
+            }
+          }
+        }
+
         // Auto complete lang use
         if (elInput.value.startsWith(":lang use ")) {
           const nameToBeComleted = elInput.value.replace(":lang use ", "");
