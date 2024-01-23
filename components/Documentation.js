@@ -44,7 +44,7 @@ const Documentation = ({ country }) => {
     { action: t("Clear the input."), shortcut: "ESC", condition: t("Focused on the input area. Input area not empty.") },
     { action: t("Unfocus from the input box."), shortcut: "ESC", condition: t("Focused on the input area. Input area is empty/cleared.") },
     { action: t("Repeat last input."), shortcut: "Tab", condition: t("Focused on the input area. Input area is empty/cleared.") },
-    { action: t("Command autocomplete."), shortcut: "Tab", condition: t("Focused on the input area. Input commands `:role use`, `:store use`, `:node use`, `:theme`, `:lang use` and type the starts characters of the value.") },
+    { action: t("Command autocomplete."), shortcut: "Tab", condition: t("Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use` and type the starts characters of the value.") },
     { action: t("Previous log (same session)."), shortcut: "← or K", condition: t("Unfocused from the input area or input box is empty when using `←`.") },
     { action: t("Next log (same session)."), shortcut: "→ or J", condition: t("Unfocused from the input area or input box is empty when using `→`") },
     { action: t("Previous command."), shortcut: "↑", condition: t("Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history.") },
