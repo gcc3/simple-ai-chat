@@ -103,6 +103,7 @@ export function getFunctions() {
   // Get time
   functions.push({
     name: 'get_time',
+    friendly_name: 'Time',
     description: 'Provide the current time. If user ask question related to time, this function should be called.',
     parameters: {
       type: "object",
@@ -119,6 +120,7 @@ export function getFunctions() {
   // Get weather
   functions.push({
     name: 'get_weather',
+    friendly_name: 'Weather',
     description: 'Get current weather for a given location or city, e.g. San Francisco, CA.',
     parameters: {
       type: "object",
@@ -135,6 +137,7 @@ export function getFunctions() {
   // Ask Wolfram Alpha
   functions.push({
     name: 'ask_wolframalpha',
+    friendly_name: 'WolframAlpha',
     description: 'This function send request to WolframAlpha, a computational knowledge engine mainly for resoving mathematical questions. It also can search for what you want to know about, such as "What is the population of San Francisco?" or "What is the capital of France?".',
     parameters: {
       type: "object",
@@ -151,6 +154,7 @@ export function getFunctions() {
   // Redirect to url
   functions.push({
     name: 'redirect_to_url',
+    friendly_name: 'Redirection',
     description: 'Redirect to a URL.',
     parameters: {
       type: "object",

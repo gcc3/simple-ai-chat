@@ -1,3 +1,4 @@
+// Friendly name: Redirection
 export default async function redirectToUrl(paramObject) {
   const url = paramObject.url;
   let blank = paramObject.blank;

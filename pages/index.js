@@ -312,6 +312,7 @@ export default function Home() {
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
+    if (localStorage.getItem("functions") === null) localStorage.setItem("functions", "");  // default functions
 
     // Set default sessionStorage values
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
@@ -1163,6 +1164,8 @@ export default function Home() {
     const time = sessionStorage.getItem("time");
 
     const mem_length = sessionStorage.getItem("memLength");
+
+    const functions = localStorage.getItem("functions");
     const role = sessionStorage.getItem("role");
     const store = sessionStorage.getItem("store");
     const node = sessionStorage.getItem("node");
@@ -1178,6 +1181,7 @@ export default function Home() {
     const config = {
       session: session,
       mem_length: mem_length,
+      functions: functions,
       role: role,
       store: store,
       node: node,
@@ -1194,6 +1198,7 @@ export default function Home() {
                                                            + "&session=" + session
                                                            + "&time=" + time
                                                            + "&mem_length=" + mem_length
+                                                           + "&functions=" + functions
                                                            + "&role=" + role
                                                            + "&store=" + store
                                                            + "&node=" + node
