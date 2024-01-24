@@ -19,6 +19,7 @@ export function getLangCodes() {
     "zh-CN",
     "zh-HK",
     "zh-TW",
+    "sv-SE",  // Swedish
   ];
 
   return langCodes;
