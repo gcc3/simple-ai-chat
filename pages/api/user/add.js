@@ -143,7 +143,7 @@ export default async function (req, res) {
     + "4. Use the ← and → arrow keys to navigate between logs 🗂️." + "<br>"
     + "5. Shortcut: `Control + |` for split-screen mode, `Control + F11` to switch to fullscreen mode 🖥️." + "<br>"
     + "6. Change theme: use `:theme [light|dark|terminal]` 🌈." + "<br>"
-    + "* The general `user` account is free; you only have to pay for tokens 💰. You can manage your token balance on Usage page 💳." + "<br>"
+    + "* The general `user` account is free; you only have to pay for tokens. You can manage your token balance on Usage page 💳." + "<br>"
     + `* Watch a 100s Quick Start Video: https://youtu.be/${process.env.NEXT_PUBLIC_VIDEO_ID}` + "<br>"
     + "<br>"
     + "- Support & Feedback" + "<br>"
