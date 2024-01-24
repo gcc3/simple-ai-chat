@@ -136,7 +136,7 @@ export default async function (req, res) {
     + `- Here’s a quick start guide` + "<br>"
     + "1. Simple AI operates on a command-based interface; every command begins with \":\". + <br>"
     + "To register a user, use command `:user add [username] [email] [password?]` (no brackets needed) ✅." + "<br>"
-    + "For example, `:user add john aaa@ccc.zz ********`" + "<br>"
+    + "For example, `:user add john xxxx@zzzz.vv ********`" + "<br>"
     + "* The password must be at least 8 characters long." + "<br>"
     + "2. To log in, use the command `:login [username] [password]` 🔑" + "<br>"
     + "3. To access the documentation and confirm usage: click the dot (•) in the screen corner 📄." + "<br>"
