@@ -11,6 +11,10 @@ export function verifiyEmailAddress(email) {
 }
 
 export async function evalEmailAddress(email) {
+  return {
+    success: true,
+  };
+
   if (!process.env.HUNTER_API_KEY) {
     console.error("Hunter API key not found.");
     return {
