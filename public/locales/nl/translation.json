@@ -1,0 +1,8 @@
+{
+  "hello": "Hallo Wereld!",
+  "welcome": "Welkom bij Simple AI! 🚀 Een alternatief voor ChatGPT.\nTyp gewoon uw vraag in het invoerveld en druk op enter om te converseren met de AI.\n\nHier is een snelle startgids:\n1. Simple AI werkt op een commando-gebaseerde interface; elk commando begint met \":\".\nOm een gebruiker te registreren, gebruik je het commando `:user add [gebruikersnaam] [email] [wachtwoord?]` (geen haakjes nodig) ✅.\nBijvoorbeeld, `:user add john xxxx@zzzz.vv ********`\n* Het wachtwoord moet minimaal 8 tekens lang zijn.\n2. Om in te loggen, gebruik je het commando `:user login [wachtwoord]` 🔑\n3. Om toegang te krijgen tot de documentatie en het gebruik te bevestigen: klik op de stip (•) in de hoek van het scherm 📄.\n4. Gebruik de ← en → pijltjestoetsen om tussen de logs te navigeren 🗂️.\n5. Sneltoets: `Control + |` voor split-screen modus, `Control + F11` om over te schakelen naar volledigschermmodus 🖥️.\n6. Verander thema: gebruik `:theme [light|dark|terminal]` 🌈.\n* Het algemene `user` account is gratis; je betaalt alleen voor tokens. Je kunt je tokenbalans beheren op de Gebruikspagina 💳.\n\nVoel je je vrijgevig? Nodig vrienden uit met het commando `:invite [email]` en jullie ontvangen beiden 100K beloningstokens! 💌",
+  "Documentation": "Documentation",
+  "Usage": "Usage",
+  "Subcriptions": "Subcriptions",
+  "Privacy Policy": "Privacy Policy"
+}
