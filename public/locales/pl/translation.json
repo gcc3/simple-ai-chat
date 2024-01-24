@@ -1,0 +1,8 @@
+{
+  "hello": "Witaj świecie!",
+  "welcome": "Witaj w Simple AI! 🚀 Alternatywa dla ChatGPT.\nPo prostu wpisz swoje zapytanie w polu wejściowym i naciśnij enter, aby rozmawiać z AI.\n\nOto krótki przewodnik na start:\n1. Simple AI działa na interfejsie opartym na komendach; każda komenda zaczyna się od \":\".\nAby zarejestrować użytkownika, użyj komendy `:user add [nazwa użytkownika] [email] [hasło?]` (bez nawiasów) ✅.\nNa przykład, `:user add john xxxx@zzzz.vv ********`\n* Hasło musi mieć co najmniej 8 znaków.\n2. Aby się zalogować, użyj komendy `:user login [hasło]` 🔑\n3. Aby uzyskać dostęp do dokumentacji i potwierdzić użycie: kliknij kropkę (•) w rogu ekranu 📄.\n4. Użyj klawiszy strzałek ← i →, aby nawigować między logami 🗂️.\n5. Skrót: `Control + |` dla trybu podzielonego ekranu, `Control + F11` aby przełączyć na tryb pełnoekranowy 🖥️.\n6. Zmień motyw: użyj `:theme [light|dark|terminal]` 🌈.\n* Ogólne konto `user` jest darmowe; płacisz tylko za tokeny. Możesz zarządzać swoim saldem tokenów na stronie Użycie 💳.\n\nCzujesz się hojny? Zaproś znajomych używając komendy `:invite [email]` a oboje otrzymacie 100 tysięcy tokenów nagrody! 💌",
+  "Documentation": "Documentation",
+  "Usage": "Usage",
+  "Subcriptions": "Subcriptions",
+  "Privacy Policy": "Privacy Policy"
+}

@@ -1,21 +1,21 @@
 export function getLangCodes() {
   const langCodes = [
-    "de-DE",
+    "de-DE",  // German
     "en-US",
     "en-GB",
     "en-GB",
-    "es-ES",
+    "es-ES",  // Spanish
     "es-US",
-    "fr-FR",
-    "hi-IN",
-    "id-ID",
-    "it-IT",
+    "fr-FR",  // French
+    "hi-IN",  // Hindi
+    "id-ID",  // Indonesian
+    "it-IT",  // Italian
     "ja-JP",
     "ko-KR",
-    "nl-NL",
-    "pl-PL",
-    "pt-BR",
-    "ru-RU",
+    "nl-NL",  // Dutch
+    "pl-PL",  // Polish
+    "pt-BR",  // Portuguese
+    "ru-RU",  // Russian
     "zh-CN",
     "zh-HK",
     "zh-TW",
