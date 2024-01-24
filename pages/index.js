@@ -29,7 +29,6 @@ import { getLangCodes } from "utils/langUtils";
 import { useTranslation } from 'react-i18next';
 import { getFunctions } from "function";
 import { simulateKeyPress } from "utils/keyboardUtils";
-import GoogleAdsGtag from "components/GoogleAdsGtag";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -678,18 +677,6 @@ export default function Home() {
             printOutput(t("welcome"))
           } else {
             printOutput(systemInfo.welcome_message);
-          }
-
-          // Print welcome video
-          const video_id = process.env.NEXT_PUBLIC_VIDEO_ID;
-          if (video_id && localStorage.getItem("fullscreen").startsWith("off")) {
-            if (ipInfo.country && ipInfo.country === "CN") {
-              // TODO use Bilibili
-              console.log("Video not available in China.");
-            } else {
-              clearPreviewVideos();
-              printVideo(video_id, elOutputRef, "before");
-            }
           }
         }
       } catch (error) {
@@ -2014,12 +2001,11 @@ export default function Home() {
   if (fullscreen === "split") styles = fullscreenSplitStyles;
   
   return (
-    <>
+    <div>
       <Head>
         <title>simple ai - chat</title>
         <link rel="manifest" href="/manifest.json"></link> {/* Android Icon */}
       </Head>
-      <GoogleAdsGtag />
 
       <main className={styles.main}>
         {!minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>}
@@ -2113,6 +2099,6 @@ export default function Home() {
             </div>
           </div>}
       </main>
-    </>
+    </div>
   );
 }
