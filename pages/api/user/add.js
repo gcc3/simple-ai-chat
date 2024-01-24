@@ -150,7 +150,7 @@ export default async function (req, res) {
     + `1. Join our Discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>"
     + "2. For customer support, email us at `support@simple-ai.io`." + "<br>"
     + "<br>"
-    + "Feel generous? Invite friends to join, and both of you will receive 100K award tokens! 💌" + "<br>"
+    + "- Feel generous? Invite friends to join, and both of you will receive 100K award tokens! 💌" + "<br>"
     + "How to invite: " + "<br>"
     + "1. Invite friends to join and register as a user." + "<br>"
     + "2. Have them click the invitation link below." + "<br>"
