@@ -16,7 +16,7 @@ export async function getUacResult(user, ip) {
     if (chatCount >= 0) {
       return {
         success: false,
-        error: "Please register as a `user` to continue. If you are already a member, please log in using `:user login [username] [password]`.<br><br>To register as a user. Use command `:user add [username] [email] [password?]` (no brackets needed.). Example: `:user add john xxxx@zzzz.vv ********`."
+        error: "Please register as a `user` to continue. If you are already a member, please log in using `:user login [username] [password]`.<br><br>To register as a user. Use command `:user add [username] [email] [password?]` (no brackets needed). Example: `:user add john xxxx@zzzz.vv ********`."
       };
     }
   }

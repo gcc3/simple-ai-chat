@@ -128,7 +128,7 @@ export default async function (req, res) {
     + "<br>"
     + "Welcome to Simple AI! 🎉 An alternative to ChatGPT." + "<br>"
     + `Your account, with username \"${username}\", has been created successfully.` + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + "<br>"
-    + "You can log in with command `:login [username] [password]` (no brackets needed.), e.g `:login john ********`" + "<br>"
+    + "You can log in with command `:login [username] [password]` (no brackets needed), e.g `:login john ********`" + "<br>"
     + "<br>"
     + `Please click the following link to verify your email before using our services.` + "<br>" 
     + `<a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>` + "<br>"
