@@ -16,7 +16,7 @@ def translate(text, target_language_name):
         messages=[
             {
                 "role": "user",
-                "content": f"Translate the following text to {target_language_name}:" 
+                "content": f"Translate the following text to {target_language_name}:"
                            + "\n\n" + text,
             },
         ],
