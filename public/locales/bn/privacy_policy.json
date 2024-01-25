@@ -1,0 +1,20 @@
+{
+  "Introduction": "ভূমিকা",
+  "Welcome to Simple AI (simple-ai.io). We are committed to protecting your personal information and your right to privacy.": "সিম্পল এআই-এ (simple-ai.io) স্বাগতম। আমরা আপনার ব্যক্তিগত তথ্য এবং আপনার গোপনীয়তার অধিকার রক্ষা করার প্রতি অঙ্গীকারবদ্ধ।",
+  "What Information We Collect": "আমরা কী তথ্য সংগ্রহ করি",
+  "We collect minimal user information strictly necessary to provide and improve our services.": "আমরা আমাদের সেবা প্রদান এবং উন্নতি করার জন্য কঠোরভাবে প্রয়োজনীয় সর্বনিম্ন ব্যবহারকারীর তথ্য সংগ্রহ করি।",
+  "- Basic account information: email address for account creation.": "- মৌলিক অ্যাকাউন্ট তথ্য: অ্যাকাউন্ট তৈরির জন্য ইমেইল ঠিকানা।",
+  "How We Use Your Information": "আমরা আপনার তথ্য কীভাবে ব্যবহার করি",
+  "We use your information to provide, improve, and customize our services. We do not sell, rent, or trade your information to any third parties.": "আমরা আপনার তথ্য ব্যবহার করি আমাদের সেবা প্রদান, উন্নতি এবং কাস্টমাইজ করার জন্য। আমরা আপনার তথ্য বিক্রি, ভাড়া বা তৃতীয় পক্ষের সাথে বাণিজ্য করি না।",
+  "How We Store and Protect Your Information": "আমরা কীভাবে আপনার তথ্য সংরক্ষণ এবং সুরক্ষা করি",
+  "Your data is securely stored in our website's database. We implement a variety of security measures to maintain the safety of your personal information.": "আপনার ডেটা আমাদের ওয়েবসাইটের ডাটাবেসে নিরাপদে সংরক্ষিত থাকে। আপনার ব্যক্তিগত তথ্যের নিরাপত্তা রক্ষা করার জন্য আমরা নানাবিধ নিরাপত্তা ব্যবস্থা গ্রহণ করি।",
+  "Your Rights": "আপনার অধিকার",
+  "You have the right to access, update, or delete your personal information at any time. When you delete your account, we will delete all your personal information from our database.": "আপনার যেকোনো সময়ে আপনার ব্যক্তিগত তথ্য অ্যাক্সেস, আপডেট বা মুছে ফেলার অধিকার রয়েছে। আপনি যখন আপনার অ্যাকাউন্ট মুছে ফেলেন, আমরা আমাদের ডাটাবেস থেকে আপনার সমস্ত ব্যক্তিগত তথ্য মুছে ফেলব।",
+  "Changes to This Policy": "এই নীতিতে পরিবর্তন",
+  "We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.": "আমরা এই গোপনীয়তা নীতিটি যেকোনো সময়ে পরিবর্তন করতে পারি, তাই দয়া করে এটি নিয়মিত পর্যালোচনা করুন। পরিবর্তনগুলি ওয়েবসাইটে পোস্ট করা হলেই তা কার্যকর হবে।",
+  "Contact Us": "যোগাযোগ করুন",
+  "Privacy Policy": "গোপনীয়তা নীতি",
+  "This information may include": "এই তথ্যে অন্তর্ভুক্ত হতে পারে",
+  "- Usage data: email address will be used for account registration, password recovery, and service updates notification.": "- ব্যবহারের ডেটা: অ্যাকাউন্ট নিবন্ধন, পাসওয়ার্ড পুনরুদ্ধার এবং সেবা আপডেটের বিজ্ঞপ্তির জন্য ইমেইল ঠিকানা ব্যবহৃত হবে।",
+  "email_support": "এই গোপনীয়তা নীতি সম্পর্কে আপনার যদি কোনো প্রশ্ন বা উদ্বেগ থাকে, অনুগ্রহ করে `<1><2>support@simple-ai.io</2></1>` এ আমাদের যোগাযোগ করুন।"
+}

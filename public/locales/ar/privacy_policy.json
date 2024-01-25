@@ -1,0 +1,20 @@
+{
+  "Introduction": "مقدمة",
+  "Welcome to Simple AI (simple-ai.io). We are committed to protecting your personal information and your right to privacy.": "مرحبا بكم في Simple AI (simple-ai.io). نحن ملتزمون بحماية معلوماتك الشخصية وحقك في الخصوصية.",
+  "What Information We Collect": "المعلومات التي نجمعها",
+  "We collect minimal user information strictly necessary to provide and improve our services.": "نحن نجمع الحد الأدنى من معلومات المستخدم الضرورية بدقة لتقديم وتحسين خدماتنا.",
+  "- Basic account information: email address for account creation.": "- معلومات الحساب الأساسية: عنوان البريد الإلكتروني لإنشاء الحساب.",
+  "How We Use Your Information": "كيف نستخدم معلوماتك",
+  "We use your information to provide, improve, and customize our services. We do not sell, rent, or trade your information to any third parties.": "نستخدم معلوماتك لتقديم وتحسين وتخصيص خدماتنا. نحن لا نبيع أو نؤجر أو نتاجر بمعلوماتك لأي أطراف ثالثة.",
+  "How We Store and Protect Your Information": "كيف نخزن ونحمي معلوماتك",
+  "Your data is securely stored in our website's database. We implement a variety of security measures to maintain the safety of your personal information.": "يتم تخزين بياناتك بأمان في قاعدة بيانات موقعنا. نحن ننفذ مجموعة متنوعة من تدابير الأمان للحفاظ على سلامة معلوماتك الشخصية.",
+  "Your Rights": "حقوقك",
+  "You have the right to access, update, or delete your personal information at any time. When you delete your account, we will delete all your personal information from our database.": "لديك الحق في الوصول إلى معلوماتك الشخصية وتحديثها أو حذفها في أي وقت. عندما تحذف حسابك، سنحذف جميع معلوماتك الشخصية من قاعدة بياناتنا.",
+  "Changes to This Policy": "تغييرات على هذه السياسة",
+  "We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.": "قد نعدل هذه السياسة الخاصة بالخصوصية في أي وقت، لذا يرجى مراجعتها بشكل متكرر. ستسري التغييرات فور نشرها على الموقع.",
+  "Contact Us": "اتصل بنا",
+  "Privacy Policy": "سياسة الخصوصية",
+  "This information may include": "قد تشمل هذه المعلومات",
+  "- Usage data: email address will be used for account registration, password recovery, and service updates notification.": "- بيانات الاستخدام: سيتم استخدام عنوان البريد الإلكتروني لتسجيل الحساب، واستعادة كلمة المرور، وإشعارات تحديث الخدمة.",
+  "email_support": "إذا كانت لديك أي أسئلة أو مخاوف بخصوص هذه السياسة الخاصة بالخصوصية، يرجى الاتصال بنا على `<1><2>support@simple-ai.io</2></1>`."
+}

@@ -1,0 +1,20 @@
+{
+  "Introduction": "Giriş",
+  "Welcome to Simple AI (simple-ai.io). We are committed to protecting your personal information and your right to privacy.": "Simple AI'ye (simple-ai.io) hoş geldiniz. Kişisel bilgilerinizi korumaya ve gizlilik hakkınıza saygı duymaya kararlıyız.",
+  "What Information We Collect": "Hangi Bilgileri Toplarız",
+  "We collect minimal user information strictly necessary to provide and improve our services.": "Hizmetlerimizi sağlamak ve geliştirmek için kesinlikle gerekli olan minimal kullanıcı bilgilerini toplarız.",
+  "- Basic account information: email address for account creation.": "- Temel hesap bilgileri: hesap oluşturmak için e-posta adresi.",
+  "How We Use Your Information": "Bilgilerinizi Nasıl Kullanırız",
+  "We use your information to provide, improve, and customize our services. We do not sell, rent, or trade your information to any third parties.": "Bilgilerinizi hizmetlerimizi sağlamak, iyileştirmek ve kişiselleştirmek için kullanırız. Bilgilerinizi hiçbir üçüncü tarafa satmıyor, kiralamıyor veya takas etmiyoruz.",
+  "How We Store and Protect Your Information": "Bilgilerinizi Nasıl Saklarız ve Koruruz",
+  "Your data is securely stored in our website's database. We implement a variety of security measures to maintain the safety of your personal information.": "Verileriniz web sitemizin veritabanında güvenli bir şekilde saklanır. Kişisel bilgilerinizin güvenliğini sağlamak için çeşitli güvenlik önlemleri uygularız.",
+  "Your Rights": "Haklarınız",
+  "You have the right to access, update, or delete your personal information at any time. When you delete your account, we will delete all your personal information from our database.": "Kişisel bilgilerinize erişme, güncelleme veya istediğiniz zaman silme hakkına sahipsiniz. Hesabınızı sildiğinizde, tüm kişisel bilgilerinizi veritabanımızdan sileceğiz.",
+  "Changes to This Policy": "Bu Politikadaki Değişiklikler",
+  "We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.": "Bu gizlilik politikasını herhangi bir zaman değiştirebiliriz, bu yüzden lütfen sık sık gözden geçirin. Değişiklikler, web sitemizde yayınlandıkları anda derhal yürürlüğe girecektir.",
+  "Contact Us": "Bize Ulaşın",
+  "Privacy Policy": "Gizlilik Politikası",
+  "This information may include": "Bu bilgiler şunları içerebilir",
+  "- Usage data: email address will be used for account registration, password recovery and service updates notification.": "- Kullanım verileri: e-posta adresi, hesap kaydı, şifre kurtarma ve servis güncellemeleri bildirimi için kullanılacaktır.",
+  "email_support": "Bu gizlilik politikası hakkında herhangi bir sorunuz veya endişeniz varsa, lütfen `<1><2>support@simple-ai.io</2></1>` adresinden bize ulaşın."
+}
