@@ -55,6 +55,8 @@ const Documentation = ({ country }) => {
   const gestures = [
     { action: t("Previous log (same session)."), gesture: t("Swipe Right"), condition: t("Not on code block.") },
     { action: t("Next log (same session)."), gesture: t("Swipe Left"), condition: t("Not on code block.") },
+    { action: t("Auto input/Autocomplete."), gesture: t("Swipe Right"), condition: t("Touch swipe on input box.") },
+    { action: t("Delete input."), gesture: t("Swipe Left"), condition: t("Touch swipe on input box.") },
   ];
 
   const apis = [
