@@ -9,12 +9,12 @@
   "How We Store and Protect Your Information": "हम आपकी जानकारी को कैसे संग्रहीत और सुरक्षित रखते हैं",
   "Your data is securely stored in our website's database. We implement a variety of security measures to maintain the safety of your personal information.": "आपका डेटा हमारी वेबसाइट के डेटाबेस में सुरक्षित रूप से संग्रहीत है। हम आपकी व्यक्तिगत जानकारी की सुरक्षा बनाए रखने के लिए विभिन्न सुरक्षा उपाय लागू करते हैं।",
   "Your Rights": "आपके अधिकार",
-  "You have the right to access, update, or delete your personal information at any time. When you delele your account, we will delete all your personal information from our database.": "आपको किसी भी समय अपनी व्यक्तिगत जानकारी तक पहुँचने, अपडेट करने या हटाने का अधिकार है। जब आप अपना खाता हटाते हैं, तो हम हमारे डेटाबेस से आपकी सभी व्यक्तिगत जानकारी को हटा देंगे।",
+  "You have the right to access, update, or delete your personal information at any time. When you delete your account, we will delete all your personal information from our database.": "आपको किसी भी समय अपनी व्यक्तिगत जानकारी तक पहुँचने, अपडेट करने या हटाने का अधिकार है। जब आप अपना खाता हटाते हैं, तो हम हमारे डेटाबेस से आपकी सभी व्यक्तिगत जानकारी को हटा देंगे।",
   "Changes to This Policy": "इस नीति में परिवर्तन",
   "We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.": "हम किसी भी समय इस गोपनीयता नीति में संशोधन कर सकते हैं, इसलिए कृपया इसे नियमित रूप से समीक्षा करें। परिवर्तन वेबसाइट पर उनके पोस्टिंग के तुरंत बाद प्रभावी हो जाएंगे।",
   "Contact Us": "हमसे संपर्क करें",
   "Privacy Policy": "गोपनीयता नीति",
   "This information may include": "यह जानकारी में शामिल हो सकता है",
   "- Usage data: email address will be used for account registeration, password recovery and service updates notification.": "- उपयोग डेटा: खाता पंजीकरण, पासवर्ड पुनर्प्राप्ति और सेवा अपडेट सूचना के लिए ईमेल पता का उपयोग किया जाएगा।",
-  "email_support": "यदि आपको इस गोपनीयता नीति के बारे में कोई प्रश्न या चिंता है, तो कृपया `<1><2>support@simple-ai.io</2></1>` पर हमसे संपर्क करें।"
+  "email_support_privacy_policy": "यदि आपको इस गोपनीयता नीति के बारे में कोई प्रश्न या चिंता है, तो कृपया `<1><2>support@simple-ai.io</2></1>` पर हमसे संपर्क करें।"
 }

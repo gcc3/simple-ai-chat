@@ -9,12 +9,12 @@
   "How We Store and Protect Your Information": "귀하의 정보 저장 및 보호 방법",
   "Your data is securely stored in our website's database. We implement a variety of security measures to maintain the safety of your personal information.": "귀하의 데이터는 우리 웹사이트의 데이터베이스에 안전하게 저장됩니다. 우리는 귀하의 개인 정보의 안전을 유지하기 위해 다양한 보안 조치를 시행합니다.",
   "Your Rights": "귀하의 권리",
-  "You have the right to access, update, or delete your personal information at any time. When you delele your account, we will delete all your personal information from our database.": "귀하는 언제든지 귀하의 개인 정보에 접근하고, 업데이트하거나 삭제할 권리가 있습니다. 귀하가 계정을 삭제할 때, 우리는 데이터베이스에서 귀하의 모든 개인 정보를 삭제할 것입니다.",
+  "You have the right to access, update, or delete your personal information at any time. When you delete your account, we will delete all your personal information from our database.": "귀하는 언제든지 귀하의 개인 정보에 접근하고, 업데이트하거나 삭제할 권리가 있습니다. 귀하가 계정을 삭제할 때, 우리는 데이터베이스에서 귀하의 모든 개인 정보를 삭제할 것입니다.",
   "Changes to This Policy": "이 정책의 변경사항",
   "We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.": "우리는 언제든지 이 개인정보 보호정책을 수정할 수 있으므로 자주 검토해 주십시오. 변경사항은 웹사이트에 게시되는 즉시 효력을 발생합니다.",
   "Contact Us": "연락처",
   "Privacy Policy": "개인정보 보호정책",
   "This information may include": "이 정보에는 다음이 포함될 수 있습니다",
   "- Usage data: email address will be used for account registeration, password recovery and service updates notification.": "- 사용 데이터: 이메일 주소는 계정 등록, 비밀번호 복구 및 서비스 업데이트 알림에 사용됩니다.",
-  "email_support": "이 개인정보 보호정책에 대해 질문이나 우려가 있는 경우 `<1><2>support@simple-ai.io</2></1>`로 문의해 주세요."
+  "email_support_privacy_policy": "이 개인정보 보호정책에 대해 질문이나 우려가 있는 경우 `<1><2>support@simple-ai.io</2></1>`로 문의해 주세요."
 }

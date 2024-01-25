@@ -9,12 +9,12 @@
   "How We Store and Protect Your Information": "Cómo almacenamos y protegemos su información",
   "Your data is securely stored in our website's database. We implement a variety of security measures to maintain the safety of your personal information.": "Sus datos se almacenan de forma segura en la base de datos de nuestro sitio web. Implementamos una variedad de medidas de seguridad para mantener la seguridad de su información personal.",
   "Your Rights": "Sus derechos",
-  "You have the right to access, update, or delete your personal information at any time. When you delele your account, we will delete all your personal information from our database.": "Tiene derecho a acceder, actualizar o eliminar su información personal en cualquier momento. Cuando elimine su cuenta, borraremos toda su información personal de nuestra base de datos.",
+  "You have the right to access, update, or delete your personal information at any time. When you delete your account, we will delete all your personal information from our database.": "Tiene derecho a acceder, actualizar o eliminar su información personal en cualquier momento. Cuando elimine su cuenta, borraremos toda su información personal de nuestra base de datos.",
   "Changes to This Policy": "Cambios en esta política",
   "We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.": "Podemos modificar esta política de privacidad en cualquier momento, así que revísela frecuentemente. Los cambios surtirán efecto inmediatamente después de su publicación en el sitio web.",
   "Contact Us": "Contáctenos",
   "Privacy Policy": "Política de Privacidad",
   "This information may include": "Esta información puede incluir",
   "- Usage data: email address will be used for account registeration, password recovery and service updates notification.": "- Datos de uso: la dirección de correo electrónico se utilizará para el registro de la cuenta, la recuperación de la contraseña y la notificación de actualizaciones del servicio.",
-  "email_support": "Si tiene alguna pregunta o inquietud acerca de esta política de privacidad, contáctenos en `<1><2>support@simple-ai.io</2></1>`."
+  "email_support_privacy_policy": "Si tiene alguna pregunta o inquietud acerca de esta política de privacidad, contáctenos en `<1><2>support@simple-ai.io</2></1>`."
 }

@@ -8,7 +8,7 @@
   "Subscription plans": "订阅计划",
   "`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`：提供普通用户。它是免费的。（您仍需支付所使用的 Token 费用。）",
   "`pro_user`: provide advanced features and support for professonal uses.": "`pro_user`：为专业使用提供高级功能和支持。",
-  "`super_user`: provide accessability for all latest features and support.": "`super_user`：提供所有最新功能和支持的可访问性。",
+  "`super_user`: provide accessibility for all latest features and support.": "`super_user`：提供所有最新功能和支持的可访问性。",
   "Non-registered users are limited to 12 text generations per day.": "未注册用户每天限制生成12次文本。",
   "Extend, Upgrade or Downgrade": "延长、升级或降级",
   "Select plan": "选择订阅",

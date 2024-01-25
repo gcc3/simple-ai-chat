@@ -17,14 +17,14 @@ function UserDataPrivacy() {
       <div className="mt-3">- { t("How We Store and Protect Your Information") }</div>
       { t("Your data is securely stored in our website's database. We implement a variety of security measures to maintain the safety of your personal information.") }<br></br>
       <div className="mt-3">- { t("Your Rights") }</div>
-      { t("You have the right to access, update, or delete your personal information at any time. When you delele your account, we will delete all your personal information from our database.") }<br></br>
+      { t("You have the right to access, update, or delete your personal information at any time. When you delete your account, we will delete all your personal information from our database.") }<br></br>
       <div className="mt-3">- { t("Changes to This Policy") }</div>
       { t("We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.") }<br></br>
       <div className="mt-3">- { t("Contact Us") }</div>
       <Trans
-        i18nKey="email_support"
+        i18nKey="email_support_privacy_policy"
         components={{ 1: <a href="mailto:support@simple-ai.io" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
-        ns="documentation"
+        ns="privacy_policy"
       />
     </div>
   )
