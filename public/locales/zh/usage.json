@@ -1,5 +1,5 @@
 {
-  "Please login. To register a user, use the command `:user add [username] [email] [password?]` (no brackets needed).": "请登录。要注册用户，请使用命令 `:user add [用户名] [电子邮件] [密码?]`（不需要括号）。",
+  "User infromation not found. Please login with command `:login [username] [password]`.": "未找到用户信息。请使用 `:login [用户名] [密码]` 命令登录。",
   "User": "用户",
   "Email": "电子邮件",
   "Subscription": "订阅",
