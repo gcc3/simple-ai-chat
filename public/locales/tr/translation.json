@@ -1,0 +1,8 @@
+{
+  "hello": "Merhaba dünya!",
+  "welcome": "Simple AI'ye hoş geldiniz! 🚀 ChatGPT'ye alternatif, daha iyi bir kullanıcı deneyimi odaklı. Sadece sorgunuzu giriş kutusuna yazın ve AI ile sohbet etmek için enter tuşuna basın.\n\nİşte hızlı başlangıç ​​rehberi:\n1. Simple AI komut tabanlı bir arayüzde çalışır; her komut \":\" ile başlar.\nKullanıcı kaydetmek için, `:user add [kullanıcı_adı] [email] [şifre?]` komutunu kullanın (köşeli paranteze gerek yok) ✅. \nÖrneğin, `:user add john xxxx@zzzz.vv ********`\n* Şifrenin en az 8 karakter uzunluğunda olması gerekmektedir.\n2. Oturum açmak için, `:user login [şifre]` komutunu kullanın 🔑\n3. Şifrenizi unuttuysanız, şifrenizi sıfırlamak için `:user reset pass [kullanıcı_adı] [email]` komutunu kullanın 🆘.\n4. Dokümantasyona erişmek ve kullanımı doğrulamak için: ekran köşesindeki noktaya (•) tıklayın 📄.\n5. Günlükler arasında gezinmek için ← ve → ok tuşlarını kullanın 🗂️.\n6. Kısayol: `Control + |` ile bölünmüş ekran modu, `Control + F11` ile tam ekran moduna geçiş 🖥️.\n7. Temayı değiştirmek için: `:theme [light|dark|terminal]` kullanın 🌈.\n* Genel `user` hesabı ücretsizdir; sadece belirteçler için ödeme yapmanız gerekir. Belirteç bakiyenizi Kullanım sayfasında yönetebilirsiniz 💳.\n\nCömert misiniz? `:invite [email]` komutunu kullanarak arkadaşlarınızı davet edin ve ikisi de 100K ödül belirteci alacaktır! 💌",
+  "Documentation": "Dokümantasyon",
+  "Usage": "Kullanım",
+  "Subcriptions": "Abonelikler",
+  "Privacy Policy": "Gizlilik Politikası"
+}
