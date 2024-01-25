@@ -10,12 +10,13 @@ export async function getUacResult(user, ip) {
   if (!isLogin) {
     // Not a user, urge register a user
     const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());
+
     // Forbidden as noticed some user user can use fake IP to bypass the limit
     // But if user cannot chat, it will be inconvenient... temporarily enabled.
-    if (chatCount >= 6) {
+    if (chatCount >= 0) {
       return {
         success: false,
-        error: "Unregistered user are limited to 6 chats per day. Please use command `:user add [username] [email] [password?]` (no bracktes needed) to register as user to continue. If you are already a member, please log in using `:user login [username] [password]`."
+        error: "Please register as a `user` to continue. If you are already a member, please log in using `:user login [username] [password]`.<br><br>To register as a user. Use command `:user add [username] [email] [password?]` (no brackets needed.). Example: `:user add john xxxx@zzzz.vv ********`."
       };
     }
   }
