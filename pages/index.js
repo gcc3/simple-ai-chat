@@ -306,23 +306,24 @@ export default function Home() {
 
     // Set default localStorage values
     if (localStorage.getItem("_up") === null) localStorage.setItem("_up", Date.now());
+    if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
     if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
     if (localStorage.getItem("useEval") === null) localStorage.setItem("useEval", "false");
     if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
     if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
-    if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
     if (localStorage.getItem("functions") === null) localStorage.setItem("functions", "Time,Weather,Redirection");  // default functions
+    if (localStorage.getItem("useSystemRole") === null) localStorage.setItem("useSystemRole", "true");
 
     // Set default sessionStorage values
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
     if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");    // default role
     if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");  // default store
     if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");    // default node
-    if (sessionStorage.getItem("history") === null) sessionStorage.setItem("history", JSON.stringify([]));
-    if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);
+    if (sessionStorage.getItem("history") === null) sessionStorage.setItem("history", JSON.stringify([]));  // command history
+    if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);  // command history index
 
     // Set styles and themes
     const dispatchFullscreen = (mode, force = false) => {
@@ -1183,6 +1184,8 @@ export default function Home() {
     const use_location = localStorage.getItem("useLocation");
     const location = localStorage.getItem("location");
 
+    const use_system_role = localStorage.getItem("useSystemRole");
+
     // Vision: Will automatically use vision model if there is any image
     // If use vision model function calling cannot use
     console.log("Input: " + input);
@@ -1198,7 +1201,8 @@ export default function Home() {
       use_location: use_location,
       location: location,
       images: images,
-      files: files
+      files: files,
+      use_system_role: use_system_role,
     };
     
     console.log("Config: " + JSON.stringify(config));
@@ -1215,7 +1219,8 @@ export default function Home() {
                                                            + "&use_location=" + use_location
                                                            + "&location=" + location
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
-                                                           + "&files=" + files.join(encodeURIComponent("###")));
+                                                           + "&files=" + files.join(encodeURIComponent("###"))
+                                                           + "&use_system_role=" + use_system_role);
 
     let done_evaluating = false;
     let toolCalls = [];
@@ -1487,6 +1492,7 @@ export default function Home() {
       use_eval: localStorage.getItem("useEval"),
       use_location: localStorage.getItem("useLocation"),
       location: localStorage.getItem("location"),
+      use_system_role: localStorage.getItem("useSystemRole"),
     };
     console.log("Config: " + JSON.stringify(config));
 

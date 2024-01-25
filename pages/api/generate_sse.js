@@ -39,6 +39,8 @@ export default async function (req, res) {
   const location = req.query.location || "";
   const images_ = req.query.images || "";
   const files_ = req.query.files || "";
+  const use_system_role = req.query.use_system_role === "true" ? true : false;
+
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
 
@@ -248,7 +250,8 @@ export default async function (req, res) {
 
     // Message base
     updateStatus("Start pre-generating...");
-    const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
+    const generateMessagesResult = await generateMessages(use_system_role, 
+                                                          user, model, input, inputType, files, images, 
                                                           session, mem_length,
                                                           role, store, node, 
                                                           use_location, location,
