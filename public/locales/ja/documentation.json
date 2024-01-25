@@ -47,7 +47,7 @@
   "Focused on the input area. Input area is empty/cleared.": "入力エリアにフォーカス。入力エリアが空またはクリアされている。",
   "Repeat last input.": "最後の入力を繰り返す。",
   "Command autocomplete.": "コマンド自動補完。",
-  "Focused on the input area. Input commands `:role use`, `:store use`, `:node use`, `:theme` and type the starts characters of the value.": "入力エリアにフォーカス。入力コマンドが `:role use`、`:store use`、`:node use`、`:theme` で始まり、値の開始文字をタイプする。",
+  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use` and type the starts characters of the value.": "入力エリアにフォーカス。入力コマンドが `:function use`, `:role use`、`:store use`、`:node use`、`:theme`, `:lang use` で始まり、値の開始文字をタイプする。",
   "Previous log (same session).": "前回のログ（同じセッション）。",
   "Unfocused from the input area or input box is empty when using `←`.": "入力エリアからフォーカスが外れるか、`←` を使用するときに入力ボックスが空の場合。",
   "Next log (same session).": "次のログ（同じセッション）。",
@@ -132,5 +132,8 @@
   "github_issues": "GitHubのイシュー（<1><2>リンク</2></1>）にアクセスして、遭遇した問題を報告したり、アイディアを共有したり、プロジェクトに貢献したりすることができます。",
   "discord_server": "公式のDiscordサーバー（<1><2>リンク</2></1>）に参加して他のユーザーと議論することができます。",
   "email_support": "カスタマーサポートメールだドレスへ問い合わせすることができます。メールアドレス： `<1><2>support@simple-ai.io<2></1>`",
-  "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourneyは最初のシステムノードAIです。最先端の画像生成AIであるMidjourneyをChatGPTのプロンプトと組み合わせて、高品質の認証済み画像を生成します。この機能をオンにするには、`:use \"Midjourney\"` コマンドを使用してください。"
+  "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourneyは最初のシステムノードAIです。最先端の画像生成AIであるMidjourneyをChatGPTのプロンプトと組み合わせて、高品質の認証済み画像を生成します。この機能をオンにするには、`:use \"Midjourney\"` コマンドを使用してください。",
+  "Auto input/Autocomplete.": "自動入力/自動補完。",
+  "Delete input.": "入力内容全削除。",
+  "Touch swipe on input box.": "入力欄にタッチスワイプする。"
 }
