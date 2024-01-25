@@ -18,7 +18,10 @@ export default function set(args) {
     "voice",
     "lang",
     "uselocation",
-    "location"
+    "location",
+    "functions",
+    "useeval",
+    "usesystemrole"
   ];
 
   if (!validKeys.includes(key)) {
@@ -92,6 +95,21 @@ export default function set(args) {
       break;
     case "location":
       localStorage.setItem("location", value);
+      break;
+    case "functions":
+      localStorage.setItem("functions", value);
+      break;
+    case "useeval":
+      if (value != "true" && value != "false") {
+        return "Invalid value. Value must be true or false.";
+      }
+      localStorage.setItem("useEval", value);
+      break;
+    case "usesystemrole":
+      if (value != "true" && value != "false") {
+        return "Invalid value. Value must be true or false.";
+      }
+      localStorage.setItem("useSystemRole", value);
       break;
   }
 

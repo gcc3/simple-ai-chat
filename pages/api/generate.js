@@ -35,6 +35,8 @@ export default async function(req, res) {
   const location = req.body.location || "";
   const files = req.body.files || null;
   const images = req.body.images || null;
+  const use_system_role = req.body.use_system_role || false;
+
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
 
@@ -107,7 +109,8 @@ export default async function(req, res) {
     let messages = [];
     let mem = 0;
 
-    const generateMessagesResult = await generateMessages(user, model, input, inputType, files, images, 
+    const generateMessagesResult = await generateMessages(use_system_role, 
+                                                          user, model, input, inputType, files, images, 
                                                           session, mem_length,
                                                           role, store, node,
                                                           use_location, location, 

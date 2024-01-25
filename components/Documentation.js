@@ -35,6 +35,23 @@ const Documentation = ({ country }) => {
 
   const functions = getFunctions();
 
+  const settings = [
+    { name: "Session ID", key: "session", example: "1706191819722", description: "" },
+    { name: "Timeline", key: "time", example: "1706191848034", description: "" },
+    { name: "Memory length", key: "memLength", example: "7", description: "" },
+    { name: "Role", key: "role", example: "(not set)", description: "" },
+    { name: "Store", key: "store", example: "(not set)", description: "" },
+    { name: "Node", key: "node", example: "(not set)", description: "" },
+    { name: "Show stats", key: "useStats", example: "true", description: "" },
+    { name: "Stream", key: "useStream", example: "true", description: "" },
+    { name: "Speak", key: "useSpeak", example: "false", description: "" },
+    { name: "Voice", key: "voice", example: "default", description: "" },
+    { name: "Language", key: "lang", example: "ru-RU force", description: "" },
+    { name: "Location service", key: "useLocation", example: "false", description: "" },
+    { name: "Location", key: "location", example: "(not set)", description: "" },
+    { name: "Use System Role", key: "useSystemRole", example: "true", description: "" },
+  ];
+
   const shortcuts = [
     { action: t("Stop generating. (`:stop`)"), shortcut: "⌃C", condition: t("Generating.") },
     { action: t("Clear output. (`:clear`)"), shortcut: "⌃R", condition: t("Has output.") },
