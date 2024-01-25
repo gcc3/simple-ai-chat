@@ -8,7 +8,7 @@
   "Subscription plans": "サブスクリプションプラン",
   "`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`：一般的なユーザーに提供されます。無料です。（使用したトークン料金は支払う必要があります。）",
   "`pro_user`: provide advanced features and support for professonal uses.": "`pro_user`：プロフェッショナルな使用に高度な機能とサポートを提供します。",
-  "`super_user`: provide accessability for all latest features and support.": "`super_user`：最新機能へのアクセスとサポートを提供します。",
+  "`super_user`: provide accessibility for all latest features and support.": "`super_user`：最新機能へのアクセスとサポートを提供します。",
   "Non-registered users are limited to 12 text generations per day.": "未登録のユーザーは1日に12回のテキスト生成に限られています。",
   "Extend, Upgrade or Downgrade": "延長、アップグレード、またはダウングレード",
   "Select plan": "プランを選択",
