@@ -373,13 +373,21 @@ export default function Home() {
       }
     }
 
+    const setDir = (lang) => {
+      if (lang === "ar") {
+        document.dir = "rtl";
+      }
+    }
     const i18nLang = lang.split("-")[0];  // i18n language, e.g. en for en-US
     if (i18n.language !== i18nLang) {
       i18n.changeLanguage(i18nLang)
         .then(() => {
           console.log("Language: " + lang + ", i18n: " + i18n.language);
           console.log('Language test:', t('hello'));
+          setDir(i18nLang);
         });
+    } else {
+      setDir(i18nLang);
     }
     
     // Theme
