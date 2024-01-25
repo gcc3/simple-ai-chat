@@ -1,4 +1,4 @@
-import { getLangCodes } from "utils/langUtils";
+import { getLangCodes, getLanguageName } from "utils/langUtils";
 
 export default async function lang(args) {
   const command = args[0];
@@ -19,14 +19,14 @@ export default async function lang(args) {
       return "Usage: :lang use [language code]";
     }
 
-    let newLang = args[1].trim();
-    if (newLang.startsWith("\"") && newLang.endsWith("\"")) {
-      newLang = newLang.slice(1, -1);
+    let newLangCode = args[1].trim();
+    if (newLangCode.startsWith("\"") && newLangCode.endsWith("\"")) {
+      newLangCode = newLangCode.slice(1, -1);
     }
 
-    if (langCodes.includes(newLang)) {
-      localStorage.setItem("lang", newLang + " force");
-      return "Language set to `" + newLang + "`, please refresh to see changes.";
+    if (langCodes.includes(newLangCode)) {
+      localStorage.setItem("lang", newLangCode + " force");
+      return "Language set to `" + getLanguageName(newLangCode) + "`, code: " + newLangCode + ". Please refresh to see changes.";
     } else {
       return "Language code not found.";
     }
