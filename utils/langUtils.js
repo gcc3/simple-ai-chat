@@ -20,6 +20,7 @@ export function getLangCodes() {
     "zh-HK",
     "zh-TW",
     "sv-SE",  // Swedish
+    "bn-BD",  // Bengali
   ];
 
   return langCodes;
