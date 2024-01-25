@@ -1,5 +1,5 @@
 {
-  "User infromation not found. Please login with command `:login [username] [password]`.": "ログイン情報が見つかりませんでした。コマンド `:login [username] [password]` でログインしてください。",
+  "User information not found. Please login with command `:login [username] [password]`.": "ログイン情報が見つかりませんでした。コマンド `:login [username] [password]` でログインしてください。",
   "Subcription Status": "サブスクリプションの状況",
   "User": "ユーザー",
   "Email": "メール",

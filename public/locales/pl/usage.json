@@ -1,5 +1,5 @@
 {
-  "User infromation not found. Please login with command `:login [username] [password]`.": "Informacja o użytkowniku nie znaleziona. Proszę zalogować się za pomocą komendy `:login [nazwa użytkownika] [hasło]`.",
+  "User information not found. Please login with command `:login [username] [password]`.": "Informacja o użytkowniku nie znaleziona. Proszę zalogować się za pomocą komendy `:login [nazwa użytkownika] [hasło]`.",
   "User": "Użytkownik",
   "Email": "Email",
   "Subscription": "Subskrypcja",

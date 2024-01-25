@@ -1,5 +1,5 @@
 {
-  "User infromation not found. Please login with command `:login [username] [password]`.": "उपयोगकर्ता की जानकारी नहीं मिली। कृपया कमांड `:login [username] [password]` के साथ लॉगिन करें।",
+  "User information not found. Please login with command `:login [username] [password]`.": "उपयोगकर्ता की जानकारी नहीं मिली। कृपया कमांड `:login [username] [password]` के साथ लॉगिन करें।",
   "Subcription Status": "सब्सक्रिप्शन स्थिति",
   "User": "उपयोगकर्ता",
   "Email": "ईमेल",
