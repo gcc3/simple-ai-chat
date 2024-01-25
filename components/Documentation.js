@@ -238,9 +238,9 @@ const Documentation = ({ country }) => {
             ))}
           </tbody>
         </table>
-        <div className="mt-2">
-          * { t("Weather data is provided by WolframAlpha.") }
-        </div>
+      </div>
+      <div className="mt-2">
+        * { t("Weather data is provided by WolframAlpha.") }
       </div>
       <div id="shortcuts" className="mt-5">{ t("Shortcuts & Gestures") }</div>
       <div className="mt-3">{ t("Shortcuts") }</div>
