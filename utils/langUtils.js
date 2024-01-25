@@ -25,6 +25,7 @@ export function getLangCodes() {
     "ru-RU",  // Russian
     "sv-FI",  // Swedish (Finland)
     "sv-SE",  // Swedish (Sweden)
+    "tr-TR",  // Turkish (Turkey)
     "zh-CN",  // Chinese (S)
     "zh-HK",  // Chinese (Hong Kong)
     "zh-TW",  // Chinese (T)
