@@ -1,5 +1,5 @@
 {
-  "User infromation not found. Please login with command `:login [username] [password]`.": "Kullanıcı bilgisi bulunamadı. Lütfen `:login [kullanıcı adı] [şifre]` komutuyla giriş yapın.",
+  "User information not found. Please login with command `:login [username] [password]`.": "Kullanıcı bilgisi bulunamadı. Lütfen `:login [kullanıcı adı] [şifre]` komutuyla giriş yapın.",
   "Subcription Status": "Abonelik Durumu",
   "User": "Kullanıcı",
   "Email": "E-posta",

@@ -1,5 +1,5 @@
 {
-  "User infromation not found. Please login with command `:login [username] [password]`.": "Informasi pengguna tidak ditemukan. Silakan masuk dengan perintah `:login [username] [password]`.",
+  "User information not found. Please login with command `:login [username] [password]`.": "Informasi pengguna tidak ditemukan. Silakan masuk dengan perintah `:login [username] [password]`.",
   "Subcription Status": "Status Berlangganan",
   "User": "Pengguna",
   "Email": "Email",

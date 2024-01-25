@@ -107,7 +107,7 @@ function Subscription() {
 
   const content = (
     <>
-      {!user && <div>{ t("User infromation not found. Please login with command `:login [username] [password]`.") }</div>}
+      {!user && <div>{ t("User information not found. Please login with command `:login [username] [password]`.") }</div>}
       {user && <div>
         <div>- { t("Subcription Status") }</div>
         <div className="mt-1">{ t("User") }: {user.username}</div>

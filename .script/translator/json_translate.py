@@ -16,17 +16,19 @@ def translate(text, target_language_name):
         messages=[
             {
                 "role": "user",
-                "content": f"Translate the following text to {target_language_name}:"
-                           + "\n\n" + text,
+                "content": f"Translate the following text to {target_language_name} and response with json format:\n\n"
+                           + "\n\n" + text
+                           + "\n\n" + "json format: {\"content\": \"translated text\"}",
             },
         ],
         model="gpt-4-1106-preview",
+        type="json",
     )
     return completion.choices[0].message.content
 
 # Read the source language code and document content
 source_language_code = 'en'
-with open(f'content_{source_language_code}.txt', 'r', encoding='utf-8') as file:
+with open(f'content_{source_language_code}.json', 'r', encoding='utf-8') as file:
     content = file.read()
     print(f'Content to translate:\n{content}')
 
@@ -41,7 +43,7 @@ with open('languages.csv', newline='', encoding='utf-8') as csvfile:
             # Translate the content to the target language
             translated_content = translate(content, language_name)
             # Write the translated content to a new file
-            output_filename = f'content_{language_code}.txt'
+            output_filename = f'content_{language_code}.json'
             with open(output_filename, 'w', encoding='utf-8') as output_file:
                 output_file.write(translated_content)
             print(f'Content translated to {language_name} and saved in {output_filename}')

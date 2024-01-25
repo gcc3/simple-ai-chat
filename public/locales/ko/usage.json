@@ -1,5 +1,5 @@
 {
-  "User infromation not found. Please login with command `:login [username] [password]`.": "사용자 정보를 찾을 수 없습니다. `:login [사용자 이름] [비밀번호]` 명령으로 로그인하세요.",
+  "User information not found. Please login with command `:login [username] [password]`.": "사용자 정보를 찾을 수 없습니다. `:login [사용자 이름] [비밀번호]` 명령으로 로그인하세요.",
   "User": "사용자",
   "Email": "이메일",
   "Subscription": "구독",

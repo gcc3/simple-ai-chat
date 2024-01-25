@@ -26,7 +26,7 @@ export default async function lang(args) {
 
     if (langCodes.includes(newLangCode)) {
       localStorage.setItem("lang", newLangCode + " force");
-      return "Language set to `" + getLanguageName(newLangCode) + "`, code: " + newLangCode + ". Please refresh to see changes.";
+      return "Language set to `" + getLanguageName(newLangCode) + "`, country-language code: " + newLangCode + ". Please refresh to see changes.";
     } else {
       return "Language code not found.";
     }

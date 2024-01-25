@@ -59,6 +59,7 @@ export function getLanguageName(code) {
   if (code === "ru-RU") return "Russian";
   if (code === "sv-FI") return "Swedish (Finland)";
   if (code === "sv-SE") return "Swedish (Sweden)";
+  if (code === "tr-TR") return "Turkish (Turkey)";
   if (code === "zh-CN") return "Chinese (S)";
   if (code === "zh-HK") return "Chinese (Hong Kong)";
   if (code === "zh-TW") return "Chinese (T)";
