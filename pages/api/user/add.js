@@ -126,7 +126,8 @@ export default async function (req, res) {
     const body
     = "Dear " + username + "," + "<br>"
     + "<br>"
-    + "Welcome to Simple AI! 🎉 An alternative to ChatGPT." + "<br>"
+    + "Welcome to Simple AI! 🎉" + "<br>"
+    + "<br>"
     + `Your account, with username \"${username}\", has been created successfully.` + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + "<br>"
     + "You can log in with command `:login [username] [password]` (no brackets needed), e.g `:login john ********`" + "<br>"
     + "<br>"
