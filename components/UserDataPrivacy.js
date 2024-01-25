@@ -22,9 +22,9 @@ function UserDataPrivacy() {
       { t("We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.") }<br></br>
       <div className="mt-3">- { t("Contact Us") }</div>
       <Trans
-        i18nKey="email_support"
+        i18nKey="email_support_privacy_policy"
         components={{ 1: <a href="mailto:support@simple-ai.io" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
-        ns="documentation"
+        ns="privacy_policy"
       />
     </div>
   )
