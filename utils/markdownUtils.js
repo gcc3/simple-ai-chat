@@ -49,14 +49,14 @@ export function markdownFormatter(elOutput) {
 
       // Temporarily replace text with a placeholder to avoid conflicts
       let placeholders = [];
-      line = line.replace(/\*\*(.*?)\*\*/g, function(match, p1) {
-          placeholders.push('<strong>' + p1 + '</strong>');
-          return '\x00'; // Use a null character as a placeholder
+      line = line.replace(/\*\*([^*]+)\*\*/g, function(match, p1) {
+        placeholders.push('<strong>' + p1 + '</strong>');
+        return '\x00'; // Use a null character as a placeholder
       });
 
       // Replace *text* with <em>text</em>
       if (line.includes('*')) {
-          line = line.replace(/\*([^*]+?)\*/g, '<em>$1</em>');  // Emphasis
+        line = line.replace(/\*([^*]+)\*/g, '<em>$1</em>');  // Emphasis
       }
 
       // Remove the # at first
