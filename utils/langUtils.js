@@ -1,11 +1,10 @@
 export function getLangCodes() {
   const langCodes = [
+    "bn-BD",  // Bengali
     "de-DE",  // German
     "en-US",
     "en-GB",
-    "en-GB",
     "es-ES",  // Spanish
-    "es-US",
     "fr-FR",  // French
     "hi-IN",  // Hindi
     "id-ID",  // Indonesian
@@ -16,11 +15,10 @@ export function getLangCodes() {
     "pl-PL",  // Polish
     "pt-BR",  // Portuguese
     "ru-RU",  // Russian
+    "sv-SE",  // Swedish
     "zh-CN",
     "zh-HK",
     "zh-TW",
-    "sv-SE",  // Swedish
-    "bn-BD",  // Bengali
   ];
 
   return langCodes;
