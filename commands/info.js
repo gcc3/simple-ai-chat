@@ -1,5 +1,5 @@
 export default function info(args) {
-  const info = "Up Time (key: `_up`): " + localStorage.getItem("_up") + "\n" +
+  const info = "Up Time (key: `_up`): " + new Date(parseInt(localStorage.getItem("_up"))).toLocaleString() + "\n" +
                "Session ID (key: `session`): " + sessionStorage.getItem("session") + "\n" +
                "Timeline (key: `time`): " + sessionStorage.getItem("time") + "\n" +
                "Language (key: `lang`): " + (localStorage.getItem("lang") || "___") + "\n" +

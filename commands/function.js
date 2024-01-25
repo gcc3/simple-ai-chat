@@ -1,6 +1,10 @@
 import { getFunctions } from "function";
 
 export default async function function_(args) {
+  const usage = "Usage: :function [ls|list]\n"
+              + "       :function use [name]\n"
+              + "       :function unuse [name]\n";
+
   const command = args[0];
 
   if (command === "ls" || command === "list") {
@@ -108,5 +112,5 @@ export default async function function_(args) {
     return "Function \`" + functionName + "\` is disabled for calling.";
   }
 
-  return "Usage: :function [ls|list]";
+  return usage;
 }
