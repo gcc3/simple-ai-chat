@@ -119,7 +119,7 @@ export async function getUserInfo() {
 
 // User get user info to check user credential
 export async function refreshUserInfo() {
-  user = getUserInfo();
+  const user = getUserInfo();
 
   if (user) {
     // Refresh local user data
