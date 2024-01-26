@@ -240,6 +240,10 @@ Setup
 .env
 ----
 
+* NODE_ENV  
+For development environment use `development`.
+For production environment use `production`.
+
 * NEXT_PUBLIC_BASE_URL  
 Fill in the base URL, for example: `http://localhost:3000`  
 

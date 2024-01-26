@@ -47,7 +47,7 @@
   "Focused on the input area. Input area is empty/cleared.": "Fokuserad på inmatningsområdet. Inmatningsområdet är tomt/rensad.",
   "Repeat last input.": "Upprepa senaste inmatningen.",
   "Command autocomplete.": "Kommandoförslag.",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use` and type the starts characters of the value.": "Fokuserad på inmatningsområdet. Ange kommandon `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use` och skriv de inledande bokstäverna i värdet.",
+  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Fokuserad på inmatningsområdet. Ange kommandon `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` och skriv de inledande bokstäverna i värdet.",
   "Previous log (same session).": "Tidigare logg (samma session).",
   "Unfocused from the input area or input box is empty when using `←`.": "Ofokuserad från inmatningsområdet eller inmatningsrutan är tom vid användning av `←`.",
   "Next log (same session).": "Nästa logg (samma session).",

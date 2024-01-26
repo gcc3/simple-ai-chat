@@ -29,6 +29,7 @@ import { getLangCodes } from "utils/langUtils";
 import { useTranslation } from 'react-i18next';
 import { getFunctions } from "function";
 import { simulateKeyPress } from "utils/keyboardUtils";
+import { getSettings } from "utils/settingsUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -1619,7 +1620,7 @@ export default function Home() {
 
       // Auto complete
       if (elInput.value.startsWith(":")) {
-        // Auto complete function
+        // Auto complete :function use
         if (elInput.value.startsWith(":function use ")) {
           const nameToBeComleted = elInput.value.replace(":function use ", "").replace(/^\"+/, '').replace(/\"$/, '');
           if (nameToBeComleted) {
@@ -1633,6 +1634,8 @@ export default function Home() {
             }
           }
         }
+
+        // Auto complete :function unuse
         if (elInput.value.startsWith(":function unuse ")) {
           const nameToBeComleted = elInput.value.replace(":function unuse ", "").replace(/^\"+/, '').replace(/\"$/, '');
           if (nameToBeComleted) {
@@ -1647,7 +1650,7 @@ export default function Home() {
           }
         }
 
-        // Auto complete role
+        // Auto complete :role use
         if (elInput.value.startsWith(":role use ")) {
           const nameToBeComleted = elInput.value.replace(":role use ", "").replace(/^\"+/, '').replace(/\"$/, '');
           if (nameToBeComleted) {
@@ -1665,7 +1668,7 @@ export default function Home() {
           }
         }
 
-        // Auto complete store
+        // Auto complete :store use
         if (elInput.value.startsWith(":store use ")) {
           const nameToBeComleted = elInput.value.replace(":store use ", "").replace(/^\"+/, '').replace(/\"$/, '');
           if (nameToBeComleted) {
@@ -1683,7 +1686,7 @@ export default function Home() {
           }
         }
 
-        // Auto complete node
+        // Auto complete :node use
         if (elInput.value.startsWith(":node use ")) {
           const nameToBeComleted = elInput.value.replace(":node use ", "").replace(/^\"+/, '').replace(/\"$/, '');
           if (nameToBeComleted) {
@@ -1701,7 +1704,7 @@ export default function Home() {
           }
         }
 
-        // Auto complete themes
+        // Auto complete :theme
         if (elInput.value.startsWith(":theme ")) {
           const nameToBeComleted = elInput.value.replace(":theme ", "");
           if (nameToBeComleted) {
@@ -1714,7 +1717,7 @@ export default function Home() {
           }
         }
 
-        // Auto complete use
+        // Auto complete :use
         if (elInput.value.startsWith(":use ")) {
           const nameToBeComleted = elInput.value.replace(":use ", "").replace(/^\"+/, '').replace(/\"$/, '');
           if (nameToBeComleted) {
@@ -1769,7 +1772,7 @@ export default function Home() {
           }
         }
 
-        // Auto complete unuse
+        // Auto complete :unuse
         if (elInput.value.startsWith(":unuse ")) {
           const nameToBeComleted = elInput.value.replace(":unuse ", "").replace(/^\"+/, '').replace(/\"$/, '');
           if (nameToBeComleted) {
@@ -1824,13 +1827,27 @@ export default function Home() {
           }
         }
 
-        // Auto complete lang use
+        // Auto complete :lang use
         if (elInput.value.startsWith(":lang use ")) {
           const nameToBeComleted = elInput.value.replace(":lang use ", "");
           if (nameToBeComleted) {
             const langCode = getLangCodes().find((n) => n.startsWith(nameToBeComleted));
             if (langCode) {
               setInput(":lang use " + langCode);
+              reAdjustInputHeight();
+              return;
+            }
+          }
+        }
+
+        // Auto complete :user set
+        if (elInput.value.startsWith(":user set ")) {
+          const nameToBeComleted = elInput.value.replace(":user set ", "");
+          if (nameToBeComleted) {
+            const availableSettings = getSettings("keys_string_array");
+            const key = availableSettings.find((n) => n.startsWith(nameToBeComleted));
+            if (key) {
+              setInput(":user set " + key);
               reAdjustInputHeight();
               return;
             }

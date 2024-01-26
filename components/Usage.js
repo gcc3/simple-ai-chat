@@ -31,7 +31,6 @@ function Usage() {
 
   const onSuccess = useCallback(async (details) => {
     console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
-    console.log("Detail: ", details);
 
     // Update user role
     const response = await fetch("/api/user/update/balance", {
@@ -40,7 +39,8 @@ function Usage() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        amount,
+        amount: amount,
+        details: JSON.stringify(details),
       }),
     });
   

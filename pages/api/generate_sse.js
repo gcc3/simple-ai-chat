@@ -176,11 +176,11 @@ export default async function (req, res) {
     + "use_function_calling: " + use_function_calling + "\n"
     + "use_node_ai: " + use_node_ai + "\n"
     + "use_lcation: " + use_location + "\n"
-    + "location: " + (use_location ? (location === "" ? "(not set)" : location) : "(disabled)") + "\n"
-    + "functions: " + (functions_ || "(not set)") + "\n"
-    + "role: " + (role || "(not set)") + "\n"
-    + "store: " + (store || "(not set)") + "\n"
-    + "node: " + (node || "(not set)") + "\n");
+    + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
+    + "functions: " + (functions_ || "___") + "\n"
+    + "role: " + (role || "___") + "\n"
+    + "store: " + (store || "___") + "\n"
+    + "node: " + (node || "___") + "\n");
   }
 
   // Type II. Tool calls (function calling) input
