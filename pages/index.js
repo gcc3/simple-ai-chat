@@ -1046,6 +1046,12 @@ export default function Home() {
       clearInterval(dunutIntervalId);
     }
 
+    // Check input is full-width
+    if (!minimalist && input.startsWith("：")) {
+      printOutput("Please use half-width colon (\":\").");
+      return;
+    }
+
     // Function CLI
     // Format: !function_name({ "arg1":"value1", "arg2":"value2", ... })
     // Example: !get_weather({ "location":"Tokyo" })
