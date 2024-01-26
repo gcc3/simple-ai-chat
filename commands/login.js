@@ -14,7 +14,6 @@ export default async function login(args) {
   const username = args[0];
   const password = args[1];
 
-  let user = null;
   try {
     const response = await fetch("/api/user/login", {
       method: "POST",
@@ -27,13 +26,17 @@ export default async function login(args) {
       }),
     });
 
-    const data = await response.json();
     if (response.status !== 200) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
+    const data = await response.json();
     if (data.success) {
-      user = data.user;
+      const user = data.user;
+      if (!user) {
+        throw new Error("User not found.");
+      }
+
       setUserLocalStorage(user);
       console.log("User is set to \"" + localStorage.getItem("user") + "\".");
 
