@@ -106,8 +106,7 @@ export function generatePassword(length=8) {
   return result;
 }
 
-// User get user info to check user credential
-export async function refreshUserInfo() {
+export async function getUserInfo() {
   let user = null;
   const response = await fetch(`/api/user/info`, {
     method: "GET",
@@ -115,6 +114,12 @@ export async function refreshUserInfo() {
   });
   const data = await response.json();
   user = data.user;
+  return user;
+}
+
+// User get user info to check user credential
+export async function refreshUserInfo() {
+  const user = getUserInfo();
 
   if (user) {
     // Refresh local user data

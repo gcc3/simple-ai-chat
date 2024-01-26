@@ -1,8 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import ProgressBar from "./ProgressBar";
-import { getRoleLevel } from "utils/userUtils";
+import { refreshUserInfo, getRoleLevel, getUserInfo } from "utils/userUtils";
 import PayPalButton from "./PayPalButton";
-import { refreshUserInfo } from "utils/userUtils";
 import { npre } from "utils/numberUtils";
 import { plusFeeCal } from "utils/usageUtils";
 import { useTranslation } from "react-i18next";
@@ -54,7 +53,7 @@ function Usage() {
       setMessage(data.message);
   
       // Refresh user info
-      const user = await refreshUserInfo();
+      const user = await getUserInfo();
       setUser(user);
     } else {
       console.log(data.error);
@@ -64,18 +63,9 @@ function Usage() {
 
   useEffect(() => {
     // Get user info
-    const getUserInfo = async () => {
-      const response = await fetch(`/api/user/info`, {
-        method: "GET",
-        credentials: 'include',
-      });
+    const updateUserInfo = async () => {
+      const user = await getUserInfo();
 
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      const user = data.user;
       setUser(user);
       setUseCountFequencies(user.usage.use_count_fequencies);
       setUseCountMonthly(user.usage.use_count_monthly);
@@ -99,7 +89,7 @@ function Usage() {
     }
 
     if (localStorage.getItem("user") && !user) {
-      getUserInfo();
+      updateUserInfo();
     }
   });
 
