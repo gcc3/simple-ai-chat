@@ -24,7 +24,9 @@ export default async function (req, res) {
   }
 
   // Input and validation
-  const { amount, details } = req.body;
+  const { amount: amount_, details } = req.body;
+  const amount = parseFloat(amount_);
+
   if (!amount || amount < 0) {
     return res.status(400).json({ error: 'Invalid amount.' });
   }
@@ -33,7 +35,7 @@ export default async function (req, res) {
   }
 
   // Confrim if amount is received
-  if (!confrimReceived(amount)) {
+  if (!await confrimReceived(amount, JSON.parse(details))) {
     return res.status(400).json({ error: 'Failed to confirm payment.' });
   }
 
@@ -71,23 +73,89 @@ export default async function (req, res) {
   }
 }
 
-function confrimReceived(amount) {
-  // TODO, use API to confirm amount is received
-  return true;
+async function confrimReceived(amount, details) {
+  const transactionId = details.id;
+  const status = details.status;
+  if (status !== 'COMPLETED') {
+    return false;
+  }
+  
+  const clientId = process.env.PAYPAL_CLIENT_ID;
+  const secret = process.env.PAYPAL_CLIENT_SECRET;
+  const accessToken = await getPayPalAccessToken(clientId, secret);
+  if (!accessToken) {
+    return false;
+  }
+
+  const isProduction = process.env.NODE_ENV === 'production';
+  const baseUrl = isProduction ? 'https://api.paypal.com' : 'https://api-m.sandbox.paypal.com';
+
+  try {
+    const orderResponse = await fetch(`${baseUrl}/v2/checkout/orders/${transactionId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${accessToken}`,
+        'Content-Type': 'application/json'
+      }
+    });
+    if (!orderResponse.ok) {
+      throw new Error(`PayPal order server responded with status: ${orderResponse.status}, body: ${order}`);
+    }
+    
+    // Verification
+    const order = await orderResponse.json();
+    if (!order) {
+      return false;
+    }
+    if (!order.id || order.id !== transactionId) {
+      return false;
+    }
+    if (!order.purchase_units || order.purchase_units.length === 0) {
+      return false;
+    }
+    if (!order.status || order.status !== 'COMPLETED') {
+      return false;
+    }
+    if (!order.purchase_units[0].amount || order.purchase_units[0].amount.currency_code !== 'USD') {
+      return false;
+    }
+    if (!order.purchase_units[0].amount.value || parseFloat(order.purchase_units[0].amount.value) - amount > 0.01) {
+      return false;
+    }
+
+    return true;
+  } catch (error) {
+    console.error('Error:', error);
+    return false;
+  }
 }
 
-function getTransactions(accessToken) {
-  fetch('https://api.paypal.com/v1/reporting/transactions?start_date=START_DATE&end_date=END_DATE', {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${accessToken}`
+async function getPayPalAccessToken(clientId, secret) {
+  const isProduction = process.env.NODE_ENV === 'production';
+  const baseUrl = isProduction ? 'https://api.paypal.com' : 'https://api-m.sandbox.paypal.com';
+
+  try {
+    // Base64 encode the client ID and secret
+    const basicAuth = Buffer.from(`${clientId}:${secret}`).toString('base64');
+    const tokenResponse = await fetch(`${baseUrl}/v1/oauth2/token`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Basic ${basicAuth}`,
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      body: 'grant_type=client_credentials'
+    });
+
+    // Check the response status
+    if (!tokenResponse.ok) {
+      const errorBody = await tokenResponse.text();
+      throw new Error(`PayPal token server responded with status: ${tokenResponse.status}, body: ${errorBody}`);
     }
-  })
-  .then(response => response.json())
-  .then(data => {
-    console.log('Transaction Data:', data);
-    return data;
-  })
-  .catch(error => console.error('Error:', error));
+
+    const tokenData = await tokenResponse.json();
+    return tokenData.access_token;
+  } catch (error) {
+    console.error('Error obtaining access token:', error);
+    return null;
+  }
 }
