@@ -1,4 +1,4 @@
-import { generatePassword } from "./passwordUtils.js";
+import { generatePassword } from "utils/userUtils.js";
 
 export function getInitialSettings(format = "json", theme = "light", fullscreen = "off") {
   let result = null;
