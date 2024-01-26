@@ -6,6 +6,7 @@ import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module
 import command, { getHistoryCommand, getHistoryCommandIndex, pushCommandHistory } from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme, getThemes } from "utils/themeUtils.js";
+import { setRtl } from "utils/rtlUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
@@ -375,21 +376,16 @@ export default function Home() {
       }
     }
 
-    const setDir = (lang) => {
-      if (lang === "ar") {
-        document.dir = "rtl";
-      }
-    }
     const i18nLang = lang.split("-")[0];  // i18n language, e.g. en for en-US
     if (i18n.language !== i18nLang) {
       i18n.changeLanguage(i18nLang)
         .then(() => {
           console.log("Language: " + lang + ", i18n: " + i18n.language);
           console.log('Language test:', t('hello'));
-          setDir(i18nLang);
+          setRtl(i18nLang === "ar");
         });
     } else {
-      setDir(i18nLang);
+      setRtl(i18nLang === "ar");
     }
     
     // Theme
