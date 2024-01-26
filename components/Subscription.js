@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PayPalButton from "./PayPalButton";
-import { refreshUserInfo, getRoleLevel } from "utils/userUtils";
+import { refreshUserInfo, getRoleLevel, getUserInfo } from "utils/userUtils";
 import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
 import { npre } from "utils/numberUtils";
 import { useTranslation } from "react-i18next";
@@ -49,7 +49,7 @@ function Subscription() {
       setMessage(data.message);
 
       // Refresh user info
-      const user = await refreshUserInfo();
+      const user = await getUserInfo();
       setUser(user);
     } else {
       console.log(data.error);
@@ -59,7 +59,7 @@ function Subscription() {
 
   useEffect(() => {
     const loadUserInfo = async () => {
-      const user = await refreshUserInfo();
+      const user = await getUserInfo();
       if (user) {
         setUser(user);
         
