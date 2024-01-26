@@ -5,8 +5,6 @@ import { initializeSession } from "./sessionUtils";
 
 export function setUserLocalStorage(user) {
   localStorage.setItem("user", user.username);
-  localStorage.setItem("userEmail", user.email);
-  localStorage.setItem("userRole", user.role);
 
   if (user.settings) {
     const settings = user.settings;
@@ -78,9 +76,6 @@ export function setUserLocalStorage(user) {
 
 export function clearUserWebStorage() {
   localStorage.removeItem("user");
-  localStorage.removeItem("userEmail");
-  localStorage.removeItem("userRole");
-  localStorage.removeItem("userSettings");
   
   // Reset session to forget previous memory
   initializeSession();

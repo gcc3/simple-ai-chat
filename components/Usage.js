@@ -110,9 +110,9 @@ function Usage() {
       {user && <div>
         <div>
           <div className="mb-1">- { t("Subcription Status") }</div>
-          <div>{ t("User") }: {localStorage.getItem("user") }</div>
-          <div>{ t("Email") }: {localStorage.getItem("userEmail") }</div>
-          <div>{ t("Subscription") }: `{localStorage.getItem("userRole") }`</div>
+          <div>{ t("User") }: {user.username}</div>
+          <div>{ t("Email") }: {user.email}</div>
+          <div>{ t("Subscription") }: `{user.role}`</div>
           <div>{ t("Expire at") }: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
           {user.usage && getRoleLevel(user.role) >= 1 && <div className="mt-3">
             <div>- { t("Monthly Usage") }</div>
