@@ -47,7 +47,7 @@
   "Focused on the input area. Input area is empty/cleared.": "مُركّز على منطقة الإدخال. منطقة الإدخال فارغة/تم مسحها.",
   "Repeat last input.": "كرر آخر إدخال.",
   "Command autocomplete.": "إكمال الأمر التلقائي",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use` and type the starts characters of the value.": "مُركَّز على منطقة الإدخال. أدخل الأوامر `:use`، `:function use`، `:role use`، `:store use`، `:node use`، `:theme`، `:lang use` واكتب الأحرف الأولى من القيمة.",
+  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "مُركَّز على منطقة الإدخال. أدخل الأوامر `:use`، `:function use`، `:role use`، `:store use`، `:node use`، `:theme`، `:lang use`، `:user set` واكتب الأحرف الأولى من القيمة.",
   "Previous log (same session).": "السجل السابق (نفس الجلسة).",
   "Unfocused from the input area or input box is empty when using `←`.": "تم إلغاء التركيز من مربع الإدخال أو مربع الإدخال فارغ عند استخدام '←'.",
   "Next log (same session).": "السجل التالي (نفس الجلسة).",

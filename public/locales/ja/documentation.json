@@ -47,7 +47,7 @@
   "Focused on the input area. Input area is empty/cleared.": "入力エリアにフォーカス。入力エリアが空またはクリアされている。",
   "Repeat last input.": "最後の入力を繰り返す。",
   "Command autocomplete.": "コマンド自動補完。",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use` and type the starts characters of the value.": "入力エリアにフォーカス。入力コマンドが `:function use`, `:role use`、`:store use`、`:node use`、`:theme`, `:lang use` で始まり、値の開始文字をタイプする。",
+  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "入力エリアにフォーカス。入力コマンドが `:function use`, `:role use`、`:store use`、`:node use`、`:theme`, `:lang use`, `:user set` で始まり、値の開始文字をタイプする。",
   "Previous log (same session).": "前回のログ（同じセッション）。",
   "Unfocused from the input area or input box is empty when using `←`.": "入力エリアからフォーカスが外れるか、`←` を使用するときに入力ボックスが空の場合。",
   "Next log (same session).": "次のログ（同じセッション）。",

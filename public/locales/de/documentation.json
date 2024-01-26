@@ -47,7 +47,7 @@
   "Focused on the input area. Input area is empty/cleared.": "Fokussiert auf den Eingabebereich. Eingabebereich ist leer/gelöscht.",
   "Repeat last input.": "Wiederholen Sie die letzte Eingabe.",
   "Command autocomplete.": "Befehlsvervollständigung.",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use` and type the starts characters of the value.": "Fokussiert auf den Eingabebereich. Geben Sie die Befehle `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use` ein und tippen Sie die Anfangsbuchstaben des Wertes.",
+  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Fokussiert auf den Eingabebereich. Geben Sie die Befehle `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` ein und tippen Sie die Anfangsbuchstaben des Wertes.",
   "Previous log (same session).": "Vorheriges Protokoll (gleiche Sitzung).",
   "Unfocused from the input area or input box is empty when using `←`.": "Unfokussiert vom Eingabebereich oder das Eingabefeld ist leer, wenn `←` verwendet wird.",
   "Next log (same session).": "Nächste Protokoll (gleiche Sitzung).",

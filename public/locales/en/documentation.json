@@ -47,7 +47,7 @@
   "Focused on the input area. Input area is empty/cleared.": "Focused on the input area. Input area is empty/cleared.",
   "Repeat last input.": "Repeat last input.",
   "Command autocomplete.": "Command autocomplete.",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use` and type the starts characters of the value.": "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use` and type the starts characters of the value.",
+  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.",
   "Previous log (same session).": "Previous log (same session).",
   "Unfocused from the input area or input box is empty when using `←`.": "Unfocused from the input area or input box is empty when using `←`.",
   "Next log (same session).": "Next log (same session).",
