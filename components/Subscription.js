@@ -131,9 +131,9 @@ function Subscription() {
             <div>- { t("Extend, Upgrade or Downgrade") }</div>
             <div className="flex flex-wrap items-center mt-2">
               <div>{ t("Select plan") }:</div>
-              <button className="ml-2" onClick={handleSetTargetRole("user") }>`user`</button>
-              <button className="ml-2" onClick={handleSetTargetRole("pro_user") }>`pro_user`</button>
-              <button className="ml-2" onClick={handleSetTargetRole("super_user") }>`super_user`</button>
+              <button className="ml-2" onClick={handleSetTargetRole("user")}>`user`</button>
+              <button className="ml-2" onClick={handleSetTargetRole("pro_user")}>`pro_user`</button>
+              <button className="ml-2" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
               {targetRole && <button className="ml-2 w-20" onClick={handleSetTargetRole(null)}>{ t("Cancel") }</button>}
             </div>
           </div>}
