@@ -1,12 +1,14 @@
 export default async function eval_(args) {
-  const value = args[0];
+  const eval_ = args[0];
 
-  if (value !== "on" && value !== "off") {
+  if (eval_ !== "on" && eval_ !== "off") {
     return "Usage: :eval [on|off]";
   }
 
+  const value = eval_ == "on" ? "true" : "false";
+
   // Update local setting
-  localStorage.setItem('useEval', value == "on" ? "true" : "false");
+  localStorage.setItem('useEval', value);
 
   // There is user logged in
   // Update remote setting
@@ -19,7 +21,7 @@ export default async function eval_(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          key: "eval",
+          key: "useEval",
           value: value,
         }),
       });
@@ -35,6 +37,6 @@ export default async function eval_(args) {
   }
 
   const turnOnStats = " `self_eval_score` is in stats, use command `:stats on` to show stats.";
-  const useEvalWill = " Note, use self evaluation score will double the cost of tokens."
-  return value == "on" ? "Self evaluation score enabled." + turnOnStats + useEvalWill : "Self evaluation score disabled.";
+  const useEvalWill = " Note, use self evaluation score will double the tokens."
+  return eval_ == "on" ? "Self evaluation score enabled." + turnOnStats + useEvalWill : "Self evaluation score disabled.";
 }

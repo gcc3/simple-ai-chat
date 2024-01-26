@@ -1,12 +1,14 @@
 export default async function stats(args) {
-  const value = args[0];
+  const stats = args[0];
 
-  if (value !== "on" && value !== "off") {
+  if (stats !== "on" && stats !== "off") {
     return "Usage: :stats [on|off]";
   }
 
+  const value = stats == "on" ? "true" : "false";
+
   // Update local setting
-  localStorage.setItem('useStats', value == "on" ? "true" : "false");
+  localStorage.setItem('useStats', value);
 
   // There is user logged in
   // Update remote setting
@@ -19,7 +21,7 @@ export default async function stats(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          key: "stats",
+          key: "useStats",
           value: value,
         }),
       });
@@ -34,5 +36,5 @@ export default async function stats(args) {
     }
   }
 
-  return value == "on" ? "Show stats." : "Hide stats.";
+  return stats == "on" ? "Show stats." : "Hide stats.";
 }

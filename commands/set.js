@@ -1,3 +1,5 @@
+import { getSettings } from "utils/settingsUtils";
+
 export default function set(args) {
   if (args.length != 2) {
     return "Usage: :set [key] [value]";
@@ -5,25 +7,24 @@ export default function set(args) {
 
   // Key validation
   const key = args[0].toLowerCase();
-  const validKeys = [
+
+  // Local keys
+  let validKeys = [
     "session",
     "time",
-    "memlength",
-    "role",
-    "store",
-    "node",
-    "usestats",
     "usestream",
-    "usespeak",
     "voice",
-    "lang",
     "uselocation",
     "location",
-    "functions",
-    "useeval",
-    "usesystemrole"
   ];
 
+  // User settable keys
+  const availableSettings = getSettings();
+  for (const [key, value] of Object.entries(availableSettings)) {
+    validKeys.push(key);
+  }
+
+  console.log(validKeys);
   if (!validKeys.includes(key)) {
     return "Unknown key. Key must be one of: " + validKeys.join(", ") + ".";
   }
@@ -48,44 +49,14 @@ export default function set(args) {
       }
       sessionStorage.setItem("time", value);
       break;
-    case "memlength":
-      if (isNaN(value)) {
-        return "Invalid value. Value must be a number.";
-      }
-      sessionStorage.setItem("memLength", value);
-      break;
-    case "role":
-      sessionStorage.setItem("role", value);
-      break;
-    case "store":
-      sessionStorage.setItem("store", value);
-      break;
-    case "node":
-      sessionStorage.setItem("node", value);
-      break;
-    case "usestats":
-      if (value != "true" && value != "false") {
-        return "Invalid value. Value must be true or false.";
-      }
-      localStorage.setItem("useStats", value);
-      break;
     case "usestream":
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
       localStorage.setItem("useStream", value);
       break;
-    case "usespeak":
-      if (value != "true" && value != "false") {
-        return "Invalid value. Value must be true or false.";
-      }
-      localStorage.setItem("useSpeak", value);
-      break;
     case "voice":
       localStorage.setItem("voice", value);
-      break;
-    case "lang":
-      localStorage.setItem("lang", value);
       break;
     case "uselocation":
       if (value != "true" && value != "false") {
@@ -96,8 +67,32 @@ export default function set(args) {
     case "location":
       localStorage.setItem("location", value);
       break;
-    case "functions":
-      localStorage.setItem("functions", value);
+    case "lang":
+      localStorage.setItem("lang", value);
+      break;
+    case "theme":
+      if (value != "light" && value != "dark" && value != "terminal") {
+        return "Invalid value. Value must be light, dark, or terminal.";
+      }
+      localStorage.setItem("theme", value);
+      break;
+    case "fullscreen":
+      if (value != "off" && value != "default" && value != "split") {
+        return "Invalid value. Value must be on, off, default, or split.";
+      }
+      localStorage.setItem("fullscreen", value);
+      break;
+    case "usespeak":
+      if (value != "true" && value != "false") {
+        return "Invalid value. Value must be true or false.";
+      }
+      localStorage.setItem("useSpeak", value);
+      break;
+    case "usestats":
+      if (value != "true" && value != "false") {
+        return "Invalid value. Value must be true or false.";
+      }
+      localStorage.setItem("useStats", value);
       break;
     case "useeval":
       if (value != "true" && value != "false") {
@@ -110,6 +105,24 @@ export default function set(args) {
         return "Invalid value. Value must be true or false.";
       }
       localStorage.setItem("useSystemRole", value);
+      break;
+    case "functions":
+      localStorage.setItem("functions", value);
+      break;
+    case "role":
+      sessionStorage.setItem("role", value);
+      break;
+    case "store":
+      sessionStorage.setItem("store", value);
+      break;
+    case "node":
+      sessionStorage.setItem("node", value);
+      break;
+    case "memlength":
+      if (isNaN(value)) {
+        return "Invalid value. Value must be a number.";
+      }
+      sessionStorage.setItem("memLength", value);
       break;
   }
 

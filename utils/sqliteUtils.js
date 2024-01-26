@@ -2,6 +2,8 @@ import sqlite3 from "sqlite3";
 import { promises as fs } from "fs";
 import { formatUnixTimestamp, getTimestamp } from "./timeUtils.js";
 import { generatePassword } from "./userUtils.js";
+import { getInitialSettings } from "./settingsUtils.js";
+import { getSettings } from "./settingsUtils.js";
 
 const createDatabaseFile = () => {
   return new Promise((resolve, reject) => {
@@ -51,9 +53,9 @@ const initializeDatabase = (db) => {
             role_expires_at INTEGER,
             password TEXT NOT NULL,
             email TEXT,
-            email_verified_at INTEGER,
-            balance INTEGER,
-            usage INTEGER,
+            email_verified_at TEXT,
+            balance REAL,
+            usage REAL,
             settings TEXT,
             ip_addr TEXT,
             last_login TEXT,
@@ -175,16 +177,7 @@ const getDatabaseConnection = async () => {
       await initializeDatabase(db);
 
       // Create root user with defatut settings
-      const settings = JSON.stringify({
-        theme:         "light",
-        speak:         "off",
-        stats:         "off",
-        fullscreen:    "off",
-        role:          "",
-        store:         "",
-        node:          "",
-        groupPassword: generatePassword(),
-      });
+      const settings = getInitialSettings("json_string", "light", "off");
 
       await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, settings);
       await updateUserEmailVerifiedAt("root");
@@ -849,6 +842,21 @@ const updateUserSettings = async (username, key, value) => {
   let newSettings = {};
   if (user.settings) {
     newSettings = JSON.parse(user.settings);
+
+    // Trim user settings
+    // Check if user settings are all available
+    // If not available, remove it
+    const availableSettings = getSettings();
+    for (const [key, value] of Object.entries(newSettings)) {
+      if (!availableSettings[key]) {
+        delete newSettings[key];
+      }
+    }
+    for (const [key, value] of Object.entries(availableSettings)) {
+      if (!newSettings[key]) {
+        newSettings[key] = value;
+      }
+    }
   }
   newSettings[key] = value;
   const settings = JSON.stringify(newSettings);

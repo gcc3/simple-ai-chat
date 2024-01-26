@@ -1,5 +1,6 @@
 import { verifiyEmailAddress } from "utils/emailUtils";
-import { refreshUserInfo, clearUserWebStorage, generatePassword, setUserLocalStorage } from "utils/userUtils";
+import { getInitialSettings } from "utils/settingsUtils";
+import { refreshUserInfo, clearUserWebStorage, setUserLocalStorage } from "utils/userUtils";
 
 export default async function entry(args) {
   const command = args[0];
@@ -67,6 +68,10 @@ export default async function entry(args) {
     }
 
     try {
+      // Apply the user current UI setting when creating a user
+      const theme = localStorage.getItem("theme") || "light";
+      const fullscreen = localStorage.getItem("fullscreen") || "off";
+
       const response = await fetch("/api/user/add", {
         method: "POST",
         headers: {
@@ -76,17 +81,7 @@ export default async function entry(args) {
           username,
           email,
           password,
-          settings: JSON.stringify({
-            theme:         localStorage.getItem("theme") || "light",
-            speak:         localStorage.getItem("speak") || "off",
-            stats:         localStorage.getItem("stats") || "off",
-            eval:          localStorage.getItem("eval") || "off",
-            fullscreen:    localStorage.getItem("fullscreen") || "off",
-            role:          "",
-            store:         "",
-            node:          "",
-            groupPassword: generatePassword(),
-          }),
+          settings: getInitialSettings("json_string", theme, fullscreen),
         }),
       });
 

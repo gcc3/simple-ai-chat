@@ -7,34 +7,64 @@ export function setUserLocalStorage(user) {
   localStorage.setItem("user", user.username);
   localStorage.setItem("userEmail", user.email);
   localStorage.setItem("userRole", user.role);
-  localStorage.setItem("userSettings", JSON.stringify(user.settings));
 
   if (user.settings) {
     const settings = user.settings;
 
-    // Overwrite role, store, node
-    sessionStorage.setItem("role", settings.role);
-    sessionStorage.setItem("store", settings.store);
-    sessionStorage.setItem("node", settings.node);
+    // 1. lang
+    if (settings.lang) {
+      localStorage.setItem("lang", settings.lang);
+    }
 
+    // 2. theme
     if (settings.theme) {
       localStorage.setItem("theme", settings.theme);
       setTheme(localStorage.getItem("theme"));
     }
 
-    if (settings.speak) {
-      localStorage.setItem("useSpeak", settings.speak == "on" ? "true" : "false");
-    }
-
-    if (settings.stats) {
-      localStorage.setItem("useStats", settings.stats == "on" ? "true" : "false");
-    }
-
+    // 3. fullscreen
     // If fullscreen is forced, do not overwrite
     if (settings.fullscreen && localStorage.getItem("fullscreen").indexOf("force") === -1) {
       localStorage.setItem("fullscreen", settings.fullscreen);
       store.dispatch(toggleFullscreen(settings.fullscreen));
     }
+
+    // 4. useSpeak
+    if (settings.useSpeak) {
+      localStorage.setItem("useSpeak", settings.useSpeak == "true" ? "true" : "false");
+    }
+
+    // 5. useStats
+    if (settings.useStats) {
+      localStorage.setItem("useStats", settings.useStats == "true" ? "true" : "false");
+    }
+
+    // 6. useEval
+    if (settings.useEval) {
+      localStorage.setItem("useEval", settings.useEval == "true" ? "true" : "false");
+    }
+
+    // 7. useSystemRole
+    if (settings.useSystemRole) {
+      sessionStorage.setItem("useSystemRole", settings.useSystemRole == "true" ? "true" : "false");
+    }
+
+    // 8. functions
+    if (settings.functions) {
+      localStorage.setItem("functions", settings.functions);
+    }
+
+    // 9. role
+    sessionStorage.setItem("role", settings.role);
+
+    // 10. store
+    sessionStorage.setItem("store", settings.store);
+
+    // 11. node
+    sessionStorage.setItem("node", settings.node);
+
+    // 12. memLength
+    sessionStorage.setItem("memLength", settings.memLength);
   }
 }
 
