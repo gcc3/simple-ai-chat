@@ -50,7 +50,8 @@
 .main .submit {
   font-size: 14px;
   position: absolute;
-  right: calc(50% + 22px);  /* adjust as needed */
+  left: var(--submit-rtl-left-offset);
+  right: var(--submit-rtl-right-offset);
   bottom: 10px;
   transform: translateY(-50%);  /* vertically center the button */
   background-color: var(--submit-button-color) !important;  /* submit has a different button color */
@@ -115,7 +116,8 @@
   text-align: center;
   position: fixed;
   top: 4px;
-  right: 8px;
+  right: var(--dot-rtl-right-offset);
+  left: var(--dot-rtl-left-offset);
   width: 15px;
   color: var(--dot-color);
 }
