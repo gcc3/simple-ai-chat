@@ -24,9 +24,17 @@ export function setUserLocalStorage(user) {
 
     // 3. fullscreen
     // If fullscreen is forced, do not overwrite
-    if (settings.fullscreen && localStorage.getItem("fullscreen").indexOf("force") === -1) {
-      localStorage.setItem("fullscreen", settings.fullscreen);
-      store.dispatch(toggleFullscreen(settings.fullscreen));
+    if (settings.fullscreen) {
+      if (localStorage.getItem("fullscreen")) {
+        // Not forced
+        if (localStorage.getItem("fullscreen").indexOf("force") === -1) {
+          localStorage.setItem("fullscreen", settings.fullscreen);
+          store.dispatch(toggleFullscreen(settings.fullscreen));
+        }
+      } else {
+        localStorage.setItem("fullscreen", settings.fullscreen);
+        store.dispatch(toggleFullscreen(settings.fullscreen));
+      }
     }
 
     // 4. useSpeak
