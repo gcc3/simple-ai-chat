@@ -1,3 +1,5 @@
+import { generatePassword } from "./passwordUtils.js";
+
 export function getInitialSettings(format = "json", theme = "light", fullscreen = "off") {
   let result = null;
 
