@@ -1,12 +1,14 @@
 export default async function speak(args) {
-  const value = args[0];
+  const speak = args[0];
 
-  if (value !== "on" && value !== "off") {
+  if (speak !== "on" && speak !== "off") {
     return "Usage: :speak [on|off]";
   }
 
+  const value = speak == "on" ? "true" : "false";
+
   // Update local setting
-  localStorage.setItem('useSpeak', value == "on" ? "true" : "false");
+  localStorage.setItem('useSpeak', value);
 
   // There is user logged in
   // Update remote setting
@@ -19,7 +21,7 @@ export default async function speak(args) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          key: "speak",
+          key: "useSpeak",
           value: value,
         }),
       });
@@ -34,5 +36,5 @@ export default async function speak(args) {
     }
   }
 
-  return value == "on" ? "Switched on auto speak." : "Switched off auto speak.";
+  return speak == "on" ? "Switched on auto speak." : "Switched off auto speak.";
 }

@@ -3,6 +3,7 @@ import { authenticate } from 'utils/authUtils.js';
 import { getAvailableStoresForUser } from 'utils/storeUtils';
 import { getAvailableNodesForUser } from 'utils/nodeUtils';
 import { getSystemRoles } from 'utils/roleUtils';
+import { getSettings } from 'utils/settingsUtils';
 
 export default async function (req, res) {
   // Check if the method is POST.
@@ -25,10 +26,10 @@ export default async function (req, res) {
 
   // Input and validation
   const { key, value } = req.body;
-  if (!key) {
+  if (!key || !value) {
     return res.status(400).json({ 
       success: false,
-      error: 'Key is required.'
+      error: 'Key and value are required.'
     });
   }
 
@@ -43,7 +44,12 @@ export default async function (req, res) {
     }
 
     // Check if key is valid
-    const validKeys = ['theme', 'speak', 'stats', 'eval', "fullscreen", "role", "store", "node", "groupPassword"];
+    let validKeys = [];
+    const availableSettings = getSettings();
+    for (const [key, value] of Object.entries(availableSettings)) {
+      validKeys.push(key);
+    }
+
     if (!validKeys.includes(key)) {
       return res.status(400).json({ 
         success: false, 
@@ -60,16 +66,16 @@ export default async function (req, res) {
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
-    } else if (key === 'speak') {
-      const validValues = ['on', 'off'];
+    } else if (key === 'useSpeak') {
+      const validValues = ['true', 'false'];
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
           success: false, 
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
-    } else if (key === 'stats') {
-      const validValues = ['on', 'off'];
+    } else if (key === 'useStats') {
+      const validValues = ['true', 'false'];
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
           success: false, 
@@ -86,7 +92,7 @@ export default async function (req, res) {
       }
     } else if (key === 'role') {
       const userRoles = await getUserRoles(username);
-      const systemRoles = await getSystemRoles(); 
+      const systemRoles = await getSystemRoles();
 
       if (Object.entries(userRoles).length === 0 && systemRoles.length === 0) {
         return res.status(400).json({
@@ -107,7 +113,7 @@ export default async function (req, res) {
       });
 
       // Add system roles
-      validValues = validValues.concat(systemRoles.map(s => "\"" + s + "\""));
+      validValues = validValues.concat(systemRoles.map(s => "\"" + s.role + "\""));
 
       if (!validValues.includes("\"" + value + "\"")) {
         return res.status(400).json({ 
@@ -164,7 +170,9 @@ export default async function (req, res) {
       }
     }
 
+    // Update user settings
     const wasSuccessful = await updateUserSettings(username, key, value);
+
     if (wasSuccessful) {
       return res.status(200).json({ 
         success: true, 
