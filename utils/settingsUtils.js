@@ -1,22 +1,28 @@
 import { generatePassword } from "utils/userUtils.js";
 
-export function getInitialSettings(format = "json", theme = "light", fullscreen = "off") {
+export function getInitialSettings() {
+  getSettings(format);
+}
+
+// Setting key, default value
+export function getSettings(format = "json", theme = "light", fullscreen = "off") {
   let result = null;
 
+  // Settings with default value
   const initialSettings = {
-    lang:          "",
-    theme:         theme,
-    fullscreen:    fullscreen,
-    useSpeak:      "false",
-    useStats:      "false",
-    useEval:       "false",
-    functions:     "Time,Weather,Redirection",
-    role:          "",
-    store:         "",
-    node:          "",
-    useSystemRole: "true",
-    memLength:     "7",
-    groupPassword: generatePassword(),
+    /*  1 */ lang:          "",
+    /*  2 */ theme:         theme,
+    /*  3 */ fullscreen:    fullscreen,
+    /*  4 */ useSpeak:      false,
+    /*  5 */ useStats:      false,
+    /*  6 */ useEval:       false,
+    /*  7 */ useSystemRole: true,
+    /*  8 */ functions:     "Time,Weather,Redirection",
+    /*  9 */ role:          "",
+    /* 10 */ store:         "",
+    /* 11 */ node:          "",
+    /* 12 */ memLength:     7,
+    /* 13 */ groupPassword: generatePassword(),
   }
 
   if (format === "json") {
@@ -27,23 +33,13 @@ export function getInitialSettings(format = "json", theme = "light", fullscreen 
     result = JSON.stringify(initialSettings)
   }
 
-  return result;
-}
-
-// Setting key, default value
-export function getSettings() {
-  return {
-     /*  1 */ lang: "",
-     /*  2 */ theme: "light",
-     /*  3 */ fullscreen: "off",
-     /*  4 */ useSpeak: false,
-     /*  5 */ useStats: false,
-     /*  6 */ useEval: false,
-     /*  7 */ useSystemRole: true,
-     /*  8 */ functions: "Time,Weather,Redirection",
-     /*  9 */ role: "",
-     /* 10 */ store: "",
-     /* 11 */ node: "",
-     /* 12 */ memLength: 7,
+  if (format === "keys_array") {
+    result = Object.entries(initialSettings)
   }
+
+  if (format === "keys_string_array") {
+    result = Object.keys(initialSettings).map(key => String(key));
+  }
+
+  return result;
 }
