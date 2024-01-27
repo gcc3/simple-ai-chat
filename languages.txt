@@ -7,7 +7,7 @@
 07,hi,Hindi
 08,id,Indonesian
 09,it,Italian
-10,jp,Japanese
+10,ja,Japanese
 11,ko,Korean
 12,nl,Dutch
 13,pl,Polish
