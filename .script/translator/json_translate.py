@@ -22,6 +22,7 @@ def translate(text, target_language_name):
                            + "\n\n" + "json format: {\"content\": \"translated text\"}",
             },
         ],
+        temperature=0,
         model="gpt-4-1106-preview",
         response_format={ "type": "json_object" }
     )
