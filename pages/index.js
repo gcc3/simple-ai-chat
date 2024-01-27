@@ -587,7 +587,7 @@ export default function Home() {
                     // Attach to it
                     setSession(session.id);
                     setTime(session.id);
-                    printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
+                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
                   }
                 });
             } else {
@@ -620,7 +620,7 @@ export default function Home() {
                     // Attach to it
                     setSession(session.id);
                     setTime(session.id);
-                    printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
+                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
                   }
                 });
             } else {
@@ -673,7 +673,7 @@ export default function Home() {
                     // Attach to it
                     setSession(session.id);
                     setTime(session.id);
-                    printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
+                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
                   }
                 });
             } else {
@@ -706,7 +706,7 @@ export default function Home() {
                     // Attach to it
                     setSession(session.id);
                     setTime(session.id);
-                    printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
+                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
                   }
                 });
             } else {
