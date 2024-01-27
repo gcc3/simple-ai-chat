@@ -98,7 +98,7 @@
   "* Build to link with other AI systems, or your own APIs.": "다른 AI 시스템이나 여러분의 API와 연동하도록 구축합니다.",
   "And more...": "그리고 더 많은 것들...",
   "- Is Simple AI free?": "심플 AI가 무료인가요?",
-  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-use.": "네, 대부분의 서비스들은 `user`를 위해 무료입니다; 그러나, OpenAI 토큰은 무료가 아닙니다. 사용한 만큼 지불해야 합니다.",
+  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-go.": "네, 대부분의 서비스들은 `user`를 위해 무료입니다; 그러나, OpenAI 토큰은 무료가 아닙니다. 사용한 만큼 지불해야 합니다.",
   "* For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.": "전문적인 사용을 위해, 우리의 `pro_user` 또는 `super_user`를 사용하는 것을 고려해 주세요, 구독 페이지를 참조하세요.",
   "Quick Start": "빠른 시작",
   "Features": "특징",

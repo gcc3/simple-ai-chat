@@ -98,7 +98,7 @@
   "* Build to link with other AI systems, or your own APIs.": "Erstellt, um mit anderen KI-Systemen oder Ihren eigenen APIs zu verbinden.",
   "And more...": "Und mehr...",
   "- Is Simple AI free?": "Ist Simple AI kostenlos?",
-  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-use.": "Ja, die meisten Dienste sind für `Benutzer` kostenlos; jedoch ist der OpenAI-Token nicht kostenlos. Sie müssen nach Verbrauch bezahlen.",
+  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-go.": "Ja, die meisten Dienste sind für `Benutzer` kostenlos; jedoch ist der OpenAI-Token nicht kostenlos. Sie müssen nach Verbrauch bezahlen.",
   "* For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.": "Für den professionellen Einsatz ziehen Sie bitte unsere `pro_user` oder `super_user` in Betracht, siehe Abonnementsseite.",
   "Quick Start": "Schnellstart",
   "Features": "Eigenschaften",

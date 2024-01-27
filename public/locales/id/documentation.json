@@ -98,7 +98,7 @@
   "* Build to link with other AI systems, or your own APIs.": "Dibangun untuk terhubung dengan sistem AI lainnya, atau API Anda sendiri.",
   "And more...": "Dan lain-lain...",
   "- Is Simple AI free?": "Apakah Simple AI gratis?",
-  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-use.": "Ya, sebagian besar layanan itu gratis untuk `pengguna`; namun, token OpenAI tidak gratis. Anda perlu membayar sesuai penggunaan.",
+  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-go.": "Ya, sebagian besar layanan itu gratis untuk `pengguna`; namun, token OpenAI tidak gratis. Anda perlu membayar sesuai penggunaan.",
   "* For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.": "Untuk penggunaan professional, mohon pertimbangkan untuk menggunakan `pro_user` atau `super_user` kami, lihat halaman Subscriptions.",
   "Quick Start": "Mulai Cepat",
   "Features": "Fitur-fitur",

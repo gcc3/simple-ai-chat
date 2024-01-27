@@ -98,7 +98,7 @@
   "* Build to link with other AI systems, or your own APIs.": "بناء للربط مع أنظمة الذكاء الاصطناعي الأخرى، أو واجهات برمجة التطبيقات الخاصة بك.",
   "And more...": "والمزيد...",
   "- Is Simple AI free?": "هل الذكاء الاصطناعي البسيط مجاني؟",
-  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-use.": "نعم، معظم الخدمات مجانية لـ `المستخدم`؛ لكن رمز OpenAI ليس مجانيًا. يجب عليك الدفع حسب الاستخدام.",
+  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-go.": "نعم، معظم الخدمات مجانية لـ `المستخدم`؛ لكن رمز OpenAI ليس مجانيًا. يجب عليك الدفع حسب الاستخدام.",
   "* For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.": "للاستخدام المهني، يرجى النظر في استخدام `pro_user` أو `super_user` لدينا، انظر صفحة الاشتراكات.",
   "Quick Start": "بداية سريعة",
   "Features": "الميزات",

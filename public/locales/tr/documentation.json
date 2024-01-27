@@ -98,7 +98,7 @@
   "* Build to link with other AI systems, or your own APIs.": "Diğer AI sistemleriyle veya kendi API'lerinizle bağlantı kuracak şekilde oluşturun.",
   "And more...": "Ve daha fazlası...",
   "- Is Simple AI free?": "Basit Yapay Zeka ücretsiz mi?",
-  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-use.": "Evet, hizmetlerin çoğu `kullanıcı` için ücretsizdir; ancak OpenAI jetonu ücretsiz değildir. Kullanım başına ödeme yapmanız gerekmektedir.",
+  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-go.": "Evet, hizmetlerin çoğu `kullanıcı` için ücretsizdir; ancak OpenAI jetonu ücretsiz değildir. Kullanım başına ödeme yapmanız gerekmektedir.",
   "* For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.": "Profesyonel kullanım için lütfen `pro_user` veya `super_user` kullanmayı düşünün, Abonelikler sayfasına bakınız.",
   "Quick Start": "Hızlı Başlangıç",
   "Features": "Özellikler",
