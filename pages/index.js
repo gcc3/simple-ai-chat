@@ -559,7 +559,7 @@ export default function Home() {
           }
 
           // Navigation to previous session
-          if (event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ⌃↑");
 
@@ -612,8 +612,8 @@ export default function Home() {
             }
           }
 
-          // Print session log (previous)
-          if (event.ctrlKey && !event.shiftKey && !event.altKey) {
+          // Navigate to next session
+          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ⌃↓");
 
