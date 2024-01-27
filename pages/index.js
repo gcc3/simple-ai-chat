@@ -655,6 +655,7 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
+                    setTime(-1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -678,6 +679,7 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
+                    setTime(-1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -701,6 +703,7 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
+                    setTime(1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -724,6 +727,7 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
+                    setTime(1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -934,27 +938,6 @@ export default function Home() {
   async function onSubmit(event) {
     if (global.STATE === STATES.DOING) return;
     event.preventDefault();
-
-    // Detect subsession
-    if (sessionStorage.getItem("head") !== null && sessionStorage.getItem("head") !== "") {
-      const head = Number(sessionStorage.getItem("head"));
-      const timelineTime = Number(sessionStorage.getItem("time"));  // time in the timeline
-      const session = Number(sessionStorage.getItem("session"));  // session ID
-      if (timelineTime < head) {
-        // Subsession detected
-        // The session ID is one of the log time (not head log of session)
-        console.log("Detected possible sub session " + timelineTime + ", parent session is " + session + ".");
-        
-        // TODO, check subsession is valid in session
-        // If valid, set session ID to subsession
-        setSession(timelineTime);
-      }
-    }
-
-    const timeNow = Date.now();
-    setTime(timeNow);
-    sessionStorage.setItem("head", timeNow);
-    sessionStorage.setItem("historyIndex", -1);
 
     if (global.rawInput === "") return;
     if (global.rawInput.startsWith(":fullscreen") || global.rawInput.startsWith(":theme")) {
@@ -1234,6 +1217,28 @@ export default function Home() {
       }
       return;
     }
+
+    // Finally, general input
+    // Detect subsession
+    if (sessionStorage.getItem("head") !== null && sessionStorage.getItem("head") !== "") {
+      const head = Number(sessionStorage.getItem("head"));
+      const timelineTime = Number(sessionStorage.getItem("time"));  // time in the timeline
+      const session = Number(sessionStorage.getItem("session"));  // session ID
+      if (timelineTime < head) {
+        // Subsession detected
+        // The session ID is one of the log time (not head log of session)
+        console.log("Detected possible sub session " + timelineTime + ", parent session is " + session + ".");
+        
+        // TODO, check subsession is valid in session
+        // If valid, set session ID to subsession
+        setSession(timelineTime);
+      }
+    }
+
+    const timeNow = Date.now();
+    setTime(timeNow);
+    sessionStorage.setItem("head", timeNow);
+    sessionStorage.setItem("historyIndex", -1);
 
     // Clear info and start generating
     resetInfo();
