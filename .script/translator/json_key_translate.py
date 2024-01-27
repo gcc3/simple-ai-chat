@@ -62,7 +62,6 @@ with open(languages_csv_path, newline='', encoding='utf-8') as csvfile:
 
         # Translate the content of the specific key
         text_to_translate = source_content[key_to_translate]
-        text_to_translate = text_to_translate.replace('\\n', '\n')
         translated_text = translate(text_to_translate, language_name)
 
         # Load the target content, if it exists, and update the specific key
@@ -72,7 +71,7 @@ with open(languages_csv_path, newline='', encoding='utf-8') as csvfile:
         else:
             target_content = {}
 
-        target_content[key_to_translate] = translated_text.replace('\n', '\\n')
+        target_content[key_to_translate] = translated_text
 
         # Write the updated content back to the target file
         with open(target_file_path, 'w', encoding='utf-8') as target_file:
