@@ -49,7 +49,6 @@
   "Command autocomplete.": "命令自动补完。",
   "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "聚焦在输入区域。输入命令 `:function use`、`:role use`、`:store use`、`:node use`、`:theme`、`:lang use`、`:user set`并键入值的起始字符。",
   "Previous log (same session).": "上一个日志（相同会话）。",
-  "Unfocused from the input area or input box is empty when using `←`.": "当使用 `←` 时，若从输入区域取消聚焦或输入框为空。",
   "Next log (same session).": "下一个日志（相同会话）。",
   "Unfocused from the input area or input box is empty when using `→`": "当使用 `→` 时，若从输入区域取消聚焦或输入框为空。",
   "Previous command.": "上一个命令。",

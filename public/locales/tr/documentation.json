@@ -49,7 +49,6 @@
   "Command autocomplete.": "Komut otomatik tamamlama.",
   "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Giriş alanına odaklandı. ':use', ':function use', ':role use', ':store use', ':node use', ':theme', ':lang use', ':user set' giriş komutlarını kullanın ve değerin başlangıç karakterlerini yazın.",
   "Previous log (same session).": "Önceki kayıt (aynı oturum).",
-  "Unfocused from the input area or input box is empty when using `←`.": "`←` kullanılırken girdi alanından çıkıldı veya giriş kutusu boş.",
   "Next log (same session).": "Sonraki kayıt (aynı oturum).",
   "Unfocused from the input area or input box is empty when using `→`": "`→` kullanırken giriş alanından odağın kaybolması veya giriş kutusu boş olduğunda",
   "Previous command.": "Önceki komut.",

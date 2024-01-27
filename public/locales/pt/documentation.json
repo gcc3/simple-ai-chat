@@ -49,7 +49,6 @@
   "Command autocomplete.": "Autocompletar comando.",
   "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Focado na área de entrada. Insira os comandos `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` e digite os caracteres iniciais do valor.",
   "Previous log (same session).": "Log anterior (mesma sessão).",
-  "Unfocused from the input area or input box is empty when using `←`.": "Desfocado da área de entrada ou caixa de entrada está vazia ao usar `←`.",
   "Next log (same session).": "Próximo registro (mesma sessão).",
   "Unfocused from the input area or input box is empty when using `→`": "Desfocado da área de entrada ou caixa de entrada está vazia quando se usa `→`",
   "Previous command.": "Comando anterior.",
