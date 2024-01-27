@@ -120,7 +120,7 @@
   "Action": "Действие",
   "Condition": "Условие",
   "Gestures can be used on touch screens, such as smartphones and tablets.": "Жесты могут использоваться на сенсорных экранах, таких как смартфоны и планшеты.",
-  "APIs": "API - это набор определений и протоколов для создания и интеграции программного обеспечения приложений. Он позволяет разным системам взаимодействовать друг с другом.",
+  "APIs": "АПИ",
   "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Простой AI предоставляет API для разработчиков для интеграции с их приложениями. API находится в стадии бета-тестирования и может быть изменен. Для использования API вам нужно добавить куки `auth=your_jwt_token` для аутентификации пользователя. Вы можете получить JWT токен из куки вашего браузера. (Требуется вход в систему.)",
   "Endpoint": "Конечная точка",
   "Parameters": "Параметры",
