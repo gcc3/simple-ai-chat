@@ -1,8 +1,8 @@
 import os
-import csv
 import json
-from openai import OpenAI
+import csv
 from dotenv import load_dotenv
+from openai import OpenAI
 
 # Load the API key from .env file
 load_dotenv()
@@ -16,69 +16,77 @@ def translate(text, target_language_name):
     completion = openai.chat.completions.create(
         messages=[
             {
-                "role": "system",
-                "content": "You're a greate translator! I'll give you a text to translate. When you translating, don't translate the word `Simple AI`.",
-            },
-            {
                 "role": "user",
-                "content": f"Translate the following text to {target_language_name}:\n\n{text}",
+                "content": f"Translate the following text to {target_language_name} and response with json format:\n\n"
+                           + "\n\n" + text
+                           + "\n\n" + "json format: {\"content\": \"translated text\"}",
             },
         ],
         model="gpt-4-1106-preview",
+        response_format={ "type": "json_object" }
     )
-    # Extract the translated text from the response
-    translated_text = completion.choices[0].message.content
-    return translated_text
+    # Extract the translated text from the generated JSON format
+    translated_json = json.loads(completion.choices[0].message.content)
+    return translated_json['content']
 
-# Specify the file name and key to translate
-file_name = "translation.json"
-key_to_translate = "welcome"
+# Define the base path to the 'locales' folder
+base_path = '../../public/locales'
 
-# Read the source language code
+# Read the source language code (do not translate this)
 source_language_code = 'en'
-source_file_path = f"../../public/locales/{source_language_code}/{file_name}"
 
-# Define the path to the languages CSV file
-languages_csv_path = 'languages.csv'
+# Read the language codes and names from the languages.csv
+languages = {}
+with open('languages.csv', newline='', encoding='utf-8') as csvfile:
+    csv_reader = csv.reader(csvfile)
+    for row in csv_reader:
+        code, name = row
+        languages[code] = name
 
-# Define the path to the locales directory
-locales_dir = "../../public/locales"
+# Read the target keys and associated file names from target_keys.csv
+# and map them to each file
+target_keys_per_file = {}
+with open('target_keys.csv', newline='', encoding='utf-8') as csvfile:
+    csv_reader = csv.reader(csvfile)
+    for row in csv_reader:
+        file_name, key = row
+        if file_name not in target_keys_per_file:
+            target_keys_per_file[file_name] = set()
+        target_keys_per_file[file_name].add(key)
 
-# Open the CSV file containing language codes and names
-with open(languages_csv_path, newline='', encoding='utf-8') as csvfile:
-    reader = csv.reader(csvfile)
-    for row in reader:
-        language_code, language_name = row
-        # Skip the source language
-        if language_code == source_language_code:
-            continue
+# Read the source language file to get the base values for translation
+source_data = {}
+for file_name in target_keys_per_file:
+    source_file_path = os.path.join(base_path, source_language_code, file_name + '.json')
+    if os.path.isfile(source_file_path):
+        with open(source_file_path, 'r', encoding='utf-8') as file:
+            source_data[file_name] = json.load(file)
 
-        target_file_path = f"{locales_dir}/{language_code}/{file_name}"
-
-        # Load the source content
-        with open(source_file_path, 'r', encoding='utf-8') as source_file:
-            source_content = json.load(source_file)
-
-        # Check if the key exists in the source content
-        if key_to_translate not in source_content:
-            print(f"Key '{key_to_translate}' not found in {source_file_path}")
-            continue
-
-        # Translate the content of the specific key
-        text_to_translate = source_content[key_to_translate]
-        translated_text = translate(text_to_translate, language_name)
-
-        # Load the target content, if it exists, and update the specific key
-        if os.path.exists(target_file_path):
-            with open(target_file_path, 'r', encoding='utf-8') as target_file:
-                target_content = json.load(target_file)
+# Translate and update each target language file with translated values from the source language file
+for lang_code, lang_name in languages.items():
+    if lang_code == source_language_code:
+        continue  # Skip the source language
+    
+    for file_name, keys_to_translate in target_keys_per_file.items():
+        target_file_path = os.path.join(base_path, lang_code, file_name + '.json')
+        
+        # If the target file exists, read it, otherwise create a new dictionary
+        if os.path.isfile(target_file_path):
+            with open(target_file_path, 'r', encoding='utf-8') as file:
+                target_data = json.load(file)
         else:
-            target_content = {}
+            target_data = {}
+        
+        # Translate and update the target data
+        for key in keys_to_translate:
+            if key in source_data[file_name]:
+                original_text = source_data[file_name][key]
+                translated_text = translate(original_text, lang_name)
+                target_data[key] = translated_text
+        
+        # Save the updated target language file
+        with open(target_file_path, 'w', encoding='utf-8') as file:
+            json.dump(target_data, file, ensure_ascii=False, indent=2)
+        print(f'Updated file: {target_file_path} with keys translated to {lang_name}.')
 
-        target_content[key_to_translate] = translated_text
-
-        # Write the updated content back to the target file
-        with open(target_file_path, 'w', encoding='utf-8') as target_file:
-            json.dump(target_content, target_file, ensure_ascii=False, indent=2)
-
-        print(f"Key '{key_to_translate}' translated to {language_name} and updated in {file_name}")
+print('Finished updating JSON files.')

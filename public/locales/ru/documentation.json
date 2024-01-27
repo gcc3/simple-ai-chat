@@ -49,13 +49,9 @@
   "Command autocomplete.": "Автозавершение команды.",
   "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Фокусировка на области ввода. Введите команды `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` и начните набирать первые символы значения.",
   "Previous log (same session).": "Предыдущий журнал (та же сессия).",
-  "Unfocused from the input area or input box is empty when using `←`.": "Убран фокус с поля ввода или поле ввода пусто при использовании `←`.",
   "Next log (same session).": "Следующая запись (та же сессия).",
-  "Unfocused from the input area or input box is empty when using `→`": "Фокус с поля ввода снят или поле ввода пусто при использовании `→`",
   "Previous command.": "Предыдущая команда.",
-  "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history.": "Сфокусируйтесь на области ввода. Текущий ввод начинается с `:` (команды). Или область ввода пуста, а заполнитель — это команда. В истории команд есть предыдущая команда.",
   "Next command.": "Следующая команда.",
-  "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history.": "Сфокусируйтесь на области ввода. Текущий ввод начинается с `:` (команды). В истории команд имеется следующая команда.",
   "Change focus to input area.": "Переключите фокус на область ввода.",
   "Unfocused from the input area.": "Ушёл с фокуса из поля ввода.",
   "Swipe Right": "Свайп вправо",
@@ -135,5 +131,12 @@
   "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourney - это первая система Node AI. Она использует самый продвинутый AI генерации изображений, Midjourney, в сочетании с запросами ChatGPT для создания сертифицированных изображений высокого качества. Чтобы включить эту функцию, используйте команду `:use \"Midjourney\"`.",
   "Auto input/Autocomplete.": "Автоввод/Автозаполнение.",
   "Delete input.": "Удалить ввод.",
-  "Touch swipe on input box.": "Свайп пальцем по полю ввода"
+  "Touch swipe on input box.": "Свайп пальцем по полю ввода",
+  "Previous session.": "Предыдущая сессия.",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "Убран фокус с поля ввода или поле ввода пустое (для →). Генерация не выполняется.",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Переключение фокуса с поля ввода или поле ввода пустое (для ↓). Генерация не выполняется.",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Сфокусируйтесь на области ввода. Текущий ввод начинается с `:`. Есть предыдущая команда в истории команд.",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Фокус с поля ввода снят или поле ввода пусто (для ↑). Генерация не выполняется.",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Сфокусируйтесь на области ввода. Текущий ввод начинается с символа `:`. Имеется следующая команда в истории команд.",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Убран фокус с поля ввода или текстовое поле пусто (для ←). Генерация не выполняется."
 }

@@ -49,13 +49,9 @@
   "Command autocomplete.": "कमांड ऑटोकम्प्लीट।",
   "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "इनपुट क्षेत्र पर केंद्रित। इनपुट कमांड्स `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` टाइप करें और मूल्य के प्रारंभिक अक्षरों को टाइप करें।",
   "Previous log (same session).": "पिछला लॉग (वही सत्र)",
-  "Unfocused from the input area or input box is empty when using `←`.": "जब `←` का उपयोग करते समय इनपुट क्षेत्र से अनफोकस हो जाता है या इनपुट बॉक्स खाली होता है।",
   "Next log (same session).": "अगला लॉग (वही सत्र)।",
-  "Unfocused from the input area or input box is empty when using `→`": "जब '→' का उपयोग करते समय इनपुट क्षेत्र से ध्यान हट जाता है या इनपुट बॉक्स खाली होता है",
   "Previous command.": "पिछला आदेश।",
-  "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history.": "इनपुट क्षेत्र पर ध्यान दें। वर्तमान इनपुट `:` (एक आदेश) से शुरू होता है। या इनपुट क्षेत्र खाली है और प्लेसहोल्डर एक आदेश है। इसमें कमांड हिस्ट्री में एक पिछला आदेश है।",
   "Next command.": "अगला आदेश।",
-  "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history.": "इनपुट क्षेत्र पर ध्यान दें। वर्तमान इनपुट `:` (एक कमांड) से शुरू होता है। इसमें कमांड हिस्ट्री में अगला कमांड है।",
   "Change focus to input area.": "इनपुट क्षेत्र पर फोकस बदलें।",
   "Unfocused from the input area.": "इनपुट क्षेत्र से अनफोकस्ड।",
   "Swipe Right": "दायें स्वाइप करें",
@@ -135,5 +131,12 @@
   "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "मिडजर्नी पहली सिस्टम नोड AI है। यह सबसे उन्नत छवि उत्पन्न करने वाली AI, मिडजर्नी का उपयोग करके, ChatGPT प्रॉम्प्ट्स के संयोजन से उच्च-गुणवत्ता वाली प्रमाणित छवियों को जनरेट करता है। इस फीचर को चालू करने के लिए, कमांड `:use \"Midjourney\"` का उपयोग करें।",
   "Auto input/Autocomplete.": "ऑटो इनपुट/ऑटोकम्पलीट",
   "Delete input.": "इनपुट हटाएं।",
-  "Touch swipe on input box.": "इनपुट बॉक्स पर टच स्वाइप करें।"
+  "Touch swipe on input box.": "इनपुट बॉक्स पर टच स्वाइप करें।",
+  "Previous session.": "पिछला सत्र।",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "इनपुट क्षेत्र से ध्यान भटका हुआ है या इनपुट बॉक्स खाली है (के लिए →)। प्रगति में जनरेट नहीं हो रहा है।",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "इनपुट क्षेत्र से अनध्यानित या इनपुट बॉक्स खाली है (↓ के लिए)। प्रगति में जनरेट नहीं हो रहा है।",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "इनपुट क्षेत्र पर ध्यान दें। वर्तमान इनपुट `:` से शुरू होता है। कमांड हिस्ट्री में पिछला कमांड मौजूद है।",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "इनपुट क्षेत्र से ध्यान भटका हुआ है या इनपुट बॉक्स खाली है (के लिए ↑). जेनरेशन प्रगति पर नहीं है।",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "इनपुट क्षेत्र पर ध्यान दें। वर्तमान इनपुट ':' से शुरू होता है। कमांड हिस्ट्री में अगला कमांड है।",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "इनपुट क्षेत्र से अनफोकस्ड है या इनपुट बॉक्स खाली है (for ←)। प्रगति में सृजन नहीं हो रहा है।"
 }

@@ -49,13 +49,9 @@
   "Command autocomplete.": "Completamento automatico del comando.",
   "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Concentrato sull'area di inserimento. Immetti i comandi `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` e digita i caratteri iniziali del valore.",
   "Previous log (same session).": "Log precedente (stessa sessione).",
-  "Unfocused from the input area or input box is empty when using `←`.": "Non focalizzato sull'area di input o casella di testo vuota quando si utilizza `←`.",
   "Next log (same session).": "Prossimo log (stessa sessione).",
-  "Unfocused from the input area or input box is empty when using `→`": "Non focalizzato sull'area di input o casella di input vuota quando si usa `→`",
   "Previous command.": "Comando precedente.",
-  "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history.": "Concentrati sull'area di input. L'input attuale inizia con ':' (un comando). Oppure l'area di input è vuota e il placeholder è un comando. C'è un comando precedente nella cronologia dei comandi.",
   "Next command.": "Prossimo comando.",
-  "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history.": "Concentrati sull'area di input. L'input corrente inizia con ':' (un comando). C'è un altro comando nel cronologia dei comandi.",
   "Change focus to input area.": "Cambia focus sull'area di input.",
   "Unfocused from the input area.": "Distrazione dall'area di immissione.",
   "Swipe Right": "Scorri a destra",
@@ -135,5 +131,12 @@
   "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourney è il primo sistema di intelligenza artificiale Node. Utilizza l'intelligenza artificiale di generazione di immagini più avanzata, la Midjourney in combinazione con i prompt di ChatGPT per generare immagini certificate di alta qualità. Per attivare questa funzione, utilizza il comando `:use \"Midjourney\"`.",
   "Auto input/Autocomplete.": "Inserimento automatico/Autocompletamento.",
   "Delete input.": "Elimina l'input.",
-  "Touch swipe on input box.": "Scorri con il dito sulla casella di input."
+  "Touch swipe on input box.": "Scorri con il dito sulla casella di input.",
+  "Previous session.": "Sessione precedente.",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "Si è persa la focalizzazione dall'area di inserimento o il campo di inserimento è vuoto (per →). Non è in corso la generazione.",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Uscita dall'area di inserimento o casella di inserimento vuota (per ↓). Generazione non in corso.",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Concentrati sull'area di inserimento. L'input corrente inizia con ':'. C'è un comando precedente nella cronologia dei comandi.",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Uscito dall'area di input o il campo di inserimento è vuoto (per ↑). Non è in corso la generazione.",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Concentrati sull'area di input. L'input corrente inizia con `:`. C'è un comando successivo nella cronologia dei comandi.",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Fuori fuoco dall'area di input o casella di immissione vuota (per ←). Nessuna generazione in corso."
 }

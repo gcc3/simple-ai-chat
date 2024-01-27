@@ -49,13 +49,9 @@
   "Command autocomplete.": "命令自动补完。",
   "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "聚焦在输入区域。输入命令 `:function use`、`:role use`、`:store use`、`:node use`、`:theme`、`:lang use`、`:user set`并键入值的起始字符。",
   "Previous log (same session).": "上一个日志（相同会话）。",
-  "Unfocused from the input area or input box is empty when using `←`.": "当使用 `←` 时，若从输入区域取消聚焦或输入框为空。",
   "Next log (same session).": "下一个日志（相同会话）。",
-  "Unfocused from the input area or input box is empty when using `→`": "当使用 `→` 时，若从输入区域取消聚焦或输入框为空。",
   "Previous command.": "上一个命令。",
-  "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history.": "聚焦在输入区域。当前输入以 `:` 开头（一个命令）。或输入区域为空且占位符为命令。命令历史中有上一个命令。",
   "Next command.": "下一个命令。",
-  "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history.": "聚焦在输入区域。当前输入以 `:` 开头（一个命令）。命令历史中有下一个命令。",
   "Change focus to input area.": "改变聚焦至输入区域。",
   "Unfocused from the input area.": "从输入区域取消聚焦。",
   "Swipe Right": "向右滑动",
@@ -135,5 +131,12 @@
   "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourney 是首个系统节点 AI。它利用最先进的图像生成 AI —— Midjourney，结合 ChatGPT 提示来生成高质量、认证的图像。要启用此功能，请使用命令 `:use \"Midjourney\"`。",
   "Auto input/Autocomplete.": "自动输入/自动补完。",
   "Delete input.": "删除输入内容。",
-  "Touch swipe on input box.": "在输入框中滑动。"
+  "Touch swipe on input box.": "在输入框中滑动。",
+  "Previous session.": "上一次会议。",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "从输入区域失去焦点或输入框为空(对于→)。没有正在生成。",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "从输入区域失焦或输入框为空（对于↓）。不在生成过程中。",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "专注于输入区域。当前输入以冒号`:`开始。在命令历史中有之前的命令。",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "从输入区域失焦或输入框为空（见↑）。没有正在生成。",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "专注于输入区域。当前输入以 `:` 开头。命令历史中有下一个命令。",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "未聚焦输入区域或输入框为空（对于←）。不在生成过程中。"
 }

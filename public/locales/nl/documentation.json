@@ -49,13 +49,9 @@
   "Command autocomplete.": "Opdracht automatisch aanvullen.",
   "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Gericht op het invoerveld. Voer commando's in `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` en typ de beginletters van de waarde.",
   "Previous log (same session).": "Vorige logboek (dezelfde sessie).",
-  "Unfocused from the input area or input box is empty when using `←`.": "Ongefocust van het invoerveld of het invoervak is leeg bij het gebruik van `←`.",
   "Next log (same session).": "Volgende logboek (zelfde sessie).",
-  "Unfocused from the input area or input box is empty when using `→`": "Ongefocust van het invoerveld of invoervak is leeg bij gebruik van `→`",
   "Previous command.": "Vorige opdracht.",
-  "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history.": "Focus op het invoerveld. De huidige input begint met ':' (een commando). Of het invoerveld is leeg en de placeholder is een commando. Er is een vorig commando in de commandohistorie.",
   "Next command.": "Volgend commando.",
-  "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history.": "Focus op het invoerveld. De huidige invoer begint met ':' (een commando). Er staat een volgend commando in de commandogeschiedenis.",
   "Change focus to input area.": "Verander focus naar invoergebied.",
   "Unfocused from the input area.": "Niet gefocust van het invoerveld.",
   "Swipe Right": "Swipe naar rechts",
@@ -135,5 +131,12 @@
   "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourney is het eerste Node AI-systeem. Het maakt gebruik van de meest geavanceerde AI voor afbeeldingengeneratie, de Midjourney in combinatie met ChatGPT-prompts om hoogwaardige gecertificeerde afbeeldingen te genereren. Om deze functie in te schakelen, gebruik je het commando `:use \"Midjourney\"`.",
   "Auto input/Autocomplete.": "Auto-invoer/Auto-aanvullen.",
   "Delete input.": "Verwijder invoer.",
-  "Touch swipe on input box.": "Veeg over het invoervak."
+  "Touch swipe on input box.": "Veeg over het invoervak.",
+  "Previous session.": "Vorige sessie.",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "De focus is verloren gegaan van het invoerveld of het invoervak is leeg (voor →). Er wordt niets gegenereerd.",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Niet gefocust op het invoerveld of het invoervak is leeg (voor ↓). Er wordt geen generatie uitgevoerd.",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Richt je op het invoerveld. De huidige invoer begint met ':'. Er is een vorige opdracht in de commandogeschiedenis.",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Niet gefocust op het invoerveld of invoervak is leeg (voor ↑). Er wordt geen voortgang gegenereerd.",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Richt je op het invoerveld. De huidige invoer begint met ':'. Heeft een volgend commando in de commandogeschiedenis.",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Niet gefocust op het invoerveld of invoervak is leeg (voor ←). Er wordt niet gegenereerd."
 }

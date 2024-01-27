@@ -49,13 +49,9 @@
   "Command autocomplete.": "Kommandoförslag.",
   "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Fokuserad på inmatningsområdet. Ange kommandon `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` och skriv de inledande bokstäverna i värdet.",
   "Previous log (same session).": "Tidigare logg (samma session).",
-  "Unfocused from the input area or input box is empty when using `←`.": "Ofokuserad från inmatningsområdet eller inmatningsrutan är tom vid användning av `←`.",
   "Next log (same session).": "Nästa logg (samma session).",
-  "Unfocused from the input area or input box is empty when using `→`": "Ouppfokuserad från inmatningsfältet eller inmatningsrutan är tom vid användning av `→`",
   "Previous command.": "Tidigare kommando.",
-  "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history.": "Fokusera på inmatningsområdet. Nuvarande inmatning börjar med ':' (ett kommando). Eller så är inmatningsområdet tomt och platshållaren är ett kommando. Det finns ett tidigare kommando i kommandohistoriken.",
   "Next command.": "Nästa kommando.",
-  "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history.": "Fokusera på inmatningsområdet. Den aktuella inmatningen börjar med `:` (ett kommando). Det finns ett nästa kommando i kommandohistoriken.",
   "Change focus to input area.": "Byt fokus till inmatningsområdet.",
   "Unfocused from the input area.": "Ofokuserad från inmatningsområdet.",
   "Swipe Right": "Svep Höger",
@@ -135,5 +131,12 @@
   "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourney är det första systemet Node AI. Det använder den mest avancerade AI:n för bildgenerering, Midjourney i kombination med ChatGPT-prompter för att generera bilder av hög kvalitet som är certifierade. För att använda och aktivera denna funktion, använd kommandot `:use \"Midjourney\"`.",
   "Auto input/Autocomplete.": "Autoinmatning/Autofyllning.",
   "Delete input.": "Ta bort inmatning.",
-  "Touch swipe on input box.": "Svep med fingret på inmatningsrutan."
+  "Touch swipe on input box.": "Svep med fingret på inmatningsrutan.",
+  "Previous session.": "Föregående session.",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "Ur fokus från inmatningsfältet eller inmatningsrutan är tom (för →). Generering pågår inte.",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Ofokuserad från inmatningsområdet eller inmatningsrutan är tom (för ↓). Generering pågår inte.",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Fokusera på inmatningsområdet. Den nuvarande inmatningen börjar med ':'. Har ett tidigare kommando i kommandohistoriken.",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Omfokusering från inmatningsområdet eller inmatningsrutan är tom (för ↑). Generering pågår inte.",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Fokusera på inmatningsområdet. Den aktuella inmatningen börjar med ':'. Har ett nästa kommando i kommandohistoriken.",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Ur fokus från inmatningsfältet eller inmatningsrutan är tom (för ←). Generering pågår inte."
 }

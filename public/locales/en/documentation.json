@@ -49,13 +49,9 @@
   "Command autocomplete.": "Command autocomplete.",
   "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.",
   "Previous log (same session).": "Previous log (same session).",
-  "Unfocused from the input area or input box is empty when using `←`.": "Unfocused from the input area or input box is empty when using `←`.",
   "Next log (same session).": "Next log (same session).",
-  "Unfocused from the input area or input box is empty when using `→`": "Unfocused from the input area or input box is empty when using `→`",
   "Previous command.": "Previous command.",
-  "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history.": "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history.",
   "Next command.": "Next command.",
-  "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history.": "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history.",
   "Change focus to input area.": "Change focus to input area.",
   "Unfocused from the input area.": "Unfocused from the input area.",
   "Swipe Right": "Swipe Right",
@@ -135,5 +131,13 @@
   "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.",
   "Auto input/Autocomplete.": "Auto input/Autocomplete.",
   "Delete input.": "Delete input.",
-  "Touch swipe on input box.": "Touch swipe on input box."
+  "Touch swipe on input box.": "Touch swipe on input box.",
+  "Previous session.": "Previous session.",
+  "Next session.": "Next session.",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Unfocused from the input area or input box is empty (for ←). Not generating in progress.",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "Unfocused from the input area or input box is empty (for →). Not generating in progress.",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Focus on the input area. The current input is starts with `:`. Has a next command in command history."
 }

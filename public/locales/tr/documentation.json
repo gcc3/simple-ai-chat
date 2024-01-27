@@ -49,13 +49,9 @@
   "Command autocomplete.": "Komut otomatik tamamlama.",
   "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Giriş alanına odaklandı. ':use', ':function use', ':role use', ':store use', ':node use', ':theme', ':lang use', ':user set' giriş komutlarını kullanın ve değerin başlangıç karakterlerini yazın.",
   "Previous log (same session).": "Önceki kayıt (aynı oturum).",
-  "Unfocused from the input area or input box is empty when using `←`.": "`←` kullanılırken girdi alanından çıkıldı veya giriş kutusu boş.",
   "Next log (same session).": "Sonraki kayıt (aynı oturum).",
-  "Unfocused from the input area or input box is empty when using `→`": "`→` kullanırken giriş alanından odağın kaybolması veya giriş kutusu boş olduğunda",
   "Previous command.": "Önceki komut.",
-  "Focus on the input area. The current input is starts with `:` (a command). Or the input area is empty and placeholder is a command. It has an previous command in command history.": "Giriş alanına odaklanın. Mevcut giriş `:` (bir komut) ile başlar. Ya da giriş alanı boş ve yer tutucu bir komuttur. Komut geçmişinde önceki bir komut bulunmaktadır.",
   "Next command.": "Sonraki komut.",
-  "Focus on the input area. The current input is starts with `:` (a command). It has an next command in command history.": "Giriş alanına odaklanın. Geçerli giriş ':' ile başlar (bir komut). Komut geçmişinde bir sonraki komut vardır.",
   "Change focus to input area.": "Odağı giriş alanına çevir.",
   "Unfocused from the input area.": "Giriş alanından dikkati dağılmış.",
   "Swipe Right": "Sağa Kaydır",
@@ -135,5 +131,12 @@
   "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourney, ilk sistem Node AI'dir. En gelişmiş görüntü üretme AI olan Midjourney ile ChatGPT komutlarını bir araya getirerek yüksek kaliteli sertifikalı görüntüler oluşturur. Bu özelliği açmak için `:use \"Midjourney\"` komutunu kullanın.",
   "Auto input/Autocomplete.": "Otomatik giriş/Otomatik tamamlama.",
   "Delete input.": "Girdiyi sil.",
-  "Touch swipe on input box.": "Giriş kutusunda dokunmatik kaydırma."
+  "Touch swipe on input box.": "Giriş kutusunda dokunmatik kaydırma.",
+  "Previous session.": "Önceki oturum.",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "Giriş alanından veya giriş kutusu boş (→ için) odaklanılmamış. İşlem devam etmiyor.",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Giriş alanından uzaklaşıldı veya giriş kutusu boş (↓ için). İşlem devam etmiyor.",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Giriş alanına odaklanın. Mevcut giriş `:` ile başlar. Komut geçmişinde önceki bir komut var.",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Giriş alanından odaklanma kalktı veya giriş kutusu boş (↑ için). İşlem sürdürülüyor değil.",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Giriş alanına odaklanın. Mevcut giriş `:` ile başlar. Komut geçmişinde bir sonraki komut var.",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Giriş alanından odaklanma kaybedildi veya giriş kutusu boş (← için). İşlem devam etmiyor."
 }
