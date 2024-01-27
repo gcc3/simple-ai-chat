@@ -570,6 +570,7 @@ export default function Home() {
                   if (!session) {
                     console.log("No previous session.");
                     printOutput("No previous session.");
+                    setSession(-1);
                     return;
                   } else {
                     // Attach to it
@@ -606,22 +607,28 @@ export default function Home() {
           }
 
           // Print session log (previous)
-          if (global.STATE === STATES.IDLE) {
-            getHistorySession("next", sessionStorage.getItem("session"))
-              .then((session) => {
-                if (!session) {
-                  console.log("No next session.");
-                  printOutput("No next session.");
-                  return;
-                } else {
-                  // Attach to it
-                  setSession(session.id);
-                  setTime(session.id);
-                  printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
-                }
-              });
-          } else {
-            console.log("Aborted as generating.");
+          if (event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: ⌃↓");
+
+            if (global.STATE === STATES.IDLE) {
+              getHistorySession("next", sessionStorage.getItem("session"))
+                .then((session) => {
+                  if (!session) {
+                    console.log("No next session.");
+                    printOutput("No next session.");
+                    setSession(1);
+                    return;
+                  } else {
+                    // Attach to it
+                    setSession(session.id);
+                    setTime(session.id);
+                    printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
+                  }
+                });
+            } else {
+              console.log("Aborted as generating.");
+            }
           }
           break;
 
@@ -637,6 +644,7 @@ export default function Home() {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
                     printOutput("No previous log.");
+                    setTime(-1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -661,6 +669,7 @@ export default function Home() {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
                     printOutput("No previous log.");
+                    setTime(-1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -685,6 +694,7 @@ export default function Home() {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
                     printOutput("No next log.");
+                    setTime(1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -709,6 +719,7 @@ export default function Home() {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
                     printOutput("No next log.");
+                    setTime(1);
                     return;
                   } else {
                     const log = r.result["log"];

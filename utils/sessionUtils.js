@@ -31,7 +31,7 @@ export async function attachSession(sessionId) {
 
     setTime(session.created_at);
     setSession(session.id);
-    
+
     return "Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.";
   } catch (error) {
     console.error("Error attaching session:", error);
@@ -72,11 +72,23 @@ export function verifySessionId(session) {
 }
 
 export function setTime(time) {
+  if (time == 1 || time == -1) {
+    const current = sessionStorage.getItem("time");
+    time = Number(current) + time;
+  }
+
+  // Set time
   sessionStorage.setItem("time", time);
-  console.log("Time set to " + time + ".");
+  console.log("Time -> " + time);
 }
 
 export function setSession(session) {
+  if (session == 1 || session == -1) {
+    const current = sessionStorage.getItem("session");
+    session = Number(current) + session;
+  }
+
+  // Set session
   sessionStorage.setItem("session", session);
-  console.log("Session set to " + session + ".");
+  console.log("Session -> " + session);
 }
