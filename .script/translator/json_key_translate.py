@@ -16,6 +16,14 @@ def translate(text, target_language_name):
     completion = openai.chat.completions.create(
         messages=[
             {
+                "role": "system",
+                "content": "You're an awesome translator! I'm going to give you a text to translate.\n"
+                         + "Remember:\n"
+                         + "1. Don't translate word \"Simple AI\", keep it.\n"
+                         + "2. Don't translate word \"Midjourney\", keep it..\n"
+                         + "3. Don't translate word \"GPT-4 Vision\", keep it..\n"
+            },
+            {
                 "role": "user",
                 "content": f"Translate the following text to {target_language_name} and response with json format:\n\n"
                            + "\n\n" + text
