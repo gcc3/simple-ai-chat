@@ -41,7 +41,7 @@ for lang_code in language_codes:
             if modified:
                 with open(file_path, 'w', encoding='utf-8') as file:
                     json.dump(data, file, ensure_ascii=False, indent=2)
-                print(f'Updated file: {file_path}')
+                print(f'Updated file: {file_path} with {len(target_keys)} keys removed.')
             else:
                 print(f'No changes made to file: {file_path}')
 
