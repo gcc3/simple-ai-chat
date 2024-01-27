@@ -132,5 +132,11 @@
   "Auto input/Autocomplete.": "إدخال تلقائي / إكمال تلقائي.",
   "Delete input.": "حذف المُدخل",
   "Touch swipe on input box.": "السحب باللمس على مربع الإدخال",
-  "Previous session.": "الجلسة السابقة."
+  "Previous session.": "الجلسة السابقة.",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "غير مركز عن منطقة الإدخال أو حقل الإدخال فارغ (لـ →). لا يوجد توليد قيد التقدم.",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "غير مركز عن منطقة الإدخال أو مربع الإدخال فارغ (للأسفل). لا يوجد توليد قيد التنفيذ.",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "ركز على منطقة الإدخال. الإدخال الحالي يبدأ بـ `:`. يوجد أمر سابق في تاريخ الأوامر.",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "غير مُركّز من مجال الإدخال أو صندوق الإدخال فارغ (للأعلى). لا يوجد عملية توليد جارية.",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "ركّز على منطقة الإدخال. الإدخال الحالي يبدأ بـ `:`. يوجد أمر تالٍ في سجل الأوامر.",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "التركيز غير مُستمر من منطقة الإدخال أو صندوق الإدخال فارغ (للسهم اليسار ←). لا يوجد توليد قيد التقدم."
 }

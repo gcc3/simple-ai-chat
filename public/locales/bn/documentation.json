@@ -132,5 +132,11 @@
   "Auto input/Autocomplete.": "অটো ইনপুট/অটোকমপ্লিট।",
   "Delete input.": "ইনপুট মুছে ফেলুন।",
   "Touch swipe on input box.": "ইনপুট বক্সে টাচ সোয়াইপ করুন।",
-  "Previous session.": "পূর্ববর্তী অধিবেশন।"
+  "Previous session.": "পূর্ববর্তী অধিবেশন।",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "ইনপুট এলাকা থেকে অস্পষ্ট অথবা ইনপুট বক্স খালি আছে (→ এর জন্য)। চলমান অবস্থায় কিছু তৈরি করা হচ্ছে না।",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "ইনপুট এরিয়া থেকে অমনোযোগী অথবা ইনপুট বক্স খালি আছে (↓ এর জন্য)। জেনারেট করা চলছে না।",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "ইনপুট এলাকায় মনোনিবেশ করুন। বর্তমান ইনপুট `:` দিয়ে শুরু হয়েছে। কমান্ড হিস্টরিতে আগের একটি কমান্ড আছে।",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "ইনপুট এরিয়া থেকে অনিবন্ধিত অথবা ইনপুট বক্স খালি রয়েছে (↑ এর জন্য)। জেনারেটিং প্রক্রিয়া চলমান নেই।",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "ইনপুট এলাকায় মনোনিবেশ করুন। বর্তমান ইনপুট `:` দিয়ে শুরু হয়। কমান্ড ইতিহাসে পরবর্তী কমান্ড আছে।",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "ইনপুট এরিয়া থেকে মনোনিবেশ নেই অথবা ইনপুট বক্স খালি আছে (← এর জন্য)। জেনারেটিং প্রক্রিয়া চলছে না।"
 }

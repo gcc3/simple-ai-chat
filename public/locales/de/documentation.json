@@ -132,5 +132,11 @@
   "Auto input/Autocomplete.": "Autoeingabe/Autovervollständigung.",
   "Delete input.": "Eingabe löschen.",
   "Touch swipe on input box.": "Wischberührung auf Eingabefeld.",
-  "Previous session.": "Vorherige Sitzung."
+  "Previous session.": "Vorherige Sitzung.",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "Der Fokus wurde vom Eingabebereich entfernt oder das Eingabefeld ist leer (für →). Die Generierung läuft nicht.",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Der Fokus wurde vom Eingabebereich entfernt oder das Eingabefeld ist leer (für ↓). Keine laufende Generierung.",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Konzentrieren Sie sich auf den Eingabebereich. Die aktuelle Eingabe beginnt mit `:`. Es gibt einen vorherigen Befehl im Befehlsverlauf.",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Der Fokus wurde vom Eingabebereich entfernt oder das Eingabefeld ist leer (für ↑). Keine Generierung läuft.",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Konzentrier dich auf das Eingabefeld. Die aktuelle Eingabe beginnt mit ':'. Es gibt einen nächsten Befehl im Befehlsverlauf.",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Nicht fokussiert vom Eingabebereich oder Eingabefeld ist leer (für ←). Generierung nicht in Bearbeitung."
 }

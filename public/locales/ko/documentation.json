@@ -132,5 +132,11 @@
   "Auto input/Autocomplete.": "자동 입력/자동완성.",
   "Delete input.": "입력 삭제.",
   "Touch swipe on input box.": "입력 상자에서 터치 스와이프하세요.",
-  "Previous session.": "이전 세션."
+  "Previous session.": "이전 세션.",
+  "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "입력 영역이나 입력 상자에서 포커스가 벗어났거나 (→) 입력 상자가 비어 있습니다. 생성 진행 중이 아닙니다.",
+  "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "입력 영역에서 포커스를 벗어났거나 입력 상자가 비어 있습니다(↓). 생성 진행 중이 아닙니다.",
+  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "입력 영역에 집중하세요. 현재 입력이 ':'으로 시작합니다. 명령어 기록에 이전 명령이 있습니다.",
+  "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "입력 영역에서 포커스가 벗어났거나 입력 상자가 비어 있습니다(위쪽을 위해). 생성 진행 중이 아닙니다.",
+  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "입력 영역에 집중하세요. 현재 입력은 `:`로 시작합니다. 명령어 히스토리에 다음 명령이 있습니다.",
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "입력 영역에서 포커스가 벗어났거나 입력 상자가 비어 있습니다(←). 생성이 진행 중이 아닙니다."
 }
