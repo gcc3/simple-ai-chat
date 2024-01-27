@@ -1516,6 +1516,38 @@ const getSession = async (id) => {
   }
 }
 
+const getPreviousSession = async (id, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM sessions WHERE id < ? AND created_by = ? ORDER BY id DESC LIMIT 1`, [id, createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
+const getNextSession = async (id, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM sessions WHERE id > ? AND created_by = ? ORDER BY id ASC LIMIT 1`, [id, createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
 // Insert a session to sessions table
 const insertSession = async (id, parentId, createdBy) => {
   const db = await getDatabaseConnection();
@@ -1601,5 +1633,7 @@ export {
   insertInvite,
   countInvites,
   getSession,
+  getPreviousSession,
+  getNextSession,
   insertSession,
 };
