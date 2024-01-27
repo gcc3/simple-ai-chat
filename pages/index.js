@@ -566,7 +566,7 @@ export default function Home() {
             // Print session log (previous)
             if (global.STATE === STATES.IDLE) {
               if (!localStorage.getItem("user")) {
-                console.log("Please log in to view session history.");
+                console.error("User not logged in.");
                 printOutput("Please log in to view session history.");
                 return;
               }
@@ -619,7 +619,7 @@ export default function Home() {
 
             if (global.STATE === STATES.IDLE) {
               if (!localStorage.getItem("user")) {
-                console.log("Please log in to view session history.");
+                console.error("User not logged in.");
                 printOutput("Please log in to view session history.");
                 return;
               }
