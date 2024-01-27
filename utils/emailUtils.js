@@ -21,6 +21,7 @@ export async function evalEmailAddress(email) {
   // Use hunter.io API to check if the email is valid.
   try {
     const response = await fetch("https://api.hunter.io/v2/email-verifier?email=" + email + "&api_key=" + process.env.HUNTER_API_KEY);
+    
     const data = await response.json();
     if (response.status !== 200) {
       // Hunter api will not return `error`, instead it using `errors`.

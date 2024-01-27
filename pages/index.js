@@ -317,6 +317,7 @@ export default function Home() {
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
     if (localStorage.getItem("functions") === null) localStorage.setItem("functions", "Time,Weather,Redirection");  // default functions
+    if (localStorage.getItem("passMask") === null) localStorage.setItem("passMask", "true");
     if (localStorage.getItem("useSystemRole") === null) localStorage.setItem("useSystemRole", "true");
 
     // Set default sessionStorage values
@@ -1083,18 +1084,18 @@ export default function Home() {
           }),
         });
 
+        const data = await response.json();
         if (response.status !== 200) {
-          throw response.error || new Error(`Request failed with status ${response.status}`);
+          throw data.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        const responseJson = await response.json();
-        if (!responseJson.success) {
-          console.log("Function Error: " + responseJson.error);
-          printOutput(responseJson.error);
+        if (!data.success) {
+          console.log("Function Error: " + data.error);
+          printOutput(data.error);
           return;
         }
 
-        const functionResults = responseJson.function_results;
+        const functionResults = data.function_results;
         console.log("Function Results: " + JSON.stringify(functionResults));
 
         if (functionResults.length === 1) {
@@ -1859,8 +1860,12 @@ export default function Home() {
     const elInput = elInputRef.current;
     if (elInput.value.startsWith(':login') || elInput.value.startsWith(':user set pass') || elInput.value.startsWith(":user add") || elInput.value.startsWith(":user join")) {
       // Password input
-      global.rawInput = elInput.value.replace(/\*/g, (match, index) => global.rawInput[index] || '');  // store real password
-      passwordFormatter(elInputRef.current);
+      if (localStorage.getItem("passMask") === "true") {
+        global.rawInput = elInput.value.replace(/\*/g, (match, index) => global.rawInput[index] || '');  // store real password
+        passwordFormatter(elInputRef.current);
+      } else {
+        global.rawInput = elInput.value;
+      }
     } else {
       // General input
       global.rawInput = elInput.value;

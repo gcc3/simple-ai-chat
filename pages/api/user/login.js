@@ -20,7 +20,7 @@ export default async (req, res) => {
   // Get user
   const user = await getUser(username);
   if (!user) {
-    return res.status(401).json({
+    return res.status(404).json({
       success: false,
       error: 'User not found.'
     });

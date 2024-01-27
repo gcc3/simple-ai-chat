@@ -9,18 +9,18 @@ export function setUserLocalStorage(user) {
   if (user.settings) {
     const settings = user.settings;
 
-    // 1. lang
+    // lang
     if (settings.lang) {
       localStorage.setItem("lang", settings.lang);
     }
 
-    // 2. theme
+    // theme
     if (settings.theme) {
       localStorage.setItem("theme", settings.theme);
       setTheme(localStorage.getItem("theme"));
     }
 
-    // 3. fullscreen
+    // fullscreen
     // If fullscreen is forced, do not overwrite
     if (settings.fullscreen) {
       if (localStorage.getItem("fullscreen")) {
@@ -35,41 +35,41 @@ export function setUserLocalStorage(user) {
       }
     }
 
-    // 4. useSpeak
+    // useSpeak
     if (settings.useSpeak) {
       localStorage.setItem("useSpeak", settings.useSpeak == "true" ? "true" : "false");
     }
 
-    // 5. useStats
+    // useStats
     if (settings.useStats) {
       localStorage.setItem("useStats", settings.useStats == "true" ? "true" : "false");
     }
 
-    // 6. useEval
+    // useEval
     if (settings.useEval) {
       localStorage.setItem("useEval", settings.useEval == "true" ? "true" : "false");
     }
 
-    // 7. useSystemRole
+    // useSystemRole
     if (settings.useSystemRole) {
       sessionStorage.setItem("useSystemRole", settings.useSystemRole == "true" ? "true" : "false");
     }
 
-    // 8. functions
+    // functions
     if (settings.functions) {
       localStorage.setItem("functions", settings.functions);
     }
 
-    // 9. role
+    // role
     sessionStorage.setItem("role", settings.role);
 
-    // 10. store
+    // store
     sessionStorage.setItem("store", settings.store);
 
-    // 11. node
+    // node
     sessionStorage.setItem("node", settings.node);
 
-    // 12. memLength
+    // memLength
     sessionStorage.setItem("memLength", settings.memLength);
   }
 }
