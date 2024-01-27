@@ -138,5 +138,6 @@
   "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Concentrez-vous sur la zone de saisie. L'entrée actuelle commence par `:`. Il y a une commande précédente dans l'historique des commandes.",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Sortie de la zone de saisie ou de la boîte de saisie est vide (pour ↑). Pas de génération en cours.",
   "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Concentrez-vous sur la zone de saisie. L'entrée actuelle commence par `:`. Il y a une commande suivante dans l'historique des commandes.",
-  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Perte de focus de la zone de saisie ou le champ de saisie est vide (pour ←). Aucune génération en cours."
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Perte de focus de la zone de saisie ou le champ de saisie est vide (pour ←). Aucune génération en cours.",
+  "Next session.": "Prochaine session."
 }

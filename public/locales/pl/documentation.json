@@ -138,5 +138,6 @@
   "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Skup się na obszarze wprowadzania. Aktualne wejście zaczyna się od `:`. Ma poprzednie polecenie w historii poleceń.",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Brak skupienia na polu wprowadzania lub pole wprowadzania jest puste (dla ↑). Nie trwa generowanie.",
   "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Skoncentruj się na obszarze wprowadzania. Obecne wejście rozpoczyna się od ':'. Ma następne polecenie w historii poleceń.",
-  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Utrata fokusu z pola wprowadzania lub pole wprowadzania jest puste (dla ←). Trwa generowanie nie jest w toku."
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Utrata fokusu z pola wprowadzania lub pole wprowadzania jest puste (dla ←). Trwa generowanie nie jest w toku.",
+  "Next session.": "Następna sesja."
 }
