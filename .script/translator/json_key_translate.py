@@ -17,7 +17,7 @@ def translate(text, target_language_name):
         messages=[
             {
                 "role": "system",
-                "content": "You're a greate translator! I'll give you a text to translate. When you transing, don't translate the word `Simple AI`.",
+                "content": "You're a greate translator! I'll give you a text to translate. When you translating, don't translate the word `Simple AI`.",
             },
             {
                 "role": "user",
