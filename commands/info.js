@@ -16,6 +16,7 @@ export default function info(args) {
                "Voice (key: `voice`): " + (localStorage.getItem("voice") || "default") + "\n" +
                "Location service (key: `useLocation`): " + localStorage.getItem("useLocation") + "\n" +
                "Location (key: `location`): " + (localStorage.getItem("location") || "___") + "\n" +
+               "Password Masking (key: `passMask`): " + localStorage.getItem("passMask") + "\n" +
                "Use System Role (key: `useSystemRole`): " + localStorage.getItem("useSystemRole") + "\n";
 
   return info;

@@ -20,10 +20,11 @@ export default function set(args) {
 
   // User settable keys
   const availableSettings = getSettings();
-  for (const [key, value] of Object.entries(availableSettings)) {
-    validKeys.push(key);
+  for (const [k, v] of Object.entries(availableSettings)) {
+    validKeys.push(k.toLowerCase());
   }
 
+  console.log(key);
   console.log(validKeys);
   if (!validKeys.includes(key)) {
     return "Unknown key. Key must be one of: " + validKeys.join(", ") + ".";
@@ -123,6 +124,12 @@ export default function set(args) {
         return "Invalid value. Value must be a number.";
       }
       sessionStorage.setItem("memLength", value);
+      break;
+    case "passmask":
+      if (value != "true" && value != "false") {
+        return "Invalid value. Value must be true or false.";
+      }
+      localStorage.setItem("passMask", value);
       break;
   }
 
