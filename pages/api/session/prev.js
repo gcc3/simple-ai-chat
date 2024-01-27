@@ -1,4 +1,4 @@
-import { countLogs, getPreviousSession } from "utils/sqliteUtils";
+import { countLogs, getPreviousSession, getSessionLogs } from "utils/sqliteUtils";
 
 export default async function (req, res) {
   const { sessionId: id, user: createdBy } = req.query;
@@ -14,7 +14,10 @@ export default async function (req, res) {
     }
 
     // Get session length
-    session.length = await countLogs(id);
+    session.length = await countLogs(session.id);
+
+    // Get session logs
+    session.logs = await getSessionLogs(session.id);
 
     return res.status(200).json({
       success: true,

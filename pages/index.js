@@ -575,8 +575,8 @@ export default function Home() {
                     // Attach to it
                     sessionStorage.setItem("session", session.id);
                     sessionStorage.setItem("time", session.id);
-                    console.log("Session is set to " + session.id + ".");
-                    printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.");
+                    console.log("Session is set to " + session.id + ", time is set to " + session.id + ".");
+                    printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
                   }
                 });
             } else {
@@ -617,8 +617,8 @@ export default function Home() {
                   // Attach to it
                   sessionStorage.setItem("session", session.id);
                   sessionStorage.setItem("time", session.id);
-                  console.log("Session is set to " + session.id + ".");
-                  printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.");
+                  console.log("Session is set to " + session.id + ", time is set to " + session.id + ".");
+                  printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
                 }
               });
           } else {
