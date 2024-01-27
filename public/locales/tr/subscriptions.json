@@ -42,5 +42,6 @@
   "1/day(trial)": "1/gün (deneme)",
   "Image Generation (Midjourney)": "Görüntü Oluşturma (Midjourney)",
   "email_support_subscriptions": "Kurumsal kullanım için lütfen `<1><2>support@simple-ai.io</2></1>` adresinden bizimle iletişime geçin.",
-  "Usage Fee": "Kullanım Ücreti"
+  "Usage Fee": "Kullanım Ücreti",
+  "You are the `root_user`.": "Siz `root_user`'sınız."
 }

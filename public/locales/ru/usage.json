@@ -36,5 +36,6 @@
   "Cancel": "Отмена",
   "Daily usage": "Ежедневное использование",
   "Weekly usage": "Еженедельное использование",
-  "Monthly usage": "Ежемесячное использование"
+  "Monthly usage": "Ежемесячное использование",
+  "You are the `root_user`.": "Вы — `root_user`."
 }

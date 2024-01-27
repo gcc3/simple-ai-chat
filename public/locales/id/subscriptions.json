@@ -42,5 +42,6 @@
   "1/day(trial)": "1/hari (percobaan)",
   "Image Generation (Midjourney)": "Pembuatan Gambar (Midjourney)",
   "email_support_subscriptions": "Untuk penggunaan enterprise, silakan hubungi kami di `<1><2>support@simple-ai.io</2></1>`.",
-  "Usage Fee": "Biaya Penggunaan"
+  "Usage Fee": "Biaya Penggunaan",
+  "You are the `root_user`.": "Anda adalah `root_user`."
 }

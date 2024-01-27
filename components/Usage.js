@@ -73,7 +73,7 @@ function Usage() {
       setTokenMonthly(user.usage.token_monthly);
 
       if (user.role === "root_user") {
-        setMessage("You are the root_user.");
+        setMessage(t("You are the `root_user`."));
       }
 
       // Fee calculation

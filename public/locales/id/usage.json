@@ -36,5 +36,6 @@
   "Cancel": "Batal",
   "Daily usage": "Penggunaan Harian",
   "Weekly usage": "Penggunaan Mingguan",
-  "Monthly usage": "Penggunaan Bulanan"
+  "Monthly usage": "Penggunaan Bulanan",
+  "You are the `root_user`.": "Anda adalah `root_user`."
 }

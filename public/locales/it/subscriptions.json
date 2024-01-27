@@ -42,5 +42,6 @@
   "1/day(trial)": "1/giorno (prova)",
   "Image Generation (Midjourney)": "Generazione di Immagini (Midjourney)",
   "email_support_subscriptions": "Per l'utilizzo aziendale, si prega di contattarci all'indirizzo `<1><2>support@simple-ai.io</2></1>`.",
-  "Usage Fee": "Tariffa di Utilizzo"
+  "Usage Fee": "Tariffa di Utilizzo",
+  "You are the `root_user`.": "Sei il `root_user`."
 }

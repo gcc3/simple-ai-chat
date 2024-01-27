@@ -36,5 +36,6 @@
   "Cancel": "取消し",
   "Daily usage": "本日の使用量",
   "Weekly usage": "過去７日間の使用量",
-  "Monthly usage": "過去３０日間の使用量"
+  "Monthly usage": "過去３０日間の使用量",
+  "You are the `root_user`.": "あなたは `root_user` です。"
 }

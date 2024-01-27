@@ -64,7 +64,7 @@ function Subscription() {
         setUser(user);
         
         if (user.role === "root_user") {
-          setMessage("You are the root_user.");
+          setMessage(t("You are the `root_user`."));
         }
       }
     }

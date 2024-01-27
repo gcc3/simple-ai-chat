@@ -36,5 +36,6 @@
   "Cancel": "Cancel",
   "Daily usage": "Daily usage",
   "Weekly usage": "Weekly usage",
-  "Monthly usage": "Monthly usage"
+  "Monthly usage": "Monthly usage",
+  "You are the `root_user`.": "You are the `root_user`."
 }

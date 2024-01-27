@@ -36,5 +36,6 @@
   "Cancel": "বাতিল",
   "Daily usage": "দৈনিক ব্যবহার",
   "Weekly usage": "সাপ্তাহিক ব্যবহার",
-  "Monthly usage": "মাসিক ব্যবহার"
+  "Monthly usage": "মাসিক ব্যবহার",
+  "You are the `root_user`.": "আপনি `root_user`।"
 }

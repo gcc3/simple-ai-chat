@@ -36,5 +36,6 @@
   "Cancel": "취소",
   "Daily usage": "일일 사용량",
   "Weekly usage": "주간 사용량",
-  "Monthly usage": "월간 사용량"
+  "Monthly usage": "월간 사용량",
+  "You are the `root_user`.": "당신은 `root_user`입니다."
 }
