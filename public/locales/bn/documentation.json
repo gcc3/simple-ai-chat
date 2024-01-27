@@ -131,5 +131,6 @@
   "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "মিডজার্নি প্রথম সিস্টেম নোড এআই। এটি সবচেয়ে উন্নত ইমেজ জেনারেশন এআই, মিডজার্নি এর সঙ্গে চ্যাটজিপিটি প্রম্পট ব্যবহার করে উচ্চ-মানের সার্টিফাইড ইমেজ জেনারেট করে। এই ফিচারটি চালু করতে, কমান্ড `:use \"Midjourney\"` ব্যবহার করুন।",
   "Auto input/Autocomplete.": "অটো ইনপুট/অটোকমপ্লিট।",
   "Delete input.": "ইনপুট মুছে ফেলুন।",
-  "Touch swipe on input box.": "ইনপুট বক্সে টাচ সোয়াইপ করুন।"
+  "Touch swipe on input box.": "ইনপুট বক্সে টাচ সোয়াইপ করুন।",
+  "Previous session.": "পূর্ববর্তী অধিবেশন।"
 }

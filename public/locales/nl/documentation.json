@@ -131,5 +131,6 @@
   "Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.": "Midjourney is het eerste Node AI-systeem. Het maakt gebruik van de meest geavanceerde AI voor afbeeldingengeneratie, de Midjourney in combinatie met ChatGPT-prompts om hoogwaardige gecertificeerde afbeeldingen te genereren. Om deze functie in te schakelen, gebruik je het commando `:use \"Midjourney\"`.",
   "Auto input/Autocomplete.": "Auto-invoer/Auto-aanvullen.",
   "Delete input.": "Verwijder invoer.",
-  "Touch swipe on input box.": "Veeg over het invoervak."
+  "Touch swipe on input box.": "Veeg over het invoervak.",
+  "Previous session.": "Vorige sessie."
 }
