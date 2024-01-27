@@ -4,8 +4,10 @@ import { toggleFullscreen } from '../states/fullscreenSlice.js';
 import { initializeSession } from "./sessionUtils";
 
 export function setUserLocalStorage(user) {
+  // 1. Set local user
   localStorage.setItem("user", user.username);
 
+  // 2. Overwrite local settings
   if (user.settings) {
     const settings = user.settings;
 
@@ -37,22 +39,22 @@ export function setUserLocalStorage(user) {
 
     // useSpeak
     if (settings.useSpeak) {
-      localStorage.setItem("useSpeak", settings.useSpeak == "true" ? "true" : "false");
+      localStorage.setItem("useSpeak", settings.useSpeak == "true" ? true : false);
     }
 
     // useStats
     if (settings.useStats) {
-      localStorage.setItem("useStats", settings.useStats == "true" ? "true" : "false");
+      localStorage.setItem("useStats", settings.useStats == "true" ? true : false);
     }
 
     // useEval
     if (settings.useEval) {
-      localStorage.setItem("useEval", settings.useEval == "true" ? "true" : "false");
+      localStorage.setItem("useEval", settings.useEval == "true" ? true : false);
     }
 
     // useSystemRole
     if (settings.useSystemRole) {
-      sessionStorage.setItem("useSystemRole", settings.useSystemRole == "true" ? "true" : "false");
+      sessionStorage.setItem("useSystemRole", settings.useSystemRole == "true" ? true : false);
     }
 
     // functions
@@ -61,16 +63,29 @@ export function setUserLocalStorage(user) {
     }
 
     // role
-    sessionStorage.setItem("role", settings.role);
+    if (settings.role) {
+      sessionStorage.setItem("role", settings.role);
+    }
 
     // store
-    sessionStorage.setItem("store", settings.store);
+    if (settings.store) {
+      sessionStorage.setItem("store", settings.store);
+    }
 
     // node
-    sessionStorage.setItem("node", settings.node);
+    if (settings.node) {
+      sessionStorage.setItem("node", settings.node);
+    }
 
     // memLength
-    sessionStorage.setItem("memLength", settings.memLength);
+    if (settings.memLength) {
+      sessionStorage.setItem("memLength", settings.memLength);
+    }
+
+    // passMask
+    if (settings.passMask) {
+      localStorage.setItem("passMask", settings.passMask);
+    }
   }
 }
 
