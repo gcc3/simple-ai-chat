@@ -550,7 +550,7 @@ export default function Home() {
 
         case "ArrowUp":
           // Command history (↑)
-          if ((global.rawInput === "" && (global.rawPlaceholder.startsWith(":") || global.rawPlaceholder.startsWith("!")) || (global.rawInput.startsWith(":") || global.rawInput.startsWith("!"))) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if (global.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ↑");
 
@@ -565,7 +565,7 @@ export default function Home() {
           }
 
           // Navigation to previous session
-          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ⌃↑");
 
@@ -631,7 +631,7 @@ export default function Home() {
 
         case "ArrowDown":
           // Command history (↓)
-          if ((global.rawInput === "" && (global.rawPlaceholder.startsWith(":") || global.rawPlaceholder.startsWith("!")) || (global.rawInput.startsWith(":") || global.rawInput.startsWith("!"))) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if (global.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ↓");
 
@@ -644,14 +644,14 @@ export default function Home() {
               reAdjustInputHeight(localStorage.getItem("fullscreen"));
             } else {
               // Clear input
-              setInput("");
+              setInput(":");
               sessionStorage.setItem("historyIndex", -1);
               reAdjustInputHeight(localStorage.getItem("fullscreen"));
             }
           }
 
           // Navigate to next session
-          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ⌃↓");
 
