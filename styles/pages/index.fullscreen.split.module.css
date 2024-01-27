@@ -136,7 +136,8 @@
 }
 .main .nav {
   width: 220px;
-  margin-right: 10px;
+  margin-right: var(--nav-rtl-right-margin);
+  margin-left: var(--nav-rtl-left-margin);
 }
 .main .navitem {
   margin-bottom: 10px;

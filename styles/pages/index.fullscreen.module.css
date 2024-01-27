@@ -116,7 +116,8 @@
   text-align: center;
   position: fixed;
   top: 4px;
-  right: 8px;
+  right: var(--dot-rtl-right-offset);
+  left: var(--dot-rtl-left-offset);
   width: 15px;
   color: var(--dot-color);
 }
@@ -135,7 +136,8 @@
 }
 .main .nav {
   width: 220px;
-  margin-right: 10px;
+  margin-right: var(--nav-rtl-right-margin);
+  margin-left: var(--nav-rtl-left-margin);
 }
 .main .navitem {
   margin-bottom: 10px;
