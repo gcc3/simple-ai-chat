@@ -33,7 +33,7 @@ export async function attachSession(sessionId) {
     sessionStorage.setItem("session", session.id);
 
     console.log("Session attached to " + session.id + ".");
-    return "Session attached. Use `→` or `←` to navigate between session logs.";
+    return "Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.";
   } catch (error) {
     console.error("Error attaching session:", error);
     return "Error attaching session. Please try again later.";
