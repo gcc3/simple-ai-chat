@@ -655,8 +655,6 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
-                    printOutput("No previous log.");
-                    setTime(-1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -680,8 +678,6 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
-                    printOutput("No previous log.");
-                    setTime(-1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -705,8 +701,6 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
-                    printOutput("No next log.");
-                    setTime(1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -730,8 +724,6 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
-                    printOutput("No next log.");
-                    setTime(1);
                     return;
                   } else {
                     const log = r.result["log"];
