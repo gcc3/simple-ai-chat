@@ -1084,18 +1084,18 @@ export default function Home() {
           }),
         });
 
+        const data = await response.json();
         if (response.status !== 200) {
-          throw response.error || new Error(`Request failed with status ${response.status}`);
+          throw data.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        const responseJson = await response.json();
-        if (!responseJson.success) {
-          console.log("Function Error: " + responseJson.error);
-          printOutput(responseJson.error);
+        if (!data.success) {
+          console.log("Function Error: " + data.error);
+          printOutput(data.error);
           return;
         }
 
-        const functionResults = responseJson.function_results;
+        const functionResults = data.function_results;
         console.log("Function Results: " + JSON.stringify(functionResults));
 
         if (functionResults.length === 1) {

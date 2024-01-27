@@ -26,12 +26,13 @@ export default async function login(args) {
       }),
     });
 
+    const data = await response.json();
     if (response.status !== 200) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    const data = await response.json();
     if (data.success) {
+      // Login successful
       const user = data.user;
       if (!user) {
         throw new Error("User not found.");
