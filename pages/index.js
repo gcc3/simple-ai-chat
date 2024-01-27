@@ -96,6 +96,12 @@ export default function Home() {
 
   // Print output
   const printOutput = (text, ignoreFormatter=true, append=false) => {
+    if (!append) {
+      // Clear output images
+      clearPreviewImages();
+      clearPreviewVideos();
+    }
+
     const elOutput = elOutputRef.current;
     if (elOutput) {
       if (ignoreFormatter) {
@@ -559,11 +565,10 @@ export default function Home() {
           }
 
           // Navigation to previous session
-          if (event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ⌃↑");
 
-            // Print session log (previous)
             if (global.STATE === STATES.IDLE) {
               if (!localStorage.getItem("user")) {
                 console.error("User not logged in.");
@@ -582,7 +587,40 @@ export default function Home() {
                     // Attach to it
                     setSession(session.id);
                     setTime(session.id);
-                    printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
+                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
+                  }
+                });
+            } else {
+              console.log("Aborted as generating.");
+            }
+          }
+          break;
+
+        case "h":
+          // Navigation to previous session
+          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: ⌃↑");
+
+            if (global.STATE === STATES.IDLE) {
+              if (!localStorage.getItem("user")) {
+                console.error("User not logged in.");
+                printOutput("Please log in to view session history.");
+                return;
+              }
+
+              getHistorySession("prev", sessionStorage.getItem("session"))
+                .then((session) => {
+                  if (!session) {
+                    console.log("No previous session.");
+                    printOutput("No previous session.");
+                    setSession(-1);
+                    return;
+                  } else {
+                    // Attach to it
+                    setSession(session.id);
+                    setTime(session.id);
+                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
                   }
                 });
             } else {
@@ -612,8 +650,8 @@ export default function Home() {
             }
           }
 
-          // Print session log (previous)
-          if (event.ctrlKey && !event.shiftKey && !event.altKey) {
+          // Navigate to next session
+          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ⌃↓");
 
@@ -635,7 +673,40 @@ export default function Home() {
                     // Attach to it
                     setSession(session.id);
                     setTime(session.id);
-                    printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
+                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
+                  }
+                });
+            } else {
+              console.log("Aborted as generating.");
+            }
+          }
+          break;
+
+        case "l":
+          // Navigate to next session
+          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: ⌃↓");
+
+            if (global.STATE === STATES.IDLE) {
+              if (!localStorage.getItem("user")) {
+                console.error("User not logged in.");
+                printOutput("Please log in to view session history.");
+                return;
+              }
+
+              getHistorySession("next", sessionStorage.getItem("session"))
+                .then((session) => {
+                  if (!session) {
+                    console.log("No next session.");
+                    printOutput("No next session.");
+                    setSession(1);
+                    return;
+                  } else {
+                    // Attach to it
+                    setSession(session.id);
+                    setTime(session.id);
+                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
                   }
                 });
             } else {
@@ -655,7 +726,6 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
-                    setTime(-1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -679,7 +749,6 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
-                    setTime(-1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -703,7 +772,6 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
-                    setTime(1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -727,7 +795,6 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
-                    setTime(1);
                     return;
                   } else {
                     const log = r.result["log"];
