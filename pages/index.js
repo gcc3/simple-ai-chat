@@ -20,7 +20,7 @@ import { refreshUserInfo, updateUserSetting } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
 import { generateFileURl } from "utils/awsUtils";
-import { initializeSession } from "utils/sessionUtils";
+import { initializeSession, setSession, setTime } from "utils/sessionUtils";
 import Image from 'next/image';
 import { getQueryParameterValue } from "utils/urlUtils";
 import 'katex/dist/katex.min.css';
@@ -227,8 +227,7 @@ export default function Home() {
 
   // Print session log
   const printSessionLog = async function(log) {
-    console.log("Time set to log time: " + log["time"])
-    sessionStorage.setItem("time", log["time"]);
+    setTime(log["time"]);
     console.log("Session log:", JSON.stringify(log));
 
     // Print the log
@@ -566,16 +565,23 @@ export default function Home() {
 
             // Print session log (previous)
             if (global.STATE === STATES.IDLE) {
+              if (!localStorage.getItem("user")) {
+                console.error("User not logged in.");
+                printOutput("Please log in to view session history.");
+                return;
+              }
+
               getHistorySession("prev", sessionStorage.getItem("session"))
                 .then((session) => {
                   if (!session) {
                     console.log("No previous session.");
+                    printOutput("No previous session.");
+                    setSession(-1);
                     return;
                   } else {
                     // Attach to it
-                    sessionStorage.setItem("session", session.id);
-                    sessionStorage.setItem("time", session.id);
-                    console.log("Session is set to " + session.id + ", time is set to " + session.id + ".");
+                    setSession(session.id);
+                    setTime(session.id);
                     printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
                   }
                 });
@@ -607,22 +613,34 @@ export default function Home() {
           }
 
           // Print session log (previous)
-          if (global.STATE === STATES.IDLE) {
-            getHistorySession("next", sessionStorage.getItem("session"))
-              .then((session) => {
-                if (!session) {
-                  console.log("No next session.");
-                  return;
-                } else {
-                  // Attach to it
-                  sessionStorage.setItem("session", session.id);
-                  sessionStorage.setItem("time", session.id);
-                  console.log("Session is set to " + session.id + ", time is set to " + session.id + ".");
-                  printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
-                }
-              });
-          } else {
-            console.log("Aborted as generating.");
+          if (event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: ⌃↓");
+
+            if (global.STATE === STATES.IDLE) {
+              if (!localStorage.getItem("user")) {
+                console.error("User not logged in.");
+                printOutput("Please log in to view session history.");
+                return;
+              }
+
+              getHistorySession("next", sessionStorage.getItem("session"))
+                .then((session) => {
+                  if (!session) {
+                    console.log("No next session.");
+                    printOutput("No next session.");
+                    setSession(1);
+                    return;
+                  } else {
+                    // Attach to it
+                    setSession(session.id);
+                    setTime(session.id);
+                    printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
+                  }
+                });
+            } else {
+              console.log("Aborted as generating.");
+            }
           }
           break;
 
@@ -637,6 +655,8 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
+                    printOutput("No previous log.");
+                    setTime(-1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -660,6 +680,8 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
+                    printOutput("No previous log.");
+                    setTime(-1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -683,6 +705,8 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
+                    printOutput("No next log.");
+                    setTime(1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -706,6 +730,8 @@ export default function Home() {
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
+                    printOutput("No next log.");
+                    setTime(1);
                     return;
                   } else {
                     const log = r.result["log"];
@@ -925,17 +951,16 @@ export default function Home() {
       if (timelineTime < head) {
         // Subsession detected
         // The session ID is one of the log time (not head log of session)
-        console.log("Detected possible sub session " + timelineTime + " of parent session " + session + ".");
+        console.log("Detected possible sub session " + timelineTime + ", parent session is " + session + ".");
         
         // TODO, check subsession is valid in session
         // If valid, set session ID to subsession
-        sessionStorage.setItem("session", timelineTime);
-        console.log("Session is set to subsession " + timelineTime + ".");
+        setSession(timelineTime);
       }
     }
 
     const timeNow = Date.now();
-    sessionStorage.setItem("time", timeNow);
+    setTime(timeNow);
     sessionStorage.setItem("head", timeNow);
     sessionStorage.setItem("historyIndex", -1);
 
@@ -1456,7 +1481,7 @@ export default function Home() {
 
           // Reset time
           const timeNow = Date.now();
-          sessionStorage.setItem("time", timeNow);
+          setTime(timeNow);
           sessionStorage.setItem("head", timeNow);
 
           // Call generate with function

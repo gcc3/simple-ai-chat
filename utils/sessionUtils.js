@@ -1,9 +1,9 @@
 export function initializeMemory() {
   console.log("Memory initializing...");
   const time = Date.now()
-  sessionStorage.setItem("time", time);
-  sessionStorage.setItem("session", time);  // new session
-  console.log("Session is initialized to " + time + ".");
+  setTime(time);
+  setSession(time);
+  console.log("Session is initialized.");
 }
 
 export function initializeSession() {
@@ -29,10 +29,9 @@ export async function attachSession(sessionId) {
     }
     const session = result.result.session;
 
-    sessionStorage.setItem("time", session.created_at);
-    sessionStorage.setItem("session", session.id);
+    setTime(session.created_at);
+    setSession(session.id);
 
-    console.log("Session attached to " + session.id + ".");
     return "Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.";
   } catch (error) {
     console.error("Error attaching session:", error);
@@ -70,4 +69,26 @@ export function verifySessionId(session) {
     success: true,
     message: "Session is valid."
   };
+}
+
+export function setTime(time) {
+  if (time == 1 || time == -1) {
+    const current = sessionStorage.getItem("time");
+    time = Number(current) + time;
+  }
+
+  // Set time
+  sessionStorage.setItem("time", time);
+  console.log("Time -> " + time);
+}
+
+export function setSession(session) {
+  if (session == 1 || session == -1) {
+    const current = sessionStorage.getItem("session");
+    session = Number(current) + session;
+  }
+
+  // Set session
+  sessionStorage.setItem("session", session);
+  console.log("Session -> " + session);
 }
