@@ -140,7 +140,7 @@ const Documentation = ({ country }) => {
       </div>
       <div className="mt-2">
         { t("- Is Simple AI free?") }<br/>
-        { t("* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-use.") }<br/>
+        { t("* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-go.") }<br/>
         { t("* For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.") }<br/>
       </div>
       <div id="quick-start" className="mt-5">{ t("Quick Start") }</div>

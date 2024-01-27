@@ -202,6 +202,29 @@ export default function Home() {
     return log;
   }
 
+  // Get hostory session
+  const getHistorySession = async function(direction = "prev", currentSessionId) {
+    if (!localStorage.getItem("user")) {
+      console.log("User not logged in.");
+      return null;
+    }
+
+    let session = null;
+    console.log("Getting history session " + direction + " of " + currentSessionId + "...");
+    const response = await fetch("/api/session/" + direction + "?sessionId=" + currentSessionId + "&user=" + localStorage.getItem("user"), {
+      method: 'GET',
+      headers: { 'Content-Type': 'application/json' },
+    }).catch(error => {
+      console.error('Error:', error);
+      return null;
+    });
+    const data = await response.json()
+    if (data.success) {
+      session = data.result.session;
+    }
+    return session;
+  }
+
   // Print session log
   const printSessionLog = async function(log) {
     console.log("Time set to log time: " + log["time"])
@@ -521,6 +544,7 @@ export default function Home() {
           break;
 
         case "ArrowUp":
+          // Command history (↑)
           if ((global.rawInput === "" && (global.rawPlaceholder.startsWith(":") || global.rawPlaceholder.startsWith("!")) || (global.rawInput.startsWith(":") || global.rawInput.startsWith("!"))) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ↑");
@@ -534,9 +558,35 @@ export default function Home() {
               reAdjustInputHeight(localStorage.getItem("fullscreen"));
             }
           }
+
+          // Navigation to previous session
+          if (event.ctrlKey && !event.shiftKey && !event.altKey) {
+            event.preventDefault();
+            console.log("Shortcut: ⌃↑");
+
+            // Print session log (previous)
+            if (global.STATE === STATES.IDLE) {
+              getHistorySession("prev", sessionStorage.getItem("session"))
+                .then((session) => {
+                  if (!session) {
+                    console.log("No previous session.");
+                    return;
+                  } else {
+                    // Attach to it
+                    sessionStorage.setItem("session", session.id);
+                    sessionStorage.setItem("time", session.id);
+                    console.log("Session is set to " + session.id + ", time is set to " + session.id + ".");
+                    printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
+                  }
+                });
+            } else {
+              console.log("Aborted as generating.");
+            }
+          }
           break;
 
         case "ArrowDown":
+          // Command history (↓)
           if ((global.rawInput === "" && (global.rawPlaceholder.startsWith(":") || global.rawPlaceholder.startsWith("!")) || (global.rawInput.startsWith(":") || global.rawInput.startsWith("!"))) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
             console.log("Shortcut: ↓");
@@ -554,6 +604,25 @@ export default function Home() {
               sessionStorage.setItem("historyIndex", -1);
               reAdjustInputHeight(localStorage.getItem("fullscreen"));
             }
+          }
+
+          // Print session log (previous)
+          if (global.STATE === STATES.IDLE) {
+            getHistorySession("next", sessionStorage.getItem("session"))
+              .then((session) => {
+                if (!session) {
+                  console.log("No next session.");
+                  return;
+                } else {
+                  // Attach to it
+                  sessionStorage.setItem("session", session.id);
+                  sessionStorage.setItem("time", session.id);
+                  console.log("Session is set to " + session.id + ", time is set to " + session.id + ".");
+                  printOutput("Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.\n\n" + JSON.stringify(session.logs, null, 2));
+                }
+              });
+          } else {
+            console.log("Aborted as generating.");
           }
           break;
 

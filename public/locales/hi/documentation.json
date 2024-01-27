@@ -98,7 +98,7 @@
   "* Build to link with other AI systems, or your own APIs.": "अन्य AI सिस्टम्स से जोड़ने के लिए या आपके स्वयं के APIs के साथ बिल्ड करें।",
   "And more...": "और भी...",
   "- Is Simple AI free?": "क्या सिंपल एआई मुफ्त है?",
-  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-use.": "हां, ज्यादातर सेवाएं 'user' के लिए मुफ्त हैं; हालांकि, OpenAI टोकन मुफ्त नहीं है। आपको इस्तेमाल के अनुसार भुगतान करना होगा।",
+  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-go.": "हां, ज्यादातर सेवाएं 'user' के लिए मुफ्त हैं; हालांकि, OpenAI टोकन मुफ्त नहीं है। आपको इस्तेमाल के अनुसार भुगतान करना होगा।",
   "* For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.": "पेशेवर उपयोग के लिए, कृपया हमारे `pro_user` या `super_user` का उपयोग करने पर विचार करें, सब्सक्रिप्शन पृष्ठ देखें।",
   "Quick Start": "त्वरित आरंभ",
   "Features": "विशेषताएँ",

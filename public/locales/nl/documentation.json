@@ -98,7 +98,7 @@
   "* Build to link with other AI systems, or your own APIs.": "Bouw om te koppelen met andere AI-systemen of uw eigen API's.",
   "And more...": "En meer...",
   "- Is Simple AI free?": "Is Simple AI gratis?",
-  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-use.": "Ja, de meeste diensten zijn gratis voor `gebruiker`; echter, het OpenAI-token is niet gratis. Je moet betalen naar gebruik.",
+  "* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-go.": "Ja, de meeste diensten zijn gratis voor `gebruiker`; echter, het OpenAI-token is niet gratis. Je moet betalen naar gebruik.",
   "* For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.": "Voor professioneel gebruik, overweeg alstublieft om onze `pro_user` of `super_user` te gebruiken, zie de Abonnementenpagina.",
   "Quick Start": "Snelle Start",
   "Features": "Kenmerken",

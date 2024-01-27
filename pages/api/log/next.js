@@ -19,7 +19,7 @@ export default async function (req, res) {
 
     // Find in current session
     let log = null;
-    const logs = await getLogs(session.id, 1000);
+    const logs = await getLogs(session.id, 50);
     logs.map((l) => {
       if (l.time > time) {
         log = l;
@@ -47,7 +47,7 @@ export default async function (req, res) {
       session = await getSession(session.parent_id);
 
       // Find the earliest log
-      const logs = await getLogs(session.id, 1000);
+      const logs = await getLogs(session.id, 50);
       logs.map((l) => {
         if (l.time > time && l.time <= branchPoint) {
           log = l;

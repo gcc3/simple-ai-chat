@@ -353,6 +353,23 @@ const getSessionLog = async (session, time = null, direction = ">") => {
   }
 };
 
+// Get logs by session, only input for summary session
+const getSessionLogs = async (session, limit = 12) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT time, time_h, input, output FROM logs WHERE session = ? ORDER BY time DESC LIMIT ?`, [session, limit], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
 // Use for getting node prompt
 const getLastLogBySessionAndModel = async (session, model) => {
   const db = await getDatabaseConnection();
@@ -1516,6 +1533,38 @@ const getSession = async (id) => {
   }
 }
 
+const getPreviousSession = async (id, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM sessions WHERE id < ? AND created_by = ? ORDER BY id DESC LIMIT 1`, [id, createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
+const getNextSession = async (id, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM sessions WHERE id > ? AND created_by = ? ORDER BY id ASC LIMIT 1`, [id, createdBy], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+}
+
 // Insert a session to sessions table
 const insertSession = async (id, parentId, createdBy) => {
   const db = await getDatabaseConnection();
@@ -1547,6 +1596,7 @@ export {
   getSessions,
   getUserSessions,
   getSessionLog,
+  getSessionLogs,
   getLastLogBySessionAndModel,
   countChatsForIP,
   countChatsForUser,
@@ -1601,5 +1651,7 @@ export {
   insertInvite,
   countInvites,
   getSession,
+  getPreviousSession,
+  getNextSession,
   insertSession,
 };
