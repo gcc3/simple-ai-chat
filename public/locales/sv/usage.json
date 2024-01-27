@@ -36,5 +36,6 @@
   "Cancel": "Avbryt",
   "Daily usage": "Daglig användning",
   "Weekly usage": "Veckovis användning",
-  "Monthly usage": "Månadsvis användning"
+  "Monthly usage": "Månadsvis användning",
+  "You are the `root_user`.": "Du är `root_user`."
 }

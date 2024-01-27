@@ -36,5 +36,6 @@
   "Cancel": "Annuleren",
   "Daily usage": "Dagelijks gebruik",
   "Weekly usage": "Wekelijks gebruik",
-  "Monthly usage": "Maandelijks gebruik"
+  "Monthly usage": "Maandelijks gebruik",
+  "You are the `root_user`.": "U bent de `root_user`."
 }

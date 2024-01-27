@@ -42,5 +42,6 @@
   "1/day(trial)": "1/день (пробная версия)",
   "Image Generation (Midjourney)": "Генерация изображений (Midjourney)",
   "email_support_subscriptions": "Для использования в корпоративных целях, пожалуйста, свяжитесь с нами по адресу `<1><2>support@simple-ai.io</2></1>`.",
-  "Usage Fee": "Плата за использование"
+  "Usage Fee": "Плата за использование",
+  "You are the `root_user`.": "Вы — `root_user`."
 }

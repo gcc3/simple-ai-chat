@@ -36,5 +36,6 @@
   "Cancel": "İptal",
   "Daily usage": "Günlük kullanım",
   "Weekly usage": "Haftalık kullanım",
-  "Monthly usage": "Aylık kullanım"
+  "Monthly usage": "Aylık kullanım",
+  "You are the `root_user`.": "Siz `root_user`'sınız."
 }

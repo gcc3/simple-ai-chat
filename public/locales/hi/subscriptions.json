@@ -42,5 +42,6 @@
   "1/day(trial)": "1/दिन (परीक्षण)",
   "Image Generation (Midjourney)": "छवि निर्माण (Midjourney)",
   "email_support_subscriptions": "एंटरप्राइज़ उपयोग के लिए, कृपया `<1><2>support@simple-ai.io</2></1>` पर हमसे संपर्क करें।",
-  "Usage Fee": "उपयोग शुल्क"
+  "Usage Fee": "उपयोग शुल्क",
+  "You are the `root_user`.": "आप `root_user` हैं।"
 }

@@ -36,5 +36,6 @@
   "Cancel": "Annulla",
   "Daily usage": "Utilizzo Quotidiano",
   "Weekly usage": "Utilizzo Settimanale",
-  "Monthly usage": "Utilizzo Mensile"
+  "Monthly usage": "Utilizzo Mensile",
+  "You are the `root_user`.": "Sei il `root_user`."
 }
