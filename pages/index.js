@@ -565,6 +565,12 @@ export default function Home() {
 
             // Print session log (previous)
             if (global.STATE === STATES.IDLE) {
+              if (!localStorage.getItem("user")) {
+                console.log("Please log in to view session history.");
+                printOutput("Please log in to view session history.");
+                return;
+              }
+
               getHistorySession("prev", sessionStorage.getItem("session"))
                 .then((session) => {
                   if (!session) {
@@ -612,6 +618,12 @@ export default function Home() {
             console.log("Shortcut: ⌃↓");
 
             if (global.STATE === STATES.IDLE) {
+              if (!localStorage.getItem("user")) {
+                console.log("Please log in to view session history.");
+                printOutput("Please log in to view session history.");
+                return;
+              }
+
               getHistorySession("next", sessionStorage.getItem("session"))
                 .then((session) => {
                   if (!session) {
