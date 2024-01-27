@@ -1,3 +1,4 @@
+import { setSession, setTime } from "utils/sessionUtils";
 import { getSettings } from "utils/settingsUtils";
 
 export default function set(args) {
@@ -42,13 +43,13 @@ export default function set(args) {
       if (isNaN(value)) {
         return "Invalid value. Value must be a number.";
       }
-      sessionStorage.setItem("session", value);
+      setSession(value);
       break;
     case "time":
       if (isNaN(value)) {
         return "Invalid value. Value must be a number.";
       }
-      sessionStorage.setItem("time", value);
+      setTime(value);
       break;
     case "usestream":
       if (value != "true" && value != "false") {
