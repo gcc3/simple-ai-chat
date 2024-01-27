@@ -9,6 +9,7 @@ if (!i18n.isInitialized) {
     .use(initReactI18next) // Pass i18n instance to react-i18next
     .init({
       fallbackLng: 'en',
+      keySeparator: false,  // disable as we use content as keys, and keys could contain '.'
       debug: false,
       backend: {
         loadPath: '/locales/{{lng}}/{{ns}}.json',
