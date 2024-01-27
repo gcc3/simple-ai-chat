@@ -1,6 +1,6 @@
 import { generatePassword } from "utils/userUtils.js";
 
-export function getInitialSettings() {
+export function getInitialSettings(format = "json") {
   getSettings(format);
 }
 
