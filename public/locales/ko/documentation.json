@@ -138,5 +138,6 @@
   "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "입력 영역에 집중하세요. 현재 입력이 ':'으로 시작합니다. 명령어 기록에 이전 명령이 있습니다.",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "입력 영역에서 포커스가 벗어났거나 입력 상자가 비어 있습니다(위쪽을 위해). 생성 진행 중이 아닙니다.",
   "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "입력 영역에 집중하세요. 현재 입력은 `:`로 시작합니다. 명령어 히스토리에 다음 명령이 있습니다.",
-  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "입력 영역에서 포커스가 벗어났거나 입력 상자가 비어 있습니다(←). 생성이 진행 중이 아닙니다."
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "입력 영역에서 포커스가 벗어났거나 입력 상자가 비어 있습니다(←). 생성이 진행 중이 아닙니다.",
+  "Next session.": "다음 세션."
 }

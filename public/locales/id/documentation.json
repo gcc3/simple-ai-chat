@@ -138,5 +138,6 @@
   "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Fokus pada area input. Input saat ini dimulai dengan ':'. Memiliki perintah sebelumnya dalam riwayat perintah.",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Tidak fokus dari area input atau kotak input kosong (untuk ↑). Tidak dalam proses pembuatan.",
   "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Fokus pada area input. Input saat ini diawali dengan ':'. Memiliki perintah berikutnya dalam riwayat perintah.",
-  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Tidak terfokus dari area input atau kotak input kosong (untuk ←). Tidak ada proses pembuatan yang sedang berlangsung."
+  "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Tidak terfokus dari area input atau kotak input kosong (untuk ←). Tidak ada proses pembuatan yang sedang berlangsung.",
+  "Next session.": "Sesi berikutnya."
 }
