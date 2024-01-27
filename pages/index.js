@@ -310,6 +310,7 @@ export default function Home() {
   // Clear input
   const clearInput = () => {
     elInputRef.current.value = "";
+    global.rawInput = "";
   }
 
   // Clear hash tag
