@@ -135,7 +135,7 @@ export default async function (req, res) {
     + `<a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>` + "<br>"
     + "<br>"
     + `- Here’s a quick start guide` + "<br>"
-    + "1. Simple AI operates on a command-based interface; every command begins with \":\". + <br>"
+    + "1. Simple AI operates on a command-based interface; every command begins with \":\"." + "<br>"
     + "To register a user, use command `:user add [username] [email] [password?]` (no brackets needed) ✅." + "<br>"
     + "For example, `:user add john xxxx@zzzz.vv ********`" + "<br>"
     + "* The password must be at least 8 characters long." + "<br>"
