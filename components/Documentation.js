@@ -5,7 +5,7 @@ import YouTube from 'react-youtube';
 import { useTranslation, Trans } from 'react-i18next';
 
 const Documentation = ({ country }) => {
-  const { t } = useTranslation("documentation");
+  const { t, ready } = useTranslation("documentation");
 
   const features = [
     { id: "features-gpt4turbo", name: t("Text Generation (GPT-4 Turbo)"), description: t("Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.") },
@@ -349,6 +349,7 @@ const Documentation = ({ country }) => {
     </>
   )
 
+  if (!ready) return <div></div>;
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="Documentation">

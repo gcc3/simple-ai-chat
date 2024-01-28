@@ -2,7 +2,7 @@ import { useTranslation, Trans } from 'react-i18next';
 import { Suspense } from 'react';
 
 function UserDataPrivacy() {
-  const { t } = useTranslation("privacy_policy");
+  const { t, ready } = useTranslation("privacy_policy");
 
   const content = (
     <div>
@@ -30,6 +30,7 @@ function UserDataPrivacy() {
     </div>
   )
 
+  if (!ready) return <div></div>;
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="UserDataPrivacy">

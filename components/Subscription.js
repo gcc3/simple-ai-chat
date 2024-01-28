@@ -22,7 +22,7 @@ function Subscription() {
   const [bankingFee, setBankingFee] = useState(0);
   const [subscriptions, setSubscriptions] = useState(null);
 
-  const { t } = useTranslation("subscriptions");
+  const { t, ready } = useTranslation("subscriptions");
 
   const onSuccess = useCallback(async (details) => {
     console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
@@ -179,6 +179,7 @@ function Subscription() {
     </>
   )
 
+  if (!ready) return <div></div>;
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="Subcription">
