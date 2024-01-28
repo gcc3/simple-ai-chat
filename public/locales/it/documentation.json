@@ -42,9 +42,6 @@
   "Fullscreen. (`:fullscreen [off?]`)": "Schermo intero. (`:fullscreen [disattiva?]`)",
   "Split screen. (`:fullscreen split`)": "Schermo diviso (`:fullscreen split`)",
   "Clear the input.": "Pulisci l'input.",
-  "Focused on the input area. Input area not empty.": "Concentrato sull'area di input. L'area di input non è vuota.",
-  "Unfocus from the input box.": "Togli la messa a fuoco dalla casella di input.",
-  "Focused on the input area. Input area is empty/cleared.": "Concentrato sull'area di inserimento. L'area di inserimento è vuota/pulita.",
   "Repeat last input.": "Ripeti l'ultimo input.",
   "Command autocomplete.": "Completamento automatico del comando.",
   "Previous log (same session).": "Log precedente (stessa sessione).",
@@ -134,9 +131,7 @@
   "Previous session.": "Sessione precedente.",
   "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "Si è persa la focalizzazione dall'area di inserimento o il campo di inserimento è vuoto (per →). Non è in corso la generazione.",
   "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Uscita dall'area di inserimento o casella di inserimento vuota (per ↓). Generazione non in corso.",
-  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Concentrati sull'area di inserimento. L'input corrente inizia con ':'. C'è un comando precedente nella cronologia dei comandi.",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Uscito dall'area di input o il campo di inserimento è vuoto (per ↑). Non è in corso la generazione.",
-  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Concentrati sull'area di input. L'input corrente inizia con `:`. C'è un comando successivo nella cronologia dei comandi.",
   "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Fuori fuoco dall'area di input o casella di immissione vuota (per ←). Nessuna generazione in corso.",
   "Next session.": "Prossima sessione."
 }

@@ -42,9 +42,6 @@
   "Fullscreen. (`:fullscreen [off?]`)": "전체 화면. (`:fullscreen [끄기?]`)",
   "Split screen. (`:fullscreen split`)": "분할 화면. (`:fullscreen split`)",
   "Clear the input.": "입력을 지워주세요.",
-  "Focused on the input area. Input area not empty.": "입력 영역에 초점을 맞추었습니다. 입력 영역이 비어있지 않습니다.",
-  "Unfocus from the input box.": "입력 상자에서 포커스를 해제하세요.",
-  "Focused on the input area. Input area is empty/cleared.": "입력 영역에 초점을 맞추었습니다. 입력 영역이 비어 있거나 지워졌습니다.",
   "Repeat last input.": "마지막 입력을 반복하다.",
   "Command autocomplete.": "명령어 자동완성",
   "Previous log (same session).": "이전 기록 (같은 세션).",
@@ -134,9 +131,7 @@
   "Previous session.": "이전 세션.",
   "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "입력 영역이나 입력 상자에서 포커스가 벗어났거나 (→) 입력 상자가 비어 있습니다. 생성 진행 중이 아닙니다.",
   "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "입력 영역에서 포커스를 벗어났거나 입력 상자가 비어 있습니다(↓). 생성 진행 중이 아닙니다.",
-  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "입력 영역에 집중하세요. 현재 입력이 ':'으로 시작합니다. 명령어 기록에 이전 명령이 있습니다.",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "입력 영역에서 포커스가 벗어났거나 입력 상자가 비어 있습니다(위쪽을 위해). 생성 진행 중이 아닙니다.",
-  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "입력 영역에 집중하세요. 현재 입력은 `:`로 시작합니다. 명령어 히스토리에 다음 명령이 있습니다.",
   "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "입력 영역에서 포커스가 벗어났거나 입력 상자가 비어 있습니다(←). 생성이 진행 중이 아닙니다.",
   "Next session.": "다음 세션."
 }

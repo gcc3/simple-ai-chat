@@ -42,9 +42,6 @@
   "Fullscreen. (`:fullscreen [off?]`)": "Vollbild. (`:fullscreen [aus?]`)",
   "Split screen. (`:fullscreen split`)": "Geteilter Bildschirm. (`:fullscreen split`)",
   "Clear the input.": "Löschen Sie die Eingabe.",
-  "Focused on the input area. Input area not empty.": "Fokussiert auf den Eingabebereich. Eingabebereich ist nicht leer.",
-  "Unfocus from the input box.": "Entfernen Sie den Fokus vom Eingabefeld.",
-  "Focused on the input area. Input area is empty/cleared.": "Fokussiert auf den Eingabebereich. Eingabebereich ist leer/gelöscht.",
   "Repeat last input.": "Wiederholen Sie die letzte Eingabe.",
   "Command autocomplete.": "Befehlsvervollständigung.",
   "Previous log (same session).": "Vorheriges Protokoll (gleiche Sitzung).",
@@ -134,9 +131,7 @@
   "Previous session.": "Vorherige Sitzung.",
   "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "Der Fokus wurde vom Eingabebereich entfernt oder das Eingabefeld ist leer (für →). Die Generierung läuft nicht.",
   "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Der Fokus wurde vom Eingabebereich entfernt oder das Eingabefeld ist leer (für ↓). Keine laufende Generierung.",
-  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "Konzentrieren Sie sich auf den Eingabebereich. Die aktuelle Eingabe beginnt mit `:`. Es gibt einen vorherigen Befehl im Befehlsverlauf.",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Der Fokus wurde vom Eingabebereich entfernt oder das Eingabefeld ist leer (für ↑). Keine Generierung läuft.",
-  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "Konzentrier dich auf das Eingabefeld. Die aktuelle Eingabe beginnt mit ':'. Es gibt einen nächsten Befehl im Befehlsverlauf.",
   "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Nicht fokussiert vom Eingabebereich oder Eingabefeld ist leer (für ←). Generierung nicht in Bearbeitung.",
   "Next session.": "Nächste Sitzung."
 }

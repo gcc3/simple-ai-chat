@@ -42,9 +42,6 @@
   "Fullscreen. (`:fullscreen [off?]`)": "पूर्ण स्क्रीन। (`:fullscreen [बंद?]`)",
   "Split screen. (`:fullscreen split`)": "स्प्लिट स्क्रीन। (:fullscreen split)",
   "Clear the input.": "इनपुट को साफ़ करें।",
-  "Focused on the input area. Input area not empty.": "इनपुट क्षेत्र पर केंद्रित। इनपुट क्षेत्र खाली नहीं है।",
-  "Unfocus from the input box.": "इनपुट बॉक्स से ध्यान हटाएँ।",
-  "Focused on the input area. Input area is empty/cleared.": "इनपुट क्षेत्र पर ध्यान केंद्रित है। इनपुट क्षेत्र खाली / साफ है।",
   "Repeat last input.": "पिछला इनपुट दोहराएं।",
   "Command autocomplete.": "कमांड ऑटोकम्प्लीट।",
   "Previous log (same session).": "पिछला लॉग (वही सत्र)",
@@ -134,9 +131,7 @@
   "Previous session.": "पिछला सत्र।",
   "Unfocused from the input area or input box is empty (for →). Not generating in progress.": "इनपुट क्षेत्र से ध्यान भटका हुआ है या इनपुट बॉक्स खाली है (के लिए →)। प्रगति में जनरेट नहीं हो रहा है।",
   "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "इनपुट क्षेत्र से अनध्यानित या इनपुट बॉक्स खाली है (↓ के लिए)। प्रगति में जनरेट नहीं हो रहा है।",
-  "Focus on the input area. The current input is starts with `:`. Has a previous command in command history.": "इनपुट क्षेत्र पर ध्यान दें। वर्तमान इनपुट `:` से शुरू होता है। कमांड हिस्ट्री में पिछला कमांड मौजूद है।",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "इनपुट क्षेत्र से ध्यान भटका हुआ है या इनपुट बॉक्स खाली है (के लिए ↑). जेनरेशन प्रगति पर नहीं है।",
-  "Focus on the input area. The current input is starts with `:`. Has a next command in command history.": "इनपुट क्षेत्र पर ध्यान दें। वर्तमान इनपुट ':' से शुरू होता है। कमांड हिस्ट्री में अगला कमांड है।",
   "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "इनपुट क्षेत्र से अनफोकस्ड है या इनपुट बॉक्स खाली है (for ←)। प्रगति में सृजन नहीं हो रहा है।",
   "Next session.": "अगला सत्र।"
 }
