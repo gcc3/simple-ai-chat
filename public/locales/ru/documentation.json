@@ -47,7 +47,6 @@
   "Focused on the input area. Input area is empty/cleared.": "Фокус на области ввода. Область ввода пуста/очищена.",
   "Repeat last input.": "Повторить последний ввод.",
   "Command autocomplete.": "Автозавершение команды.",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Фокусировка на области ввода. Введите команды `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` и начните набирать первые символы значения.",
   "Previous log (same session).": "Предыдущий журнал (та же сессия).",
   "Next log (same session).": "Следующая запись (та же сессия).",
   "Previous command.": "Предыдущая команда.",

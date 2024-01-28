@@ -47,7 +47,6 @@
   "Focused on the input area. Input area is empty/cleared.": "इनपुट क्षेत्र पर ध्यान केंद्रित है। इनपुट क्षेत्र खाली / साफ है।",
   "Repeat last input.": "पिछला इनपुट दोहराएं।",
   "Command autocomplete.": "कमांड ऑटोकम्प्लीट।",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "इनपुट क्षेत्र पर केंद्रित। इनपुट कमांड्स `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` टाइप करें और मूल्य के प्रारंभिक अक्षरों को टाइप करें।",
   "Previous log (same session).": "पिछला लॉग (वही सत्र)",
   "Next log (same session).": "अगला लॉग (वही सत्र)।",
   "Previous command.": "पिछला आदेश।",

@@ -47,7 +47,6 @@
   "Focused on the input area. Input area is empty/cleared.": "Gericht op het invoergebied. Invoergebied is leeg/gewist.",
   "Repeat last input.": "Herhaal de laatste invoer.",
   "Command autocomplete.": "Opdracht automatisch aanvullen.",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Gericht op het invoerveld. Voer commando's in `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` en typ de beginletters van de waarde.",
   "Previous log (same session).": "Vorige logboek (dezelfde sessie).",
   "Next log (same session).": "Volgende logboek (zelfde sessie).",
   "Previous command.": "Vorige opdracht.",

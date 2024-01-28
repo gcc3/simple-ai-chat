@@ -47,7 +47,6 @@
   "Focused on the input area. Input area is empty/cleared.": "Concentré sur la zone de saisie. La zone de saisie est vide/effacée.",
   "Repeat last input.": "Répéter la dernière saisie.",
   "Command autocomplete.": "Autocomplétion de commande",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Concentrez-vous sur la zone de saisie. Entrez les commandes `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` et tapez les premiers caractères de la valeur.",
   "Previous log (same session).": "Journal précédent (même session).",
   "Next log (same session).": "Prochaine entrée (même session).",
   "Previous command.": "Commande précédente.",

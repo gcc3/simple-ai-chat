@@ -47,7 +47,6 @@
   "Focused on the input area. Input area is empty/cleared.": "Fokus pada area input. Area input kosong/dibersihkan.",
   "Repeat last input.": "Ulangi masukan terakhir.",
   "Command autocomplete.": "Autolengkapi perintah.",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Fokus pada area input. Masukkan perintah `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` dan ketik karakter awal dari nilai.",
   "Previous log (same session).": "Log sebelumnya (sesi yang sama).",
   "Next log (same session).": "Log berikutnya (sesi yang sama).",
   "Previous command.": "Perintah sebelumnya.",

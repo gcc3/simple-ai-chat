@@ -47,7 +47,6 @@
   "Focused on the input area. Input area is empty/cleared.": "Giriş alanına odaklandı. Giriş alanı boş/temizlendi.",
   "Repeat last input.": "Son girdiyi tekrarla.",
   "Command autocomplete.": "Komut otomatik tamamlama.",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "Giriş alanına odaklandı. ':use', ':function use', ':role use', ':store use', ':node use', ':theme', ':lang use', ':user set' giriş komutlarını kullanın ve değerin başlangıç karakterlerini yazın.",
   "Previous log (same session).": "Önceki kayıt (aynı oturum).",
   "Next log (same session).": "Sonraki kayıt (aynı oturum).",
   "Previous command.": "Önceki komut.",

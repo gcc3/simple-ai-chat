@@ -47,7 +47,6 @@
   "Focused on the input area. Input area is empty/cleared.": "ইনপুট এলাকায় মনোযোগ দেওয়া হয়েছে। ইনপুট এলাকা খালি/পরিষ্কার করা হয়েছে।",
   "Repeat last input.": "শেষ ইনপুটটি পুনরাবৃত্তি করুন।",
   "Command autocomplete.": "কমান্ড স্বয়ংক্রিয় পূরণ",
-  "Focused on the input area. Input commands `:use`, `:function use`, `:role use`, `:store use`, `:node use`, `:theme`, `:lang use`, `:user set` and type the starts characters of the value.": "ইনপুট এরিয়াতে মনোনিবেশ করুন। ':use', ':function use', ':role use', ':store use', ':node use', ':theme', ':lang use', ':user set' ইনপুট কমান্ডসগুলো ব্যবহার করুন এবং মানের শুরুর অক্ষরগুলি টাইপ করুন।",
   "Previous log (same session).": "পূর্ববর্তী লগ (একই অধিবেশন)",
   "Next log (same session).": "পরবর্তী লগ (একই সেশন)।",
   "Previous command.": "পূর্ববর্তী নির্দেশ",
