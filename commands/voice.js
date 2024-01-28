@@ -42,7 +42,7 @@ export default async function voice(args) {
     const voice = await getVoice(voiceName);
     if (voice) {
       localStorage.setItem("voice", voiceName);
-      return "Voice is set to " + voiceName + ".";
+      return "Voice is set to \"" + voiceName + "\".";
     } else {
       return "Voice not found."
     }

@@ -1799,11 +1799,18 @@ export default function Home() {
         }
 
         // Try auto complete
+        autocomplete(":role ", true);
         autocomplete(":role use ", true);
         autocomplete(":role unuse ", true);
+        autocomplete(":store ", true);
         autocomplete(":store use ", true);
         autocomplete(":store unuse ", true);
+        autocomplete(":store init ", true);
+        autocomplete(":store data reset ", true);
+        autocomplete(":store delete ", true);
+        autocomplete(":node ", true);
         autocomplete(":node use ", true);
+        autocomplete(":node delete ", true);
         autocomplete(":theme ");
         autocomplete(":lang use ");
         autocomplete(":user set ");
@@ -1812,6 +1819,7 @@ export default function Home() {
         autocomplete(":function unuse ", true);
         autocomplete(":use ", true);
         autocomplete(":unuse ", true);
+        autocomplete(":voice use ", true);
       }
     }
   };

@@ -2,9 +2,10 @@ import { getFunctions } from "function";
 import { getLangCodes } from "./langUtils";
 import { getSettings } from "./settingsUtils";
 import { getThemes } from "./themeUtils";
+import { getVoices } from "./voiceUtils";
 
 export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
-  if (prefix === ":role use " || prefix === ":role unuse ") {
+  if (prefix === ":role " || prefix === ":role use " || prefix === ":role unuse ") {
     const response = await fetch("/api/role/list");
     const data = await response.json();
     if (response.status === 200 && data.success) {
@@ -15,7 +16,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     }
   }
 
-  if (prefix === ":store use " || prefix === ":store unuse ") {
+  if (prefix === ":store " || prefix === ":store use " || prefix === ":store unuse " || prefix === ":store init " || prefix === ":store data reset " || prefix === ":store delete ") {
     const response = await fetch("/api/store/list");
     const data = await response.json();
     if (response.status === 200 && data.success) {
@@ -26,7 +27,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     }
   }
 
-  if (prefix === ":node use ") {
+  if (prefix === ":node " || prefix === ":node use " || prefix === ":node delete ") {
     const response = await fetch("/api/node/list");
     const data = await response.json();
     if (response.status === 200 && data.success) {
@@ -99,6 +100,19 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
         return [role.role];
       }
     }
+  }
+
+  if (prefix === ":voice use ") {
+    const voices = await getVoices();
+    let langVoiceList = [];
+    const currentLang = localStorage.getItem("lang").replace(" force", "");
+    for (let i = 0; i < voices.length ; i++) {
+      if (voices[i].lang === currentLang) {
+        console.log(`Voice ${i+1}: ${voices[i].name}, ${voices[i].lang}`);
+        langVoiceList.push(voices[i].name);
+      }
+    }
+    return langVoiceList;
   }
 
   return [];
