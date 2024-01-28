@@ -285,43 +285,36 @@ export async function generateMessages(use_system_role, lang,
 
   // 2. Data store search result
   let store_prompt = "";
-  if (store && user) {
+
+  // No user login, give him a Simple AI Documentation search
+  if (!user) {
     updateStatus && updateStatus("Data store searching...");
     console.log("--- data store search ---");
-    console.log("store: " + store);
+    console.log("store: " + "Simple AI Documentation (non-login user)");
 
-    // Search all active stores
-    const activeStores = store.split(",").filter(s => s !== "");
-    for (const store of activeStores) {
-      // Get store info
-      const storeInfo = await findStore(store, user.username);
+    // Get store info
+    const storeInfo = await findStore("Simple AI Documentation", "root");
+    if (storeInfo) {
       const settings = JSON.parse(storeInfo.settings);
 
       if (isInitialized(storeInfo.engine, settings)) {
         let queryResult = null;
         let prompt = "";
+  
+        prompt += "\nQuery Vector database\n";
+        prompt += "Database description: " + (settings.description || "No description") + "\n";
 
-        // Query
-        if (storeInfo.engine === "vectara") {
-          prompt += "\nQuery Vector database\n";
-          prompt += "Database description: " + (settings.description || "No description") + "\n";
-
-          // Query with store language
-          let vectaraQuery = input;
-          const storeLanguageCode = settings.language;
-          console.log("user language: " + lang);
-          console.log("store language: " + storeLanguageCode);
-          if (storeLanguageCode && storeLanguageCode !== lang) {
-            vectaraQuery = await translate(vectaraQuery, getLanguageName(storeLanguageCode));
-            console.log("input translation to store language: " + vectaraQuery);
-          }
-
-          queryResult = await searchVectaraStore(settings, vectaraQuery);
-        } else if (storeInfo.engine === "mysql") {
-          prompt += "\nQuery MySQL database\n";
-          prompt += "Database description: " + (settings.description || "No description") + "\n";
-          queryResult = await searchMysqlStore(settings, input);
+        // Query with store language
+        let vectaraQuery = input;
+        const storeLanguageCode = settings.language;
+        console.log("user language: " + lang);
+        console.log("store language: " + storeLanguageCode);
+        if (storeLanguageCode && storeLanguageCode !== lang) {
+          vectaraQuery = await translate(vectaraQuery, getLanguageName(storeLanguageCode));
+          console.log("input translation to store language: " + vectaraQuery);
         }
+
+        queryResult = await searchVectaraStore(settings, vectaraQuery);
 
         if (queryResult.success) {
           if (queryResult.query) {
@@ -336,6 +329,69 @@ export async function generateMessages(use_system_role, lang,
           
           store_prompt += prompt;
           console.log("response: " + prompt.trim());
+        }
+      }
+    }
+    console.log("");  // add new line
+
+    // Count tokens
+    token_ct["store"] = countToken(model, store_prompt);
+  }
+  
+  // General store search
+  if (store && user) {
+    updateStatus && updateStatus("Data store searching...");
+    console.log("--- data store search ---");
+    console.log("store: " + store);
+
+    // Search all active stores
+    const activeStores = store.split(",").filter(s => s !== "");
+    for (const store of activeStores) {
+      // Get store info
+      const storeInfo = await findStore(store, user.username);
+      if (storeInfo) {
+        const settings = JSON.parse(storeInfo.settings);
+
+        if (isInitialized(storeInfo.engine, settings)) {
+          let queryResult = null;
+          let prompt = "";
+
+          // Query
+          if (storeInfo.engine === "vectara") {
+            prompt += "\nQuery Vector database\n";
+            prompt += "Database description: " + (settings.description || "No description") + "\n";
+
+            // Query with store language
+            let vectaraQuery = input;
+            const storeLanguageCode = settings.language;
+            console.log("user language: " + lang);
+            console.log("store language: " + storeLanguageCode);
+            if (storeLanguageCode && storeLanguageCode !== lang) {
+              vectaraQuery = await translate(vectaraQuery, getLanguageName(storeLanguageCode));
+              console.log("input translation to store language: " + vectaraQuery);
+            }
+
+            queryResult = await searchVectaraStore(settings, vectaraQuery);
+          } else if (storeInfo.engine === "mysql") {
+            prompt += "\nQuery MySQL database\n";
+            prompt += "Database description: " + (settings.description || "No description") + "\n";
+            queryResult = await searchMysqlStore(settings, input);
+          }
+
+          if (queryResult.success) {
+            if (queryResult.query) {
+              prompt += "Query: " + queryResult.query + "\n";
+            }
+            prompt += "Query result: \n";
+            prompt += queryResult.message.trim();
+            messages.push({
+              "role": "system",
+              "content": prompt,
+            });
+            
+            store_prompt += prompt;
+            console.log("response: " + prompt.trim());
+          }
         }
       }
     }
