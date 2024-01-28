@@ -10,6 +10,7 @@ import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "
 import { generateMidjourneyPrompt } from "utils/midjourneyUtils";
 import fetch from 'node-fetch';
 import { getLanguageName } from './langUtils.js';
+import { translate } from './translateUtils.js';
 
 // Input output type
 const TYPE = {
@@ -298,15 +299,24 @@ export async function generateMessages(use_system_role, lang,
 
       if (isInitialized(storeInfo.engine, settings)) {
         let queryResult = null;
-        console.log("store: " + storeInfo.name);
-
         let prompt = "";
 
         // Query
         if (storeInfo.engine === "vectara") {
           prompt += "\nQuery Vector database\n";
           prompt += "Database description: " + (settings.description || "No description") + "\n";
-          queryResult = await searchVectaraStore(settings, input);
+
+          // Query with store language
+          let vectaraQuery = input;
+          const storeLanguageCode = settings.language;
+          console.log("user language: " + lang);
+          console.log("store language: " + storeLanguageCode);
+          if (storeLanguageCode && storeLanguageCode !== lang) {
+            vectaraQuery = await translate(vectaraQuery, getLanguageName(storeLanguageCode));
+            console.log("input translation to store language: " + vectaraQuery);
+          }
+
+          queryResult = await searchVectaraStore(settings, vectaraQuery);
         } else if (storeInfo.engine === "mysql") {
           prompt += "\nQuery MySQL database\n";
           prompt += "Database description: " + (settings.description || "No description") + "\n";

@@ -55,6 +55,7 @@ export default async function (req, res) {
 
   if (engine === "vectara") {
     settings = {
+      language: "",
       apiKey: "",
       customerId: "",
       clientId: "",
