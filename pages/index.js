@@ -1347,6 +1347,7 @@ export default function Home() {
     const use_location = localStorage.getItem("useLocation");
     const location = localStorage.getItem("location");
 
+    const lang = localStorage.getItem("lang").replace("force", "").trim();
     const use_system_role = localStorage.getItem("useSystemRole");
 
     // Vision: Will automatically use vision model if there is any image
@@ -1365,6 +1366,7 @@ export default function Home() {
       location: location,
       images: images,
       files: files,
+      lang: lang,
       use_system_role: use_system_role,
     };
     
@@ -1383,6 +1385,7 @@ export default function Home() {
                                                            + "&location=" + location
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
                                                            + "&files=" + files.join(encodeURIComponent("###"))
+                                                           + "&lang=" + lang
                                                            + "&use_system_role=" + use_system_role);
 
     let done_evaluating = false;
@@ -1655,6 +1658,7 @@ export default function Home() {
       use_eval: localStorage.getItem("useEval"),
       use_location: localStorage.getItem("useLocation"),
       location: localStorage.getItem("location"),
+      lang: localStorage.getItem("lang").replace("force", "").trim(),
       use_system_role: localStorage.getItem("useSystemRole"),
     };
     console.log("Config: " + JSON.stringify(config));

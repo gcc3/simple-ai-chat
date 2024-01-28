@@ -20,7 +20,7 @@ const TYPE = {
 const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 // Generate messages for chatCompletion
-export async function generateMessages(use_system_role, 
+export async function generateMessages(use_system_role, lang,
                                        user, model, input, inputType, files, images,
                                        session, mem_limit = 7,
                                        role, store, node,
@@ -39,6 +39,7 @@ export async function generateMessages(use_system_role,
   let system_prompt = "";
   if (use_system_role && role_content_system !== "") {
     system_prompt += role_content_system;
+    system_prompt += "\n" + "User language: " + lang + "\n";
 
     messages.push({ 
       role: "system",
