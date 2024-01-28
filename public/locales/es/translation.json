@@ -1,8 +1,8 @@
 {
   "hello": "¡Hola Mundo!",
   "welcome": "Bienvenido a Simple AI! 🚀 Una alternativa a ChatGPT que se centra en una mejor experiencia de usuario. Simplemente escribe tu consulta en el cuadro de entrada y presiona enter para conversar con el IA.\n\nAquí tienes una guía rápida para comenzar:\n1. Simple AI opera con una interfaz basada en comandos, cada comando comienza con `:`.\nPara registrar un usuario, usa el comando `:user add [nombre de usuario] [correo electrónico] [contraseña?]` (no se necesitan corchetes) ✅.\nPor ejemplo, `:user add john xxxx@zzzz.vv ********`\n* La contraseña debe tener al menos 8 caracteres de longitud.\n2. Para iniciar sesión, usa el comando `:user login [contraseña]` 🔑\n3. ¿Olvidaste tu contraseña? Usa el comando `:user reset pass [nombre de usuario] [correo electrónico]` 🆘.\n4. Para acceder a la documentación y confirmar uso: haz clic en el punto (•) en la esquina de la pantalla 📄.\n5. Para navegar entre los registros, usa las teclas de flecha `⬅️` y `➡️`. 🗂️\n6. Para navegar entre historiales (sesiones), usa las teclas de flecha `⬆️` y `⬇️`. 📜\n7. Para cambiar a modo de pantalla completa, usa `F11`, para pantalla dividida usa `Control+|` 🖥️.\n8. Cambiar tema: usa `:theme [light|dark|terminal]` 🌈.\n* La cuenta general `user` es gratuita; solo tienes que pagar por los tokens. Puedes gestionar tu saldo de tokens en la página de Uso 💳.\n\n¿Interesado? Invita a amigos usando el comando `:invite [correo electrónico]` y ambos recibiréis 100K tokens de premio! 💌",
-  "Documentation": "Documentaci√≥n",
+  "Documentation": "Documentación",
   "Usage": "Uso",
   "Subcriptions": "Suscripciones",
-  "Privacy Policy": "Pol√≠tica de Privacidad"
+  "Privacy Policy": "Política de Privacidad"
 }
