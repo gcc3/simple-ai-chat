@@ -1,5 +1,5 @@
 import { verifiyEmailAddress } from "utils/emailUtils";
-import { getInitialSettings } from "utils/settingsUtils";
+import { getSettings } from "utils/settingsUtils";
 import { refreshUserInfo, clearUserWebStorage, setUserLocalStorage } from "utils/userUtils";
 
 export default async function entry(args) {
@@ -71,6 +71,7 @@ export default async function entry(args) {
       // Apply the user current UI setting when creating a user
       const theme = localStorage.getItem("theme") || "light";
       const fullscreen = localStorage.getItem("fullscreen") || "off";
+      const settings = getSettings("json_string", theme, fullscreen);
 
       const response = await fetch("/api/user/add", {
         method: "POST",
@@ -81,7 +82,7 @@ export default async function entry(args) {
           username,
           email,
           password,
-          settings: getInitialSettings("json_string", theme, fullscreen),
+          settings,
         }),
       });
 

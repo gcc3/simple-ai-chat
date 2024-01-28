@@ -1,9 +1,5 @@
 import { generatePassword } from "utils/userUtils.js";
 
-export function getInitialSettings(format = "json") {
-  getSettings(format);
-}
-
 // Setting key, default value
 export function getSettings(format = "json", theme = "light", fullscreen = "off") {
   let result = null;
