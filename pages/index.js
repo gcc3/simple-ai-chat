@@ -2000,10 +2000,24 @@ export default function Home() {
         if (elInput.value.startsWith(":user set ")) {
           const nameToBeComleted = elInput.value.replace(":user set ", "");
           if (nameToBeComleted) {
-            const availableSettings = getSettings("keys_string_array");
+            const availableSettings = getSettings("keys_string_array_user");
             const key = availableSettings.find((n) => n.startsWith(nameToBeComleted));
             if (key) {
               setInput(":user set " + key);
+              reAdjustInputHeight();
+              return;
+            }
+          }
+        }
+
+        // Auto complete :set
+        if (elInput.value.startsWith(":set ")) {
+          const nameToBeComleted = elInput.value.replace(":set ", "");
+          if (nameToBeComleted) {
+            const availableSettings = getSettings("keys_string_array_local");
+            const key = availableSettings.find((n) => n.startsWith(nameToBeComleted));
+            if (key) {
+              setInput(":set " + key);
               reAdjustInputHeight();
               return;
             }

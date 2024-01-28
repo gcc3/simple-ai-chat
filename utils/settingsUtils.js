@@ -4,8 +4,41 @@ import { generatePassword } from "utils/userUtils.js";
 export function getSettings(format = "json", theme = "light", fullscreen = "off") {
   let result = null;
 
+  const localSettings = {
+    _up: "",
+    user: "",
+    userRole: "",
+    time: "",
+    lang: "",
+    theme: "",
+    fullscreen: "",
+    useSpeak: "",
+    useStats: "",
+    useStream: "",
+    useEval: "",
+    useSystemRole: "",
+    functions: "",
+    session: "",
+    head: "",
+    history: "",
+    historyIndex: "",
+    role: "",
+    store: "",
+    node: "",
+    memLength: "",
+    passMask: "",
+    voice: "",
+    useStream: "",
+    useLocation: "",
+    location: "",
+  }
+
+  if (format === "keys_string_array_local") {
+    result = Object.keys(localSettings).map(key => String(key));
+  }
+
   // Settings with default value
-  const settings = {
+  const userSettings = {
     /*  1 */ lang:          "",
     /*  2 */ theme:         theme,
     /*  3 */ fullscreen:    fullscreen,
@@ -23,19 +56,19 @@ export function getSettings(format = "json", theme = "light", fullscreen = "off"
   }
 
   if (format === "json") {
-    result = settings
+    result = userSettings
   }
 
   if (format === "json_string") {
-    result = JSON.stringify(settings)
+    result = JSON.stringify(userSettings)
   }
 
   if (format === "keys_array") {
-    result = Object.entries(settings)
+    result = Object.entries(userSettings)
   }
 
-  if (format === "keys_string_array") {
-    result = Object.keys(settings).map(key => String(key));
+  if (format === "keys_string_array_user") {
+    result = Object.keys(userSettings).map(key => String(key));
   }
 
   if (format === "full_array") {
@@ -51,7 +84,7 @@ export function getSettings(format = "json", theme = "light", fullscreen = "off"
       { name: "Show stats",            key: "useStats",      storage: "localStorage",    userSettings: "",               default: "false",                    description: "" },
       { name: "Use Stream",            key: "useStream",     storage: "localStorage",    userSettings: "",               default: "true",                     description: "" },
       { name: "Use Self Evaluation",   key: "useEval",       storage: "localStorage",    userSettings: "useEval",        default: "false",                    description: "" },
-      { name: "Use System Role",       key: "useSystemRole", storage: "localStorage",    userSettings: "",               default: "true",                     description: "" },
+      { name: "Use System Role",       key: "useSystemRole", storage: "localStorage",    userSettings: "useSystemRole",  default: "true",                     description: "" },
       { name: "Functions",             key: "functions",     storage: "localStorage",    userSettings: "functions",      default: "Time,Weather,Redirection", description: "" },
       { name: "Session ID",            key: "session",       storage: "sessionStorage",  userSettings: "",               default: "",                         description: "" },
       { name: "Session Head",          key: "head",          storage: "sessionStorage",  userSettings: "",               default: "",                         description: "" },
