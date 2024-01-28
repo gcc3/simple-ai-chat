@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, Suspense } from "react";
 import PayPalButton from "./PayPalButton";
 import { refreshUserInfo, getRoleLevel, getUserInfo } from "utils/userUtils";
 import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
@@ -180,12 +180,14 @@ function Subscription() {
   )
 
   return (
-    <div className="Subcription">
-      <div className="text-center mb-4">
-        <div>{ t("Subcriptions") }</div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="Subcription">
+        <div className="text-center mb-4">
+          <div>{ t("Subcriptions") }</div>
+        </div>
+        <div>{content}</div>
       </div>
-      <div>{content}</div>
-    </div>
+    </Suspense>
   );
 }
 

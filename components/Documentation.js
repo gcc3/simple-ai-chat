@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { Suspense } from 'react';
 import { getCommands } from '/command';
 import { getFunctions } from '../function';
 import YouTube from 'react-youtube';
@@ -350,12 +350,14 @@ const Documentation = ({ country }) => {
   )
 
   return (
-    <div className="Documentation">
-      <div className="text-center mb-4">
-        <div>{ t("Documentation") }</div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="Documentation">
+        <div className="text-center mb-4">
+          <div>{ t("Documentation") }</div>
+        </div>
+        <div>{content}</div>
       </div>
-      <div>{content}</div>
-    </div>
+    </Suspense>
   );
 };
 
