@@ -7,7 +7,7 @@ export default async function (req, res) {
 
     res.status(200).json({
       result: {
-        role_content_system: role_content_system,
+        role_content_system: "***",
         welcome_message: welcome_message,
         querying: querying,
         generating: generating,
