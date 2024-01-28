@@ -1186,6 +1186,10 @@ export default function Home() {
       printOutput("Please use half-width colon (\":\").");
       return;
     }
+    if (!minimalist && input.startsWith("！")) {
+      printOutput("Please use half-width exclamation mark (\"!\").");
+      return;
+    }
 
     // Function CLI
     // Format: !function_name({ "arg1":"value1", "arg2":"value2", ... })

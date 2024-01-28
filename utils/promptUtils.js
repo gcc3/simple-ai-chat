@@ -9,6 +9,7 @@ import { findNode, queryNodeAI, isNodeConfigured } from "utils/nodeUtils";
 import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
 import { generateMidjourneyPrompt } from "utils/midjourneyUtils";
 import fetch from 'node-fetch';
+import { getLanguageName } from './langUtils.js';
 
 // Input output type
 const TYPE = {
@@ -39,7 +40,9 @@ export async function generateMessages(use_system_role, lang,
   let system_prompt = "";
   if (use_system_role && role_content_system !== "") {
     system_prompt += role_content_system;
-    system_prompt += "\n" + "User language: " + lang + "\n";
+
+    // User language, lang is the language code
+    system_prompt += "\n" + "User's browser language: " + getLanguageName(lang) + "\n";
 
     messages.push({ 
       role: "system",
