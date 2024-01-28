@@ -134,7 +134,7 @@ export function getFunctions(functions_ = null) {
         properties: {
           location: {
             type: "string",
-            description: "The city and state, e.g. San Francisco, CA. If the city is not in English, translate it to English first.",
+            description: "The city and state, e.g. San Francisco, CA. Location cannot include an area name, must be a city name. The city name must be English.",
           }
         },
         required: ["location"],
