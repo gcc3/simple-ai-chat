@@ -5,7 +5,7 @@ import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
 import command, { getHistoryCommand, getHistoryCommandIndex, pushCommandHistory } from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
-import { setTheme, getThemes } from "utils/themeUtils.js";
+import { setTheme } from "utils/themeUtils.js";
 import { setRtl } from "utils/rtlUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen } from "../states/fullscreenSlice.js";
@@ -31,6 +31,7 @@ import { useTranslation } from 'react-i18next';
 import { getFunctions } from "function";
 import { simulateKeyPress } from "utils/keyboardUtils";
 import { getSettings } from "utils/settingsUtils";
+import { getAutoCompleteOptions } from "utils/autocompleteUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -1784,253 +1785,41 @@ export default function Home() {
 
       // Auto complete
       if (elInput.value.startsWith(":")) {
-        // Auto complete :function use
-        if (elInput.value.startsWith(":function use ")) {
-          const nameToBeComleted = elInput.value.replace(":function use ", "").replace(/^\"+/, '').replace(/\"$/, '');
-          if (nameToBeComleted) {
-            const founds = getFunctions().filter((f) => f.name.startsWith(nameToBeComleted) || f.friendly_name.startsWith(nameToBeComleted));
-            if (founds.length > 0) {
-              const f = founds[0];
-              if (f.name.startsWith(nameToBeComleted)) setInput(":function use \"" + f.name + "\"");
-              if (f.friendly_name.startsWith(nameToBeComleted)) setInput(":function use \"" + f.friendly_name + "\"");
+        const autocomplete = async (prefix, useQuates = false) => {
+          if (elInput.value.startsWith(prefix)) {
+            const nameToBeComleted = elInput.value.replace(prefix, "").replace(/^\"+/, '').replace(/\"$/, '');
+            const options = await getAutoCompleteOptions(prefix, nameToBeComleted);
+            const matches = options.filter((o) => o.startsWith(nameToBeComleted));
+            if (matches.length > 0) {
+              const complation = useQuates ? "\"" + matches[0] + "\"" : matches[0];
+              setInput(prefix + complation);
               reAdjustInputHeight();
-              return;
             }
           }
         }
 
-        // Auto complete :function unuse
-        if (elInput.value.startsWith(":function unuse ")) {
-          const nameToBeComleted = elInput.value.replace(":function unuse ", "").replace(/^\"+/, '').replace(/\"$/, '');
-          if (nameToBeComleted) {
-            const founds = getFunctions().filter((f) => f.name.startsWith(nameToBeComleted) || f.friendly_name.startsWith(nameToBeComleted));
-            if (founds.length > 0) {
-              const f = founds[0];
-              if (f.name.startsWith(nameToBeComleted)) setInput(":function unuse \"" + f.name + "\"");
-              if (f.friendly_name.startsWith(nameToBeComleted)) setInput(":function unuse \"" + f.friendly_name + "\"");
-              reAdjustInputHeight();
-              return;
-            }
-          }
-        }
-
-        // Auto complete :role use
-        if (elInput.value.startsWith(":role use ")) {
-          const nameToBeComleted = elInput.value.replace(":role use ", "").replace(/^\"+/, '').replace(/\"$/, '');
-          if (nameToBeComleted) {
-            const response = await fetch("/api/role/list");
-            const data = await response.json();
-            if (response.status === 200 && data.success) {
-              const role = [].concat(data.result.user_roles, data.result.system_roles).flat()
-                             .find((n) => n.role.startsWith(nameToBeComleted));
-              if (role) {
-                setInput(":role use \"" + role.role + "\"");
-                reAdjustInputHeight();
-                return;
-              }
-            }
-          }
-        }
-
-        // Auto complete :store use
-        if (elInput.value.startsWith(":store use ")) {
-          const nameToBeComleted = elInput.value.replace(":store use ", "").replace(/^\"+/, '').replace(/\"$/, '');
-          if (nameToBeComleted) {
-            const response = await fetch("/api/store/list");
-            const data = await response.json();
-            if (response.status === 200 && data.success) {
-              const store = [].concat(data.result.user_stores, data.result.group_stores, data.result.system_stores).flat()
-                              .find((n) => n.name.startsWith(nameToBeComleted));
-              if (store) {
-                setInput(":store use \"" + store.name + "\"");
-                reAdjustInputHeight();
-                return;
-              }
-            }
-          }
-        }
-
-        // Auto complete :node use
-        if (elInput.value.startsWith(":node use ")) {
-          const nameToBeComleted = elInput.value.replace(":node use ", "").replace(/^\"+/, '').replace(/\"$/, '');
-          if (nameToBeComleted) {
-            const response = await fetch("/api/node/list");
-            const data = await response.json();
-            if (response.status === 200 && data.success) {
-              const node = [].concat(data.result.user_nodes, data.result.group_nodes, data.result.system_nodes).flat()
-                             .find((n) => n.name.startsWith(nameToBeComleted));
-              if (node) {
-                setInput(":node use \"" + node.name + "\"");
-                reAdjustInputHeight();
-                return;
-              }
-            }
-          }
-        }
-
-        // Auto complete :theme
-        if (elInput.value.startsWith(":theme ")) {
-          const nameToBeComleted = elInput.value.replace(":theme ", "");
-          if (nameToBeComleted) {
-            const theme = getThemes().find((n) => n.startsWith(nameToBeComleted));
-            if (theme) {
-              setInput(":theme " + theme);
-              reAdjustInputHeight();
-              return;
-            }
-          }
-        }
-
-        // Auto complete :use
-        if (elInput.value.startsWith(":use ")) {
-          const nameToBeComleted = elInput.value.replace(":use ", "").replace(/^\"+/, '').replace(/\"$/, '');
-          if (nameToBeComleted) {
-            // Get functions
-            const founds = getFunctions().filter((f) => f.name.startsWith(nameToBeComleted) || f.friendly_name.startsWith(nameToBeComleted));
-            if (founds.length > 0) {
-              const f = founds[0];
-              if (f.name.startsWith(nameToBeComleted)) setInput(":use \"" + f.name + "\"");
-              if (f.friendly_name.startsWith(nameToBeComleted)) setInput(":use \"" + f.friendly_name + "\"");
-              reAdjustInputHeight();
-              return;
-            }
-
-            // Get node
-            const responseNode = await fetch("/api/node/list");
-            const dataNode = await responseNode.json();
-            if (responseNode.status === 200 && dataNode.success) {
-              const node = [].concat(dataNode.result.user_nodes, dataNode.result.group_nodes, dataNode.result.system_nodes).flat()
-                             .find((n) => n.name.startsWith(nameToBeComleted));
-              if (node) {
-                setInput(":use \"" + node.name + "\"");
-                reAdjustInputHeight();
-                return;
-              }
-            }
-
-            // Get store
-            const responseStore = await fetch("/api/store/list");
-            const dataStore = await responseStore.json();
-            if (responseStore.status === 200 && dataStore.success) {
-              const store = [].concat(dataStore.result.user_stores, dataStore.result.group_stores, dataStore.result.system_stores).flat()
-                              .find((n) => n.name.startsWith(nameToBeComleted));
-              if (store) {
-                setInput(":use \"" + store.name + "\"");
-                reAdjustInputHeight();
-                return;
-              }
-            }
-
-            // Get role
-            const responseRole = await fetch("/api/role/list");
-            const dataRole = await responseRole.json();
-            if (responseRole.status === 200 && dataRole.success) {
-              const role = [].concat(dataRole.result.user_roles, dataRole.result.system_roles).flat()
-                             .find((n) => n.role.startsWith(nameToBeComleted));
-              if (role) {
-                setInput(":use \"" + role.role + "\"");
-                reAdjustInputHeight();
-                return;
-              }
-            }
-          }
-        }
-
-        // Auto complete :unuse
-        if (elInput.value.startsWith(":unuse ")) {
-          const nameToBeComleted = elInput.value.replace(":unuse ", "").replace(/^\"+/, '').replace(/\"$/, '');
-          if (nameToBeComleted) {
-            // Get functions
-            const founds = getFunctions().filter((f) => f.name.startsWith(nameToBeComleted) || f.friendly_name.startsWith(nameToBeComleted));
-            if (founds.length > 0) {
-              const f = founds[0];
-              if (f.name.startsWith(nameToBeComleted)) setInput(":unuse \"" + f.name + "\"");
-              if (f.friendly_name.startsWith(nameToBeComleted)) setInput(":unuse \"" + f.friendly_name + "\"");
-              reAdjustInputHeight();
-              return;
-            }
-
-            // Get node
-            const responseNode = await fetch("/api/node/list");
-            const dataNode = await responseNode.json();
-            if (responseNode.status === 200 && dataNode.success) {
-              const node = [].concat(dataNode.result.user_nodes, dataNode.result.group_nodes, dataNode.result.system_nodes).flat()
-                             .find((n) => n.name.startsWith(nameToBeComleted));
-              if (node) {
-                setInput(":unuse \"" + node.name + "\"");
-                reAdjustInputHeight();
-                return;
-              }
-            }
-
-            // Get store
-            const responseStore = await fetch("/api/store/list");
-            const dataStore = await responseStore.json();
-            if (responseStore.status === 200 && dataStore.success) {
-              const store = [].concat(dataStore.result.user_stores, dataStore.result.group_stores, dataStore.result.system_stores).flat()
-                              .find((n) => n.name.startsWith(nameToBeComleted));
-              if (store) {
-                setInput(":unuse \"" + store.name + "\"");
-                reAdjustInputHeight();
-                return;
-              }
-            }
-
-            // Get role
-            const responseRole = await fetch("/api/role/list");
-            const dataRole = await responseRole.json();
-            if (responseRole.status === 200 && dataRole.success) {
-              const role = [].concat(dataRole.result.user_roles, dataRole.result.system_roles).flat()
-                             .find((n) => n.role.startsWith(nameToBeComleted));
-              if (role) {
-                setInput(":unuse \"" + role.role + "\"");
-                reAdjustInputHeight();
-                return;
-              }
-            }
-          }
-        }
-
-        // Auto complete :lang use
-        if (elInput.value.startsWith(":lang use ")) {
-          const nameToBeComleted = elInput.value.replace(":lang use ", "");
-          if (nameToBeComleted) {
-            const langCode = getLangCodes().find((n) => n.startsWith(nameToBeComleted));
-            if (langCode) {
-              setInput(":lang use " + langCode);
-              reAdjustInputHeight();
-              return;
-            }
-          }
-        }
-
-        // Auto complete :user set
-        if (elInput.value.startsWith(":user set ")) {
-          const nameToBeComleted = elInput.value.replace(":user set ", "");
-          if (nameToBeComleted) {
-            const availableSettings = getSettings("keys_string_array_user");
-            const key = availableSettings.find((n) => n.startsWith(nameToBeComleted));
-            if (key) {
-              setInput(":user set " + key);
-              reAdjustInputHeight();
-              return;
-            }
-          }
-        }
-
-        // Auto complete :set
-        if (elInput.value.startsWith(":set ")) {
-          const nameToBeComleted = elInput.value.replace(":set ", "");
-          if (nameToBeComleted) {
-            const availableSettings = getSettings("keys_string_array_local");
-            const key = availableSettings.find((n) => n.startsWith(nameToBeComleted));
-            if (key) {
-              setInput(":set " + key);
-              reAdjustInputHeight();
-              return;
-            }
-          }
-        }
+        // Try auto complete
+        autocomplete(":role ", true);
+        autocomplete(":role use ", true);
+        autocomplete(":role unuse ", true);
+        autocomplete(":store ", true);
+        autocomplete(":store use ", true);
+        autocomplete(":store unuse ", true);
+        autocomplete(":store init ", true);
+        autocomplete(":store data reset ", true);
+        autocomplete(":store delete ", true);
+        autocomplete(":node ", true);
+        autocomplete(":node use ", true);
+        autocomplete(":node delete ", true);
+        autocomplete(":theme ");
+        autocomplete(":lang use ");
+        autocomplete(":user set ");
+        autocomplete(":set ");
+        autocomplete(":function use ", true);
+        autocomplete(":function unuse ", true);
+        autocomplete(":use ", true);
+        autocomplete(":unuse ", true);
+        autocomplete(":voice use ", true);
       }
     }
   };

@@ -128,7 +128,7 @@ export function getFunctions(functions_ = null) {
     functions.push({
       name: 'get_weather',
       friendly_name: 'Weather',
-      description: 'Get current weather for a given location or city, e.g. San Francisco, CA.',
+      description: 'Get current weather for a given location or city, e.g. San Francisco, CA. When using this function, the location must be provided, if not provided ask user to provide first.',
       parameters: {
         type: "object",
         properties: {
