@@ -841,7 +841,7 @@ export default function Home() {
         // Set welcome message
         if (systemInfo.welcome_message && !localStorage.getItem("user")) {
           if (systemInfo.welcome_message === "default") {
-            printOutput(t("welcome"))
+            printOutput(t("welcome") + "\n\n" + t("quick_start"))
           } else {
             printOutput(systemInfo.welcome_message);
           }
