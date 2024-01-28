@@ -39,6 +39,7 @@ export default async function (req, res) {
   const location = req.query.location || "";
   const images_ = req.query.images || "";
   const files_ = req.query.files || "";
+  const lang = req.query.lang || "en-US";
   const use_system_role = req.query.use_system_role === "true" ? true : false;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -165,7 +166,8 @@ export default async function (req, res) {
     }
 
     // Configuration info
-    console.log("--- configuration info ---\n" 
+    console.log("--- configuration info ---\n"
+    + "lang: " + lang + "\n"
     + "model: " + model + "\n"
     + "temperature: " + temperature + "\n"
     + "top_p: " + top_p + "\n"
@@ -250,7 +252,7 @@ export default async function (req, res) {
 
     // Message base
     updateStatus("Start pre-generating...");
-    const generateMessagesResult = await generateMessages(use_system_role, 
+    const generateMessagesResult = await generateMessages(use_system_role, lang,
                                                           user, model, input, inputType, files, images, 
                                                           session, mem_length,
                                                           role, store, node, 

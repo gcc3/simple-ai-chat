@@ -1347,6 +1347,7 @@ export default function Home() {
     const use_location = localStorage.getItem("useLocation");
     const location = localStorage.getItem("location");
 
+    const lang = localStorage.getItem("lang").replace("force", "").trim();
     const use_system_role = localStorage.getItem("useSystemRole");
 
     // Vision: Will automatically use vision model if there is any image
@@ -1365,6 +1366,7 @@ export default function Home() {
       location: location,
       images: images,
       files: files,
+      lang: lang,
       use_system_role: use_system_role,
     };
     
@@ -1383,6 +1385,7 @@ export default function Home() {
                                                            + "&location=" + location
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
                                                            + "&files=" + files.join(encodeURIComponent("###"))
+                                                           + "&lang=" + lang
                                                            + "&use_system_role=" + use_system_role);
 
     let done_evaluating = false;
@@ -1655,6 +1658,7 @@ export default function Home() {
       use_eval: localStorage.getItem("useEval"),
       use_location: localStorage.getItem("useLocation"),
       location: localStorage.getItem("location"),
+      lang: localStorage.getItem("lang").replace("force", "").trim(),
       use_system_role: localStorage.getItem("useSystemRole"),
     };
     console.log("Config: " + JSON.stringify(config));
@@ -2000,10 +2004,24 @@ export default function Home() {
         if (elInput.value.startsWith(":user set ")) {
           const nameToBeComleted = elInput.value.replace(":user set ", "");
           if (nameToBeComleted) {
-            const availableSettings = getSettings("keys_string_array");
+            const availableSettings = getSettings("keys_string_array_user");
             const key = availableSettings.find((n) => n.startsWith(nameToBeComleted));
             if (key) {
               setInput(":user set " + key);
+              reAdjustInputHeight();
+              return;
+            }
+          }
+        }
+
+        // Auto complete :set
+        if (elInput.value.startsWith(":set ")) {
+          const nameToBeComleted = elInput.value.replace(":set ", "");
+          if (nameToBeComleted) {
+            const availableSettings = getSettings("keys_string_array_local");
+            const key = availableSettings.find((n) => n.startsWith(nameToBeComleted));
+            if (key) {
+              setInput(":set " + key);
               reAdjustInputHeight();
               return;
             }
