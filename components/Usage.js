@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback } from "react";
+import React, { useEffect, useState, useCallback, Suspense } from "react";
 import ProgressBar from "./ProgressBar";
 import { refreshUserInfo, getRoleLevel, getUserInfo } from "utils/userUtils";
 import PayPalButton from "./PayPalButton";
@@ -293,12 +293,14 @@ function Usage() {
   )
 
   return (
-    <div className="Subcription">
-      <div className="text-center mb-4">
-        <div>{ t("Usage") }</div>
+    <Suspense fallback={<div>Loading...</div>}>
+      <div className="Subcription">
+        <div className="text-center mb-4">
+          <div>{ t("Usage") }</div>
+        </div>
+        <div>{content}</div>
       </div>
-      <div>{content}</div>
-    </div>
+    </Suspense>
   );
 }
 
