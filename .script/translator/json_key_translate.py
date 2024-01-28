@@ -25,6 +25,7 @@ def translate(text, target_language_name):
                          + "2. Don't translate word \"Midjourney\", keep it.\n"
                          + "3. Don't translate word \"GPT-4 Vision\", keep it.\n"
                          + "4. Don't translate word \"GPT-4 Turbo\", keep it.\n"
+                         + "5. Don't translate word \"token\", keep it.\n"
             },
             {
                 "role": "user",
