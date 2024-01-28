@@ -26,7 +26,7 @@ function Usage() {
   const [amount, setAmount] = useState(0);
   const [bankingFee, setBankingFee] = useState(0);
 
-  const { t } = useTranslation("usage");
+  const { t, ready } = useTranslation("usage");
 
   const onSuccess = useCallback(async (details) => {
     console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
@@ -292,6 +292,7 @@ function Usage() {
     </>
   )
 
+  if (!ready) return <div></div>;
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="Subcription">
