@@ -2,6 +2,7 @@ import { countChatsForIP, countChatsForUser, countTokenForUserByModel } from './
 import { getRoleFequencyLimit, gpt4FeeCal, gpt4vFeeCal, dbFeeCal, plusFeeCal } from './usageUtils';
 
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
+const free_chat_limit = parseInt(process.env.FREE_CHAT_LIMIT);
 
 // User access control utilities
 export async function getUacResult(user, ip) {
@@ -13,7 +14,7 @@ export async function getUacResult(user, ip) {
 
     // Forbidden as noticed some user user can use fake IP to bypass the limit
     // But if user cannot chat, it will be inconvenient... temporarily enabled.
-    if (chatCount >= 30) {
+    if (chatCount >= free_chat_limit) {
       return {
         success: false,
         error: "Please register as a `user` to continue. If you are already a member, please log in using `:user login [username] [password]`.<br><br>To register as a user. Use command `:user add [username] [email] [password?]` (no brackets needed). Example: `:user add john xxxx@zzzz.vv ********`."
