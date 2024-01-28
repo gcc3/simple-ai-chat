@@ -42,7 +42,7 @@ export async function generateMessages(use_system_role, lang,
     system_prompt += role_content_system;
 
     // User language, lang is the language code
-    system_prompt += "\n" + "User's browser language: " + getLanguageName(lang) + "\n";
+    system_prompt += "\n" + "User's language: " + getLanguageName(lang) + "\n";
 
     messages.push({ 
       role: "system",
