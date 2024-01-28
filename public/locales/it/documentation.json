@@ -133,5 +133,11 @@
   "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Uscita dall'area di inserimento o casella di inserimento vuota (per ↓). Generazione non in corso.",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Uscito dall'area di input o il campo di inserimento è vuoto (per ↑). Non è in corso la generazione.",
   "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Fuori fuoco dall'area di input o casella di immissione vuota (per ←). Nessuna generazione in corso.",
-  "Next session.": "Prossima sessione."
+  "Next session.": "Prossima sessione.",
+  "Cursor focused on the input area. Input area not empty.": "Cursore focalizzato sull'area di input. Area di input non vuota.",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a next command in command history.": "Il cursore è focalizzato sull'area di inserimento. L'input corrente inizia con `:`. C'è un comando successivo nella cronologia dei comandi.",
+  "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "Il cursore è posizionato sull'area di input. Comando inserito. Digita i caratteri iniziali del valore.",
+  "Unfocus cursor from the input box.": "Rimuovi il focus dal campo di inserimento.",
+  "Cursor is focused on the input area. Input area is empty/cleared.": "Il cursore è posizionato sull'area di inserimento. L'area di inserimento è vuota/pulita.",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "Il cursore è posizionato sull'area di input. L'input corrente inizia con `:`. C'è un comando precedente nella cronologia dei comandi."
 }

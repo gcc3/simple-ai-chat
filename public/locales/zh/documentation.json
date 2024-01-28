@@ -133,5 +133,11 @@
   "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "从输入区域失焦或输入框为空（↓）。不在生成过程中。",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "从输入区域失焦或输入框为空（↑）。没有正在生成。",
   "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "未聚焦输入区域或输入框为空（←）。不在生成过程中。",
-  "Next session.": "下一次会话。"
+  "Next session.": "下一次会话。",
+  "Cursor focused on the input area. Input area not empty.": "光标聚焦在输入区域。输入区域不为空。",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a next command in command history.": "光标聚焦在输入区域。当前输入以 `:` 开始。命令历史中有下一个命令。",
+  "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "光标聚焦在输入区域。已输入命令。输入值的开始字符。",
+  "Unfocus cursor from the input box.": "将光标从输入框中移开。",
+  "Cursor is focused on the input area. Input area is empty/cleared.": "光标聚焦在输入区域。输入区域为空/已清空。",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "光标聚焦在输入区域。当前输入以`:`开始。命令历史中有之前的命令。"
 }

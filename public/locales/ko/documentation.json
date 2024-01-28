@@ -133,5 +133,11 @@
   "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "입력 영역에서 포커스를 벗어났거나 입력 상자가 비어 있습니다(↓). 생성 진행 중이 아닙니다.",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "입력 영역에서 포커스가 벗어났거나 입력 상자가 비어 있습니다(위쪽을 위해). 생성 진행 중이 아닙니다.",
   "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "입력 영역에서 포커스가 벗어났거나 입력 상자가 비어 있습니다(←). 생성이 진행 중이 아닙니다.",
-  "Next session.": "다음 세션."
+  "Next session.": "다음 세션.",
+  "Cursor focused on the input area. Input area not empty.": "커서가 입력 영역에 초점을 맞추고 있습니다. 입력 영역이 비어 있지 않습니다.",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a next command in command history.": "커서가 입력 영역에 초점을 맞추고 있습니다. 현재 입력은 `:`으로 시작합니다. 명령어 기록에 다음 명령이 있습니다.",
+  "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "커서가 입력 영역에 초점을 맞추고 있습니다. 명령이 입력되었습니다. 값의 시작 문자를 입력하세요.",
+  "Unfocus cursor from the input box.": "입력 상자에서 커서를 해제하세요.",
+  "Cursor is focused on the input area. Input area is empty/cleared.": "커서가 입력 영역에 초점을 맞추고 있습니다. 입력 영역이 비어 있거나 지워졌습니다.",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "커서가 입력 영역에 초점을 맞추고 있습니다. 현재 입력은 `:`으로 시작합니다. 명령어 기록에 이전 명령어가 있습니다."
 }

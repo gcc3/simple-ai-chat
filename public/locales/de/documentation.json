@@ -133,5 +133,11 @@
   "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Der Fokus wurde vom Eingabebereich entfernt oder das Eingabefeld ist leer (für ↓). Keine laufende Generierung.",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Der Fokus wurde vom Eingabebereich entfernt oder das Eingabefeld ist leer (für ↑). Keine Generierung läuft.",
   "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Nicht fokussiert vom Eingabebereich oder Eingabefeld ist leer (für ←). Generierung nicht in Bearbeitung.",
-  "Next session.": "Nächste Sitzung."
+  "Next session.": "Nächste Sitzung.",
+  "Cursor focused on the input area. Input area not empty.": "Der Cursor ist auf das Eingabefeld fokussiert. Das Eingabefeld ist nicht leer.",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a next command in command history.": "Der Cursor ist auf das Eingabefeld fokussiert. Die aktuelle Eingabe beginnt mit `:`. Es gibt einen nächsten Befehl im Befehlsverlauf.",
+  "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "Der Cursor ist auf das Eingabefeld fokussiert. Befehl eingegeben. Geben Sie die Anfangszeichen des Wertes ein.",
+  "Unfocus cursor from the input box.": "Den Cursor aus dem Eingabefeld entfernen.",
+  "Cursor is focused on the input area. Input area is empty/cleared.": "Der Cursor ist auf das Eingabefeld fokussiert. Das Eingabefeld ist leer/zurückgesetzt.",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "Der Cursor ist auf das Eingabefeld fokussiert. Die aktuelle Eingabe beginnt mit `:`. Es gibt einen vorherigen Befehl im Befehlsverlauf."
 }

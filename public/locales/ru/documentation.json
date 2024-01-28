@@ -133,5 +133,11 @@
   "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "Переключение фокуса с поля ввода или поле ввода пустое (для ↓). Генерация не выполняется.",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "Фокус с поля ввода снят или поле ввода пусто (для ↑). Генерация не выполняется.",
   "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "Убран фокус с поля ввода или текстовое поле пусто (для ←). Генерация не выполняется.",
-  "Next session.": "Следующая сессия."
+  "Next session.": "Следующая сессия.",
+  "Cursor focused on the input area. Input area not empty.": "Курсор установлен в области ввода. Область ввода не пуста.",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a next command in command history.": "Курсор установлен в области ввода. Текущий ввод начинается с `:`. В истории команд есть следующая команда.",
+  "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "Курсор установлен в области ввода. Команда введена. Введите начальные символы значения.",
+  "Unfocus cursor from the input box.": "Уберите фокус с поля ввода.",
+  "Cursor is focused on the input area. Input area is empty/cleared.": "Курсор установлен в области ввода. Область ввода пуста/очищена.",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "Курсор установлен в области ввода. Текущий ввод начинается с `:`. В истории команд есть предыдущая команда."
 }

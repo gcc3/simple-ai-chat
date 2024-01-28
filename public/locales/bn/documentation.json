@@ -133,5 +133,11 @@
   "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "ইনপুট এরিয়া থেকে অমনোযোগী অথবা ইনপুট বক্স খালি আছে (↓ এর জন্য)। জেনারেট করা চলছে না।",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "ইনপুট এরিয়া থেকে অনিবন্ধিত অথবা ইনপুট বক্স খালি রয়েছে (↑ এর জন্য)। জেনারেটিং প্রক্রিয়া চলমান নেই।",
   "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "ইনপুট এরিয়া থেকে মনোনিবেশ নেই অথবা ইনপুট বক্স খালি আছে (← এর জন্য)। জেনারেটিং প্রক্রিয়া চলছে না।",
-  "Next session.": "পরবর্তী অধিবেশন।"
+  "Next session.": "পরবর্তী অধিবেশন।",
+  "Cursor focused on the input area. Input area not empty.": "কার্সর ইনপুট এলাকায় ফোকাস করা আছে। ইনপুট এলাকা খালি নয়।",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a next command in command history.": "কার্সর ইনপুট এরিয়াতে ফোকাস করা আছে। বর্তমান ইনপুট `:` দিয়ে শুরু হয়েছে। কমান্ড হিস্টরিতে পরবর্তী কমান্ড আছে।",
+  "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "কার্সর ইনপুট এলাকায় ফোকাস করা হয়েছে। কমান্ড ইনপুট করা হয়েছে। মানের শুরুর অক্ষরগুলি টাইপ করুন।",
+  "Unfocus cursor from the input box.": "ইনপুট বক্স থেকে কার্সর সরান",
+  "Cursor is focused on the input area. Input area is empty/cleared.": "কার্সর ইনপুট এলাকায় ফোকাস করা আছে। ইনপুট এলাকা খালি/পরিষ্কার করা হয়েছে।",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "কার্সর ইনপুট এরিয়াতে ফোকাস করা আছে। বর্তমান ইনপুট `:` দিয়ে শুরু হয়েছে। কমান্ড হিস্ট্রিতে আগের কমান্ড আছে।"
 }

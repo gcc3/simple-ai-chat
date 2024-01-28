@@ -133,5 +133,11 @@
   "Unfocused from the input area or input box is empty (for ↓). Not generating in progress.": "入力エリアからフォーカスが外れているか、入力ボックスが空です(↓)。生成中ではありません。",
   "Unfocused from the input area or input box is empty (for ↑). Not generating in progress.": "入力エリアからフォーカスが外れたか、入力ボックスが空です（上記のため）。生成進行中ではありません。",
   "Unfocused from the input area or input box is empty (for ←). Not generating in progress.": "入力エリアからフォーカスが外れているか、入力ボックスが空です（←）。進行中の生成ではありません。",
-  "Next session.": "次のセッション。"
+  "Next session.": "次のセッション。",
+  "Cursor focused on the input area. Input area not empty.": "カーソルが入力エリアにフォーカスされています。入力エリアは空ではありません。",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a next command in command history.": "カーソルは入力エリアにフォーカスされています。現在の入力は `:` で始まります。コマンド履歴に次のコマンドがあります。",
+  "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "カーソルが入力エリアにフォーカスされています。コマンドが入力されました。値の最初の文字を入力してください。",
+  "Unfocus cursor from the input box.": "入力ボックスからカーソルを外す。",
+  "Cursor is focused on the input area. Input area is empty/cleared.": "カーソルは入力エリアにフォーカスされています。入力エリアは空です／クリアされています。",
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "カーソルは入力エリアにフォーカスされています。現在の入力は `:` で始まります。コマンド履歴には前のコマンドがあります。"
 }
