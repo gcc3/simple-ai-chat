@@ -1,8 +1,6 @@
 import sqlite3 from "sqlite3";
 import { promises as fs } from "fs";
 import { formatUnixTimestamp, getTimestamp } from "./timeUtils.js";
-import { generatePassword } from "./userUtils.js";
-import { getInitialSettings } from "./settingsUtils.js";
 import { getSettings } from "./settingsUtils.js";
 
 const createDatabaseFile = () => {
@@ -177,7 +175,7 @@ const getDatabaseConnection = async () => {
       await initializeDatabase(db);
 
       // Create root user with defatut settings
-      const settings = getInitialSettings("json_string", "light", "off");
+      const settings = getSettings("json_string", "light", "off");
 
       await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, settings);
       await updateUserEmailVerifiedAt("root");
