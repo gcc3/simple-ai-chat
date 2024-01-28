@@ -15,17 +15,6 @@
   font-style: normal;
 }
 
-:global {
-  :root {
-    --submit-rtl-right-offset: calc(50% + 22px);
-    --submit-rtl-left-offset: auto;
-    --dot-rtl-right-offset: 8px;
-    --dot-rtl-left-offset: auto;
-    --nav-rtl-right-margin: 10px;
-    --nav-rtl-left-margin: auto;
-  }
-}
-
 body {
   background-color: var(--background-color);
 }
