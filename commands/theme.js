@@ -34,5 +34,5 @@ export default async function theme(args) {
     }
   }
 
-  return "\`" + value + "\` theme applied.";
+  return;
 }
