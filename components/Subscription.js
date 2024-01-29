@@ -118,8 +118,8 @@ function Subscription() {
       <div className="mt-3">
         <div>- { t("Subscription plans") }</div>
         <div className="mt-1">
-          1. { t("`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)") }<br></br>
-          2. { t("`pro_user`: provide advanced features and support for professonal uses.") }<br></br>
+          1. { t("`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)") }<br></br>
+          2. { t("`pro_user`: provides advanced features and support for professional uses.") }<br></br>
           3. { t("`super_user`: provide accessibility for all latest features and support.") }<br></br>
         </div>
       </div>
