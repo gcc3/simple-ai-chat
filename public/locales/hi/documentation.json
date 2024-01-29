@@ -61,7 +61,7 @@
   "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "आप कंट्रोल कुंजी दबाकर मॉडल का नाम क्लिक कर सकते हैं, एक `:session attach` कमांड सेशन आईडी के साथ स्वचालित रूप से आपके क्लिपबोर्ड पर कॉपी कर दी जाएगी।",
   "Does Simple AI store my credit card information?": "क्या सिंपल एआई मेरी क्रेडिट कार्ड की जानकारी संग्रहीत करता है?",
   "No, we do not store any credit card numbers. Payments are securely processed through an embedded page provided by the payment service provider, and the information is sent directly to the banking system.": "नहीं, हम किसी भी क्रेडिट कार्ड नंबर को संग्रहित नहीं करते हैं। भुगतान सुरक्षित रूप से भुगतान सेवा प्रदाता द्वारा प्रदान किए गए एक एम्बेडेड पेज के माध्यम से संसाधित किए जाते हैं, और जानकारी सीधे बैंकिंग प्रणाली को भेजी जाती है।",
-  "More...": "और अधिक...",
+  "more...": "और अधिक...",
   "General": "सामान्य",
   "Session": "सत्र",
   "Stats & Self-evaluation": "आँकड़े और आत्म-मूल्यांकन",
