@@ -43,5 +43,11 @@
   "* For details of the usage fee, please refer to the Usage page.": "* For details of the usage fee, please refer to the Usage page.",
   "email_support_subscriptions": "* For enterprise use, please contact us at `<1><2>support@simple-ai.io</2></1>`.",
   "Usage Fee": "Usage Fee",
-  "You are the `root_user`.": "You are the `root_user`."
+  "You are the `root_user`.": "You are the `root_user`.",
+  "Unlimited": "Unlimited",
+  "Expired": "Expired",
+  "Extend 1 month for": "Extend 1 month for",
+  "day": "day",
+  "month": "month",
+  "banking fee {{bankingFee}} included": "banking fee {{bankingFee}} included"
 }

@@ -43,5 +43,11 @@
   "Image Generation (Midjourney)": "Beeldgeneratie (Midjourney)",
   "email_support_subscriptions": "Voor zakelijk gebruik, neem contact met ons op via `<1><2>support@simple-ai.io</2></1>`.",
   "Usage Fee": "Gebruiksvergoeding",
-  "You are the `root_user`.": "U bent de `root_user`."
+  "You are the `root_user`.": "U bent de `root_user`.",
+  "Expired": "Verlopen",
+  "Unlimited": "Onbeperkt",
+  "Extend 1 month for": "Verleng met 1 maand voor",
+  "day": "dag",
+  "month": "maand",
+  "banking fee {{bankingFee}} included": "bankkosten {{bankingFee}} inbegrepen"
 }
