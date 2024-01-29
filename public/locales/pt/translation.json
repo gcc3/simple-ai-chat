@@ -4,6 +4,17 @@
   "Usage": "Utilização",
   "Subcriptions": "Assinaturas",
   "Privacy Policy": "Política de Privacidade",
-  "welcome": "Bem-vindo ao Simple AI! 🚀 Uma alternativa ao ChatGPT, focada em oferecer uma melhor experiência ao usuário. Digite sua consulta e pressione enter para conversar com a IA.",
-  "quick_start": "Início Rápido:\n1. O Simple AI opera em uma interface de comandos e atalhos. Todos os comandos começam com `:`. Para registrar um usuário, use o comando `:user add [nome de usuário] [email] [senha?]`. Nota: Não inclua os colchetes no seu comando. ✅\nPor exemplo, `:user add john john@example.com ********`\n2. Para fazer login, use o comando `:login [nome de usuário] [senha]`. 🔑\n3. Esqueceu sua senha? Redefina-a usando o comando `:user reset pass [nome de usuário] [email]`. 🆘\n4. Para acessar a Documentação e confirmar o Uso, clique no ponto (•) no canto da tela. 📄\n5. Um conjunto de chats é chamado de `sessão`. Para navegar entre os registros em uma sessão, use as teclas de seta `⬅️` e `➡️`. 🗂️\n6. Para navegar entre históricos (sessões), use as teclas de seta `⬆️` e `⬇️`. 📜\n7. Alterne para tela cheia com `F11` (⌃F11 para macOS). Para tela dividida, use `Ctrl+|`. 🖥️\n8. Para mudar o tema, use `:theme [light|dark|terminal]` 🌈.\n9. A conta geral de `usuário` é gratuita, mas você tem que pagar pelos tokens da API OpenAI. Você pode gerenciar seu saldo de tokens na página de Uso. 💳\n10. Convide amigos usando o comando `:invite [email]`, e ambos receberão 100 mil tokens de prêmio! 💌"
+  "welcome": "Bem-vindo ao Simple AI (simple-ai.io)! 🚀 O Simple AI é um aplicativo de chat AI, uma alternativa ao ChatGPT, focado em fornecer uma experiência de usuário rápida e mais profissional. Digite sua consulta e pressione `Enter` para conversar com a IA.💬",
+  "quick_start": "Guia de Início Rápido:",
+  "quick_start_6": "Use `:use \"Midjourney\"` para habilitar a geração de imagens.⛵ Use `:use \"WolframAlpha\"` para habilitar matemática avançada.🏛️",
+  "quick_start_3": "Esqueceu sua senha? Redefina-a usando o comando `:user reset pass [username] [email]`.🆘",
+  "quick_start_10": "Convide amigos usando o comando `:invite [email]`, e ambos receberão 100 mil tokens de premiação!💌",
+  "quick_start_1": "Primeiro, registre um usuário com o comando `:user add [username] [email] [password?]`.🔑 Nota: Não inclua os colchetes no seu comando.✅ Por exemplo, `:user add john john@example.com ********`",
+  "quick_start_5": "Um conjunto de conversas é chamado de `session`. Para navegar entre os registros em uma `session`, use as teclas de seta `⬅️` e `➡️`. Ou deslize para a esquerda e para a direita em smartphones.📱 Para navegar entre `sessions`, use as teclas de seta `⬆️` e `⬇️`.",
+  "quick_start_8": "Para alterar o tema, use `:theme [light|dark|terminal]`.🌈",
+  "quick_start_0": "O Simple AI opera utilizando uma interface de comandos, atalhos e gestos. <strong>Os comandos todos começam com `:` (dois-pontos de meia largura).</strong>",
+  "quick_start_9": "Uma conta geral de `usuário` é gratuita, mas você deve pagar pelos tokens da API OpenAI. Você pode gerenciar seu saldo de tokens na página de Uso.💳",
+  "quick_start_2": "Para fazer login, use o comando `:login [nome de usuário] [senha]`.",
+  "quick_start_7": "Mude para tela cheia com `F11` (⌃F11 para macOS). Para tela dividida, use `Ctrl+|`.🖥️",
+  "quick_start_4": "Para acessar a Documentação e confirmar o Uso, clique no ponto (•) no canto da tela.📄"
 }

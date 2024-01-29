@@ -841,7 +841,20 @@ export default function Home() {
         // Set welcome message
         if (systemInfo.welcome_message && !localStorage.getItem("user")) {
           if (systemInfo.welcome_message === "default") {
-            printOutput(t("welcome") + "\n\n" + t("quick_start"))
+            const quickStart = t("quick_start") + "\n"
+                             + t("quick_start_0") + "\n"
+                             + "1. " + t("quick_start_1") + "\n"
+                             + "2. " + t("quick_start_2") + "\n"
+                             + "3. " + t("quick_start_3") + "\n"
+                             + "4. " + t("quick_start_4") + "\n"
+                             + "5. " + t("quick_start_5") + "\n"
+                             + "6. " + t("quick_start_6") + "\n"
+                             + "7. " + t("quick_start_7") + "\n"
+                             + "8. " + t("quick_start_8") + "\n"
+                             + "9. " + t("quick_start_9") + "\n"
+                             + "10. " + t("quick_start_10");
+            printOutput(t("welcome") + "\n\n" + quickStart);
+            markdownFormatter(elOutputRef.current);
           } else {
             printOutput(systemInfo.welcome_message);
           }
