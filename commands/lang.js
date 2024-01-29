@@ -24,6 +24,16 @@ export default async function lang(args) {
       newLangCode = newLangCode.slice(1, -1);
     }
 
+    // Try to complete the language code
+    if (newLangCode.length < 5) {
+      const langCodeCompletation = langCodes.filter(code => code.startsWith(newLangCode));
+      if (langCodeCompletation.length === 1) {
+        newLangCode = langCodeCompletation[0];
+      } else if (langCodeCompletation.length > 1) {
+        return "Multiple language codes found: " + langCodeCompletation.join(", ");
+      }
+    }
+
     if (langCodes.includes(newLangCode)) {
       localStorage.setItem("lang", newLangCode + " force");
       return "Language set to `" + getLanguageName(newLangCode) + "`, country-language code: " + newLangCode + ". Please refresh to see changes.";
