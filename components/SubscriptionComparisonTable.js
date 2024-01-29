@@ -6,7 +6,7 @@ import { useTranslation, Trans } from "react-i18next";
 function getPriceString(subscriptions, role, t) {
   let price = "";
   if (subscriptions.hasOwnProperty(role)) {
-    price = (Number(subscriptions[role].price) === 0 ? "Free" : "$" + subscriptions[role].price + "/" + t("month")) + " +" + t("Usage Fee");
+    price = (Number(subscriptions[role].price) === 0 ? t("Free") : "$" + subscriptions[role].price + "/" + t("month")) + " (+" + t("Usage Fee") + ")";
   }
   return price;
 }

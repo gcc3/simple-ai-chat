@@ -49,5 +49,6 @@
   "Extend 1 month for": "为期延长1个月",
   "day": "天",
   "month": "月",
-  "banking fee {{bankingFee}} included": "包含银行费用 {{bankingFee}}"
+  "banking fee {{bankingFee}} included": "包含银行费用 {{bankingFee}}",
+  "Free": "免费"
 }
