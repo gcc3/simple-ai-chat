@@ -24,6 +24,14 @@ export default async function lang(args) {
       newLangCode = newLangCode.slice(1, -1);
     }
 
+    // Try to complete the language code
+    if (newLangCode.length < 5) {
+      const langCodeCompletation = langCodes.find(code => code.startsWith(newLangCode));
+      if (langCodeCompletation) {
+        newLangCode = langCodeCompletation;
+      }
+    }
+
     if (langCodes.includes(newLangCode)) {
       localStorage.setItem("lang", newLangCode + " force");
       return "Language set to `" + getLanguageName(newLangCode) + "`, country-language code: " + newLangCode + ". Please refresh to see changes.";
