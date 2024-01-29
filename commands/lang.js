@@ -26,9 +26,11 @@ export default async function lang(args) {
 
     // Try to complete the language code
     if (newLangCode.length < 5) {
-      const langCodeCompletation = langCodes.find(code => code.startsWith(newLangCode));
-      if (langCodeCompletation) {
-        newLangCode = langCodeCompletation;
+      const langCodeCompletation = langCodes.filter(code => code.startsWith(newLangCode));
+      if (langCodeCompletation.length === 1) {
+        newLangCode = langCodeCompletation[0];
+      } else if (langCodeCompletation.length > 1) {
+        return "Multiple language codes found: " + langCodeCompletation.join(", ");
       }
     }
 
