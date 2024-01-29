@@ -28,6 +28,7 @@ def translate(text, target_language_name):
                          + "5. Don't translate word \"token\", keep it.\n"
                          + "6. Keep the HTML tag if it's in the text.\n"
                          + "7. Keep the escape charactors if it's in the text.\n"
+                         + "8. Don't translate command, a command starts with `:`, example: `:login [username] [password]`.\n"
             },
             {
                 "role": "user",
