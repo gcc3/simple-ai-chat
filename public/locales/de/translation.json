@@ -13,7 +13,7 @@
   "quick_start_5": "Eine Reihe von Chats wird als `session` bezeichnet. Um zwischen Protokollen in einer `session` zu navigieren, verwenden Sie die Pfeiltasten `⬅️` und `➡️`. Oder wischen Sie auf Smartphones nach links und rechts.📱 Um zwischen `sessions` zu navigieren, verwenden Sie die Pfeiltasten `⬆️` und `⬇️`.",
   "quick_start_1": "Zuerst registrieren Sie einen Benutzer mit dem Befehl `:user add [username] [email] [password?]`.🔑 Hinweis: Schließen Sie die Klammern nicht in Ihrem Befehl ein.✅ Zum Beispiel, `:user add john john@example.com ********`",
   "quick_start_2": "Um sich anzumelden, verwenden Sie den Befehl `:login [Benutzername] [Passwort]`.",
-  "quick_start_6": "Verwenden Sie `:use \"Midjourney\"`, um die Bildgenerierung zu aktivieren.⛵ Verwenden Sie `:use \"WolframAlpha\"`, um erweiterte Mathematik zu ermöglichen.🏛️ Tipps: Sie können die `Tab`-Taste verwenden, um die Autovervollständigung zu nutzen.💡",
+  "quick_start_6": "Nach dem Einloggen verwenden Sie `:use \"Midjourney\"`, um die Bildgenerierung zu aktivieren.⛵ Verwenden Sie `:use \"WolframAlpha\"`, um erweiterte Mathematik zu ermöglichen.🏛️ Tipps: Sie können die `Tab`-Taste verwenden, um die Autovervollständigung zu nutzen.💡",
   "quick_start_4": "Um auf die Dokumentation zuzugreifen und die Nutzung zu bestätigen, klicken Sie auf den Punkt (•) in der Bildschirmecke.📄",
   "quick_start_7": "Wechseln Sie mit `F11` in den Vollbildmodus (⌃F11 für macOS). Für geteilten Bildschirm verwenden Sie `Strg+|`.🖥️",
   "quick_start_0": "Simple AI funktioniert über eine Befehlsschnittstelle, Tastenkombinationen und Gesten. <strong>Befehle beginnen alle mit `:` (halbbreitem Doppelpunkt).</strong>"
