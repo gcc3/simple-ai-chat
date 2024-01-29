@@ -139,5 +139,7 @@
   "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "कर्सर इनपुट क्षेत्र पर केंद्रित है। कमांड दर्ज किया गया। मूल्य के प्रारंभिक अक्षरों को टाइप करें।",
   "Unfocus cursor from the input box.": "इनपुट बॉक्स से कर्सर को अनफोकस करें।",
   "Cursor is focused on the input area. Input area is empty/cleared.": "कर्सर इनपुट क्षेत्र पर केंद्रित है। इनपुट क्षेत्र खाली/साफ़ है।",
-  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "कर्सर इनपुट क्षेत्र पर केंद्रित है। वर्तमान इनपुट `:` से शुरू होता है। कमांड हिस्ट्री में पिछला कमांड मौजूद है।"
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "कर्सर इनपुट क्षेत्र पर केंद्रित है। वर्तमान इनपुट `:` से शुरू होता है। कमांड हिस्ट्री में पिछला कमांड मौजूद है।",
+  "Internationalization and localization": "अंतर्राष्ट्रीयकरण और स्थानीयकरण",
+  "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI 18 भाषाओं का समर्थन करता है: अरबी, बंगाली, चीनी, डच, अंग्रेजी, फ्रेंच, जर्मन, हिंदी, इंडोनेशियाई, इतालवी, जापानी, कोरियाई, पोलिश, पुर्तगाली, रूसी, स्पेनिश, स्वीडिश, तुर्की। कृपया हमें बताएं यदि आपको अपनी भाषा के लिए सहायता की आवश्यकता है।"
 }

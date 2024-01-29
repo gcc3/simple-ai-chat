@@ -139,5 +139,7 @@
   "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "光标聚焦在输入区域。已输入命令。输入值的开始字符。",
   "Unfocus cursor from the input box.": "将光标从输入框中移开。",
   "Cursor is focused on the input area. Input area is empty/cleared.": "光标聚焦在输入区域。输入区域为空/已清空。",
-  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "光标聚焦在输入区域。当前输入以`:`开始。命令历史中有之前的命令。"
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "光标聚焦在输入区域。当前输入以`:`开始。命令历史中有之前的命令。",
+  "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI支持18种语言：阿拉伯语、孟加拉语、中文、荷兰语、英语、法语、德语、印地语、印尼语、意大利语、日语、韩语、波兰语、葡萄牙语、俄语、西班牙语、瑞典语、土耳其语。如果您需要支持您的语言，请告知我们。",
+  "Internationalization and localization": "国际化与本地化"
 }

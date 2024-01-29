@@ -139,5 +139,7 @@
   "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "İmleç giriş alanına odaklandı. Komut girildi. Değerin başlangıç karakterlerini yazın.",
   "Unfocus cursor from the input box.": "Giriş kutusundan imleci kaldırın.",
   "Cursor is focused on the input area. Input area is empty/cleared.": "İmleç giriş alanına odaklanmış durumda. Giriş alanı boş/temizlendi.",
-  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "İmleç giriş alanına odaklanmış durumda. Mevcut giriş `:` ile başlıyor. Komut geçmişinde önceki bir komut var."
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "İmleç giriş alanına odaklanmış durumda. Mevcut giriş `:` ile başlıyor. Komut geçmişinde önceki bir komut var.",
+  "Internationalization and localization": "Uluslararasılaştırma ve yerelleştirme",
+  "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI, 18 dil desteklemektedir: Arapça, Bengalce, Çince, Felemenkçe, İngilizce, Fransızca, Almanca, Hintçe, Endonezce, İtalyanca, Japonca, Korece, Lehçe, Portekizce, Rusça, İspanyolca, İsveççe, Türkçe. Eğer kendi diliniz için destek ihtiyacınız varsa lütfen bize bildirin."
 }

@@ -139,5 +139,7 @@
   "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "Markören är fokuserad på inmatningsområdet. Kommando inmatat. Skriv starttecknen för värdet.",
   "Unfocus cursor from the input box.": "Flytta fokus från inmatningsrutan.",
   "Cursor is focused on the input area. Input area is empty/cleared.": "Markören är fokuserad på inmatningsområdet. Inmatningsområdet är tomt/rensad.",
-  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "Markören är fokuserad på inmatningsområdet. Den aktuella inmatningen börjar med `:`. Har ett tidigare kommando i kommandohistoriken."
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "Markören är fokuserad på inmatningsområdet. Den aktuella inmatningen börjar med `:`. Har ett tidigare kommando i kommandohistoriken.",
+  "Internationalization and localization": "Internationalisering och lokalisering",
+  "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI stöder 18 språk: arabiska, bengali, kinesiska, nederländska, engelska, franska, tyska, hindi, indonesiska, italienska, japanska, koreanska, polska, portugisiska, ryska, spanska, svenska, turkiska. Meddela oss om du behöver stöd för ditt språk."
 }
