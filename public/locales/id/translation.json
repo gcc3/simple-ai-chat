@@ -7,14 +7,14 @@
   "welcome": "Selamat datang di Simple AI (simple-ai.io)! 🚀 Simple AI adalah aplikasi chat AI, alternatif ChatGPT, yang berfokus pada penyediaan pengalaman pengguna yang cepat dan lebih profesional. Ketik pertanyaan Anda dan tekan `Enter` untuk mengobrol dengan AI.💬",
   "quick_start": "Panduan Memulai Cepat:",
   "quick_start_6": "Gunakan `:use \"Midjourney\"` untuk mengaktifkan pembuatan gambar.⛵ Gunakan `:use \"WolframAlpha\"` untuk mengaktifkan matematika yang lebih canggih.🏛️",
-  "quick_start_3": "Lupa password Anda? Atur ulang dengan menggunakan perintah `:user reset pass [username] [email]`.🆘",
+  "quick_start_3": "Lupa kata sandi Anda? Atur ulang menggunakan perintah `:user reset pass [username] [email]`.🆘",
   "quick_start_10": "Undang teman menggunakan perintah `:invite [email]`, dan kalian berdua akan menerima 100K token hadiah!💌",
   "quick_start_1": "Pertama, daftarkan pengguna dengan perintah `:user add [username] [email] [password?]`.🔑 Catatan: Jangan sertakan tanda kurung dalam perintah Anda.✅ Sebagai contoh, `:user add john john@example.com ********`",
   "quick_start_5": "Sebuah set percakapan disebut sebuah `session`. Untuk berpindah antar log dalam sebuah `session`, gunakan tombol panah `⬅️` dan `➡️`. Atau geser ke kiri dan ke kanan pada smartphone.📱 Untuk berpindah antara `session`, gunakan tombol panah `⬆️` dan `⬇️`.",
   "quick_start_8": "Untuk mengubah tema, gunakan `:theme [light|dark|terminal]`.🌈",
   "quick_start_0": "Simple AI beroperasi menggunakan antarmuka perintah, pintasan, dan gerakan. <strong>Perintah semua dimulai dengan `:` (titik dua setengah lebar).</strong>",
   "quick_start_9": "Akun `user` umum gratis, tetapi Anda harus membayar untuk token API OpenAI. Anda dapat mengelola saldo token Anda di halaman Penggunaan.💳",
-  "quick_start_2": "Untuk masuk, gunakan perintah `:login [nama pengguna] [kata sandi]`.",
+  "quick_start_2": "Untuk masuk, gunakan perintah `:login [username] [password]`.",
   "quick_start_7": "Beralih ke layar penuh dengan `F11` (⌃F11 untuk macOS). Untuk layar terbagi, gunakan `Ctrl+|`.🖥️",
   "quick_start_4": "Untuk mengakses Dokumentasi dan mengonfirmasi Penggunaan, klik titik (•) di sudut layar.📄"
 }

@@ -6,7 +6,7 @@
   "Privacy Policy": "Politica sulla Privacy",
   "welcome": "Benvenuti su Simple AI (simple-ai.io)! 🚀 Simple AI è un'applicazione di chat AI, un'alternativa a ChatGPT, focalizzata nel fornire un'esperienza utente rapida e più professionale. Digita la tua domanda e premi `Invio` per chattare con l'AI.💬",
   "quick_start": "Guida Rapida:",
-  "quick_start_6": "Usa `:use \"Midjourney\"` per abilitare la generazione di immagini.⛵ Usa `:use \"WolframAlpha\"` per abilitare funzionalità matematiche avanzate.🏛️",
+  "quick_start_6": "Usa `:use \"Midjourney\"` per abilitare la generazione di immagini.⛵ Usa `:use \"WolframAlpha\"` per abilitare matematica avanzata.🏛️",
   "quick_start_3": "Hai dimenticato la tua password? Reimpostala utilizzando il comando `:user reset pass [username] [email]`.🆘",
   "quick_start_10": "Invita amici utilizzando il comando `:invite [email]`, e entrambi riceverete 100K token premio!💌",
   "quick_start_1": "Prima, registra un utente con il comando `:user add [username] [email] [password?]`.🔑 Nota: Non includere le parentesi quadre nel tuo comando.✅ Ad esempio, `:user add john john@example.com ********`",
@@ -14,7 +14,7 @@
   "quick_start_8": "Per cambiare il tema, usa `:theme [light|dark|terminal]`.🌈",
   "quick_start_0": "Simple AI funziona tramite un'interfaccia a comandi, scorciatoie e gesti. <strong>I comandi iniziano tutti con `:` (due punti di larghezza ridotta).</strong>",
   "quick_start_9": "Un account `user` generico è gratuito, ma devi pagare per i token dell'API OpenAI. Puoi gestire il tuo saldo di token nella pagina Utilizzo.💳",
-  "quick_start_2": "Per effettuare l'accesso, usa il comando `:login [nome utente] [password]`.",
+  "quick_start_2": "Per effettuare l'accesso, utilizza il comando `:login [username] [password]`.",
   "quick_start_7": "Passa a schermo intero con `F11` (⌃F11 per macOS). Per lo schermo diviso, usa `Ctrl+|`.🖥️",
   "quick_start_4": "Per accedere alla Documentazione e confermare l'Utilizzo, clicca sul punto (•) nell'angolo dello schermo.📄"
 }
