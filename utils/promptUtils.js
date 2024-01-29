@@ -301,27 +301,14 @@ export async function generateMessages(use_system_role, lang,
             // the node input
             messages.pop();
 
-            // Give this image to ChatGPT
+            // Override the user input with images
             const fakeUserInput = "Evaluate this image, within 55 words."
-            messages.push({
-              "role": "user",
-              "content": [
-                {
-                  type: "text",
-                  text: fakeUserInput
-                },
-                {
-                  type: "image",
-                  image_url: {
-                    url: node_output_images[0]
-                  }
-                }
-              ]
-            });
-            input_images.push(node_output_images[0]);
+            input = fakeUserInput;
+            console.log("Override the user input: " + fakeUserInput);
 
-            // add to node prompt for token count
-            node_prompt += fakeUserInput;
+            // Override the input images
+            images = [node_output_images[0]];
+            console.log("Override the input images: " + JSON.stringify(images));
 
             // TODO, count image token
           } else {
@@ -344,7 +331,7 @@ export async function generateMessages(use_system_role, lang,
     // Count tokens
     token_ct["node"] = countToken(model, node_prompt);
     console.log("response: " + node_output);
-    if (node_output_images.length > 0) console.log("image: " + JSON.stringify(node_output_images));
+    if (node_output_images.length > 0) console.log("response images: " + JSON.stringify(node_output_images));
     console.log("");
   }
 
