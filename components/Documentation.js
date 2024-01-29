@@ -88,7 +88,7 @@ const Documentation = ({ country }) => {
             <div><a href="#features-stores">- <u>{ t("Data Stores") }</u></a></div>
             <div><a href="#features-nodes">- <u>{ t("Nodes (Node AI)") }</u></a></div>
             <div><a href="#features-mathematics-wolframalpha">- <u>{ t("Enhanced Knowledge & Mathematics (WolframAlpha)") }</u></a></div>
-            <div><a href="#features-more">- <u>{ t("More...") }</u></a></div>
+            <div><a href="#features-more">- <u>{ t("more...") }</u></a></div>
           </div>
         </div>
         <div>
@@ -349,7 +349,7 @@ const Documentation = ({ country }) => {
     </>
   )
 
-  if (!ready) return <div></div>;
+  if (!ready) return (<div><br></br></div>);
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="Documentation">

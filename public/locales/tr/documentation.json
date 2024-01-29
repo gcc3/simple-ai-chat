@@ -61,7 +61,7 @@
   "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control tuşuna basabilir ve model adının üzerine tıklayabilirsiniz, oturum kimliği ile birlikte bir `:session attach` komutu otomatik olarak panonuza kopyalanacaktır.",
   "Does Simple AI store my credit card information?": "Simple AI kredi kartı bilgilerimi saklar mı?",
   "No, we do not store any credit card numbers. Payments are securely processed through an embedded page provided by the payment service provider, and the information is sent directly to the banking system.": "Hayır, hiçbir kredi kartı numarası saklamıyoruz. Ödemeler, ödeme hizmet sağlayıcısı tarafından sağlanan gömülü bir sayfa üzerinden güvenle işlenir ve bilgiler doğrudan bankacılık sistemine gönderilir.",
-  "More...": "Daha fazla...",
+  "more...": "daha fazla...",
   "General": "Genel",
   "Session": "Oturum",
   "Stats & Self-evaluation": "İstatistikler & Öz-değerlendirme",

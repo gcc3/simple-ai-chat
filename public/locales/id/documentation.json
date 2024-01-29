@@ -61,7 +61,7 @@
   "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Anda dapat menekan tombol Control dan mengklik nama model, perintah `:session attach` dengan ID sesi akan secara otomatis disalin ke clipboard Anda.",
   "Does Simple AI store my credit card information?": "Apakah Simple AI menyimpan informasi kartu kredit saya?",
   "No, we do not store any credit card numbers. Payments are securely processed through an embedded page provided by the payment service provider, and the information is sent directly to the banking system.": "Tidak, kami tidak menyimpan nomor kartu kredit. Pembayaran diproses secara aman melalui halaman yang tertanam yang disediakan oleh penyedia layanan pembayaran, dan informasi tersebut dikirim langsung ke sistem perbankan.",
-  "More...": "Lebih banyak...",
+  "more...": "lebih lanjut...",
   "General": "Umum",
   "Session": "Sesi",
   "Stats & Self-evaluation": "Statistik & Evaluasi Diri",

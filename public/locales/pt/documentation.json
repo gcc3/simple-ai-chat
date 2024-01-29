@@ -61,7 +61,7 @@
   "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Você pode pressionar a tecla Control e clicar no nome do modelo, um comando `:session attach` com o ID da sessão será automaticamente copiado para a sua área de transferência.",
   "Does Simple AI store my credit card information?": "O Simple AI armazena as informações do meu cartão de crédito?",
   "No, we do not store any credit card numbers. Payments are securely processed through an embedded page provided by the payment service provider, and the information is sent directly to the banking system.": "Não, não armazenamos nenhum número de cartão de crédito. Os pagamentos são processados de forma segura através de uma página integrada fornecida pelo provedor de serviços de pagamento, e as informações são enviadas diretamente para o sistema bancário.",
-  "More...": "Mais...",
+  "more...": "mais...",
   "General": "Geral",
   "Session": "Sessão",
   "Stats & Self-evaluation": "Estatísticas & Autoavaliação",

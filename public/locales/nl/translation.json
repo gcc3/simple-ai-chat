@@ -4,6 +4,17 @@
   "Usage": "Gebruik",
   "Subcriptions": "Abonnementen",
   "Privacy Policy": "Privacybeleid",
-  "welcome": "Welkom bij Simple AI! 🚀 Een ChatGPT-alternatief, gericht op het bieden van een betere gebruikerservaring. Typ uw vraag en druk op enter om te chatten met de AI.",
-  "quick_start": "Snel Starten:\n1. Simple AI werkt op een commando-interface en sneltoetsen. Commando's beginnen allemaal met `:`. Om een gebruiker te registreren, gebruik je het commando `:user add [gebruikersnaam] [e-mail] [wachtwoord?]`. Let op: Voeg de haakjes niet toe aan je commando. ✅\nBijvoorbeeld, `:user add john john@example.com ********`\n2. Om in te loggen, gebruik je het commando `:login [gebruikersnaam] [wachtwoord]`. 🔑\n3. Wachtwoord vergeten? Reset het met het commando `:user reset pass [gebruikersnaam] [e-mail]`. 🆘\n4. Om de Documentatie te openen en Gebruik te bevestigen, klik op de stip (•) in de hoek van het scherm. 📄\n5. Een reeks chats wordt een `sessie` genoemd. Om tussen logs in een sessie te navigeren, gebruik je de `⬅️` en `➡️` pijltoetsen. 🗂️\n6. Om tussen geschiedenissen (sessies) te navigeren, gebruik je de `⬆️` en `⬇️` pijltoetsen. 📜\n7. Schakel over naar volledig scherm met `F11` (⌃F11 voor macOS). Voor gesplitst scherm, gebruik `Ctrl+|`. 🖥️\n8. Om het thema te veranderen, gebruik `:theme [licht|donker|terminal]` 🌈.\n9. Het algemene `user` account is gratis, maar je moet betalen voor OpenAI API tokens. Je kunt je token saldo beheren op de Gebruikspagina. 💳\n10. Nodig vrienden uit met het commando `:invite [e-mail]`, en jullie ontvangen beide 100K beloningstokens! 💌"
+  "welcome": "Welkom bij Simple AI (simple-ai.io)! 🚀 Simple AI is een AI-chatapplicatie, een alternatief voor ChatGPT, gericht op het bieden van een snelle en meer professionele gebruikerservaring. Typ uw vraag en druk op `Enter` om te chatten met de AI.💬",
+  "quick_start": "Snelstartgids:",
+  "quick_start_6": "Gebruik `:use \"Midjourney\"` om beeldgeneratie in te schakelen.⛵ Gebruik `:use \"WolframAlpha\"` om verbeterde wiskunde mogelijk te maken.🏛️",
+  "quick_start_3": "Wachtwoord vergeten? Stel het opnieuw in met het commando `:user reset pass [gebruikersnaam] [e-mail]`.🆘",
+  "quick_start_10": "Nodig vrienden uit met het commando `:invite [email]`, en jullie ontvangen beide 100K award tokens!💌",
+  "quick_start_1": "Registreer eerst een gebruiker met het commando `:user add [gebruikersnaam] [e-mail] [wachtwoord?]`.🔑 Let op: Voeg de haakjes niet toe aan uw commando.✅ Bijvoorbeeld, `:user add john john@example.com ********`",
+  "quick_start_5": "Een reeks chats wordt een `sessie` genoemd. Gebruik de `⬅️` en `➡️` pijltoetsen om tussen logs in een `sessie` te navigeren. Of veeg naar links en rechts op smartphones.📱 Om tussen `sessies` te navigeren, gebruik je de `⬆️` en `⬇️` pijltoetsen.",
+  "quick_start_8": "Om het thema te wijzigen, gebruik `:theme [light|dark|terminal]`.🌈",
+  "quick_start_0": "Simple AI werkt met een commando-interface, sneltoetsen en gebaren. <strong>Commando's beginnen allemaal met `:` (halve breedte dubbele punt).</strong>",
+  "quick_start_9": "Een algemeen `gebruiker` account is gratis, maar je moet betalen voor OpenAI API tokens. Je kunt je token saldo beheren op de Gebruikspagina.💳",
+  "quick_start_2": "Om in te loggen, gebruik het commando `:login [gebruikersnaam] [wachtwoord]`.",
+  "quick_start_7": "Schakel over naar volledig scherm met `F11` (⌃F11 voor macOS). Voor gesplitst scherm, gebruik `Ctrl+|`.🖥️",
+  "quick_start_4": "Om toegang te krijgen tot de Documentatie en het Gebruik te bevestigen, klik op de stip (•) in de hoek van het scherm.📄"
 }

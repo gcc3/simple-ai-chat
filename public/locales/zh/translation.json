@@ -4,6 +4,17 @@
   "Usage": "用量",
   "Subcriptions": "订阅",
   "Privacy Policy": "隐私政策",
-  "welcome": "欢迎来到Simple AI！🚀 一个ChatGPT的替代品，专注于提供更好的用户体验。输入您的查询并按回车键与AI聊天。",
-  "quick_start": "快速开始：\n1. Simple AI 基于命令界面和快捷方式操作。所有命令都以 `:` 开始。要注册用户，请使用命令 `:user add [用户名] [邮箱] [密码?]`。注意：在您的命令中不要包括方括号。✅\n例如，`:user add john john@example.com ********`\n2. 要登录，请使用命令 `:login [用户名] [密码]`。🔑\n3. 忘记密码了吗？使用命令 `:user reset pass [用户名] [邮箱]` 重置。🆘\n4. 要访问文档并确认使用情况，请点击屏幕角落的圆点 (•)。📄\n5. 一组聊天称为 `session`。要在会话中导航日志，请使用 `⬅️` 和 `➡️` 箭头键。🗂️\n6. 要在历史记录（会话）之间导航，请使用 `⬆️` 和 `⬇️` 箭头键。📜\n7. 切换到全屏请按 `F11`（对于 macOS 是 ⌃F11）。分屏使用 `Ctrl+|`。🖥️\n8. 要更改主题，请使用 `:theme [light|dark|terminal]` 🌈。\n9. 通用 `user` 账户是免费的，但您需要为 OpenAI API token 付费。您可以在使用情况页面管理您的 token 余额。💳\n10. 使用命令 `:invite [邮箱]` 邀请朋友，你们俩都将获得 100K 奖励 token！💌"
+  "welcome": "欢迎来到Simple AI（simple-ai.io）！🚀 Simple AI是一个AI聊天应用程序，是ChatGPT的替代品，专注于提供快速和更专业的用户体验。输入您的查询并按`Enter`与AI聊天。💬",
+  "quick_start": "快速开始指南：",
+  "quick_start_6": "使用 `:use \"Midjourney\"` 来启用图像生成。⛵ 使用 `:use \"WolframAlpha\"` 来启用增强数学功能。🏛️",
+  "quick_start_3": "忘记密码了吗？使用命令 `:user reset pass [username] [email]` 来重置密码。🆘",
+  "quick_start_10": "使用命令`:invite [email]`邀请朋友，你们俩都将获得100K奖励token！💌",
+  "quick_start_1": "首先，使用命令 `:user add [username] [email] [password?]` 注册一个用户。🔑 注意：在您的命令中不要包括方括号。✅ 例如，`:user add john john@example.com ********`",
+  "quick_start_5": "一组聊天被称为一个`会话`。要在`会话`中的日志之间导航，请使用`⬅️`和`➡️`箭头键。或者在智能手机上向左滑动和向右滑动。📱要在`会话`之间导航，请使用`⬆️`和`⬇️`箭头键。",
+  "quick_start_8": "要更改主题，请使用 `:theme [light|dark|terminal]`。🌈",
+  "quick_start_0": "Simple AI 通过命令界面、快捷方式和手势操作。<strong>所有命令都以 `:`（半角冒号）开头。</strong>",
+  "quick_start_9": "普通的`user`账户是免费的，但是你需要为OpenAI API token付费。你可以在Usage页面管理你的token余额。💳",
+  "quick_start_2": "要登录，请使用命令 `:login [用户名] [密码]`。",
+  "quick_start_7": "切换到全屏请按 `F11`（macOS 系统为 ⌃F11）。分屏使用 `Ctrl+|`。🖥️",
+  "quick_start_4": "要访问文档并确认使用情况，请点击屏幕角落的圆点（•）。📄"
 }

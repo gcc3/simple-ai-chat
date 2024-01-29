@@ -26,6 +26,8 @@ def translate(text, target_language_name):
                          + "3. Don't translate word \"GPT-4 Vision\", keep it.\n"
                          + "4. Don't translate word \"GPT-4 Turbo\", keep it.\n"
                          + "5. Don't translate word \"token\", keep it.\n"
+                         + "6. Keep the HTML tag if it's in the text.\n"
+                         + "7. Keep the escape charactors if it's in the text.\n"
             },
             {
                 "role": "user",
