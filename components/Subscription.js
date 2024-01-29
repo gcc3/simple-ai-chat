@@ -113,7 +113,7 @@ function Subscription() {
         <div className="mt-1">{ t("User") }: {user.username}</div>
         <div>{ t("Email") }: {user.email}</div>
         <div>{ t("Subscription") }: `{user.role}`</div>
-        <div>{ t("Expire at") }: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimit)"} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
+        <div>{ t("Expire at") }: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "(unlimited)"} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
       </div>}
       <div className="mt-3">
         <div>- { t("Subscription plans") }</div>
