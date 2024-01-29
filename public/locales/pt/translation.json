@@ -8,13 +8,13 @@
   "quick_start": "Guia de Início Rápido:",
   "quick_start_6": "Use `:use \"Midjourney\"` para habilitar a geração de imagens.⛵ Use `:use \"WolframAlpha\"` para habilitar matemática avançada.🏛️",
   "quick_start_3": "Esqueceu sua senha? Redefina-a usando o comando `:user reset pass [username] [email]`.🆘",
-  "quick_start_10": "Convide amigos usando o comando `:invite [email]`, e ambos receberão 100 mil tokens de premiação!💌",
+  "quick_start_10": "Convide amigos usando o comando `:invite [email]`, e ambos receberão 100 mil tokens de recompensa!💌",
   "quick_start_1": "Primeiro, registre um usuário com o comando `:user add [username] [email] [password?]`.🔑 Nota: Não inclua os colchetes no seu comando.✅ Por exemplo, `:user add john john@example.com ********`",
   "quick_start_5": "Um conjunto de conversas é chamado de `session`. Para navegar entre os registros em uma `session`, use as teclas de seta `⬅️` e `➡️`. Ou deslize para a esquerda e para a direita em smartphones.📱 Para navegar entre `sessions`, use as teclas de seta `⬆️` e `⬇️`.",
   "quick_start_8": "Para alterar o tema, use `:theme [light|dark|terminal]`.🌈",
   "quick_start_0": "O Simple AI opera utilizando uma interface de comandos, atalhos e gestos. <strong>Os comandos todos começam com `:` (dois-pontos de meia largura).</strong>",
   "quick_start_9": "Uma conta geral de `usuário` é gratuita, mas você deve pagar pelos tokens da API OpenAI. Você pode gerenciar seu saldo de tokens na página de Uso.💳",
-  "quick_start_2": "Para fazer login, use o comando `:login [nome de usuário] [senha]`.",
+  "quick_start_2": "Para fazer login, use o comando `:login [username] [password]`.",
   "quick_start_7": "Mude para tela cheia com `F11` (⌃F11 para macOS). Para tela dividida, use `Ctrl+|`.🖥️",
   "quick_start_4": "Para acessar a Documentação e confirmar o Uso, clique no ponto (•) no canto da tela.📄"
 }
