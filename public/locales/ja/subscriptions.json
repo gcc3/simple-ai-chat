@@ -20,8 +20,8 @@
   "Paypal or Credit Card": "ペイパルまたはクレジットカード",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "お客様の支払いは銀行システムを通じて安全に処理されます。私たちはお客様の支払い情報を保存または収集しません。",
   "Subcriptions": "サブスクリプション",
-  "Upgrade": "アップグレード：",
-  "Downgrade": "ダウングレード：",
+  "Upgrade to": "アップグレード：",
+  "Downgrade to": "ダウングレード：",
   "50/day +fast": "1日50件 +速い",
   "Image Input (GPT-4 Vision)": "画像入力（GPT-4 Vision）",
   "Roles": "役割",
@@ -43,5 +43,11 @@
   "Image Generation (Midjourney)": "画像生成（Midjourney）",
   "email_support_subscriptions": "エンタープライズご利用の際は、`<1><2>support@simple-ai.io</2></1>`までご連絡ください。",
   "Usage Fee": "使用料",
-  "You are the `root_user`.": "あなたは `root_user` です。"
+  "You are the `root_user`.": "あなたは `root_user` です。",
+  "Expired": "期限切れ",
+  "Unlimited": "無制限",
+  "Extend 1 month for": "1ヶ月延長",
+  "day": "日",
+  "month": "月",
+  "banking fee {{bankingFee}} included": "銀行手数料 {{bankingFee}} 含む"
 }

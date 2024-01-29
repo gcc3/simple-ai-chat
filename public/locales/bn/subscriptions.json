@@ -43,5 +43,11 @@
   "Image Generation (Midjourney)": "চিত্র সৃষ্টি (Midjourney)",
   "email_support_subscriptions": "এন্টারপ্রাইজ ব্যবহারের জন্য, দয়া করে `<1><2>support@simple-ai.io</2></1>` এ আমাদের সাথে যোগাযোগ করুন।",
   "Usage Fee": "ব্যবহারের ফি",
-  "You are the `root_user`.": "আপনি `root_user`।"
+  "You are the `root_user`.": "আপনি `root_user`।",
+  "Expired": "মেয়াদোত্তীর্ণ",
+  "Unlimited": "আনলিমিটেড",
+  "Extend 1 month for": "1 মাসের জন্য বাড়ান",
+  "day": "দিন",
+  "month": "মাস",
+  "banking fee {{bankingFee}} included": "ব্যাংকিং ফি {{bankingFee}} অন্তর্ভুক্ত"
 }

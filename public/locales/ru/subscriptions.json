@@ -43,5 +43,11 @@
   "Image Generation (Midjourney)": "Генерация изображений (Midjourney)",
   "email_support_subscriptions": "Для использования в корпоративных целях, пожалуйста, свяжитесь с нами по адресу `<1><2>support@simple-ai.io</2></1>`.",
   "Usage Fee": "Плата за использование",
-  "You are the `root_user`.": "Вы — `root_user`."
+  "You are the `root_user`.": "Вы — `root_user`.",
+  "Expired": "Истекший",
+  "Unlimited": "Неограниченно",
+  "Extend 1 month for": "Продлить на 1 месяц для",
+  "day": "день",
+  "month": "месяц",
+  "banking fee {{bankingFee}} included": "банковская комиссия {{bankingFee}} включена"
 }

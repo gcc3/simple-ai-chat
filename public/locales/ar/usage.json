@@ -37,5 +37,7 @@
   "Daily usage": "الاستخدام اليومي",
   "Weekly usage": "الاستخدام الأسبوعي",
   "Monthly usage": "الاستخدام الشهري",
-  "You are the `root_user`.": "أنت `root_user`."
+  "You are the `root_user`.": "أنت `root_user`.",
+  "Unlimited": "غير محدود",
+  "banking fee {{bankingFee}} included": "رسوم بنكية {{bankingFee}} مشمولة"
 }

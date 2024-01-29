@@ -29,6 +29,7 @@ def translate(text, target_language_name):
                          + "6. Keep the HTML tag if it's in the text.\n"
                          + "7. Keep the escape charactors if it's in the text.\n"
                          + "8. Don't translate command, a command starts with `:`, example: `:login [username] [password]`.\n"
+                         + "9. Don't translate the text inside {{ }}, example: banking fee {{bankingFee}} included\n"
             },
             {
                 "role": "user",

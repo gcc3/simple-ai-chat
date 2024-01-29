@@ -37,5 +37,7 @@
   "Daily usage": "Penggunaan Harian",
   "Weekly usage": "Penggunaan Mingguan",
   "Monthly usage": "Penggunaan Bulanan",
-  "You are the `root_user`.": "Anda adalah `root_user`."
+  "You are the `root_user`.": "Anda adalah `root_user`.",
+  "Unlimited": "Tak Terbatas",
+  "banking fee {{bankingFee}} included": "biaya perbankan {{bankingFee}} termasuk"
 }

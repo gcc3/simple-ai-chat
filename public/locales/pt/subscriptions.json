@@ -43,5 +43,11 @@
   "Image Generation (Midjourney)": "Geração de Imagens (Midjourney)",
   "email_support_subscriptions": "Para uso empresarial, por favor entre em contato conosco pelo e-mail `<1><2>support@simple-ai.io</2></1>`.",
   "Usage Fee": "Taxa de Uso",
-  "You are the `root_user`.": "Você é o `root_user`."
+  "You are the `root_user`.": "Você é o `root_user`.",
+  "Expired": "Expirado",
+  "Unlimited": "Ilimitado",
+  "Extend 1 month for": "Estender por 1 mês para",
+  "day": "dia",
+  "month": "mês",
+  "banking fee {{bankingFee}} included": "taxa bancária {{bankingFee}} inclusa"
 }

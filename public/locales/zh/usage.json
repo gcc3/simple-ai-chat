@@ -37,5 +37,7 @@
   "Daily usage": "本日用量",
   "Weekly usage": "过去7日用量",
   "Monthly usage": "过去30日用量",
-  "You are the `root_user`.": "您是 `root_user`。"
+  "You are the `root_user`.": "您是 `root_user`。",
+  "Unlimited": "无限",
+  "banking fee {{bankingFee}} included": "包含银行费用 {{bankingFee}}"
 }

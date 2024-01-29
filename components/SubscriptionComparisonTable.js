@@ -6,21 +6,21 @@ import { useTranslation, Trans } from "react-i18next";
 function getPriceString(subscriptions, role, t) {
   let price = "";
   if (subscriptions.hasOwnProperty(role)) {
-    price = (Number(subscriptions[role].price) === 0 ? "Free" : "$" + subscriptions[role].price + "/month") + " +" + t("Usage Fee");
+    price = (Number(subscriptions[role].price) === 0 ? "Free" : "$" + subscriptions[role].price + "/" + t("month")) + " +" + t("Usage Fee");
   }
   return price;
 }
 
-function getRoleFequencyLimits(role) {
+function getRoleFequencyLimits(role, t) {
   const limit = getRoleFequencyLimit(role);
-  return limit.daily_limit + "/day";
+  return limit.daily_limit + "/" + t("day");
 }
 
 const SubscriptionComparisonTable = ({ subscriptions }) => {
   const { t } = useTranslation("subscriptions");
 
   const comparison = [
-    { name: t("Text Generation (GPT-4 Turbo)"), user: getRoleFequencyLimits(`user`), pro_user: getRoleFequencyLimits(`pro_user`), super_user: getRoleFequencyLimits(`super_user`) },
+    { name: t("Text Generation (GPT-4 Turbo)"), user: getRoleFequencyLimits(`user`, t), pro_user: getRoleFequencyLimits(`pro_user`, t), super_user: getRoleFequencyLimits(`super_user`, t) },
     { name: t("Image Generation (Midjourney)"), user: t("1/day(trial)"), pro_user: t("20/day"), super_user: t("50/day +fast") },
     { name: t("Image Input (GPT-4 Vision)"), user: t("No limit"), pro_user: t("No limit"), super_user: t("No limit") },
     { name: t("File Input"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
