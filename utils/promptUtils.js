@@ -282,6 +282,7 @@ export async function generateMessages(use_system_role, lang,
         // Format result
         if (typeof queryNodeAIResult.result === "string") {
           content += queryNodeAIResult.result;
+          node_output = queryNodeAIResult.result;
         } else if (queryNodeAIResult.result.text || queryNodeAIResult.result.image) {
 
           // Node AI generated images
@@ -309,8 +310,6 @@ export async function generateMessages(use_system_role, lang,
             // Override the input images
             images = [node_output_images[0]];
             console.log("Override the input images: " + JSON.stringify(images));
-
-            // TODO, count image token
           } else {
             content += queryNodeAIResult.result.text;
           }
