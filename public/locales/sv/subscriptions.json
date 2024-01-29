@@ -6,8 +6,8 @@
   "Subscription": "Abonelik",
   "Expire at": "Bitiş Tarihi",
   "Subscription plans": "Abonelik Planları",
-  "`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)": "1. `user`: genel bir kullanıcı sağlar. Ücretsizdir. (Kullandığınız token ücretini ödemeye devam etmeniz gerekecek.)",
-  "`pro_user`: provide advanced features and support for professonal uses.": "`pro_user`: profesyonel kullanımlar için gelişmiş özellikler ve destek sağlar.",
+  "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "1. `user`: genel bir kullanıcı sağlar. Ücretsizdir. (Kullandığınız token ücretini ödemeye devam etmeniz gerekecek.)",
+  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: profesyonel kullanımlar için gelişmiş özellikler ve destek sağlar.",
   "`super_user`: provide accessibility for all latest features and support.": "`super_user`: tüm en son özelliklere ve desteğe erişim sağlar.",
   "Non-registered users are limited to 12 text generations per day.": "Kayıtlı olmayan kullanıcılar günde 12 metin üretimi ile sınırlıdır.",
   "Extend, Upgrade or Downgrade": "Uzat, Yükselt veya Düşür",
@@ -49,5 +49,6 @@
   "Extend 1 month for": "Förläng med 1 månad för",
   "day": "dag",
   "month": "månad",
-  "banking fee {{bankingFee}} included": "bankavgift {{bankingFee}} inkluderad"
+  "banking fee {{bankingFee}} included": "bankavgift {{bankingFee}} inkluderad",
+  "Free": "Gratis"
 }

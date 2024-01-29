@@ -6,8 +6,8 @@
   "Subscription": "Abonnement",
   "Expire at": "Expire le",
   "Subscription plans": "Plans d'abonnement",
-  "`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`: fournit un utilisateur général. C'est gratuit. (Vous devrez toujours payer les frais de jeton utilisés.)",
-  "`pro_user`: provide advanced features and support for professonal uses.": "`pro_user`: fournit des fonctionnalités avancées et un support pour des usages professionnels.",
+  "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`: fournit un utilisateur général. C'est gratuit. (Vous devrez toujours payer les frais de jeton utilisés.)",
+  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: fournit des fonctionnalités avancées et un support pour des usages professionnels.",
   "`super_user`: provide accessibility for all latest features and support.": "`super_user`: offre une accessibilité à toutes les dernières fonctionnalités et support.",
   "Non-registered users are limited to 12 text generations per day.": "Les utilisateurs non enregistrés sont limités à 12 générations de texte par jour.",
   "Extend, Upgrade or Downgrade": "Étendre, Améliorer ou Réduire",
@@ -49,5 +49,6 @@
   "Extend 1 month for": "1 ay uzatın için",
   "day": "gün",
   "month": "ay",
-  "banking fee {{bankingFee}} included": "bankacılık ücreti {{bankingFee}} dahil"
+  "banking fee {{bankingFee}} included": "bankacılık ücreti {{bankingFee}} dahil",
+  "Free": "Ücretsiz"
 }

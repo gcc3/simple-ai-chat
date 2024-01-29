@@ -6,8 +6,8 @@
   "Subscription": "الاشتراك",
   "Expire at": "ينتهي في",
   "Subscription plans": "خطط الاشتراك",
-  "`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`: يوفر للمستخدم العام. إنه مجاني. (ستظل بحاجة إلى دفع رسوم الرمز التي استخدمتها.)",
-  "`pro_user`: provide advanced features and support for professonal uses.": "`pro_user`: يوفر ميزات متقدمة ودعم للاستخدامات المهنية.",
+  "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`: يوفر للمستخدم العام. إنه مجاني. (ستظل بحاجة إلى دفع رسوم الرمز التي استخدمتها.)",
+  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: يوفر ميزات متقدمة ودعم للاستخدامات المهنية.",
   "`super_user`: provide accessibility for all latest features and support.": "`super_user`: يوفر إمكانية الوصول لجميع أحدث الميزات والدعم.",
   "Non-registered users are limited to 12 text generations per day.": "المستخدمون غير المسجلين محدودون بـ 12 توليد نص في اليوم.",
   "Extend, Upgrade or Downgrade": "تمديد، ترقية أو تخفيض",
@@ -49,5 +49,6 @@
   "Extend 1 month for": "تمديد لمدة شهر واحد لـ",
   "day": "يوم",
   "month": "شهر",
-  "banking fee {{bankingFee}} included": "رسوم بنكية {{bankingFee}} مشمولة"
+  "banking fee {{bankingFee}} included": "رسوم بنكية {{bankingFee}} مشمولة",
+  "Free": "مجاني"
 }

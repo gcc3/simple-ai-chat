@@ -6,8 +6,8 @@
   "Subscription": "サブスクリプション",
   "Expire at": "有効期限",
   "Subscription plans": "サブスクリプションプラン",
-  "`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`：一般的なユーザーに提供されます。無料です。（使用したトークン料金は支払う必要があります。）",
-  "`pro_user`: provide advanced features and support for professonal uses.": "`pro_user`：プロフェッショナルな使用に高度な機能とサポートを提供します。",
+  "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`：一般的なユーザーに提供されます。無料です。（使用したトークン料金は支払う必要があります。）",
+  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`：プロフェッショナルな使用に高度な機能とサポートを提供します。",
   "`super_user`: provide accessibility for all latest features and support.": "`super_user`：最新機能へのアクセスとサポートを提供します。",
   "Non-registered users are limited to 12 text generations per day.": "未登録のユーザーは1日に12回のテキスト生成に限られています。",
   "Extend, Upgrade or Downgrade": "延長、アップグレード、またはダウングレード",
@@ -49,5 +49,6 @@
   "Extend 1 month for": "1ヶ月延長",
   "day": "日",
   "month": "月",
-  "banking fee {{bankingFee}} included": "銀行手数料 {{bankingFee}} 含む"
+  "banking fee {{bankingFee}} included": "銀行手数料 {{bankingFee}} 含む",
+  "Free": "無料"
 }

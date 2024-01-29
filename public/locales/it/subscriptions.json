@@ -6,8 +6,8 @@
   "Subscription": "Abbonamento",
   "Expire at": "Scade il",
   "Subscription plans": "Piani di Abbonamento",
-  "`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)": "1. `user`: fornisce un utente generico. È gratuito. (Dovrai comunque pagare la tassa del token che hai utilizzato.)",
-  "`pro_user`: provide advanced features and support for professonal uses.": "`pro_user`: fornisce funzionalità avanzate e supporto per usi professionali.",
+  "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "1. `user`: fornisce un utente generico. È gratuito. (Dovrai comunque pagare la tassa del token che hai utilizzato.)",
+  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: fornisce funzionalità avanzate e supporto per usi professionali.",
   "`super_user`: provide accessibility for all latest features and support.": "`super_user`: fornisce accessibilità a tutte le ultime funzionalità e supporto.",
   "Non-registered users are limited to 12 text generations per day.": "Gli utenti non registrati sono limitati a 12 generazioni di testo al giorno.",
   "Extend, Upgrade or Downgrade": "Estendi, Aggiorna o Downgrade",
@@ -49,5 +49,6 @@
   "Extend 1 month for": "Estendi di 1 mese per",
   "day": "giorno",
   "month": "mese",
-  "banking fee {{bankingFee}} included": "commissione bancaria {{bankingFee}} inclusa"
+  "banking fee {{bankingFee}} included": "commissione bancaria {{bankingFee}} inclusa",
+  "Free": "Gratuito"
 }

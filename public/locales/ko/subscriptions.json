@@ -6,8 +6,8 @@
   "Subscription": "구독",
   "Expire at": "만료 시각",
   "Subscription plans": "구독 플랜",
-  "`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)": "1. `user`: 일반 사용자를 제공합니다. 무료입니다. (사용한 토큰 수수료는 지불해야 합니다.)",
-  "`pro_user`: provide advanced features and support for professonal uses.": "`pro_user`: 전문가용 고급 기능 및 지원을 제공합니다.",
+  "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "1. `user`: 일반 사용자를 제공합니다. 무료입니다. (사용한 토큰 수수료는 지불해야 합니다.)",
+  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: 전문가용 고급 기능 및 지원을 제공합니다.",
   "`super_user`: provide accessibility for all latest features and support.": "`super_user`: 모든 최신 기능 및 지원에 대한 접근성을 제공합니다.",
   "Non-registered users are limited to 12 text generations per day.": "비등록 사용자는 하루에 텍스트 생성 12회로 제한됩니다.",
   "Extend, Upgrade or Downgrade": "연장, 업그레이드 또는 다운그레이드",
@@ -49,5 +49,6 @@
   "Extend 1 month for": "1개월 연장하기",
   "day": "날",
   "month": "월",
-  "banking fee {{bankingFee}} included": "은행 수수료 {{bankingFee}} 포함"
+  "banking fee {{bankingFee}} included": "은행 수수료 {{bankingFee}} 포함",
+  "Free": "무료"
 }

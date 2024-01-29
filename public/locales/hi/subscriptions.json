@@ -6,8 +6,8 @@
   "Subscription": "सब्सक्रिप्शन",
   "Expire at": "समाप्ति",
   "Subscription plans": "सब्सक्रिप्शन योजनाएँ",
-  "`user`: provide a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`: एक सामान्य उपयोगकर्ता प्रदान करता है। यह मुफ्त है। (आपको अभी भी इस्तेमाल किए गए टोकन शुल्क का भुगतान करना होगा।)",
-  "`pro_user`: provide advanced features and support for professonal uses.": "`pro_user`: पेशेवर उपयोगों के लिए उन्नत सुविधाएँ और समर्थन प्रदान करता है।",
+  "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`: एक सामान्य उपयोगकर्ता प्रदान करता है। यह मुफ्त है। (आपको अभी भी इस्तेमाल किए गए टोकन शुल्क का भुगतान करना होगा।)",
+  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: पेशेवर उपयोगों के लिए उन्नत सुविधाएँ और समर्थन प्रदान करता है।",
   "`super_user`: provide accessibility for all latest features and support.": "`super_user`: सभी नवीनतम सुविधाओं और समर्थन के लिए पहुँच प्रदान करता है।",
   "Non-registered users are limited to 12 text generations per day.": "गैर-पंजीकृत उपयोगकर्ता प्रति दिन 12 पाठ सृजन तक सीमित हैं।",
   "Extend, Upgrade or Downgrade": "विस्तार, अपग्रेड या डाउनग्रेड",
@@ -49,5 +49,6 @@
   "Extend 1 month for": "1 महीने के लिए विस्तार करें",
   "day": "दिन",
   "month": "महीना",
-  "banking fee {{bankingFee}} included": "बैंकिंग शुल्क {{bankingFee}} सम्मिलित"
+  "banking fee {{bankingFee}} included": "बैंकिंग शुल्क {{bankingFee}} सम्मिलित",
+  "Free": "निःशुल्क"
 }
