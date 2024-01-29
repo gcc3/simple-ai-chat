@@ -139,5 +139,7 @@
   "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "커서가 입력 영역에 초점을 맞추고 있습니다. 명령이 입력되었습니다. 값의 시작 문자를 입력하세요.",
   "Unfocus cursor from the input box.": "입력 상자에서 커서를 해제하세요.",
   "Cursor is focused on the input area. Input area is empty/cleared.": "커서가 입력 영역에 초점을 맞추고 있습니다. 입력 영역이 비어 있거나 지워졌습니다.",
-  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "커서가 입력 영역에 초점을 맞추고 있습니다. 현재 입력은 `:`으로 시작합니다. 명령어 기록에 이전 명령어가 있습니다."
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "커서가 입력 영역에 초점을 맞추고 있습니다. 현재 입력은 `:`으로 시작합니다. 명령어 기록에 이전 명령어가 있습니다.",
+  "Internationalization and localization": "국제화 및 지역화",
+  "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI는 아랍어, 벵골어, 중국어, 네덜란드어, 영어, 프랑스어, 독일어, 힌디어, 인도네시아어, 이탈리아어, 일본어, 한국어, 폴란드어, 포르투갈어, 러시아어, 스페인어, 스웨덴어, 터키어 등 18개 언어를 지원합니다. 귀하의 언어에 대한 지원이 필요하시면 알려주십시오."
 }

@@ -139,5 +139,7 @@
   "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "De cursor is gefocust op het invoerveld. Commando ingevoerd. Typ de beginletters van de waarde.",
   "Unfocus cursor from the input box.": "Verwijder de focus van de cursor uit het invoervak.",
   "Cursor is focused on the input area. Input area is empty/cleared.": "De cursor is gefocust op het invoerveld. Het invoerveld is leeg/gewist.",
-  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "De cursor is gefocust op het invoerveld. De huidige invoer begint met ':'. Er is een vorige opdracht in de opdrachthistorie."
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "De cursor is gefocust op het invoerveld. De huidige invoer begint met ':'. Er is een vorige opdracht in de opdrachthistorie.",
+  "Internationalization and localization": "Internationalisatie en lokalisatie",
+  "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI ondersteunt 18 talen: Arabisch, Bengaals, Chinees, Nederlands, Engels, Frans, Duits, Hindi, Indonesisch, Italiaans, Japans, Koreaans, Pools, Portugees, Russisch, Spaans, Zweeds, Turks. Laat het ons weten als u ondersteuning voor uw taal nodig heeft."
 }

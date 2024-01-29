@@ -139,5 +139,7 @@
   "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "Il cursore è posizionato sull'area di input. Comando inserito. Digita i caratteri iniziali del valore.",
   "Unfocus cursor from the input box.": "Rimuovi il focus dal campo di inserimento.",
   "Cursor is focused on the input area. Input area is empty/cleared.": "Il cursore è posizionato sull'area di inserimento. L'area di inserimento è vuota/pulita.",
-  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "Il cursore è posizionato sull'area di input. L'input corrente inizia con `:`. C'è un comando precedente nella cronologia dei comandi."
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "Il cursore è posizionato sull'area di input. L'input corrente inizia con `:`. C'è un comando precedente nella cronologia dei comandi.",
+  "Internationalization and localization": "Internazionalizzazione e localizzazione",
+  "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI supporta 18 lingue: arabo, bengalese, cinese, olandese, inglese, francese, tedesco, hindi, indonesiano, italiano, giapponese, coreano, polacco, portoghese, russo, spagnolo, svedese, turco. Si prega di farci sapere se necessitate di supporto per la vostra lingua."
 }

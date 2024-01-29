@@ -139,5 +139,7 @@
   "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "カーソルが入力エリアにフォーカスされています。コマンドが入力されました。値の最初の文字を入力してください。",
   "Unfocus cursor from the input box.": "入力ボックスからカーソルを外す。",
   "Cursor is focused on the input area. Input area is empty/cleared.": "カーソルは入力エリアにフォーカスされています。入力エリアは空です／クリアされました。",
-  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "カーソルは入力エリアにフォーカスされています。現在の入力は `:` で始まります。コマンド履歴には前のコマンドがあります。"
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "カーソルは入力エリアにフォーカスされています。現在の入力は `:` で始まります。コマンド履歴には前のコマンドがあります。",
+  "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AIは18の言語をサポートしています：アラビア語、ベンガル語、中国語、オランダ語、英語、フランス語、ドイツ語、ヒンディー語、インドネシア語、イタリア語、日本語、韓国語、ポーランド語、ポルトガル語、ロシア語、スペイン語、スウェーデン語、トルコ語。ご利用の言語でサポートが必要な場合はお知らせください。",
+  "Internationalization and localization": "国際化とローカリゼーション"
 }

@@ -139,5 +139,7 @@
   "Cursor is focused on the input area. Command inputted. Type the starts characters of the value.": "Курсор установлен в области ввода. Команда введена. Введите начальные символы значения.",
   "Unfocus cursor from the input box.": "Уберите фокус с поля ввода.",
   "Cursor is focused on the input area. Input area is empty/cleared.": "Курсор установлен в области ввода. Область ввода пуста/очищена.",
-  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "Курсор установлен в области ввода. Текущий ввод начинается с `:`. В истории команд есть предыдущая команда."
+  "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "Курсор установлен в области ввода. Текущий ввод начинается с `:`. В истории команд есть предыдущая команда.",
+  "Internationalization and localization": "Интернационализация и локализация",
+  "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI поддерживает 18 языков: арабский, бенгальский, китайский, голландский, английский, французский, немецкий, хинди, индонезийский, итальянский, японский, корейский, польский, португальский, русский, испанский, шведский, турецкий. Пожалуйста, дайте нам знать, если вам нужна поддержка на вашем языке."
 }

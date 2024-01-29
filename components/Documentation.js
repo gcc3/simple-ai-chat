@@ -29,6 +29,7 @@ const Documentation = ({ country }) => {
     { name: t("Code highlighting"), description: t("Code highting for different themes, support all programming languages.") },
     { name: t("Mathematical Equation"), description: t("Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.") },
     { name: t("Shortcuts"), description: t("Supports convenient shortcut operations. Refer: `Shortcuts`") },
+    { name: t("Internationalization and localization"), description: t("Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.") },
   ];
 
   const commands = getCommands();
