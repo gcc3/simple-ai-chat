@@ -349,7 +349,7 @@ const Documentation = ({ country }) => {
     </>
   )
 
-  if (!ready) return <div></div>;
+  if (!ready) return (<div><br></br></div>);
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="Documentation">
