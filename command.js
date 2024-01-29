@@ -188,7 +188,7 @@ export function pushCommandHistory(command) {
   }
 
   // Get the existing history or initialize a new array
-  let commandHistories = JSON.parse(sessionStorage.getItem("history")) || [];
+  let commandHistories = JSON.parse(localStorage.getItem("history")) || [];
 
   // Add new command to the front of the array
   commandHistories.unshift(command);
@@ -197,15 +197,15 @@ export function pushCommandHistory(command) {
   commandHistories = commandHistories.slice(0, 100);
 
   // Save the updated history
-  sessionStorage.setItem("history", JSON.stringify(commandHistories));
+  localStorage.setItem("history", JSON.stringify(commandHistories));
 }
 
 export function getHistoryCommand(index) {
-  if (sessionStorage.getItem("history") === null) {
-    sessionStorage.setItem("history", JSON.stringify([]));
+  if (localStorage.getItem("history") === null) {
+    localStorage.setItem("history", JSON.stringify([]));
   }
 
-  let commandHistory = JSON.parse(sessionStorage.getItem("history"));
+  let commandHistory = JSON.parse(localStorage.getItem("history"));
   return commandHistory[index];
 }
 

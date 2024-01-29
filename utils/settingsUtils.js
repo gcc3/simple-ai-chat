@@ -88,7 +88,7 @@ export function getSettings(format = "json", theme = "light", fullscreen = "off"
       { name: "Functions",             key: "functions",     storage: "localStorage",    userSettings: "functions",      default: "Time,Weather,Redirection", description: "" },
       { name: "Session ID",            key: "session",       storage: "sessionStorage",  userSettings: "",               default: "",                         description: "" },
       { name: "Session Head",          key: "head",          storage: "sessionStorage",  userSettings: "",               default: "",                         description: "" },
-      { name: "Command History",       key: "history",       storage: "sessionStorage",  userSettings: "",               default: "[]",                       description: "" },
+      { name: "Command History",       key: "history",       storage: "localStorage",    userSettings: "",               default: "[]",                       description: "" },
       { name: "Command Hostory Index", key: "historyIndex",  storage: "sessionStorage",  userSettings: "",               default: "-1",                       description: "" },
       { name: "Role",                  key: "role",          storage: "sessionStorage",  userSettings: "role",           default: "",                         description: "" },
       { name: "Store",                 key: "store",         storage: "sessionStorage",  userSettings: "store",          default: "",                         description: "" },

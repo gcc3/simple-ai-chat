@@ -6,7 +6,7 @@
   "Privacy Policy": "Politica sulla Privacy",
   "welcome": "Benvenuti su Simple AI (simple-ai.io)! 🚀 Simple AI è un'applicazione di chat AI, un'alternativa a ChatGPT, focalizzata nel fornire un'esperienza utente rapida e più professionale. Digita la tua domanda e premi `Invio` per chattare con l'AI.💬",
   "quick_start": "Guida Rapida:",
-  "quick_start_6": "Usa `:use \"Midjourney\"` per abilitare la generazione di immagini.⛵ Usa `:use \"WolframAlpha\"` per abilitare matematica avanzata.🏛️",
+  "quick_start_6": "Usa `:use \"Midjourney\"` per abilitare la generazione di immagini.⛵ Usa `:use \"WolframAlpha\"` per abilitare funzionalità matematiche avanzate.🏛️ Suggerimenti: puoi usare il tasto `Tab` per l'autocompletamento.💡",
   "quick_start_3": "Hai dimenticato la tua password? Reimpostala utilizzando il comando `:user reset pass [username] [email]`.🆘",
   "quick_start_10": "Invita amici utilizzando il comando `:invite [email]`, e entrambi riceverete 100K token premio!💌",
   "quick_start_1": "Prima, registra un utente con il comando `:user add [username] [email] [password?]`.🔑 Nota: Non includere le parentesi quadre nel tuo comando.✅ Ad esempio, `:user add john john@example.com ********`",

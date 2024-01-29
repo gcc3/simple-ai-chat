@@ -6,7 +6,7 @@
   "Privacy Policy": "개인정보 처리방침",
   "welcome": "Simple AI(simple-ai.io)에 오신 것을 환영합니다! 🚀 Simple AI는 빠르고 더 전문적인 사용자 경험을 제공하는 것에 중점을 둔 AI 채팅 응용 프로그램, ChatGPT 대안입니다. 질문을 입력하고 `Enter`를 눌러 AI와 채팅하세요.💬",
   "quick_start": "빠른 시작 가이드:",
-  "quick_start_6": "`:use \"Midjourney\"`를 사용하여 이미지 생성을 활성화하세요.⛵ `:use \"WolframAlpha\"`를 사용하여 고급 수학 기능을 활성화하세요.🏛️",
+  "quick_start_6": "`:use \"Midjourney\"`를 사용하여 이미지 생성을 활성화하세요.⛵ `:use \"WolframAlpha\"`를 사용하여 고급 수학 기능을 활성화하세요.🏛️ 팁: 자동완성을 위해 `Tab` 키를 사용할 수 있습니다.💡",
   "quick_start_3": "비밀번호를 잊으셨나요? 명령어 `:user reset pass [username] [email]`를 사용하여 재설정하세요.🆘",
   "quick_start_10": "명령어 `:invite [email]`를 사용하여 친구를 초대하고, 여러분 둘 다 100K 상금 토큰을 받으세요!💌",
   "quick_start_1": "먼저 `:user add [username] [email] [password?]` 명령어로 사용자를 등록하세요.🔑 참고: 명령어에 괄호를 포함하지 마세요.✅ 예를 들어, `:user add john john@example.com ********`",
