@@ -8,7 +8,7 @@
   "quick_start_3": "Forgot your password? Reset it using the command `:user reset pass [username] [email]`.🆘",
   "quick_start_4": "To access the Documentation and confirm Usage, click the dot (•) in the screen corner.📄",
   "quick_start_5": "A set of chats is called a `session`. To navigate between logs in a `session`, use the `⬅️` and `➡️` arrow keys. Or swipe left and right on smartphones.📱 To navigate between `sessions`, use the `⬆️` and `⬇️` arrow keys.",
-  "quick_start_6": "Use `:use \"Midjourney\"` to enable image generation.⛵ Use `:use \"WolframAlpha\"` to enable enhanced mathematics.🏛️",
+  "quick_start_6": "Use `:use \"Midjourney\"` to enable image generation.⛵ Use `:use \"WolframAlpha\"` to enable enhanced mathematics.🏛️ Tips: you can use the `Tab` key to autocomplete.💡",
   "quick_start_7": "Switch to fullscreen with `F11` (⌃F11 for macOS). For split screen, use `Ctrl+|`.🖥️",
   "quick_start_8": "To change the theme, use `:theme [light|dark|terminal]`.🌈",
   "quick_start_9": "A general `user` account is free, but you have to pay for OpenAI API tokens. You can manage your token balance on the Usage page.💳",
