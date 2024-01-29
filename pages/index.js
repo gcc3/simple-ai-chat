@@ -349,13 +349,13 @@ export default function Home() {
     if (localStorage.getItem("functions") === null) localStorage.setItem("functions", "Time,Weather,Redirection");  // default functions
     if (localStorage.getItem("passMask") === null) localStorage.setItem("passMask", "true");
     if (localStorage.getItem("useSystemRole") === null) localStorage.setItem("useSystemRole", "true");
+    if (localStorage.getItem("history") === null) localStorage.setItem("history", JSON.stringify([]));  // command history
 
     // Set default sessionStorage values
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
     if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");    // default role
     if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");  // default store
     if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");    // default node
-    if (sessionStorage.getItem("history") === null) sessionStorage.setItem("history", JSON.stringify([]));  // command history
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);  // command history index
 
     // Set styles and themes
