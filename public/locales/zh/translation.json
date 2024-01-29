@@ -13,7 +13,7 @@
   "quick_start_5": "一组聊天被称为一个`会话`。要在`会话`中的日志之间导航，请使用`⬅️`和`➡️`箭头键。或者在智能手机上向左滑动和向右滑动。📱要在`会话`之间导航，请使用`⬆️`和`⬇️`箭头键。",
   "quick_start_8": "要更改主题，请使用 `:theme [light|dark|terminal]`。🌈",
   "quick_start_0": "Simple AI 通过命令界面、快捷方式和手势操作。<strong>所有命令都以 `:`（半角冒号）开头。</strong>",
-  "quick_start_9": "普通的`user`账户是免费的，但是你需要为OpenAI API token付费。你可以在Usage页面管理你的token余额。💳",
+  "quick_start_9": "普通的`user`账户是免费的，但是你需要为OpenAI API token付费。你可以在用量页面管理你的token余额。💳",
   "quick_start_2": "要登录，请使用命令 `:login [username] [password]`。",
   "quick_start_7": "切换到全屏请按 `F11`（macOS 系统为 ⌃F11）。分屏使用 `Ctrl+|`。🖥️",
   "quick_start_4": "要访问文档并确认使用情况，请点击屏幕角落的圆点（•）。📄"
