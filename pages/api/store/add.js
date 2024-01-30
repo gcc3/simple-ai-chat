@@ -62,6 +62,8 @@ export default async function (req, res) {
       clientSecret: "",
       corpusId: "",
       description: "",
+      threshold: 0.3,
+      numberOfResults: 5,
     }
   }
 
