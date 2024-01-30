@@ -51,15 +51,15 @@ export async function generateMessages(use_system_role, lang,
   // -6. System master message, important
   let system_prompt = "";
   if (use_system_role && role_content_system !== "") {
-    system_prompt += role_content_system;
-
-    // User language, lang is the language code
-    system_prompt += "\n" + "User's language: " + getLanguageName(lang) + "\n";
-
     if (!user) {
       // It's not a free service, need to tell the user to register a user first
-      system_prompt += "\n" + "The user has not logged in yet. He can inquire about how to use the system or urgent questions. Other answers to questions, or results from function calls should not be provided. Instead, advise him to log in before using the system.  Guide him to register a user with command `:user add [username] [email] [password?]`, example: `:user add john john@example.com ********`.";
+      system_prompt += "Don't answer user's question as the user has not logged in. Advise him to log in before using the system in the message. Guide him to register a user with command `:user add [username] [email] [password?]`, example: `:user add john john@example.com ********`. And login with command `:login [usernmae] [password]` if already a member." + "\n\n";
+    } else {
+      system_prompt += role_content_system + "\n\n";
     }
+
+    // User language, lang is the language code
+    system_prompt += "User's language: " + getLanguageName(lang) + "\n\n";
 
     messages.push({ 
       role: "system",
