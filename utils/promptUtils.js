@@ -59,7 +59,7 @@ export async function generateMessages(use_system_role, lang,
     }
 
     // User language, lang is the language code, e.g. "en-US"
-    // When user language is not English, emphasize the language
+    // Only when user language is not English, emphasize the language
     if (lang !== "en-US") {
       system_prompt += "\n" + "User's language: " + getLanguageName(lang) + "\n";
     }
