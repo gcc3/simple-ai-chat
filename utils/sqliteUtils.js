@@ -180,6 +180,18 @@ const getDatabaseConnection = async () => {
       await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, settings);
       await updateUserEmailVerifiedAt("root");
 
+      // Create Simple AI Documentation (store)
+      const storeSettings = {
+        language: "en-US",
+        apiKey: "",
+        customerId: "",
+        clientId: "",
+        clientSecret: "",
+        corpusId: "",
+        description: "This is the documentation or user manual of Simple AI (simple-ai.io).",
+      }
+      await insertStore("Simple AI Documentation", "vectara", JSON.stringify(storeSettings), "root")
+
       return db;
     } else {
       // If it's some other error, throw it
