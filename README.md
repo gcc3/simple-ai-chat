@@ -353,9 +353,6 @@ Set a welcome message and introduction video in front page.
 * NEXT_PUBLIC_DISCORD
 Discord invitation link, the last part.  
 
-* FREE_CHAT_LIMIT  
-Limit of free chat for unregistered.  
-
 
 Coding rules
 ------------

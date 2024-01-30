@@ -56,6 +56,11 @@ export async function generateMessages(use_system_role, lang,
     // User language, lang is the language code
     system_prompt += "\n" + "User's language: " + getLanguageName(lang) + "\n";
 
+    if (!user) {
+      // It's not a free service, need to tell the user to register a user first
+      system_prompt += "\n" + "The user has not logged in yet. He can inquire about how to use the system or urgent questions. Other answers to questions, or results from function calls should not be provided. Instead, advise him to log in before using the system.  Guide him to register a user with command `:user add [username] [email] [password?]`, example: `:user add john john@example.com ********`.";
+    }
+
     messages.push({ 
       role: "system",
       content: system_prompt,
@@ -109,7 +114,7 @@ export async function generateMessages(use_system_role, lang,
 
         // Query with store language
         let vectaraQuery = input;
-        const storeLanguageCode = settings.language;
+        const storeLanguageCode = settings.language || "en-US";
         console.log("user language: " + lang);
         console.log("store language: " + storeLanguageCode);
         if (storeLanguageCode && storeLanguageCode !== lang) {
@@ -168,7 +173,7 @@ export async function generateMessages(use_system_role, lang,
             let vectaraQuery = input;
             const storeLanguageCode = settings.language;
             console.log("user language: " + lang);
-            console.log("store language: " + storeLanguageCode);
+            console.log("store language: " + storeLanguageCode || "___");
             if (storeLanguageCode && storeLanguageCode !== lang) {
               vectaraQuery = await translate(vectaraQuery, getLanguageName(storeLanguageCode));
               console.log("input translation to store language: " + vectaraQuery);
