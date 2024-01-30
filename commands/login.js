@@ -44,7 +44,9 @@ export default async function login(args) {
       if (userLoginPreviously) {
         initializeSession();
       }
-      return "You're logged in as " + user.username + " (`" + user.role + "`).\n\n" + "`Simple AI Documentation` (store) is disabled to save your tokens. If you need to ask the documentation, please re-enable it by typing `:use \"Simple AI Documentation\"`.";
+      return "You're logged in as " + user.username + " (`" + user.role + "`).\n\n" 
+      
+          + "`Simple AI Documentation` (store) is disabled by default to save your tokens. If you need to ask the documentation, please re-enable it by typing `:use \"Simple AI Documentation\"`.";
     }
   } catch (error) {
     // Login failed
