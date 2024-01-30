@@ -58,8 +58,11 @@ export async function generateMessages(use_system_role, lang,
       system_prompt += role_content_system + "\n\n";
     }
 
-    // User language, lang is the language code
-    system_prompt += "User's language: " + getLanguageName(lang) + "\n\n";
+    // User language, lang is the language code, e.g. "en-US"
+    // Only when user language is not English, emphasize the language
+    if (lang !== "en-US") {
+      system_prompt += "\n" + "User's language: " + getLanguageName(lang) + "\n";
+    }
 
     messages.push({ 
       role: "system",
