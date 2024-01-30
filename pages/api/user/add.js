@@ -124,7 +124,7 @@ export default async function (req, res) {
     const to = email;
     const subject = "Welcome to simple-ai.io";
     const body
-    = "Dear " + username + "," + "<br>"
+    = "Hey " + username + "!" + "<br>"
     + "<br>"
     + "Welcome to Simple AI! 🚀 A ChatGPT alternative, focused on providing a better user experience." + "<br>"
     + "<br>"
@@ -164,6 +164,7 @@ export default async function (req, res) {
     + "<br>"
     + "* Please do not register multiple accounts or use temporary email addresses to avoid having your account suspended." + "<br>"
     + "<br>"
+    + "Thanks," + "<br>"
     + "- Simple AI Developers"
     + "<br>";
     
