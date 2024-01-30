@@ -53,7 +53,7 @@ export async function generateMessages(use_system_role, lang,
   if (use_system_role && role_content_system !== "") {
     if (!user) {
       // It's not a free service, need to tell the user to register a user first
-      system_prompt += "Don't answer user's question as the user has not logged in. Advise him to log in before using the system in the message. Guide him to register a user with command `:user add [username] [email] [password?]`, example: `:user add john john@example.com ********`. And login with command `:login [usernmae] [password]` if already a member." + "\n\n";
+      system_prompt += "Do not answer a user's question if the user has not logged in, except if the user is asking about how to use the system, example, \"How to use the help command?\".\n\nIf the question not regarding the system and how to use, advise them to log in before using the system in your message. Guide them to register as a user with the command `:user add [username] [email] [password?]`, example: `:user add john john@example.com ********`. And if already a member, log in with the command `:login [usernmae] [password]`. If user want to check the user manual, guide user to click the dot (•) in the screen corner to access the user manual." + "\n\n";
     } else {
       system_prompt += role_content_system + "\n\n";
     }
