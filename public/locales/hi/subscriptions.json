@@ -22,7 +22,6 @@
   "Subcriptions": "सब्सक्रिप्शन",
   "Upgrade to": "में उन्नत करें",
   "Downgrade to": "में अवनत करें",
-  "50/day +fast": "50/दिन +तेज़",
   "Image Input (GPT-4 Vision)": "छवि इनपुट (GPT-4 Vision)",
   "Roles": "भूमिकाएँ",
   "Yes": "हाँ",
@@ -30,7 +29,6 @@
   "Pricing": "मूल्य निर्धारण",
   "* For details of the usage fee, please refer to the Usage page.": "उपयोग शुल्क के विवरण के लिए, कृपया उपयोग पृष्ठ का संदर्भ लें।",
   "File Input": "फ़ाइल इनपुट\n\njson प्रारूप: {\"content\": \"अनुवादित पाठ\"}",
-  "Yes(trial)": "हां(परीक्षण)",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "विस्तारित ज्ञान और गणित (WolframAlpha)",
   "Features": "विशेषताएँ",
   "Nodes (Node AI)": "नोड्स (Node AI)",
@@ -38,11 +36,9 @@
   "No limit": "कोई सीमा नहीं",
   "Features Comparison and Pricing": "फीचर्स तुलना और मूल्य निर्धारण",
   "Text Generation (GPT-4 Turbo)": "पाठ सृजन (GPT-4 Turbo)",
-  "20/day": "प्रतिदिन 20",
   "1/day(trial)": "1/दिन (परीक्षण)",
   "Image Generation (Midjourney)": "छवि निर्माण (Midjourney)",
   "email_support_subscriptions": "एंटरप्राइज़ उपयोग के लिए, कृपया `<1><2>support@simple-ai.io</2></1>` पर हमसे संपर्क करें।",
-  "Usage Fee": "उपयोग शुल्क",
   "You are the `root_user`.": "आप `root_user` हैं।",
   "Expired": "समाप्त",
   "Unlimited": "असीमित",
@@ -50,5 +46,9 @@
   "day": "दिन",
   "month": "महीना",
   "banking fee {{bankingFee}} included": "बैंकिंग शुल्क {{bankingFee}} सम्मिलित",
-  "Free": "निःशुल्क"
+  "Free": "निःशुल्क",
+  "image": "छवि",
+  "query": "प्रश्न",
+  "usage": "उपयोग",
+  "speedup": "गति बढ़ाओ"
 }

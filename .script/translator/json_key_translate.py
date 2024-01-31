@@ -30,6 +30,7 @@ def translate(text, target_language_name):
                          + "7. Keep the escape charactors if it's in the text.\n"
                          + "8. Don't translate command, a command starts with `:`, example: `:login [username] [password]`.\n"
                          + "9. Don't translate the text inside {{ }}, example: banking fee {{bankingFee}} included\n"
+                         + "10, When translating the word `usage`, it means `how much` user used, not means `how to use`, and the word transted should be short.\n"
             },
             {
                 "role": "user",
@@ -100,6 +101,8 @@ for lang_code, lang_name in languages.items():
                 original_text = source_data[file_name][key]
                 translated_text = translate(original_text, lang_name)
                 target_data[key] = translated_text
+            else:
+                print(f'Key: `{key}` not found in source data.')
         
         # Save the updated target language file
         with open(target_file_path, 'w', encoding='utf-8') as file:
