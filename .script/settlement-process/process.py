@@ -54,7 +54,7 @@ def update_user_data(username, total_usage_fees_this_month):
     balance, usage = cursor.fetchone()
     
     # Calculate the updated balance and usage
-    new_balance = balance - total_usage_fees_this_month
+    new_balance = max(balance - total_usage_fees_this_month, 0)
     new_usage = usage + total_usage_fees_this_month
     
     # Update the user's balance and usage in the `users` table

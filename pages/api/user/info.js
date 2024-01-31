@@ -195,15 +195,15 @@ async function getUseCountFequenciesWithLimit(username, role) {
 // Token
 async function getUserTokenUsageThisMonth(username, model) {
   const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1; // Add 1 because getMonth() returns 0-11
+  const year = now.getUTCFullYear();
+  const month = now.getUTCMonth() + 1; // Add 1 because getUTCMonth() returns 0-11
   return getUserTokenUsageByMonth(username, model, year, month);
 }
 
 async function getUserTokenUsageLastMonth(username, model) {
   const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
+  const year = now.getUTCFullYear();
+  const month = now.getUTCMonth();
   return getUserTokenUsageByMonth(username, model, year, month);
 }
 
