@@ -21,6 +21,11 @@ load_dotenv(dotenv_path)
 DATABASE_PATH = '../../db.sqlite'
 BASE_URL = os.getenv('NEXT_PUBLIC_BASE_URL', 'https://simple-ai.io')  # Default to a base URL if not found
 
+def npre(num, precision=5):
+    if num is not None and isinstance(num, (int, float)):
+        return round(num, precision)
+    return 0
+
 def get_all_user_credentials():
     # Connect to the SQLite database
     conn = sqlite3.connect(DATABASE_PATH)
@@ -54,8 +59,9 @@ def update_user_data(username, total_usage_fees_this_month):
     balance, usage = cursor.fetchone()
     
     # Calculate the updated balance and usage
-    new_balance = max(balance - total_usage_fees_this_month, 0)
+    new_balance = max(npre(balance - total_usage_fees_this_month), 0)
     new_usage = usage + total_usage_fees_this_month
+    print(f"Updating user {username}, balance = {balance} -> {new_balance}, usage = {usage} -> {new_usage}, fee = {total_usage_fees_this_month}")
     
     # Update the user's balance and usage in the `users` table
     cursor.execute("UPDATE users SET balance = ?, usage = ? WHERE username = ?",
@@ -76,8 +82,6 @@ def main():
         
         # Get total_usage_fees_this_month from the user info
         total_usage_fees_this_month = user_info['usage']['total_usage_fees_this_month']
-        
-        print(f"Processing user {username}, usage fee = {total_usage_fees_this_month}")
         
         # Update user's balance and usage in the database
         update_user_data(username, total_usage_fees_this_month)
