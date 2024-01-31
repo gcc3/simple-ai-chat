@@ -22,7 +22,6 @@
   "Subcriptions": "الاشتراكات",
   "Upgrade to": "ترقية إلى",
   "Downgrade to": "تخفيض إلى",
-  "50/day +fast": "50/يوم +سريع",
   "Image Input (GPT-4 Vision)": "إدخال الصورة (GPT-4 Vision)",
   "Roles": "الأدوار",
   "Yes": "نعم",
@@ -30,7 +29,6 @@
   "Pricing": "التسعير",
   "* For details of the usage fee, please refer to the Usage page.": "للتفاصيل المتعلقة برسوم الاستخدام، يرجى الرجوع إلى صفحة الاستخدام.",
   "File Input": "الملف المدخل\n\nتنسيق json: {\"content\": \"النص المترجم\"}",
-  "Yes(trial)": "نعم (تجريبي)",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "المعرفة المعززة والرياضيات (WolframAlpha)",
   "Features": "الميزات",
   "Nodes (Node AI)": "العقد (عقدة الذكاء الاصطناعي)",
@@ -38,11 +36,9 @@
   "No limit": "لا حدود",
   "Features Comparison and Pricing": "مقارنة الميزات والأسعار",
   "Text Generation (GPT-4 Turbo)": "توليد النصوص (GPT-4 Turbo)",
-  "20/day": "20/يوم",
   "1/day(trial)": "1/يوم (تجربة)",
   "Image Generation (Midjourney)": "توليد الصور (Midjourney)",
   "email_support_subscriptions": "للاستخدام المؤسسي، يرجى التواصل معنا على `<1><2>support@simple-ai.io</2></1>`.",
-  "Usage Fee": "رسوم الاستخدام",
   "You are the `root_user`.": "أنت `root_user`.",
   "Expired": "منتهي الصلاحية",
   "Unlimited": "غير محدود",
@@ -50,5 +46,9 @@
   "day": "يوم",
   "month": "شهر",
   "banking fee {{bankingFee}} included": "رسوم بنكية {{bankingFee}} مشمولة",
-  "Free": "مجاني"
+  "Free": "مجاني",
+  "image": "صورة",
+  "query": "استعلام",
+  "usage": "الاستخدام",
+  "speedup": "تسريع"
 }

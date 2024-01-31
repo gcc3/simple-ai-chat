@@ -22,7 +22,6 @@
   "Subcriptions": "Abonnementen",
   "Upgrade to": "Upgraden naar",
   "Downgrade to": "Downgraden naar",
-  "50/day +fast": "50/dag +snel",
   "Image Input (GPT-4 Vision)": "Beeldinvoer (GPT-4 Vision)",
   "Roles": "Rollen",
   "Yes": "Ja",
@@ -30,7 +29,6 @@
   "Pricing": "Prijzen",
   "* For details of the usage fee, please refer to the Usage page.": "Voor details over de gebruikskosten, zie de Gebruikspagina.",
   "File Input": "vertaalde tekst",
-  "Yes(trial)": "Ja (proefversie)",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Verbeterde Kennis & Wiskunde (WolframAlpha)",
   "Features": "Kenmerken",
   "Nodes (Node AI)": "Knooppunten (Node AI)",
@@ -38,11 +36,9 @@
   "No limit": "Geen limiet",
   "Features Comparison and Pricing": "Vergelijking van functies en prijzen",
   "Text Generation (GPT-4 Turbo)": "Tekstgeneratie (GPT-4 Turbo)",
-  "20/day": "20/dag",
   "1/day(trial)": "1/dag (proef)",
   "Image Generation (Midjourney)": "Beeldgeneratie (Midjourney)",
   "email_support_subscriptions": "Voor zakelijk gebruik, neem contact met ons op via `<1><2>support@simple-ai.io</2></1>`.",
-  "Usage Fee": "Gebruiksvergoeding",
   "You are the `root_user`.": "U bent de `root_user`.",
   "Expired": "Verlopen",
   "Unlimited": "Onbeperkt",
@@ -50,5 +46,9 @@
   "day": "dag",
   "month": "maand",
   "banking fee {{bankingFee}} included": "bankkosten {{bankingFee}} inbegrepen",
-  "Free": "Gratis"
+  "Free": "Gratis",
+  "image": "afbeelding",
+  "query": "query",
+  "usage": "gebruik",
+  "speedup": "versnellen"
 }

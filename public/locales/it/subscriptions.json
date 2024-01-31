@@ -22,7 +22,6 @@
   "Subcriptions": "Abbonamenti",
   "Upgrade to": "Aggiorna a",
   "Downgrade to": "Retrocedi a",
-  "50/day +fast": "50 al giorno +veloce",
   "Image Input (GPT-4 Vision)": "Inserimento Immagine (GPT-4 Vision)",
   "Roles": "Ruoli",
   "Yes": "Sì",
@@ -30,7 +29,6 @@
   "Pricing": "Prezzi",
   "* For details of the usage fee, please refer to the Usage page.": "Per i dettagli della tariffa d'uso, si prega di fare riferimento alla pagina di Utilizzo.",
   "File Input": "File di Input\n\nformato json: {\"content\": \"testo tradotto\"}",
-  "Yes(trial)": "Sì (prova)",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Conoscenza Avanzata & Matematica (WolframAlpha)",
   "Features": "Caratteristiche",
   "Nodes (Node AI)": "Nodi (Node AI)",
@@ -38,11 +36,9 @@
   "No limit": "Nessun limite",
   "Features Comparison and Pricing": "Confronto delle Caratteristiche e Prezzi",
   "Text Generation (GPT-4 Turbo)": "Generazione di Testo (GPT-4 Turbo)",
-  "20/day": "20 al giorno",
   "1/day(trial)": "1/giorno (prova)",
   "Image Generation (Midjourney)": "Generazione di Immagini (Midjourney)",
   "email_support_subscriptions": "Per l'utilizzo aziendale, si prega di contattarci all'indirizzo `<1><2>support@simple-ai.io</2></1>`.",
-  "Usage Fee": "Tariffa di Utilizzo",
   "You are the `root_user`.": "Sei il `root_user`.",
   "Expired": "Scaduto",
   "Unlimited": "Illimitato",
@@ -50,5 +46,9 @@
   "day": "giorno",
   "month": "mese",
   "banking fee {{bankingFee}} included": "commissione bancaria {{bankingFee}} inclusa",
-  "Free": "Gratuito"
+  "Free": "Gratuito",
+  "image": "immagine",
+  "query": "query",
+  "usage": "utilizzo",
+  "speedup": "accelerazione"
 }

@@ -22,7 +22,6 @@
   "Subcriptions": "Berlangganan",
   "Upgrade to": "Tingkatkan ke",
   "Downgrade to": "Turunkan ke",
-  "50/day +fast": "50/hari +cepat",
   "Image Input (GPT-4 Vision)": "Masukan Gambar (GPT-4 Vision)",
   "Roles": "Peran",
   "Yes": "Ya",
@@ -30,7 +29,6 @@
   "Pricing": "Harga",
   "* For details of the usage fee, please refer to the Usage page.": "Untuk rincian biaya penggunaan, silakan lihat di halaman Penggunaan.",
   "File Input": "File Input\n\nformat json: {\"content\": \"teks yang diterjemahkan\"}",
-  "Yes(trial)": "Ya(percobaan)",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Pengetahuan & Matematika yang Ditingkatkan (WolframAlpha)",
   "Features": "Fitur",
   "Nodes (Node AI)": "Node (Node AI)",
@@ -38,11 +36,9 @@
   "No limit": "Tanpa batas",
   "Features Comparison and Pricing": "Perbandingan Fitur dan Harga",
   "Text Generation (GPT-4 Turbo)": "Pembangkitan Teks (GPT-4 Turbo)",
-  "20/day": "20/hari",
   "1/day(trial)": "1/hari (percobaan)",
   "Image Generation (Midjourney)": "Pembuatan Gambar (Midjourney)",
   "email_support_subscriptions": "Untuk penggunaan enterprise, silakan hubungi kami di `<1><2>support@simple-ai.io</2></1>`.",
-  "Usage Fee": "Biaya Penggunaan",
   "You are the `root_user`.": "Anda adalah `root_user`.",
   "Expired": "Kedaluwarsa",
   "Unlimited": "Tak Terbatas",
@@ -50,5 +46,9 @@
   "day": "hari",
   "month": "bulan",
   "banking fee {{bankingFee}} included": "biaya perbankan {{bankingFee}} sudah termasuk",
-  "Free": "Gratis"
+  "Free": "Gratis",
+  "image": "gambar",
+  "query": "query",
+  "usage": "pemakaian",
+  "speedup": "percepatan"
 }
