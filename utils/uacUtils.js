@@ -13,7 +13,7 @@ export async function getUacResult(user, ip) {
 
     // Forbidden as noticed some user user can use fake IP to bypass the limit
     // But if user cannot chat, it will be inconvenient... temporarily enabled.
-    if (chatCount >= 6) {
+    if (chatCount >= 12) {
       return {
         success: false,
         error: "To proceed, kindly sign up by creating a new `user` account. Registration is simple—just enter the command `:user add [username] [email] [password?]`, omitting the brackets and substituting in your own details for username, email, and password. Remember that the username should only contain letters and not begin with a number. For instance, you can type `:user add john xxxx@zzzz.vv ********` to register. Existing members, please log in with `:user login [username] [password]`. Please note, all commands should start with a half-width colon (:)."
