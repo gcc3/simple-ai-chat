@@ -10,8 +10,9 @@ import sqlite3
 import requests
 from dotenv import load_dotenv
 import os
-from time import sleep
+from time import sleep, time
 import urllib.parse
+from datetime import datetime
 
 # Load .env file from the specified path
 dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', '.env')
@@ -60,8 +61,13 @@ def update_user_data(username, total_usage_fees_this_month):
     
     # Calculate the updated balance and usage
     new_balance = max(npre(balance - total_usage_fees_this_month), 0)
-    new_usage = usage + total_usage_fees_this_month
-    print(f"Updating user {username}, balance = {balance} -> {new_balance}, usage = {usage} -> {new_usage}, fee = {total_usage_fees_this_month}")
+    new_usage = npre(usage + total_usage_fees_this_month)
+    log = f"Updating user {username}, balance = {balance} -> {new_balance}, usage = {usage} -> {new_usage}, fee = {total_usage_fees_this_month}"
+    print(log)
+    
+    # Output to log file
+    with open("log.txt", "a") as f:
+        f.write(log + "\n")
     
     # Update the user's balance and usage in the `users` table
     cursor.execute("UPDATE users SET balance = ?, usage = ? WHERE username = ?",
@@ -71,22 +77,40 @@ def update_user_data(username, total_usage_fees_this_month):
     conn.close()
 
 def main():
+    # Print a timestamp to the log file
+    with open("log.txt", "a") as f:
+        f.write("\n" + "="*40 + "\n")
+        f.write("Starting process\n")
+        f.write("="*40 + "\n")
+        f.write("\n")
+        f.write("Timestamp: " + str(int(time())) + "\n")
+        current_time = datetime.utcnow()
+        timestamp_str = current_time.strftime("Timestamp: %Y-%m-%d %H:%M:%S\n")
+        f.write("Timestamp Human Readble: " + timestamp_str + "\n")
+    
     # Get credentials for all users from the database
     users_credentials = get_all_user_credentials()
     
     # Process each user
+    users_total_usage = 0
     for username, password in users_credentials:
         
         # Get user info from the API
         user_info = get_user_info(username, password)
         
         # Get total_usage_fees_this_month from the user info
-        total_usage_fees_this_month = user_info['usage']['total_usage_fees_this_month']
+        usage_user_this_month = user_info['usage']['total_usage_fees_this_month']
         
         # Update user's balance and usage in the database
-        update_user_data(username, total_usage_fees_this_month)
+        update_user_data(username, usage_user_this_month)
+        users_total_usage += usage_user_this_month
         sleep(1)
     
+    # Print users_total_usage to the log file
+    with open("log.txt", "a") as f:
+        f.write("\n")
+        f.write("Total usage fees this month: " + str(users_total_usage) + "\n")
+        f.write("\n")
     print("Done")
 
 if __name__ == "__main__":
