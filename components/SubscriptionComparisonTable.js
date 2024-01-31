@@ -21,7 +21,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
 
   const comparison = [
     { name: t("Text Generation (GPT-4 Turbo)"), user: getRoleFequencyLimits(`user`, t), pro_user: getRoleFequencyLimits(`pro_user`, t), super_user: getRoleFequencyLimits(`super_user`, t) },
-    { name: t("Image Generation (Midjourney)"), user: "1" + " " + t("image") + "/" + t("day"), pro_user: "20" + " " + t("image") + "/" + t("day"), super_user: "20" + " " + t("image") + "/" + t("day") + " +" + t("speedup") },
+    { name: t("Image Generation (Midjourney)"), user: "1" + " " + t("image") + "/" + t("day"), pro_user: "120" + " " + t("image") + "/" + t("month"), super_user: "640" + " " + t("image") + "/" + t("month") + " +" + t("speedup") },
     { name: t("Image Input (GPT-4 Vision)"), user: t("No limit"), pro_user: t("No limit"), super_user: t("No limit") },
     { name: t("File Input"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
     { name: t("Roles"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
