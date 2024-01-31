@@ -24,7 +24,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
     { name: t("Image Generation (Midjourney)"), user: t("1/day(trial)"), pro_user: t("20/day"), super_user: t("50/day +fast") },
     { name: t("Image Input (GPT-4 Vision)"), user: t("No limit"), pro_user: t("No limit"), super_user: t("No limit") },
     { name: t("File Input"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
-    { name: t("Roles"), user: t("Yes"), pro_user: t("Yes"), super_user: "Yes" },
+    { name: t("Roles"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
     { name: t("Data Stores"), user: t("Yes"), pro_user: t("Yes +support"), super_user: t("Yes +support") },
     { name: t("Nodes (Node AI)"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes +support") },
     { name: t("Enhanced Knowledge & Mathematics (WolframAlpha)"), user: t("Yes(trial)"), pro_user: t("Yes"), super_user: t("Yes") },
