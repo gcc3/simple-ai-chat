@@ -46,6 +46,7 @@ export default async function (req, res) {
     "queryParameterForInput": "input",
     "multimodality": false,
     "overrideOutputWithNodeResponse": false,
+    "description": "",
   });
 
   insertNode(name, settings, username);
