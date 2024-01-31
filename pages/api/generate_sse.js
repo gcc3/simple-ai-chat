@@ -245,6 +245,7 @@ export default async function (req, res) {
     let raw_prompt = "";
     let mem = 0;
     let input_images = [];
+    let input_file_content = "";
     let node_input = "";
     let node_output = "";
     let node_output_images = [];
@@ -267,6 +268,7 @@ export default async function (req, res) {
     raw_prompt = generateMessagesResult.raw_prompt;
     mem = generateMessagesResult.mem;
     input_images = generateMessagesResult.input_images;
+    input_file_content = generateMessagesResult.input_file_content;
     node_input = generateMessagesResult.node_input;
     node_output = generateMessagesResult.node_output;
     node_output_images = generateMessagesResult.node_output_images;
@@ -427,6 +429,9 @@ export default async function (req, res) {
     if (outputType === TYPE.TOOL_CALL) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
+    }
+    if (files.length > 0 && input_file_content) {
+      input += "\n\n" + input_file_content;
     }
     await logadd(user, session, time++, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
 

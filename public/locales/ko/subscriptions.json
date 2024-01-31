@@ -22,7 +22,6 @@
   "Subcriptions": "구독",
   "Upgrade to": "업그레이드 대상",
   "Downgrade to": "다운그레이드 대상",
-  "50/day +fast": "하루 50개 +빠른",
   "Image Input (GPT-4 Vision)": "이미지 입력 (GPT-4 Vision)",
   "Roles": "역할",
   "Yes": "네",
@@ -30,7 +29,6 @@
   "Pricing": "가격 책정",
   "* For details of the usage fee, please refer to the Usage page.": "이용 요금에 대한 자세한 내용은 이용 페이지를 참조해 주세요.",
   "File Input": "Simple AI, Midjourney 및 GPT-4 Vision에 대한 텍스트를 번역하라는 요청을 받았습니다.",
-  "Yes(trial)": "예(시험적)",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "향상된 지식 & 수학 (WolframAlpha)",
   "Features": "특징",
   "Nodes (Node AI)": "노드 (Node AI)",
@@ -38,11 +36,9 @@
   "No limit": "제한 없음",
   "Features Comparison and Pricing": "기능 비교 및 가격 책정",
   "Text Generation (GPT-4 Turbo)": "텍스트 생성 (GPT-4 Turbo)",
-  "20/day": "하루 20개",
   "1/day(trial)": "1일/체험판",
   "Image Generation (Midjourney)": "이미지 생성 (Midjourney)",
   "email_support_subscriptions": "엔터프라이즈 사용을 위해서는 `<1><2>support@simple-ai.io</2></1>`로 문의해 주세요.",
-  "Usage Fee": "이용료",
   "You are the `root_user`.": "당신은 `root_user`입니다.",
   "Expired": "만료됨",
   "Unlimited": "무제한",
@@ -50,5 +46,9 @@
   "day": "날",
   "month": "월",
   "banking fee {{bankingFee}} included": "은행 수수료 {{bankingFee}} 포함",
-  "Free": "무료"
+  "Free": "무료",
+  "image": "이미지",
+  "query": "쿼리",
+  "usage": "사용량",
+  "speedup": "가속화"
 }
