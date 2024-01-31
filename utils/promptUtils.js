@@ -44,6 +44,7 @@ export async function generateMessages(use_system_role, lang,
   let token_ct = {};
   let mem = 0;
   let input_images = [];
+  let input_file_content = "";
   let node_input = "";
   let node_output = "";
   let node_output_images = [];
@@ -507,9 +508,10 @@ export async function generateMessages(use_system_role, lang,
                   fileContent = data.value;
                 }
 
+                input_file_content += "User input file content:\n" + fileContent + "\n\n";
                 c.push({
                   type: "text",
-                  text: "User input file content:\n" + fileContent,
+                  text: input_file_content,
                 });
                 user_input_file_prompt += fileContent;
               } catch (error) {
@@ -603,6 +605,7 @@ export async function generateMessages(use_system_role, lang,
     token_ct,
     mem,
     input_images,
+    input_file_content,
     node_input,
     node_output,
     node_output_images,
