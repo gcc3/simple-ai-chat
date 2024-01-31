@@ -5,6 +5,7 @@ import { getRoleFequencyLimit } from 'utils/usageUtils.js';
 import { gpt4FeeCal, gpt4vFeeCal } from "utils/usageUtils";
 import { getAvailableStoresForUser } from 'utils/storeUtils';
 import { getAvailableNodesForUser } from 'utils/nodeUtils';
+import { npre } from "utils/numberUtils";
 
 const moment = require('moment');
 
@@ -76,10 +77,10 @@ export default async function (req, res) {
     // Fee calculation
     const gpt4FeeThisMonth = gpt4FeeCal(tokenMonthlyUsageThisMonth.input, tokenMonthlyUsageThisMonth.output);
     const gpt4vFeeThisMonth = gpt4vFeeCal(tokenVMonthlyUsageThisMonth.input, tokenVMonthlyUsageThisMonth.output);
-    const totalUsageFeeThisMonth = gpt4FeeThisMonth + gpt4vFeeThisMonth;
+    const totalUsageFeeThisMonth = npre(gpt4FeeThisMonth + gpt4vFeeThisMonth);
     const gpt4FeeLastMonth = gpt4FeeCal(tokenMonthlyUsageLastMonth.input, tokenMonthlyUsageLastMonth.output);
     const gpt4vFeeLastMonth = gpt4vFeeCal(tokenVMonthlyUsageLastMonth.input, tokenVMonthlyUsageLastMonth.output);
-    const totalUsageFeeLastMonth = gpt4FeeLastMonth + gpt4vFeeLastMonth;
+    const totalUsageFeeLastMonth = npre(gpt4FeeLastMonth + gpt4vFeeLastMonth);
 
     // Set the token as a cookie
     const sameSiteCookie = process.env.SAME_SITE_COOKIE;
@@ -195,15 +196,15 @@ async function getUseCountFequenciesWithLimit(username, role) {
 // Token
 async function getUserTokenUsageThisMonth(username, model) {
   const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth() + 1; // Add 1 because getMonth() returns 0-11
+  const year = now.getUTCFullYear();
+  const month = now.getUTCMonth() + 1; // Add 1 because getUTCMonth() returns 0-11
   return getUserTokenUsageByMonth(username, model, year, month);
 }
 
 async function getUserTokenUsageLastMonth(username, model) {
   const now = new Date();
-  const year = now.getFullYear();
-  const month = now.getMonth();
+  const year = now.getUTCFullYear();
+  const month = now.getUTCMonth();
   return getUserTokenUsageByMonth(username, model, year, month);
 }
 
