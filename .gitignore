@@ -39,3 +39,7 @@ role.csv
 
 # sqlite
 *.sqlite
+
+# log files
+*.log
+log.config

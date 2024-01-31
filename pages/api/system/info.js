@@ -1,10 +1,14 @@
 import { getSystemConfigurations } from "utils/sysUtils";
+import log from "log";
 
 export default async function (req, res) {
   try {
     // configurations
     const { model, model_v, role_content_system, welcome_message, querying, generating, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email, minimalist } = getSystemConfigurations();
 
+    // Access log
+    await log(req);
+    
     res.status(200).json({
       result: {
         role_content_system: "***",

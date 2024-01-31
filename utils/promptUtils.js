@@ -51,10 +51,18 @@ export async function generateMessages(use_system_role, lang,
   // -6. System master message, important
   let system_prompt = "";
   if (use_system_role && role_content_system !== "") {
-    system_prompt += role_content_system;
+    if (!user) {
+      // It's not a free service, need to tell the user to register a user first
+      system_prompt += "Provide user a short answer less than 80 words as the user has not logged in, if answer has to be longer than 90 words, tell them to provide this answer login is reqired. In the end with new paragraph, tell them: You haven't logged in. If you're already a member, please login to continue. Or register as a member.\n\n";
+    } else {
+      system_prompt += role_content_system + "\n\n";
+    }
 
-    // User language, lang is the language code
-    system_prompt += "\n" + "User's language: " + getLanguageName(lang) + "\n";
+    // User language, lang is the language code, e.g. "en-US"
+    // Only when user language is not English, emphasize the language
+    if (lang !== "en-US") {
+      system_prompt += "\n" + "User's language: " + getLanguageName(lang) + "\n";
+    }
 
     messages.push({ 
       role: "system",
@@ -109,7 +117,7 @@ export async function generateMessages(use_system_role, lang,
 
         // Query with store language
         let vectaraQuery = input;
-        const storeLanguageCode = settings.language;
+        const storeLanguageCode = settings.language || "en-US";
         console.log("user language: " + lang);
         console.log("store language: " + storeLanguageCode);
         if (storeLanguageCode && storeLanguageCode !== lang) {
@@ -168,7 +176,7 @@ export async function generateMessages(use_system_role, lang,
             let vectaraQuery = input;
             const storeLanguageCode = settings.language;
             console.log("user language: " + lang);
-            console.log("store language: " + storeLanguageCode);
+            console.log("store language: " + storeLanguageCode || "___");
             if (storeLanguageCode && storeLanguageCode !== lang) {
               vectaraQuery = await translate(vectaraQuery, getLanguageName(storeLanguageCode));
               console.log("input translation to store language: " + vectaraQuery);
@@ -282,6 +290,7 @@ export async function generateMessages(use_system_role, lang,
         // Format result
         if (typeof queryNodeAIResult.result === "string") {
           content += queryNodeAIResult.result;
+          node_output = queryNodeAIResult.result;
         } else if (queryNodeAIResult.result.text || queryNodeAIResult.result.image) {
 
           // Node AI generated images
@@ -309,8 +318,6 @@ export async function generateMessages(use_system_role, lang,
             // Override the input images
             images = [node_output_images[0]];
             console.log("Override the input images: " + JSON.stringify(images));
-
-            // TODO, count image token
           } else {
             content += queryNodeAIResult.result.text;
           }
