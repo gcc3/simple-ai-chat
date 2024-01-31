@@ -858,6 +858,18 @@ export default function Home() {
           } else {
             printOutput(systemInfo.welcome_message);
           }
+
+          // Print welcome video
+          const video_id = process.env.NEXT_PUBLIC_VIDEO_ID;
+          if (video_id && localStorage.getItem("fullscreen").startsWith("off")) {
+            if (ipInfo.country && ipInfo.country === "CN") {
+              // TODO use Bilibili
+              console.log("Video not available in China.");
+            } else {
+              clearPreviewVideos();
+              printVideo(video_id, elOutputRef, "before");
+            }
+          }
         }
       } catch (error) {
         console.error("There was an error fetching the data:", error);
