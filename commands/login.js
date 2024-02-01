@@ -46,7 +46,9 @@ export default async function login(args) {
       }
       return "You're logged in as " + user.username + " (`" + user.role + "`).\n\n" 
       
-          + "`Simple AI Documentation` (store) is disabled by default to save your tokens. If you need to ask the documentation, please re-enable it by typing `:use \"Simple AI Documentation\"`.";
+          + "`Simple AI Documentation` (store) is disabled by default to save your tokens. If you need to ask the documentation, please re-enable it by typing `:use \"Simple AI Documentation\"`.\n\n"
+          
+          + "Remember that, GPT's answers can make mistakes. Consider checking important information.\n\n";
     }
   } catch (error) {
     // Login failed
