@@ -86,7 +86,7 @@ def main():
         f.write("Timestamp: " + str(int(time())) + "\n")
         current_time = datetime.utcnow()
         timestamp_str = current_time.strftime("Timestamp: %Y-%m-%d %H:%M:%S\n")
-        f.write("Timestamp Human Readble: " + timestamp_str + "\n")
+        f.write("Timestamp Human Readable: " + timestamp_str + "\n")
     
     # Get credentials for all users from the database
     users_credentials = get_all_user_credentials()

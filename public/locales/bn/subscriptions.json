@@ -33,7 +33,6 @@
   "Features": "বৈশিষ্ট্যসমূহ",
   "Nodes (Node AI)": "নোডস (Node AI)",
   "Data Stores": "ডেটা স্টোরস",
-  "No limit": "কোনো সীমা নেই",
   "Features Comparison and Pricing": "বৈশিষ্ট্য তুলনা এবং মূল্য নির্ধারণ",
   "Text Generation (GPT-4 Turbo)": "টেক্সট জেনারেশন (GPT-4 Turbo)",
   "1/day(trial)": "1/দিন (ট্রায়াল)",
@@ -48,7 +47,6 @@
   "banking fee {{bankingFee}} included": "ব্যাংকিং ফি {{bankingFee}} অন্তর্ভুক্ত",
   "Free": "ফ্রি",
   "image": "ছবি",
-  "query": "অনুসন্ধান",
   "usage": "ব্যবহার",
   "speedup": "গতি বৃদ্ধি"
 }

@@ -33,7 +33,6 @@
   "Features": "Kenmerken",
   "Nodes (Node AI)": "Knooppunten (Node AI)",
   "Data Stores": "Dataopslag",
-  "No limit": "Geen limiet",
   "Features Comparison and Pricing": "Vergelijking van functies en prijzen",
   "Text Generation (GPT-4 Turbo)": "Tekstgeneratie (GPT-4 Turbo)",
   "1/day(trial)": "1/dag (proef)",
@@ -48,7 +47,6 @@
   "banking fee {{bankingFee}} included": "bankkosten {{bankingFee}} inbegrepen",
   "Free": "Gratis",
   "image": "afbeelding",
-  "query": "query",
   "usage": "gebruik",
   "speedup": "versnellen"
 }

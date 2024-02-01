@@ -33,7 +33,6 @@
   "Features": "功能",
   "Nodes (Node AI)": "节点（Node AI）",
   "Data Stores": "数据存储",
-  "No limit": "无限制",
   "Features Comparison and Pricing": "功能比较与定价",
   "Text Generation (GPT-4 Turbo)": "文本生成（GPT-4 Turbo）",
   "1/day(trial)": "1/天（试用）",
@@ -48,7 +47,6 @@
   "banking fee {{bankingFee}} included": "包含银行费用 {{bankingFee}}",
   "Free": "免费",
   "image": "图像",
-  "query": "查询",
   "usage": "使用量",
   "speedup": "加速"
 }

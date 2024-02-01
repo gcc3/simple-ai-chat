@@ -33,7 +33,6 @@
   "Features": "विशेषताएँ",
   "Nodes (Node AI)": "नोड्स (Node AI)",
   "Data Stores": "डेटा स्टोर्स",
-  "No limit": "कोई सीमा नहीं",
   "Features Comparison and Pricing": "फीचर्स तुलना और मूल्य निर्धारण",
   "Text Generation (GPT-4 Turbo)": "पाठ सृजन (GPT-4 Turbo)",
   "1/day(trial)": "1/दिन (परीक्षण)",
@@ -48,7 +47,6 @@
   "banking fee {{bankingFee}} included": "बैंकिंग शुल्क {{bankingFee}} सम्मिलित",
   "Free": "निःशुल्क",
   "image": "छवि",
-  "query": "प्रश्न",
   "usage": "उपयोग",
   "speedup": "गति बढ़ाओ"
 }

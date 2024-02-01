@@ -33,7 +33,6 @@
   "Features": "Fitur",
   "Nodes (Node AI)": "Node (Node AI)",
   "Data Stores": "Toko Data",
-  "No limit": "Tanpa batas",
   "Features Comparison and Pricing": "Perbandingan Fitur dan Harga",
   "Text Generation (GPT-4 Turbo)": "Pembangkitan Teks (GPT-4 Turbo)",
   "1/day(trial)": "1/hari (percobaan)",
@@ -48,7 +47,6 @@
   "banking fee {{bankingFee}} included": "biaya perbankan {{bankingFee}} sudah termasuk",
   "Free": "Gratis",
   "image": "gambar",
-  "query": "query",
   "usage": "pemakaian",
   "speedup": "percepatan"
 }
