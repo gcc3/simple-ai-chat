@@ -33,7 +33,6 @@
   "Features": "Funktioner",
   "Nodes (Node AI)": "Noder (Node AI)",
   "Data Stores": "Dataförråd",
-  "No limit": "Ingen begränsning",
   "Features Comparison and Pricing": "Funktionsjämförelse och prissättning",
   "Text Generation (GPT-4 Turbo)": "Textgenerering (GPT-4 Turbo)",
   "1/day(trial)": "1/dag (testversion)",
@@ -48,7 +47,6 @@
   "banking fee {{bankingFee}} included": "bankavgift {{bankingFee}} inkluderad",
   "Free": "Gratis",
   "image": "bild",
-  "query": "förfrågan",
   "usage": "användning",
   "speedup": "snabba upp"
 }

@@ -33,7 +33,6 @@
   "Features": "Особенности",
   "Nodes (Node AI)": "Узлы (Node AI)",
   "Data Stores": "Хранилища данных",
-  "No limit": "Без ограничений",
   "Features Comparison and Pricing": "Сравнение функций и ценообразование",
   "Text Generation (GPT-4 Turbo)": "Генерация текста (GPT-4 Turbo)",
   "1/day(trial)": "1/день (пробная версия)",
@@ -48,7 +47,6 @@
   "banking fee {{bankingFee}} included": "банковская комиссия {{bankingFee}} включена",
   "Free": "Бесплатно",
   "image": "изображение",
-  "query": "переведенный текст",
   "usage": "использование",
   "speedup": "ускорение"
 }

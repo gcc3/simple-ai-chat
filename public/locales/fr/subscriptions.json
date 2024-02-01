@@ -33,7 +33,6 @@
   "Features": "Caractéristiques",
   "Nodes (Node AI)": "Nœuds (Node AI)",
   "Data Stores": "Magasins de Données",
-  "No limit": "Aucune limite",
   "Features Comparison and Pricing": "Comparaison des Fonctionnalités et Tarification",
   "Text Generation (GPT-4 Turbo)": "Génération de texte (GPT-4 Turbo)",
   "1/day(trial)": "1/jour (essai)",
@@ -48,7 +47,6 @@
   "banking fee {{bankingFee}} included": "frais bancaires {{bankingFee}} inclus",
   "Free": "Gratuit",
   "image": "image",
-  "query": "requête",
   "usage": "utilisation",
   "speedup": "accélération"
 }

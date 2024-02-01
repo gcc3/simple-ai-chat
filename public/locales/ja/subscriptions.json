@@ -33,7 +33,6 @@
   "Features": "特徴",
   "Nodes (Node AI)": "ノード（Node AI）",
   "Data Stores": "データストア",
-  "No limit": "制限なし",
   "Features Comparison and Pricing": "機能比較と価格設定",
   "Text Generation (GPT-4 Turbo)": "テキスト生成（GPT-4 Turbo）",
   "1/day(trial)": "1日/回（トライアル）",
@@ -48,7 +47,6 @@
   "banking fee {{bankingFee}} included": "銀行手数料 {{bankingFee}} 含む",
   "Free": "無料",
   "image": "画像",
-  "query": "翻訳されたテキスト",
   "usage": "使用量",
   "speedup": "スピードアップ"
 }

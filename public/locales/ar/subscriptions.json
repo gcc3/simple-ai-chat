@@ -33,7 +33,6 @@
   "Features": "الميزات",
   "Nodes (Node AI)": "العقد (عقدة الذكاء الاصطناعي)",
   "Data Stores": "متاجر البيانات",
-  "No limit": "لا حدود",
   "Features Comparison and Pricing": "مقارنة الميزات والأسعار",
   "Text Generation (GPT-4 Turbo)": "توليد النصوص (GPT-4 Turbo)",
   "1/day(trial)": "1/يوم (تجربة)",
@@ -48,7 +47,6 @@
   "banking fee {{bankingFee}} included": "رسوم بنكية {{bankingFee}} مشمولة",
   "Free": "مجاني",
   "image": "صورة",
-  "query": "استعلام",
   "usage": "الاستخدام",
   "speedup": "تسريع"
 }
