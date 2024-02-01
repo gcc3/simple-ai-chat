@@ -11,11 +11,6 @@ function getPriceString(subscriptions, role, t) {
   return price;
 }
 
-function getRoleFequencyLimits(role, t) {
-  const limit = getRoleFequencyLimit(role);
-  return limit.daily_limit + "/" + t("day");
-}
-
 const SubscriptionComparisonTable = ({ subscriptions }) => {
   const { t } = useTranslation("subscriptions");
 
