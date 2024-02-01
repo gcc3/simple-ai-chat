@@ -7,14 +7,14 @@
   "welcome": "Välkommen till Simple AI (simple-ai.io)! 🚀 Simple AI är en AI-chattapplikation som drivs av OpenAI:s GPT-4 Turbo, integrerad med WolframAlpha (Förbättrad kunskap & Matematik), Midjourney (Högkvalitativ bildgenerering) och Vectara (Vektorbaserad databasindexering), bland andra praktiska verktyg. Den erbjuder en minimalistisk design fylld med rika funktioner, snabbare operationer och en mer professionell användarupplevelse, vilket gör den till ett utmärkt alternativ till ChatGPT. Skriv bara din fråga och tryck `Enter` för att chatta med AI.💬",
   "quick_start": "Snabbstartguide:",
   "quick_start_6": "Efter att ha loggat in, använd `:use \"Midjourney\"` för att aktivera bildgenerering.⛵ Använd `:use \"WolframAlpha\"` för att aktivera förbättrad matematik.🏛️ Tips: du kan använda `Tab`-tangenten för att autokomplettera.💡",
-  "quick_start_3": "Glömt ditt lösenord? Återställ det genom att använda kommandot `:user reset pass [användarnamn] [e-post]`.🆘",
+  "quick_start_3": "Om du har glömt ditt lösenord, återställ det genom att använda kommandot `:user reset pass [username] [email]`.🆘",
   "quick_start_10": "Bjud in vänner med kommandot `:invite [email]`, och ni båda kommer att få 100K belöningstokens!💌",
-  "quick_start_1": "Först, registrera en användare med kommandot `:user add [username] [email] [password?]` - med en gratis provperiod på 30K tokens.🎁 Obs: Inkludera inte klammerparenteserna i ditt kommando.✅ Till exempel, `:user add john john@example.com ********`.🔑",
-  "quick_start_5": "En uppsättning chattar kallas en `session`. För att navigera mellan loggar i en `session`, använd piltangenterna `⬅️` och `➡️`. Eller svep åt vänster och höger på smartphones.📱 För att navigera mellan `sessions`, använd piltangenterna `⬆️` och `⬇️`.",
+  "quick_start_1": "Innan du börjar använda, ta 10 sekunder för att registrera en användare med kommandot `:user add [username] [email] [password?]`, och 30 000 gratis tokens kommer att ges till dig.🎁\nObs: Inkludera inte klammerparenteserna i ditt kommando.✅\nTill exempel, `:user add john john@example.com ********`.🔑",
+  "quick_start_5": "För att navigera mellan chatt-historik, använd piltangenterna `⬅️` och `➡️`. (Eller svep åt vänster och höger på smartphones.📱) För att navigera mellan `sessioner`, använd piltangenterna `⬆️` och `⬇️`.",
   "quick_start_8": "För att ändra tema, använd `:theme [light|dark|terminal]`.🌈",
   "quick_start_0": "Simple AI fungerar med ett kommandogränssnitt, genvägar och gester. <strong>Kommandon börjar alla med `:` (halvbreddskolon).</strong>",
   "quick_start_9": "Ett allmänt `användar` konto är gratis, men du måste betala för OpenAI API tokens. Du kan hantera ditt saldo av tokens på Användningssidan.💳",
   "quick_start_2": "För att logga in, använd kommandot `:login [användarnamn] [lösenord]`.",
   "quick_start_7": "Byt till helskärm med `F11` (⌃F11 för macOS). För delad skärm, använd `Ctrl+|`.🖥️",
-  "quick_start_4": "För att komma åt dokumentationen och bekräfta användningen, klicka på punkten (•) i skärmhörnet.📄"
+  "quick_start_4": "För att komma åt dokumentationen och bekräfta användning, klicka på punkten (•) i skärmhörnet.📄"
 }

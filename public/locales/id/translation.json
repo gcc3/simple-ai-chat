@@ -7,14 +7,14 @@
   "welcome": "Selamat datang di Simple AI (simple-ai.io)! 🚀 Simple AI adalah aplikasi chat AI yang didukung oleh GPT-4 Turbo dari OpenAI, terintegrasi dengan WolframAlpha (Pengetahuan & Matematika Tingkat Lanjut), Midjourney (Pembuatan Gambar Berkualitas Tinggi), dan Vectara (Pengindeksan Database Vektor), di antara alat-alat praktis lainnya. Menawarkan desain minimalis yang dilengkapi dengan fitur-fitur kaya, operasi yang lebih cepat dan pengalaman pengguna yang lebih profesional, menjadikannya alternatif ChatGPT yang sangat baik. Cukup ketik pertanyaan Anda dan tekan `Enter` untuk mengobrol dengan AI.💬",
   "quick_start": "Panduan Memulai Cepat:",
   "quick_start_6": "Setelah masuk, gunakan `:use \"Midjourney\"` untuk mengaktifkan pembuatan gambar.⛵ Gunakan `:use \"WolframAlpha\"` untuk mengaktifkan matematika yang lebih canggih.🏛️ Tips: Anda dapat menggunakan tombol `Tab` untuk autolengkap.💡",
-  "quick_start_3": "Lupa kata sandi Anda? Atur ulang menggunakan perintah `:user reset pass [username] [email]`.🆘",
+  "quick_start_3": "Jika Anda lupa kata sandi, atur ulang dengan menggunakan perintah `:user reset pass [username] [email]`.🆘",
   "quick_start_10": "Undang teman menggunakan perintah `:invite [email]`, dan kalian berdua akan menerima 100K token hadiah!💌",
-  "quick_start_1": "Pertama, daftarkan pengguna dengan perintah `:user add [username] [email] [password?]` - dengan percobaan gratis 30K token.🎁 Catatan: Jangan sertakan tanda kurung dalam perintah Anda.✅ Sebagai contoh, `:user add john john@example.com ********`.🔑",
-  "quick_start_5": "Sebuah set percakapan disebut sebuah `session`. Untuk berpindah antar log dalam sebuah `session`, gunakan tombol panah `⬅️` dan `➡️`. Atau geser ke kiri dan ke kanan pada smartphone.📱 Untuk berpindah antara `session`, gunakan tombol panah `⬆️` dan `⬇️`.",
+  "quick_start_1": "Sebelum mulai menggunakan, luangkan waktu 10 detik untuk mendaftar pengguna dengan perintah `:user add [username] [email] [password?]`, dan Anda akan mendapatkan 30K token gratis.🎁\nCatatan: Jangan sertakan tanda kurung dalam perintah Anda.✅\nContohnya, `:user add john john@example.com ********`.🔑",
+  "quick_start_5": "Untuk berpindah antara riwayat obrolan, gunakan tombol panah `⬅️` dan `➡️`. (Atau geser ke kiri dan ke kanan pada smartphone.📱) Untuk berpindah antara `sesi`, gunakan tombol panah `⬆️` dan `⬇️`.",
   "quick_start_8": "Untuk mengubah tema, gunakan `:theme [light|dark|terminal]`.🌈",
   "quick_start_0": "Simple AI beroperasi menggunakan antarmuka perintah, pintasan, dan gerakan. <strong>Perintah semua dimulai dengan `:` (titik dua setengah lebar).</strong>",
   "quick_start_9": "Akun `user` umum gratis, tetapi Anda harus membayar untuk token API OpenAI. Anda dapat mengelola saldo token Anda di halaman Penggunaan.💳",
   "quick_start_2": "Untuk masuk, gunakan perintah `:login [username] [password]`.",
   "quick_start_7": "Beralih ke layar penuh dengan `F11` (⌃F11 untuk macOS). Untuk layar terbagi, gunakan `Ctrl+|`.🖥️",
-  "quick_start_4": "Untuk mengakses Dokumentasi dan mengonfirmasi Penggunaan, klik titik (•) di sudut layar.📄"
+  "quick_start_4": "Untuk mengakses dokumentasi dan konfirmasi penggunaan, klik titik (•) di sudut layar.📄"
 }

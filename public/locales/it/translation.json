@@ -7,14 +7,14 @@
   "welcome": "Benvenuti su Simple AI (simple-ai.io)! 🚀 Simple AI è un'applicazione di chat AI alimentata da GPT-4 Turbo di OpenAI, integrata con WolframAlpha (Conoscenza Avanzata & Matematica), Midjourney (Generazione di Immagini di Alta Qualità) e Vectara (Indicizzazione di Database Vettoriali), tra gli altri strumenti pratici. Offre un design minimalista arricchito da funzionalità avanzate, operazioni più veloci e un'esperienza utente più professionale, rendendola un'ottima alternativa a ChatGPT. Digita semplicemente la tua domanda e premi `Invio` per chattare con l'AI.💬",
   "quick_start": "Guida Rapida:",
   "quick_start_6": "Dopo aver effettuato l'accesso, usa `:use \"Midjourney\"` per abilitare la generazione di immagini.⛵ Usa `:use \"WolframAlpha\"` per abilitare funzionalità matematiche avanzate.🏛️ Suggerimenti: puoi usare il tasto `Tab` per completamento automatico.💡",
-  "quick_start_3": "Hai dimenticato la tua password? Reimpostala utilizzando il comando `:user reset pass [username] [email]`.🆘",
+  "quick_start_3": "Se hai dimenticato la tua password, puoi reimpostarla utilizzando il comando `:user reset pass [username] [email]`.🆘",
   "quick_start_10": "Invita amici utilizzando il comando `:invite [email]`, e entrambi riceverete 100K token premio!💌",
-  "quick_start_1": "Prima di tutto, registra un utente con il comando `:user add [username] [email] [password?]` - con prova gratuita di 30K token.🎁 Nota: Non includere le parentesi nel tuo comando.✅ Ad esempio, `:user add john john@example.com ********`.🔑",
-  "quick_start_5": "Un insieme di chat è chiamato una `session`. Per navigare tra i log in una `session`, utilizza i tasti freccia `⬅️` e `➡️`. Oppure scorri verso sinistra e destra sugli smartphone.📱 Per navigare tra le `sessions`, utilizza i tasti freccia `⬆️` e `⬇️`.",
+  "quick_start_1": "Prima di iniziare ad utilizzare, impiega 10 secondi per registrare un utente con il comando `:user add [username] [email] [password?]`, e ti verranno dati 30K token gratuiti.🎁 Nota: Non includere le parentesi nel tuo comando.✅ Ad esempio, `:user add john john@example.com ********`.🔑",
+  "quick_start_5": "Per navigare tra le cronologie delle chat, utilizza i tasti freccia `⬅️` e `➡️`. (Oppure scorri verso sinistra e destra sugli smartphone.📱) Per passare da una `sessione` all'altra, usa i tasti freccia `⬆️` e `⬇️`.",
   "quick_start_8": "Per cambiare il tema, usa `:theme [light|dark|terminal]`.🌈",
   "quick_start_0": "Simple AI funziona tramite un'interfaccia a comandi, scorciatoie e gesti. <strong>I comandi iniziano tutti con `:` (due punti di larghezza ridotta).</strong>",
   "quick_start_9": "Un account `user` generico è gratuito, ma devi pagare per i token dell'API OpenAI. Puoi gestire il tuo saldo di token nella pagina Utilizzo.💳",
   "quick_start_2": "Per effettuare l'accesso, utilizza il comando `:login [username] [password]`.",
   "quick_start_7": "Passa a schermo intero con `F11` (⌃F11 per macOS). Per lo schermo diviso, usa `Ctrl+|`.🖥️",
-  "quick_start_4": "Per accedere alla Documentazione e confermare l'Utilizzo, clicca sul punto (•) nell'angolo dello schermo.📄"
+  "quick_start_4": "Per accedere alla documentazione e confermare l'utilizzo, clicca sul punto (•) nell'angolo dello schermo.📄"
 }
