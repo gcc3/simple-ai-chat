@@ -108,8 +108,8 @@ def process_document(file_path, mysql_config):
     insert_data_to_mysql(extracted_data_json, mysql_config)
 
 # Create a list of all PDF and DOCX files in the specified directory
-pdf_files = glob.glob(os.path.join("./", '*.pdf'))
-docx_files = glob.glob(os.path.join("./", '*.docx'))
+pdf_files = glob.glob(os.path.join(".", '*.pdf'))
+docx_files = glob.glob(os.path.join(".", '*.docx'))
 all_files = pdf_files + docx_files
 
 for file_path in all_files:
