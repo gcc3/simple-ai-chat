@@ -4,7 +4,7 @@
   "Usage": "Kullanım",
   "Subcriptions": "Abonelikler",
   "Privacy Policy": "Gizlilik Politikası",
-  "welcome": "Simple AI'ye (simple-ai.io) hoş geldiniz! 🚀 Simple AI, harika bir AI sohbet uygulamasıdır, ChatGPT alternatifidir. Minimalist bir tasarıma sahip olmasına rağmen güçlü özelliklerle doludur. Sorgunuzu yazın ve AI ile sohbet etmek için `Enter` tuşuna basın.💬",
+  "welcome": "Simple AI (simple-ai.io)'a hoş geldiniz! 🚀 Simple AI, OpenAI'nin GPT-4 Turbo'su tarafından desteklenen bir AI sohbet uygulamasıdır ve WolframAlpha (Gelişmiş Bilgi & Matematik), Midjourney (Yüksek Kaliteli Resim Üretimi) ve Vectara (Vektör Veritabanı İndeksleme) gibi diğer pratik araçlarla entegre edilmiştir. Minimalist bir tasarım sunarken zengin özellikler, daha hızlı işlemler ve daha profesyonel bir kullanıcı deneyimi ile mükemmel bir ChatGPT alternatifi oluşturur. Sadece sorgunuzu yazın ve AI ile sohbet etmek için `Enter` tuşuna basın.💬",
   "quick_start": "Hızlı Başlangıç Kılavuzu:",
   "quick_start_6": "Giriş yaptıktan sonra, resim oluşturmayı etkinleştirmek için `:use \"Midjourney\"` kullanın.⛵ Gelişmiş matematiği etkinleştirmek için `:use \"WolframAlpha\"` kullanın.🏛️ İpucu: Otomatik tamamlama için `Tab` tuşunu kullanabilirsiniz.💡",
   "quick_start_3": "Şifrenizi mi unuttunuz? Komutu kullanarak sıfırlayın `:user reset pass [kullanıcı adı] [e-posta]`.🆘",

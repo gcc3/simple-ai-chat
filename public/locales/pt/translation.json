@@ -4,7 +4,7 @@
   "Usage": "Utilização",
   "Subcriptions": "Assinaturas",
   "Privacy Policy": "Política de Privacidade",
-  "welcome": "Bem-vindo ao Simple AI (simple-ai.io)! 🚀 O Simple AI é um incrível aplicativo de chat com IA, uma alternativa ao ChatGPT. Possui um design minimalista, mas ainda assim repleto de recursos poderosos. Digite sua consulta e pressione `Enter` para conversar com a IA.💬",
+  "welcome": "Bem-vindo ao Simple AI (simple-ai.io)! 🚀 O Simple AI é um aplicativo de chat AI alimentado pelo GPT-4 Turbo da OpenAI, integrado com WolframAlpha (Conhecimento Avançado & Matemática), Midjourney (Geração de Imagens de Alta Qualidade) e Vectara (Indexação de Banco de Dados Vetorial), entre outras ferramentas práticas. Oferece um design minimalista repleto de recursos ricos, operações mais rápidas e uma experiência de usuário mais profissional, tornando-o uma excelente alternativa ao ChatGPT. Basta digitar sua consulta e pressionar `Enter` para conversar com a IA.💬",
   "quick_start": "Guia de Início Rápido:",
   "quick_start_6": "Após fazer login, use `:use \"Midjourney\"` para habilitar a geração de imagens.⛵ Use `:use \"WolframAlpha\"` para habilitar matemática avançada.🏛️ Dicas: você pode usar a tecla `Tab` para autocompletar.💡",
   "quick_start_3": "Esqueceu sua senha? Redefina-a usando o comando `:user reset pass [username] [email]`.🆘",

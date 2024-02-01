@@ -4,7 +4,7 @@
   "Usage": "使用量",
   "Subcriptions": "サブスクリプション",
   "Privacy Policy": "個人情報保護方針",
-  "welcome": "Simple AI (simple-ai.io) へようこそ！🚀 Simple AIは素晴らしいAIチャットアプリケーションで、ChatGPTの代替品です。ミニマリスティックなデザインながらも、強力な機能が満載です。質問を入力して`Enter`を押すと、AIとチャットできます。💬",
+  "welcome": "Simple AI（simple-ai.io）へようこそ！🚀 Simple AIは、OpenAIのGPT-4 Turboを搭載し、WolframAlpha（拡張知識＆数学）、Midjourney（高品質画像生成）、Vectara（ベクターデータベースインデキシング）など、実用的なツールを統合したAIチャットアプリケーションです。シンプルなデザインながら豊富な機能を備え、操作が速く、よりプロフェッショナルなユーザー体験を提供するため、ChatGPTの優れた代替品となっています。質問を入力して`Enter`を押すだけでAIとチャットができます。💬",
   "quick_start": "クイックスタートガイド：",
   "quick_start_6": "ログイン後、`:use \"Midjourney\"` を使用して画像生成を有効にします。⛵ `:use \"WolframAlpha\"` を使用して高度な数学機能を有効にします。🏛️ ヒント: `Tab` キーを使用して自動補完することができます。💡",
   "quick_start_3": "パスワードを忘れましたか？コマンド `:user reset pass [username] [email]` を使用してリセットしてください。🆘",
