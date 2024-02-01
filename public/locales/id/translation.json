@@ -4,7 +4,7 @@
   "Usage": "Penggunaan",
   "Subcriptions": "Langganan",
   "Privacy Policy": "Kebijakan Privasi",
-  "welcome": "Selamat datang di Simple AI (simple-ai.io)! 🚀 Simple AI adalah aplikasi chat AI yang mengagumkan, alternatif ChatGPT. Desainnya minimalis, namun tetap penuh dengan fitur-fitur canggih. Ketik pertanyaan Anda dan tekan `Enter` untuk mengobrol dengan AI.💬",
+  "welcome": "Selamat datang di Simple AI (simple-ai.io)! 🚀 Simple AI adalah aplikasi chat AI yang didukung oleh GPT-4 Turbo dari OpenAI, terintegrasi dengan WolframAlpha (Pengetahuan & Matematika Tingkat Lanjut), Midjourney (Pembuatan Gambar Berkualitas Tinggi), dan Vectara (Pengindeksan Database Vektor), di antara alat-alat praktis lainnya. Menawarkan desain minimalis yang dilengkapi dengan fitur-fitur kaya, operasi yang lebih cepat dan pengalaman pengguna yang lebih profesional, menjadikannya alternatif ChatGPT yang sangat baik. Cukup ketik pertanyaan Anda dan tekan `Enter` untuk mengobrol dengan AI.💬",
   "quick_start": "Panduan Memulai Cepat:",
   "quick_start_6": "Setelah masuk, gunakan `:use \"Midjourney\"` untuk mengaktifkan pembuatan gambar.⛵ Gunakan `:use \"WolframAlpha\"` untuk mengaktifkan matematika yang lebih canggih.🏛️ Tips: Anda dapat menggunakan tombol `Tab` untuk autolengkap.💡",
   "quick_start_3": "Lupa kata sandi Anda? Atur ulang menggunakan perintah `:user reset pass [username] [email]`.🆘",

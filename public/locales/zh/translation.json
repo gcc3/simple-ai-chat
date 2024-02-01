@@ -4,7 +4,7 @@
   "Usage": "用量",
   "Subcriptions": "订阅",
   "Privacy Policy": "隐私政策",
-  "welcome": "欢迎来到Simple AI (simple-ai.io)！🚀 Simple AI是一个了不起的AI聊天应用程序，是ChatGPT的替代品。它设计简约，但功能强大。输入您的查询并按`Enter`与AI聊天。💬",
+  "welcome": "欢迎来到Simple AI (simple-ai.io)！🚀 Simple AI是一个由OpenAI的GPT-4 Turbo驱动的AI聊天应用程序，集成了WolframAlpha（增强型知识与数学）、Midjourney（高质量图像生成）和Vectara（向量数据库索引）等实用工具。它提供了一个简约的设计，包含丰富的功能，更快的操作速度和更专业的用户体验，使其成为一个出色的ChatGPT替代品。输入您的查询并按`Enter`键即可与AI聊天。💬",
   "quick_start": "快速开始指南：",
   "quick_start_6": "登录后，使用 `:use \"Midjourney\"` 来启用图像生成。⛵ 使用 `:use \"WolframAlpha\"` 来启用增强数学功能。🏛️ 提示：您可以使用 `Tab` 键来自动完成。💡",
   "quick_start_3": "忘记密码了吗？使用命令 `:user reset pass [username] [email]` 来重置密码。🆘",
