@@ -71,7 +71,6 @@
   "User": "用户",
   "Information": "信息",
   "Introduction": "介绍",
-  "Simple AI (simple-ai.io) is an AI chat application based on OpenAI's latest GPT-4 Turbo model, the most advanced AI model in the world. We focus on improving user experience and providing powerful features for interacting with AI models. Simple AI is the first AI chat application to support both OpenAI's GPT models and to offer integration with other AI systems, such as Midjourney for image generation, and WolframAlpha for knowledge and mathematics. Additionally, we provide a command-based and easy-to-use shell interface, along with shortcuts and gestures, to facilitate user interactions with the AI models. With all these features, Simple AI stands as one of the most powerful AI chat applications.": "Simple AI（simple-ai.io）是基于 OpenAI 最新的 GPT-4 Turbo 模型的AI聊天应用程序，是世界上最先进的 AI 模型。我们专注于提升用户体验并提供与 AI 模型互动的强大功能。Simple AI 是第一个支持 OpenAI 的 GPT 模型并提供与其他AI系统集成的 AI 聊天应用程序，比如 Midjourney 用于图像生成，WolframAlpha 用于知识和数学。此外，我们提供基于命令的易用外壳界面，以及快捷方式和手势，以促进用户与 AI 模型的互动。凭借所有这些功能，Simple AI 被认为是功能最强大的AI聊天应用之一。",
   "What I can do with Simple AI?": "我能用Simple AI做什么？",
   "1. Basic Use": "1. 基本使用",
   "* Chat. Ask complex questions. Problem Solving.": "* 聊天。询问复杂问题。解决问题。",
@@ -141,5 +140,6 @@
   "Cursor is focused on the input area. Input area is empty/cleared.": "光标聚焦在输入区域。输入区域为空/已清空。",
   "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "光标聚焦在输入区域。当前输入以`:`开始。命令历史中有之前的命令。",
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI支持18种语言：阿拉伯语、孟加拉语、中文、荷兰语、英语、法语、德语、印地语、印尼语、意大利语、日语、韩语、波兰语、葡萄牙语、俄语、西班牙语、瑞典语、土耳其语。如果您需要支持您的语言，请告知我们。",
-  "Internationalization and localization": "国际化与本地化"
+  "Internationalization and localization": "国际化与本地化",
+  "introduction": "欢迎来到Simple AI（simple-ai.io）！🚀 Simple AI是一个由OpenAI的GPT-4 Turbo驱动的AI聊天应用程序，集成了WolframAlpha（增强型知识与数学）、Midjourney（高质量图像生成）和Vectara（向量数据库索引）等实用工具。它提供了简约设计，包含丰富功能，操作更快，用户体验更专业，是一个出色的ChatGPT替代品。"
 }
