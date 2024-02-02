@@ -162,8 +162,8 @@ const Documentation = ({ country }) => {
         { t("* For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.") }<br/>
       </div>
       <div id="quick-start" className="mt-5">{ t("Quick Start") }</div>
-      <div className="mt-2">
-        {country && country !== "CN" && process.env.NEXT_PUBLIC_VIDEO_ID && <div className="max-w-screen-lg">
+      <div className="mt-2 mb-3">
+        {country && country !== "CN" && process.env.NEXT_PUBLIC_VIDEO_ID && <div className="max-w-screen-md">
           <YouTube
             videoId={process.env.NEXT_PUBLIC_VIDEO_ID}
             className="youtube-video"
@@ -178,14 +178,13 @@ const Documentation = ({ country }) => {
         </div>}
         {((country && country === "CN") || !process.env.NEXT_PUBLIC_VIDEO_ID) && <div>
           <div className="max-w-screen-lg">
-            (Quick start video preparing...)
+            Add BiliBili video here.
           </div>
         </div>}
       </div>
-      <div className="mt-4">
-        { tt("quick_start") }
+      <div className="mt-2">
         {quick_starts.map((item, index) => (
-          <div key={index} className="mt-2">
+          <div key={index} className="mt-1">
             <div id={item.id}>{ index + 1 }. { t(item.content) }</div>
           </div>
         ))}

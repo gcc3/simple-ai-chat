@@ -5,7 +5,6 @@
   "Subcriptions": "구독",
   "Privacy Policy": "개인정보 처리방침",
   "welcome": "Simple AI(simple-ai.io)에 오신 것을 환영합니다! 🚀 Simple AI는 OpenAI의 GPT-4 Turbo에 의해 구동되는 AI 채팅 애플리케이션으로, WolframAlpha(향상된 지식 및 수학), Midjourney(고품질 이미지 생성), Vectara(벡터 데이터베이스 색인) 등 다양한 실용 도구가 통합되어 있습니다. 깔끔한 디자인과 풍부한 기능, 빠른 작동 속도 및 더 전문적인 사용자 경험을 제공하여, 훌륭한 ChatGPT 대안이 됩니다. 질문을 입력하고 `Enter`를 눌러 AI와 채팅하세요.💬",
-  "quick_start": "빠른 시작 가이드:",
   "quick_start_6": "로그인 후, 이미지 생성을 활성화하려면 `:use \"Midjourney\"`를 사용하세요.⛵ 고급 수학 기능을 사용하려면 `:use \"WolframAlpha\"`를 사용하세요.🏛️ 팁: 자동완성을 위해 `Tab` 키를 사용할 수 있습니다.💡",
   "quick_start_3": "비밀번호를 잊어버린 경우, `:user reset pass [username] [email]` 명령어를 사용하여 재설정하세요.🆘",
   "quick_start_10": "명령어 `:invite [email]`를 사용하여 친구를 초대하고, 여러분 둘 다 100K 상금 토큰을 받으세요!💌",
