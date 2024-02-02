@@ -6,6 +6,21 @@ import { useTranslation, Trans } from 'react-i18next';
 
 const Documentation = ({ country }) => {
   const { t, ready } = useTranslation("documentation");
+  const { t: tt, ready: transReady } = useTranslation("translation");
+
+  const quick_starts = [
+    { id: "quick_start_0", content: tt("quick_start_0") },
+    { id: "quick_start_1", content: tt("quick_start_1") },
+    { id: "quick_start_2", content: tt("quick_start_2") },
+    { id: "quick_start_3", content: tt("quick_start_3") },
+    { id: "quick_start_4", content: tt("quick_start_4") },
+    { id: "quick_start_5", content: tt("quick_start_5") },
+    { id: "quick_start_6", content: tt("quick_start_6") },
+    { id: "quick_start_7", content: tt("quick_start_7") },
+    { id: "quick_start_8", content: tt("quick_start_8") },
+    { id: "quick_start_9", content: tt("quick_start_9") },
+    { id: "quick_start_10", content: tt("quick_start_10") },
+  ]
 
   const features = [
     { id: "features-gpt4turbo", name: t("Text Generation (GPT-4 Turbo)"), description: t("Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.") },
@@ -166,6 +181,14 @@ const Documentation = ({ country }) => {
             (Quick start video preparing...)
           </div>
         </div>}
+      </div>
+      <div className="mt-4">
+        { tt("quick_start") }
+        {quick_starts.map((item, index) => (
+          <div key={index} className="mt-2">
+            <div id={item.id}>{ index + 1 }. { t(item.content) }</div>
+          </div>
+        ))}
       </div>
       <div id="features" className="mt-5">{ t("Features") }</div>
       <div>
@@ -350,7 +373,7 @@ const Documentation = ({ country }) => {
     </>
   )
 
-  if (!ready) return (<div><br></br></div>);
+  if (!ready || !transReady) return (<div><br></br></div>);
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <div className="Documentation">

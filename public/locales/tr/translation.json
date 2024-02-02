@@ -12,7 +12,7 @@
   "quick_start_1": "Kullanmaya başlamadan önce, `:user add [kullanıcı adı] [e-posta] [şifre?]` komutu ile 10 saniye içinde bir kullanıcı kaydedin ve size 30K ücretsiz token verilecektir.🎁\nNot: Komutunuzda köşeli parantezleri dahil etmeyin.✅\nÖrneğin, `:user add john john@example.com ********`.🔑",
   "quick_start_5": "Sohbet geçmişleri arasında gezinmek için `⬅️` ve `➡️` ok tuşlarını kullanın. (Veya akıllı telefonlarda sola ve sağa kaydırın.📱) Oturumlar arasında gezinmek için `⬆️` ve `⬇️` ok tuşlarını kullanın.",
   "quick_start_8": "Temayı değiştirmek için `:theme [light|dark|terminal]` kullanın.🌈",
-  "quick_start_0": "Simple AI, komut arayüzü, kısayollar ve jestler kullanarak çalışır. <strong>Komutlar `:` (yarım genişlikteki iki nokta üst üste) ile başlar.</strong>",
+  "quick_start_0": "Simple AI, komut arayüzü, kısayollar ve jestler kullanarak çalışır. Tüm komutlar `:` (yarım genişlikte iki nokta üst üste) ile başlar.",
   "quick_start_9": "Genel bir `kullanıcı` hesabı ücretsizdir, ancak OpenAI API token'ları için ödeme yapmanız gerekmektedir. Token bakiyenizi Kullanım sayfasından yönetebilirsiniz.💳",
   "quick_start_2": "Giriş yapmak için `:login [kullanıcı adı] [şifre]` komutunu kullanın.",
   "quick_start_7": "Tam ekrana geçmek için `F11` (macOS için ⌃F11) tuşlarını kullanın. Bölünmüş ekran için `Ctrl+|` kullanın.🖥️",

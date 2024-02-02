@@ -12,7 +12,7 @@
   "quick_start_1": "Przed rozpoczęciem korzystania, poświęć 10 sekund na rejestrację użytkownika za pomocą komendy `:user add [username] [email] [password?]`, a otrzymasz od nas 30K darmowych tokenów.🎁\nUwaga: Nie dołączaj nawiasów w swojej komendzie.✅\nNa przykład, `:user add john john@example.com ********`.🔑",
   "quick_start_5": "Aby nawigować między historiami czatu, użyj klawiszy strzałek `⬅️` i `➡️`. (Lub przesuń palcem w lewo i w prawo na smartfonach.📱) Aby nawigować między `sesjami`, użyj klawiszy strzałek `⬆️` i `⬇️`.",
   "quick_start_8": "Aby zmienić motyw, użyj `:theme [light|dark|terminal]`.🌈",
-  "quick_start_0": "Simple AI działa przy użyciu interfejsu poleceń, skrótów i gestów. <strong>Wszystkie polecenia zaczynają się od `:` (półszerokości dwukropka).</strong>",
+  "quick_start_0": "Simple AI działa przy użyciu interfejsu poleceń, skrótów i gestów. Wszystkie polecenia zaczynają się od `:` (dwukropka o połówkowej szerokości).",
   "quick_start_9": "Ogólne konto `user` jest darmowe, ale musisz płacić za tokeny OpenAI API. Możesz zarządzać swoim saldem tokenów na stronie Użycie.💳",
   "quick_start_2": "Aby się zalogować, użyj komendy `:login [username] [password]`.",
   "quick_start_7": "Przełącz na pełny ekran za pomocą klawisza `F11` (⌃F11 dla systemu macOS). Aby użyć podzielonego ekranu, użyj `Ctrl+|`.🖥️",
