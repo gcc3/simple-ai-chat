@@ -16,15 +16,17 @@ api_key = os.getenv("OPENAI_API_KEY")
 # Load the MySQL connection details
 load_dotenv()
 mysql_host = os.getenv("MYSQL_HOST")
+mysql_port = os.getenv("MYSQL_PORT")
 mysql_user = os.getenv("MYSQL_USER")
 mysql_password = os.getenv("MYSQL_PASSWORD")
 mysql_database = os.getenv("MYSQL_DATABASE")
 mysql_table = os.getenv("MYSQL_TABLE")
 mysql_config = {
     'host': mysql_host,
+    'port': mysql_port,
     'user': mysql_user,
     'password': mysql_password,
-    'database': mysql_database
+    'database': mysql_database,
 }
 
 # Initialize the OpenAI client
@@ -69,17 +71,17 @@ def extract(prompt, text):
     extracted_json = json.loads(completion.choices[0].message.content)
     return extracted_json
 
-def insert_data_to_mysql(data, mysql_config):
+def insert_data_to_mysql(file_name, data, mysql_config):
     db_connection = mysql.connector.connect(**mysql_config)
     cursor = db_connection.cursor()
     
     # Prepare the columns and values for the insert statement
-    columns = ', '.join(data.keys())
-    values = tuple(data.values())
-    placeholders = ', '.join(['%s'] * len(data))
+    columns = 'file_name, ' + ', '.join(data.keys())
+    values = (file_name,) + tuple(data.values())
+    placeholders = ', '.join(['%s'] * (len(data) + 1))
 
     # Construct the insert query using the columns and placeholders
-    insert_query = f"INSERT INTO {mysql_config['table']} ({columns}) VALUES ({placeholders})"
+    insert_query = f"INSERT INTO {mysql_table} ({columns}) VALUES ({placeholders})"
     
     # Execute the query and commit the changes
     cursor.execute(insert_query, values)
@@ -104,8 +106,11 @@ def process_document(file_path, mysql_config):
     # Use OpenAI to extract data
     extracted_data_json = extract(prompt, file_content)
     
+    # Get file name
+    file_name = os.path.basename(file_path)
+    
     # Insert extracted data into MySQL database
-    insert_data_to_mysql(extracted_data_json, mysql_config)
+    insert_data_to_mysql(file_name, extracted_data_json, mysql_config)
 
 # Create a list of all PDF and DOCX files in the specified directory
 pdf_files = glob.glob(os.path.join(".", '*.pdf'))
