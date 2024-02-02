@@ -855,20 +855,21 @@ export default function Home() {
                              + "11. " + t("quick_start_10");
             printOutput(t("welcome") + "\n\n" + quickStart);
             markdownFormatter(elOutputRef.current);
+
+            // Print welcome video
+            const video_id = process.env.NEXT_PUBLIC_VIDEO_ID;
+            if (video_id && localStorage.getItem("fullscreen").startsWith("off")) {
+              if (ipInfo.country && ipInfo.country === "CN") {
+                // TODO use Bilibili
+                console.log("Video not available in China.");
+              } else {
+                clearPreviewVideos();
+                printVideo(video_id, elOutputRef, "before");
+              }
+            }
           } else {
             printOutput(systemInfo.welcome_message);
-          }
-
-          // Print welcome video
-          const video_id = process.env.NEXT_PUBLIC_VIDEO_ID;
-          if (video_id && localStorage.getItem("fullscreen").startsWith("off")) {
-            if (ipInfo.country && ipInfo.country === "CN") {
-              // TODO use Bilibili
-              console.log("Video not available in China.");
-            } else {
-              clearPreviewVideos();
-              printVideo(video_id, elOutputRef, "before");
-            }
+            markdownFormatter(elOutputRef.current);
           }
         }
       } catch (error) {
