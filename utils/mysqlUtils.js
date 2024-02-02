@@ -1,5 +1,4 @@
-const mysql = require('mysql');
-const mysql2 = require('mysql2');
+const mysql = require('mysql2');
 
 function mysqlQuery({ host, port, user, password, database}, query) {
   return new Promise((resolve, reject) => {
@@ -31,7 +30,7 @@ function mysqlQuery({ host, port, user, password, database}, query) {
 function testConnection({ host, port, user, password, database }) {
   return new Promise((resolve, reject) => {
     // Create a connection to the database
-    const connection = mysql2.createConnection({ host, port, user, password, database });
+    const connection = mysql.createConnection({ host, port, user, password, database });
 
     // Connect to the database
     connection.connect((err) => {
