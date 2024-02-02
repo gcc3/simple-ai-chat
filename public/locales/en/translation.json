@@ -2,7 +2,7 @@
   "hello": "Hello world!",
   "welcome": "Welcome to Simple AI (simple-ai.io)! 🚀 Simple AI is an AI chat application powered by OpenAI's GPT-4 Turbo, integrated with WolframAlpha (Enhanced Knowledge & Mathematics), Midjourney (High Quality Image Generation), and Vectara (Vector Database Indexing), among other practical tools. It offers a minimalistic design packed with rich features, faster operations and a more professional user experience, making it an excellent ChatGPT alternative. Just type your query and press `Enter` to chat with the AI.💬",
   "quick_start": "Quick Start Guide:",
-  "quick_start_0": "Simple AI operates using a command interface, shortcuts and gestures. <strong>Commands all begin with `:` (half-width colon).</strong>",
+  "quick_start_0": "Simple AI operates using a command interface, shortcuts and gestures. Commands all begin with `:` (half-width colon).",
   "quick_start_1": "Before starting to use, take 10s to register a user with command `:user add [username] [email] [password?]`, and a 30K free tokens will be given to you.🎁\nNote: Do not include the brackets in your command.✅\nFor example, `:user add john john@example.com ********`.🔑",
   "quick_start_2": "To log in, use the command `:login [username] [password]`.",
   "quick_start_3": "If you forgot your password, reset it using the command `:user reset pass [username] [email]`.🆘",

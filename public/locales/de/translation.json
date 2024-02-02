@@ -5,7 +5,6 @@
   "Subcriptions": "Abonnements",
   "Privacy Policy": "Datenschutzrichtlinie",
   "welcome": "Willkommen bei Simple AI (simple-ai.io)! 🚀 Simple AI ist eine KI-Chat-Anwendung, die von OpenAI's GPT-4 Turbo angetrieben wird, integriert mit WolframAlpha (Erweitertes Wissen & Mathematik), Midjourney (Hochwertige Bildgenerierung) und Vectara (Vektor-Datenbank-Indizierung), unter anderem praktischen Werkzeugen. Sie bietet ein minimalistisches Design, das mit reichhaltigen Funktionen, schnelleren Operationen und einer professionelleren Benutzererfahrung ausgestattet ist, was sie zu einer ausgezeichneten ChatGPT-Alternative macht. Geben Sie einfach Ihre Anfrage ein und drücken Sie `Enter`, um mit dem KI zu chatten.💬",
-  "quick_start": "Schnellstartanleitung:",
   "quick_start_10": "Lade Freunde mit dem Befehl `:invite [email]` ein, und ihr beide erhaltet jeweils 100K Prämien-tokens!💌",
   "quick_start_9": "Ein allgemeines `user` Konto ist kostenlos, aber Sie müssen für OpenAI API tokens bezahlen. Sie können Ihr Token-Guthaben auf der Seite Nutzung verwalten.💳",
   "quick_start_8": "Um das Thema zu ändern, verwenden Sie `:theme [light|dark|terminal]`.🌈",
@@ -16,5 +15,5 @@
   "quick_start_6": "Nach dem Einloggen verwenden Sie `:use \"Midjourney\"`, um die Bildgenerierung zu aktivieren.⛵ Verwenden Sie `:use \"WolframAlpha\"`, um erweiterte Mathematik zu ermöglichen.🏛️ Tipps: Sie können die `Tab`-Taste verwenden, um die Autovervollständigung zu nutzen.💡",
   "quick_start_4": "Um auf die Dokumentation zuzugreifen und die Nutzung zu bestätigen, klicken Sie auf den Punkt (•) in der Bildschirmecke.📄",
   "quick_start_7": "Wechseln Sie mit `F11` in den Vollbildmodus (⌃F11 für macOS). Für geteilten Bildschirm verwenden Sie `Strg+|`.🖥️",
-  "quick_start_0": "Simple AI funktioniert über eine Befehlsschnittstelle, Tastenkombinationen und Gesten. <strong>Befehle beginnen alle mit `:` (halbbreitem Doppelpunkt).</strong>"
+  "quick_start_0": "Simple AI funktioniert mit einer Befehlsschnittstelle, Tastenkombinationen und Gesten. Alle Befehle beginnen mit `:` (halbbreitem Doppelpunkt)."
 }
