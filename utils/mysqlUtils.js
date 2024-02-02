@@ -1,4 +1,4 @@
-const mysql = require('mysql');
+const mysql = require('mysql2');
 
 function mysqlQuery({ host, port, user, password, database}, query) {
   return new Promise((resolve, reject) => {
@@ -27,6 +27,27 @@ function mysqlQuery({ host, port, user, password, database}, query) {
   });
 }
 
+function testConnection({ host, port, user, password, database }) {
+  return new Promise((resolve, reject) => {
+    // Create a connection to the database
+    const connection = mysql.createConnection({ host, port, user, password, database });
+
+    // Connect to the database
+    connection.connect((err) => {
+      if (err) {
+        return reject(err);
+      }
+
+      // Close the connection
+      connection.end();
+
+      // Resolve the promise
+      resolve();
+    });
+  });
+}
+
 export {
-  mysqlQuery
+  mysqlQuery,
+  testConnection
 };

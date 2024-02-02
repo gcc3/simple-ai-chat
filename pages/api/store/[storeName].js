@@ -1,5 +1,6 @@
 import { authenticate } from 'utils/authUtils';
 import { findStore, isInitialized } from 'utils/storeUtils';
+import { testConnection } from 'utils/mysqlUtils';
 
 export default async function (req, res) {
   const { storeName } = req.query;
@@ -26,19 +27,29 @@ export default async function (req, res) {
   try {
     // Mask settings
     let settings = JSON.parse(store.settings);
+    let status = {};
     if (store.engine === "vectara") {
+      status = {
+        initialized: isInitialized(store.engine, settings),
+      };
       settings = {
         ...settings,
         apiKey: maskString(settings.apiKey),
         customerId: maskString(settings.customerId),
         clientId: maskString(settings.clientId),
         clientSecret: maskString(settings.clientSecret),
-      }
+      };
     } else if (store.engine === "mysql") {
+      status = {
+        testConnectable: await testConnection({ host: settings.host, port: settings.port, user: settings.user, password: settings.password, database: settings.database })
+                                  .then(() => true)
+                                  .catch(() => false),
+        initialized: isInitialized(store.engine, settings),
+      };
       settings = {
         ...settings,
         password: maskString(settings.password, 0),
-      }
+      };
     }
 
     return res.status(200).json({ 
@@ -49,7 +60,7 @@ export default async function (req, res) {
         created_by: store.created_by,
         engine: store.engine,
         settings,
-        initialized: isInitialized(store.engine, settings)
+        status,
       },
     });
   } catch (error) {

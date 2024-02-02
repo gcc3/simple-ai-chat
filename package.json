@@ -30,7 +30,7 @@
     "mammoth": "^1.6.0",
     "moment": "^2.29.4",
     "moment-timezone": "^0.5.43",
-    "mysql": "^2.18.1",
+    "mysql2": "^3.9.1",
     "nearby-cities": "^1.1.0",
     "next": "^14.0.4",
     "next-redux-wrapper": "^8.1.0",
