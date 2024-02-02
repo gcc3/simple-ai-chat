@@ -840,37 +840,8 @@ export default function Home() {
 
         // Set welcome message
         if (systemInfo.welcome_message && !localStorage.getItem("user")) {
-          if (systemInfo.welcome_message === "default") {
-            const quickStart = t("quick_start") + "\n"
-                             + "1. " + t("quick_start_0") + "\n"
-                             + "2. " + t("quick_start_1") + "\n"
-                             + "3. " + t("quick_start_2") + "\n"
-                             + "4. " + t("quick_start_3") + "\n"
-                             + "5. " + t("quick_start_4") + "\n"
-                             + "6. " + t("quick_start_5") + "\n"
-                             + "7. " + t("quick_start_6") + "\n"
-                             + "8. " + t("quick_start_7") + "\n"
-                             + "9. " + t("quick_start_8") + "\n"
-                             + "10. " + t("quick_start_9") + "\n"
-                             + "11. " + t("quick_start_10");
-            printOutput(t("welcome") + "\n\n" + quickStart);
-            markdownFormatter(elOutputRef.current);
-
-            // Print welcome video
-            const video_id = process.env.NEXT_PUBLIC_VIDEO_ID;
-            if (video_id && localStorage.getItem("fullscreen").startsWith("off")) {
-              if (ipInfo.country && ipInfo.country === "CN") {
-                // TODO use Bilibili
-                console.log("Video not available in China.");
-              } else {
-                clearPreviewVideos();
-                printVideo(video_id, elOutputRef, "before");
-              }
-            }
-          } else {
-            printOutput(systemInfo.welcome_message);
-            markdownFormatter(elOutputRef.current);
-          }
+          printOutput(systemInfo.welcome_message);
+          markdownFormatter(elOutputRef.current);
         }
       } catch (error) {
         console.error("There was an error fetching the data:", error);
