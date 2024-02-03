@@ -222,6 +222,7 @@ const Documentation = ({ country }) => {
             </div>}
             <div className="mt-2">
               <div>{item.command}</div>
+              {item.options && <div className="mt-1">{ t("Command options") }: {item.options}</div>}
               <div>{ t("Short description") }: {item.short_description || "-"}</div>
               <div>{ t("Description") }: {item.description || "-"}</div>
             </div>
@@ -230,7 +231,7 @@ const Documentation = ({ country }) => {
       </div>
       <div id="functions" className="mt-5">{ t("Functions") }</div>
       <div className="mt-2">
-        { t("We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.") }
+        { t("We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.") }
       </div>
       <div className="mt-3 table-container">
         <table>
