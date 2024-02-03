@@ -7,7 +7,8 @@ export default async (req, res) => {
     return res.status(405).end();  // Method Not Allowed
   }
 
-  const { username, password } = req.body;
+  const { username, password, expiresIn } = req.body;
+  console.log("User logging in system. username: " + username + ", password: " + password + ", expireIn: " + expiresIn);
 
   // Validation
   if (!username || !password) {
