@@ -54,7 +54,7 @@ export async function generateMessages(use_system_role, lang,
   if (use_system_role && role_content_system !== "") {
     if (!user) {
       // It's not a free service, need to tell the user to register a user first
-      system_prompt += "Provide user a short answer less than 80 words as the user has not logged in, if answer has to be longer than 90 words, tell them to provide this answer login is reqired. In the end with new paragraph, tell them: You haven't logged in. If you're already a member, please login to continue. Or register as a member. The service is free, but you need to pay for GPT's `tokens`. We offer 30,000 tokens as a gift for new users.\n\n";
+      system_prompt += "Provide the user with a short answer, less than 80 words. If the answer needs to be longer than 90 words, inform them that login is required. In a new paragraph, add:\n\nYou haven't logged in, so the answer length is limited to 80 words. If you're already a member, please log in to continue. Or, register as a member with the command `:user add username email password` (replace with your actual details).\n\n";
     } else {
       system_prompt += role_content_system + "\n\n";
     }
