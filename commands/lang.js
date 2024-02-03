@@ -4,6 +4,17 @@ export default async function lang(args) {
   const command = args[0];
   const langCodes = getLangCodes();
 
+  // Get lang info
+  // :lang
+  if (!command) {
+    if (localStorage.getItem("lang")) {
+      const currentLang = localStorage.getItem("lang").replace(" force", "");
+      return "Current language: `" + getLanguageName(currentLang) + "`, country-language code: " + currentLang;
+    } else {
+      return "No language set.";
+    }
+  }
+
   if (command === "ls" || command === "list") {
     // Add star to current lang
     let result = "\\" + langCodes.join(" \\");
