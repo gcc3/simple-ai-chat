@@ -126,7 +126,7 @@ button:hover {
 input {
   background-color: transparent !important;
   border: 1.5px solid var(--input-border-color) !important;
-  border-radius: 6px;
+  border-radius: 9px;
 }
 input:focus {
   outline: none;
