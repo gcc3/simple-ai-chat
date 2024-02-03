@@ -184,7 +184,7 @@ const Documentation = ({ country }) => {
       </div>
       <div className="mt-2">
         {quick_starts.map((item, index) => (
-          <div key={index} className="mt-1">
+          <div key={index}>
             <div id={item.id}>{ index + 1 }. { t(item.content) }</div>
           </div>
         ))}
