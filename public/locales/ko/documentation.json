@@ -141,5 +141,7 @@
   "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "커서가 입력 영역에 초점을 맞추고 있습니다. 현재 입력은 `:`으로 시작합니다. 명령어 기록에 이전 명령어가 있습니다.",
   "Internationalization and localization": "국제화 및 지역화",
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI는 아랍어, 벵골어, 중국어, 네덜란드어, 영어, 프랑스어, 독일어, 힌디어, 인도네시아어, 이탈리아어, 일본어, 한국어, 폴란드어, 포르투갈어, 러시아어, 스페인어, 스웨덴어, 터키어 등 18개 언어를 지원합니다. 귀하의 언어에 대한 지원이 필요하시면 알려주십시오.",
-  "introduction": "Simple AI(simple-ai.io)에 오신 것을 환영합니다! 🚀 Simple AI는 OpenAI의 GPT-4 Turbo에 의해 구동되는 AI 채팅 애플리케이션으로, WolframAlpha(향상된 지식 및 수학), Midjourney(고품질 이미지 생성), Vectara(벡터 데이터베이스 색인) 등 다양한 실용 도구가 통합되어 있습니다. 깔끔한 디자인과 풍부한 기능, 빠른 작동 속도 및 더 전문적인 사용자 경험을 제공하여, 훌륭한 ChatGPT 대안이 됩니다."
+  "introduction": "Simple AI(simple-ai.io)에 오신 것을 환영합니다! 🚀 Simple AI는 OpenAI의 GPT-4 Turbo에 의해 구동되는 AI 채팅 애플리케이션으로, WolframAlpha(향상된 지식 및 수학), Midjourney(고품질 이미지 생성), Vectara(벡터 데이터베이스 색인) 등 다양한 실용 도구가 통합되어 있습니다. 깔끔한 디자인과 풍부한 기능, 빠른 작동 속도 및 더 전문적인 사용자 경험을 제공하여, 훌륭한 ChatGPT 대안이 됩니다.",
+  "Options": "옵션",
+  "Command options": "명령어 옵션"
 }
