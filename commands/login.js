@@ -2,7 +2,7 @@ import { initializeSession } from "utils/sessionUtils";
 import { setUserLocalStorage } from "utils/userUtils.js";
 
 export default async function login(args) {
-  if (args.length != 2) {
+  if (args.length < 2 && args.length > 4) {
     return "Usage: :login [username] [password]";
   }
 
@@ -14,6 +14,21 @@ export default async function login(args) {
   const username = args[0];
   const password = args[1];
 
+  let expiresIn = "24h";
+  if (args.length == 3) {
+    if (args[2] == "--save" || args[2] == "-s") {
+      expiresIn = "7d";
+    }
+  } else if (args.length == 4) {
+    if (args[2] == "--save" || args[2] == "-s") {
+      expiresIn = args[3];
+
+      if (!expiresIn.endsWith("h") && !expiresIn.endsWith("d")) {
+        return "Invalid expiration time. Please use 'h' for hours or 'd' for days.";
+      }
+    }
+  }
+
   try {
     const response = await fetch("/api/user/login", {
       method: "POST",
@@ -23,6 +38,7 @@ export default async function login(args) {
       body: JSON.stringify({
         username: username,
         password: password,
+        expiresIn: expiresIn,
       }),
     });
 
