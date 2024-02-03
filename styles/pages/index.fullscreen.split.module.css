@@ -38,7 +38,7 @@
   outline-color: #adadad;
   box-sizing: border-box;
   border: 1px solid var(--border-color);
-  border-radius: 6px;
+  border-radius: 9px;
   box-shadow: 0.21875rem 0.21875rem 0.875rem var(--border-shadow-color);
   background-color: var(--background-color);
   color: var(--text-color);
