@@ -27,7 +27,7 @@ export const authenticate = (req) => {
 
 export const createToken = (payload) => {
   try {
-    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '3d' });
+    const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '24h' });
     return token;
   } catch (error) {
     return null;
