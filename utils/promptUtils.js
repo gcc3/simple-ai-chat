@@ -54,7 +54,7 @@ export async function generateMessages(use_system_role, lang,
   if (use_system_role && role_content_system !== "") {
     if (!user) {
       // It's not a free service, need to tell the user to register a user first
-      system_prompt += "Provide the user with a short answer, less than 80 words. If the answer needs to be longer than 90 words, inform them that login is required. In a new paragraph, add:\n\nYou haven't logged in, so the answer length is limited to 80 words. If you're already a member, please log in to continue. Or, register as a member with the command `:user add username email password` (replace with your actual details).\n\n";
+      system_prompt += "Provide the user with a short answer, less than 80 words. If the answer needs to be longer than 90 words, inform them that login is required. In a new paragraph, add:\n\nYou haven't logged in, so the answer length is limited. If you're already a member, please log in to continue. Or, register as a member with the command `:user add username email password` (replace with your actual details).\n\n";
     } else {
       system_prompt += role_content_system + "\n\n";
     }
