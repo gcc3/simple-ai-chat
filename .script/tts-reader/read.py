@@ -3,21 +3,28 @@ import os
 from dotenv import load_dotenv
 import time
 
-# Load the OpenAI API key from the .env file
-load_dotenv('../../.env')
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+# Load the OpenAI API key from the .env file two levels up
+dotenv_path = os.path.join(os.path.dirname(__file__), '..', '..', '.env')
+load_dotenv(dotenv_path=dotenv_path)
+api_key = os.getenv("OPENAI_API_KEY")
+
+# Load the MySQL connection details
+load_dotenv()
+tts_model = os.getenv("TTS_MODEL")
+print(f"Using model: {tts_model}")
 
 # Function to call OpenAI API and generate speech from text
 def generate_speech(input_text, filename):
     headers = {
-        'Authorization': f'Bearer {OPENAI_API_KEY}',
+        'Authorization': f'Bearer {api_key}',
         'Content-Type': 'application/json',
     }
 
     data = {
         'model': 'tts-1-hd',
         'input': input_text,
-        'voice': 'echo',
+        'voice': tts_model,
+        "response_format": "mp3"
     }
 
     response = requests.post('https://api.openai.com/v1/audio/speech', headers=headers, json=data)
@@ -48,7 +55,7 @@ def main():
     output_filename = 'content.txt'
     
     # Read sentences from the input file
-    with open(input_filename, 'r') as file:
+    with open(input_filename, 'r', encoding="utf8") as file:
         sentences = file.read().strip().split('\n')
 
     # Generate speech for each sentence and write back to the file with numbering
@@ -90,7 +97,7 @@ def main():
             result_sentences.append('')
 
     # Write the numbered sentences back to the output file
-    with open(output_filename, 'w') as file:
+    with open(output_filename, 'w', encoding="utf8") as file:
         file.write('\n'.join(result_sentences))
 
 if __name__ == "__main__":
