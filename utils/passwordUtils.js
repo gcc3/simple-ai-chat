@@ -1,20 +1,30 @@
 export function passwordFormatter(elInput) {
   if (elInput) {
+    // Store the current cursor position
+    const cursorPosition = elInput.selectionStart;
+
     // Format the output
     const input = elInput.value;
-    elInput.value = maskPassword(input);
+    const maskedInput = maskPassword(input);
+
+    // Set the value without moving the cursor to the end
+    elInput.value = maskedInput;
+
+    // Restore the cursor position
+    elInput.setSelectionRange(cursorPosition, cursorPosition);
   }
 }
 
 export function maskPassword(input) {
   if (input.startsWith(':login')) {
-    const pattern = /^:login (\w+) (\S+)$/;  // matches ':login user_name password'
+    const pattern = /^:login (\w+) (\S+)( .*)?$/; // matches ':login user_name password' with any optional arguments
     const match = input.match(pattern);
-
+  
     if (match) {
-        // creates a string of asterisks with the same length as the password
-        const maskedPassword = '*'.repeat(match[2].length);
-        return `:login ${match[1]} ${maskedPassword}`; 
+      // creates a string of asterisks with the same length as the password
+      const maskedPassword = '*'.repeat(match[2].length);
+      const additionalOptions = match[3] ? match[3] : ''; // includes any additional arguments if they were in the input
+      return `:login ${match[1]} ${maskedPassword}${additionalOptions}`; 
     }
   }
 
