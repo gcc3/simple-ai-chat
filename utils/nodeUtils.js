@@ -93,7 +93,8 @@ export async function queryNodeAI(input, settings, history = null) {
   const queryParameterForInput = settings.queryParameterForInput;
 
   try {
-    const response = await fetch(endpoint + "?" + queryParameterForInput + "=" + input + "&history=" + JSON.stringify(history), {
+    const response = await fetch(endpoint + "?" + queryParameterForInput + "=" + encodeURIComponent(input) 
+                                          + "&history=" + encodeURIComponent(history), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
