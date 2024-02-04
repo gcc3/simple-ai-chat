@@ -48,6 +48,9 @@ export async function generateMessages(use_system_role, lang,
   let node_input = "";
   let node_output = "";
   let node_output_images = [];
+
+  // Session history
+  const sessionLogs = await loglist(session, mem_limit);  // limit the memory length in the chat history
   
   // -6. System master message, important
   let system_prompt = "";
@@ -279,7 +282,14 @@ export async function generateMessages(use_system_role, lang,
       const stopKeepAlive = await sendKeepAlive(updateStatus);
 
       // Perform the query
-      const queryNodeAIResult = (await queryNodeAI(node_input, settings));
+      const history = JSON.stringify(
+        sessionLogs.map((log) => ({
+          input: log.input,
+          output: log.output,
+        }))
+      );
+      console.log("history: " + history);
+      const queryNodeAIResult = await queryNodeAI(node_input, settings, history);
 
       // Stop sending keep-alive messages
       stopKeepAlive();
@@ -386,7 +396,6 @@ export async function generateMessages(use_system_role, lang,
 
   // -1. Chat history
   let chat_history_prompt = "";
-  const sessionLogs = await loglist(session, mem_limit);  // limit the memory length in the chat history
   if (sessionLogs && sessionLogs.length > 0) {
     sessionLogs.reverse().map(log => {
       mem += 1;
