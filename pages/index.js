@@ -243,12 +243,12 @@ export default function Home() {
     clearOutput(true);
 
     // Print input
-    global.rawPlaceholder = log["input"];
+    global.rawPlaceholder = log["input"].trim();
     reAdjustPlaceholder();
 
     // Print output
-    printOutput(log["output"]);
-    global.rawOutput = log["output"];
+    printOutput(log["output"].trim());
+    global.rawOutput = log["output"].trim();
 
     // Print images
     if (log["images"]) {
