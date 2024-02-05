@@ -84,6 +84,7 @@
   margin-left: 10px;
   margin-right: 10px;
   white-space: pre-wrap;
+  overflow-wrap: break-word;
   color: var(--text-color);
 }
 .main .evaluation,
