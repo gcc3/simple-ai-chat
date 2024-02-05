@@ -301,9 +301,11 @@ export default async function (req, res) {
         }
 
         // Text output
-        const noddOutput = raw_prompt["node"];
-        if (noddOutput) {
-          res.write(`data: ${noddOutput}\n\n`); res.flush();
+        let nodeOutput = raw_prompt["node"];
+        if (nodeOutput) {
+          nodeOutput = nodeOutput.trim().replaceAll("\n", "###RETURN###");
+          res.write(`data: [CLEAR]\n\n`); res.flush();
+          res.write(`data: ${nodeOutput}\n\n`); res.flush();
         }
 
         // Done message
