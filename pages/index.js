@@ -98,12 +98,6 @@ export default function Home() {
 
   // Print output
   const printOutput = (text, ignoreFormatter=true, append=false) => {
-    if (!append) {
-      // Clear output images
-      clearPreviewImages();
-      clearPreviewVideos();
-    }
-
     const elOutput = elOutputRef.current;
     if (elOutput) {
       if (ignoreFormatter) {
@@ -246,7 +240,7 @@ export default function Home() {
       setEvaluation();
     }
     resetInfo();
-    clearOutput();
+    clearOutput(true);
 
     // Print input
     global.rawPlaceholder = log["input"];
@@ -294,8 +288,12 @@ export default function Home() {
   }
 
   // Clear output
-  const clearOutput = () => {
+  const clearOutput = (clearMedia = false) => {
     printOutput("");
+    if (clearMedia) {
+      clearPreviewImages();
+      clearPreviewVideos();
+    }
   };
 
   // Get output
@@ -581,6 +579,8 @@ export default function Home() {
 
               getHistorySession("prev", sessionStorage.getItem("session"))
                 .then((session) => {
+                  clearOutput(true);
+
                   if (!session) {
                     console.log("No previous session.");
                     printOutput("No previous session.");
@@ -614,6 +614,8 @@ export default function Home() {
 
               getHistorySession("prev", sessionStorage.getItem("session"))
                 .then((session) => {
+                  clearOutput(true);
+
                   if (!session) {
                     console.log("No previous session.");
                     printOutput("No previous session.");
@@ -667,6 +669,8 @@ export default function Home() {
 
               getHistorySession("next", sessionStorage.getItem("session"))
                 .then((session) => {
+                  clearOutput(true);
+
                   if (!session) {
                     console.log("No next session.");
                     printOutput("No next session.");
@@ -700,6 +704,8 @@ export default function Home() {
 
               getHistorySession("next", sessionStorage.getItem("session"))
                 .then((session) => {
+                  clearOutput(true);
+
                   if (!session) {
                     console.log("No next session.");
                     printOutput("No next session.");
@@ -1536,7 +1542,7 @@ export default function Home() {
         if (_status_.startsWith("Create chat completion.")) {
           printOutput(generating);
         }
-        return;        
+        return;
       }
 
       // Handle the DONE signal
