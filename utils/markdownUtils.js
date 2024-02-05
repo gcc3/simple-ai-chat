@@ -175,6 +175,7 @@ export function markdownFormatter(elOutput) {
     result = result
       .replace(/<\/pre><br><br>/g, '</pre><br>')  // Avoid consecutive breaks after </pre>
       .replace(/<br> ?<\/code><\/pre>/g, '</code></pre>')  // Remove <br> before </pre>
+      .replace(/(?:[^<br>]|^)(<br\s*\/?>\s*<pre>)/gi, '<br>$1'); // If only one <br> before <pre>, add 1 more <br>
 
     return result;
   })(output);
