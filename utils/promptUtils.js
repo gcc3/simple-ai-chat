@@ -52,6 +52,53 @@ export async function generateMessages(use_system_role, lang,
   // Session history
   const sessionLogs = await loglist(session, mem_limit);  // limit the memory length in the chat history
   
+  // Preprocess files
+  // File input
+  let files_text = [];
+  if (files && files.length > 0) {
+    for (let i = 0; i < files.length; i++) {
+      if (files[i] !== "") {
+        try {
+          const fileExtension = files[i].split('.').pop().split(/\#|\?/)[0].toLowerCase();
+          const response = await fetch(files[i]);
+          const pdfParse = require('pdf-parse');
+          const mammoth = require('mammoth');
+          
+          // Get content form different file types
+          let fileContent = "(file is empty)";
+          if (fileExtension === "txt") {
+            fileContent = await response.text();
+          } else if (fileExtension === "json") {
+            fileContent = JSON.stringify(await response.json(), null, 2);
+          } else if (fileExtension === "csv") {
+            fileContent = await response.text();
+          } else if (fileExtension === "pdf") {
+            const buffer = await response.buffer();
+            const data = await pdfParse(buffer);   // Use pdf-parse to extract text
+            fileContent = data.text;
+          } else if (fileExtension === "docx") {
+            const buffer = await response.buffer();
+            const data = await mammoth.extractRawText({ buffer: buffer });  // Use mammoth to extract text
+            fileContent = data.value;
+          }
+
+          input_file_content += "User input file content:\n" + fileContent + "\n\n";
+          files_text.push({
+            file: files[i],
+            text: fileContent,
+          });
+        } catch (error) {
+          const errorMessages = "Error fetching file:" + files[i] + "\n" + error;
+          console.error(errorMessages);
+          files_text.push({
+            file: files[i],
+            text: errorMessages,
+          });
+        }
+      }
+    }
+  }
+
   // -6. System master message, important
   let system_prompt = "";
   if (use_system_role && role_content_system !== "") {
@@ -287,14 +334,12 @@ export async function generateMessages(use_system_role, lang,
       const stopKeepAlive = await sendKeepAlive(updateStatus);
 
       // Perform the query
-      const history = JSON.stringify(
-        sessionLogs.map((log) => ({
-          input: log.input,
-          output: log.output,
-        }))
-      );
-      console.log("history: " + history);
-      const queryNodeAIResult = await queryNodeAI(node_input, settings, history);
+      const history = sessionLogs.map((log) => ({
+        input: log.input,
+        output: log.output,
+      }))
+      console.log("history: " + JSON.stringify(history));
+      const queryNodeAIResult = await queryNodeAI(node_input, settings, history, files_text);
 
       // Stop sending keep-alive messages
       stopKeepAlive();
@@ -353,7 +398,7 @@ export async function generateMessages(use_system_role, lang,
 
     // Count tokens
     token_ct["node"] = countToken(model, node_prompt);
-    console.log("response: " + node_output);
+    console.log("response: " + node_output.trim().replace(/\n/g, " "));
     if (node_output_images.length > 0) console.log("response images: " + JSON.stringify(node_output_images));
     console.log("");
   }
@@ -494,49 +539,15 @@ export async function generateMessages(use_system_role, lang,
         // Count tokens
         token_ct["user_input"] = countToken(model, input);
 
-        // File input
-        if (files && files.length > 0) {
-          for (let i = 0; i < files.length; i++) {
-            if (files[i] !== "") {
-              try {
-                const fileExtension = files[i].split('.').pop().split(/\#|\?/)[0].toLowerCase();
-                const response = await fetch(files[i]);
-                const pdfParse = require('pdf-parse');
-                const mammoth = require('mammoth');
-                
-                // Get content form different file types
-                let fileContent = "(file is empty)";
-                if (fileExtension === "txt") {
-                  fileContent = await response.text();
-                } else if (fileExtension === "json") {
-                  fileContent = JSON.stringify(await response.json(), null, 2);
-                } else if (fileExtension === "csv") {
-                  fileContent = await response.text();
-                } else if (fileExtension === "pdf") {
-                  const buffer = await response.buffer();
-                  const data = await pdfParse(buffer);   // Use pdf-parse to extract text
-                  fileContent = data.text;
-                } else if (fileExtension === "docx") {
-                  const buffer = await response.buffer();
-                  const data = await mammoth.extractRawText({ buffer: buffer });  // Use mammoth to extract text
-                  fileContent = data.value;
-                }
-
-                input_file_content += "User input file content:\n" + fileContent + "\n\n";
-                c.push({
-                  type: "text",
-                  text: input_file_content,
-                });
-                user_input_file_prompt += fileContent;
-              } catch (error) {
-                const errorMessages = "Error fetching file:" + files[i] + "\n" + error;
-                console.error(errorMessages);
-                c.push({
-                  type: "text",
-                  text: errorMessages,
-                });
-                user_input_file_prompt += errorMessages;
-              }
+        // File input (extracted text)
+        if (files_text && files_text.length > 0) {
+          for (let i = 0; i < files_text.length; i++) {
+            if (files_text[i].text !== "") {
+              c.push({
+                type: "text",
+                text: "File content: " + files_text[i].text,
+              });
+              user_input_file_prompt += "File content: " + files_text[i].text;
             }
           }
           token_ct["user_input_file"] = countToken(model, user_input_file_prompt);
