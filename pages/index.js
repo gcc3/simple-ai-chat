@@ -1525,6 +1525,13 @@ export default function Home() {
           }
         }
 
+        if (_status_.startsWith("Node AI responsed, result: ")) {
+          const result = _status_.replace("Node AI responsed, result: ", "");
+          if (result) {
+            // Do nothing
+          }
+        }
+
         // Sometime the function calling make it pause
         if (_status_.startsWith("Create chat completion.")) {
           printOutput(generating);
