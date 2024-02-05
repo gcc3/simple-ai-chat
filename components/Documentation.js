@@ -20,7 +20,7 @@ const Documentation = ({ country }) => {
     { id: "quick_start_8", content: tt("quick_start_8") },
     { id: "quick_start_9", content: tt("quick_start_9") },
     { id: "quick_start_10", content: tt("quick_start_10") },
-  ]
+  ];
 
   const features = [
     { id: "features-gpt4turbo", name: t("Text Generation (GPT-4 Turbo)"), description: t("Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.") },

@@ -1,6 +1,28 @@
 import katex from 'katex';
 
-// To test: Repeat me *text* **text** `text` ```text``` **test`test`** *test`test`*
+/*
+  Process:
+  Check the code block or equation block is closed or not, if not, return
+
+  Temporarily stop observing
+
+    Format the output
+      Store code block to placeholders
+
+        for each line
+          Inline code
+          Emphasis
+          Remove the # at first
+          Detect URLs
+          Math equation (LaTeX) support      
+
+      Resume code block
+      Cleanup
+
+  Resume observing
+
+  To test: Repeat me *text* **text** `text` ```text``` **test`test`** *test`test`*
+*/
 export function markdownFormatter(elOutput) {
   if (!elOutput) return;
   let output = global.rawOutput;
@@ -61,6 +83,9 @@ export function markdownFormatter(elOutput) {
 
       // Remove the # at first
       line = line.replace(/^###\s|^####\s|^#####\s/, '');
+
+      // Detect URLs
+      line = line.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<u><a href="$2">$1</a></u>');
 
       // Math equation (LaTeX) support
       // Equation block, e.g. \[  \]
