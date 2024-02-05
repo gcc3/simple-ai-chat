@@ -4,7 +4,7 @@ import log from "log";
 export default async function (req, res) {
   try {
     // configurations
-    const { model, model_v, role_content_system, welcome_message, querying, generating, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email, minimalist } = getSystemConfigurations();
+    const { model, model_v, role_content_system, welcome_message, querying, generating, searching, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email, minimalist } = getSystemConfigurations();
 
     // Access log
     await log(req);
@@ -15,6 +15,7 @@ export default async function (req, res) {
         welcome_message: welcome_message,
         querying: querying,
         generating: generating,
+        searching: searching,
         waiting: waiting,
         init_placeholder: init_placeholder,
         enter: enter,

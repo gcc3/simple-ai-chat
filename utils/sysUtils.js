@@ -9,6 +9,7 @@ export function getSystemConfigurations() {
   const init_placeholder = process.env.INIT_PLACEHOLDER ? process.env.INIT_PLACEHOLDER : "";
   const waiting = process.env.WAITING ? process.env.WAITING : "";
   const generating = process.env.GENERATING ? process.env.GENERATING : "";
+  const searching = process.env.SEARCHING ? process.env.SEARCHING : "";
   const querying = process.env.QUERYING ? process.env.QUERYING : "Querying...";
   const enter = process.env.ENTER ? process.env.ENTER : "";
   const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
@@ -27,6 +28,7 @@ export function getSystemConfigurations() {
     welcome_message: welcome_message,
     querying: querying,
     generating: generating,
+    searching: searching,
     waiting: waiting,
     init_placeholder: init_placeholder,
     enter: enter,
