@@ -293,13 +293,20 @@ export default async function (req, res) {
         res.write(`data: ###ENV###${node.toLowerCase()}\n\n`);
 
         // Print node output images
-        node_output_images.map(image => {
-          res.write(`data: ###IMG###${image}\n\n`);
-        });
-        res.flush();
+        if (node_output_images.length > 0) {
+          node_output_images.map(image => {
+            res.write(`data: ###IMG###${image}\n\n`);
+          });
+          res.flush();
+        }
 
+        // Text output
         const noddOutput = raw_prompt["node"];
-        res.write(`data: ${noddOutput}\n\n`); res.flush();
+        if (noddOutput) {
+          res.write(`data: ${noddOutput}\n\n`); res.flush();
+        }
+
+        // Done message
         res.write(`data: [DONE]\n\n`); res.flush();
         res.end();
         return;

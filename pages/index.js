@@ -1622,7 +1622,7 @@ export default function Home() {
       }
 
       // Clear the waiting or querying text
-      if (getOutput() === waiting || getOutput() === querying || getOutput() === generating) {
+      if (getOutput() === waiting || getOutput() === querying || getOutput() === searching || getOutput() === generating) {
         clearOutput();
       }
 
