@@ -1545,6 +1545,12 @@ export default function Home() {
         return;
       }
 
+      // Handle a clear signal
+      if (event.data === '[CLEAR]') {
+        clearOutput(true);
+        return;
+      }
+
       // Handle the DONE signal
       if (event.data === '[DONE]') {
         openaiEssSrouce.close();
