@@ -22,149 +22,8 @@ tailwind https://tailwindcss.com/docs/
 Features
 --------
 
-Commands are supported, use `:help` to show commands.  
-
-* Vision  
-Vision models, or called GPT-4V is now supported.  
-Use `+img[https://image_url]` to ask question about an image/multiple images.  
-
-* Tool calls  
-1. Function calling  
-Support for [function calling](https://openai.com/blog/function-calling-and-other-api-updates).  
-The AI can call the function itself, and with the description it can know when to use the function. Amazing!  
-To list available functions, use `:function ls`  
-To execute a function from input, use `!function_name({ "argument": "value" })`  
-Example: `!get_time({ "timezone": "UTC" })`  
-!get_weather({ "location": "kyoto" })
-Function call be called simultaneously, add `,` between functions.  
-Example: !get_time({ "timezone": "UTC" }),!get_weather({ "location": "kyoto" })  
-Below tools are to be supported.  
-2. Code Interpreter  
-3. Knowledge Retrieval  
-4. Supported files
-
-* Sessions and logs  
-to continue the previous talk, use `:session attach [session_id]` to attach to a session.  
-Use `:info` to check the current session ID.  
-Use `:log` to show the current conversation(session) history.  
-Use arrow key "←", and "→" to check and print previous or next session log.  
-Before switching log, unfocusing input box is required.
-Use "ESC" key to unfocus, or just click somewhere else.  
-
-* Roles
-Roles are prompts created for certain purposes.  
-User can custom own role prompt.  
-To use role, simply type `:role use [role_name]`.  
-Use `:role list` to check current available roles.  
-Prompts provided by the Awesome ChatGPT Prompts  
-User can use their custom roles  
-Use `:user role` command to add, set, delete custom roles.  
-
-* Self Result Evaluation  
-I found that the AI can evaluate the result of itself very well.  
-And this can solve the credibility problem.  
-To show the stats information includings the self result evaluation use `:stats on`.  
-
-* User Location  
-Use the device location to enhance the geology location based questions (like weather or time).  
-To enable use `:location on`  
-
-* Speak  
-Use `:speak on` to turn on the speak after generating.  
-Use `:speak stop` to stop the speaking.  
-To change language use `:lang use [language code]`  
-
-* Nodes (Node AI)   
-Refer `Node AI` below.  
-
-* Data Stores  
-User :store to setup a data store  
-1. Vector database search  
-Query data from vector database engine.  
-Support [Vectara](https://vectara.com/).  
-2. Relational database  
-Support `MySQL`  
-Multiple data store can be used simultaneously.  
-
-* Themes  
-Provide light theme by default, a dark theme, and a terminal style theme.  
-Use `:theme [light/dark/terminal]` to change color theme.
-
-* Fullscreen Mode  
-Use `:fullscreen` to turn on fullscreen mode.  
-Use `:fullscreen split` to use a vertically splited screen.  
-
-* User  
-User `:user add [username] [email] [password?]` to create a new user.  
-If no password set, it will send the initial password to email.  
-Use `:user set pass [password]` to change password.  
-`:user set email [email]` will send a verification email to user, after verified, email will be updated.  
-Use `:login [username] [password]`, `:logout` to login and logout user.  
-Use `:user reset pass [username] [email]` to recover user password.  
-User settings will be applied after login.  
-When user deleted, this is a soft deleted.  
-When user re-add himself use same email address, user subscription will be resumed.  
-
-* Formatters  
-Support code block display with a markdown formatter.  
-
-* Mathematical Equation  
-Support LaTeX format equation display.  
-Support copy the orignal LaTex string from the displayed equation.  
-
-* Multiple Lines Input  
-It's possible to input multiple lines. Use `crtl` or `alt` with `enter` key to break new line.
-
-* Placeholder  
-Use placeholder to store and show the last input.  
-Use `tab` key to restore input from the placehodler.  
-
-* File upload  
-Support image type: JPG, PNG  
-Support file type: TXT, JSON, DOCX, PDF  
-User can upload these types and query for file content.  
-Image type will be answer with vision model.  
-
-* Command History  
-Use up and down arrow key to navigate between command history.  
-
-
-Roles
------
-
-System has 4 kinds of roles.
-1. root_user, system management
-2. super_user, advanced use
-3. pro_user, professional use
-4. user, basic use
-
-
-Function Calling
-----------------
-
-!get_time({ "timezone": "___" })  
-Simply return the current time with timezone.  
-
-!get_weather({ "location": "___" })  
-Return weather with WolframeAlpha API.  
-
-!redirect_to_url({ "url": "___", "blank": [true|false] })  
-Send event to brower to make a redirection.  
-
-
-Messages
---------
-
-| #  | Part                           | Role                  | Description                              |
-|----|--------------------------------|-----------------------|------------------------------------------|
-| -3 | System master message          | system                | Set with `ROLE_CONTENT_SYSTEM`.          |
-| -2 | Role prompt                    | system                | Role prompt message.                     |
-| -1 | Chat history                   | user, assistant, tool | Chat history from user and assistant.    |
-|  0 | User input                     | user                  | Direct input provided by the user.       |
-|  1 | Function calling result        | tool                  | Results of tool calls.                   |
-|  2 | Data store search result       | system                | Result from a data store engine.         |
-|  3 | Node AI query result           | system                | Result from AI node or hub.              |
-|  4 | Location info                  | system                | Add when location service is enabled     |
+Refer the [Documentation](https://simple-ai.io) page.  
+Click the dot in the screen corner.  
 
 
 Node (AI Node)
@@ -173,18 +32,18 @@ Node (AI Node)
 Simple AI is able to link to another support AI or data source.  
 To use AI links, set `USE_NODE_AI` to `true`.  
 
-Any API response format as following can be used as a `node`:  
+Request will be sent from Simple AI as following format:  
+GET http://endpoint_url?query_parameter_for_input=query_string&history=history_json_string
 
-Simply use text:
-
+Any API response format as following can be treated as a `node`:  
+Simply use text:  
 ```json
 {
   "result": "Sample result text."
 }
 ```
 
-Or more complex:
-
+Or more complex:  
 ```json
 {
   "result": {
@@ -205,18 +64,6 @@ Or more complex:
 
 Another 2 repositories [simple-ai-node](https://github.com/gcc3/simple-ai-node) and [simple-ai-hub](https://github.com/gcc3/simple-ai-hub) are provided.  
 To use multiple AI node, a AI hub is suggested, it can send query to multipe node simultaneously.  
-
-
-Shortcuts
----------
-
-`/` or `TAB` to jump to input box.  
-`TAB` key to restore the placeholder text which is the last input.  
-`ESC` to clear input.  
-`control + C` to stop generating.  
-`control + R` to reset session.  
-`Left arrow` or `k` to navigating to the previous session history/log.  
-`Right arrow` or `j` to navigating to the next session history/log. 
 
 
 Setup
