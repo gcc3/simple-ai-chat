@@ -67,6 +67,7 @@ export default function Home() {
   const [waiting, setWaiting] = useState("");
   const [querying, setQuerying] = useState("Querying...");
   const [generating, setGenerating] = useState("Generating...");
+  const [searching, setSearching] = useState("Searching...");
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
@@ -830,6 +831,7 @@ export default function Home() {
         if (systemInfo.waiting) setWaiting(systemInfo.waiting);  // Set waiting text
         if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
         if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
+        if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
         if (systemInfo.use_payment) setSubscriptionDisplay(true);  // Set use payment
         if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
 
@@ -1505,6 +1507,11 @@ export default function Home() {
       if (event.data.startsWith("###STATUS###")) {
         const _status_ = event.data.replace("###STATUS###", "");
         console.log("Status: " + _status_);
+
+        // For store print "Searching..."
+        if (_status_.startsWith("Start searching...")) {
+          printOutput(searching);
+        }
 
         // For node print "Generating...", because it will be slow.
         if (node && _status_.startsWith("Start pre-generating...")) {

@@ -129,6 +129,7 @@ export async function generateMessages(use_system_role, lang,
           console.log("input translation to store language: " + vectaraQuery);
         }
 
+        updateStatus && updateStatus("Start searching...");
         queryResult = await searchVectaraStore(settings, vectaraQuery);
 
         if (queryResult.success) {
@@ -186,10 +187,13 @@ export async function generateMessages(use_system_role, lang,
               console.log("input translation to store language: " + vectaraQuery);
             }
 
+            updateStatus && updateStatus("Start searching...");
             queryResult = await searchVectaraStore(settings, vectaraQuery);
           } else if (storeInfo.engine === "mysql") {
             prompt += "\nQuery MySQL database\n";
             prompt += "Database description: " + (settings.description || "No description") + "\n";
+
+            updateStatus && updateStatus("Start searching...");
             queryResult = await searchMysqlStore(settings, input);
           }
 
