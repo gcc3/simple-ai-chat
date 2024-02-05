@@ -78,7 +78,7 @@ export function doNodeOverrideOutput(node) {
   return settings.overrideOutputWithNodeResponse;
 }
 
-export async function queryNodeAI(input, settings, history = null, filesText = null) {
+export async function queryNodeAI(input, settings, histories = null, files_text = null) {
   if (!input) return {
     success: false,
     error: "Invalid query.",
@@ -93,11 +93,9 @@ export async function queryNodeAI(input, settings, history = null, filesText = n
   const queryParameterForInput = settings.queryParameterForInput;
 
   try {
-    const histores = JSON.stringify(history);
-    const files = JSON.stringify(filesText);
     const response = await fetch(endpoint + "?" + queryParameterForInput + "=" + encodeURIComponent(input) 
-                                          + "&histories=" + encodeURIComponent(histores)
-                                          + "&files=" + encodeURIComponent(files), {
+                                          + "&histories=" + encodeURIComponent(JSON.stringify(histories))
+                                          + "&files=" + encodeURIComponent(JSON.stringify(files_text)), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

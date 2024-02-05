@@ -334,12 +334,12 @@ export async function generateMessages(use_system_role, lang,
       const stopKeepAlive = await sendKeepAlive(updateStatus);
 
       // Perform the query
-      const history = sessionLogs.map((log) => ({
+      const histories = sessionLogs.map((log) => ({
         input: log.input,
         output: log.output,
       }))
-      console.log("history: " + JSON.stringify(history));
-      const queryNodeAIResult = await queryNodeAI(node_input, settings, history, files_text);
+      console.log("histories: " + JSON.stringify(histories));
+      const queryNodeAIResult = await queryNodeAI(node_input, settings, histories, files_text);
 
       // Stop sending keep-alive messages
       stopKeepAlive();
