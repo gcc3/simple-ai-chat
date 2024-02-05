@@ -545,9 +545,9 @@ export async function generateMessages(use_system_role, lang,
             if (files_text[i].text !== "") {
               c.push({
                 type: "text",
-                text: files_text[i].text,
+                text: "File content: " + files_text[i].text,
               });
-              user_input_file_prompt += files_text[i].text;
+              user_input_file_prompt += "File content: " + files_text[i].text;
             }
           }
           token_ct["user_input_file"] = countToken(model, user_input_file_prompt);
