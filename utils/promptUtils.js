@@ -222,6 +222,23 @@ export async function generateMessages(use_system_role, lang,
 
   // -3. Node AI result
   let node_prompt = "";
+
+  // Prepare a keep alive
+  async function sendKeepAlive(updateStatus) {
+    let keepAlive = true;
+    const keepAliveInterval = setInterval(() => {
+      if (keepAlive) {
+        updateStatus("Node AI is still processing...");
+      }
+    }, 1000);
+  
+    // Return a function to stop the keep-alive messages
+    return () => {
+      keepAlive = false;
+      clearInterval(keepAliveInterval);
+    };
+  }
+
   if (use_node_ai && node && user) {
     updateStatus && updateStatus("Node AI generating...");
     console.log("--- node ai ---");
@@ -266,22 +283,6 @@ export async function generateMessages(use_system_role, lang,
       console.log("prompt: " + node_input.replace(/\n/g, " "));
       updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
 
-      // Prepare a keep alive
-      async function sendKeepAlive(updateStatus) {
-        let keepAlive = true;
-        const keepAliveInterval = setInterval(() => {
-          if (keepAlive) {
-            updateStatus("Node AI is still processing...");
-          }
-        }, 1000);
-      
-        // Return a function to stop the keep-alive messages
-        return () => {
-          keepAlive = false;
-          clearInterval(keepAliveInterval);
-        };
-      }
-
       // Start sending keep-alive messages
       const stopKeepAlive = await sendKeepAlive(updateStatus);
 
@@ -297,7 +298,7 @@ export async function generateMessages(use_system_role, lang,
 
       // Stop sending keep-alive messages
       stopKeepAlive();
-      updateStatus && updateStatus("Node AI responsed, result = " + JSON.stringify(queryNodeAIResult));
+      updateStatus && updateStatus("Node AI responsed, result: " + JSON.stringify(queryNodeAIResult));
 
       if (queryNodeAIResult && queryNodeAIResult.success) {
         let content = "";
