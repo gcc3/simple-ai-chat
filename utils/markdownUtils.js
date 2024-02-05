@@ -85,7 +85,7 @@ export function markdownFormatter(elOutput) {
       line = line.replace(/^###\s|^####\s|^#####\s/, '');
 
       // Detect URLs
-      line = line.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<u><a href="$2">$1</a></u>');
+      line = line.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<u><a href="$2" target="_blank">$1</a></u>');
 
       // Math equation (LaTeX) support
       // Equation block, e.g. \[  \]
