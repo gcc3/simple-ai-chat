@@ -91,7 +91,7 @@ export default async function (req, res) {
   }
 
   // Input
-  input = req.query.user_input.replaceAll("%", "％").trim();  // escape %
+  input = req.query.user_input.trim();
   input = decodeURIComponent(input) || "";
 
   // Images & files
