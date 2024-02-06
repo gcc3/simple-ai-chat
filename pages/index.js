@@ -288,11 +288,14 @@ export default function Home() {
   }
 
   // Clear output
-  const clearOutput = (clearMedia = false) => {
+  const clearOutput = (all = false) => {
     printOutput("");
-    if (clearMedia) {
+    if (all) {
       clearPreviewImages();
       clearPreviewVideos();
+      setInfo();
+      setStats();
+      setEvaluation();
     }
   };
 

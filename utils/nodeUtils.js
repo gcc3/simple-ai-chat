@@ -227,15 +227,64 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
 }
 
 export function isNodeConfigured(settings) {
-  let isConfigured = false;
   if (!settings) {
     return false;
   }
 
-  if (settings.endpoint && settings.queryParameterForInput) {
-    isConfigured = true;
+  if (!settings.endpoint || settings.endpoint === "___") {
+    return false;
   }
-  return isConfigured;
+
+  if (settings.stream) {
+    if (!settings.generateSseApi || settings.generateSseApi === "___") {
+      return false;
+    }
+  }
+
+  if (!settings.stream) {
+    if (!settings.generateApi || settings.generateApi === "___") {
+      return false;
+    }
+
+    if (!settings.queryParameterForInput) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export async function pingNode(settings) {
+  if (!settings.endpoint || settings.endpoint === "___") {
+    return "Endpoint not set.";
+  }
+
+  const endpoint = settings.endpoint;
+
+  // Fetch from endpoint
+  try {
+    const response = await fetch(endpoint, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (response.status !== 200 || !response.ok) {
+      return "Inconnectable.";
+    }
+
+    // Get response text
+    const text = await response.text();
+
+    if (text) {
+      return text;
+    } else {
+      return "Connected.";
+    }
+  } catch (error) {
+    return "Inconnectable.";
+  }
 }
 
 export async function getAvailableNodesForUser(user) {
@@ -263,9 +312,9 @@ export async function getAvailableNodesForUser(user) {
 // Settings and initial values
 export function getInitNodeSettings() {
   return {
-    "endpoint": "",
-    "generateApi": "/api/generate",
-    "generateSseApi": "/api/generate_sse",
+    "endpoint": "___",
+    "generateApi": "___",
+    "generateSseApi": "___",
     "queryParameterForInput": "input",
     "queryParameterForHistories": "histories",
     "queryParameterForFiles": "files",
