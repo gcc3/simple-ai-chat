@@ -10,6 +10,7 @@ import katex from 'katex';
       Store code block to placeholders
 
         for each line
+          Trim
           Inline code
           Emphasis
           Remove the # at first
@@ -60,6 +61,9 @@ export function markdownFormatter(elOutput) {
     });
 
     result = result.split('\n').map((line, i) => {
+      // Trim
+      line = line.trim();
+
       // Replace `text` with <code>text</code>
       if (line.includes('`')) line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, function(match, p1) {
         // Escape HTML special characters

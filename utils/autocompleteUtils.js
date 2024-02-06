@@ -27,12 +27,34 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     }
   }
 
+  if (prefix === ":store set ") {
+    const name = sessionStorage.getItem("store");
+    const response = await getStore(name);
+    if (response.success) {
+      const store = response.result;
+      return Object.keys(store.settings);
+    } else {
+      return [];
+    }
+  }
+
   if (prefix === ":node " || prefix === ":node use " || prefix === ":node delete ") {
     const response = await fetch("/api/node/list");
     const data = await response.json();
     if (response.status === 200 && data.success) {
       const node = [].concat(data.result.user_nodes, data.result.group_nodes, data.result.system_nodes).flat()
       return node.map((s) => s.name);
+    } else {
+      return [];
+    }
+  }
+
+  if (prefix === ":node set ") {
+    const name = sessionStorage.getItem("node");
+    const response = await getNode(name);
+    if (response.success) {
+      const node = response.result;
+      return Object.keys(node.settings);
     } else {
       return [];
     }
@@ -116,4 +138,72 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   }
 
   return [];
+}
+
+async function getNode(name) {
+  try {
+    const response = await fetch("/api/node/" + name, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (response.status !== 200) {
+      throw data.error || new Error(`Request failed with status ${response.status}`);
+    }
+
+    if (!data.result) {
+      return {
+        success: false,
+        error: "Node not exists."
+      };
+    } else {
+      return {
+        success: true,
+        result: data.result
+      };
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: "An error occurred during your request."
+    };
+  }
+}
+
+async function getStore(name) {
+  try {
+    const response = await fetch("/api/store/" + name, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (response.status !== 200) {
+      throw data.error || new Error(`Request failed with status ${response.status}`);
+    }
+
+    if (!data.result) {
+      return {
+        success: false,
+        error: "Store not exists."
+      };
+    } else {
+      return {
+        success: true,
+        result: data.result
+      };
+    }
+  } catch (error) {
+    console.error(error);
+    return {
+      success: false,
+      error: "An error occurred during your request."
+    };
+  }
 }

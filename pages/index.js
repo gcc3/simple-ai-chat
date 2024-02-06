@@ -1827,12 +1827,14 @@ export default function Home() {
         autocomplete(":role unuse ", true);
         autocomplete(":store ", true);
         autocomplete(":store use ", true);
+        autocomplete(":store set ", false);
         autocomplete(":store unuse ", true);
         autocomplete(":store init ", true);
         autocomplete(":store data reset ", true);
         autocomplete(":store delete ", true);
         autocomplete(":node ", true);
         autocomplete(":node use ", true);
+        autocomplete(":node set ", false);
         autocomplete(":node delete ", true);
         autocomplete(":theme ");
         autocomplete(":lang use ");
