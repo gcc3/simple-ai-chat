@@ -39,7 +39,7 @@ export async function generateMessages(use_system_role, lang,
                                        role, store, node,
                                        use_location, location,
                                        use_function_calling, functionCalls, functionResults,
-                                       updateStatus = null) {
+                                       updateStatus = null, streamOutput = null) {
   let messages = [];
   let token_ct = {};
   let mem = 0;
@@ -327,8 +327,14 @@ export async function generateMessages(use_system_role, lang,
         node_input = mjPrompt;
       }
 
-      console.log("prompt: " + node_input.replace(/\n/g, " "));
-      updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
+      console.log("node_input: " + node_input.replace(/\n/g, " "));
+
+      // Show a message for generting
+      if (!settings.overrideOutputWithNodeResponse) {
+        updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
+      } else {
+        updateStatus && updateStatus("Start generating...");
+      }
 
       // Start sending keep-alive messages
       const stopKeepAlive = await sendKeepAlive(updateStatus);
@@ -340,7 +346,7 @@ export async function generateMessages(use_system_role, lang,
       }))
       console.log("histories: " + JSON.stringify(histories));
       console.log("files: " + JSON.stringify(files));
-      const queryNodeAIResult = await queryNodeAI(node_input, settings, histories, files_text);
+      const queryNodeAIResult = await queryNodeAI(node_input, settings, histories, files_text, streamOutput);
 
       // Stop sending keep-alive messages
       stopKeepAlive();

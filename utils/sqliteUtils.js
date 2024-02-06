@@ -488,8 +488,9 @@ const countUserByIP = async (ip) => {
 };
 
 const insertUser = async (username, role, role_expires_at, password, email, balance, settings) => {
+  console.log("Inserting new user: " + username　+ "...");
   const db = await getDatabaseConnection();
-
+  
   try {
     return await new Promise((resolve, reject) => {
       // First, check if the username already exists

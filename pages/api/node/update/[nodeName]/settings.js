@@ -1,6 +1,6 @@
 import { updateNodeSettings } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
-import { findNode } from 'utils/nodeUtils.js';
+import { findNode, getInitNodeSettings } from 'utils/nodeUtils.js';
 
 export default async function (req, res) {
   // Check if the method is POST.
@@ -39,11 +39,9 @@ export default async function (req, res) {
   if (value === "true") value_ = true;
   if (value === "false") value_ = false;
 
-  if (key !== 'endpoint' 
-   && key !== 'queryParameterForInput' 
-   && key !== 'multimodality'
-   && key !== 'overrideOutputWithNodeResponse'
-   && key !== 'description') {
+  // Check if the key is valid
+  const validKeys = Object.keys(getInitNodeSettings());
+  if (!validKeys.includes(key)) {
     return res.status(400).json({ 
       success: false,
       error: 'Invalid key.' 
