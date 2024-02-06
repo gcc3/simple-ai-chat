@@ -280,7 +280,8 @@ export default async function (req, res) {
     node_output_images = generateMessagesResult.node_output_images;
 
     if (node && nodeInfo) {
-      const nodeSettings = JSON.parse(nodeInfo.settings);
+      const settings = JSON.parse(nodeInfo.settings);
+      const nodeModel = settings.model || node;
 
       // Add log for node
       // Use node as model name, TODO, use node response model name
@@ -289,16 +290,18 @@ export default async function (req, res) {
         if (node_output_images.length > 0) {
           for (let i = 0; i < node_output_images.length; i++) {
             // The time cannot be same, so every image add 1 millisecond
-            await logadd(user, session, time++, node, 0, ":generate \"" + node_input + "\"", 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
+            await logadd(user, session, time++, nodeModel, 0, ":generate \"" + node_input + "\"", 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
           }
         } else {
-          await logadd(user, session, time++, node, 0, node_input, 0, node_output, JSON.stringify([]), ip, browser);
+          await logadd(user, session, time++, nodeModel, 0, node_input, 0, node_output, JSON.stringify([]), ip, browser);
         }
       }
 
       // Node taken output override
       if (doNodeOverrideOutput(nodeInfo)) {
-        res.write(`data: ###ENV###${nodeSettings.model}\n\n`);
+        if (settings.model && settings.model !== "") {
+          res.write(`data: ###ENV###${nodeInfo.model}\n\n`);
+        }
 
         // Print node output images
         if (node_output_images.length > 0) {
@@ -309,7 +312,7 @@ export default async function (req, res) {
         }
 
         // Print non-stream text output
-        if (!nodeSettings.stream) {
+        if (!settings.stream) {
           let nodeOutput = raw_prompt["node"];
           if (nodeOutput) {
             nodeOutput = nodeOutput.trim().replaceAll("\n", "###RETURN###");
@@ -317,6 +320,10 @@ export default async function (req, res) {
             res.write(`data: ${nodeOutput}\n\n`); res.flush();
           }
         }
+
+        // Print output
+        console.log(chalk.magentaBright("Output (session = "+ session + "):"));
+        console.log((node_output || "(null)") + "\n");
 
         // Done message
         res.write(`data: [DONE]\n\n`); res.flush();

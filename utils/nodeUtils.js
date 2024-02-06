@@ -138,7 +138,9 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
     return new Promise((resolve, reject) => {
 
       // Send the ENV
-      streamOutput(`###ENV###${model}`);
+      if (model && model !== "") {
+        streamOutput(`###ENV###${model}`);
+      }
 
       // Handle the data event to process each JSON line
       stream.on('data', (chunk) => {
