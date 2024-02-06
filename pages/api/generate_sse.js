@@ -300,7 +300,7 @@ export default async function (req, res) {
       // Node taken output override
       if (doNodeOverrideOutput(nodeInfo)) {
         if (settings.model && settings.model !== "") {
-          res.write(`data: ###ENV###${nodeInfo.model}\n\n`);
+          res.write(`data: ###ENV###${settings.model}\n\n`);
         }
 
         // Print node output images
