@@ -299,10 +299,6 @@ export default async function (req, res) {
 
       // Node taken output override
       if (doNodeOverrideOutput(nodeInfo)) {
-        if (settings.model && settings.model !== "") {
-          res.write(`data: ###ENV###${settings.model}\n\n`);
-        }
-
         // Print node output images
         if (node_output_images.length > 0) {
           node_output_images.map(image => {
@@ -311,13 +307,28 @@ export default async function (req, res) {
           res.flush();
         }
 
-        // Print non-stream text output
+        // Print for non-stream
         if (!settings.stream) {
           let nodeOutput = raw_prompt["node"];
           if (nodeOutput) {
             nodeOutput = nodeOutput.trim().replaceAll("\n", "###RETURN###");
             res.write(`data: [CLEAR]\n\n`); res.flush();
+
+            // model
+            if (settings.model && settings.model !== "") {
+              res.write(`data: ###ENV###${settings.model}\n\n`); res.flush();
+            }
+
+            // text output
             res.write(`data: ${nodeOutput}\n\n`); res.flush();
+          }
+        }
+
+        // Print stream
+        if (settings.stream) {
+          // model
+          if (settings.model && settings.model !== "") {
+            res.write(`data: ###ENV###${settings.model}\n\n`); res.flush();
           }
         }
 
