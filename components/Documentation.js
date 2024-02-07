@@ -83,7 +83,6 @@ const Documentation = ({ country }) => {
   const faqs = [
     { question: t("How to copy the result?"), answer: t("You can click the model name to copy the whole result (raw).") },
     { question: t("How to share a session?"), answer: t("You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.") },
-    { question: t("Does Simple AI store my credit card information?"), answer: t("No, we do not store any credit card numbers. Payments are securely processed through an embedded page provided by the payment service provider, and the information is sent directly to the banking system.") },
   ];
 
   const content = (
@@ -153,11 +152,6 @@ const Documentation = ({ country }) => {
           { t("* Build to link with other AI systems, or your own APIs.") }<br/>
           <div className="ml-5">{ t("And more...") }</div>
         </div>
-      </div>
-      <div className="mt-2">
-        { t("- Is Simple AI free?") }<br/>
-        { t("* Yes, most of the services are free for `user`; however, the OpenAI token is not free. You need to pay-as-you-go.") }<br/>
-        { t("* For professional use, please consider using our `pro_user` or `super_user`, refer Subcriptions page.") }<br/>
       </div>
       <div id="quick-start" className="mt-5">{ t("Quick Start") }</div>
       <div className="mt-2 mb-3">
