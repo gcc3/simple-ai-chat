@@ -15,6 +15,7 @@ import { ensureSession } from "utils/logUtils";
 
 // OpenAI
 const openai = new OpenAI();
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 
 // Input output type
 const TYPE = {
@@ -354,6 +355,16 @@ export default async function (req, res) {
 
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");
+
+    // OpenAI API key check
+    if (!OPENAI_API_KEY) {
+      updateStatus("OpenAI API key is not set.");
+      res.write(`data: ###ERR###OpenAI API key is not set.\n\n`);
+      res.write(`data: [DONE]\n\n`);
+      res.end();
+      return;
+    }
+
     const chatCompletion = await openai.chat.completions.create({
       model,
       // response_format: { type: "json_object" },
