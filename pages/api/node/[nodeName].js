@@ -1,5 +1,5 @@
 import { authenticate } from 'utils/authUtils';
-import { isNodeConfigured } from 'utils/nodeUtils';
+import { isNodeConfigured, pingNode } from 'utils/nodeUtils';
 import { findNode } from 'utils/nodeUtils';
 
 export default async function (req, res) {
@@ -32,7 +32,10 @@ export default async function (req, res) {
           owner: node.owner,
           created_by: node.created_by,
           settings: settings,
-          configured: isNodeConfigured(settings),
+          status: {
+            ping: await pingNode(settings),
+            configured: isNodeConfigured(settings),
+          }
         },
       });
     } else {

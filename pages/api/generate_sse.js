@@ -80,6 +80,12 @@ export default async function (req, res) {
     res.write(`data: ###STATUS###${status}\n\n`); res.flush();
   }
   updateStatus("Preparing...");
+
+  // Stream output
+  const streamOutput = (message) => {
+    message = message.replaceAll("\n", "###RETURN###");
+    res.write(`data: ${message}\n\n`); res.flush();
+  }
   
   // Session ID
   const verifyResult = verifySessionId(session);
@@ -259,7 +265,7 @@ export default async function (req, res) {
                                                           role, store, node, 
                                                           use_location, location,
                                                           use_function_calling, functionCalls, functionResults,
-                                                          updateStatus);
+                                                          updateStatus, streamOutput);
 
     updateStatus("Pre-generating finished.");
     token_ct.push(generateMessagesResult.token_ct);
@@ -274,6 +280,9 @@ export default async function (req, res) {
     node_output_images = generateMessagesResult.node_output_images;
 
     if (node && nodeInfo) {
+      const settings = JSON.parse(nodeInfo.settings);
+      const nodeModel = settings.model || node;
+
       // Add log for node
       // Use node as model name, TODO, use node response model name
       // For each image add a log
@@ -281,17 +290,15 @@ export default async function (req, res) {
         if (node_output_images.length > 0) {
           for (let i = 0; i < node_output_images.length; i++) {
             // The time cannot be same, so every image add 1 millisecond
-            await logadd(user, session, time++, node, 0, ":generate \"" + node_input + "\"", 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
+            await logadd(user, session, time++, nodeModel, 0, ":generate \"" + node_input + "\"", 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
           }
         } else {
-          await logadd(user, session, time++, node, 0, node_input, 0, node_output, JSON.stringify([]), ip, browser);
+          await logadd(user, session, time++, nodeModel, 0, node_input, 0, node_output, JSON.stringify([]), ip, browser);
         }
       }
 
       // Node taken output override
       if (doNodeOverrideOutput(nodeInfo)) {
-        res.write(`data: ###ENV###${node.toLowerCase()}\n\n`);
-
         // Print node output images
         if (node_output_images.length > 0) {
           node_output_images.map(image => {
@@ -300,13 +307,34 @@ export default async function (req, res) {
           res.flush();
         }
 
-        // Text output
-        let nodeOutput = raw_prompt["node"];
-        if (nodeOutput) {
-          nodeOutput = nodeOutput.trim().replaceAll("\n", "###RETURN###");
-          res.write(`data: [CLEAR]\n\n`); res.flush();
-          res.write(`data: ${nodeOutput}\n\n`); res.flush();
+        // Print for non-stream
+        if (!settings.stream) {
+          let nodeOutput = raw_prompt["node"];
+          if (nodeOutput) {
+            nodeOutput = nodeOutput.trim().replaceAll("\n", "###RETURN###");
+            res.write(`data: [CLEAR]\n\n`); res.flush();
+
+            // model
+            if (settings.model && settings.model !== "") {
+              res.write(`data: ###ENV###${settings.model}\n\n`); res.flush();
+            }
+
+            // text output
+            res.write(`data: ${nodeOutput}\n\n`); res.flush();
+          }
         }
+
+        // Print stream
+        if (settings.stream) {
+          // model
+          if (settings.model && settings.model !== "") {
+            res.write(`data: ###ENV###${settings.model}\n\n`); res.flush();
+          }
+        }
+
+        // Print output
+        console.log(chalk.magentaBright("Output (session = "+ session + "):"));
+        console.log((node_output || "(null)") + "\n");
 
         // Done message
         res.write(`data: [DONE]\n\n`); res.flush();
@@ -357,8 +385,7 @@ export default async function (req, res) {
       if (content) {
         outputType = TYPE.NORMAL;
         output += content;
-        let message = content.replaceAll("\n", "###RETURN###");
-        res.write(`data: ${message}\n\n`); res.flush();
+        streamOutput(content);
       }
 
       // 2. handle tool calls output

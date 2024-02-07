@@ -288,11 +288,14 @@ export default function Home() {
   }
 
   // Clear output
-  const clearOutput = (clearMedia = false) => {
+  const clearOutput = (all = false) => {
     printOutput("");
-    if (clearMedia) {
+    if (all) {
       clearPreviewImages();
       clearPreviewVideos();
+      setInfo();
+      setStats();
+      setEvaluation();
     }
   };
 
@@ -1520,7 +1523,7 @@ export default function Home() {
         }
 
         // For node print "Generating...", because it will be slow.
-        if (node && _status_.startsWith("Start pre-generating...")) {
+        if (node && (_status_.startsWith("Start pre-generating...") || _status_.startsWith("Start generating..."))) {
           printOutput(generating);
         }
 

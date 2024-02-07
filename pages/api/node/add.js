@@ -1,6 +1,6 @@
 import { getUser, countUserNodes, insertNode } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
-import { findNode } from "utils/nodeUtils.js";
+import { findNode, getInitNodeSettings } from "utils/nodeUtils.js";
 
 export default async function (req, res) {
   // Check if the method is POST
@@ -39,17 +39,11 @@ export default async function (req, res) {
     });
   }
 
+  // Create node
   console.log("Creating node \"" + name + "\"...");
-
-  const settings = JSON.stringify({
-    "endpoint": "",
-    "queryParameterForInput": "input",
-    "multimodality": false,
-    "overrideOutputWithNodeResponse": false,
-    "description": "",
-  });
-
+  const settings = JSON.stringify(getInitNodeSettings());
   insertNode(name, settings, username);
+
   return res.status(200).json({ 
     success: true,
     message: "Node \"" + name + "\" is created. You can use command `:node set [key] [value]` to configure it. Use command `:node [name?]` to check node status and settings. Node `" + name + "` is now active.",

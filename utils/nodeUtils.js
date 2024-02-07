@@ -1,5 +1,8 @@
 import { getUser, getNode, getUserNodes } from './sqliteUtils.js';
 
+const axios = require('axios');
+const { Readable } = require('stream');
+
 export async function findNode(nodeName, username) {
   let node = null;
   const user = await getUser(username);
@@ -78,71 +81,210 @@ export function doNodeOverrideOutput(node) {
   return settings.overrideOutputWithNodeResponse;
 }
 
-export async function queryNodeAI(input, settings, histories = null, files_text = null) {
+export async function queryNodeAI(input, settings, histories = null, files_text = null, streamOutput = null) {
   if (!input) return {
     success: false,
     error: "Invalid query.",
   }
 
-  if (!settings || !settings.endpoint || !settings.queryParameterForInput) return {
-    success: false,
-    error: "Invalid settings.",
+  const endpoint = settings.endpoint;
+  const generateApi = settings.generateApi;
+  const generateSseApi = settings.generateSseApi;
+  const queryParameterForInput = settings.queryParameterForInput;
+  const queryParameterForHistories = settings.queryParameterForHistories;
+  const queryParameterForFiles = settings.queryParameterForFiles;
+  const stream = settings.stream;
+  const model = settings.model;
+
+  // Ollama compatible stream output
+  if (stream && streamOutput) {
+    let messages = [];
+
+    // Files messages
+    if (files_text && files_text.length > 0) {
+      files_text.map((f) => {
+        messages.push({
+          role: 'system',
+          content: "File url: " + f.file + "\n" 
+                 + "File content: " + f.text
+        });
+      });
+    }
+
+    // History messages
+    if (histories && histories.length > 0) {
+      histories.map((h) => {
+        messages.push({ role: 'user', content: h.input });
+        messages.push({ role: 'assistant', content: h.output });
+      });
+    }
+
+    // User messages
+    if (input) {
+      messages.push({ role: 'user', content: input });
+    }
+
+    const response = await axios.post(endpoint + generateSseApi, {
+      model: model,
+      messages: messages,
+    }, { responseType: 'stream' });
+
+    let result = "";
+
+    // Convert the response stream into a readable stream
+    const stream = Readable.from(response.data);
+
+    // Handle the data event to process each JSON line
+    return new Promise((resolve, reject) => {
+
+      // Send the ENV
+      if (model && model !== "") {
+        streamOutput(`###ENV###${model}`);
+      }
+
+      // Handle the data event to process each JSON line
+      stream.on('data', (chunk) => {
+        const lines = chunk.toString().split('\n').filter(line => line.trim());
+  
+        lines.forEach((line) => {
+          try {
+            const json = JSON.parse(line);
+            if (json.message && json.message.content) {
+              if (result === "") {
+                // Send clear signal
+                streamOutput("[CLEAR]");
+              }
+
+              streamOutput(json.message.content);
+              result += json.message.content;
+            }
+          } catch (error) {
+            console.error('Error parsing JSON line:', error);
+            stream.destroy(error); // Destroy the stream on error
+          }
+        });
+      });
+  
+      // Resolve the Promise when the stream ends
+      stream.on('end', () => {
+        resolve({
+          success: true,
+          result: result,
+        });
+      });
+  
+      // Reject the Promise on error
+      stream.on('error', (error) => {
+        reject({
+          success: false,
+          error: error,
+        });
+      });
+    });
+  }
+
+  if (!stream) {
+    try {
+      const response = await fetch(endpoint + generateApi + "?" + queryParameterForInput + "=" + encodeURIComponent(input) 
+                                                          + "&" + queryParameterForHistories + "=" + encodeURIComponent(JSON.stringify(histories))
+                                                          + "&" + queryParameterForFiles + "=" + encodeURIComponent(JSON.stringify(files_text)), {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+    
+      if (response.status !== 200 || !response.ok) {
+        return {
+          success: false,
+          error: "An error occurred during your request.",
+        };
+      }
+
+      const data = await response.json();
+
+      // Veryfy format
+      if (!data.result 
+      || (typeof data.result !== "string" && !data.result.text && !data.result.images)
+      || (data.result.images && !Array.isArray(data.result.images))) {
+        return {
+          success: false,
+          error: "Unexpected node response format.",
+        };
+      }
+      
+      return {
+        success: true,
+        result: data.result,
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error,
+      };
+    }
+  }
+}
+
+export function isNodeConfigured(settings) {
+  if (!settings) {
+    return false;
+  }
+
+  if (!settings.endpoint || settings.endpoint === "___") {
+    return false;
+  }
+
+  if (settings.stream) {
+    if (!settings.generateSseApi || settings.generateSseApi === "___") {
+      return false;
+    }
+  }
+
+  if (!settings.stream) {
+    if (!settings.generateApi || settings.generateApi === "___") {
+      return false;
+    }
+
+    if (!settings.queryParameterForInput) {
+      return false;
+    }
+  }
+
+  return true;
+}
+
+export async function pingNode(settings) {
+  if (!settings.endpoint || settings.endpoint === "___") {
+    return "Endpoint not set.";
   }
 
   const endpoint = settings.endpoint;
-  const queryParameterForInput = settings.queryParameterForInput;
 
+  // Fetch from endpoint
   try {
-    const response = await fetch(endpoint + "?" + queryParameterForInput + "=" + encodeURIComponent(input) 
-                                          + "&histories=" + encodeURIComponent(JSON.stringify(histories))
-                                          + "&files=" + encodeURIComponent(JSON.stringify(files_text)), {
+    const response = await fetch(endpoint, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
       },
     });
-  
+
     if (response.status !== 200 || !response.ok) {
-      return {
-        success: false,
-        error: "An error occurred during your request.",
-      };
+      return "Inconnectable.";
     }
 
-    const data = await response.json();
+    // Get response text
+    const text = await response.text();
 
-    // Veryfy format
-    if (!data.result 
-    || (typeof data.result !== "string" && !data.result.text && !data.result.images)
-    || (data.result.images && !Array.isArray(data.result.images))) {
-      return {
-        success: false,
-        error: "Unexpected node response format.",
-      };
+    if (text) {
+      return text;
+    } else {
+      return "Connected.";
     }
-    
-    return {
-      success: true,
-      result: data.result,
-    };
   } catch (error) {
-    return {
-      success: false,
-      error: error,
-    };
+    return "Inconnectable.";
   }
-}
-
-export function isNodeConfigured(settings) {
-  let isConfigured = false;
-  if (!settings) {
-    return false;
-  }
-
-  if (settings.endpoint && settings.queryParameterForInput) {
-    isConfigured = true;
-  }
-  return isConfigured;
 }
 
 export async function getAvailableNodesForUser(user) {
@@ -165,4 +307,21 @@ export async function getAvailableNodesForUser(user) {
   }
 
   return userNodes.concat(groupNodes).concat(systemNodes);
+}
+
+// Settings and initial values
+export function getInitNodeSettings() {
+  return {
+    "endpoint": "___",
+    "generateApi": "___",
+    "generateSseApi": "___",
+    "queryParameterForInput": "input",
+    "queryParameterForHistories": "histories",
+    "queryParameterForFiles": "files",
+    "multimodality": false,
+    "overrideOutputWithNodeResponse": false,
+    "stream": false,
+    "model": "",  // optional, if the endpoint support multipe models
+    "description": "",
+  };
 }
