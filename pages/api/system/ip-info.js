@@ -1,6 +1,22 @@
 import { getIpInfo } from "utils/ipUtils";
 
 export default async function (req, res) {
+  if (process.env.USE_IPINFO !== "true") {
+    return res.status(500).json({
+      error: {
+        message: "IP info is not enabled.",
+      },
+    });
+  }
+
+  if (process.env.IPINFO_TOKEN === undefined) {
+    return res.status(500).json({
+      error: {
+        message: "IP info token is not set.",
+      },
+    });
+  }
+
   try {
     // configurations
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
