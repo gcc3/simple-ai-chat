@@ -176,7 +176,7 @@ const Documentation = ({ country }) => {
             }}
           />
         </div>}
-        {((country && country === "CN") || !process.env.NEXT_PUBLIC_VIDEO_ID) && <div>
+        {(country && country === "CN" && process.env.NEXT_PUBLIC_VIDEO_ID) && <div className="max-w-screen-md">
           <div className="max-w-screen-md">
             Add BiliBili video here.
           </div>

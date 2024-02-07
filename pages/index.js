@@ -74,6 +74,7 @@ export default function Home() {
   const [display, setDisplay] = useState(DISPLAY.FRONT);
   const [content, setContent] = useState(CONTENT.DOCUMENTATION);
   const [subscriptionDisplay, setSubscriptionDisplay] = useState(false);
+  const [usageDisplay, setUsageDisplay] = useState(false);
   const [outputImages, setOutputImages] = useState([]);
   const [minimalist, setMinimalist] = useState(false);
   const [country, setCountry] = useState(false);
@@ -841,7 +842,11 @@ export default function Home() {
         if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
         if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
         if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
-        if (systemInfo.use_payment) setSubscriptionDisplay(true);  // Set use payment
+        if (systemInfo.use_payment) {
+          // Set use payment
+          setSubscriptionDisplay(true);
+          setUsageDisplay(true);
+        }
         if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
 
         // IP Info
@@ -2111,7 +2116,7 @@ export default function Home() {
             <div className={styles.container}>
               <div className={styles.nav}>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{ t("Documentation") }</div>
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>{ t("Usage") }</div>
+                {usageDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>{ t("Usage") }</div>}
                 {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>{ t("Subcriptions")} </div>}
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>{ t("Privacy Policy") }</div>
               </div>
@@ -2119,7 +2124,7 @@ export default function Home() {
                 {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
                   <Documentation country={country} />
                 </div>}
-                {content === CONTENT.USAGE && <div className={styles.contentitem}>
+                {usageDisplay && content === CONTENT.USAGE && <div className={styles.contentitem}>
                   <Usage />
                 </div>}
                 {subscriptionDisplay && content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}>

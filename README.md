@@ -221,8 +221,10 @@ The value should be `true` or `false`.
 * WELCOME_MESSAGE and VIDEO_ID  
 Set a welcome message and introduction video in front page.  
 
-* IPINFO_TOKEN  
-`ipinfo.io` token for getting country from IP.  
+* USE_IPINFO and IPINFO_TOKEN  
+IP info is used for getting country from IP.   
+Use IP info is for enable or disable the IP support, the value should be `true` or `false`.  
+`ipinfo.io` token will be used.  
 
 * NEXT_PUBLIC_DISCORD
 Discord invitation link, the last part.  
