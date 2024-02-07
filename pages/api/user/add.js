@@ -12,6 +12,10 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
+  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
+  const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
+  const use_email = process.env.USE_EMAIL == "true" ? true : false;
+
   const { username, email, password, settings } = req.body;
 
   let generatedPassword = "";
@@ -72,13 +76,14 @@ export default async function (req, res) {
   }
 
   // Check if the IP alread used for another user
-  const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
-  const countUserWithSameIP = await countUserByIP(ip);
-  if (countUserWithSameIP >= 1) {
-    return res.status(400).json({
-      success: false,
-      error: "Your IP address has been used too frequently. For assistance, please contact our support at `support@simple-ai.io`.",
-    });
+  if (use_access_control) {
+    const countUserWithSameIP = await countUserByIP(ip);
+    if (countUserWithSameIP >= 1) {
+      return res.status(400).json({
+        success: false,
+        error: "Your IP address has been used too frequently. For assistance, please contact our support at `support@simple-ai.io`.",
+      });
+    }
   }
 
   // Generate a jwt token
@@ -108,11 +113,11 @@ export default async function (req, res) {
     });
   }
 
-  // Generate invite code
-  const inviteCode = generateInviteCode(newUser);
-
   // Email validation
-  if (process.env.USE_EMAIL == "true") {
+  if (use_email) {
+    // Generate invite code
+    const inviteCode = generateInviteCode(newUser);
+
     AWS.config.update({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
