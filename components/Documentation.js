@@ -18,8 +18,6 @@ const Documentation = ({ country }) => {
     { id: "quick_start_6", content: tt("quick_start_6") },
     { id: "quick_start_7", content: tt("quick_start_7") },
     { id: "quick_start_8", content: tt("quick_start_8") },
-    { id: "quick_start_9", content: tt("quick_start_9") },
-    { id: "quick_start_10", content: tt("quick_start_10") },
   ];
 
   const features = [

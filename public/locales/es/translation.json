@@ -7,12 +7,10 @@
   "welcome": "¡Bienvenido a Simple AI (simple-ai.io)! 🚀 Simple AI es una aplicación de chat con IA impulsada por GPT-4 Turbo de OpenAI, integrada con WolframAlpha (Conocimiento Mejorado y Matemáticas), Midjourney (Generación de Imágenes de Alta Calidad) y Vectara (Indexación de Bases de Datos Vectoriales), entre otras herramientas prácticas. Ofrece un diseño minimalista con características ricas, operaciones más rápidas y una experiencia de usuario más profesional, lo que la convierte en una excelente alternativa a ChatGPT. Simplemente escribe tu consulta y presiona `Enter` para chatear con la IA.💬",
   "quick_start_6": "Después de iniciar sesión, usa `:use \"Midjourney\"` para habilitar la generación de imágenes.⛵ Usa `:use \"WolframAlpha\"` para habilitar matemáticas avanzadas.🏛️ Consejos: puedes usar la tecla `Tab` para autocompletar.💡",
   "quick_start_3": "Si olvidaste tu contraseña, restablécela utilizando el comando `:user reset pass [username] [email]`.🆘",
-  "quick_start_10": "Invita a amigos utilizando el comando `:invite [email]`, ¡y ambos recibirán 100K tokens de recompensa!💌",
   "quick_start_1": "Antes de comenzar a usar, tómate 10 segundos para registrar un usuario con el comando `:user add [username] [email] [password?]`, y se te otorgarán 30K tokens gratis.🎁\nNota: No incluyas los corchetes en tu comando.✅\nPor ejemplo, `:user add john john@example.com ********`.🔑",
   "quick_start_5": "Para navegar entre los historiales de chat, usa las teclas de flecha `⬅️` y `➡️`. (O desliza hacia la izquierda y derecha en smartphones.📱) Para navegar entre `sesiones`, usa las teclas de flecha `⬆️` y `⬇️`.",
   "quick_start_8": "Para cambiar el tema, usa `:theme [light|dark|terminal]`.🌈",
   "quick_start_0": "Simple AI funciona mediante una interfaz de comandos, atajos y gestos. Todos los comandos comienzan con `:` (dos puntos de media anchura).",
-  "quick_start_9": "Una cuenta general de `usuario` es gratuita, pero tienes que pagar por los tokens de la API de OpenAI. Puedes gestionar tu saldo de tokens en la página de Uso.💳",
   "quick_start_2": "Para iniciar sesión, usa el comando `:login [username] [password]`.",
   "quick_start_7": "Cambie a pantalla completa con `F11` (⌃F11 para macOS). Para pantalla dividida, use `Ctrl+|`.🖥️",
   "quick_start_4": "Para acceder a la documentación y confirmar el uso, haga clic en el punto (•) en la esquina de la pantalla.📄"
