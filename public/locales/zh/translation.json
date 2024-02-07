@@ -7,10 +7,10 @@
   "welcome": "欢迎来到Simple AI (simple-ai.io)！🚀 Simple AI是一个由OpenAI的GPT-4 Turbo驱动的AI聊天应用程序，集成了WolframAlpha（增强型知识与数学）、Midjourney（高质量图像生成）和Vectara（向量数据库索引）等实用工具。它提供了一个简约的设计，包含丰富的功能，更快的操作速度和更专业的用户体验，使其成为一个出色的ChatGPT替代品。输入您的查询并按`Enter`键即可与AI聊天。💬",
   "quick_start_6": "登录后，使用 `:use \"Midjourney\"` 来启用图像生成。⛵ 使用 `:use \"WolframAlpha\"` 来启用增强数学功能。🏛️ 提示：您可以使用 `Tab` 键来自动完成。💡",
   "quick_start_3": "如果您忘记了密码，请使用命令 `:user reset pass [username] [email]` 重置。🆘",
-  "quick_start_1": "在开始使用前，请花10秒钟用命令 `:user add [username] [email] [password?]` 注册一个用户，您将获得30K免费token。🎁 注意：在您的命令中不要包括括号。✅ 例如，`:user add john john@example.com ********`。🔑",
+  "quick_start_1": "在开始使用前，请使用命令`:user add [username] [email] [password?]`注册为`用户`。例如，`:user add john john@example.com ********`。注意：在您的命令中不要包括方括号。✅",
   "quick_start_5": "要在聊天记录之间导航，请使用 `⬅️` 和 `➡️` 箭头键。（或在智能手机上向左滑动和向右滑动。📱）要在`会话`之间导航，请使用 `⬆️` 和 `⬇️` 箭头键。",
   "quick_start_8": "要更改主题，请使用 `:theme [light|dark|terminal]`。🌈",
-  "quick_start_0": "Simple AI 通过命令界面、快捷方式和手势操作。所有命令都以 `:`（半角冒号）开头。",
+  "quick_start_0": "Simple AI 通过命令界面、快捷方式和手势操作。所有命令都以 `:`（半角冒号）开头。⌨️",
   "quick_start_2": "要登录，请使用命令 `:login [username] [password]`。",
   "quick_start_7": "切换到全屏请按 `F11`（macOS 系统为 ⌃F11）。分屏使用 `Ctrl+|`。🖥️",
   "quick_start_4": "要访问文档并确认使用情况，请点击屏幕角落的圆点（•）。📄"

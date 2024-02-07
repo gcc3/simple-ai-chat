@@ -7,10 +7,10 @@
   "welcome": "Bem-vindo ao Simple AI (simple-ai.io)! 🚀 O Simple AI é um aplicativo de chat AI alimentado pelo GPT-4 Turbo da OpenAI, integrado com WolframAlpha (Conhecimento Avançado & Matemática), Midjourney (Geração de Imagens de Alta Qualidade) e Vectara (Indexação de Banco de Dados Vetorial), entre outras ferramentas práticas. Oferece um design minimalista repleto de recursos ricos, operações mais rápidas e uma experiência de usuário mais profissional, tornando-o uma excelente alternativa ao ChatGPT. Basta digitar sua consulta e pressionar `Enter` para conversar com a IA.💬",
   "quick_start_6": "Após fazer login, use `:use \"Midjourney\"` para habilitar a geração de imagens.⛵ Use `:use \"WolframAlpha\"` para habilitar matemática avançada.🏛️ Dicas: você pode usar a tecla `Tab` para autocompletar.💡",
   "quick_start_3": "Se você esqueceu sua senha, redefina-a usando o comando `:user reset pass [username] [email]`.🆘",
-  "quick_start_1": "Antes de começar a usar, reserve 10 segundos para registrar um usuário com o comando `:user add [username] [email] [password?]`, e serão concedidos a você 30 mil tokens gratuitos.🎁\nNota: Não inclua os colchetes no seu comando.✅\nPor exemplo, `:user add john john@example.com ********`.🔑",
+  "quick_start_1": "Antes de começar a usar, por favor, registre-se como `usuário` com o comando `:user add [username] [email] [password?]`. Por exemplo, `:user add john john@example.com ********`. Nota: Não inclua os colchetes no seu comando.✅",
   "quick_start_5": "Para navegar entre os históricos de chat, use as teclas de seta `⬅️` e `➡️`. (Ou deslize para a esquerda e para a direita em smartphones.📱) Para navegar entre `sessões`, use as teclas de seta `⬆️` e `⬇️`.",
   "quick_start_8": "Para alterar o tema, use `:theme [light|dark|terminal]`.🌈",
-  "quick_start_0": "O Simple AI opera utilizando uma interface de comandos, atalhos e gestos. Todos os comandos começam com `:` (dois-pontos de meia largura).",
+  "quick_start_0": "O Simple AI opera usando uma interface de comandos, atalhos e gestos. Todos os comandos começam com `:` (dois-pontos de meia largura).⌨️",
   "quick_start_2": "Para fazer login, use o comando `:login [username] [password]`.",
   "quick_start_7": "Mude para tela cheia com `F11` (⌃F11 para macOS). Para tela dividida, use `Ctrl+|`.🖥️",
   "quick_start_4": "Para acessar a documentação e confirmar o uso, clique no ponto (•) no canto da tela.📄"
