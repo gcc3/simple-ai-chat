@@ -343,24 +343,24 @@ const Documentation = ({ country }) => {
       <div id="feedback" className="mt-5">{ t("Feedback & Support") }</div>
       <div className="mt-2">
         - <Trans
-          i18nKey="discord_server"
-          components={{ 1: <a href="https://discord.gg/sRcj4HZyzU" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
-          ns="documentation"
-        />
+            i18nKey="discord_server"
+            components={{ 1: <a href="https://discord.gg/sRcj4HZyzU" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
+            ns="documentation"
+          />
       </div>
       <div>
         - <Trans
-          i18nKey="email_support"
-          components={{ 1: <a href="mailto:support@simple-ai.io" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
-          ns="documentation"
-        />
+            i18nKey="email_support"
+            components={{ 1: <a href="mailto:support@simple-ai.io" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
+            ns="documentation"
+          />
       </div>
       <div>
         - <Trans
-          i18nKey="github_issues"
-          components={{ 1: <a href="https://github.com/gcc3/simple-ai-chat/issues" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
-          ns="documentation"
-        />
+            i18nKey="github_issues"
+            components={{ 1: <a href="https://github.com/gcc3/simple-ai-chat/issues" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
+            ns="documentation"
+          />
       </div>
     </>
   )

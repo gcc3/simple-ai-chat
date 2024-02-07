@@ -94,7 +94,6 @@
   "The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.": "명령은 유닉스 쉘을 모방하도록 설계되었습니다. 'Tab' 키를 사용하여 자동 완성할 수 있습니다. 위쪽 화살표와 아래쪽 화살표 키를 사용하여 명령어 기록 사이를 탐색하세요. Control + C 키를 사용하여 중지합니다.",
   "Short description": "짧은 설명",
   "Functions": "기능",
-  "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.": "우리는 API에서 정보를 얻거나 일부 작업을 실행하기 위한 일부 내장 함수를 제공합니다. 사용자와 AI 모두 이러한 함수를 호출할 수 있습니다. 사용 가능한 함수 목록을 얻으려면 `:function ls` 명령을 사용하세요.",
   "Function": "기능",
   "Execute": "실행하다",
   "Weather data is provided by WolframAlpha.": "기상 데이터는 WolframAlpha에 의해 제공됩니다.",
@@ -107,7 +106,7 @@
   "Condition": "조건",
   "Gestures can be used on touch screens, such as smartphones and tablets.": "제스처는 스마트폰과 태블릿과 같은 터치 스크린에서 사용될 수 있습니다.",
   "APIs": "API들",
-  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI는 개발자가 애플리케이션과 통합할 수 있는 API를 제공합니다. 해당 API는 현재 베타 버전으로 변경될 수 있습니다. API를 사용하려면 사용자 인증을 위해 쿠키 `auth=your_jwt_token`을 추가해야 합니다. JWT 토큰은 브라우저의 쿠키에서 얻을 수 있습니다. (로그인이 필요합니다.)",
+  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI는 개발자들이 그들의 애플리케이션과 통합할 수 있도록 API를 제공합니다. 현재 API는 베타 버전이며 변경될 수 있습니다. API를 사용하려면 사용자 인증을 위해 쿠키 `auth=your_jwt_token`을 추가해야 합니다. JWT 토큰은 브라우저의 쿠키에서 얻을 수 있습니다. (로그인이 필요합니다.)",
   "Endpoint": "엔드포인트",
   "Parameters": "매개 변수",
   "Description": "설명",
@@ -138,5 +137,6 @@
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI는 아랍어, 벵골어, 중국어, 네덜란드어, 영어, 프랑스어, 독일어, 힌디어, 인도네시아어, 이탈리아어, 일본어, 한국어, 폴란드어, 포르투갈어, 러시아어, 스페인어, 스웨덴어, 터키어 등 18개 언어를 지원합니다. 귀하의 언어에 대한 지원이 필요하시면 알려주십시오.",
   "introduction": "Simple AI(simple-ai.io)에 오신 것을 환영합니다! 🚀 Simple AI는 OpenAI의 GPT-4 Turbo에 의해 구동되는 AI 채팅 애플리케이션으로, WolframAlpha(향상된 지식 및 수학), Midjourney(고품질 이미지 생성), Vectara(벡터 데이터베이스 색인) 등 다양한 실용 도구가 통합되어 있습니다. 깔끔한 디자인과 풍부한 기능, 빠른 작동 속도 및 더 전문적인 사용자 경험을 제공하여, 훌륭한 ChatGPT 대안이 됩니다.",
   "Options": "옵션",
-  "Command options": "명령어 옵션"
+  "Command options": "명령어 옵션",
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "우리는 사용자와 AI가 API에서 정보를 검색하거나 특정 작업을 수행할 수 있도록 여러 내장 기능을 제공합니다. 사용 가능한 기능 목록을 보려면 `:function ls` 명령을 사용하세요."
 }

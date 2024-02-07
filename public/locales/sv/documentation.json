@@ -94,7 +94,6 @@
   "The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.": "Kommandona är utformade för att efterlikna ett Unix-skal. Du kan använda `Tab`-tangenten för att autokomplettera. Använd ↑ och ↓ tangenten för att navigera mellan kommandohistoriken. Använd Control + C för att stoppa.",
   "Short description": "Kort beskrivning",
   "Functions": "Funktioner",
-  "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.": "Vi tillhandahåller några inbyggda funktioner för att hämta information från API:et eller utföra vissa uppgifter. Både användare och AI kan anropa dessa funktioner. För att få en lista över tillgängliga funktioner, använd kommandot `:function ls`.",
   "Function": "Funktion",
   "Execute": "Utför",
   "Weather data is provided by WolframAlpha.": "Väderdata tillhandahålls av WolframAlpha.",
@@ -107,7 +106,7 @@
   "Condition": "Skick",
   "Gestures can be used on touch screens, such as smartphones and tablets.": "Gester kan användas på pekskärmar, såsom smartphones och surfplattor.",
   "APIs": "API:er",
-  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI tillhandahåller API:er för utvecklare att integrera med sina applikationer. API:erna är för närvarande i betaversion och kan komma att ändras. För att använda API:erna behöver du lägga till en kaka `auth=ditt_jwt_token` för användarautentisering. Du kan få JWT-token från din webbläsares kaka. (Inloggning krävs.)",
+  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI tillhandahåller API:er för utvecklare att integrera med sina applikationer. API:erna är för närvarande i beta och kan komma att ändras. För att använda API:erna behöver du lägga till en cookie `auth=ditt_jwt_token` för användarautentisering. Du kan få JWT-token från cookien i din webbläsare. (Inloggning krävs.)",
   "Endpoint": "ändpunkt",
   "Parameters": "parametrar",
   "Description": "Beskrivning",
@@ -138,5 +137,6 @@
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI stöder 18 språk: arabiska, bengali, kinesiska, nederländska, engelska, franska, tyska, hindi, indonesiska, italienska, japanska, koreanska, polska, portugisiska, ryska, spanska, svenska, turkiska. Meddela oss om du behöver stöd för ditt språk.",
   "introduction": "Välkommen till Simple AI (simple-ai.io)! 🚀 Simple AI är en AI-chattapplikation som drivs av OpenAI:s GPT-4 Turbo, integrerad med WolframAlpha (Förbättrad kunskap & Matematik), Midjourney (Generering av högkvalitativa bilder) och Vectara (Indexering av vektordatabaser), bland andra praktiska verktyg. Den erbjuder en minimalistisk design fylld med rika funktioner, snabbare operationer och en mer professionell användarupplevelse, vilket gör den till ett utmärkt alternativ till ChatGPT.",
   "Options": "Alternativ",
-  "Command options": "Kommandon alternativ"
+  "Command options": "Kommandon alternativ",
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Vi erbjuder flera inbyggda funktioner som tillåter både användare och AI att hämta information från API:et eller utföra vissa uppgifter. För att se en lista över tillgängliga funktioner, använd kommandot `:function ls`."
 }

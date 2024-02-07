@@ -94,7 +94,6 @@
   "The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.": "命令的设计模仿了 Unix shell。您可以使用 `Tab` 键进行自动补全。使用 ↑ 和 ↓ 键来在命令历史记录之间导航。按 Control + C 来停止。",
   "Short description": "简短描述",
   "Functions": "函数调用",
-  "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.": "我们提供一些内置函数来获取API的信息或执行一些任务。用户和 AI 都可以调用这些功能。要获取可用功能的列表，使用 `:function ls` 命令。",
   "Function": "函数",
   "Execute": "执行",
   "Weather data is provided by WolframAlpha.": "天气数据由 WolframAlpha 提供。",
@@ -107,7 +106,7 @@
   "Condition": "条件",
   "Gestures can be used on touch screens, such as smartphones and tablets.": "手势可以在触摸屏上使用，例如智能手机和平板电脑。",
   "APIs": "API",
-  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI 为开发者提供 API 以集成到他们的应用程序中。API 目前处于测试阶段，可能会更改。要使用API，你需要添加一个 cookie `auth=your_jwt_token` 用于用户验证。你可以从浏览器的 cookie 中获取 JWT 令牌。（需要登录。）",
+  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI为开发者提供了可以与他们的应用程序集成的API。这些API目前处于测试阶段，可能会有所变动。要使用API，您需要添加一个cookie `auth=your_jwt_token`以进行用户认证。您可以从浏览器的cookie中获取JWT token。（需要登录。）",
   "Endpoint": "端点",
   "Parameters": "参数",
   "Description": "描述",
@@ -138,5 +137,6 @@
   "Internationalization and localization": "国际化与本地化",
   "introduction": "欢迎来到Simple AI（simple-ai.io）！🚀 Simple AI是一个由OpenAI的GPT-4 Turbo驱动的AI聊天应用程序，集成了WolframAlpha（增强型知识与数学）、Midjourney（高质量图像生成）和Vectara（向量数据库索引）等实用工具。它提供了简约设计，包含丰富功能，操作更快，用户体验更专业，是一个出色的ChatGPT替代品。",
   "Options": "选项",
-  "Command options": "命令选项"
+  "Command options": "命令选项",
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "我们提供了几个内置功能，允许用户和AI从API检索信息或执行特定任务。要查看可用功能列表，请使用`:function ls`命令。"
 }

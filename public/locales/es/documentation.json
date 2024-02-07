@@ -94,7 +94,6 @@
   "The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.": "Los comandos están diseñados para imitar una shell de Unix. Puedes usar la tecla `Tab` para autocompletar. Utiliza las teclas ↑ y ↓ para navegar por el historial de comandos. Usa Control + C para detener.",
   "Short description": "Descripción breve",
   "Functions": "Funciones",
-  "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.": "Proporcionamos algunas funciones integradas para obtener información de la API o ejecutar algunas tareas. Tanto el usuario como la inteligencia artificial pueden llamar a estas funciones. Para obtener una lista de las funciones disponibles, usa el comando `:function ls`.",
   "Function": "Función",
   "Execute": "Ejecutar",
   "Weather data is provided by WolframAlpha.": "Los datos meteorológicos son proporcionados por WolframAlpha.",
@@ -107,7 +106,7 @@
   "Condition": "Condición",
   "Gestures can be used on touch screens, such as smartphones and tablets.": "Se pueden utilizar gestos en pantallas táctiles, como teléfonos inteligentes y tabletas.",
   "APIs": "APIs",
-  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI ofrece APIs para que los desarrolladores las integren con sus aplicaciones. La API se encuentra actualmente en versión beta y está sujeta a cambios. Para usar las APIs, necesitas añadir una cookie `auth=your_jwt_token` para la autenticación del usuario. Puedes obtener el token JWT de la cookie de tu navegador. (Es necesario iniciar sesión.)",
+  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI ofrece APIs para que los desarrolladores las integren en sus aplicaciones. Las APIs están actualmente en beta y están sujetas a cambios. Para usar las APIs, necesitas agregar una cookie `auth=your_jwt_token` para la autenticación de usuario. Puedes obtener el token JWT de la cookie de tu navegador. (Es necesario iniciar sesión.)",
   "Endpoint": "Punto final",
   "Parameters": "Parámetros",
   "Description": "Descripción",
@@ -138,5 +137,6 @@
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI soporta 18 idiomas: árabe, bengalí, chino, neerlandés, inglés, francés, alemán, hindi, indonesio, italiano, japonés, coreano, polaco, portugués, ruso, español, sueco, turco. Por favor, háganos saber si necesita soporte para su idioma.",
   "introduction": "¡Bienvenido a Simple AI (simple-ai.io)! 🚀 Simple AI es una aplicación de chat con inteligencia artificial impulsada por GPT-4 Turbo de OpenAI, integrada con WolframAlpha (Conocimiento Mejorado y Matemáticas), Midjourney (Generación de Imágenes de Alta Calidad) y Vectara (Indexación de Bases de Datos Vectoriales), entre otras herramientas prácticas. Ofrece un diseño minimalista con características avanzadas, operaciones más rápidas y una experiencia de usuario más profesional, lo que la convierte en una excelente alternativa a ChatGPT.",
   "Options": "Opciones",
-  "Command options": "Opciones de comando"
+  "Command options": "Opciones de comando",
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Ofrecemos varias funciones integradas que permiten tanto a los usuarios como a la Inteligencia Artificial recuperar información de la API o realizar ciertas tareas. Para ver una lista de las funciones disponibles, utilice el comando `:function ls`."
 }

@@ -94,7 +94,6 @@
   "The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.": "Komutlar bir Unix kabuğunu taklit etmek için tasarlanmıştır. Otomatik tamamlamak için `Tab` tuşunu kullanabilirsiniz. Komut geçmişi arasında gezinmek için ↑ ve ↓ tuşlarını kullanın. Durdurmak için Control + C tuşlarını kullanın.",
   "Short description": "Kısa açıklama",
   "Functions": "Fonksiyonlar",
-  "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.": "API'den bilgi almak veya bazı görevleri gerçekleştirmek için bazı yerleşik fonksiyonlar sağlıyoruz. Bu fonksiyonları hem kullanıcı hem de Yapay Zeka çağırabilir. Mevcut fonksiyonların bir listesini almak için `:function ls` komutunu kullanın.",
   "Function": "Fonksiyon",
   "Execute": "Yürüt",
   "Weather data is provided by WolframAlpha.": "Hava durumu verileri WolframAlpha tarafından sağlanmaktadır.",
@@ -107,7 +106,7 @@
   "Condition": "Durum",
   "Gestures can be used on touch screens, such as smartphones and tablets.": "Jestler, akıllı telefonlar ve tabletler gibi dokunmatik ekranlarda kullanılabilir.",
   "APIs": "API'ler",
-  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI, geliştiricilerin uygulamalarıyla entegre olmaları için API'ler sağlar. API'ler şu anda beta aşamasındadır ve değişikliğe tabidir. API'leri kullanabilmek için, kullanıcı kimlik doğrulaması için `auth=your_jwt_token` şeklinde bir çerez eklemeniz gerekmektedir. JWT token'ını tarayıcınızın çerezlerinden alabilirsiniz. (Giriş yapılması gereklidir.)",
+  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI, geliştiricilerin uygulamalarıyla entegre etmeleri için API'ler sağlar. API'ler şu anda beta aşamasındadır ve değişikliğe tabidir. API'leri kullanmak için, kullanıcı kimlik doğrulaması için bir çerez `auth=your_jwt_token` eklemeniz gerekmektedir. JWT token'ını tarayıcınızın çerezlerinden alabilirsiniz. (Giriş yapılması gereklidir.)",
   "Endpoint": "Bitiş Noktası",
   "Parameters": "Parametreler",
   "Description": "Açıklama",
@@ -138,5 +137,6 @@
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI, 18 dil desteklemektedir: Arapça, Bengalce, Çince, Felemenkçe, İngilizce, Fransızca, Almanca, Hintçe, Endonezce, İtalyanca, Japonca, Korece, Lehçe, Portekizce, Rusça, İspanyolca, İsveççe, Türkçe. Eğer kendi diliniz için destek ihtiyacınız varsa lütfen bize bildirin.",
   "introduction": "Simple AI'ye (simple-ai.io) hoş geldiniz! 🚀 Simple AI, OpenAI'nin GPT-4 Turbo'su tarafından desteklenen bir AI sohbet uygulamasıdır ve WolframAlpha (Gelişmiş Bilgi & Matematik), Midjourney (Yüksek Kaliteli Resim Üretimi) ve Vectara (Vektör Veritabanı İndeksleme) gibi diğer pratik araçlarla entegre edilmiştir. Minimalist bir tasarım sunarken zengin özellikler, daha hızlı işlemler ve daha profesyonel bir kullanıcı deneyimi ile doludur, bu da onu mükemmel bir ChatGPT alternatifi yapar.",
   "Options": "Seçenekler",
-  "Command options": "Komut seçenekleri"
+  "Command options": "Komut seçenekleri",
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Kullanıcıların ve Yapay Zekanın API'den bilgi almasına veya belirli görevleri yerine getirmesine olanak tanıyan birkaç yerleşik fonksiyon sunuyoruz. Kullanılabilir fonksiyonların bir listesini görmek için `:function ls` komutunu kullanın."
 }
