@@ -58,7 +58,6 @@
   "How to copy the result?": "Bagaimana cara menyalin hasilnya?",
   "You can click the model name to copy the whole result (raw).": "Anda dapat mengklik nama model untuk menyalin seluruh hasil (mentah).",
   "How to share a session?": "Bagaimana cara berbagi sesi?",
-  "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Anda dapat menekan tombol Control dan mengklik nama model, perintah `:session attach` dengan ID sesi akan secara otomatis disalin ke clipboard Anda.",
   "more...": "lebih lanjut...",
   "General": "Umum",
   "Session": "Sesi",
@@ -94,7 +93,6 @@
   "The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.": "Perintah dirancang untuk meniru shell Unix. Anda dapat menggunakan tombol `Tab` untuk autolengkap. Gunakan tombol ↑ dan ↓ untuk navigasi antar riwayat perintah. Gunakan Control + C untuk menghentikan.",
   "Short description": "Deskripsi singkat",
   "Functions": "Fungsi",
-  "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.": "Kami menyediakan beberapa fungsi bawaan untuk mendapatkan informasi dari API atau melakukan beberapa tugas. Baik pengguna maupun AI dapat memanggil fungsi-fungsi ini. Untuk mendapatkan daftar fungsi yang tersedia, gunakan perintah `:function ls`.",
   "Function": "Fungsi",
   "Execute": "Melaksanakan",
   "Weather data is provided by WolframAlpha.": "Data cuaca disediakan oleh WolframAlpha.",
@@ -107,7 +105,7 @@
   "Condition": "Kondisi",
   "Gestures can be used on touch screens, such as smartphones and tablets.": "Gerakan dapat digunakan pada layar sentuh, seperti smartphone dan tablet.",
   "APIs": "API adalah singkatan dari Application Programming Interface, atau dalam Bahasa Indonesia dikenal sebagai Antarmuka Pemrograman Aplikasi. Ini adalah sekumpulan aturan, protokol, dan alat untuk membangun perangkat lunak dan aplikasi. API memungkinkan berbagai perangkat lunak untuk berinteraksi satu sama lain.",
-  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI menyediakan API bagi para pengembang untuk diintegrasikan dengan aplikasi mereka. API ini saat ini dalam versi beta dan dapat berubah sewaktu-waktu. Untuk menggunakan API, Anda perlu menambahkan cookie `auth=your_jwt_token` untuk autentikasi pengguna. Anda bisa mendapatkan token JWT dari cookie di browser Anda. (Login diperlukan.)",
+  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI menyediakan API untuk para pengembang agar dapat mengintegrasikannya dengan aplikasi mereka. API saat ini masih dalam tahap beta dan dapat berubah sewaktu-waktu. Untuk menggunakan API, Anda perlu menambahkan cookie `auth=your_jwt_token` untuk otentikasi pengguna. Anda dapat mendapatkan token JWT dari cookie di peramban Anda. (Login diperlukan.)",
   "Endpoint": "Titik Akhir",
   "Parameters": "Parameter",
   "Description": "Deskripsi",
@@ -138,5 +136,7 @@
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI mendukung 18 bahasa: Arab, Bengali, Cina, Belanda, Inggris, Prancis, Jerman, Hindi, Indonesia, Italia, Jepang, Korea, Polandia, Portugis, Rusia, Spanyol, Swedia, Turki. Silakan beritahu kami jika Anda memerlukan dukungan untuk bahasa Anda.",
   "introduction": "Selamat datang di Simple AI (simple-ai.io)! 🚀 Simple AI adalah aplikasi chat AI yang didukung oleh GPT-4 Turbo dari OpenAI, terintegrasi dengan WolframAlpha (Pengetahuan & Matematika Tingkat Lanjut), Midjourney (Pembuatan Gambar Berkualitas Tinggi), dan Vectara (Pengindeksan Database Vektor), di antara alat-alat praktis lainnya. Aplikasi ini menawarkan desain minimalis yang dilengkapi dengan fitur-fitur kaya, operasi yang lebih cepat dan pengalaman pengguna yang lebih profesional, menjadikannya alternatif ChatGPT yang sangat baik.",
   "Options": "Opsi",
-  "Command options": "Opsi perintah"
+  "Command options": "Opsi perintah",
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Kami menawarkan beberapa fungsi bawaan yang memungkinkan baik pengguna maupun AI untuk mengambil informasi dari API atau melakukan tugas-tugas tertentu. Untuk melihat daftar fungsi yang tersedia, gunakan perintah `:function ls`.",
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Anda dapat menekan tombol Control (untuk macOS tekan tombol command) dan klik nama model, perintah `:session attach` dengan ID sesi akan secara otomatis disalin ke papan klip Anda."
 }

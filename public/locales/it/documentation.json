@@ -58,7 +58,6 @@
   "How to copy the result?": "Come copiare il risultato?",
   "You can click the model name to copy the whole result (raw).": "Puoi fare clic sul nome del modello per copiare l'intero risultato (grezzo).",
   "How to share a session?": "Come condividere una sessione?",
-  "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Puoi premere il tasto Control e fare clic sul nome del modello, un comando `:session attach` con l'ID della sessione verrà automaticamente copiato negli appunti.",
   "more...": "più...",
   "General": "Generale",
   "Session": "Sessione",
@@ -94,7 +93,6 @@
   "The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.": "I comandi sono progettati per imitare una shell Unix. Puoi usare il tasto `Tab` per l'autocompletamento. Usa il tasto ↑ e ↓ per navigare tra la cronologia dei comandi. Usa Control + C per interrompere.",
   "Short description": "Breve descrizione",
   "Functions": "Funzioni",
-  "We provide some built-in functions to get information from the API or execute some tasks. Both user and AI can call these functions. To get a list of available functions, use the `:function ls` command.": "Forniamo alcune funzioni integrate per ottenere informazioni dall'API o eseguire alcuni compiti. Queste funzioni possono essere chiamate sia dall'utente che dall'IA. Per ottenere un elenco delle funzioni disponibili, utilizza il comando `:function ls`.",
   "Function": "Funzione",
   "Execute": "Esegui",
   "Weather data is provided by WolframAlpha.": "I dati meteorologici sono forniti da WolframAlpha.",
@@ -107,7 +105,7 @@
   "Condition": "Condizione",
   "Gestures can be used on touch screens, such as smartphones and tablets.": "I gesti possono essere utilizzati su schermi touch, come smartphone e tablet.",
   "APIs": "API",
-  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI fornisce API per gli sviluppatori da integrare con le loro applicazioni. Attualmente, l'API è in beta e può essere soggetta a cambiamenti. Per utilizzare le API, è necessario aggiungere un cookie `auth=your_jwt_token` per l'autenticazione dell'utente. Puoi ottenere il token JWT dal cookie del tuo browser. (È richiesto l'accesso.)",
+  "Simple AI provides APIs for developers to integrate with their applications. The APIs is currently in beta and is subject to change. To use APIs, you need to add a cookie `auth=your_jwt_token` for user authentication. You can get the JWT token from the cookie of your browser. (Login is required.)": "Simple AI offre API per gli sviluppatori da integrare nelle loro applicazioni. Le API sono attualmente in versione beta e possono subire modifiche. Per utilizzare le API, è necessario aggiungere un cookie `auth=your_jwt_token` per l'autenticazione dell'utente. Puoi ottenere il token JWT dal cookie del tuo browser. (È richiesto l'accesso.)",
   "Endpoint": "Punto finale",
   "Parameters": "Parametri",
   "Description": "Descrizione",
@@ -138,5 +136,7 @@
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI supporta 18 lingue: arabo, bengalese, cinese, olandese, inglese, francese, tedesco, hindi, indonesiano, italiano, giapponese, coreano, polacco, portoghese, russo, spagnolo, svedese, turco. Si prega di farci sapere se necessitate di supporto per la vostra lingua.",
   "introduction": "Benvenuti su Simple AI (simple-ai.io)! 🚀 Simple AI è un'applicazione di chat AI alimentata da GPT-4 Turbo di OpenAI, integrata con WolframAlpha (Conoscenza Avanzata & Matematica), Midjourney (Generazione di Immagini di Alta Qualità) e Vectara (Indicizzazione di Database Vettoriali), tra gli altri strumenti pratici. Offre un design minimalista arricchito da funzionalità avanzate, operazioni più veloci e un'esperienza utente più professionale, rendendola un'eccellente alternativa a ChatGPT.",
   "Options": "Opzioni",
-  "Command options": "Opzioni del comando"
+  "Command options": "Opzioni del comando",
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Offriamo diverse funzioni integrate che consentono sia agli utenti che all'AI di recuperare informazioni dall'API o eseguire determinati compiti. Per visualizzare un elenco delle funzioni disponibili, utilizza il comando `:function ls`.",
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Puoi premere il tasto Control (per macOS premi il tasto command) e cliccare sul nome del modello, un comando `:session attach` con l'ID della sessione verrà automaticamente copiato negli appunti."
 }

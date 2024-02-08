@@ -2099,7 +2099,7 @@ export default function Home() {
             {stats && <div className={styles.stats}>{stats}</div>}
             <div className={styles.info} onClick={(event) => {
               let copyText = "";
-              if (event.ctrlKey) {
+              if (event.ctrlKey || event.metaKey) {
                 // Copy attach session command to share
                 copyText = ":session attach " + sessionStorage.getItem("session");
               } else {
