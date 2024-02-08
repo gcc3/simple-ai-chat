@@ -1820,11 +1820,20 @@ export default function Home() {
           if (elInput.value.startsWith(prefix)) {
             const nameToBeComleted = elInput.value.replace(prefix, "").replace(/^\"+/, '').replace(/\"$/, '');
             const options = await getAutoCompleteOptions(prefix, nameToBeComleted);
-            const matches = options.filter((o) => o.startsWith(nameToBeComleted));
-            if (matches.length > 0) {
-              const complation = useQuates ? "\"" + matches[0] + "\"" : matches[0];
+            if (options.includes(nameToBeComleted)) {
+              // Set the input to next option
+              const nextOption = options[(options.indexOf(nameToBeComleted) + 1) % options.length];
+              const complation = useQuates ? "\"" + nextOption + "\"" : nextOption;
               setInput(prefix + complation);
               reAdjustInputHeight();
+            } else {
+              // Try auto complete
+              const matches = options.filter((o) => o.startsWith(nameToBeComleted));
+              if (matches.length > 0) {
+                const complation = useQuates ? "\"" + matches[0] + "\"" : matches[0];
+                setInput(prefix + complation);
+                reAdjustInputHeight();
+              }
             }
           }
         }
