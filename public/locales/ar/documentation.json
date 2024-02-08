@@ -58,7 +58,6 @@
   "How to copy the result?": "كيفية نسخ النتيجة؟",
   "You can click the model name to copy the whole result (raw).": "يمكنك النقر على اسم النموذج لنسخ النتيجة كاملة (خام).",
   "How to share a session?": "كيفية مشاركة جلسة؟",
-  "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "يمكنك الضغط على مفتاح التحكم (Control) والنقر على اسم النموذج، سيتم نسخ أمر `:session attach` مع معرف الجلسة إلى الحافظة تلقائيًا.",
   "more...": "المزيد...",
   "General": "عام",
   "Session": "جلسة",
@@ -138,5 +137,6 @@
   "introduction": "مرحبًا بك في Simple AI (simple-ai.io)! 🚀 Simple AI هو تطبيق دردشة ذكاء اصطناعي يعمل بقوة GPT-4 Turbo من OpenAI، مدمج مع WolframAlpha (المعرفة المعززة والرياضيات)، وMidjourney (توليد صور عالية الجودة)، وVectara (فهرسة قاعدة البيانات الفيكتورية)، بالإضافة إلى أدوات عملية أخرى. يقدم تصميمًا بسيطًا مع ميزات غنية، وعمليات أسرع وتجربة مستخدم أكثر احترافية، مما يجعله بديلاً ممتازًا لـ ChatGPT.",
   "Options": "خيارات",
   "Command options": "خيارات الأمر",
-  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "نحن نقدم عدة وظائف مدمجة تسمح لكل من المستخدمين والذكاء الاصطناعي باسترجاع المعلومات من الواجهة البرمجية للتطبيقات أو تنفيذ مهام معينة. لعرض قائمة الوظائف المتاحة، استخدم الأمر `:function ls`."
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "نحن نقدم عدة وظائف مدمجة تسمح لكل من المستخدمين والذكاء الاصطناعي باسترجاع المعلومات من الواجهة البرمجية للتطبيقات أو تنفيذ مهام معينة. لعرض قائمة الوظائف المتاحة، استخدم الأمر `:function ls`.",
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "يمكنك الضغط على مفتاح Control (أو مفتاح command لأجهزة macOS) والنقر على اسم النموذج، وسيتم نسخ أمر `:session attach` مع معرف الجلسة تلقائيًا إلى الحافظة الخاصة بك."
 }

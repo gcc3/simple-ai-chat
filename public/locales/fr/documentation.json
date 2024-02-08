@@ -58,7 +58,6 @@
   "How to copy the result?": "Comment copier le résultat ?",
   "You can click the model name to copy the whole result (raw).": "Vous pouvez cliquer sur le nom du modèle pour copier tout le résultat (brut).",
   "How to share a session?": "Comment partager une session ?",
-  "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Vous pouvez appuyer sur la touche Contrôle et cliquer sur le nom du modèle, une commande `:session attach` avec l'ID de session sera automatiquement copiée dans votre presse-papiers.",
   "more...": "plus...",
   "General": "Général",
   "Session": "Session",
@@ -138,5 +137,6 @@
   "introduction": "Bienvenue sur Simple AI (simple-ai.io) ! 🚀 Simple AI est une application de chat IA alimentée par GPT-4 Turbo d'OpenAI, intégrée avec WolframAlpha (Connaissances approfondies & Mathématiques), Midjourney (Génération d'images de haute qualité) et Vectara (Indexation de bases de données vectorielles), parmi d'autres outils pratiques. Elle offre un design minimaliste avec des fonctionnalités riches, des opérations plus rapides et une expérience utilisateur plus professionnelle, ce qui en fait une excellente alternative à ChatGPT.",
   "Options": "Options",
   "Command options": "Options de commande",
-  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Nous proposons plusieurs fonctions intégrées qui permettent aux utilisateurs et à l'IA de récupérer des informations de l'API ou d'effectuer certaines tâches. Pour voir une liste des fonctions disponibles, utilisez la commande `:function ls`."
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Nous proposons plusieurs fonctions intégrées qui permettent aux utilisateurs et à l'IA de récupérer des informations de l'API ou d'effectuer certaines tâches. Pour voir une liste des fonctions disponibles, utilisez la commande `:function ls`.",
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Vous pouvez appuyer sur la touche Control (pour macOS, appuyez sur la touche command) et cliquer sur le nom du modèle, une commande `:session attach` avec l'ID de session sera automatiquement copiée dans votre presse-papiers."
 }

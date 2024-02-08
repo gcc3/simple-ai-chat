@@ -58,7 +58,6 @@
   "How to copy the result?": "如何复制结果？",
   "You can click the model name to copy the whole result (raw).": "你可以点击模型名称复制整个结果（原始数据）。",
   "How to share a session?": "如何分享一个会话？",
-  "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "你可以按下Control键并点击模型名称，`:session attach` 命令和会话ID将自动复制到你的剪贴板上。",
   "more...": "更多...",
   "General": "概览",
   "Session": "会话",
@@ -138,5 +137,6 @@
   "introduction": "欢迎来到Simple AI（simple-ai.io）！🚀 Simple AI是一个由OpenAI的GPT-4 Turbo驱动的AI聊天应用程序，集成了WolframAlpha（增强型知识与数学）、Midjourney（高质量图像生成）和Vectara（向量数据库索引）等实用工具。它提供了简约设计，包含丰富功能，操作更快，用户体验更专业，是一个出色的ChatGPT替代品。",
   "Options": "选项",
   "Command options": "命令选项",
-  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "我们提供了几个内置功能，允许用户和AI从API检索信息或执行特定任务。要查看可用功能列表，请使用`:function ls`命令。"
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "我们提供了几个内置功能，允许用户和AI从API检索信息或执行特定任务。要查看可用功能列表，请使用`:function ls`命令。",
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "您可以按下 Control 键（macOS 用户请按 command 键）并点击模型名称，`:session attach` 命令及会话 ID 将自动复制到您的剪贴板。"
 }

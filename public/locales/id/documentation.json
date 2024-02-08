@@ -58,7 +58,6 @@
   "How to copy the result?": "Bagaimana cara menyalin hasilnya?",
   "You can click the model name to copy the whole result (raw).": "Anda dapat mengklik nama model untuk menyalin seluruh hasil (mentah).",
   "How to share a session?": "Bagaimana cara berbagi sesi?",
-  "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Anda dapat menekan tombol Control dan mengklik nama model, perintah `:session attach` dengan ID sesi akan secara otomatis disalin ke clipboard Anda.",
   "more...": "lebih lanjut...",
   "General": "Umum",
   "Session": "Sesi",
@@ -138,5 +137,6 @@
   "introduction": "Selamat datang di Simple AI (simple-ai.io)! 🚀 Simple AI adalah aplikasi chat AI yang didukung oleh GPT-4 Turbo dari OpenAI, terintegrasi dengan WolframAlpha (Pengetahuan & Matematika Tingkat Lanjut), Midjourney (Pembuatan Gambar Berkualitas Tinggi), dan Vectara (Pengindeksan Database Vektor), di antara alat-alat praktis lainnya. Aplikasi ini menawarkan desain minimalis yang dilengkapi dengan fitur-fitur kaya, operasi yang lebih cepat dan pengalaman pengguna yang lebih profesional, menjadikannya alternatif ChatGPT yang sangat baik.",
   "Options": "Opsi",
   "Command options": "Opsi perintah",
-  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Kami menawarkan beberapa fungsi bawaan yang memungkinkan baik pengguna maupun AI untuk mengambil informasi dari API atau melakukan tugas-tugas tertentu. Untuk melihat daftar fungsi yang tersedia, gunakan perintah `:function ls`."
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Kami menawarkan beberapa fungsi bawaan yang memungkinkan baik pengguna maupun AI untuk mengambil informasi dari API atau melakukan tugas-tugas tertentu. Untuk melihat daftar fungsi yang tersedia, gunakan perintah `:function ls`.",
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Anda dapat menekan tombol Control (untuk macOS tekan tombol command) dan klik nama model, perintah `:session attach` dengan ID sesi akan secara otomatis disalin ke papan klip Anda."
 }

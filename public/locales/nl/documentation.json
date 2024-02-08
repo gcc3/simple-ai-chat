@@ -58,7 +58,6 @@
   "How to copy the result?": "Hoe het resultaat kopiëren?",
   "You can click the model name to copy the whole result (raw).": "Je kunt op de modelnaam klikken om het hele resultaat (ruw) te kopiëren.",
   "How to share a session?": "Hoe deel je een sessie?",
-  "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "U kunt de Control-toets ingedrukt houden en op de modelnaam klikken, een `:session attach`-opdracht met de sessie-ID wordt automatisch naar uw klembord gekopieerd.",
   "more...": "meer...",
   "General": "Algemeen",
   "Session": "Zitting",
@@ -138,5 +137,6 @@
   "introduction": "Welkom bij Simple AI (simple-ai.io)! 🚀 Simple AI is een AI-chatapplicatie aangedreven door OpenAI's GPT-4 Turbo, geïntegreerd met WolframAlpha (Verbeterde Kennis & Wiskunde), Midjourney (Hoogwaardige Afbeeldingsgeneratie) en Vectara (Vector Database Indexering), onder andere praktische hulpmiddelen. Het biedt een minimalistisch ontwerp vol met rijke functies, snellere operaties en een professionelere gebruikerservaring, waardoor het een uitstekend alternatief is voor ChatGPT.",
   "Options": "Opties",
   "Command options": "Commando opties",
-  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "We bieden verschillende ingebouwde functies die zowel gebruikers als de AI in staat stellen om informatie op te halen uit de API of bepaalde taken uit te voeren. Om een lijst van beschikbare functies te bekijken, gebruik je het `:function ls` commando."
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "We bieden verschillende ingebouwde functies die zowel gebruikers als de AI in staat stellen om informatie op te halen uit de API of bepaalde taken uit te voeren. Om een lijst van beschikbare functies te bekijken, gebruik je het `:function ls` commando.",
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "U kunt de Control-toets indrukken (voor macOS drukt u op de command-toets) en op de modelnaam klikken, een `:session attach` commando met de sessie-ID wordt automatisch naar uw klembord gekopieerd."
 }

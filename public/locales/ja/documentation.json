@@ -58,7 +58,6 @@
   "How to copy the result?": "結果をどのようにコピーしますか？",
   "You can click the model name to copy the whole result (raw).": "モデル名をクリックすると、結果全体（生データ）をコピーできます。",
   "How to share a session?": "セッションを共有する方法は？",
-  "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Controlキーを押しながらモデル名をクリックすると、セッションIDが含まれた`:session attach`コマンドが自動的にクリップボードにコピーされます。",
   "more...": "もっと...",
   "General": "一般",
   "Session": "セッション",
@@ -138,5 +137,6 @@
   "introduction": "Simple AI（simple-ai.io）へようこそ！🚀 Simple AIは、OpenAIのGPT-4 Turboを搭載し、WolframAlpha（拡張知識＆数学）、Midjourney（高品質画像生成）、Vectara（ベクターデータベースインデックス）など、実用的なツールを統合したAIチャットアプリケーションです。シンプルなデザインながら豊富な機能を備え、操作が速く、よりプロフェッショナルなユーザー体験を提供するため、優れたChatGPTの代替品となっています。",
   "Options": "オプション",
   "Command options": "コマンドオプション",
-  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "いくつかの組み込み関数を提供しており、ユーザーとAIの両方がAPIから情報を取得したり、特定のタスクを実行したりすることができます。利用可能な関数のリストを表示するには、`:function ls` コマンドを使用してください。"
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "いくつかの組み込み関数を提供しており、ユーザーとAIの両方がAPIから情報を取得したり、特定のタスクを実行したりすることができます。利用可能な関数のリストを表示するには、`:function ls` コマンドを使用してください。",
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Controlキーを押しながら（macOSの場合はcommandキー）モデル名をクリックすると、セッションIDを含む`:session attach`コマンドが自動的にクリップボードにコピーされます。"
 }

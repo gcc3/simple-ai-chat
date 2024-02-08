@@ -58,7 +58,6 @@
   "How to copy the result?": "Sonucu nasıl kopyalarım?",
   "You can click the model name to copy the whole result (raw).": "Model adına tıklayarak tüm sonucu (ham) kopyalayabilirsiniz.",
   "How to share a session?": "Bir oturumu nasıl paylaşabilirim?",
-  "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control tuşuna basabilir ve model adının üzerine tıklayabilirsiniz, oturum kimliği ile birlikte bir `:session attach` komutu otomatik olarak panonuza kopyalanacaktır.",
   "more...": "daha fazla...",
   "General": "Genel",
   "Session": "Oturum",
@@ -138,5 +137,6 @@
   "introduction": "Simple AI'ye (simple-ai.io) hoş geldiniz! 🚀 Simple AI, OpenAI'nin GPT-4 Turbo'su tarafından desteklenen bir AI sohbet uygulamasıdır ve WolframAlpha (Gelişmiş Bilgi & Matematik), Midjourney (Yüksek Kaliteli Resim Üretimi) ve Vectara (Vektör Veritabanı İndeksleme) gibi diğer pratik araçlarla entegre edilmiştir. Minimalist bir tasarım sunarken zengin özellikler, daha hızlı işlemler ve daha profesyonel bir kullanıcı deneyimi ile doludur, bu da onu mükemmel bir ChatGPT alternatifi yapar.",
   "Options": "Seçenekler",
   "Command options": "Komut seçenekleri",
-  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Kullanıcıların ve Yapay Zekanın API'den bilgi almasına veya belirli görevleri yerine getirmesine olanak tanıyan birkaç yerleşik fonksiyon sunuyoruz. Kullanılabilir fonksiyonların bir listesini görmek için `:function ls` komutunu kullanın."
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Kullanıcıların ve Yapay Zekanın API'den bilgi almasına veya belirli görevleri yerine getirmesine olanak tanıyan birkaç yerleşik fonksiyon sunuyoruz. Kullanılabilir fonksiyonların bir listesini görmek için `:function ls` komutunu kullanın.",
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control tuşuna basabilirsiniz (macOS için command tuşuna basın) ve model adının üzerine tıklayın, oturum kimliği ile birlikte bir `:session attach` komutu otomatik olarak panonuza kopyalanacaktır."
 }

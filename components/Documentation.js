@@ -82,7 +82,7 @@ const Documentation = ({ country }) => {
 
   const faqs = [
     { question: t("How to copy the result?"), answer: t("You can click the model name to copy the whole result (raw).") },
-    { question: t("How to share a session?"), answer: t("You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.") },
+    { question: t("How to share a session?"), answer: t("You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.") },
   ];
 
   const content = (

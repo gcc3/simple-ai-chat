@@ -58,7 +58,6 @@
   "How to copy the result?": "Hur kopierar man resultatet?",
   "You can click the model name to copy the whole result (raw).": "Du kan klicka på modellnamnet för att kopiera hela resultatet (rått).",
   "How to share a session?": "Hur delar man en session?",
-  "You can press Control key and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Du kan trycka på Control-tangenten och klicka på modellnamnet, så kopieras ett `:session attach`-kommando med session-ID automatiskt till ditt urklipp.",
   "more...": "mer...",
   "General": "Generell",
   "Session": "Session",
@@ -138,5 +137,6 @@
   "introduction": "Välkommen till Simple AI (simple-ai.io)! 🚀 Simple AI är en AI-chattapplikation som drivs av OpenAI:s GPT-4 Turbo, integrerad med WolframAlpha (Förbättrad kunskap & Matematik), Midjourney (Generering av högkvalitativa bilder) och Vectara (Indexering av vektordatabaser), bland andra praktiska verktyg. Den erbjuder en minimalistisk design fylld med rika funktioner, snabbare operationer och en mer professionell användarupplevelse, vilket gör den till ett utmärkt alternativ till ChatGPT.",
   "Options": "Alternativ",
   "Command options": "Kommandon alternativ",
-  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Vi erbjuder flera inbyggda funktioner som tillåter både användare och AI att hämta information från API:et eller utföra vissa uppgifter. För att se en lista över tillgängliga funktioner, använd kommandot `:function ls`."
+  "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Vi erbjuder flera inbyggda funktioner som tillåter både användare och AI att hämta information från API:et eller utföra vissa uppgifter. För att se en lista över tillgängliga funktioner, använd kommandot `:function ls`.",
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Du kan trycka på Control-tangenten (för macOS tryck på command-tangenten) och klicka på modellnamnet, ett `:session attach` kommando med session-ID kommer automatiskt att kopieras till ditt urklipp."
 }
