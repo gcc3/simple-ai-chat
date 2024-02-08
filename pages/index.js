@@ -1848,10 +1848,12 @@ export default function Home() {
         autocomplete(":store unuse ", true);
         autocomplete(":store init ", true);
         autocomplete(":store data reset ", true);
+        autocomplete(":store del ", true);
         autocomplete(":store delete ", true);
         autocomplete(":node ", true);
         autocomplete(":node use ", true);
         autocomplete(":node set ", false);
+        autocomplete(":node del ", true);
         autocomplete(":node delete ", true);
         autocomplete(":theme ");
         autocomplete(":lang use ");
