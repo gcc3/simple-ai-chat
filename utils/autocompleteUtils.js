@@ -16,7 +16,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     }
   }
 
-  if (prefix === ":store " || prefix === ":store use " || prefix === ":store unuse " || prefix === ":store init " || prefix === ":store data reset " || prefix === ":store delete ") {
+  if (prefix === ":store " || prefix === ":store use " || prefix === ":store unuse " || prefix === ":store init " || prefix === ":store data reset " || prefix === ":store delete " || prefix === ":store del ") {
     const response = await fetch("/api/store/list");
     const data = await response.json();
     if (response.status === 200 && data.success) {
@@ -38,7 +38,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     }
   }
 
-  if (prefix === ":node " || prefix === ":node use " || prefix === ":node delete ") {
+  if (prefix === ":node " || prefix === ":node use " || prefix === ":node delete " || prefix === ":node del ") {
     const response = await fetch("/api/node/list");
     const data = await response.json();
     if (response.status === 200 && data.success) {
