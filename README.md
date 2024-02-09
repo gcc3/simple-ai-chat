@@ -36,8 +36,9 @@ To use AI links, set `USE_NODE_AI` to `true`.
 
 * Request
 
-Will be sent from Simple AI as following format:  
-GET http://endpoint_url?query_parameter_for_input=query_string&histories=history_json_string&files=files_text_json_string
+Will be sent from Simple AI to your node as following format:  
+
+GET `http://endpoint_url?query_parameter_for_input=query_string&histories=history_json_string&files=files_text_json_string&images=images_json_string`  
 
 `histories` format
 
@@ -63,33 +64,44 @@ GET http://endpoint_url?query_parameter_for_input=query_string&histories=history
 ]
 ```
 
+`images` format
+
+```
+[
+  {
+    image: image_url,
+  }
+  ...
+]
+```
+
 Response
 
 Any API response format as following can be treated as a `node`:  
 
-Simply use text:  
+Simply a text:  
 
-```json
+```
 {
   "result": "Sample result text."
 }
 ```
 
-Or more complex:  
+Or a more complex:  
 
-```json
+```
 {
   "result": {
     "text": "Sample result text.",
     "images": [
       {
-        "image_url": "image_url",
+        "image_url": "image_url_1",
       },
       ...
     ],
     "files": [
       {
-        "url": "file_url",
+        "url": "file_url_1",
       },
       ...
     ]
@@ -99,37 +111,43 @@ Or more complex:
 
 2. Stream  
 
-OpenAI compitable API.  
+A OpenAI compitable API.  
 
 * Request  
 
 ```
 {
-    "model": "llama2",
-    "messages": [
-      {
-        "role": "system",
-        "content": "You are a helpful assistant."
-      },
-      {
-        "role": "user",
-        "content": "what are you doing"
-      }
-    ]
-  }
+  "model": "llama2",
+  "messages": [
+    {
+      "role": "system",
+      "content": "You are a helpful assistant."
+    },
+    {
+      "role": "user",
+      "content": "what are you doing"
+    },
+    {
+      "role": "assistant",
+      "content": "Hello"
+    }
+    ...
+  ]
+}
 ```
 
 * Response
 
 Stream chuck contains
 
+```
 {
-    "message": {
-        "role": "assistant",
-        "content": "Hello"
-    },
-    ...
+  "message": {
+      "role": "assistant",
+      "content": "Hello"
+  }
 }
+```
 
 * Repositories are provided for building nodes:  
 
