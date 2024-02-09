@@ -32,12 +32,16 @@ Node (AI Node)
 Simple AI is able to link to another support AI or data source.  
 To use AI links, set `USE_NODE_AI` to `true`.  
 
-Request
+1. Non-stream
+
+* Request
 
 Will be sent from Simple AI as following format:  
 GET http://endpoint_url?query_parameter_for_input=query_string&histories=history_json_string&files=files_text_json_string
 
-1. histories format
+`histories` format
+
+```
 [
   {
     input: history_input,
@@ -45,8 +49,11 @@ GET http://endpoint_url?query_parameter_for_input=query_string&histories=history
   }
   ...
 ]
+```
 
-2. files_text
+`files_text` format
+
+```
 [
   {
     file: file_url,
@@ -54,11 +61,14 @@ GET http://endpoint_url?query_parameter_for_input=query_string&histories=history
   }
   ...
 ]
+```
 
 Response
 
 Any API response format as following can be treated as a `node`:  
+
 Simply use text:  
+
 ```json
 {
   "result": "Sample result text."
@@ -66,6 +76,7 @@ Simply use text:
 ```
 
 Or more complex:  
+
 ```json
 {
   "result": {
@@ -74,17 +85,54 @@ Or more complex:
       {
         "image_url": "image_url",
       },
+      ...
     ],
     "files": [
       {
         "url": "file_url",
       },
+      ...
     ]
   }
 }
 ```
 
-Repositories are provided for building nodes:  
+2. Stream  
+
+OpenAI compitable API.  
+
+* Request  
+
+```
+{
+    "model": "llama2",
+    "messages": [
+      {
+        "role": "system",
+        "content": "You are a helpful assistant."
+      },
+      {
+        "role": "user",
+        "content": "what are you doing"
+      }
+    ]
+  }
+```
+
+* Response
+
+Stream chuck contains
+
+{
+    "message": {
+        "role": "assistant",
+        "content": "Hello"
+    },
+    ...
+}
+
+* Repositories are provided for building nodes:  
+
 [simple-ai-node](https://github.com/gcc3/simple-ai-node)  
 [simple-ai-ollama](https://github.com/gcc3/simple-ai-ollama)  
 [simple-ai-ernie](https://github.com/gcc3/simple-ai-ernie)  
