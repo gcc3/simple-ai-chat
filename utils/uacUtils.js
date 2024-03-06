@@ -8,17 +8,10 @@ export async function getUacResult(user, ip) {
   const isLogin = (user !== null && user !== undefined);
 
   if (!isLogin) {
-    // Not a user, urge register a user
-    const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());
-
-    // Forbidden as noticed some user user can use fake IP to bypass the limit
-    // But if user cannot chat, it will be inconvenient... temporarily enabled.
-    if (chatCount >= 20) {
-      return {
-        success: false,
-        error: "Please login, or register with command `:user add [username] [email] [password?]` to continue."
-      };
-    }
+    return {
+      success: false,
+      error: "Please log in to use our system. To register a user, use the command `:user add [username] [email] [password?]` to continue."
+    };
   }
   
   // Check user status
