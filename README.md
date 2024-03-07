@@ -48,7 +48,6 @@ GET `http://endpoint_url?query_parameter_for_input=query_string&histories=histor
     input: history_input,
     output: history_output
   }
-  ...
 ]
 ```
 
@@ -60,7 +59,6 @@ GET `http://endpoint_url?query_parameter_for_input=query_string&histories=histor
     file: file_url,
     text: text_content
   }
-  ...
 ]
 ```
 
@@ -71,7 +69,6 @@ GET `http://endpoint_url?query_parameter_for_input=query_string&histories=histor
   {
     image: image_url,
   }
-  ...
 ]
 ```
 
@@ -96,14 +93,12 @@ Or a more complex:
     "images": [
       {
         "image_url": "image_url_1",
-      },
-      ...
+      }
     ],
     "files": [
       {
         "url": "file_url_1",
-      },
-      ...
+      }
     ]
   }
 }
