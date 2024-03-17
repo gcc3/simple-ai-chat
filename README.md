@@ -16,7 +16,8 @@ Redux https://redux.js.org/
 Next.js https://nextjs.org/  
 WolframAlpha APIs https://products.wolframalpha.com/api  
 Vectara https://vectara.com/  
-tailwind https://tailwindcss.com/docs/
+tailwind https://tailwindcss.com/docs/  
+Ollama https://ollama.com/  
 
 
 Features
@@ -31,6 +32,8 @@ Node (AI Node)
 
 Simple AI is able to link to another support AI or data source.  
 To use AI links, set `USE_NODE_AI` to `true`.  
+
+API format
 
 1. Non-stream
 
@@ -144,10 +147,15 @@ Stream chuck contains
 }
 ```
 
+* Ollama support  
+
+[Ollama](https://ollama.com/) compatible APIs are supported by Simple AI. Both stream or non-stream mode.  
+Ollama support opensource models like: Llama2 by Meta, or Gemma by Google.  
+Ollama model can be treated as a Node.  
+
 * Repositories are provided for building nodes:  
 
 [simple-ai-node](https://github.com/gcc3/simple-ai-node)  
-[simple-ai-ollama](https://github.com/gcc3/simple-ai-ollama)  
 [simple-ai-ernie](https://github.com/gcc3/simple-ai-ernie)  
 
 A node hub is provided for use multipe nodes simultaneously.  
