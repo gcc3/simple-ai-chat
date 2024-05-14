@@ -32,6 +32,7 @@ import { getFunctions } from "function";
 import { simulateKeyPress } from "utils/keyboardUtils";
 import { getSettings } from "utils/settingsUtils";
 import { getAutoCompleteOptions } from "utils/autocompleteUtils";
+import clear from "commands/clear";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -57,6 +58,9 @@ global.outputMutationObserver = null;
 global.rawInput = "";
 global.rawOutput = "";
 global.rawPlaceholder = "";
+
+// Initial placeholder
+global.initPlaceholder = "";
 
 // Donut interval id
 let dunutIntervalId = null;
@@ -313,8 +317,7 @@ export default function Home() {
 
   // Clear input
   const clearInput = () => {
-    elInputRef.current.value = "";
-    global.rawInput = "";
+    setInput("");
   }
 
   // Clear hash tag
@@ -496,13 +499,15 @@ export default function Home() {
           if (event.ctrlKey && !event.shiftKey) {
             if (global.STATE === STATES.IDLE) {
               event.preventDefault();
-              
-              // Clear output and previews
+
+              // Same as :clear
+              // Clear all input and output, pleaceholder, previews
+              clearInput();
               clearOutput();
+              global.rawPlaceholder = global.initPlaceholder;
+              setPlaceholder({ text: global.rawPlaceholder, height: null });
               clearPreviewImages();
               clearPreviewVideos();
-
-              // Clear info
               setInfo();
               setStats();
               setEvaluation();
@@ -832,6 +837,7 @@ export default function Home() {
         const systemInfoResponse = await fetch('/api/system/info');
         const systemInfo = (await systemInfoResponse.json()).result;
         if (systemInfo.init_placeholder) {
+          global.initPlaceholder = systemInfo.init_placeholder;
           global.rawPlaceholder = systemInfo.init_placeholder;
           setPlaceholder({ text: systemInfo.init_placeholder, height: null });  // Set placeholder text
         }
@@ -1022,6 +1028,26 @@ export default function Home() {
     event.preventDefault();
 
     if (global.rawInput === "") return;
+    if (global.rawInput.startsWith(":clear")) {
+      // Same as ⌃r
+      // Clear all input and output, pleaceholder, previews
+      clearInput();
+      clearOutput();
+      global.rawPlaceholder = global.initPlaceholder;
+      setPlaceholder({ text: global.rawPlaceholder, height: null });
+      clearPreviewImages();
+      clearPreviewVideos();
+      setInfo();
+      setStats();
+      setEvaluation();
+
+      // Focus on input
+      const elInput = elInputRef.current;
+      elInput.focus();
+      command(":clear");
+      return;
+    }
+
     if (global.rawInput.startsWith(":fullscreen") || global.rawInput.startsWith(":theme")) {
       // Don't clean output and input
     } else {
