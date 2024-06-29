@@ -365,6 +365,7 @@ export default async function (req, res) {
       return;
     }
 
+    // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
       model,
       // response_format: { type: "json_object" },
