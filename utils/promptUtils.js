@@ -574,7 +574,7 @@ export async function generateMessages(use_system_role, lang,
             image_token_ct += count_tokens_v(dimensions.width, dimensions.height)
             if (i !== "") {
               c.push({
-                type: "image",
+                type: "image_url",
                 image_url: {
                   url: images[i]
                 }
