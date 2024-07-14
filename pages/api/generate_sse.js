@@ -98,12 +98,11 @@ export default async function (req, res) {
   }
 
   // Input
-  input = req.query.user_input.trim();
-  input = decodeURIComponent(input) || "";
+  input = req.query.user_input.trim() || "";
 
   // Images & files
-  const decodedImages = decodeURIComponent(images_) || "";
-  const decodedFiles = decodeURIComponent(files_) || "";
+  const decodedImages = images_ || "";
+  const decodedFiles = files_ || "";
   let images = [];
   let files = [];
   if (decodedImages) {

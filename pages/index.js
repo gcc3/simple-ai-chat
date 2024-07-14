@@ -858,7 +858,7 @@ export default function Home() {
         // IP Info
         const ipInfoResponse = await fetch('/api/system/ip-info');
         const ipInfo = (await ipInfoResponse.json()).result;
-        if (ipInfo.country) setCountry(ipInfo.country);  // Set country
+        if (ipInfo && ipInfo.country) setCountry(ipInfo.country);  // Set country
 
         // Set welcome message
         if (systemInfo.welcome_message && !localStorage.getItem("user")) {
