@@ -306,6 +306,17 @@ DOCUMENT_CORPUS_ID
 Default vectara database settings, and documentation corpus ID.  
 
 
+Limitation
+----------
+
+Limitation below is tested available.  
+
+Model: GPT-4o  
+Tokens: 123,453  
+Characters: 370358  
+Used GPT-4 tokenizer as GPT-4o is not available yet.  
+
+
 Coding rules
 ------------
 
