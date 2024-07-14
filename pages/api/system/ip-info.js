@@ -20,8 +20,6 @@ export default async function (req, res) {
   try {
     // configurations
     const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
-    console.log("IP is:" + ip);
-
     const ipInfo = await getIpInfo(ip);
     const country = ipInfo.country === undefined ? "unknown" : ipInfo.country;
     const city = ipInfo.city === undefined ? "unknown" : ipInfo.city;  // no need
