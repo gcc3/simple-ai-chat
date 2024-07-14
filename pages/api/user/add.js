@@ -75,14 +75,18 @@ export default async function (req, res) {
     }
   }
 
-  // Check if the IP alread used for another user
+  // User access control
   if (use_access_control) {
-    const countUserWithSameIP = await countUserByIP(ip);
-    if (countUserWithSameIP >= 1) {
-      return res.status(400).json({
-        success: false,
-        error: "Your IP address has been used too frequently. For assistance, please contact our support at `support@simple-ai.io`.",
-      });
+    // Check if the IP alread used for another user
+    if (!ip.includes("127.0.0.1")) {
+      const countUserWithSameIP = await countUserByIP(ip);
+      if (countUserWithSameIP >= 1) {
+        console.log("IP address has been used too frequently for `user add`. IP:", ip);
+        return res.status(400).json({
+          success: false,
+          error: "Your IP address has been used too frequently. For assistance, please contact our support at `support@simple-ai.io`.",
+        });
+      }
     }
   }
 
