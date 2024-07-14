@@ -1,18 +1,22 @@
 import { get_encoding, encoding_for_model } from "tiktoken";
 
 // Max tokens for differnet models
+// Refer: https://platform.openai.com/playground/chat
 const max_tokens_dict = {
-  "gpt-4-1106-preview": 8192,  // the 128000 is not yet, "this model supports at most 4096 completion tokens"
-  "gpt-4-vision-preview": 500,
-  "gpt-4": 8192,
-  "gpt-3.5-turbo-1106": 16385,
-  "gpt-3.5-turbo": 4096,
-  "gpt-3.5-16k": 16385,
+  "gpt-4o": 4095,              // 4095 is the max token, not 4096
+  "gpt-4-1106-preview": 4095,  // 4095 is the max token, not 4096
+  "gpt-4": 8191,
+  "gpt-3.5-turbo": 4096,       // 4096 is the max token
+  "gpt-3.5-turbo-16k": 8192 ,  // 16384 is the max token, but it's too large, so we only use half of it
 };
 
 export function getMaxTokens(model) {
-  // only use halp of the max tokens to avoid exceeding the limit
-  return max_tokens_dict[model] / 2;
+  // Check the model is in the dictionary
+  if (!(model in max_tokens_dict)) {
+    return 4000;  // default max token
+  }
+
+  return max_tokens_dict[model];
 }
 
 export function countToken(model, input) {

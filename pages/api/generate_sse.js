@@ -99,7 +99,12 @@ export default async function (req, res) {
 
   // Input
   input = req.query.user_input.trim();
-  input = decodeURIComponent(input) || "";
+  try {
+    input = decodeURIComponent(input) || "";
+  } catch (error) {
+    console.log("Error (Decode URI Component):", error);
+    return;
+  }
 
   // Images & files
   const decodedImages = decodeURIComponent(images_) || "";
