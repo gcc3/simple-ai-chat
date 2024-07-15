@@ -22,7 +22,6 @@
   "Subcriptions": "구독",
   "Upgrade to": "업그레이드 대상",
   "Downgrade to": "다운그레이드 대상",
-  "Image Input (GPT-4 Vision)": "이미지 입력 (GPT-4 Vision)",
   "Roles": "역할",
   "Yes": "네",
   "Yes +support": "네, +지원",
@@ -34,7 +33,6 @@
   "Nodes (Node AI)": "노드 (Node AI)",
   "Data Stores": "데이터 저장소",
   "Features Comparison and Pricing": "기능 비교 및 가격 책정",
-  "Text Generation (GPT-4 Turbo)": "텍스트 생성 (GPT-4 Turbo)",
   "1/day(trial)": "1일/체험판",
   "Image Generation (Midjourney)": "이미지 생성 (Midjourney)",
   "email_support_subscriptions": "엔터프라이즈 사용을 위해서는 `<1><2>support@simple-ai.io</2></1>`로 문의해 주세요.",
@@ -48,5 +46,7 @@
   "Free": "무료",
   "image": "이미지",
   "usage": "사용량",
-  "speedup": "가속화"
+  "speedup": "가속화",
+  "GPT Vision": "GPT 비전",
+  "GPT Text Generation": "GPT 텍스트 생성"
 }

@@ -23,14 +23,12 @@ def translate(text, target_language_name):
                          + "Remember:\n"
                          + "1. Don't translate word \"Simple AI\", keep it.\n"
                          + "2. Don't translate word \"Midjourney\", keep it.\n"
-                         + "3. Don't translate word \"GPT-4 Vision\", keep it.\n"
-                         + "4. Don't translate word \"GPT-4 Turbo\", keep it.\n"
-                         + "5. Don't translate word \"token\", keep it.\n"
-                         + "6. Keep the HTML tag if it's in the text.\n"
-                         + "7. Keep the escape charactors if it's in the text.\n"
-                         + "8. Don't translate command, a command starts with `:`, example: `:login [username] [password]`.\n"
-                         + "9. Don't translate the text inside {{ }}, example: banking fee {{bankingFee}} included\n"
-                         + "10, When translating the word `usage`, it means `how much` user used, not means `how to use`, and the word transted should be short.\n"
+                         + "3. Don't translate word \"token\", keep it.\n"
+                         + "4. Keep the HTML tag if it's in the text.\n"
+                         + "5. Keep the escape charactors if it's in the text.\n"
+                         + "6. Don't translate command, a command starts with `:`, example: `:login [username] [password]`.\n"
+                         + "7. Don't translate the text inside {{ }}, example: banking fee {{bankingFee}} included\n"
+                         + "8, When translating the word `usage`, it means `how much` user used, not means `how to use`, and the word transted should be short.\n"
             },
             {
                 "role": "user",
@@ -50,7 +48,7 @@ def translate(text, target_language_name):
 # Define the base path to the 'locales' folder
 base_path = '../../public/locales'
 
-# Read the source language code (do not translate this)
+# Read the source language code (will not translate this)
 source_language_code = 'en'
 
 # Read the language codes and names from the languages.csv

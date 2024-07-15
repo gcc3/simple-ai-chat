@@ -22,7 +22,6 @@
   "Subcriptions": "Abonnements",
   "Upgrade to": "Mettre à niveau vers",
   "Downgrade to": "Réduire à",
-  "Image Input (GPT-4 Vision)": "Görüntü Girişi (GPT-4 Vision)",
   "Roles": "Roller",
   "Yes": "Evet",
   "Yes +support": "Evet +destek",
@@ -34,7 +33,6 @@
   "Nodes (Node AI)": "Düğümler (Node AI)",
   "Data Stores": "Veri Depoları",
   "Features Comparison and Pricing": "Özellik Karşılaştırması ve Fiyatlandırma",
-  "Text Generation (GPT-4 Turbo)": "Metin Üretimi (GPT-4 Turbo)",
   "1/day(trial)": "1/gün (deneme)",
   "Image Generation (Midjourney)": "Görüntü Oluşturma (Midjourney)",
   "email_support_subscriptions": "Kurumsal kullanım için lütfen `<1><2>support@simple-ai.io</2></1>` adresinden bizimle iletişime geçin.",
@@ -48,5 +46,7 @@
   "Free": "Ücretsiz",
   "image": "görüntü",
   "usage": "kullanım",
-  "speedup": "hızlandırma"
+  "speedup": "hızlandırma",
+  "GPT Vision": "GPT Vizyonu",
+  "GPT Text Generation": "GPT Metin Üretimi"
 }

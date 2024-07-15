@@ -22,7 +22,6 @@
   "Subcriptions": "सब्सक्रिप्शन",
   "Upgrade to": "में उन्नत करें",
   "Downgrade to": "में अवनत करें",
-  "Image Input (GPT-4 Vision)": "छवि इनपुट (GPT-4 Vision)",
   "Roles": "भूमिकाएँ",
   "Yes": "हाँ",
   "Yes +support": "हां +समर्थन",
@@ -34,7 +33,6 @@
   "Nodes (Node AI)": "नोड्स (Node AI)",
   "Data Stores": "डेटा स्टोर्स",
   "Features Comparison and Pricing": "फीचर्स तुलना और मूल्य निर्धारण",
-  "Text Generation (GPT-4 Turbo)": "पाठ सृजन (GPT-4 Turbo)",
   "1/day(trial)": "1/दिन (परीक्षण)",
   "Image Generation (Midjourney)": "छवि निर्माण (Midjourney)",
   "email_support_subscriptions": "एंटरप्राइज़ उपयोग के लिए, कृपया `<1><2>support@simple-ai.io</2></1>` पर हमसे संपर्क करें।",
@@ -48,5 +46,7 @@
   "Free": "निःशुल्क",
   "image": "छवि",
   "usage": "उपयोग",
-  "speedup": "गति बढ़ाओ"
+  "speedup": "गति बढ़ाओ",
+  "GPT Vision": "GPT दृष्टि",
+  "GPT Text Generation": "GPT पाठ सृजन"
 }

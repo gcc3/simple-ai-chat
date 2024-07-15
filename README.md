@@ -180,6 +180,50 @@ Setup
    `$ npm run dev` or `$npm start`
 
 
+Limitation
+----------
+
+Limitation below is tested available.  
+
+Model: GPT-4o  
+Tokens: 123,453  
+Characters: 370358  
+Used GPT-4 [tokenizer](https://platform.openai.com/tokenizer) as GPT-4o is not available yet. 
+
+
+Coding rules
+------------
+
+For API response
+Return a RESTful API response, with correct response code.  
+If there is an error, exmple response as below:  
+
+```
+return res.status(400).json({
+   success: false,
+   error: "Error message",
+});
+```
+
+Or  
+
+```
+return res.status(400).json({
+   success: false,
+   error: error,  // If there is error handling
+});
+```
+
+If success, example response as below:
+
+```
+res.status(200).json({
+   success: true,
+   message: "Success message.",
+   some_additonal_obj,
+});
+```
+
 .env
 ----
 
@@ -303,40 +347,6 @@ VECTARA_CUSTOMER_ID
 VECTARA_CLIENT_ID  
 VECTARA_CLIENT_SECRET  
 DOCUMENT_CORPUS_ID  
-Default vectara database settings, and documentation corpus ID.  
-
-
-Coding rules
-------------
-
-For API response
-Return a RESTful API response, with correct response code.  
-If there is an error, exmple response as below:  
-
-```
-return res.status(400).json({
-   success: false,
-   error: "Error message",
-});
-```
-
-Or  
-
-```
-return res.status(400).json({
-   success: false,
-   error: error,  // If there is error handling
-});
-```
-
-If success, example response as below:
-
-```
-res.status(200).json({
-   success: true,
-   message: "Success message.",
-   some_additonal_obj,
-});
-```
+Default vectara database settings, and documentation corpus ID.   
 
 _Originally Forked from https://github.com/openai/openai-quickstart-node_  

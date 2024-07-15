@@ -22,7 +22,6 @@
   "Subcriptions": "সাবস্ক্রিপশন",
   "Upgrade to": "আপগ্রেড করুন থেকে",
   "Downgrade to": "ডাউনগ্রেড করুন থেকে",
-  "Image Input (GPT-4 Vision)": "ছবি ইনপুট (GPT-4 Vision)",
   "Roles": "ভূমিকা",
   "Yes": "হ্যাঁ",
   "Yes +support": "হ্যাঁ +সাপোর্ট",
@@ -34,7 +33,6 @@
   "Nodes (Node AI)": "নোডস (Node AI)",
   "Data Stores": "ডেটা স্টোরস",
   "Features Comparison and Pricing": "বৈশিষ্ট্য তুলনা এবং মূল্য নির্ধারণ",
-  "Text Generation (GPT-4 Turbo)": "টেক্সট জেনারেশন (GPT-4 Turbo)",
   "1/day(trial)": "1/দিন (ট্রায়াল)",
   "Image Generation (Midjourney)": "চিত্র সৃষ্টি (Midjourney)",
   "email_support_subscriptions": "এন্টারপ্রাইজ ব্যবহারের জন্য, দয়া করে `<1><2>support@simple-ai.io</2></1>` এ আমাদের সাথে যোগাযোগ করুন।",
@@ -48,5 +46,7 @@
   "Free": "ফ্রি",
   "image": "ছবি",
   "usage": "ব্যবহার",
-  "speedup": "গতি বৃদ্ধি"
+  "speedup": "গতি বৃদ্ধি",
+  "GPT Vision": "GPT দৃষ্টিভঙ্গি",
+  "GPT Text Generation": "GPT টেক্সট জেনারেশন"
 }

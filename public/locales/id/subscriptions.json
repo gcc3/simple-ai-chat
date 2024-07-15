@@ -22,7 +22,6 @@
   "Subcriptions": "Berlangganan",
   "Upgrade to": "Tingkatkan ke",
   "Downgrade to": "Turunkan ke",
-  "Image Input (GPT-4 Vision)": "Masukan Gambar (GPT-4 Vision)",
   "Roles": "Peran",
   "Yes": "Ya",
   "Yes +support": "Ya +dukungan",
@@ -34,7 +33,6 @@
   "Nodes (Node AI)": "Node (Node AI)",
   "Data Stores": "Toko Data",
   "Features Comparison and Pricing": "Perbandingan Fitur dan Harga",
-  "Text Generation (GPT-4 Turbo)": "Pembangkitan Teks (GPT-4 Turbo)",
   "1/day(trial)": "1/hari (percobaan)",
   "Image Generation (Midjourney)": "Pembuatan Gambar (Midjourney)",
   "email_support_subscriptions": "Untuk penggunaan enterprise, silakan hubungi kami di `<1><2>support@simple-ai.io</2></1>`.",
@@ -48,5 +46,7 @@
   "Free": "Gratis",
   "image": "gambar",
   "usage": "pemakaian",
-  "speedup": "percepatan"
+  "speedup": "percepatan",
+  "GPT Vision": "Visi GPT",
+  "GPT Text Generation": "Generasi Teks GPT"
 }
