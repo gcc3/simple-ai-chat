@@ -117,6 +117,8 @@ export function generatePassword(length=8) {
 }
 
 export async function getUserInfo() {
+  console.log("Fetching user info...");
+
   let user = null;
   const response = await fetch(`/api/user/info`, {
     method: "GET",
@@ -147,6 +149,8 @@ export async function refreshUserInfo() {
 }
 
 export async function updateUserSetting(key, value) {
+  console.log("Updating user setting...");
+
   // There is user logged in
   // Update remote setting
   if (localStorage.getItem("user")) {
