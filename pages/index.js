@@ -391,10 +391,8 @@ export default function Home() {
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode
         dispatchFullscreen("off", true);
-        console.log("Force fullscreen off: mobile device widht < 768.");
+        console.log("Force fullscreen off: mobile device width < 768.");
       }
-    } else {
-      dispatchFullscreen(localStorage.getItem("fullscreen"));
     }
 
     // Lanuage
