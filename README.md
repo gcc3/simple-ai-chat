@@ -339,8 +339,8 @@ IP info is used for getting country from IP.
 Use IP info is for enable or disable the IP support, the value should be `true` or `false`.  
 `ipinfo.io` token will be used.  
 
-* NEXT_PUBLIC_DISCORD
-Discord invitation link, the last part.  
+* NEXT_PUBLIC_DISCORD and NEXT_PUBLIC_YOUTUBE  
+Discord invitation link and YouTube channel link.  
 
 * VECTARA_API_KEY  
 VECTARA_CUSTOMER_ID  

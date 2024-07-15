@@ -158,6 +158,7 @@ export default async function (req, res) {
     + "<br>"
     + "- Support & Feedback" + "<br>"
     + `1. Join our Discord server to get the latest news and updates: https://discord.gg/${process.env.NEXT_PUBLIC_DISCORD}` + "<br>"
+    + `2. Check our YouTube channel for tutorials and guides: https://www.youtube.com/${process.env.NEXT_PUBLIC_YOUTUBE}` + "<br>"
     + "2. For customer support, email us at `support@simple-ai.io`." + "<br>"
     + "<br>"
     + "- Interested? Invite friends to join, and both of you will receive 100K award tokens! 💌" + "<br>"
