@@ -8,7 +8,7 @@ module.exports = {
     // watch: true,   // restart on file changes
     env: {
       PORT: 3000,
-      NODE_OPTIONS: '--max-http-header-size=65536',
+      NODE_OPTIONS: '--max-http-header-size=512000',
     }
   }]
 };
