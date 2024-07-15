@@ -430,6 +430,8 @@ export default function Home() {
     // If authentication failed, clear local user data
     if (localStorage.getItem("user") !== null) {
       refreshUserInfo();
+    } else {
+      console.log("User not logged in.");
     }
 
     // Handle window resize
