@@ -41,6 +41,7 @@ export default async function entry(args) {
     }
 
     if (user) {
+      // Settings is a part of user info, so update it.
       setUserLocalStorage(user);
 
       // Remove usage in user object as too long

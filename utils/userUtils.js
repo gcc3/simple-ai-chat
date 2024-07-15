@@ -24,9 +24,9 @@ export function setUserLocalStorage(user) {
 
     // fullscreen
     if (settings.fullscreen) {
-      if (!localStorage.getItem("fullscreen")) {
+      if (settings.fullscreen != localStorage.getItem("fullscreen") && !localStorage.getItem("fullscreen").includes("force")) {
         localStorage.setItem("fullscreen", settings.fullscreen);
-        store.dispatch(toggleFullscreen(settings.fullscreen));
+        store.dispatch(toggleFullscreen());
       }
     }
 
