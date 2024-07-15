@@ -385,13 +385,16 @@ export default function Home() {
       reAdjustPlaceholder(mode);  // Adjust placeholder
     }
 
-    // Mobile device
+    // Dispatch fullscreen
     if (isMobileDevice()) {
+      // Mobile device
       if (window.innerWidth < 768) {
-        // Don't use fullscreen mode
+        // Don't use fullscreen mode if the screen is small
         dispatchFullscreen("off", true);
         console.log("Force fullscreen off: mobile device width < 768.");
       }
+    } else {
+      dispatchFullscreen(localStorage.getItem("fullscreen"));
     }
 
     // Lanuage
@@ -430,6 +433,8 @@ export default function Home() {
     // If authentication failed, clear local user data
     if (localStorage.getItem("user") !== null) {
       refreshUserInfo();
+    } else {
+      console.log("User not logged in.");
     }
 
     // Handle window resize

@@ -25,13 +25,7 @@ export function setUserLocalStorage(user) {
     // fullscreen
     // If fullscreen is forced, do not overwrite
     if (settings.fullscreen) {
-      if (localStorage.getItem("fullscreen")) {
-        // Not forced
-        if (localStorage.getItem("fullscreen").indexOf("force") === -1) {
-          localStorage.setItem("fullscreen", settings.fullscreen);
-          store.dispatch(toggleFullscreen(settings.fullscreen));
-        }
-      } else {
+      if (!localStorage.getItem("fullscreen")) {
         localStorage.setItem("fullscreen", settings.fullscreen);
         store.dispatch(toggleFullscreen(settings.fullscreen));
       }
