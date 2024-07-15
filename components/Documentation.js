@@ -4,7 +4,7 @@ import { getFunctions } from '../function';
 import YouTube from 'react-youtube';
 import { useTranslation, Trans } from 'react-i18next';
 
-const Documentation = ({ country }) => {
+const Documentation = () => {
   const { t, ready } = useTranslation("documentation");
   const { t: tt, ready: transReady } = useTranslation("translation");
 
@@ -154,26 +154,6 @@ const Documentation = ({ country }) => {
         </div>
       </div>
       <div id="quick-start" className="mt-5">{ t("Quick Start") }</div>
-      <div className="mt-2 mb-3">
-        {country && country !== "CN" && process.env.NEXT_PUBLIC_VIDEO_ID && <div className="max-w-screen-md">
-          <YouTube
-            videoId={process.env.NEXT_PUBLIC_VIDEO_ID}
-            className="youtube-video"
-            opts={{
-              playerVars: {
-                controls: 1,
-                rel: 0,
-                hl: "en",
-              }
-            }}
-          />
-        </div>}
-        {(country && country === "CN" && process.env.NEXT_PUBLIC_VIDEO_ID) && <div className="max-w-screen-md">
-          <div className="max-w-screen-md">
-            Add BiliBili video here.
-          </div>
-        </div>}
-      </div>
       <div className="mt-2">
         {quick_starts.map((item, index) => (
           <div key={index}>

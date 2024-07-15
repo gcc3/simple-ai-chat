@@ -81,7 +81,6 @@ export default function Home() {
   const [usageDisplay, setUsageDisplay] = useState(false);
   const [outputImages, setOutputImages] = useState([]);
   const [minimalist, setMinimalist] = useState(false);
-  const [country, setCountry] = useState(false);
 
   // Refs
   const elInputRef = useRef(null);
@@ -852,11 +851,6 @@ export default function Home() {
           setUsageDisplay(true);
         }
         if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
-
-        // IP Info
-        const ipInfoResponse = await fetch('/api/system/ip-info');
-        const ipInfo = (await ipInfoResponse.json()).result;
-        if (ipInfo && ipInfo.country) setCountry(ipInfo.country);  // Set country
 
         // Set welcome message
         if (systemInfo.welcome_message && !localStorage.getItem("user")) {
@@ -2157,7 +2151,7 @@ export default function Home() {
               </div>
               <div className={styles.content}>
                 {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
-                  <Documentation country={country} />
+                  <Documentation />
                 </div>}
                 {usageDisplay && content === CONTENT.USAGE && <div className={styles.contentitem}>
                   <Usage />
