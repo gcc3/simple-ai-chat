@@ -22,7 +22,6 @@
   "Subcriptions": "Abonnements",
   "Upgrade to": "Mettre à niveau vers",
   "Downgrade to": "Rétrograder vers",
-  "Image Input (GPT-4 Vision)": "Entrée d'image (GPT-4 Vision)",
   "Roles": "Rôles",
   "Yes": "Oui",
   "Yes +support": "Oui +support",
@@ -34,7 +33,6 @@
   "Nodes (Node AI)": "Nœuds (Node AI)",
   "Data Stores": "Magasins de Données",
   "Features Comparison and Pricing": "Comparaison des Fonctionnalités et Tarification",
-  "Text Generation (GPT-4 Turbo)": "Génération de texte (GPT-4 Turbo)",
   "1/day(trial)": "1/jour (essai)",
   "Image Generation (Midjourney)": "Génération d'image (Midjourney)",
   "email_support_subscriptions": "Pour une utilisation en entreprise, veuillez nous contacter à `<1><2>support@simple-ai.io</2></1>`.",
@@ -48,5 +46,7 @@
   "Free": "Gratuit",
   "image": "image",
   "usage": "utilisation",
-  "speedup": "accélération"
+  "speedup": "accélération",
+  "GPT Vision": "Vision GPT",
+  "GPT Text Generation": "Génération de texte GPT"
 }

@@ -22,7 +22,6 @@
   "Subcriptions": "Подписки",
   "Upgrade to": "Обновить до",
   "Downgrade to": "Понизить до",
-  "Image Input (GPT-4 Vision)": "Ввод изображения (GPT-4 Vision)",
   "Roles": "Роли",
   "Yes": "Да",
   "Yes +support": "Да +поддержка",
@@ -34,7 +33,6 @@
   "Nodes (Node AI)": "Узлы (Node AI)",
   "Data Stores": "Хранилища данных",
   "Features Comparison and Pricing": "Сравнение функций и ценообразование",
-  "Text Generation (GPT-4 Turbo)": "Генерация текста (GPT-4 Turbo)",
   "1/day(trial)": "1/день (пробная версия)",
   "Image Generation (Midjourney)": "Генерация изображений (Midjourney)",
   "email_support_subscriptions": "Для использования в корпоративных целях, пожалуйста, свяжитесь с нами по адресу `<1><2>support@simple-ai.io</2></1>`.",
@@ -48,5 +46,7 @@
   "Free": "Бесплатно",
   "image": "изображение",
   "usage": "использование",
-  "speedup": "ускорение"
+  "speedup": "ускорение",
+  "GPT Vision": "GPT Видение",
+  "GPT Text Generation": "Генерация текста GPT"
 }

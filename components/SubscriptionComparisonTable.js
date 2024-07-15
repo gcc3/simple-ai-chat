@@ -15,9 +15,9 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
   const { t } = useTranslation("subscriptions");
 
   const comparison = [
-    { name: t("Text Generation (GPT-4 Turbo)"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
-    { name: t("Image Input (GPT-4 Vision)"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
-    { name: t("Image Generation (Midjourney)"), user: "1" + " " + t("image") + "/" + t("day"), pro_user: "120" + " " + t("image") + "/" + t("month"), super_user: "640" + " " + t("image") + "/" + t("month") + " +" + t("speedup") },
+    { name: t("GPT Text Generation"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
+    { name: t("GPT Vision"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
+    { name: t("Image Generation (Midjourney)"), user: t("No"), pro_user: "120" + " " + t("image") + "/" + t("month"), super_user: "640" + " " + t("image") + "/" + t("month") + " +" + t("speedup") },
     { name: t("File Input"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
     { name: t("Roles"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
     { name: t("Data Stores"), user: t("Yes"), pro_user: t("Yes +support"), super_user: t("Yes +support") },
