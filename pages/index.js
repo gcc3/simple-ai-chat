@@ -385,13 +385,16 @@ export default function Home() {
       reAdjustPlaceholder(mode);  // Adjust placeholder
     }
 
-    // Mobile device
+    // Dispatch fullscreen
     if (isMobileDevice()) {
+      // Mobile device
       if (window.innerWidth < 768) {
-        // Don't use fullscreen mode
+        // Don't use fullscreen mode if the screen is small
         dispatchFullscreen("off", true);
         console.log("Force fullscreen off: mobile device width < 768.");
       }
+    } else {
+      dispatchFullscreen(localStorage.getItem("fullscreen"));
     }
 
     // Lanuage
