@@ -126,7 +126,7 @@ function Usage() {
                 </tr>
               </tbody>
             </table>
-            <div className="mt-3">{ t("GPT-4 Turbo Token") }</div>
+            <div className="mt-3">{ t("GPT Text Generation Tokens") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
@@ -146,7 +146,7 @@ function Usage() {
                 </tr>
               </tbody>
             </table>
-            <div className="mt-3">{ t("GPT-4 Vision Token") }</div>
+            <div className="mt-3">{ t("GPT Vision Tokens") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
@@ -179,7 +179,7 @@ function Usage() {
                 </tr>
               </tbody>
             </table>
-            <div className="mt-3">{ t("GPT-4 Turbo Token") }</div>
+            <div className="mt-3">{ t("GPT Text Generation Tokens") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
@@ -196,7 +196,7 @@ function Usage() {
                 </tr>
               </tbody>
             </table>
-            <div className="mt-3">{ t("GPT-4 Vision Token") }</div>
+            <div className="mt-3">{ t("GPT Vision Tokens") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
