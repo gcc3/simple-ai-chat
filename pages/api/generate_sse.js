@@ -140,9 +140,6 @@ export default async function (req, res) {
   // Use function calling
   // Function calling is not supported in vision models
   let use_function_calling = use_function_calling_;
-  if (use_vision) {
-    use_function_calling = false;
-  }
 
   // User access control
   if (use_access_control) {
@@ -374,7 +371,7 @@ export default async function (req, res) {
       max_tokens,
       stream: true,
       // vision does not support function calling
-      ...(use_function_calling && !use_vision && {
+      ...(use_function_calling && {
         tools,
         tool_choice: "auto"
       })
