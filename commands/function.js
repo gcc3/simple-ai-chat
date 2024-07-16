@@ -72,13 +72,18 @@ export default async function function_(args) {
       return "Function not found.";
     }
 
-    // Add to localhostStorage
+    // Add to localhostStorage and remote
     const currentFunctions = (localStorage.getItem("functions")).split(",");
     if (currentFunctions.includes(functionName)) {
       return "Function already in use.";
     } else {
       currentFunctions.push(functionName)
       localStorage.setItem("functions", currentFunctions.join(","));
+
+      // Update user setting (remote)
+      if (localStorage.getItem("user")) {
+        updateUserSetting("functions", currentFunctions.join(","));
+      }
     }
 
     return "Function \`" + functionName + "\` is enabled for calling. You can use command \`:function [ls|list]\` to show all enabled functions.";
@@ -99,7 +104,7 @@ export default async function function_(args) {
       return "Invalid function name.";
     }
 
-    // Remove from localhostStorage
+    // Remove from localhostStorage and remote
     const currentFunctions = (localStorage.getItem("functions")).split(",");
     if (!currentFunctions.includes(functionName)) {
       return "Function not in use.";
@@ -107,6 +112,11 @@ export default async function function_(args) {
       const index = currentFunctions.indexOf(functionName);
       currentFunctions.splice(index, 1);
       localStorage.setItem("functions", currentFunctions.join(","));
+
+      // Update user setting (remote)
+      if (localStorage.getItem("user")) {
+        updateUserSetting("functions", currentFunctions.join(","));
+      }
     }
 
     return "Function \`" + functionName + "\` is disabled for calling.";
