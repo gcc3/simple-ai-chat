@@ -486,20 +486,35 @@ export async function generateMessages(use_system_role, lang,
         }
       } else {
         // Normal log
+        // 1. Input
         // To record the original user input after the function calling
         // the input will add "Q=" as prefix
+        let content = [];
         if (log.input && !log.input.startsWith("Q=")) {
-          messages.push({ 
-            role: "user",
-            content: [
-              {
-                type: "text",
-                text: log.input
+          content.push({
+            type: "text",
+            text: log.input
+          })
+        }
+
+        // Image input
+        if (log.images && log.images.length > 0) {
+          log.images.map(image => {
+            content.push({
+              type: "image_url",
+              image_url: {
+                url: image
               }
-            ]
+            })
           });
         }
+
+        messages.push({ 
+          role: "user",
+          content: content
+        });
         
+        // 2. Output
         if (log.output) {
           if (log.output.startsWith("T=")) {
             // Tool call output log
