@@ -331,8 +331,8 @@ Use for detect accurate address.
 For minimalist, a more simple UI.  
 The value should be `true` or `false`.  
 
-* WELCOME_MESSAGE and VIDEO_ID  
-Set a welcome message and introduction video in front page.  
+* WELCOME_MESSAGE  
+Set a custom welcome message.  
 
 * IPINFO_TOKEN  
 IP info (`ipinfo.io`) is used for getting country from IP.   

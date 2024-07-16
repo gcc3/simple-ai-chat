@@ -134,7 +134,7 @@
   "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "カーソルは入力エリアにフォーカスされています。現在の入力は `:` で始まります。コマンド履歴には前のコマンドがあります。",
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AIは18の言語をサポートしています：アラビア語、ベンガル語、中国語、オランダ語、英語、フランス語、ドイツ語、ヒンディー語、インドネシア語、イタリア語、日本語、韓国語、ポーランド語、ポルトガル語、ロシア語、スペイン語、スウェーデン語、トルコ語。ご利用の言語でサポートが必要な場合はお知らせください。",
   "Internationalization and localization": "国際化とローカリゼーション",
-  "introduction": "Simple AI（simple-ai.io）へようこそ！🚀 Simple AIは、OpenAIのGPT-4 Turboを搭載し、WolframAlpha（拡張知識＆数学）、Midjourney（高品質画像生成）、Vectara（ベクターデータベースインデックス）など、実用的なツールを統合したAIチャットアプリケーションです。シンプルなデザインながら豊富な機能を備え、操作が速く、よりプロフェッショナルなユーザー体験を提供するため、優れたChatGPTの代替品となっています。",
+  "introduction": "Simple AI（simple-ai.io）へようこそ！🚀 Simple AIは、OpenAIのGPTモデルを搭載したAIチャットアプリケーションであり、WolframAlpha（拡張知識＆数学）、Midjourney（高品質画像生成）、Vectara（ベクターデータベースインデックス）など、実用的なツールが統合されています。シンプルなデザインながら豊富な機能を備え、操作が速く、よりプロフェッショナルなユーザー体験を提供するため、優れたChatGPTの代替品となっています。",
   "Options": "オプション",
   "Command options": "コマンドオプション",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "いくつかの組み込み関数を提供しており、ユーザーとAIの両方がAPIから情報を取得したり、特定のタスクを実行したりすることができます。利用可能な関数のリストを表示するには、`:function ls` コマンドを使用してください。",
