@@ -1,9 +1,9 @@
 {
-  "Text Generation (GPT-4 Turbo)": "Tekstgeneratie (GPT-4 Turbo)",
-  "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.": "Chat met het state-of-the-art GPT-4 Turbo model aangeboden door OpenAI.",
+  "GPT Text Generation": "GPT Tekstgeneratie",
+  "Chat with the state-of-the-art GPT model powered by OpenAI.": "Chat met het ultramoderne GPT-model aangedreven door OpenAI.",
   "Image Generation (Midjourney)": "Beeldgeneratie (Midreis)",
-  "Image Input (GPT-4 Vision)": "Afbeelding Invoer (GPT-4 Visie)",
-  "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling.": "Interacteer met het krachtige visiemodel, GPT-4 Vision. Om het Vision-model te gebruiken, plak je gewoon de afbeelding in het invoervak. * Het GPT-4 Vision-model ondersteunt geen functieaanroepen.",
+  "GPT Vision": "GPT Visie",
+  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "Interacteer met krachtig GPT-visiemodel. Om het visiemodel te gebruiken, plak of sleep de afbeelding naar het invoervak.",
   "File Input": "Bestandsinvoer",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "Upload bestanden (ondersteuning van platte tekst, DOCX, PDF, JSON), en ze zullen als tekst verwerkt worden. De resultaten zullen in de prompt ingevoegd worden en zullen dienen als een GPT-referentie.",
   "Roles": "Rollen",

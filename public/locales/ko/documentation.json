@@ -1,9 +1,9 @@
 {
-  "Text Generation (GPT-4 Turbo)": "텍스트 생성 (GPT-4 터보)",
-  "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.": "OpenAI가 제공하는 최첨단 GPT-4 Turbo 모델과 채팅하세요.",
+  "GPT Text Generation": "GPT 텍스트 생성",
+  "Chat with the state-of-the-art GPT model powered by OpenAI.": "OpenAI가 제공하는 최첨단 GPT 모델과 대화하세요.",
   "Image Generation (Midjourney)": "이미지 생성 (중간 여정)",
-  "Image Input (GPT-4 Vision)": "이미지 입력 (GPT-4 비전)",
-  "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling.": "강력한 비전 모델, GPT-4 Vision과 상호 작용하세요. 비전 모델을 사용하려면 이미지를 입력 상자에 붙여 넣기만 하면 됩니다. * GPT-4 비전 모델은 함수 호출을 지원하지 않습니다.",
+  "GPT Vision": "GPT 비전",
+  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "강력한 GPT 비전 모델과 상호 작용하세요. 비전 모델을 사용하려면 이미지를 입력 상자에 붙여넣거나 드래그 앤 드롭하세요.",
   "File Input": "파일 입력",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "파일 업로드 (평문 텍스트, DOCX, PDF, JSON 지원), 파일은 텍스트로 처리됩니다. 결과는 프롬프트에 삽입되며 GPT 참조를 제공할 것입니다.",
   "Roles": "역할",

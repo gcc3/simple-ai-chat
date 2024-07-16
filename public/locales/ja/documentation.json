@@ -1,9 +1,9 @@
 {
-  "Text Generation (GPT-4 Turbo)": "テキスト生成 (GPT-4 Turbo)",
-  "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.": "OpenAIが提供する最先端のGPT-4 Turboモデルとチャットを楽しむ。",
+  "GPT Text Generation": "GPTテキスト生成",
+  "Chat with the state-of-the-art GPT model powered by OpenAI.": "OpenAIが提供する最先端のGPTモデルとチャット。",
   "Image Generation (Midjourney)": "画像生成（Midjourney）",
-  "Image Input (GPT-4 Vision)": "画像入力（GPT-4 Vision）",
-  "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling.": "強力なビジョンモデル、GPT-4 Visionと対話する。ビジョンモデルを使用するには、単に画像を入力ボックスに貼り付ける。* GPT-4 Visionモデルは関数呼び出しにサポートされていない。",
+  "GPT Vision": "GPTビジョン",
+  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "強力なGPTビジョンモデルと対話しましょう。ビジョンモデルを使用するには、画像を入力ボックスに貼り付けるか、ドラッグ＆ドロップしてください。",
   "File Input": "ファイル入力",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "ファイルをアップロードする（プレーンテキスト、DOCX、PDF、JSONに対応）と、それらはテキストとして処理される。結果はプロンプトに挿入される",
   "Roles": "ロール",

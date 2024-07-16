@@ -1,9 +1,9 @@
 {
-  "Text Generation (GPT-4 Turbo)": "Textgenerering (GPT-4 Turbo)",
-  "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.": "Chatta med den toppmoderna GPT-4 Turbo-modellen som tillhandahålls av OpenAI.",
+  "GPT Text Generation": "GPT-textgenerering",
+  "Chat with the state-of-the-art GPT model powered by OpenAI.": "Chatta med den toppmoderna GPT-modellen som drivs av OpenAI.",
   "Image Generation (Midjourney)": "Bildgenerering (Midjourney)",
-  "Image Input (GPT-4 Vision)": "Bildinmatning (GPT-4 Vision)",
-  "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling.": "Interagera med den kraftfulla synmodellen, GPT-4 Vision. För att använda synmodellen, klistra bara in bilden i inmatningsfältet. * GPT-4 Vision-modellen stöder inte funktionsanrop.",
+  "GPT Vision": "GPT Vision",
+  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "Interagera med den kraftfulla GPT-synmodellen. För att använda Vision-modellen, klistra in eller dra och släpp bilden i inmatningsfältet.",
   "File Input": "Filinmatning",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "Ladda upp filer (stödjer ren text, DOCX, PDF, JSON), och de kommer att behandlas som text. Resultaten kommer att infogas i uppmaningen och kommer att ge en GPT-referens.",
   "Roles": "Roller",

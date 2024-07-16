@@ -1,9 +1,9 @@
 {
-  "Text Generation (GPT-4 Turbo)": "Metin Üretimi (GPT-4 Turbo)",
-  "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.": "OpenAI tarafından sağlanan son teknoloji GPT-4 Turbo modeli ile sohbet edin.",
+  "GPT Text Generation": "GPT Metin Üretimi",
+  "Chat with the state-of-the-art GPT model powered by OpenAI.": "OpenAI tarafından desteklenen son teknoloji GPT modeli ile sohbet edin.",
   "Image Generation (Midjourney)": "Görüntü Oluşturma (Ortayolculuk)",
-  "Image Input (GPT-4 Vision)": "Görüntü Girişi (GPT-4 Görsel)",
-  "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling.": "Güçlü görüş modeli GPT-4 Vision ile etkileşime geçin. Vision modelini kullanmak için, sadece görüntüyü giriş kutusuna yapıştırın. * GPT-4 Vision modeli, fonksiyon çağırma işlevini desteklememektedir.",
+  "GPT Vision": "GPT Vizyonu",
+  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "Güçlü GPT görüntü modeli ile etkileşim kurun. Vision modelini kullanmak için, resmi kopyalayıp yapıştırın veya sürükleyip bırakın.",
   "File Input": "Dosya Girişi",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "Dosyaları yükleyin (düz metin, DOCX, PDF, JSON desteklenir) ve bunlar metin olarak işlenecektir. Sonuçlar prompt'a eklenecek ve bir GPT referansı sağlayacaktır.",
   "Roles": "Roller",
