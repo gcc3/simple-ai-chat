@@ -487,6 +487,7 @@ export async function generateMessages(use_system_role, lang,
       } else {
         // Normal log
         // 1. Input
+        // Text input
         // To record the original user input after the function calling
         // the input will add "Q=" as prefix
         let content = [];
@@ -498,15 +499,18 @@ export async function generateMessages(use_system_role, lang,
         }
 
         // Image input
-        if (log.images && log.images.length > 0) {
-          log.images.map(image => {
-            content.push({
-              type: "image_url",
-              image_url: {
-                url: image
-              }
-            })
-          });
+        if (log.images) {
+          const images = JSON.parse(log.images);
+          if (images.length > 0) {
+            images.map(image => {
+              content.push({
+                type: "image_url",
+                image_url: {
+                  url: image
+                }
+              })
+            });
+          }
         }
 
         messages.push({ 
