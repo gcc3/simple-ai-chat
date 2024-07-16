@@ -23,7 +23,7 @@ export default async function unuse(args) {
   const functions = getFunctions();
   const function_ = functions.find((f) => f.name === name || f.friendly_name === name);
   if (function_) {
-    // Remove from localhostStorage
+    // Remove from localhostStorage and remote
     const currentFunctions = (localStorage.getItem("functions")).split(",");
     if (!currentFunctions.includes(name)) {
       return "Function not in use.";
@@ -31,6 +31,11 @@ export default async function unuse(args) {
       const index = currentFunctions.indexOf(name);
       currentFunctions.splice(index, 1);
       localStorage.setItem("functions", currentFunctions.join(","));
+
+      // Update user setting (remote)
+      if (localStorage.getItem("user")) {
+        updateUserSetting("functions", currentFunctions.join(","));
+      }
     }
     return "Function \`" + name + "\` is disabled for calling.";
   }

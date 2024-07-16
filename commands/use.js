@@ -1,6 +1,7 @@
 import { initializeMemory } from "utils/sessionUtils";
 import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } from "utils/storageUtils";
 import { getFunctions } from "function";
+import { updateUserSetting } from "utils/userUtils";
 
 export default async function use(args) {
   const usage = "Usage: :use [function|node|store|role]\n";
@@ -23,13 +24,18 @@ export default async function use(args) {
   const functions = getFunctions();
   const function_ = functions.find((f) => f.name === name || f.friendly_name === name);
   if (function_) {
-    // Add to localhostStorage
+    // Add to localhostStorage and remote
     const currentFunctions = (localStorage.getItem("functions")).split(",");
     if (currentFunctions.includes(name)) {
       return "Function already in use.";
     } else {
       currentFunctions.push(name)
       localStorage.setItem("functions", currentFunctions.join(","));
+
+      // Update user setting (remote)
+      if (localStorage.getItem("user")) {
+        updateUserSetting("functions", currentFunctions.join(","));
+      }
     }
     return "Function \`" + name + "\` is enabled for calling. You can use command \`:function [ls|list]\` to show all enabled functions.";
   }
