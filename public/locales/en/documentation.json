@@ -72,7 +72,7 @@
   "User": "User",
   "Information": "Information",
   "Introduction": "Introduction",
-  "introduction": "Welcome to Simple AI (simple-ai.io)! 🚀 Simple AI is an AI chat application powered by OpenAI's GPT-4 Turbo, integrated with WolframAlpha (Enhanced Knowledge & Mathematics), Midjourney (High Quality Image Generation), and Vectara (Vector Database Indexing), among other practical tools. It offers a minimalistic design packed with rich features, faster operations and a more professional user experience, making it an excellent ChatGPT alternative.",
+  "introduction": "Welcome to Simple AI (simple-ai.io)! 🚀 Simple AI is an AI chat application powered by OpenAI's GPT models, integrated with WolframAlpha (Enhanced Knowledge & Mathematics), Midjourney (High Quality Image Generation), and Vectara (Vector Database Indexing), among other practical tools. It offers a minimalistic design packed with rich features, faster operations and a more professional user experience, making it an excellent ChatGPT alternative.",
   "What I can do with Simple AI?": "What I can do with Simple AI?",
   "1. Basic Use": "1. Basic Use",
   "* Chat. Ask complex questions. Problem Solving.": "* Chat. Ask complex questions. Problem Solving.",

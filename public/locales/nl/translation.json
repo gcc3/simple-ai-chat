@@ -4,7 +4,6 @@
   "Usage": "Gebruik",
   "Subcriptions": "Abonnementen",
   "Privacy Policy": "Privacybeleid",
-  "welcome": "Welkom bij Simple AI (simple-ai.io)! 🚀 Simple AI is een AI-chatapplicatie aangedreven door OpenAI's GPT-4 Turbo, geïntegreerd met WolframAlpha (Verbeterde Kennis & Wiskunde), Midjourney (Hoogwaardige Afbeeldingengeneratie) en Vectara (Vector Database Indexering), onder andere praktische hulpmiddelen. Het biedt een minimalistisch ontwerp vol met rijke functies, snellere operaties en een professionelere gebruikerservaring, waardoor het een uitstekend ChatGPT-alternatief is. Typ gewoon je vraag en druk op `Enter` om te chatten met de AI.💬",
   "quick_start_6": "Na het inloggen, gebruik `:use \"Midjourney\"` om beeldgeneratie in te schakelen.⛵ Gebruik `:use \"WolframAlpha\"` om verbeterde wiskunde mogelijk te maken.🏛️ Tips: je kunt de `Tab` toets gebruiken voor automatisch aanvullen.💡",
   "quick_start_3": "Als u uw wachtwoord bent vergeten, kunt u het opnieuw instellen met het commando `:user reset pass [gebruikersnaam] [e-mail]`.🆘",
   "quick_start_1": "Voordat u begint met gebruiken, registreer u als `gebruiker` met het commando `:user add [gebruikersnaam] [e-mail] [wachtwoord?]`. Bijvoorbeeld, `:user add john john@example.com ********`. Let op: Voeg de haakjes niet toe aan uw commando.✅",

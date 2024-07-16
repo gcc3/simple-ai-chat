@@ -4,7 +4,6 @@
   "Usage": "Verbrauch",
   "Subcriptions": "Abonnements",
   "Privacy Policy": "Datenschutzrichtlinie",
-  "welcome": "Willkommen bei Simple AI (simple-ai.io)! 🚀 Simple AI ist eine KI-Chat-Anwendung, die von OpenAI's GPT-4 Turbo angetrieben wird, integriert mit WolframAlpha (Erweitertes Wissen & Mathematik), Midjourney (Hochwertige Bildgenerierung) und Vectara (Vektor-Datenbank-Indizierung), unter anderem praktischen Werkzeugen. Sie bietet ein minimalistisches Design, das mit reichhaltigen Funktionen, schnelleren Operationen und einer professionelleren Benutzererfahrung ausgestattet ist, was sie zu einer ausgezeichneten ChatGPT-Alternative macht. Geben Sie einfach Ihre Anfrage ein und drücken Sie `Enter`, um mit dem KI zu chatten.💬",
   "quick_start_8": "Um das Thema zu ändern, verwenden Sie `:theme [light|dark|terminal]`.🌈",
   "quick_start_3": "Wenn Sie Ihr Passwort vergessen haben, setzen Sie es mit dem Befehl `:user reset pass [Benutzername] [E-Mail]` zurück.🆘",
   "quick_start_5": "Um zwischen Chatverläufen zu navigieren, verwenden Sie die Pfeiltasten `⬅️` und `➡️`. (Oder wischen Sie auf Smartphones nach links und rechts.📱) Um zwischen `Sitzungen` zu navigieren, verwenden Sie die Pfeiltasten `⬆️` und `⬇️`.",
