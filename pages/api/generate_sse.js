@@ -196,7 +196,7 @@ export default async function (req, res) {
   let functionResults = [];
   if (input.startsWith("!")) {
     if (!use_function_calling) {
-      res.write(`data: Function calling is disabled. This may be due to the use of a vision model.\n\n`); res.flush();
+      res.write(`data: Function calling is disabled.\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
       res.end();
       return;
