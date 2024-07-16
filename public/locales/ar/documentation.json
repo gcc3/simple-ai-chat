@@ -1,9 +1,9 @@
 {
-  "Text Generation (GPT-4 Turbo)": "توليد النص (GPT-4 توربو)",
-  "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.": "الدردشة مع نموذج GPT-4 Turbo المتطور الذي توفره OpenAI.",
+  "GPT Text Generation": "توليد نص GPT",
+  "Chat with the state-of-the-art GPT model powered by OpenAI.": "تحدث مع نموذج GPT المتطور الذي تشغله OpenAI.",
   "Image Generation (Midjourney)": "توليد الصور (منتصف الرحلة)",
-  "Image Input (GPT-4 Vision)": "إدخال صورة (رؤية جي بي تي-4)",
-  "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling.": "تفاعل مع نموذج الرؤية القوي، جي بي تي-4 للرؤية. لاستخدام نموذج الرؤية، قم فقط بلصق الصورة في صندوق الإدخال. * نموذج جي بي تي-4 للرؤية لا يدعم استدعاء الوظائف.",
+  "GPT Vision": "رؤية GPT",
+  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "تفاعل مع نموذج GPT البصري القوي. لاستخدام نموذج الرؤية، الصق أو اسحب وأفلت الصورة في مربع الإدخال.",
   "File Input": "مدخل الملف",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "قم بتحميل الملفات (تدعم النص العادي، DOCX، PDF، JSON)، وسيتم معالجتها كنص. سيتم إدراج النتائج في الطلب وستوفر مرجع GPT.",
   "Roles": "الأدوار",

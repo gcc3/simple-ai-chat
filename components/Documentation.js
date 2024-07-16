@@ -21,9 +21,9 @@ const Documentation = () => {
   ];
 
   const features = [
-    { id: "features-gpt4turbo", name: t("Text Generation (GPT-4 Turbo)"), description: t("Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.") },
+    { id: "features-gpt-textgeneration", name: t("GPT Text Generation"), description: t("Chat with the state-of-the-art GPT model powered by OpenAI.") },
     { id: "features-imagegeneration-midjourney", name: t("Image Generation (Midjourney)"), description: t("Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.") },
-    { id: "features-gpt4vision-imageinput", name: t("Image Input (GPT-4 Vision)"), description: t("Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling.") },
+    { id: "features-gpt-vision", name: t("GPT Vision"), description: t("Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.") },
     { id: "features-fileinput", name: t("File Input"), description: t("Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.") },
     { id: "features-roles", name: t("Roles"), description: t("Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.") },
     { id: "features-stores", name: t("Data Stores"), description: t("Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.") },
@@ -93,9 +93,9 @@ const Documentation = () => {
         <div>
           <div className="mt-2"><a href="#features"><u>{ t("Features") }</u></a></div>
           <div className="ml-3">
-            <div><a href="#features-gpt4turbo">- <u>{ t("Text Generation (GPT-4 Turbo)") }</u></a></div>
+            <div><a href="#features-gpt-textgeneration">- <u>{ t("GPT Text Generation") }</u></a></div>
             <div><a href="#features-imagegeneration-midjourney">- <u>{ t("Image Generation (Midjourney)") }</u></a></div>
-            <div><a href="#features-gpt4vision-imageinput">- <u>{ t("Image Input (GPT-4 Vision)") }</u></a></div>
+            <div><a href="#features-gpt-vision">- <u>{ t("GPT Vision") }</u></a></div>
             <div><a href="#features-fileinput">- <u>{ t("File Input") }</u></a></div>
             <div><a href="#features-roles">- <u>{ t("Roles") }</u></a></div>
             <div><a href="#features-stores">- <u>{ t("Data Stores") }</u></a></div>

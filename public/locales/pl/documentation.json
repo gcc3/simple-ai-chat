@@ -1,9 +1,9 @@
 {
-  "Text Generation (GPT-4 Turbo)": "Generowanie Tekstu (GPT-4 Turbo)",
-  "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.": "Czatuj z najnowocześniejszym modelem GPT-4 Turbo od OpenAI.",
+  "GPT Text Generation": "Generowanie Tekstu GPT",
+  "Chat with the state-of-the-art GPT model powered by OpenAI.": "Czatuj z najnowocześniejszym modelem GPT stworzonym przez OpenAI.",
   "Image Generation (Midjourney)": "Generowanie Obrazów (Midjourney)",
-  "Image Input (GPT-4 Vision)": "Wprowadzenie obrazu (GPT-4 Vision)",
-  "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling.": "Interakcja z potężnym modelem wizyjnym, GPT-4 Vision. Aby użyć modelu wizyjnego, wystarczy wkleić obraz do pola wejściowego. * Model GPT-4 Vision nie obsługuje wywoływania funkcji.",
+  "GPT Vision": "Wizja GPT",
+  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "Interakcja z potężnym modelem wizyjnym GPT. Aby użyć modelu Vision, wklej lub przeciągnij i upuść obraz do pola wejściowego.",
   "File Input": "Wejście Pliku",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "Prześlij pliki (obsługujące zwykły tekst, DOCX, PDF, JSON), a zostaną przetworzone jako tekst. Wyniki zostaną wstawione do wiersza poleceń i dostarczą odniesienie GPT.",
   "Roles": "Role",

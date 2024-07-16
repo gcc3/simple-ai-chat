@@ -1,9 +1,9 @@
 {
-  "Text Generation (GPT-4 Turbo)": "文本生成（GPT-4 Turbo）",
-  "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.": "与 OpenAI 提供的最先进的 GPT-4 Turbo 模型聊天。",
+  "GPT Text Generation": "GPT文本生成",
+  "Chat with the state-of-the-art GPT model powered by OpenAI.": "与由OpenAI提供技术支持的最先进的GPT模型聊天。",
   "Image Generation (Midjourney)": "图像生成（Midjourney）",
-  "Image Input (GPT-4 Vision)": "图像输入（GPT-4 视觉）",
-  "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling.": "与强大的视觉模型GPT-4 视觉互动。要使用视觉模型，只需将图片粘贴到输入框中。* GPT-4 视觉模型不支持函数调用。",
+  "GPT Vision": "GPT 视觉",
+  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "与强大的GPT视觉模型互动。要使用视觉模型，请将图片粘贴或拖放到输入框中。",
   "File Input": "文件输入",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "上传文件（支持纯文本、DOCX、PDF、JSON），它们将被处理为文本。结果将被插入到提示中，并将提供 GPT 参考。",
   "Roles": "角色",

@@ -1,9 +1,9 @@
 {
-  "Text Generation (GPT-4 Turbo)": "টেক্সট জেনারেশন (GPT-4 টার্বো)",
-  "Chat with the state-of-the-art GPT-4 Turbo model provided by OpenAI.": "OpenAI দ্বারা প্রদত্ত অত্যাধুনিক GPT-4 Turbo মডেলের সাথে চ্যাট করুন।",
+  "GPT Text Generation": "GPT টেক্সট জেনারেশন",
+  "Chat with the state-of-the-art GPT model powered by OpenAI.": "OpenAI দ্বারা চালিত অত্যাধুনিক GPT মডেলের সাথে চ্যাট করুন।",
   "Image Generation (Midjourney)": "ইমেজ জেনারেশন (মিডজার্নি)",
-  "Image Input (GPT-4 Vision)": "চিত্র ইনপুট (GPT-4 ভিশন)",
-  "Interact with powerful vision model, GPT-4 Vision. To use Vision model, simply paste the image to the input box. * The GPT-4 Vision model not support function calling.": "শক্তিশালী দৃষ্টি মডেল, GPT-4 ভিশনের সাথে ইন্টার‍্যাক্ট করুন। ভিশন মডেল ব্যবহার করতে, কেবল ইমেজটি ইনপুট বক্সে পেস্ট করুন। * GPT-4 ভিশন মডেল ফাংশন কলিং সাপোর্ট করে না।",
+  "GPT Vision": "GPT দৃষ্টিভঙ্গি",
+  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "শক্তিশালী GPT ভিশন মডেলের সাথে মিথস্ক্রিয়া করুন। ভিশন মডেল ব্যবহার করতে, ছবিটি কপি করে অথবা টেনে এনে ইনপুট বক্সে ছেড়ে দিন।",
   "File Input": "ফাইল ইনপুট",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "ফাইল আপলোড করুন (সাধারণ টেক্স্ট, DOCX, PDF, JSON সাপোর্ট করে), এবং তারা টেক্স্ট হিসেবে প্রসেস করা হবে। রেজাল্টগুলি প্রম্পটে প্রবেশ করানো হবে এবং একটি GPT রেফারেন্স প্রদান করবে।",
   "Roles": "ভূমিকা",
