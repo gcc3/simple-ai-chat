@@ -1392,7 +1392,6 @@ export default function Home() {
     const use_system_role = localStorage.getItem("useSystemRole");
 
     // Vision: Will automatically use vision model if there is any image
-    // If use vision model function calling cannot use
     console.log("Input: " + input);
     const config = {
       session: session,
