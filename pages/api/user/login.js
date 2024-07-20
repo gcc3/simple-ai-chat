@@ -44,14 +44,6 @@ export default async (req, res) => {
     });
   }
 
-  // Check email verified or not
-  if (user.email_verified_at === null) {
-    return res.status(401).json({
-      success: false,
-      error: "Please verify your email. To re-send verification email, login and use the command \`:user set email [email]\`."
-    });
-  }
-
   // Create JWT token
   const payload = { 
     id: user.id, 
