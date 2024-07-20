@@ -15,10 +15,7 @@ function Usage() {
   const [message, setMessage] = useState(null);
 
   // Usage
-  const [useCountMonthly, setUseCountMonthly] = useState(0);
-  const [totalFeeLastMonth, setTotalFeeLastMonth] = useState(0);
   const [totalFeeThisMonth, setTotalFeeThisMonth] = useState(0);
-  const [useCountFequencies, setUseCountFequencies] = useState(0);
   const [plusFeeThisMonth, setPlusFeeThisMonth] = useState(0);  // x% of total fee
 
   // For adding balance
@@ -190,36 +187,36 @@ function Usage() {
               {usage.use_count_fequencies.monthly_limit && <ProgressBar label={ t("Monthly usage") } progress={usage.use_count_fequencies.monthly} progressMax={usage.use_count_fequencies.monthly_limit} />}
               {usage.use_count_fequencies.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
             </div>
+            {getRoleLevel(user.role) >= 2 && <div className="mt-3">
+              <div>- { t("File Storage Usage") }</div>
+              <table className="table-fixed mt-1">
+                <tbody>
+                  <tr>
+                    <td className="mr-3 mt-1">{ t("Size") }: 0MB</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>}
+            {getRoleLevel(user.role) >= 3 && <div className="mt-3">
+              <div>- { t("Services Usage") }</div>
+              <table className="table-fixed mt-1">
+                <tbody>
+                  <tr>
+                    <td className="mr-3 mt-1">Midjourney: 0</td>
+                  </tr>
+                  <tr>
+                    <td className="mr-3 mt-1">WolframAlpha: 0</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>}
+            <div className="mt-3">
+              <div>- { t("Fees and Balance") }</div>
+              <ProgressBar label={ t("Usage") } progress={npre(usage.total_usage_fee_this_month + plusFeeThisMonth)} progressMax={npre(user.balance)} />
+              <div className="mt-3">{ t("Total Fees") }: ${npre(usage.total_usage_fee_this_month + plusFeeThisMonth)}</div>
+              <div>{ t("Balance") }: ${npre(user.balance)}</div>
+            </div>
           </div>}
-          {getRoleLevel(user.role) >= 2 && <div className="mt-3">
-            <div>- { t("File Storage Usage") }</div>
-            <table className="table-fixed mt-1">
-              <tbody>
-                <tr>
-                  <td className="mr-3 mt-1">{ t("Size") }: 0MB</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>}
-          {getRoleLevel(user.role) >= 3 && <div className="mt-3">
-            <div>- { t("Services Usage") }</div>
-            <table className="table-fixed mt-1">
-              <tbody>
-                <tr>
-                  <td className="mr-3 mt-1">Midjourney: 0</td>
-                </tr>
-                <tr>
-                  <td className="mr-3 mt-1">WolframAlpha: 0</td>
-                </tr>
-              </tbody>
-            </table>
-          </div>}
-          <div className="mt-3">
-            <div>- { t("Fees and Balance") }</div>
-            <ProgressBar label={ t("Usage") } progress={npre(totalFeeThisMonth + plusFeeThisMonth)} progressMax={npre(user.balance)} />
-            <div className="mt-3">{ t("Total Fees") }: ${npre(totalFeeThisMonth + plusFeeThisMonth)}</div>
-            <div>{ t("Balance") }: ${npre(user.balance)}</div>
-          </div>
         </div>
         <div className="mt-4">
           {message && <div>{message}</div>}
