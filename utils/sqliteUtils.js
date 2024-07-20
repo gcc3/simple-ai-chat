@@ -454,6 +454,23 @@ const countTokenForUserByModel = async (user, model, start, end) => {
   }
 };
 
+// Get models used by a user for a date range
+const getUsageModelsForUser = async (user, start, end) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT DISTINCT model FROM logs WHERE user = ? AND time >= ? AND time <= ?`, [user, start, end], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
 // II. users
 const getUser = async (username) => {
   const db = await getDatabaseConnection();
@@ -1637,6 +1654,7 @@ export {
   countChatsForIP,
   countChatsForUser,
   countTokenForUserByModel,
+  getUsageModelsForUser,
   getUser,
   countUserByIP,
   insertUser,

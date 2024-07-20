@@ -1,11 +1,10 @@
 import { authenticate } from 'utils/authUtils.js';
-import { getUser, countChatsForUser, countTokenForUserByModel, countUserRoles } from 'utils/sqliteUtils.js';
+import { getUser, countChatsForUser, countTokenForUserByModel, getUsageModelsForUser } from 'utils/sqliteUtils.js';
 import { createToken } from 'utils/authUtils.js';
 import { getRoleFequencyLimit } from 'utils/usageUtils.js';
-import { gpt4FeeCal, gpt4vFeeCal } from "utils/usageUtils";
-import { getAvailableStoresForUser } from 'utils/storeUtils';
-import { getAvailableNodesForUser } from 'utils/nodeUtils';
+import { feeCal } from "utils/usageUtils";
 import { npre } from "utils/numberUtils";
+import { getModelName } from "utils/llmUtils";
 
 const moment = require('moment');
 
@@ -68,51 +67,65 @@ export default async function (req, res) {
       });
     }
 
-    // Count token
-    const tokenMonthlyUsageThisMonth = await getUserTokenUsageThisMonth(user.username, process.env.MODEL);
-    const tokenMonthlyUsageLastMonth = await getUserTokenUsageLastMonth(user.username, process.env.MODEL);
-    const tokenVMonthlyUsageThisMonth = await getUserTokenUsageThisMonth(user.username, process.env.MODEL_V);
-    const tokenVMonthlyUsageLastMonth = await getUserTokenUsageLastMonth(user.username, process.env.MODEL_V);
+    // Get usage models
+    const usageModelObjs = await getUsageModels(user.username);
+    let modelUsageList = [];
 
-    // Fee calculation
-    const gpt4FeeThisMonth = gpt4FeeCal(tokenMonthlyUsageThisMonth.input, tokenMonthlyUsageThisMonth.output);
-    const gpt4vFeeThisMonth = gpt4vFeeCal(tokenVMonthlyUsageThisMonth.input, tokenVMonthlyUsageThisMonth.output);
-    const totalUsageFeeThisMonth = npre(gpt4FeeThisMonth + gpt4vFeeThisMonth);
-    const gpt4FeeLastMonth = gpt4FeeCal(tokenMonthlyUsageLastMonth.input, tokenMonthlyUsageLastMonth.output);
-    const gpt4vFeeLastMonth = gpt4vFeeCal(tokenVMonthlyUsageLastMonth.input, tokenVMonthlyUsageLastMonth.output);
-    const totalUsageFeeLastMonth = npre(gpt4FeeLastMonth + gpt4vFeeLastMonth);
+    // Loop through usage models
+    let totalUsageFeeThisMonth = 0;
+    let totalUsageFeeLastMonth = 0;
+    for (const modelObj of usageModelObjs) {
+      const model = modelObj.model;
+
+      // Count token
+      const tokenUsageThisMonth = await getModelTokenUsageThisMonth(user.username, model);
+      const tokenUsageLastMonth = await getModelTokenUsageLastMonth(user.username, model);
+
+      // Fee calculation
+      const feeThisMonth = feeCal(tokenUsageThisMonth.input, tokenUsageThisMonth.output);
+      const feeLastMonth = feeCal(tokenUsageLastMonth.input, tokenUsageLastMonth.output);
+
+      // Token fequencies
+      const tokenFequencies = await getModelTokenFequencies(user.username, model);
+
+      // Append to model usage
+      modelUsageList.push({
+        model: getModelName(model),
+        token: {
+          this_month: tokenUsageThisMonth,
+          last_month: tokenUsageLastMonth,
+        },
+        fee: {
+          this_month: npre(feeThisMonth),
+          last_month: npre(feeLastMonth),
+        },
+        token_fequencies: tokenFequencies,
+      });
+
+      // Add to total
+      totalUsageFeeThisMonth += feeThisMonth;
+      totalUsageFeeLastMonth += feeLastMonth;
+    }
 
     // Set the token as a cookie
     const sameSiteCookie = process.env.SAME_SITE_COOKIE;
     res.setHeader('Set-Cookie', `auth=${token}; HttpOnly; Path=/; Max-Age=86400; ${sameSiteCookie}`);
-
-    res.status(200).json({ 
+    res.status(200).json({
       usage: {
-        token_fequencies: {
-          token: await getUserTokenFequencies(user.username, process.env.MODEL),
-          token_v: await getUserTokenFequencies(user.username, process.env.MODEL_V),
-        },
-        token_monthly: {
-          token: {
-            this_month: tokenMonthlyUsageThisMonth,
-            last_month: tokenMonthlyUsageLastMonth,
-          },
-          token_v: {
-            this_month: tokenVMonthlyUsageThisMonth,
-            last_month: tokenVMonthlyUsageLastMonth,
-          }
-        },
-        use_count_fequencies: await getUseCountFequenciesWithLimit(user.username, user.role),
+        // Use count
         use_count_monthly: {
           this_month: await getUseCountThisMonth(user.username),
           last_month: await getUseCountLastMonth(user.username),
         },
-        gpt4_fee_last_month: gpt4FeeLastMonth,
-        gpt4v_fee_last_month: gpt4vFeeLastMonth,
-        total_usage_fees_last_month: totalUsageFeeLastMonth,
-        gpt4_fee_this_month: gpt4FeeThisMonth,
-        gpt4v_fee_this_month: gpt4vFeeThisMonth,
-        total_usage_fees_this_month: totalUsageFeeThisMonth,
+        // Model usage
+        model_usage: modelUsageList,
+        // Fequencies
+        // Daily usage, weekly usage, monthly usage
+        // This will display bar charts
+        use_count_fequencies: await getUseCountFequenciesWithLimit(user.username, user.role),
+        // Total usage fee
+        total_usage_fee_this_month: totalUsageFeeThisMonth,
+        total_usage_fee_last_month: totalUsageFeeLastMonth,
       },
     });
   } catch (error) {
@@ -178,33 +191,64 @@ async function getUseCountFequenciesWithLimit(username, role) {
   }
 }
 
+// Usage models (last month first day ~ now)
+async function getUsageModels(username) {
+  // Now
+  const now = new Date();
+
+  // Clock (last month)
+  const clock = now;
+  clock.setMonth(now.getMonth() - 1);  // set to last month
+  const year = clock.getUTCFullYear();
+  const month = clock.getUTCMonth() + 1;
+
+  const start = new Date(year, month - 1, 1).getTime();  // start of last month
+  const end = new Date();
+  return getUsageModelsForUser(username, start, end);
+}
+
 // Token
-async function getUserTokenUsageThisMonth(username, model) {
+async function getModelTokenUsageThisMonth(username, model) {
+  // Now
   const now = new Date();
-  const year = now.getUTCFullYear();
-  const month = now.getUTCMonth() + 1; // Add 1 because getUTCMonth() returns 0-11
-  return getUserTokenUsageByMonth(username, model, year, month);
+
+  // Clock (this month)
+  const clock = now;
+  const year = clock.getUTCFullYear();
+  const month = clock.getUTCMonth() + 1; // Add 1 because getUTCMonth() returns 0-11
+
+  return getModelTokenUsageByMonth(username, model, year, month);
 }
 
-async function getUserTokenUsageLastMonth(username, model) {
+async function getModelTokenUsageLastMonth(username, model) {
+  // Now
   const now = new Date();
+
+  // Clock (last month)
+  const clock = now;
+  clock.setMonth(now.getUTCMonth() - 1);  // set to last month
   const year = now.getUTCFullYear();
-  const month = now.getUTCMonth();
-  return getUserTokenUsageByMonth(username, model, year, month);
+  const month = now.getUTCMonth() + 1;
+
+  return getModelTokenUsageByMonth(username, model, year, month);
 }
 
-async function getUserTokenUsageByMonth(username, model, year, month) {
+async function getModelTokenUsageByMonth(username, model, year, month) {
   const daysInMonth = new Date(year, month, 0).getDate();
-  const startTime = new Date(year, month - 1, 1).getTime();
-  const endTime = new Date(year, month - 1, daysInMonth, 23, 59, 59).getTime();
-  return await countTokenForUserByModel(username, model, startTime, endTime);
+  const start = new Date(year, month - 1, 1).getTime();
+  const end = new Date(year, month - 1, daysInMonth, 23, 59, 59).getTime();
+  return await countTokenForUserByModel(username, model, start, end);
 }
 
 // Token fequencies
-async function getUserTokenFequencies(username, model) {
-  const daily = await countTokenForUserByModel(username, model, Date.now() - 86400000, Date.now());
-  const weekly = await countTokenForUserByModel(username, model, Date.now() - 604800000, Date.now());
-  const monthly = await countTokenForUserByModel(username, model, Date.now() - 2592000000, Date.now());
+async function getModelTokenFequencies(username, model) {
+  const dailyStart = Date.now() - 86400000;
+  const weeklyStart = Date.now() - 604800000;
+  const monthlyStart = Date.now() - 2592000000;
+  const end = Date.now();
+  const daily = await countTokenForUserByModel(username, model, dailyStart, end);
+  const weekly = await countTokenForUserByModel(username, model, weeklyStart, end);
+  const monthly = await countTokenForUserByModel(username, model, monthlyStart, end);
   return {
     daily,
     weekly,
