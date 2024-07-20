@@ -133,7 +133,7 @@ async function getTotalFee(username) {
     const tokenUsageThisMonth = await getModelTokenUsageThisMonth(username, model);
 
     // Fee calculation
-    const feeThisMonth = feeCal(tokenUsageThisMonth.input, tokenUsageThisMonth.output);
+    const feeThisMonth = feeCal(model, tokenUsageThisMonth.input, tokenUsageThisMonth.output);
 
     // Add to total
     totalUsageFeeThisMonth += feeThisMonth;

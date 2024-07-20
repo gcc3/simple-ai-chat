@@ -82,8 +82,8 @@ export default async function (req, res) {
       const tokenUsageLastMonth = await getModelTokenUsageLastMonth(user.username, model);
 
       // Fee calculation
-      const feeThisMonth = feeCal(tokenUsageThisMonth.input, tokenUsageThisMonth.output);
-      const feeLastMonth = feeCal(tokenUsageLastMonth.input, tokenUsageLastMonth.output);
+      const feeThisMonth = feeCal(model, tokenUsageThisMonth.input, tokenUsageThisMonth.output);
+      const feeLastMonth = feeCal(model, tokenUsageLastMonth.input, tokenUsageLastMonth.output);
 
       // Token fequencies
       const tokenFequencies = await getModelTokenFequencies(user.username, model);
