@@ -109,6 +109,7 @@ export function generatePassword(length=8) {
   return result;
 }
 
+// Basic user info
 export async function getUserInfo() {
   console.log("Fetching user info...");
 
@@ -120,6 +121,21 @@ export async function getUserInfo() {
   const data = await response.json();
   user = data.user;
   return user;
+}
+
+// User usage
+// Include tokens, fees, etc.
+export async function getUserUsage() {
+  console.log("Fetching user usage...");
+
+  let usage = null;
+  const response = await fetch(`/api/user/usage`, {
+    method: "GET",
+    credentials: 'include',
+  });
+  const data = await response.json();
+  usage = data.usage;
+  return usage;
 }
 
 // User get user info to check user credential
