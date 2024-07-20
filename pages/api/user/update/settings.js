@@ -6,10 +6,12 @@ import { getSystemRoles } from 'utils/roleUtils';
 import { getSettings } from 'utils/settingsUtils';
 
 export default async function (req, res) {
-  // Check method.
+  // Check method
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
+
+  console.log('POST /api/user/update/settings');
   
   // Authentication
   const authResult = authenticate(req);
@@ -23,26 +25,23 @@ export default async function (req, res) {
 
   // Get user
   const user = await getUser(username);
+  if (!user) {
+    return res.status(400).json({ 
+      success: false, 
+      error: 'User not found.' 
+    });
+  }
 
   // Input and validation
   const { key, value } = req.body;
   if (!key || !value) {
     return res.status(400).json({ 
       success: false,
-      error: 'Key and value are required.'
+      error: '`key` and `value` are required.' 
     });
   }
 
   try {
-    // Check if the user exists
-    const user = await getUser(username);
-    if (!user) {
-      return res.status(400).json({ 
-        success: false, 
-        error: 'User not found.' 
-      });
-    }
-
     // Check if key is valid
     let validKeys = [];
     const availableSettings = getSettings();

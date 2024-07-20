@@ -2,7 +2,7 @@ import { getUser, userJoinGroup } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils";
 
 export default async (req, res) => {
-  // Check method.
+  // Check method
   if (req.method !== 'POST') {
     return res.status(405).end();  // Method Not Allowed
   }
