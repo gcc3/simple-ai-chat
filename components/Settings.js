@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useCallback, Suspense } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { getUserInfo } from "utils/userUtils";
 import { useTranslation } from "react-i18next";
 
 function Settings() {
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
 
@@ -10,14 +11,18 @@ function Settings() {
 
   useEffect(() => {
     const loadUserInfo = async () => {
+      setLoading(true);
       const user = await getUserInfo();
       if (user) {
         setUser(user);
       }
+      setLoading(false);
     }
 
     if (localStorage.getItem("user")) {
       loadUserInfo();
+    } else {
+      setLoading(false);
     }
   }, []);
 
@@ -46,12 +51,12 @@ function Settings() {
 
   const content = (
     <>
-      {!user && <div>{ t("User information not found. Please login with command `:login [username] [password]`.") }</div>}
+      {!user && <div>{t("User information not found. Please login with command `:login [username] [password]`.")}</div>}
       {user && <div>
-        <div>- { t("Email Subscription") }</div>
+        <div>- {t("Email Subscription")}</div>
         <div className="flex flex-wrap items-center mt-2">
-          <button className="ml-2" onClick={handleSubscribe("1")}>{ t("Subscribe") }</button>
-          <button className="ml-2" onClick={handleSubscribe("0")}>{ t("Unsubscribe") }</button>
+          <button className="ml-2" onClick={handleSubscribe("1")}>{t("Subscribe")}</button>
+          <button className="ml-2" onClick={handleSubscribe("0")}>{t("Unsubscribe")}</button>
         </div>
         {message && <div className="mt-2">
           {<div className="ml-2">{message}</div>}
@@ -62,14 +67,12 @@ function Settings() {
 
   if (!ready) return (<div><br></br></div>);
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="Settings">
-        <div className="text-center mb-4">
-          <div>{ t("Settings") }</div>
-        </div>
-        <div>{content}</div>
+    <div className="Settings">
+      <div className="text-center mb-4">
+        <div>{t("Settings")}</div>
       </div>
-    </Suspense>
+      {loading ? <div>Loading...</div> : <div>{content}</div>}
+    </div>
   );
 }
 
