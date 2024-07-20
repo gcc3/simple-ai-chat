@@ -571,7 +571,7 @@ const softDeleteUser = async (username) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET username = ?, ip = ?, updated_at = ? WHERE username = ?");
+      const stmt = db.prepare("UPDATE users SET username = ?, ip_addr = ?, updated_at = ? WHERE username = ?");
       stmt.run(["__deleted__", null, getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
