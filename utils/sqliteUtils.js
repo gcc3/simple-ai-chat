@@ -896,7 +896,7 @@ const updateUserSettings = async (username, key, value) => {
     // If not available, remove it
     const availableSettings = getSettings();
     for (const [key, value] of Object.entries(newSettings)) {
-      if (!availableSettings[key]) {
+      if (!(key in availableSettings)) {
         delete newSettings[key];
       }
     }
