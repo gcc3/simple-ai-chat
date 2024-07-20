@@ -16,11 +16,11 @@ jobs:
         username: ${{ secrets.USERNAME }}
         key: ${{ secrets.KEY }}
         script: |
-          pm2 stop simple-ai.io
           cd /var/www/simple-ai.io
+          pm2 stop ecosystem.config.js
           git checkout master
           git pull
           export PATH=$PATH:/root/.nvm/versions/node/v21.5.0/bin/
           npm install
           npm run build
-          pm2 start simple-ai.io
+          pm2 start ecosystem.config.js
