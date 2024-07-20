@@ -1,12 +1,21 @@
 import { npre } from "./numberUtils";
 
-export function gpt4FeeCal(input_token_ct, output_token_ct) {
-  const fee = input_token_ct * 0.00001 + output_token_ct * 0.00003;
-  return npre(fee); // Rounds to 5 decimal places
-}
+// Refer, https://openai.com/api/pricing/
+export function feeCal(model, input_token_ct, output_token_ct) {
+  let input_pricing = 0;
+  let output_pricing = 0;
 
-export function gpt4vFeeCal(input_token_ct, output_token_ct) {
-  const fee = input_token_ct * 0.00001 + output_token_ct * 0.00003;
+  if (model === "gpt-4o") {
+    input_pricing  = 0.000005;
+    output_pricing = 0.000015;
+  }
+
+  if (model === "gpt-4o-mini") {
+    input_pricing  = 0.00000015;
+    output_pricing = 0.0000006;
+  }
+
+  const fee = input_token_ct * input_pricing + output_token_ct * output_pricing;
   return npre(fee); // Rounds to 5 decimal places
 }
 
