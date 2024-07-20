@@ -135,9 +135,8 @@ export default async function (req, res) {
     const body
     = "Dear Mr./Ms. " + username + "," + "<br>"
     + "<br>"
-    + "Welcome to Simple AI!" + "<br>"
+    + "Welcome to Simple AI!" + "Your account has been created successfully." + (!password ? ' Initial password is "' + generatedPassword + '", you can change it after login.' : "") + "<br>"
     + "<br>"
-    + `Your account has been created successfully.` + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + "<br>"
     + `Please click the following link to verify your email before using our services.` + "<br>" 
     + `<a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>` + "<br>"
     + "<br>"
