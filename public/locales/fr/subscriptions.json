@@ -42,12 +42,12 @@
   "Extend 1 month for": "Prolongez d'un mois pour",
   "day": "jour",
   "month": "mois",
-  "banking fee {{bankingFee}} included": "frais bancaires {{bankingFee}} inclus",
   "Free": "Gratuit",
   "image": "image",
   "usage": "utilisation",
   "speedup": "accélération",
   "GPT Vision": "Vision GPT",
   "GPT Text Generation": "Génération de texte GPT",
-  "Loading...": "Chargement en cours..."
+  "Loading...": "Chargement en cours...",
+  "banking fee ${{bankingFee}} included": "frais bancaires ${{bankingFee}} inclus"
 }

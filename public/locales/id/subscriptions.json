@@ -42,12 +42,12 @@
   "Extend 1 month for": "Perpanjang 1 bulan untuk",
   "day": "hari",
   "month": "bulan",
-  "banking fee {{bankingFee}} included": "biaya perbankan {{bankingFee}} sudah termasuk",
   "Free": "Gratis",
   "image": "gambar",
   "usage": "pemakaian",
   "speedup": "percepatan",
   "GPT Vision": "Visi GPT",
   "GPT Text Generation": "Generasi Teks GPT",
-  "Loading...": "Memuat..."
+  "Loading...": "Memuat...",
+  "banking fee ${{bankingFee}} included": "biaya perbankan ${{bankingFee}} sudah termasuk"
 }
