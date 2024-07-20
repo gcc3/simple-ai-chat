@@ -26,7 +26,7 @@ export default async function (req, res) {
   }
 
   // Check if the email already exists in the database.
-  const user = await getUserByEmail(username);
+  const user = await getUserByEmail(email);
   if (!user) {
     return res.status(400).json({
       success: false,
@@ -78,7 +78,7 @@ export default async function (req, res) {
         }).catch((err) => {
           console.error(err, err.stack);
           res.status(500).json({
-            success: false,
+            success: true,
             error: "Failed to send email, however you're subscribed.",
           });
         });
