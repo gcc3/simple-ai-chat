@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useCallback, Suspense } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import PayPalButton from "./PayPalButton";
 import { refreshUserInfo, getRoleLevel, getUserInfo } from "utils/userUtils";
 import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
@@ -15,6 +15,7 @@ function getPrice(subscriptions, role) {
 }
 
 function Subscription() {
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
   const [targetRole, setTargetRole] = useState(null);
@@ -59,6 +60,7 @@ function Subscription() {
 
   useEffect(() => {
     const loadUserInfo = async () => {
+      setLoading(true);
       const user = await getUserInfo();
       if (user) {
         setUser(user);
@@ -67,10 +69,13 @@ function Subscription() {
           setMessage(t("You are the `root_user`."));
         }
       }
+      setLoading(false);
     }
 
     if (localStorage.getItem("user")) {
       loadUserInfo();
+    } else {
+      setLoading(false);
     }
 
     const loadSubscriptions = async () => {
@@ -181,14 +186,12 @@ function Subscription() {
 
   if (!ready) return (<div><br></br></div>);
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="Subcription">
-        <div className="text-center mb-4">
-          <div>{ t("Subcriptions") }</div>
-        </div>
-        <div>{content}</div>
+    <div className="Subcription">
+      <div className="text-center mb-4">
+        <div>{ t("Subcriptions") }</div>
       </div>
-    </Suspense>
+      {loading ? <div>Loading...</div> : <div>{content}</div>}
+    </div>
   );
 }
 

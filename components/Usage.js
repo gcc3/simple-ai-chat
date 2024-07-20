@@ -9,6 +9,7 @@ import { useTranslation } from "react-i18next";
 const moment = require('moment');
 
 function Usage() {
+  const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [message, setMessage] = useState(null);
   
@@ -64,6 +65,7 @@ function Usage() {
   useEffect(() => {
     // Get user info
     const updateUserInfo = async () => {
+      setLoading(true);
       const user = await getUserInfo();
 
       setUser(user);
@@ -86,10 +88,13 @@ function Usage() {
 
       // Plus fee
       setPlusFeeThisMonth(plusFeeCal(user.role, user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month));
+      setLoading(false);
     }
 
     if (localStorage.getItem("user") && !user) {
       updateUserInfo();
+    } else {
+      setLoading(false);
     }
   });
 
@@ -299,7 +304,7 @@ function Usage() {
         <div className="text-center mb-4">
           <div>{ t("Usage") }</div>
         </div>
-        <div>{content}</div>
+        {loading ? <div>Loading...</div> : <div>{content}</div>}
       </div>
     </Suspense>
   );
