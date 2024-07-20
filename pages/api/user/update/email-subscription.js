@@ -49,7 +49,7 @@ export default async function (req, res) {
       const ses = new AWS.SES();
       const from = 'support@simple-ai.io';
       const to = email;
-      const subject = 'Email verification';
+      const subject = 'Email Notification';
       const body = 'You\'re subscribed.';
       const emailParams = {
         Source: 'Simple AI <' + from + '>',
