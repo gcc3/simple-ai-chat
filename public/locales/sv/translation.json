@@ -12,5 +12,6 @@
   "quick_start_0": "Simple AI fungerar med ett kommandogränssnitt, genvägar och gester. Alla kommandon börjar med `:` (halvbreddskolon).⌨️",
   "quick_start_2": "För att logga in, använd kommandot `:login [användarnamn] [lösenord]`.",
   "quick_start_7": "Byt till helskärm med `F11` (⌃F11 för macOS). För delad skärm, använd `Ctrl+|`.🖥️",
-  "quick_start_4": "För att komma åt dokumentationen och bekräfta användning, klicka på punkten (•) i skärmhörnet.📄"
+  "quick_start_4": "För att komma åt dokumentationen och bekräfta användning, klicka på punkten (•) i skärmhörnet.📄",
+  "Settings": "Inställningar"
 }

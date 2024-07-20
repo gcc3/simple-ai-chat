@@ -12,5 +12,6 @@
   "quick_start_0": "O Simple AI opera usando uma interface de comandos, atalhos e gestos. Todos os comandos começam com `:` (dois-pontos de meia largura).⌨️",
   "quick_start_2": "Para fazer login, use o comando `:login [username] [password]`.",
   "quick_start_7": "Mude para tela cheia com `F11` (⌃F11 para macOS). Para tela dividida, use `Ctrl+|`.🖥️",
-  "quick_start_4": "Para acessar a documentação e confirmar o uso, clique no ponto (•) no canto da tela.📄"
+  "quick_start_4": "Para acessar a documentação e confirmar o uso, clique no ponto (•) no canto da tela.📄",
+  "Settings": "Configurações"
 }

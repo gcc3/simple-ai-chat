@@ -34,6 +34,14 @@ export default async function (req, res) {
     });
   }
 
+  // Check if the user is already subscribed.
+  if (email_subscription == "1" && user.email_subscription == "1") {
+    return res.status(200).json({
+      success: true,
+      message: "You've already subscribed.",
+    });
+  }
+
   // Update email subscription
   await updateUserEmailSubscription(email, email_subscription);
 

@@ -12,5 +12,6 @@
   "quick_start_0": "Simple AI beroperasi menggunakan antarmuka perintah, pintasan, dan gerakan. Semua perintah dimulai dengan `:` (titik dua setengah lebar).⌨️",
   "quick_start_2": "Untuk masuk, gunakan perintah `:login [username] [password]`.",
   "quick_start_7": "Beralih ke layar penuh dengan `F11` (⌃F11 untuk macOS). Untuk layar terbagi, gunakan `Ctrl+|`.🖥️",
-  "quick_start_4": "Untuk mengakses dokumentasi dan konfirmasi penggunaan, klik titik (•) di sudut layar.📄"
+  "quick_start_4": "Untuk mengakses dokumentasi dan konfirmasi penggunaan, klik titik (•) di sudut layar.📄",
+  "Settings": "Pengaturan"
 }

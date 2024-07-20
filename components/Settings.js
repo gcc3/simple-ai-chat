@@ -40,7 +40,7 @@ function Settings() {
 
     if (data.success) {
       console.log("Email subscription updated.");
-      setMessage(data.message);
+      setMessage(t(data.message));
     }
   });
 
@@ -50,8 +50,8 @@ function Settings() {
       {user && <div>
         <div>- { t("Email Subscription") }</div>
         <div className="flex flex-wrap items-center mt-2">
-          <button className="ml-2" onClick={handleSubscribe("1")}>Subscribe</button>
-          <button className="ml-2" onClick={handleSubscribe("0")}>Unsubscribe</button>
+          <button className="ml-2" onClick={handleSubscribe("1")}>{ t("Subscribe") }</button>
+          <button className="ml-2" onClick={handleSubscribe("0")}>{ t("Unsubscribe") }</button>
         </div>
         {message && <div className="mt-2">
           {<div className="ml-2">{message}</div>}

@@ -12,5 +12,6 @@
   "quick_start_0": "Simple AI 通过命令界面、快捷方式和手势操作。所有命令都以 `:`（半角冒号）开头。⌨️",
   "quick_start_2": "要登录，请使用命令 `:login [username] [password]`。",
   "quick_start_7": "切换到全屏请按 `F11`（macOS 系统为 ⌃F11）。分屏使用 `Ctrl+|`。🖥️",
-  "quick_start_4": "要访问文档并确认使用情况，请点击屏幕角落的圆点（•）。📄"
+  "quick_start_4": "要访问文档并确认使用情况，请点击屏幕角落的圆点（•）。📄",
+  "Settings": "设置"
 }

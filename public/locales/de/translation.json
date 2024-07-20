@@ -12,5 +12,6 @@
   "quick_start_6": "Nach dem Einloggen verwenden Sie `:use \"Midjourney\"`, um die Bildgenerierung zu aktivieren.⛵ Verwenden Sie `:use \"WolframAlpha\"`, um erweiterte Mathematik zu ermöglichen.🏛️ Tipps: Sie können die `Tab`-Taste verwenden, um die Autovervollständigung zu nutzen.💡",
   "quick_start_4": "Um auf die Dokumentation zuzugreifen und die Nutzung zu bestätigen, klicken Sie auf den Punkt (•) in der Bildschirmecke.📄",
   "quick_start_7": "Wechseln Sie mit `F11` in den Vollbildmodus (⌃F11 für macOS). Für geteilten Bildschirm verwenden Sie `Strg+|`.🖥️",
-  "quick_start_0": "Simple AI funktioniert mit einer Befehlsschnittstelle, Tastenkombinationen und Gesten. Befehle beginnen alle mit `:` (halbbreiter Doppelpunkt).⌨️"
+  "quick_start_0": "Simple AI funktioniert mit einer Befehlsschnittstelle, Tastenkombinationen und Gesten. Befehle beginnen alle mit `:` (halbbreiter Doppelpunkt).⌨️",
+  "Settings": "Einstellungen"
 }

@@ -1,3 +1,11 @@
 {
-    "Settings": "Settings"
+    "Settings": "Settings",
+    "User information not found. Please login with command `:login [username] [password]`.": "User information not found. Please login with command `:login [username] [password]`.",
+    "Email Subscription": "Email Subscription",
+    "Subscribe": "Subscribe",
+    "Unsubscribe": "Unsubscribe",
+    "You're subscribed.": "You're subscribed.",
+    "You've already subscribed.": "You've already subscribed.",
+    "You're unsubscribed.": "You're unsubscribed.",
+    "You're subscribed, email sent.": "You're subscribed, email sent."
 }

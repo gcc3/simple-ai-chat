@@ -1,3 +1,11 @@
 {
-    
+  "Settings": "Impostazioni",
+  "User information not found. Please login with command `:login [username] [password]`.": "Informazioni utente non trovate. Si prega di accedere con il comando `:login [username] [password]`.",
+  "Subscribe": "Iscriviti",
+  "Unsubscribe": "Annulla iscrizione",
+  "You're subscribed.": "Sei iscritto.",
+  "You've already subscribed.": "Sei già iscritto.",
+  "You're subscribed, email sent.": "Iscrizione effettuata, email inviata.",
+  "You're unsubscribed.": "Ti sei disiscritto.",
+  "Email Subscription": "Abbonamento via Email"
 }

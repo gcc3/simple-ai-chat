@@ -12,5 +12,6 @@
   "quick_start_0": "Simple AI działa przy użyciu interfejsu poleceń, skrótów i gestów. Wszystkie polecenia zaczynają się od `:` (półszerokości dwukropka).⌨️",
   "quick_start_2": "Aby się zalogować, użyj komendy `:login [username] [password]`.",
   "quick_start_7": "Przełącz na pełny ekran za pomocą klawisza `F11` (⌃F11 dla systemu macOS). Aby użyć podzielonego ekranu, użyj `Ctrl+|`.🖥️",
-  "quick_start_4": "Aby uzyskać dostęp do dokumentacji i potwierdzić użycie, kliknij kropkę (•) w rogu ekranu.📄"
+  "quick_start_4": "Aby uzyskać dostęp do dokumentacji i potwierdzić użycie, kliknij kropkę (•) w rogu ekranu.📄",
+  "Settings": "Ustawienia"
 }

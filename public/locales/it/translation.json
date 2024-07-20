@@ -12,5 +12,6 @@
   "quick_start_0": "Simple AI funziona tramite un'interfaccia a comandi, scorciatoie e gesti. Tutti i comandi iniziano con `:` (due punti a larghezza ridotta).⌨️",
   "quick_start_2": "Per effettuare l'accesso, utilizza il comando `:login [username] [password]`.",
   "quick_start_7": "Passa a schermo intero con `F11` (⌃F11 per macOS). Per lo schermo diviso, usa `Ctrl+|`.🖥️",
-  "quick_start_4": "Per accedere alla documentazione e confermare l'utilizzo, clicca sul punto (•) nell'angolo dello schermo.📄"
+  "quick_start_4": "Per accedere alla documentazione e confermare l'utilizzo, clicca sul punto (•) nell'angolo dello schermo.📄",
+  "Settings": "Impostazioni"
 }

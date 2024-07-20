@@ -12,5 +12,6 @@
   "quick_start_0": "Simple AI, komut arayüzü, kısayollar ve jestler kullanarak çalışır. Komutlar `:` (yarım genişlikte iki nokta üst üste) ile başlar.⌨️",
   "quick_start_2": "Giriş yapmak için `:login [kullanıcı adı] [şifre]` komutunu kullanın.",
   "quick_start_7": "Tam ekrana geçmek için `F11` (macOS için ⌃F11) tuşlarını kullanın. Bölünmüş ekran için `Ctrl+|` kullanın.🖥️",
-  "quick_start_4": "Dokümantasyona erişmek ve kullanımı onaylamak için ekran köşesindeki noktaya (•) tıklayın.📄"
+  "quick_start_4": "Dokümantasyona erişmek ve kullanımı onaylamak için ekran köşesindeki noktaya (•) tıklayın.📄",
+  "Settings": "Ayarlar"
 }
