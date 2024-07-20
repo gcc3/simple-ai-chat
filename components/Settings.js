@@ -5,6 +5,7 @@ import { useTranslation } from "react-i18next";
 function Settings() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [languages, setLanguages] = useState([]);
   const [message, setMessage] = useState(null);
 
   const { t, ready } = useTranslation("settings");
@@ -12,10 +13,11 @@ function Settings() {
   useEffect(() => {
     const loadUserInfo = async () => {
       setLoading(true);
-      const user = await getUserInfo();
-      if (user) {
-        setUser(user);
-      }
+
+      const [user, languages] = await Promise.all([getUserInfo(), (await fetch("/api/system/languages")).json()]);
+      setUser(user);
+      setLanguages(languages);
+
       setLoading(false);
     }
 
@@ -25,6 +27,28 @@ function Settings() {
       setLoading(false);
     }
   }, []);
+
+  const handleSettingUpdate = useCallback((key, value) => async () => {
+    const response = await fetch("/api/user/update/settings", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ key, value }),
+    });
+
+    const data = await response.json();
+    if (response.status !== 200) {
+      console.log(data.error);
+      throw data.error || new Error(`Request failed with status ${response.status}`);
+    }
+
+    if (data.success) {
+      console.log("Settings updated.");
+      localStorage.setItem("lang", value);
+      setMessage(t(data.message));
+    }
+  });
 
   const handleSubscribe = useCallback((subscription) => async () => {
     const response = await fetch("/api/user/update/email-subscription?" + new URLSearchParams({
@@ -53,14 +77,20 @@ function Settings() {
     <>
       {!user && <div>{t("User information not found. Please login with command `:login [username] [password]`.")}</div>}
       {user && <div>
-        <div>- {t("Email Subscription")}</div>
+        {message && <div className="mt-2">
+          {<div className="ml-2">{message}</div>}
+        </div>}
+        <div>- {t("Language")}</div>
+        <div className="flex flex-wrap items-center mt-2">
+          {languages && languages.map((lang) => (
+            <button className="ml-2 mb-1" key={lang.language_code} onClick={handleSettingUpdate("lang", lang.language_code)}>{lang.native_name}</button>
+          ))}
+        </div>
+        <div className="mt-2">- {t("Email Subscription")}</div>
         <div className="flex flex-wrap items-center mt-2">
           <button className="ml-2" onClick={handleSubscribe("1")}>{t("Subscribe")}</button>
           <button className="ml-2" onClick={handleSubscribe("0")}>{t("Unsubscribe")}</button>
         </div>
-        {message && <div className="mt-2">
-          {<div className="ml-2">{message}</div>}
-        </div>}
       </div>}
     </>
   );

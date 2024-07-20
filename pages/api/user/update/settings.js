@@ -12,8 +12,6 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
-  console.log('POST /api/user/update/settings');
-  
   // Authentication
   const authResult = authenticate(req);
   if (!authResult.success) {
