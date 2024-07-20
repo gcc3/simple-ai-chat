@@ -402,13 +402,14 @@ export default function Home() {
     let lang = "en-US";
     if (localStorage.getItem("lang").includes("force")) {
       // Use forced language
+      // If user set language, it will be forced
       lang = localStorage.getItem("lang").replace("force", "").trim();
     } else {
       // Use browser language
       const browserLang = navigator.language || navigator.userLanguage;
       if (getLangCodes().includes(browserLang)) {
         lang = browserLang;
-        localStorage.setItem("lang", lang);
+        localStorage.setItem("lang", lang);  // Not `force`
       } else {
         lang = localStorage.getItem("lang");
       }

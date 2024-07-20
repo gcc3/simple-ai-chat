@@ -45,7 +45,7 @@ function Settings() {
 
     if (data.success) {
       console.log("Settings updated.");
-      localStorage.setItem("lang", value);
+      localStorage.setItem(key, value);
       setMessage(t(data.message));
     }
   });
@@ -83,7 +83,7 @@ function Settings() {
         <div className="mt-3">- {t("Language")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {languages && languages.map((lang) => (
-            <button className="ml-2 mb-1" key={lang.language_code} onClick={handleSettingUpdate("lang", lang.language_code)}>{lang.native_name}</button>
+            <button className="ml-2 mb-1" key={lang.language_code} onClick={handleSettingUpdate("lang", lang.language_code + " force")}>{lang.native_name}</button>
           ))}
         </div>
         <div className="mt-2">- {t("Email Subscription")}</div>

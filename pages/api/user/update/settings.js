@@ -33,6 +33,7 @@ export default async function (req, res) {
 
   // Input and validation
   const { key, value } = req.body;
+
   if (!key || !value) {
     return res.status(400).json({ 
       success: false,
@@ -41,7 +42,7 @@ export default async function (req, res) {
   }
 
   try {
-    // Check if key is valid
+    // I. Check if key is valid
     let validKeys = [];
     const availableSettings = getSettings();
     for (const [key, value] of Object.entries(availableSettings)) {
@@ -55,7 +56,7 @@ export default async function (req, res) {
       });
     }
 
-    // Check if value is valid
+    // II. Check if value is valid
     if (key === 'theme') {
       const validValues = ['light', 'dark', 'terminal'];
       if (!validValues.includes(value)) {
@@ -68,7 +69,8 @@ export default async function (req, res) {
 
     if (key === 'lang') {
       const validValues = getLangCodes();
-      if (!validValues.includes(value)) {
+      const value_ = value.replace("force", "").trim();
+      if (!validValues.includes(value_)) {
         return res.status(400).json({ 
           success: false, 
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
