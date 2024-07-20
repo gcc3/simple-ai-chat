@@ -1,3 +1,11 @@
 {
-    
+  "Settings": "الإعدادات",
+  "User information not found. Please login with command `:login [username] [password]`.": "لم يتم العثور على معلومات المستخدم. يرجى تسجيل الدخول باستخدام الأمر `:login [username] [password]`.",
+  "You're unsubscribed.": "لقد تم إلغاء اشتراكك.",
+  "You're subscribed.": "لقد تم الاشتراك.",
+  "You're subscribed, email sent.": "لقد تم الاشتراك، تم إرسال البريد الإلكتروني.",
+  "Subscribe": "اشتراك",
+  "Unsubscribe": "إلغاء الاشتراك",
+  "You've already subscribed.": "لقد اشتركت بالفعل.",
+  "Email Subscription": "الاشتراك في البريد الإلكتروني"
 }

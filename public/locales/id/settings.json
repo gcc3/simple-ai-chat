@@ -1,3 +1,11 @@
 {
-    
+  "Settings": "Pengaturan",
+  "User information not found. Please login with command `:login [username] [password]`.": "Informasi pengguna tidak ditemukan. Silakan masuk dengan perintah `:login [username] [password]`.",
+  "Subscribe": "Berlangganan",
+  "Unsubscribe": "Berhenti berlangganan",
+  "You're subscribed.": "Anda telah berlangganan.",
+  "You've already subscribed.": "Anda sudah berlangganan.",
+  "You're subscribed, email sent.": "Anda telah berlangganan, email telah dikirim.",
+  "You're unsubscribed.": "Anda telah berhenti berlangganan.",
+  "Email Subscription": "Langganan Email"
 }

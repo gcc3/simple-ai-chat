@@ -1,3 +1,11 @@
 {
-    
+  "Settings": "Ayarlar",
+  "User information not found. Please login with command `:login [username] [password]`.": "Kullanıcı bilgisi bulunamadı. Lütfen `:login [kullanıcı adı] [şifre]` komutu ile giriş yapın.",
+  "Subscribe": "Abone Ol",
+  "Unsubscribe": "Abonelikten Çık",
+  "You're subscribed.": "Abone oldunuz.",
+  "You've already subscribed.": "Zaten abone oldunuz.",
+  "You're subscribed, email sent.": "Abone oldunuz, e-posta gönderildi.",
+  "You're unsubscribed.": "Aboneliğiniz iptal edildi.",
+  "Email Subscription": "E-posta Aboneliği"
 }

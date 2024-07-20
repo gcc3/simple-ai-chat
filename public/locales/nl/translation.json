@@ -12,5 +12,6 @@
   "quick_start_0": "Simple AI werkt met een commando-interface, sneltoetsen en gebaren. Commando's beginnen allemaal met `:` (halve breedte dubbele punt).⌨️",
   "quick_start_2": "Om in te loggen, gebruik het commando `:login [gebruikersnaam] [wachtwoord]`.",
   "quick_start_7": "Schakel over naar volledig scherm met `F11` (⌃F11 voor macOS). Voor gesplitst scherm, gebruik `Ctrl+|`.🖥️",
-  "quick_start_4": "Om de documentatie te openen en gebruik te bevestigen, klik op de stip (•) in de hoek van het scherm.📄"
+  "quick_start_4": "Om de documentatie te openen en gebruik te bevestigen, klik op de stip (•) in de hoek van het scherm.📄",
+  "Settings": "Instellingen"
 }
