@@ -119,9 +119,6 @@ export default async function (req, res) {
 
   // Email validation
   if (use_email) {
-    // Generate invite code
-    const inviteCode = generateInviteCode(newUser);
-
     AWS.config.update({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
@@ -135,7 +132,7 @@ export default async function (req, res) {
     const body
     = "Dear Mr./Ms. " + username + "," + "<br>"
     + "<br>"
-    + "Welcome to Simple AI!" + "Your account has been created successfully." + (!password ? ' Initial password is "' + generatedPassword + '", you can change it after login.' : "") + "<br>"
+    + "Welcome to Simple AI!" + " " + "Your account has been created successfully." + (!password ? " " + "Initial password is " + generatedPassword + ", you can change it after login." : "") + "<br>"
     + "<br>"
     + `Please click the following link to verify your email before using our services.` + "<br>" 
     + `<a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>` + "<br>"
