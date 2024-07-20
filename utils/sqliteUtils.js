@@ -1649,6 +1649,7 @@ export {
   updateUserBalance,
   updateUserEmail,
   updateUserEmailVerifiedAt,
+  updateUserEmailSubscription,
   updateUserRole,
   extendUserRole,
   updateUserIPAddr,

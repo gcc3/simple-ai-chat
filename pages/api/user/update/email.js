@@ -21,13 +21,13 @@ export default async function (req, res) {
     });
   }
   const { id, username, role } = authResult.user;
-  console.log('Set email request for user `' + username + '`' + ', email `' + email + '`.');
+  console.log('Set `email` request for user `' + username + '`' + ', email `' + email + '`.');
 
   // Input and validation
   if (!email) {
     return res.status(400).json({ 
       success: false, 
-      error: 'Email is required.'
+      error: '`email` is required.'
     });
   }
 
@@ -35,7 +35,7 @@ export default async function (req, res) {
   if (!verifiyEmailAddress(email)) {
     return res.status(400).json({
       success: false,
-      error: "Email is invalid.",
+      error: "`email` is invalid.",
     });
   }
 
