@@ -48,5 +48,6 @@
   "usage": "使用量",
   "speedup": "スピードアップ",
   "GPT Vision": "GPTビジョン",
-  "GPT Text Generation": "GPTテキスト生成"
+  "GPT Text Generation": "GPTテキスト生成",
+  "Loading...": "読み込み中..."
 }

@@ -37,5 +37,6 @@
   "Monthly usage": "Utilisation mensuelle",
   "You are the `root_user`.": "Vous êtes le `root_user`.",
   "Unlimited": "Illimité",
-  "banking fee {{bankingFee}} included": "frais bancaires {{bankingFee}} inclus"
+  "banking fee {{bankingFee}} included": "frais bancaires {{bankingFee}} inclus",
+  "Loading...": "Chargement en cours..."
 }

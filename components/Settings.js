@@ -71,7 +71,7 @@ function Settings() {
       <div className="text-center mb-4">
         <div>{t("Settings")}</div>
       </div>
-      {loading ? <div>Loading...</div> : <div>{content}</div>}
+      {loading ? <div>{t("Loading...")}</div> : <div>{content}</div>}
     </div>
   );
 }

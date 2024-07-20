@@ -1,5 +1,4 @@
 import { useTranslation, Trans } from 'react-i18next';
-import { Suspense } from 'react';
 
 function UserDataPrivacy() {
   const { t, ready } = useTranslation("privacy_policy");
@@ -32,14 +31,12 @@ function UserDataPrivacy() {
 
   if (!ready) return (<div><br></br></div>);
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="UserDataPrivacy">
-        <div className="text-center mb-4">
-          <div>{ t("Privacy Policy") }</div>
-        </div>
-        <div>{content}</div>
+    <div className="UserDataPrivacy">
+      <div className="text-center mb-4">
+        <div>{ t("Privacy Policy") }</div>
       </div>
-    </Suspense>
+      <div>{content}</div>
+    </div>
   );
 }
 

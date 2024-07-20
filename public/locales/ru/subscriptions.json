@@ -48,5 +48,6 @@
   "usage": "использование",
   "speedup": "ускорение",
   "GPT Vision": "GPT Видение",
-  "GPT Text Generation": "Генерация текста GPT"
+  "GPT Text Generation": "Генерация текста GPT",
+  "Loading...": "Загрузка..."
 }

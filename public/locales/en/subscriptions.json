@@ -50,5 +50,6 @@
   "image": "image",
   "usage": "usage",
   "GPT Text Generation": "GPT Text Generation",
-  "GPT Vision": "GPT Vision"
+  "GPT Vision": "GPT Vision",
+  "Loading...": "Loading..."
 }

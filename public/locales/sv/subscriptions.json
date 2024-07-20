@@ -48,5 +48,6 @@
   "usage": "användning",
   "speedup": "snabba upp",
   "GPT Vision": "GPT Vision",
-  "GPT Text Generation": "GPT-textgenerering"
+  "GPT Text Generation": "GPT-textgenerering",
+  "Loading...": "Laddar..."
 }

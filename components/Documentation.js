@@ -1,4 +1,4 @@
-import React, { Suspense } from 'react';
+import React from 'react';
 import { getCommands } from '/command';
 import { getFunctions } from '../function';
 import YouTube from 'react-youtube';
@@ -347,14 +347,12 @@ const Documentation = () => {
 
   if (!ready || !transReady) return (<div><br></br></div>);
   return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <div className="Documentation">
-        <div className="text-center mb-4">
-          <div>{ t("Documentation") }</div>
-        </div>
-        <div>{content}</div>
+    <div className="Documentation">
+      <div className="text-center mb-4">
+        <div>{ t("Documentation") }</div>
       </div>
-    </Suspense>
+      <div>{content}</div>
+    </div>
   );
 };
 

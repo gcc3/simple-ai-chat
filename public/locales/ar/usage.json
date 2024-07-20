@@ -37,5 +37,6 @@
   "Monthly usage": "الاستخدام الشهري",
   "You are the `root_user`.": "أنت `root_user`.",
   "Unlimited": "غير محدود",
-  "banking fee {{bankingFee}} included": "رسوم بنكية {{bankingFee}} مشمولة"
+  "banking fee {{bankingFee}} included": "رسوم بنكية {{bankingFee}} مشمولة",
+  "Loading...": "جاري التحميل..."
 }
