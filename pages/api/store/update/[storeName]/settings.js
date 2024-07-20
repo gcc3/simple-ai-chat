@@ -3,7 +3,7 @@ import { authenticate } from 'utils/authUtils.js';
 import { findStore } from 'utils/storeUtils.js';
 
 export default async function (req, res) {
-  // Check method.
+  // Check method
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
@@ -32,7 +32,7 @@ export default async function (req, res) {
   if (!key || !value) {
     return res.status(400).json({ 
       success: false,
-      error: 'Key and value are required.' 
+      error: '`key` and `value` are required.' 
     });
   }
 

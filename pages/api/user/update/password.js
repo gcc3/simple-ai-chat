@@ -2,7 +2,7 @@ import { updateUserPassword } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 
 export default async function (req, res) {
-  // Check method.
+  // Check method
   if (req.method !== 'POST') {
     return res.status(405).end();
   }
