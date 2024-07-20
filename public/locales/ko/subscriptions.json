@@ -42,12 +42,12 @@
   "Extend 1 month for": "1개월 연장하기",
   "day": "날",
   "month": "월",
-  "banking fee {{bankingFee}} included": "은행 수수료 {{bankingFee}} 포함",
   "Free": "무료",
   "image": "이미지",
   "usage": "사용량",
   "speedup": "가속화",
   "GPT Vision": "GPT 비전",
   "GPT Text Generation": "GPT 텍스트 생성",
-  "Loading...": "로딩 중..."
+  "Loading...": "로딩 중...",
+  "banking fee ${{bankingFee}} included": "은행 수수료 ${{bankingFee}} 포함"
 }

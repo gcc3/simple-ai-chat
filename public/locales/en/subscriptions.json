@@ -43,7 +43,7 @@
   "Extend 1 month for": "Extend 1 month for",
   "day": "day",
   "month": "month",
-  "banking fee {{bankingFee}} included": "banking fee {{bankingFee}} included",
+  "banking fee ${{bankingFee}} included": "banking fee ${{bankingFee}} included",
   "Free": "Free",
   "speedup": "speedup",
   "query": "query",

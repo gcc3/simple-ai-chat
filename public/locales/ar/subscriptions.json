@@ -42,12 +42,12 @@
   "Extend 1 month for": "تمديد لمدة شهر واحد لـ",
   "day": "يوم",
   "month": "شهر",
-  "banking fee {{bankingFee}} included": "رسوم بنكية {{bankingFee}} مشمولة",
   "Free": "مجاني",
   "image": "صورة",
   "usage": "الاستخدام",
   "speedup": "تسريع",
   "GPT Vision": "رؤية GPT",
   "GPT Text Generation": "توليد نص GPT",
-  "Loading...": "جار التحميل..."
+  "Loading...": "جار التحميل...",
+  "banking fee ${{bankingFee}} included": "رسوم البنك ${{bankingFee}} مشمولة"
 }

@@ -42,12 +42,12 @@
   "Extend 1 month for": "Verleng met 1 maand voor",
   "day": "dag",
   "month": "maand",
-  "banking fee {{bankingFee}} included": "bankkosten {{bankingFee}} inbegrepen",
   "Free": "Gratis",
   "image": "afbeelding",
   "usage": "gebruik",
   "speedup": "versnellen",
   "GPT Vision": "GPT Visie",
   "GPT Text Generation": "GPT Tekstgeneratie",
-  "Loading...": "Laden..."
+  "Loading...": "Laden...",
+  "banking fee ${{bankingFee}} included": "bankkosten ${{bankingFee}} inbegrepen"
 }

@@ -42,12 +42,12 @@
   "Extend 1 month for": "Förläng med 1 månad för",
   "day": "dag",
   "month": "månad",
-  "banking fee {{bankingFee}} included": "bankavgift {{bankingFee}} inkluderad",
   "Free": "Gratis",
   "image": "bild",
   "usage": "användning",
   "speedup": "snabba upp",
   "GPT Vision": "GPT Vision",
   "GPT Text Generation": "GPT-textgenerering",
-  "Loading...": "Laddar..."
+  "Loading...": "Laddar...",
+  "banking fee ${{bankingFee}} included": "bankavgift ${{bankingFee}} inkluderad"
 }

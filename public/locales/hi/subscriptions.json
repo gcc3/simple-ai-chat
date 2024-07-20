@@ -42,12 +42,12 @@
   "Extend 1 month for": "1 महीने के लिए विस्तार करें",
   "day": "दिन",
   "month": "महीना",
-  "banking fee {{bankingFee}} included": "बैंकिंग शुल्क {{bankingFee}} सम्मिलित",
   "Free": "निःशुल्क",
   "image": "छवि",
   "usage": "उपयोग",
   "speedup": "गति बढ़ाओ",
   "GPT Vision": "GPT दृष्टि",
   "GPT Text Generation": "GPT पाठ सृजन",
-  "Loading...": "लोड हो रहा है..."
+  "Loading...": "लोड हो रहा है...",
+  "banking fee ${{bankingFee}} included": "बैंकिंग शुल्क ${{bankingFee}} शामिल"
 }

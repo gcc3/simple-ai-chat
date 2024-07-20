@@ -157,7 +157,7 @@ function Subscription() {
                || (getRoleLevel(targetRole) < getRoleLevel(user.role) && (user.role_expires_at !== null && user.role_expires_at < new Date())))
                 && <div>
                 <div>{user.role == targetRole ? t("Extend 1 month for") : (getRoleLevel(user.role) < getRoleLevel(targetRole) ? t("Upgrade to") : t("Downgrade to"))} `{targetRole}`</div>
-                <div>{ t("Pay") }: {"$" + amount} ({ t("banking fee {{bankingFee}} included", { bankingFee }) })</div>
+                <div>{ t("Pay") }: {"$" + amount} ({ t("banking fee ${{bankingFee}} included", {bankingFee}) })</div>
                 <div className="mt-3">{ t("Payment methods") }:</div>
                 <div className="mt-1">
                   <table>
