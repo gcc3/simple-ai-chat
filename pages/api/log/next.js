@@ -2,7 +2,7 @@ import { getLogs, getSession } from "utils/sqliteUtils";
 
 export default async function (req, res) {
   try {
-    // Check if the method is GET
+    // Check method
     if (req.method !== "GET") {
       return res.status(405).end();
     }

@@ -1,7 +1,7 @@
 import AWS from 'aws-sdk';
 
 export default async function (req, res) {
-  // Check if the method is GET.
+  // Check method.
   if (req.method !== 'GET') {
     return res.status(405).end();
   }

@@ -3,7 +3,7 @@ import { queryNodeAI, isNodeConfigured } from "utils/nodeUtils";
 import { findNode } from "utils/nodeUtils";
 
 export default async function handler(req, res) {
-  // Check if the method is POST
+  // Check method
   if (req.method !== "POST") {
     return res.status(405).end();
   }

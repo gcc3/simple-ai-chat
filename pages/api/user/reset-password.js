@@ -3,7 +3,7 @@ import { getUser, updateUserPassword } from "utils/sqliteUtils";
 import { generatePassword } from "utils/userUtils";
 
 export default async function handler(req, res) {
-  // Check if the method is POST
+  // Check method
   if (req.method !== "POST") {
     return res.status(405).end();
   }

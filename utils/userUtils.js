@@ -47,7 +47,7 @@ export function setUserLocalStorage(user) {
 
     // useSystemRole
     if (settings.useSystemRole) {
-      sessionStorage.setItem("useSystemRole", settings.useSystemRole == "true" ? true : false);
+      localStorage.setItem("useSystemRole", settings.useSystemRole == "true" ? true : false);
     }
 
     // functions

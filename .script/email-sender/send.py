@@ -76,7 +76,7 @@ def get_email_content(user, email_base_content):
 # Function to send email using AWS SES
 def send_email_ses(recipient_email, subject, body, test_mode=False):
     if test_mode:
-        logadd(f"Test Mode: Email to `{recipient_email}` would have been sent.")
+        logadd(f"Test Mode: email to `{recipient_email}` would have been sent.")
         return
 
     client = boto3.client(

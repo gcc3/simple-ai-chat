@@ -9,7 +9,7 @@ export default async function (req, res) {
   if (!functions) {
     return res.status(400).json({
       success: false,
-      error: "Functions is required.",
+      error: "`functions` is required.",
     });
   }
 
