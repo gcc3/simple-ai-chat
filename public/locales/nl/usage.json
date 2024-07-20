@@ -37,5 +37,6 @@
   "Monthly usage": "Maandelijks gebruik",
   "You are the `root_user`.": "U bent de `root_user`.",
   "Unlimited": "Onbeperkt",
-  "banking fee {{bankingFee}} included": "bankkosten {{bankingFee}} inbegrepen"
+  "banking fee {{bankingFee}} included": "bankkosten {{bankingFee}} inbegrepen",
+  "Loading...": "Laden..."
 }

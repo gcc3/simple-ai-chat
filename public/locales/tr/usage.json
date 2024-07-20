@@ -37,5 +37,6 @@
   "Monthly usage": "Aylık kullanım",
   "You are the `root_user`.": "Siz `root_user`'sınız.",
   "Unlimited": "Sınırsız",
-  "banking fee {{bankingFee}} included": "banking ücreti {{bankingFee}} dahil"
+  "banking fee {{bankingFee}} included": "banking ücreti {{bankingFee}} dahil",
+  "Loading...": "Yükleniyor..."
 }

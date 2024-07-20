@@ -37,5 +37,6 @@
   "Monthly usage": "মাসিক ব্যবহার",
   "You are the `root_user`.": "আপনি `root_user`।",
   "Unlimited": "আনলিমিটেড",
-  "banking fee {{bankingFee}} included": "ব্যাংকিং ফি {{bankingFee}} অন্তর্ভুক্ত"
+  "banking fee {{bankingFee}} included": "ব্যাংকিং ফি {{bankingFee}} অন্তর্ভুক্ত",
+  "Loading...": "লোড হচ্ছে..."
 }

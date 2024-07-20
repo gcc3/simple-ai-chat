@@ -190,7 +190,7 @@ function Subscription() {
       <div className="text-center mb-4">
         <div>{ t("Subcriptions") }</div>
       </div>
-      {loading ? <div>Loading...</div> : <div>{content}</div>}
+      {loading ? <div>{t("Loading...")}</div> : <div>{content}</div>}
     </div>
   );
 }

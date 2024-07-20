@@ -37,5 +37,6 @@
   "Monthly usage": "월간 사용량",
   "You are the `root_user`.": "당신은 `root_user`입니다.",
   "Unlimited": "무제한",
-  "banking fee {{bankingFee}} included": "은행 수수료 {{bankingFee}} 포함"
+  "banking fee {{bankingFee}} included": "은행 수수료 {{bankingFee}} 포함",
+  "Loading...": "로딩 중..."
 }

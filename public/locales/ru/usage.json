@@ -37,5 +37,6 @@
   "Monthly usage": "Ежемесячное использование",
   "You are the `root_user`.": "Вы — `root_user`.",
   "Unlimited": "Неограниченно",
-  "banking fee {{bankingFee}} included": "банковская комиссия {{bankingFee}} включена"
+  "banking fee {{bankingFee}} included": "банковская комиссия {{bankingFee}} включена",
+  "Loading...": "Загрузка..."
 }

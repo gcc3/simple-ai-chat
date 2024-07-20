@@ -48,5 +48,6 @@
   "usage": "utilisation",
   "speedup": "accélération",
   "GPT Vision": "Vision GPT",
-  "GPT Text Generation": "Génération de texte GPT"
+  "GPT Text Generation": "Génération de texte GPT",
+  "Loading...": "Chargement en cours..."
 }
