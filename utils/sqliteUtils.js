@@ -52,6 +52,7 @@ const initializeDatabase = (db) => {
             password TEXT NOT NULL,
             email TEXT,
             email_verified_at TEXT,
+            email_subscription TEXT,
             balance REAL,
             usage REAL,
             settings TEXT,
@@ -509,9 +510,9 @@ const insertUser = async (username, role, role_expires_at, password, email, bala
         // If the username doesn't exist, proceed with the insertion
         const group = username;
         const stmt = db.prepare(
-          "INSERT INTO users (username, \"group\", role, role_expires_at, password, email, balance, usage, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
+          "INSERT INTO users (username, \"group\", role, role_expires_at, password, email, email_subscription, balance, usage, settings, status, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ? ,?)"
         );
-        stmt.run([username, group, role, role_expires_at, password, email, balance, 0, settings, "inactive", getTimestamp()], function (err) {
+        stmt.run([username, group, role, role_expires_at, password, email, 1, balance, 0, settings, "inactive", getTimestamp()], function (err) {
           if (err) {
             reject(err);
             return;
@@ -917,6 +918,28 @@ const updateUserStatus = async (username, status) => {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET status = ? WHERE username = ?");
       stmt.run([status, username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const updateUserEmailSubscription = async (username, subscription) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET email_subscription = ? WHERE username = ?");
+      stmt.run([subscription, username], function (err) {
         if (err) {
           reject(err);
         }
