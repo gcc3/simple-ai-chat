@@ -76,6 +76,7 @@ export default async function (req, res) {
         username: user.username,
         group: user.group,
         email: user.email,
+        email_verified: user.email_verified_at ? true : false,
         email_subscription: user.email_subscription,
         settings: JSON.parse(user.settings),
         role: user.role,
