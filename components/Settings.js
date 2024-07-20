@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { getUserInfo } from "utils/userUtils";
 import { useTranslation } from "react-i18next";
+import { setRtl } from "utils/rtlUtils.js";
 
 function Settings() {
   const [loading, setLoading] = useState(true);
@@ -8,7 +9,7 @@ function Settings() {
   const [languages, setLanguages] = useState([]);
   const [message, setMessage] = useState(null);
 
-  const { t, ready } = useTranslation("settings");
+  const { t, i18n, ready } = useTranslation("settings");
 
   useEffect(() => {
     const loadUserInfo = async () => {
@@ -44,9 +45,22 @@ function Settings() {
     }
 
     if (data.success) {
-      console.log("Settings updated.");
       localStorage.setItem(key, value);
+      console.log("Settings updated.");
       setMessage(t(data.message));
+
+      // lang
+      if (key === "lang") {
+        const lang = value.replace("force", "").trim()
+        const i18nLang = lang.split("-")[0];
+        i18n.changeLanguage(i18nLang)
+        .then(() => {
+          console.log("Language: " + lang + ", i18n: " + i18n.language);
+          console.log('Language test:', t('hello'));
+          setRtl(i18nLang === "ar");
+          setMessage(t(data.message));
+        });
+      }
     }
   });
 

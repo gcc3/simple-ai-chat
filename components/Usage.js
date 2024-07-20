@@ -112,7 +112,7 @@ function Usage() {
               </tbody>
             </table>
             {usage.model_usage.map((modelUsage, index) => (
-              <>
+              <React.Fragment key={index}>
                 <div className="mt-3">{modelUsage.model}</div>
                 <table className="table-fixed mt-1">
                   <tbody>
@@ -133,7 +133,7 @@ function Usage() {
                     </tr>
                   </tbody>
                 </table>
-              </>
+              </React.Fragment>
             ))}
             <div className="mt-2">* { t("For token pricing, refer to the OpenAI official pricing document.") } (<a href="https://openai.com/pricing#language-models"><u>link</u></a>) </div>
             <div>* { t("1% ~ 3% for maintaince service.") }</div>
@@ -149,7 +149,7 @@ function Usage() {
               </tbody>
             </table>
             {usage.model_usage.map((modelUsage, index) => (
-              <>
+              <React.Fragment key={index}>
                 <div className="mt-3">{modelUsage.model}</div>
                 <table className="table-fixed mt-1">
                   <tbody>
@@ -167,7 +167,7 @@ function Usage() {
                     </tr>
                   </tbody>
                 </table>
-              </>
+              </React.Fragment>
             ))}
             <div className="mt-3">
               {usage.use_count_fequencies.daily_limit && <ProgressBar label={ t("Daily usage") } 
