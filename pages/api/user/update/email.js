@@ -5,7 +5,7 @@ import AWS from 'aws-sdk';
 import { encode } from 'utils/authUtils.js';
 
 export default async function (req, res) {
-  // Check if the method is POST.
+  // Check method.
   if (req.method !== 'POST') {
     return res.status(405).end();
   }

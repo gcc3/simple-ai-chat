@@ -2,7 +2,7 @@ import { getUser, updateUserIPAndLastLogin, updateUserStatus } from "utils/sqlit
 import { createToken } from "utils/authUtils.js";
 
 export default async (req, res) => {
-  // Check if the method is POST.
+  // Check method.
   if (req.method !== 'POST') {
     return res.status(405).end();  // Method Not Allowed
   }

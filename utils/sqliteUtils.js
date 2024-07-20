@@ -934,12 +934,12 @@ const updateUserStatus = async (username, status) => {
   }
 };
 
-const updateUserEmailSubscription = async (username, subscription) => {
+const updateUserEmailSubscription = async (email, subscription) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare("UPDATE users SET email_subscription = ? WHERE username = ?");
-      stmt.run([subscription, username], function (err) {
+      const stmt = db.prepare("UPDATE users SET email_subscription = ? WHERE email = ?");
+      stmt.run([subscription, email], function (err) {
         if (err) {
           reject(err);
         }
