@@ -92,6 +92,7 @@ export default async function (req, res) {
         username: user.username,
         group: user.group,
         email: user.email,
+        email_subscription: user.email_subscription,
         settings: JSON.parse(user.settings),
         role: user.role,
         role_expires_at: user.role_expires_at,

@@ -16,6 +16,7 @@ import Usage from "components/Usage";
 import Subscription from "components/Subscription";
 import Documentation from "components/Documentation";
 import Copyrights from "components/Copyrights";
+import Settings from "components/Settings";
 import { refreshUserInfo, updateUserSetting } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
@@ -2151,6 +2152,7 @@ export default function Home() {
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{ t("Documentation") }</div>
                 {usageDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>{ t("Usage") }</div>}
                 {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>{ t("Subcriptions")} </div>}
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.SETTINGS)}>{ t("Settings") }</div>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>{ t("Privacy Policy") }</div>
               </div>
               <div className={styles.content}>
@@ -2162,6 +2164,9 @@ export default function Home() {
                 </div>}
                 {subscriptionDisplay && content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}>
                   <Subscription />
+                </div>}
+                {content === CONTENT.SETTINGS && <div className={styles.contentitem}>
+                  <Settings />
                 </div>}
                 {content === CONTENT.PRIVACY && <div className={styles.contentitem}>
                   <UserDataPrivacy />
