@@ -4,6 +4,7 @@ import { getAvailableStoresForUser } from 'utils/storeUtils';
 import { getAvailableNodesForUser } from 'utils/nodeUtils';
 import { getSystemRoles } from 'utils/roleUtils';
 import { getSettings } from 'utils/settingsUtils';
+import { getLangCodes } from 'utils/langUtils';
 
 export default async function (req, res) {
   // Check method
@@ -65,7 +66,19 @@ export default async function (req, res) {
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
-    } else if (key === 'useSpeak') {
+    }
+
+    if (key === 'lang') {
+      const validValues = getLangCodes();
+      if (!validValues.includes(value)) {
+        return res.status(400).json({ 
+          success: false, 
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+        });
+      }
+    }
+    
+    if (key === 'useSpeak') {
       const validValues = ['true', 'false'];
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
@@ -73,7 +86,9 @@ export default async function (req, res) {
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
-    } else if (key === 'useStats') {
+    } 
+    
+    if (key === 'useStats') {
       const validValues = ['true', 'false'];
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
@@ -81,7 +96,9 @@ export default async function (req, res) {
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
-    } else if (key === 'fullscreen') {
+    } 
+    
+    if (key === 'fullscreen') {
       const validValues = ['default', 'split', 'off'];
       if (!validValues.includes(value)) {
         return res.status(400).json({ 
@@ -89,7 +106,9 @@ export default async function (req, res) {
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
-    } else if (key === 'role') {
+    } 
+    
+    if (key === 'role') {
       const userRoles = await getUserRoles(username);
       const systemRoles = await getSystemRoles();
 
@@ -120,7 +139,9 @@ export default async function (req, res) {
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
-    } else if (key === 'store') {
+    } 
+    
+    if (key === 'store') {
       const allStores = await getAvailableStoresForUser(user);
       if (Object.entries(allStores).length === 0) {
         return res.status(400).json({ 
@@ -146,7 +167,9 @@ export default async function (req, res) {
           });
         }
       }
-    } else if (key === 'node') {
+    } 
+    
+    if (key === 'node') {
       const allNodes = await getAvailableNodesForUser(user);
       if (Object.entries(allNodes).length === 0) {
         return res.status(400).json({ 
