@@ -135,7 +135,7 @@ export default async function (req, res) {
     const body
     = "Dear Mr./Ms. " + username + "," + "<br>"
     + "<br>"
-    + "Welcome to join Simple AI!" + "<br>"
+    + "Welcome to Simple AI!" + "<br>"
     + "<br>"
     + `Your account has been created successfully.` + (!password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "") + "<br>"
     + "<br>"
