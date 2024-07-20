@@ -10,7 +10,7 @@ import { npre } from "utils/numberUtils";
 const moment = require('moment');
 
 export default async function (req, res) {
-  // Method Not Allowed if not GET
+  // Check method
   if (req.method !== 'GET') {
     return res.status(405).end();
   }
@@ -35,7 +35,7 @@ export default async function (req, res) {
     if (user && password && user.password !== password) {
       return res.status(401).json({ 
         success: false,
-        error: 'Incorrect password.'
+        error: 'Incorrect username or password.'
       });
     }
   }
