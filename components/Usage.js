@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback, Suspense } from "react";
 import ProgressBar from "./ProgressBar";
-import { refreshUserInfo, getRoleLevel, getUserInfo } from "utils/userUtils";
+import { getRoleLevel, getUserInfo, getUserUsage } from "utils/userUtils";
 import PayPalButton from "./PayPalButton";
 import { npre } from "utils/numberUtils";
 import { plusFeeCal } from "utils/usageUtils";
@@ -11,6 +11,7 @@ const moment = require('moment');
 function Usage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+  const [usage, setUsage] = useState(null);
   const [message, setMessage] = useState(null);
   
   const [tokenFequencies, setTokenFequencies] = useState(0);
@@ -56,6 +57,10 @@ function Usage() {
       // Refresh user info
       const user = await getUserInfo();
       setUser(user);
+
+      // Refresh usage
+      const usage = await getUserUsage();
+      setUsage(usage);
     } else {
       console.log(data.error);
       setMessage(data.error);
@@ -64,35 +69,41 @@ function Usage() {
 
   useEffect(() => {
     // Get user info
-    const updateUserInfo = async () => {
+    const updateUserInfoAndUsage = async () => {
       setLoading(true);
-      const user = await getUserInfo();
 
+      // Get user info
+      const user = await getUserInfo();
       setUser(user);
-      setUseCountFequencies(user.usage.use_count_fequencies);
-      setUseCountMonthly(user.usage.use_count_monthly);
-      setTokenFequencies(user.usage.token_fequencies);
-      setTokenMonthly(user.usage.token_monthly);
 
       if (user.role === "root_user") {
         setMessage(t("You are the `root_user`."));
       }
 
+      // Get user usage
+      const usage = await getUserUsage();
+      setUsage(usage);
+
+      setUseCountFequencies(usage.use_count_fequencies);
+      setUseCountMonthly(usage.use_count_monthly);
+      setTokenFequencies(usage.token_fequencies);
+      setTokenMonthly(usage.token_monthly);
+
       // Fee calculation
-      setGpt4FeeLastMonth(npre(user.usage.gpt4_fee_last_month));
-      setGpt4vFeeLastMonth(npre(user.usage.gpt4v_fee_last_month));
-      setTotalFeeLastMonth(npre(user.usage.gpt4_fee_last_month + user.usage.gpt4v_fee_last_month));
-      setGpt4FeeThisMonth(npre(user.usage.gpt4_fee_this_month));
-      setGpt4vFeeThisMonth(npre(user.usage.gpt4v_fee_this_month));
-      setTotalFeeThisMonth(npre(user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month));
+      setGpt4FeeLastMonth(npre(usage.gpt4_fee_last_month));
+      setGpt4vFeeLastMonth(npre(usage.gpt4v_fee_last_month));
+      setTotalFeeLastMonth(npre(usage.gpt4_fee_last_month + usage.gpt4v_fee_last_month));
+      setGpt4FeeThisMonth(npre(usage.gpt4_fee_this_month));
+      setGpt4vFeeThisMonth(npre(usage.gpt4v_fee_this_month));
+      setTotalFeeThisMonth(npre(usage.gpt4_fee_this_month + usage.gpt4v_fee_this_month));
 
       // Plus fee
-      setPlusFeeThisMonth(plusFeeCal(user.role, user.usage.gpt4_fee_this_month + user.usage.gpt4v_fee_this_month));
+      setPlusFeeThisMonth(plusFeeCal(user.role, usage.gpt4_fee_this_month + usage.gpt4v_fee_this_month));
       setLoading(false);
     }
 
-    if (localStorage.getItem("user") && !user) {
-      updateUserInfo();
+    if (localStorage.getItem("user") && !usage) {
+      updateUserInfoAndUsage();
     } else {
       setLoading(false);
     }
@@ -119,7 +130,7 @@ function Usage() {
           <div>{ t("Email") }: {user.email}</div>
           <div>{ t("Subscription") }: `{user.role}`</div>
           <div>{ t("Expire at") }: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : `(${ t("Unlimited") })`} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
-          {user.usage && getRoleLevel(user.role) >= 1 && <div className="mt-3">
+          {usage && getRoleLevel(user.role) >= 1 && <div className="mt-3">
             <div>- { t("Monthly Usage") }</div>
             <div className="mt-1">{ t("Use Count") }</div>
             <table className="table-fixed mt-1">
