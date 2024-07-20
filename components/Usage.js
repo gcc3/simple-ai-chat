@@ -14,10 +14,6 @@ function Usage() {
   const [usage, setUsage] = useState(null);
   const [message, setMessage] = useState(null);
 
-  // Usage
-  const [totalFeeThisMonth, setTotalFeeThisMonth] = useState(0);
-  const [plusFeeThisMonth, setPlusFeeThisMonth] = useState(0);  // x% of total fee
-
   // For adding balance
   const [amount, setAmount] = useState(0);
   const [bankingFee, setBankingFee] = useState(0);
@@ -48,12 +44,9 @@ function Usage() {
     if (data.success) {
       setMessage(data.message);
   
-      // Refresh user info
-      const user = await getUserInfo();
+      // Refresh user and usage
+      const [user, usage] = await Promise.all([getUserInfo(), getUserUsage()]);
       setUser(user);
-
-      // Refresh usage
-      const usage = await getUserUsage();
       setUsage(usage);
     } else {
       console.log(data.error);
@@ -66,20 +59,15 @@ function Usage() {
     const updateUserInfoAndUsage = async () => {
       setLoading(true);
 
-      // Get user info
-      const user = await getUserInfo();
+      // Refresh user and usage
+      const [user, usage] = await Promise.all([getUserInfo(), getUserUsage()]);
       setUser(user);
+      setUsage(usage);
 
       if (user.role === "root_user") {
         setMessage(t("You are the `root_user`."));
       }
 
-      // Get user usage
-      const usage = await getUserUsage();
-      setUsage(usage);
-
-      // Plus fee
-      setPlusFeeThisMonth(plusFeeCal(user.role, usage.total_usage_fee_this_month));
       setLoading(false);
     }
 
@@ -88,7 +76,7 @@ function Usage() {
     } else {
       setLoading(false);
     }
-  });
+  }, []);
 
   function handleSetAmount(newAmount) {
     return () => {
@@ -182,9 +170,12 @@ function Usage() {
               </>
             ))}
             <div className="mt-3">
-              {usage.use_count_fequencies.daily_limit && <ProgressBar label={ t("Daily usage") } progress={usage.use_count_fequencies.daily} progressMax={usage.use_count_fequencies.daily_limit} />}
-              {usage.use_count_fequencies.weekly_limit && <ProgressBar label={ t("Weekly usage") } progress={usage.use_count_fequencies.weekly} progressMax={usage.use_count_fequencies.weekly_limit} />}
-              {usage.use_count_fequencies.monthly_limit && <ProgressBar label={ t("Monthly usage") } progress={usage.use_count_fequencies.monthly} progressMax={usage.use_count_fequencies.monthly_limit} />}
+              {usage.use_count_fequencies.daily_limit && <ProgressBar label={ t("Daily usage") } 
+                progress={usage.use_count_fequencies.daily} progressMax={usage.use_count_fequencies.daily_limit} />}
+              {usage.use_count_fequencies.weekly_limit && <ProgressBar label={ t("Weekly usage") } 
+                progress={usage.use_count_fequencies.weekly} progressMax={usage.use_count_fequencies.weekly_limit} />}
+              {usage.use_count_fequencies.monthly_limit && <ProgressBar label={ t("Monthly usage") } 
+                progress={usage.use_count_fequencies.monthly} progressMax={usage.use_count_fequencies.monthly_limit} />}
               {usage.use_count_fequencies.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
             </div>
             {getRoleLevel(user.role) >= 2 && <div className="mt-3">
@@ -212,8 +203,11 @@ function Usage() {
             </div>}
             <div className="mt-3">
               <div>- { t("Fees and Balance") }</div>
-              <ProgressBar label={ t("Usage") } progress={npre(usage.total_usage_fee_this_month + plusFeeThisMonth)} progressMax={npre(user.balance)} />
-              <div className="mt-3">{ t("Total Fees") }: ${npre(usage.total_usage_fee_this_month + plusFeeThisMonth)}</div>
+              <ProgressBar label={ t("Usage") } progress={npre(usage.total_usage_fee_this_month 
+                                                        + plusFeeCal(user.role, usage.total_usage_fee_this_month))} 
+                                                          progressMax={npre(user.balance)} />
+              <div className="mt-3">{ t("Total Fees") }: ${npre(usage.total_usage_fee_this_month 
+                                                         + plusFeeCal(user.role, usage.total_usage_fee_this_month))}</div>
               <div>{ t("Balance") }: ${npre(user.balance)}</div>
             </div>
           </div>}
