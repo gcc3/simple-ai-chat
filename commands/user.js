@@ -6,7 +6,7 @@ export default async function entry(args) {
   const command = args[0];
   const usage = "Usage: :user [info?]" + "\n" +
                 "       :user add [username] [email] [password?]" + "\n" +
-                "       :user delete [username]" + "\n" +
+                "       :user [del|delete] [username]" + "\n" +
                 "       :user set pass [value]" + "\n" +
                 "       :user set email [value]" + "\n" +
                 "       :user set [key] [value]" + "\n" +
