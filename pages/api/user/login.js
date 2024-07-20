@@ -48,7 +48,7 @@ export default async (req, res) => {
   if (user.email_verified_at === null) {
     return res.status(401).json({
       success: false,
-      error: 'Please verify your email. To re-send verification email, login and use the command \`:user set email [email]\`."
+      error: "Please verify your email. To re-send verification email, login and use the command \`:user set email [email]\`."
     });
   }
 
