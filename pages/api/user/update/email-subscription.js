@@ -72,7 +72,7 @@ export default async function (req, res) {
         .then((data) => {
           res.status(200).json({ 
             success: true,
-            message: 'You\'re subscribed.',
+            message: 'You\'re subscribed, email sent.',
             data
           });
         }).catch((err) => {

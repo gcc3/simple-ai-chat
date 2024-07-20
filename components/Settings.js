@@ -53,9 +53,9 @@ function Settings() {
           <button className="ml-2" onClick={handleSubscribe("1")}>Subscribe</button>
           <button className="ml-2" onClick={handleSubscribe("0")}>Unsubscribe</button>
         </div>
-      </div>}
-      {message && <div className="mt-2">
-        {<div className="ml-2">{message}</div>}
+        {message && <div className="mt-2">
+          {<div className="ml-2">{message}</div>}
+        </div>}
       </div>}
     </>
   );
