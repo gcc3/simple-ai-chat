@@ -1936,6 +1936,18 @@ export default function Home() {
     if (elInput) {
       if (!fullscreen_) fullscreen_ = fullscreen;
 
+      // Non-fullscreen
+      if (fullscreen_ === "off") {
+        if (elInput.value) {
+          // Has input
+          elInput.style.height = "auto";
+          elInput.style.height = `${elInput.scrollHeight + 1}px`;
+        } else {
+          // No input
+          elInput.style.height = "45px";
+        }
+      }
+
       // Fullscreen
       if (fullscreen_ === "default") {
         if (elInput.value) {
@@ -1962,18 +1974,6 @@ export default function Home() {
       if (fullscreen_ === "split") {
         // Do nothing because the input height alwasy 100%
         elInput.style.height = "100%";
-      }
-
-      // Non-fullscreen
-      if (fullscreen_ === "off") {
-        if (elInput.value) {
-          // Has input
-          elInput.style.height = "auto";
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
-        } else {
-          // No input
-          elInput.style.height = "45px";
-        }
       }
     }
   }
