@@ -305,7 +305,7 @@ export default async function (req, res) {
         }
 
         // Print for non-stream
-        if (!settings.stream) {
+        if (!settings.useStream) {
           let nodeOutput = raw_prompt["node"];
           if (nodeOutput) {
             nodeOutput = nodeOutput.trim().replaceAll("\n", "###RETURN###");
@@ -322,7 +322,7 @@ export default async function (req, res) {
         }
 
         // Print stream
-        if (settings.stream) {
+        if (settings.useStream) {
           // model
           if (settings.model && settings.model !== "") {
             res.write(`data: ###ENV###${settings.model}\n\n`); res.flush();

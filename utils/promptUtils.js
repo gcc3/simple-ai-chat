@@ -32,6 +32,10 @@ const { model, model_v, role_content_system, welcome_message, querying, waiting,
   -1. Chat history
    0. User input
    1. Function calling result
+
+  Callback Functions:
+  1. updateStatus: function callback to update status
+  2. streamOutput: function callback to stream output from LLM
 */
 export async function generateMessages(use_system_role, lang,
                                        user, model, input, inputType, files, images,

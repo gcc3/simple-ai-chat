@@ -93,11 +93,11 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
   const queryParameterForInput = settings.queryParameterForInput;
   const queryParameterForHistories = settings.queryParameterForHistories;
   const queryParameterForFiles = settings.queryParameterForFiles;
-  const stream = settings.stream;
+  const useStream = settings.useStream;
   const model = settings.model;
 
   // Ollama compatible stream output
-  if (stream && streamOutput) {
+  if (useStream && streamOutput) {
     let messages = [];
 
     // Files messages
@@ -183,7 +183,7 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
     });
   }
 
-  if (!stream) {
+  if (!useStream) {
     try {
       const response = await fetch(endpoint + generateApi + "?" + queryParameterForInput + "=" + encodeURIComponent(input) 
                                                           + "&" + queryParameterForHistories + "=" + encodeURIComponent(JSON.stringify(histories))
@@ -235,13 +235,13 @@ export function isNodeConfigured(settings) {
     return false;
   }
 
-  if (settings.stream) {
+  if (settings.useStream) {
     if (!settings.generateSseApi || settings.generateSseApi === "___") {
       return false;
     }
   }
 
-  if (!settings.stream) {
+  if (!settings.useStream) {
     if (!settings.generateApi || settings.generateApi === "___") {
       return false;
     }
@@ -320,7 +320,7 @@ export function getInitNodeSettings() {
     "queryParameterForFiles": "files",
     "multimodality": false,
     "overrideOutputWithNodeResponse": false,
-    "stream": false,
+    "useStream": false,
     "model": "",  // optional, if the endpoint support multipe models
     "description": "",
   };
