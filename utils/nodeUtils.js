@@ -96,7 +96,7 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
   const useStream = settings.useStream;
   const model = settings.model;
 
-  // Ollama compatible stream output
+  // Stream output
   if (useStream && streamOutput) {
     let messages = [];
 
@@ -183,7 +183,8 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
     });
   }
 
-  if (!useStream) {
+  // Non stream output
+  if (!useStream || !streamOutput) {
     try {
       const response = await fetch(endpoint + generateApi + "?" + queryParameterForInput + "=" + encodeURIComponent(input) 
                                                           + "&" + queryParameterForHistories + "=" + encodeURIComponent(JSON.stringify(histories))
