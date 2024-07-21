@@ -31,10 +31,10 @@
   align-items: center;  /* vertically center the items */
 }
 .main .input {
-  height: 45px;
+  height: 44px;
+  padding: 10px;
   overflow-y: auto;
   width: 100%;
-  padding: 10px;
   font-size: 16px;
   outline: 0;
   outline-color: #adadad;

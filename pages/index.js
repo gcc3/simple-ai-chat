@@ -1941,10 +1941,10 @@ export default function Home() {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
+          elInput.style.height = `${elInput.scrollHeight}px`;
         } else {
           // No input
-          elInput.style.height = "45px";
+          elInput.style.height = "44px";
         }
       }
 
@@ -1953,7 +1953,7 @@ export default function Home() {
         if (elInput.value) {
           // Has input
           elInput.style.height = "auto";
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
+          elInput.style.height = `${elInput.scrollHeight}px`;
 
           // If input height is larger than the window height
           // then set it to window height
@@ -1962,7 +1962,7 @@ export default function Home() {
           }
         } else {
           // No input
-          elInput.style.height = "45px";
+          elInput.style.height = "44px";
         }
 
         // Store input height in fullscreen mode
