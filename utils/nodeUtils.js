@@ -213,6 +213,11 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
           error: "Invalid response format.",
         };
       }
+
+      // Use streamer to show output
+      if (streamOutput) {
+        streamOutput(data.message.content);
+      }
       
       return {
         success: true,
