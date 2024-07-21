@@ -319,6 +319,8 @@ export default function Home() {
   // Clear input
   const clearInput = () => {
     setInput("");
+    reAdjustInputHeight();
+    reAdjustPlaceholder();
   }
 
   // Clear hash tag
@@ -367,6 +369,12 @@ export default function Home() {
 
     // Set styles and themes
     const dispatchFullscreen = (mode, force = false) => {
+      const currentMode = localStorage.getItem('fullscreen');
+      if (currentMode.includes("force") && !force) {
+        // If current mode is forced, do not change it
+        return;
+      }
+
       localStorage.setItem('fullscreen', mode + (force ? " force" : ""));
       dispatch(toggleFullscreen(mode));
 
@@ -952,6 +960,7 @@ export default function Home() {
 
         if (xDiff > 0) {
           if (elTouch.className && (elTouch.className.indexOf("input") !== -1)) {
+            // If touch on input and swipe left, simulate ESC.
             simulateKeyPress("esc", document.getElementById('input'));
             return;
           }
@@ -973,6 +982,7 @@ export default function Home() {
           }
         } else {
           if (elTouch.className && (elTouch.className.indexOf("input") !== -1)) {
+            // If touch on input and swipe right, simulate TAB.
             simulateKeyPress("tab", document.getElementById('input'));
             return;
           }
@@ -1130,9 +1140,8 @@ export default function Home() {
     }
     global.rawPlaceholder = placeholder;
     
+    // Clear input
     clearInput();
-    reAdjustInputHeight();
-    reAdjustPlaceholder();
 
     // Command input
     if (!minimalist && input.startsWith(":")) {
@@ -1925,6 +1934,7 @@ export default function Home() {
   // For fullscreen split, the placeholder shouldn't be shorten
   const reAdjustPlaceholder = (fullscreen_ = null) => {
     if (!fullscreen_) fullscreen_ = localStorage.getItem("fullscreen");
+    fullscreen_ = fullscreen_.replace("force", "").trim();
     
     const placeholder = global.rawPlaceholder;
     const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? 
