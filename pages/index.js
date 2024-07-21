@@ -34,6 +34,7 @@ import { simulateKeyPress } from "utils/keyboardUtils";
 import { getSettings } from "utils/settingsUtils";
 import { getAutoCompleteOptions } from "utils/autocompleteUtils";
 import clear from "commands/clear";
+import { sleep } from "utils/sleepUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -1917,7 +1918,7 @@ export default function Home() {
     }
     
     // Re-adjust input height
-    reAdjustInputHeight();
+    reAdjustInputHeight(null, false);
   };
 
   // The placeholder should be shorten if fullscreen off or default
@@ -1931,28 +1932,44 @@ export default function Home() {
     setPlaceholder({ text: placeholderShortern, height: null });
   }
 
-  const reAdjustInputHeight = (fullscreen_ = null) => {
+  // The sleep 1 will magically fix the auto -> height issue
+  // But when input change, the height will jumping, so add doSleepToFixAuto param to control
+  const reAdjustInputHeight = (fullscreen_ = null, doSleepToFixAuto = true) => {
     const elInput = elInputRef.current;
     if (elInput) {
       if (!fullscreen_) fullscreen_ = fullscreen;
 
+      // Non-fullscreen
+      if (fullscreen_ === "off") {
+        elInput.style.height = "auto";
+        if (doSleepToFixAuto) {
+          // This sleep magically fixed the hight issue
+          sleep(1).then(() => {
+            elInput.style.height = `${elInput.scrollHeight + 1}px`;
+          });
+        } else {
+          elInput.style.height = `${elInput.scrollHeight + 1}px`;
+        }
+      }
+
       // Fullscreen
       if (fullscreen_ === "default") {
-        if (elInput.value) {
-          // Has input
-          elInput.style.height = "auto";
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
-
-          // If input height is larger than the window height
-          // then set it to window height
-          if (elInput.scrollHeight > window.innerHeight / 2) {
-            elInput.style.height = `${window.innerHeight / 2}px`;
-          }
+        elInput.style.height = "auto";
+        if (doSleepToFixAuto) {
+          // This sleep magically fixed the hight issue
+          sleep(1).then(() => {
+            elInput.style.height = `${elInput.scrollHeight + 1}px`;
+          });
         } else {
-          // No input
-          elInput.style.height = "45px";
+          elInput.style.height = `${elInput.scrollHeight + 1}px`;
         }
 
+        // If input height is larger than the window height
+        // then set it to window height
+        if (elInput.scrollHeight > window.innerHeight / 2) {
+          elInput.style.height = `${window.innerHeight / 2}px`;
+        }
+        
         // Store input height in fullscreen mode
         // To calculate the height of output wrapper
         document.documentElement.style.setProperty("--input-height", elInput.style.height);
@@ -1962,18 +1979,6 @@ export default function Home() {
       if (fullscreen_ === "split") {
         // Do nothing because the input height alwasy 100%
         elInput.style.height = "100%";
-      }
-
-      // Non-fullscreen
-      if (fullscreen_ === "off") {
-        if (elInput.value) {
-          // Has input
-          elInput.style.height = "auto";
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
-        } else {
-          // No input
-          elInput.style.height = "45px";
-        }
       }
     }
   }
