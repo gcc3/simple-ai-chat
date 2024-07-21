@@ -319,6 +319,8 @@ export default function Home() {
   // Clear input
   const clearInput = () => {
     setInput("");
+    reAdjustInputHeight();
+    reAdjustPlaceholder();
   }
 
   // Clear hash tag
@@ -958,6 +960,7 @@ export default function Home() {
 
         if (xDiff > 0) {
           if (elTouch.className && (elTouch.className.indexOf("input") !== -1)) {
+            // If touch on input and swipe left, simulate ESC.
             simulateKeyPress("esc", document.getElementById('input'));
             return;
           }
@@ -979,6 +982,7 @@ export default function Home() {
           }
         } else {
           if (elTouch.className && (elTouch.className.indexOf("input") !== -1)) {
+            // If touch on input and swipe right, simulate TAB.
             simulateKeyPress("tab", document.getElementById('input'));
             return;
           }
@@ -1136,9 +1140,8 @@ export default function Home() {
     }
     global.rawPlaceholder = placeholder;
     
+    // Clear input
     clearInput();
-    reAdjustInputHeight();
-    reAdjustPlaceholder();
 
     // Command input
     if (!minimalist && input.startsWith(":")) {
