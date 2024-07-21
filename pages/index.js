@@ -1931,6 +1931,7 @@ export default function Home() {
   // For fullscreen split, the placeholder shouldn't be shorten
   const reAdjustPlaceholder = (fullscreen_ = null) => {
     if (!fullscreen_) fullscreen_ = localStorage.getItem("fullscreen");
+    fullscreen_ = fullscreen_.replace("force", "").trim();
     
     const placeholder = global.rawPlaceholder;
     const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? 
