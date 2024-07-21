@@ -367,9 +367,13 @@ export default function Home() {
 
     // Set styles and themes
     const dispatchFullscreen = (mode, force = false) => {
-      const currentMode = localStorage.getItem('fullscreen');
+      // If current mode is forced, do not change it
+      // But adjust input height and placeholder
+      let currentMode = localStorage.getItem('fullscreen');
       if (currentMode.includes("force") && !force) {
-        // If current mode is forced, do not change it
+        currentMode = currentMode.replace("force", "").trim();
+        reAdjustInputHeight(currentMode); // Adjust input height
+        reAdjustPlaceholder(currentMode);  // Adjust placeholder
         return;
       }
 
