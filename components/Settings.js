@@ -55,18 +55,19 @@ function Settings() {
   }
 
   const handleSetLanguage = useCallback((newLang) => async () => {
-    if (user) {
-      await updateUserSettings("lang", newLang);
-    }
-
-    // lang
+    // Set language
     const lang = newLang.replace("force", "").trim()
     const i18nLang = lang.split("-")[0];
     i18n.changeLanguage(i18nLang)
-    .then(() => {
+    .then(async () => {
       console.log("Language: " + lang + ", i18n: " + i18n.language);
       console.log('Language test:', t('hello'));
       setRtl(i18nLang === "ar");
+
+      // Update user settings
+      if (user) {
+        await updateUserSettings("lang", newLang);
+      }
     });
   });
 
