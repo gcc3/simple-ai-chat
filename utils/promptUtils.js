@@ -32,6 +32,10 @@ const { model, model_v, role_content_system, welcome_message, querying, waiting,
   -1. Chat history
    0. User input
    1. Function calling result
+
+  Callback Functions:
+  1. updateStatus: function callback to update status
+  2. streamOutput: function callback to stream output from LLM
 */
 export async function generateMessages(use_system_role, lang,
                                        user, model, input, inputType, files, images,
@@ -294,6 +298,8 @@ export async function generateMessages(use_system_role, lang,
     // Get node info
     const nodeInfo = await findNode(node, user.username);
     const settings = JSON.parse(nodeInfo.settings);
+    console.log("override_output: " + settings.overrideOutputWithNodeResponse);
+    console.log("use_stream: " + settings.useStream);
 
     if (isNodeConfigured(settings)) {
       node_input = input;
@@ -339,13 +345,15 @@ export async function generateMessages(use_system_role, lang,
       // Start sending keep-alive messages
       const stopKeepAlive = await sendKeepAlive(updateStatus);
 
-      // Perform the query
+      // Prepare the query
       const histories = sessionLogs.reverse().map((log) => ({
         input: log.input,
         output: log.output,
       }))
       console.log("histories: " + JSON.stringify(histories));
       console.log("files: " + JSON.stringify(files));
+
+      // Query Node AI
       const queryNodeAIResult = await queryNodeAI(node_input, settings, histories, files_text, streamOutput);
 
       // Stop sending keep-alive messages
@@ -389,8 +397,6 @@ export async function generateMessages(use_system_role, lang,
           } else {
             content += queryNodeAIResult.result.text;
           }
-        } else {
-          content += "No result.";
         }
 
         if (content) {
@@ -401,6 +407,8 @@ export async function generateMessages(use_system_role, lang,
         }
         node_prompt += content;
       }
+    } else {
+      console.log("Node not configured.");
     }
 
     // Count tokens

@@ -20,6 +20,14 @@ export default async function (req, res) {
   }
   const { id, username } = authResult.user;
 
+  // Verify store name
+  if (!name) {
+    return res.status(400).json({ 
+      success: false, 
+      error: "Node `name` is required and cannot be empty." 
+    });
+  }
+
   // Check role existance
   const node = await findNode(name, username);
   if (!node) {

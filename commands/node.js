@@ -4,7 +4,7 @@ export default async function node(args) {
   const command = args[0];
   const usage = "Usage: :node [name?]\n" +
                 "       :node [ls|list]\n" +
-                "       :node use [name]\n" +
+                "       :node [use|unuse] [name]\n" +
                 "       :node reset\n" +
                 "       :node add [name]\n" +
                 "       :node [del|delete] [name]\n" +
@@ -154,9 +154,9 @@ export default async function node(args) {
   }
 
   // Use node
-  if (command === "use") {
+  if (command === "use" || command === "unuse") {
     if (args.length != 2) {
-      return "Usage: :node use [name]\n"
+      return "Usage: :node [use|unuse] [name]\n"
     }
 
     if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
@@ -168,32 +168,43 @@ export default async function node(args) {
       return "Invalid node name.";
     }
 
-    // Check if the node exists
-    try {
-      const response = await fetch("/api/node/" + nodeName, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    if (args[0] === "use") {
+      // Check if the node exists
+      try {
+        const response = await fetch("/api/node/" + nodeName, {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.error || new Error(`Request failed with status ${response.status}`);
+        }
+
+        if (!data.result) {
+          return "Node not found.";
+        }
+      } catch (error) {
+        console.error(error);
+        return error;
       }
 
-      if (!data.result) {
-        return "Node not found.";
-      }
-    } catch (error) {
-      console.error(error);
-      return error;
+      // Set node
+      sessionStorage.setItem("node", nodeName);
+
+      return "Node is set to \`" + nodeName + "\`, you can directly talk to it, or use command \`:generate [input]\` to generate from it. Command \`:node\` shows current node information.";
     }
 
-    // Set node
-    sessionStorage.setItem("node", nodeName);
+    if (args[0] === "unuse") {
+      if (sessionStorage.getItem("node") !== nodeName) {
+        return "Node `" + nodeName + "` is not being used.";
+      }
 
-    return "Node is set to \`" + nodeName + "\`, you can directly talk to it, or use command \`:generate [input]\` to generate from it. Command \`:node\` shows current node information.";
+      sessionStorage.setItem("node", "");
+      return "Node unset.";
+    }
   }
 
   // Reset node

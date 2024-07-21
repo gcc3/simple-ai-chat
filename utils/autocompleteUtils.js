@@ -38,7 +38,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     }
   }
 
-  if (prefix === ":node " || prefix === ":node use " || prefix === ":node delete " || prefix === ":node del ") {
+  if (prefix === ":node " || prefix === ":node use " || prefix === ":node unuse " || prefix === ":node delete " || prefix === ":node del ") {
     const response = await fetch("/api/node/list");
     const data = await response.json();
     if (response.status === 200 && data.success) {

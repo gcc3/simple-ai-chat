@@ -47,7 +47,7 @@ export function getNodeSettings(node) {
   return settings;
 }
 
-export function isMultimodalityNode(node) {
+export function isNodeMultimodalityContains(node, value) {
   if (!node) {
     return false;
   }
@@ -61,7 +61,7 @@ export function isMultimodalityNode(node) {
     return false;
   }
 
-  return settings.multimodality;
+  return settings.multimodality.includes(value);
 }
 
 export function doNodeOverrideOutput(node) {
@@ -88,58 +88,62 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
   }
 
   const endpoint = settings.endpoint;
-  const generateApi = settings.generateApi;
-  const generateSseApi = settings.generateSseApi;
-  const queryParameterForInput = settings.queryParameterForInput;
-  const queryParameterForHistories = settings.queryParameterForHistories;
-  const queryParameterForFiles = settings.queryParameterForFiles;
-  const stream = settings.stream;
+  const method = settings.method;
+  const multimodality = settings.multimodality;
+  const overrideOutputWithNodeResponse = settings.overrideOutputWithNodeResponse;
+  const useStream = settings.useStream;
   const model = settings.model;
+  const description = settings.description;
 
-  // Ollama compatible stream output
-  if (stream && streamOutput) {
-    let messages = [];
+  // I. Input
+  // Prepare messages
+  let messages = [];
 
-    // Files messages
-    if (files_text && files_text.length > 0) {
-      files_text.map((f) => {
-        messages.push({
-          role: 'system',
-          content: "File url: " + f.file + "\n" 
-                 + "File content: " + f.text
-        });
+  // -2. Files messages
+  if (files_text && files_text.length > 0) {
+    files_text.map((f) => {
+      messages.push({
+        role: 'system',
+        content: "File url: " + f.file + "\n" 
+                + "File content: " + f.text
       });
-    }
+    });
+  }
 
-    // History messages
-    if (histories && histories.length > 0) {
-      histories.map((h) => {
-        messages.push({ role: 'user', content: h.input });
-        messages.push({ role: 'assistant', content: h.output });
-      });
-    }
+  // -1. History messages
+  if (histories && histories.length > 0) {
+    histories.map((h) => {
+      messages.push({ role: 'user', content: h.input });
+      messages.push({ role: 'assistant', content: h.output });
+    });
+  }
 
-    // User messages
-    if (input) {
-      messages.push({ role: 'user', content: input });
-    }
+  // 0. User messages
+  if (input) {
+    messages.push({ role: 'user', content: input });
+  }
 
-    const response = await axios.post(endpoint + generateSseApi, {
+  // II. Output
+  // Result text
+  let result = "";
+
+  // III. Execute
+  // Stream output
+  if (useStream && streamOutput) {
+    const response = await axios.post(endpoint, {
       model: model,
       messages: messages,
     }, { responseType: 'stream' });
 
-    let result = "";
 
     // Convert the response stream into a readable stream
     const stream = Readable.from(response.data);
 
     // Handle the data event to process each JSON line
     return new Promise((resolve, reject) => {
-
       // Send the ENV
       if (model && model !== "") {
-        streamOutput(`###ENV###${model}`);
+        streamOutput(`###MODEL###${model}`);
       }
 
       // Handle the data event to process each JSON line
@@ -183,15 +187,19 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
     });
   }
 
-  if (!stream) {
+  // Non stream output
+  if (!useStream || !streamOutput) {
     try {
-      const response = await fetch(endpoint + generateApi + "?" + queryParameterForInput + "=" + encodeURIComponent(input) 
-                                                          + "&" + queryParameterForHistories + "=" + encodeURIComponent(JSON.stringify(histories))
-                                                          + "&" + queryParameterForFiles + "=" + encodeURIComponent(JSON.stringify(files_text)), {
-        method: "GET",
+      const response = await fetch(endpoint, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          model: model,
+          messages: messages,
+          stream: false,
+        }),
       });
     
       if (response.status !== 200 || !response.ok) {
@@ -203,19 +211,25 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
 
       const data = await response.json();
 
-      // Veryfy format
-      if (!data.result 
-      || (typeof data.result !== "string" && !data.result.text && !data.result.images)
-      || (data.result.images && !Array.isArray(data.result.images))) {
+      // Verify format
+      if (!data.message || !data.message.content) {
         return {
           success: false,
-          error: "Unexpected node response format.",
+          error: "Invalid response format.",
         };
+      }
+
+      // Set result
+      result = data.message.content;
+
+      // Use streamer to show output
+      if (streamOutput) {
+        streamOutput(data.message.content, model);
       }
       
       return {
         success: true,
-        result: data.result,
+        result: result,
       };
     } catch (error) {
       return {
@@ -226,39 +240,36 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
   }
 }
 
+// Check necessary settings
 export function isNodeConfigured(settings) {
-  if (!settings) {
-    return false;
-  }
-
-  if (!settings.endpoint || settings.endpoint === "___") {
-    return false;
-  }
-
-  if (settings.stream) {
-    if (!settings.generateSseApi || settings.generateSseApi === "___") {
-      return false;
-    }
-  }
-
-  if (!settings.stream) {
-    if (!settings.generateApi || settings.generateApi === "___") {
-      return false;
-    }
-
-    if (!settings.queryParameterForInput) {
-      return false;
-    }
-  }
-
+  if (!settings) return false;
+  if (!settings.endpoint || settings.endpoint === "___") return false;
+  if (!settings.method || settings.method === "___") return false;
   return true;
+}
+
+export function verifyNodeSettings(settings) {
+  const messages = [];
+
+  // Endpoint check
+  if (!settings.endpoint || settings.endpoint === "___") {
+    messages.push("Error: `endpoint` not set.");
+  }
+
+  // Method check
+  if (!settings.method || settings.method === "") {
+    messages.push("Error: `method` not set.");
+  } else if (settings.method !== "GET" && settings.method !== "POST") {
+    messages.push("Error: `method` must be either `GET` or `POST`.");
+  }
+
+  return messages;
 }
 
 export async function pingNode(settings) {
   if (!settings.endpoint || settings.endpoint === "___") {
     return "Endpoint not set.";
   }
-
   const endpoint = settings.endpoint;
 
   // Fetch from endpoint
@@ -312,16 +323,12 @@ export async function getAvailableNodesForUser(user) {
 // Settings and initial values
 export function getInitNodeSettings() {
   return {
-    "endpoint": "___",
-    "generateApi": "___",
-    "generateSseApi": "___",
-    "queryParameterForInput": "input",
-    "queryParameterForHistories": "histories",
-    "queryParameterForFiles": "files",
-    "multimodality": false,
-    "overrideOutputWithNodeResponse": false,
-    "stream": false,
-    "model": "",  // optional, if the endpoint support multipe models
+    "endpoint": "___",                         // the full endpoint of the node, example: "http://localhost:5000/api/chat"
+    "method": "GET",                           // the method of endpont, if use GET, the input is in query parameters, if use POST, the input is in body
+    "multimodality": "",                       // multimodality of input, like image, audio, video input, example: "image,audio"
+    "overrideOutputWithNodeResponse": false,   // If set to true, the output will only use node response.
+    "useStream": false,                        // Streamed output
+    "model": "",                               // Optional, if the endpoint support multipe models
     "description": "",
   };
 }

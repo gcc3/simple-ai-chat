@@ -14,6 +14,7 @@ export default async function generate(args) {
 
   const input = args[0].slice(1, -1);
   try {
+    // Simple non-stream generation
     const response = await fetch("/api/node/generate", {
       method: "POST",
       headers: {
@@ -31,28 +32,7 @@ export default async function generate(args) {
     }
 
     if (data.success) {
-      if (data.result) {
-        let result = "";
-
-        if (typeof data.result === "string") {
-          result += data.result;
-        } else if (data.result.text) {
-
-          if (data.result.images) {
-            for (let i = 0; i < data.result.images.length; i++) {
-              result += "+img[" + data.result.images[i] + "]" + " ";
-            }
-          }
-
-          result += data.result.text;
-        } else {
-          result += "Result fomat error.";
-        }
-
-        return result;
-      } else {
-        return "No result.";
-      }
+      return data.result;
     } else {
       return data.error;
     }

@@ -31,91 +31,14 @@ Node (AI Node)
 --------------
 
 Simple AI is able to link to another support AI or data source.  
+The API format will use a OpenAI compitible format.  
 To use AI links, set `USE_NODE_AI` to `true`.  
 
-API format
-
-1. Non-stream
-
-* Request
-
-Will be sent from Simple AI to your node as following format:  
-
-GET `http://endpoint_url?query_parameter_for_input=query_string&histories=history_json_string&files=files_text_json_string&images=images_json_string`  
-
-`histories` format
-
-```
-[
-  {
-    input: history_input,
-    output: history_output
-  }
-]
-```
-
-`files_text` format
-
-```
-[
-  {
-    file: file_url,
-    text: text_content
-  }
-]
-```
-
-`images` format
-
-```
-[
-  {
-    image: image_url,
-  }
-]
-```
-
-Response
-
-Any API response format as following can be treated as a `node`:  
-
-Simply a text:  
+* Request example:  
 
 ```
 {
-  "result": "Sample result text."
-}
-```
-
-Or a more complex:  
-
-```
-{
-  "result": {
-    "text": "Sample result text.",
-    "images": [
-      {
-        "image_url": "image_url_1",
-      }
-    ],
-    "files": [
-      {
-        "url": "file_url_1",
-      }
-    ]
-  }
-}
-```
-
-2. Stream  
-
-A OpenAI compitable API.  
-
-* Request  
-
-```
-{
-  "model": "llama2",
+  "model": "llama3",
   "messages": [
     {
       "role": "system",
@@ -123,20 +46,22 @@ A OpenAI compitable API.
     },
     {
       "role": "user",
-      "content": "what are you doing"
+      "content": "Hi."
     },
     {
       "role": "assistant",
-      "content": "Hello"
+      "content": "Hi! It's nice to meet you. Is there something I can help you with or would you like to chat?"
+    },
+    {
+      "role": "user",
+      "content": "What can you do?"
     }
-    ...
-  ]
+  ],
+  "stream": false
 }
 ```
 
-* Response
-
-Stream chuck contains
+* Response example  
 
 ```
 {
@@ -149,17 +74,7 @@ Stream chuck contains
 
 * Ollama support  
 
-[Ollama](https://ollama.com/) compatible APIs are supported by Simple AI. Both stream or non-stream mode.  
-Ollama support opensource models like: Llama2 by Meta, or Gemma by Google.  
-Ollama model can be treated as a Node.  
-
-* Repositories are provided for building nodes:  
-
-[simple-ai-node](https://github.com/gcc3/simple-ai-node)  
-[simple-ai-ernie](https://github.com/gcc3/simple-ai-ernie)  
-
-A node hub is provided for use multipe nodes simultaneously.  
-[simple-ai-hub](https://github.com/gcc3/simple-ai-hub)  
+[Ollama](https://ollama.com/) compatible APIs are supported by Simple AI with Node feature. Both stream or non-stream mode.  
 
 
 Setup

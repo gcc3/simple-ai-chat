@@ -10,7 +10,7 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { doNodeOverrideOutput, findNode, isMultimodalityNode } from "utils/nodeUtils";
+import { doNodeOverrideOutput, findNode, isNodeMultimodalityContains } from "utils/nodeUtils";
 import { ensureSession } from "utils/logUtils";
 
 // OpenAI
@@ -83,9 +83,13 @@ export default async function (req, res) {
   updateStatus("Preparing...");
 
   // Stream output
-  const streamOutput = (message) => {
+  const streamOutput = (message, model = null) => {
     message = message.replaceAll("\n", "###RETURN###");
     res.write(`data: ${message}\n\n`); res.flush();
+
+    if (model) {
+      res.write(`data: ###MODEL###${model}\n\n`); res.flush();
+    }
   }
   
   // Session ID
@@ -121,19 +125,17 @@ export default async function (req, res) {
   }
 
   // If input is all empty, return
-  if (input.trim().length === 0 
-   && images.length == 0
-   && files.length == 0) {
+  if (input.trim().length === 0 && images.length == 0 && files.length == 0) {
     console.log("Input is empty.");
     return;
-   }
+  }
 
   // Load node
   const nodeInfo = user && await findNode(node, user.username);
 
   // Model switch
   // For Midjourney node, use version model to input image to AI.
-  const use_vision = images.length > 0 || isMultimodalityNode(nodeInfo);
+  const use_vision = images.length > 0 || isNodeMultimodalityContains(nodeInfo, "image");
   const model = use_vision ? model_v : model_;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
@@ -305,7 +307,7 @@ export default async function (req, res) {
         }
 
         // Print for non-stream
-        if (!settings.stream) {
+        if (!settings.useStream) {
           let nodeOutput = raw_prompt["node"];
           if (nodeOutput) {
             nodeOutput = nodeOutput.trim().replaceAll("\n", "###RETURN###");
@@ -313,7 +315,7 @@ export default async function (req, res) {
 
             // model
             if (settings.model && settings.model !== "") {
-              res.write(`data: ###ENV###${settings.model}\n\n`); res.flush();
+              res.write(`data: ###MODEL###${settings.model}\n\n`); res.flush();
             }
 
             // text output
@@ -322,10 +324,10 @@ export default async function (req, res) {
         }
 
         // Print stream
-        if (settings.stream) {
+        if (settings.useStream) {
           // model
           if (settings.model && settings.model !== "") {
-            res.write(`data: ###ENV###${settings.model}\n\n`); res.flush();
+            res.write(`data: ###MODEL###${settings.model}\n\n`); res.flush();
           }
         }
 
@@ -377,7 +379,7 @@ export default async function (req, res) {
       })
     });
 
-    res.write(`data: ###ENV###${model}\n\n`);
+    res.write(`data: ###MODEL###${model}\n\n`);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
 
     // Print input images

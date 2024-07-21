@@ -448,6 +448,21 @@ export default function Home() {
     window.addEventListener('resize', handleResize);
     handleResize();
 
+    // Attach to session
+    const attachSession = (session) => {
+      setSession(session.id);
+      setTime(session.id);
+
+      // Truncate input and output characters
+      session.logs.map(item => {
+        if (item.input.length > 150) item.input = item.input.substring(0, 150) + " ...";
+        if (item.output.length > 150) item.output = item.output.substring(0, 150) + " ...";
+        return item;
+      });
+
+      printOutput(`Session (id:${session.id}) attached. Use \`→\` and \`←\` (or \`j\` and \`k\`) to navigate between session logs (length:${session.length}).\n\nPreview:\n` + JSON.stringify(session.logs, null, 2));
+    }
+
     // Handle global shortcut keys
     const handleKeyDown = (event) => {
 
@@ -601,9 +616,7 @@ export default function Home() {
                     return;
                   } else {
                     // Attach to it
-                    setSession(session.id);
-                    setTime(session.id);
-                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
+                    attachSession(session);
                   }
                 });
             } else {
@@ -636,9 +649,7 @@ export default function Home() {
                     return;
                   } else {
                     // Attach to it
-                    setSession(session.id);
-                    setTime(session.id);
-                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
+                    attachSession(session);
                   }
                 });
             } else {
@@ -691,9 +702,7 @@ export default function Home() {
                     return;
                   } else {
                     // Attach to it
-                    setSession(session.id);
-                    setTime(session.id);
-                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
+                    attachSession(session);
                   }
                 });
             } else {
@@ -726,9 +735,7 @@ export default function Home() {
                     return;
                   } else {
                     // Attach to it
-                    setSession(session.id);
-                    setTime(session.id);
-                    printOutput(`Session (id:${session.id}) attached. Use \`→\` or \`←\` to navigate between session logs (length:${session.length}).\n\n` + JSON.stringify(session.logs, null, 2));
+                    attachSession(session);
                   }
                 });
             } else {
@@ -1377,19 +1384,15 @@ export default function Home() {
 
     const session = sessionStorage.getItem("session");
     const time = sessionStorage.getItem("time");
-
     const mem_length = sessionStorage.getItem("memLength");
-
     const functions = localStorage.getItem("functions");
     const role = sessionStorage.getItem("role");
     const store = sessionStorage.getItem("store");
     const node = sessionStorage.getItem("node");
-
     const use_stats = localStorage.getItem("useStats");
     const use_eval = localStorage.getItem("useEval");
     const use_location = localStorage.getItem("useLocation");
     const location = localStorage.getItem("location");
-
     const lang = localStorage.getItem("lang").replace("force", "").trim();
     const use_system_role = localStorage.getItem("useSystemRole");
 
@@ -1444,9 +1447,9 @@ export default function Home() {
         return;
       }
 
-      // I. Handle the environment info
-      if (event.data.startsWith("###ENV###")) {
-        const _env_ = event.data.replace("###ENV###", "").split(',');
+      // I. Handle the llm's model name (lower case)
+      if (event.data.startsWith("###MODEL###")) {
+        const _env_ = event.data.replace("###MODEL###", "").split(',');
         const model = _env_[0];
         !minimalist && setInfo((
           <div>
@@ -1546,11 +1549,13 @@ export default function Home() {
         const _status_ = event.data.replace("###STATUS###", "");
         console.log("Status: " + _status_);
 
+        // 1. Store
         // For store print "Searching..."
         if (_status_.startsWith("Start searching...")) {
           printOutput(searching);
         }
 
+        // 2. Node
         // For node print "Generating...", because it will be slow.
         if (node && (_status_.startsWith("Start pre-generating...") || _status_.startsWith("Start generating..."))) {
           printOutput(generating);
@@ -1570,6 +1575,7 @@ export default function Home() {
           }
         }
 
+        // 3. Other
         // Sometime the function calling make it pause
         if (_status_.startsWith("Create chat completion.")) {
           printOutput(generating);
@@ -1876,6 +1882,7 @@ export default function Home() {
         autocomplete(":store delete ", true);
         autocomplete(":node ", true);
         autocomplete(":node use ", true);
+        autocomplete(":node unuse ", true);
         autocomplete(":node set ", false);
         autocomplete(":node del ", true);
         autocomplete(":node delete ", true);
