@@ -395,8 +395,6 @@ export async function generateMessages(use_system_role, lang,
           } else {
             content += queryNodeAIResult.result.text;
           }
-        } else {
-          content += "No result.";
         }
 
         if (content) {
