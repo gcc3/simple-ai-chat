@@ -98,34 +98,35 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
   const model = settings.model;
   const description = settings.description;
 
+  // Prepare messages
+  let messages = [];
+
+  // -2. Files messages
+  if (files_text && files_text.length > 0) {
+    files_text.map((f) => {
+      messages.push({
+        role: 'system',
+        content: "File url: " + f.file + "\n" 
+                + "File content: " + f.text
+      });
+    });
+  }
+
+  // -1. History messages
+  if (histories && histories.length > 0) {
+    histories.map((h) => {
+      messages.push({ role: 'user', content: h.input });
+      messages.push({ role: 'assistant', content: h.output });
+    });
+  }
+
+  // 0. User messages
+  if (input) {
+    messages.push({ role: 'user', content: input });
+  }
+
   // Stream output
   if (useStream && streamOutput) {
-    let messages = [];
-
-    // Files messages
-    if (files_text && files_text.length > 0) {
-      files_text.map((f) => {
-        messages.push({
-          role: 'system',
-          content: "File url: " + f.file + "\n" 
-                 + "File content: " + f.text
-        });
-      });
-    }
-
-    // History messages
-    if (histories && histories.length > 0) {
-      histories.map((h) => {
-        messages.push({ role: 'user', content: h.input });
-        messages.push({ role: 'assistant', content: h.output });
-      });
-    }
-
-    // User messages
-    if (input) {
-      messages.push({ role: 'user', content: input });
-    }
-
     const response = await axios.post(endpoint, {
       model: model,
       messages: messages,
@@ -187,13 +188,16 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
   // Non stream output
   if (!useStream || !streamOutput) {
     try {
-      const response = await fetch(endpoint + "?" + queryParameterForInput + "=" + encodeURIComponent(input) 
-                                            + "&" + queryParameterForHistories + "=" + encodeURIComponent(JSON.stringify(histories))
-                                            + "&" + queryParameterForFiles + "=" + encodeURIComponent(JSON.stringify(files_text)), {
-        method: "GET",
+      const response = await fetch(endpoint, {
+        method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          model: model,
+          messages: messages,
+          stream: false,
+        }),
       });
     
       if (response.status !== 200 || !response.ok) {
@@ -206,18 +210,16 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
       const data = await response.json();
 
       // Verify format
-      if (!data.result 
-      || (typeof data.result !== "string" && !data.result.text && !data.result.images)
-      || (data.result.images && !Array.isArray(data.result.images))) {
+      if (!data.message || !data.message.content) {
         return {
           success: false,
-          error: "Unexpected node response format.",
+          error: "Invalid response format.",
         };
       }
       
       return {
         success: true,
-        result: data.result,
+        result: data,
       };
     } catch (error) {
       return {

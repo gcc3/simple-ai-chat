@@ -42,10 +42,10 @@ export default async function handler(req, res) {
 
     // Query
     console.log("Querying node...");
-    const queryResult = await queryNodeAI(input, settings);
+    const response = await queryNodeAI(input, settings);
 
     // Return result
-    if (!queryResult.success) {
+    if (!response.success) {
       res.status(400).json({
         success: false,
         error: "An error occurred during your request.",
@@ -53,11 +53,10 @@ export default async function handler(req, res) {
       return;
     }
     
-    console.log("Query Result:\n" + JSON.stringify(queryResult, null, 2));
+    console.log("Query response:\n" + JSON.stringify(response, null, 2));
     res.status(200).json({
       success: true,
-      message: queryResult.message,
-      result: queryResult.result
+      result: response.result
     });
   } catch (error) {
     console.error(error);
