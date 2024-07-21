@@ -1447,9 +1447,9 @@ export default function Home() {
         return;
       }
 
-      // I. Handle the environment info
-      if (event.data.startsWith("###ENV###")) {
-        const _env_ = event.data.replace("###ENV###", "").split(',');
+      // I. Handle the llm's model name (lower case)
+      if (event.data.startsWith("###MODEL###")) {
+        const _env_ = event.data.replace("###MODEL###", "").split(',');
         const model = _env_[0];
         !minimalist && setInfo((
           <div>

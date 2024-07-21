@@ -83,9 +83,13 @@ export default async function (req, res) {
   updateStatus("Preparing...");
 
   // Stream output
-  const streamOutput = (message) => {
+  const streamOutput = (message, model = null) => {
     message = message.replaceAll("\n", "###RETURN###");
     res.write(`data: ${message}\n\n`); res.flush();
+
+    if (model) {
+      res.write(`data: ###MODEL###${model}\n\n`); res.flush();
+    }
   }
   
   // Session ID
@@ -311,7 +315,7 @@ export default async function (req, res) {
 
             // model
             if (settings.model && settings.model !== "") {
-              res.write(`data: ###ENV###${settings.model}\n\n`); res.flush();
+              res.write(`data: ###MODEL###${settings.model}\n\n`); res.flush();
             }
 
             // text output
@@ -323,7 +327,7 @@ export default async function (req, res) {
         if (settings.useStream) {
           // model
           if (settings.model && settings.model !== "") {
-            res.write(`data: ###ENV###${settings.model}\n\n`); res.flush();
+            res.write(`data: ###MODEL###${settings.model}\n\n`); res.flush();
           }
         }
 
@@ -375,7 +379,7 @@ export default async function (req, res) {
       })
     });
 
-    res.write(`data: ###ENV###${model}\n\n`);
+    res.write(`data: ###MODEL###${model}\n\n`);
     res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
 
     // Print input images

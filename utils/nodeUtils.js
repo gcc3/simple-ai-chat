@@ -138,7 +138,7 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
     return new Promise((resolve, reject) => {
       // Send the ENV
       if (model && model !== "") {
-        streamOutput(`###ENV###${model}`);
+        streamOutput(`###MODEL###${model}`);
       }
 
       // Handle the data event to process each JSON line
@@ -216,7 +216,7 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
 
       // Use streamer to show output
       if (streamOutput) {
-        streamOutput(data.message.content);
+        streamOutput(data.message.content, model);
       }
       
       return {
