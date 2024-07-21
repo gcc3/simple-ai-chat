@@ -1883,6 +1883,7 @@ export default function Home() {
         autocomplete(":store delete ", true);
         autocomplete(":node ", true);
         autocomplete(":node use ", true);
+        autocomplete(":node unuse ", true);
         autocomplete(":node set ", false);
         autocomplete(":node del ", true);
         autocomplete(":node delete ", true);

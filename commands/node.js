@@ -154,7 +154,7 @@ export default async function node(args) {
   }
 
   // Use node
-  if (command === "use") {
+  if (command === "use" || command === "unuse") {
     if (args.length != 2) {
       return "Usage: :node [use|unuse] [name]\n"
     }
@@ -199,11 +199,11 @@ export default async function node(args) {
 
     if (args[0] === "unuse") {
       if (sessionStorage.getItem("node") !== nodeName) {
-        return "Node is not set.";
+        return "Node `" + nodeName + "` is not being used.";
       }
 
       sessionStorage.setItem("node", "");
-      return "Node is unset.";
+      return "Node unset.";
     }
   }
 
