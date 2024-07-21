@@ -367,6 +367,12 @@ export default function Home() {
 
     // Set styles and themes
     const dispatchFullscreen = (mode, force = false) => {
+      const currentMode = localStorage.getItem('fullscreen');
+      if (currentMode.includes("force") && !force) {
+        // If current mode is forced, do not change it
+        return;
+      }
+
       localStorage.setItem('fullscreen', mode + (force ? " force" : ""));
       dispatch(toggleFullscreen(mode));
 
