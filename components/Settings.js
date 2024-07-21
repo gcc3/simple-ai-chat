@@ -7,6 +7,7 @@ function Settings() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [languages, setLanguages] = useState([]);
+  const [lang, setLang] = useState(null);
   const [message, setMessage] = useState(null);
 
   const { t, i18n, ready } = useTranslation("settings");
@@ -30,6 +31,9 @@ function Settings() {
     } else {
       setLoading(false);
     }
+
+    // Set initial language
+    setLang(localStorage.getItem("lang").replace("force", "").trim());
   }, []);
 
   const updateUserSettings = async (key, value) => {
@@ -56,11 +60,12 @@ function Settings() {
 
   const handleSetLanguage = useCallback((newLang) => async () => {
     // Set language
-    const lang = newLang.replace("force", "").trim()
-    const i18nLang = lang.split("-")[0];
+    const lang_ = newLang.replace("force", "").trim()
+    setLang(lang_);
+    const i18nLang = lang_.split("-")[0];
     i18n.changeLanguage(i18nLang)
     .then(async () => {
-      console.log("Language: " + lang + ", i18n: " + i18n.language);
+      console.log("Language: " + lang_ + ", i18n: " + i18n.language);
       console.log('Language test:', t('hello'));
       setRtl(i18nLang === "ar");
 
@@ -69,7 +74,7 @@ function Settings() {
         await updateUserSettings("lang", newLang);
       }
     });
-  });
+  }, [i18n, t, user]);
 
   const handleSubscribe = useCallback((subscription) => async () => {
     const response = await fetch("/api/user/update/email-subscription?" + new URLSearchParams({
@@ -92,7 +97,7 @@ function Settings() {
       console.log("Email subscription updated.");
       setMessage(t(data.message));
     }
-  });
+  }, [user, t]);
 
   const content = (
     <>
@@ -102,8 +107,15 @@ function Settings() {
       {languages && <div>
         <div className="mt-3">- {t("Language")}</div>
         <div className="flex flex-wrap items-center mt-2">
-          {languages.map((lang) => (
-            <button className="ml-2 mb-1" key={lang.language_code} onClick={handleSetLanguage(lang.language_code + " force")}>{lang.native_name}</button>
+          {languages.map((l) => (
+            <button 
+              className="ml-2 mb-1" 
+              key={l.language_code} 
+              onClick={handleSetLanguage(l.language_code + " force")} 
+              style={{ backgroundColor: l.language_code == lang ? '#EAEAEA' : '' }}
+            >
+              {l.native_name}
+            </button>
           ))}
         </div>
       </div>}
