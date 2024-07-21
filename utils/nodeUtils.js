@@ -95,6 +95,7 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
   const model = settings.model;
   const description = settings.description;
 
+  // I. Input
   // Prepare messages
   let messages = [];
 
@@ -122,6 +123,11 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
     messages.push({ role: 'user', content: input });
   }
 
+  // II. Output
+  // Result text
+  let result = "";
+
+  // III. Execute
   // Stream output
   if (useStream && streamOutput) {
     const response = await axios.post(endpoint, {
@@ -129,7 +135,6 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
       messages: messages,
     }, { responseType: 'stream' });
 
-    let result = "";
 
     // Convert the response stream into a readable stream
     const stream = Readable.from(response.data);
@@ -214,6 +219,9 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
         };
       }
 
+      // Set result
+      result = data.message.content;
+
       // Use streamer to show output
       if (streamOutput) {
         streamOutput(data.message.content, model);
@@ -221,7 +229,7 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
       
       return {
         success: true,
-        result: data,
+        result: result,
       };
     } catch (error) {
       return {

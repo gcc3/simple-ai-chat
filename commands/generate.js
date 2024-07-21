@@ -32,7 +32,7 @@ export default async function generate(args) {
     }
 
     if (data.success) {
-      return JSON.stringify(data.result, null, 2);
+      return data.result;
     } else {
       return data.error;
     }
