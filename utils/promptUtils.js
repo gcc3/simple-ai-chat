@@ -339,13 +339,15 @@ export async function generateMessages(use_system_role, lang,
       // Start sending keep-alive messages
       const stopKeepAlive = await sendKeepAlive(updateStatus);
 
-      // Perform the query
+      // Prepare the query
       const histories = sessionLogs.reverse().map((log) => ({
         input: log.input,
         output: log.output,
       }))
       console.log("histories: " + JSON.stringify(histories));
       console.log("files: " + JSON.stringify(files));
+
+      // Query Node AI
       const queryNodeAIResult = await queryNodeAI(node_input, settings, histories, files_text, streamOutput);
 
       // Stop sending keep-alive messages
@@ -401,6 +403,8 @@ export async function generateMessages(use_system_role, lang,
         }
         node_prompt += content;
       }
+    } else {
+      console.log("Node not configured.");
     }
 
     // Count tokens

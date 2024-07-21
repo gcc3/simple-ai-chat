@@ -28,8 +28,9 @@ export default async function (req, res) {
   }
 
   // Input and validation
+  // value is allowed to be empty string
   const { key, value } = req.body;
-  if (!key || !value) {
+  if (!key || value == null) {
     return res.status(400).json({ 
       success: false,
       error: '`key` and `value` are required.' 
