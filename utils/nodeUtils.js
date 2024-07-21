@@ -91,9 +91,6 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
   const method = settings.method;
   const multimodality = settings.multimodality;
   const overrideOutputWithNodeResponse = settings.overrideOutputWithNodeResponse;
-  const queryParameterForInput = settings.queryParameterForInput;
-  const queryParameterForHistories = settings.queryParameterForHistories;
-  const queryParameterForFiles = settings.queryParameterForFiles;
   const useStream = settings.useStream;
   const model = settings.model;
   const description = settings.description;
@@ -315,9 +312,6 @@ export function getInitNodeSettings() {
   return {
     "endpoint": "___",                         // the full endpoint of the node, example: "http://localhost:5000/api/chat"
     "method": "GET",                           // the method of endpont, if use GET, the input is in query parameters, if use POST, the input is in body
-    "queryParameterForInput": "input",
-    "queryParameterForHistories": "histories",
-    "queryParameterForFiles": "files",
     "multimodality": "",                       // multimodality of input, like image, audio, video input, example: "image,audio"
     "overrideOutputWithNodeResponse": false,   // If set to true, the output will only use node response.
     "useStream": false,                        // Streamed output
