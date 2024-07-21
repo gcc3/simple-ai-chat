@@ -298,6 +298,8 @@ export async function generateMessages(use_system_role, lang,
     // Get node info
     const nodeInfo = await findNode(node, user.username);
     const settings = JSON.parse(nodeInfo.settings);
+    console.log("override_output: " + settings.overrideOutputWithNodeResponse);
+    console.log("use_stream: " + settings.useStream);
 
     if (isNodeConfigured(settings)) {
       node_input = input;
