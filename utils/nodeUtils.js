@@ -47,7 +47,7 @@ export function getNodeSettings(node) {
   return settings;
 }
 
-export function isMultimodalityNode(node) {
+export function isNodeMultimodalityContains(node, value) {
   if (!node) {
     return false;
   }
@@ -61,7 +61,7 @@ export function isMultimodalityNode(node) {
     return false;
   }
 
-  return settings.multimodality;
+  return settings.multimodality.includes(value);
 }
 
 export function doNodeOverrideOutput(node) {
@@ -88,13 +88,15 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
   }
 
   const endpoint = settings.endpoint;
-  const generateApi = settings.generateApi;
-  const generateSseApi = settings.generateSseApi;
+  const method = settings.method;
+  const multimodality = settings.multimodality;
+  const overrideOutputWithNodeResponse = settings.overrideOutputWithNodeResponse;
   const queryParameterForInput = settings.queryParameterForInput;
   const queryParameterForHistories = settings.queryParameterForHistories;
   const queryParameterForFiles = settings.queryParameterForFiles;
   const useStream = settings.useStream;
   const model = settings.model;
+  const description = settings.description;
 
   // Stream output
   if (useStream && streamOutput) {
@@ -124,7 +126,7 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
       messages.push({ role: 'user', content: input });
     }
 
-    const response = await axios.post(endpoint + generateSseApi, {
+    const response = await axios.post(endpoint, {
       model: model,
       messages: messages,
     }, { responseType: 'stream' });
@@ -136,7 +138,6 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
 
     // Handle the data event to process each JSON line
     return new Promise((resolve, reject) => {
-
       // Send the ENV
       if (model && model !== "") {
         streamOutput(`###ENV###${model}`);
@@ -186,9 +187,9 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
   // Non stream output
   if (!useStream || !streamOutput) {
     try {
-      const response = await fetch(endpoint + generateApi + "?" + queryParameterForInput + "=" + encodeURIComponent(input) 
-                                                          + "&" + queryParameterForHistories + "=" + encodeURIComponent(JSON.stringify(histories))
-                                                          + "&" + queryParameterForFiles + "=" + encodeURIComponent(JSON.stringify(files_text)), {
+      const response = await fetch(endpoint + "?" + queryParameterForInput + "=" + encodeURIComponent(input) 
+                                            + "&" + queryParameterForHistories + "=" + encodeURIComponent(JSON.stringify(histories))
+                                            + "&" + queryParameterForFiles + "=" + encodeURIComponent(JSON.stringify(files_text)), {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -204,7 +205,7 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
 
       const data = await response.json();
 
-      // Veryfy format
+      // Verify format
       if (!data.result 
       || (typeof data.result !== "string" && !data.result.text && !data.result.images)
       || (data.result.images && !Array.isArray(data.result.images))) {
@@ -227,39 +228,36 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
   }
 }
 
+// Check necessary settings
 export function isNodeConfigured(settings) {
-  if (!settings) {
-    return false;
-  }
-
-  if (!settings.endpoint || settings.endpoint === "___") {
-    return false;
-  }
-
-  if (settings.useStream) {
-    if (!settings.generateSseApi || settings.generateSseApi === "___") {
-      return false;
-    }
-  }
-
-  if (!settings.useStream) {
-    if (!settings.generateApi || settings.generateApi === "___") {
-      return false;
-    }
-
-    if (!settings.queryParameterForInput) {
-      return false;
-    }
-  }
-
+  if (!settings) return false;
+  if (!settings.endpoint || settings.endpoint === "___") return false;
+  if (!settings.method || settings.method === "___") return false;
   return true;
+}
+
+export function verifyNodeSettings(settings) {
+  const messages = [];
+
+  // Endpoint check
+  if (!settings.endpoint || settings.endpoint === "___") {
+    messages.push("Error: `endpoint` not set.");
+  }
+
+  // Method check
+  if (!settings.method || settings.method === "") {
+    messages.push("Error: `method` not set.");
+  } else if (settings.method !== "GET" && settings.method !== "POST") {
+    messages.push("Error: `method` must be either `GET` or `POST`.");
+  }
+
+  return messages;
 }
 
 export async function pingNode(settings) {
   if (!settings.endpoint || settings.endpoint === "___") {
     return "Endpoint not set.";
   }
-
   const endpoint = settings.endpoint;
 
   // Fetch from endpoint
@@ -313,16 +311,15 @@ export async function getAvailableNodesForUser(user) {
 // Settings and initial values
 export function getInitNodeSettings() {
   return {
-    "endpoint": "___",
-    "generateApi": "___",
-    "generateSseApi": "___",
+    "endpoint": "___",                         // the full endpoint of the node, example: "http://localhost:5000/api/chat"
+    "method": "GET",                           // the method of endpont, if use GET, the input is in query parameters, if use POST, the input is in body
     "queryParameterForInput": "input",
     "queryParameterForHistories": "histories",
     "queryParameterForFiles": "files",
-    "multimodality": false,
-    "overrideOutputWithNodeResponse": false,
-    "useStream": false,
-    "model": "",  // optional, if the endpoint support multipe models
+    "multimodality": "",                       // multimodality of input, like image, audio, video input, example: "image,audio"
+    "overrideOutputWithNodeResponse": false,   // If set to true, the output will only use node response.
+    "useStream": false,                        // Streamed output
+    "model": "",                               // Optional, if the endpoint support multipe models
     "description": "",
   };
 }

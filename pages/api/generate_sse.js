@@ -10,7 +10,7 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { doNodeOverrideOutput, findNode, isMultimodalityNode } from "utils/nodeUtils";
+import { doNodeOverrideOutput, findNode, isNodeMultimodalityContains } from "utils/nodeUtils";
 import { ensureSession } from "utils/logUtils";
 
 // OpenAI
@@ -121,19 +121,17 @@ export default async function (req, res) {
   }
 
   // If input is all empty, return
-  if (input.trim().length === 0 
-   && images.length == 0
-   && files.length == 0) {
+  if (input.trim().length === 0 && images.length == 0 && files.length == 0) {
     console.log("Input is empty.");
     return;
-   }
+  }
 
   // Load node
   const nodeInfo = user && await findNode(node, user.username);
 
   // Model switch
   // For Midjourney node, use version model to input image to AI.
-  const use_vision = images.length > 0 || isMultimodalityNode(nodeInfo);
+  const use_vision = images.length > 0 || isNodeMultimodalityContains(nodeInfo, "image");
   const model = use_vision ? model_v : model_;
   const use_eval = use_eval_ && use_stats && !use_vision;
 

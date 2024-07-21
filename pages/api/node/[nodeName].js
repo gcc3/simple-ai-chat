@@ -1,5 +1,5 @@
 import { authenticate } from 'utils/authUtils';
-import { isNodeConfigured, pingNode } from 'utils/nodeUtils';
+import { isNodeConfigured, verifyNodeSettings, pingNode } from 'utils/nodeUtils';
 import { findNode } from 'utils/nodeUtils';
 
 export default async function (req, res) {
@@ -35,6 +35,7 @@ export default async function (req, res) {
           status: {
             ping: await pingNode(settings),
             configured: isNodeConfigured(settings),
+            messages: verifyNodeSettings(settings),
           }
         },
       });
