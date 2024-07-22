@@ -1953,7 +1953,7 @@ export default function Home() {
 
   // The sleep 1 will magically fix the auto -> height issue
   // But when input change, the height will jumping, so add doSleepToFixAuto param to control
-  const reAdjustInputHeight = (fullscreen_ = null, doSleepToFixAuto = true) => {
+  const reAdjustInputHeight = async (fullscreen_ = null, doSleepToFixAuto = true) => {
     const elInput = elInputRef.current;
     if (elInput) {
       if (!fullscreen_) fullscreen_ = fullscreen;
@@ -1963,9 +1963,8 @@ export default function Home() {
         elInput.style.height = "auto";
         if (doSleepToFixAuto) {
           // This sleep magically fixed the hight issue
-          sleep(1).then(() => {
-            elInput.style.height = `${elInput.scrollHeight + 1}px`;
-          });
+          await sleep(1)
+          elInput.style.height = `${elInput.scrollHeight + 1}px`;
         } else {
           elInput.style.height = `${elInput.scrollHeight + 1}px`;
         }
@@ -1976,9 +1975,8 @@ export default function Home() {
         elInput.style.height = "auto";
         if (doSleepToFixAuto) {
           // This sleep magically fixed the hight issue
-          sleep(1).then(() => {
-            elInput.style.height = `${elInput.scrollHeight + 1}px`;
-          });
+          await sleep(1)
+          elInput.style.height = `${elInput.scrollHeight + 1}px`;
         } else {
           elInput.style.height = `${elInput.scrollHeight + 1}px`;
         }
