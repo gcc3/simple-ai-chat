@@ -397,7 +397,7 @@ export default function Home() {
 
     // Dispatch fullscreen
     const userAgentInfo = checkUserAgent();
-    console.log("User agent:", JSON.stringify(userAgentInfo, null, 2));
+    console.log("User agent:", userAgentInfo.userAgent);
     if (userAgentInfo.isIPhone || userAgentInfo.isAndroid) {
       console.log("Mobile device (iPhone/Android) detected.");
 
