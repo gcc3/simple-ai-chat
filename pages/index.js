@@ -26,7 +26,7 @@ import Image from 'next/image';
 import { getQueryParameterValue } from "utils/urlUtils";
 import 'katex/dist/katex.min.css';
 import { asciiframe } from "utils/donutUtils";
-import { isMobileDevice } from "utils/mobileUtils";
+import { checkUserAgent } from "utils/userAgentUtils";
 import { getLangCodes } from "utils/langUtils";
 import { useTranslation } from 'react-i18next';
 import { getFunctions } from "function";
@@ -396,9 +396,11 @@ export default function Home() {
     }
 
     // Dispatch fullscreen
-    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-    console.log("User agent:", userAgent);
-    if (isMobileDevice(userAgent)) {
+    const userAgentInfo = checkUserAgent();
+    console.log("User agent:", JSON.stringify(userAgentInfo, null, 2));
+    if (userAgentInfo.isIPhone || userAgentInfo.isAndroid) {
+      console.log("Mobile device (iPhone/Android) detected.");
+
       // Mobile device
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode if the screen is small
