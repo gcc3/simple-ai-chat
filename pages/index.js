@@ -396,17 +396,10 @@ export default function Home() {
     }
 
     // Dispatch fullscreen
-    const userAgentInfo = checkUserAgent();
-    console.log("User agent:", JSON.stringify(userAgentInfo, null, 2));
-    if (userAgentInfo.isIPhone || userAgentInfo.isAndroid) {
-      console.log("Mobile device (iPhone/Android) detected.");
-
-      // Mobile device
-      if (window.innerWidth < 768) {
-        // Don't use fullscreen mode if the screen is small
-        dispatchFullscreen("off", true);
-        console.log("Force fullscreen off: mobile device width < 768.");
-      }
+    if (window.innerWidth < 768) {
+      // Force fullscreen off if the screen is small
+      dispatchFullscreen("off", true);
+      console.log("Force fullscreen off: width < 768.");
     } else {
       dispatchFullscreen(localStorage.getItem("fullscreen"));
     }
