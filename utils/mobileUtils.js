@@ -1,6 +1,4 @@
-export function isMobileDevice() {
-  const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-
+export function isMobileDevice(userAgent) {
   // Patterns to check for in user agent string
   const mobileRegexPatterns = [
       /Android/i,

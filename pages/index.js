@@ -396,7 +396,9 @@ export default function Home() {
     }
 
     // Dispatch fullscreen
-    if (isMobileDevice()) {
+    const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+    console.log("User agent:", userAgent);
+    if (isMobileDevice(userAgent)) {
       // Mobile device
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode if the screen is small
