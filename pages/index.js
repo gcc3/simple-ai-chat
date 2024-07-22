@@ -401,6 +401,12 @@ export default function Home() {
       dispatchFullscreen("off", true);
       console.log("Force fullscreen off: width < 768.");
     } else {
+      // Cancel force fullscreen
+      const currentMode = localStorage.getItem('fullscreen');
+      if (currentMode.includes("force")) {
+        const newMode = currentMode.replace("force", "").trim();
+        localStorage.setItem('fullscreen', newMode);
+      }
       dispatchFullscreen(localStorage.getItem("fullscreen"));
     }
 
