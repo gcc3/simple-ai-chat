@@ -11,6 +11,7 @@ import { ensureSession } from "utils/logUtils";
 
 // OpenAI
 const openai = new OpenAI();
+const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 
 // Input output type
 const TYPE = {
@@ -23,7 +24,7 @@ const { model : model_, model_v, role_content_system, welcome_message, querying,
 
 export default async function(req, res) {
   const session = req.body.session || "";
-  const time = req.body.time || "";
+  const time_ = req.body.time || "";
   const mem_length = req.body.mem_length || 0;
   const functions_ = req.body.functions || "";
   const role = req.body.role || "";
@@ -33,13 +34,16 @@ export default async function(req, res) {
   const use_eval_ = req.body.use_eval || false;
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
-  const files = req.body.files || null;
   const images = req.body.images || null;
+  const files = req.body.files || null;
   const lang = req.body.lang || "en-US";
   const use_system_role = req.body.use_system_role || false;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
+
+  // Time
+  let time = Number(time_);
 
   // Authentication
   const authResult = authenticate(req);
@@ -77,7 +81,7 @@ export default async function(req, res) {
   }
 
   // Input
-  input = req.body.user_input || "";
+  input = req.body.user_input.trim() || "";
   if (input.trim().length === 0) return;
   console.log(chalk.yellowBright("\nInput (session = " + session + "):"));
   console.log(input + "\n");
