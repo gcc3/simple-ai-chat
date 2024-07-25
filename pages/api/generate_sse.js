@@ -27,21 +27,24 @@ const TYPE = {
 const { model: model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling: use_function_calling_, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 export default async function (req, res) {
-  const session = req.query.session || "";
-  const time_ = req.query.time || "";
-  const mem_length = req.query.mem_length || 0;
-  const functions_ = req.query.functions || "";
-  const role = req.query.role || "";
-  const store = req.query.store || "";
-  const node = req.query.node || "";
-  const use_stats = req.query.use_stats === "true" ? true : false;
-  const use_eval_ = req.query.use_eval === "true" ? true : false;
-  const use_location = req.query.use_location === "true" ? true : false;
-  const location = req.query.location || "";
+  // Input
   const images_ = req.query.images || "";
   const files_ = req.query.files || "";
-  const lang = req.query.lang || "en-US";
-  const use_system_role = req.query.use_system_role === "true" ? true : false;
+
+  // Config (input)
+  /*  1 */ const time_ = req.query.time || "";
+  /*  2 */ const session = req.query.session || "";
+  /*  3 */ const mem_length = req.query.mem_length || 0;
+  /*  4 */ const functions_ = req.query.functions || "";
+  /*  5 */ const role = req.query.role || "";
+  /*  6 */ const store = req.query.store || "";
+  /*  7 */ const node = req.query.node || "";
+  /*  8 */ const use_stats = req.query.use_stats === "true" ? true : false;
+  /*  9 */ const use_eval_ = req.query.use_eval === "true" ? true : false;
+  /* 10 */ const use_location = req.query.use_location === "true" ? true : false;
+  /* 11 */ const location = req.query.location || "";
+  /* 12 */ const lang = req.query.lang || "en-US";
+  /* 13 */ const use_system_role = req.query.use_system_role === "true" ? true : false;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
@@ -157,7 +160,7 @@ export default async function (req, res) {
   // Type I. Normal input
   if (!input.startsWith("!")) {
     inputType = TYPE.NORMAL;
-    console.log(chalk.yellowBright("Input (session = " + session + "):"));
+    console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input + "\n");
 
     // Images & files
@@ -256,7 +259,7 @@ export default async function (req, res) {
     let node_output_images = [];
     let toolCalls = [];
 
-    // Message base
+    // Messages
     updateStatus("Start pre-generating...");
     const generateMessagesResult = await generateMessages(use_system_role, lang,
                                                           user, model, input, inputType, files, images, 
@@ -332,7 +335,7 @@ export default async function (req, res) {
         }
 
         // Print output
-        console.log(chalk.magentaBright("Output (session = "+ session + "):"));
+        console.log(chalk.magentaBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
         console.log((node_output || "(null)") + "\n");
 
         // Done message
@@ -342,10 +345,9 @@ export default async function (req, res) {
       }
     }
 
-    // Get tools
-    let tools = await getTools(functions_);
-
+    // Tools
     console.log("--- tools ---");
+    let tools = await getTools(functions_);
     console.log(JSON.stringify(tools) + "\n");
 
     console.log("--- messages ---");
@@ -365,18 +367,27 @@ export default async function (req, res) {
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
-      model,
-      // response_format: { type: "json_object" },
       messages,
+      model,
+      frequency_penalty: 0,
+      logit_bias: null,
+      logprobs: null,
+      top_logprobs: null,
+      max_tokens,
+      n: 1,
+      presence_penalty: 0,
+      response_format: null,
+      seed: null,
+      service_tier: null,
+      stop: null,
+      stream: true,
+      stream_options: null,
       temperature,
       top_p,
-      max_tokens,
-      stream: true,
-      // vision does not support function calling
-      ...(use_function_calling && {
-        tools,
-        tool_choice: "auto"
-      })
+      tools: (use_function_calling && tools.length > 0) ? tools : null,
+      tool_choice: (use_function_calling && tools.length > 0) ? "auto" : null,
+      parallel_tool_calls: true,
+      user: user.username,
     });
 
     res.write(`data: ###MODEL###${model}\n\n`);
@@ -436,7 +447,7 @@ export default async function (req, res) {
     console.log(JSON.stringify(token_ct) + "\n");
 
     // Output
-    console.log(chalk.blueBright("Output (session = "+ session + "):"));
+    console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log((output || "(null)") + "\n");
 
     // Tool calls output
