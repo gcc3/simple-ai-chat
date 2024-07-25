@@ -533,6 +533,9 @@ export default function Home() {
 
               // Send `stop` command no matter generating or not
               console.log("Sending `stop` command...");
+            } else {
+              // Stop speaking
+              window.speechSynthesis.cancel();
             }
           }
           break;
