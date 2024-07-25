@@ -481,6 +481,8 @@ export default function Home() {
 
       switch (event.key) {
         case "Escape":
+          console.log("Shortcut: ESC");
+
           if (document.activeElement.id === "input") {
             // If there is input, use ESC to clear input
             const elInput = elInputRef.current;
@@ -498,6 +500,8 @@ export default function Home() {
           break;
     
         case "Tab":  // TAB to focus on input
+          console.log("Shortcut: Tab");
+
           if (document.activeElement.id !== "input") {
             const elInput = elInputRef.current;
             if (elInput !== null) {
@@ -508,6 +512,8 @@ export default function Home() {
           break;
     
         case "/":  // Press / to focus on input
+          console.log("Shortcut: /");
+
           if (document.activeElement.id !== "input") {
             const elInput = elInputRef.current;
             if (elInput !== null) {
@@ -520,17 +526,24 @@ export default function Home() {
         case "c":  // stop generating
           if (event.ctrlKey) {
             console.log("Shortcut: ⌃c");
-            event.preventDefault();
 
-            // Send `stop` command no matter generating or not
-            console.log("Sending `stop` command...");
-            command(":stop");
+            if (global.STATE === STATES.DOING) {
+              event.preventDefault();
+              command(":stop");
+
+              // Send `stop` command no matter generating or not
+              console.log("Sending `stop` command...");
+            } else {
+              // Stop speaking
+              window.speechSynthesis.cancel();
+            }
           }
           break;
 
         case "r":  // clear output and reset session
           if (event.ctrlKey && !event.shiftKey) {
             console.log("Shortcut: ⌃r");
+
             if (global.STATE === STATES.IDLE) {
               event.preventDefault();
 
@@ -557,6 +570,7 @@ export default function Home() {
 
           if (event.ctrlKey && event.shiftKey) {
             console.log("Shortcut: ⇧⌃r");
+
             if (global.STATE === STATES.IDLE) {
               event.preventDefault();
 
@@ -567,6 +581,7 @@ export default function Home() {
           break;
 
         case "F11":  // fullscreen mode
+          console.log("Shortcut: F11");
           event.preventDefault();
 
           // Triggle fullscreen split
@@ -582,6 +597,7 @@ export default function Home() {
         case "\\":
         case "|":  // fullscreen split mode
           if (event.ctrlKey) {
+            console.log("Shortcut: ⌃|");
             event.preventDefault();
 
             // Triggle fullscreen split
@@ -598,8 +614,8 @@ export default function Home() {
         case "ArrowUp":
           // Command history (↑)
           if (global.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            event.preventDefault();
             console.log("Shortcut: ↑");
+            event.preventDefault();
 
             // Set input to previous command history
             const historyIndex = getHistoryCommandIndex();
@@ -613,8 +629,8 @@ export default function Home() {
 
           // Navigation to previous session
           if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            event.preventDefault();
             console.log("Shortcut: ⌃↑");
+            event.preventDefault();
 
             if (global.STATE === STATES.IDLE) {
               if (!localStorage.getItem("user")) {
@@ -647,7 +663,7 @@ export default function Home() {
           // Navigation to previous session
           if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             event.preventDefault();
-            console.log("Shortcut: ⌃↑");
+            console.log("Shortcut: h");
 
             if (global.STATE === STATES.IDLE) {
               if (!localStorage.getItem("user")) {
@@ -679,8 +695,8 @@ export default function Home() {
         case "ArrowDown":
           // Command history (↓)
           if (global.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            event.preventDefault();
             console.log("Shortcut: ↓");
+            event.preventDefault();
 
             // Set input to previous command history
             const historyIndex = getHistoryCommandIndex();
@@ -699,8 +715,8 @@ export default function Home() {
 
           // Navigate to next session
           if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            event.preventDefault();
             console.log("Shortcut: ⌃↓");
+            event.preventDefault();
 
             if (global.STATE === STATES.IDLE) {
               if (!localStorage.getItem("user")) {
@@ -732,8 +748,8 @@ export default function Home() {
         case "l":
           // Navigate to next session
           if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+            console.log("Shortcut: l");
             event.preventDefault();
-            console.log("Shortcut: ⌃↓");
 
             if (global.STATE === STATES.IDLE) {
               if (!localStorage.getItem("user")) {
@@ -764,8 +780,8 @@ export default function Home() {
 
         case "ArrowLeft":
           if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            event.preventDefault();
             console.log("Shortcut: ←");
+            event.preventDefault();
 
             // Print session log (previous)
             if (global.STATE === STATES.IDLE) {
@@ -787,8 +803,8 @@ export default function Home() {
 
         case "k":
           if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            event.preventDefault();
             console.log("Shortcut: k");
+            event.preventDefault();
 
             // Print session log (previous)
             if (global.STATE === STATES.IDLE) {
@@ -810,8 +826,8 @@ export default function Home() {
 
         case "ArrowRight":
           if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            event.preventDefault();
             console.log("Shortcut: →");
+            event.preventDefault();
 
             // Print session log (next)
             if (global.STATE === STATES.IDLE) {
@@ -833,8 +849,8 @@ export default function Home() {
 
         case "j":
           if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            event.preventDefault();
             console.log("Shortcut: j");
+            event.preventDefault();
 
             // Print session log (next)
             if (global.STATE === STATES.IDLE) {
