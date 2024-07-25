@@ -9,6 +9,7 @@ import { countToken } from "utils/tokenUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
+import { executeFunctions, getTools } from "function.js";
 
 // OpenAI
 const openai = new OpenAI();
@@ -24,21 +25,24 @@ const TYPE = {
 const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
 
 export default async function(req, res) {
-  const session = req.body.session || "";
-  const time_ = req.body.time || "";
-  const mem_length = req.body.mem_length || 0;
-  const functions_ = req.body.functions || "";
-  const role = req.body.role || "";
-  const store = req.body.store || "";
-  const node = req.body.node || "";
-  const use_stats = req.body.use_stats || false;
-  const use_eval_ = req.body.use_eval || false;
-  const use_location = req.body.use_location || false;
-  const location = req.body.location || "";
+  // Input
   const images = req.body.images || null;
   const files = req.body.files || null;
-  const lang = req.body.lang || "en-US";
-  const use_system_role = req.body.use_system_role || false;
+
+  // Config (input)
+  /*  1 */ const time_ = req.body.time || "";
+  /*  2 */ const session = req.body.session || "";
+  /*  3 */ const mem_length = req.body.mem_length || 0;
+  /*  4 */ const functions_ = req.body.functions || "";
+  /*  5 */ const role = req.body.role || "";
+  /*  6 */ const store = req.body.store || "";
+  /*  7 */ const node = req.body.node || "";
+  /*  8 */ const use_stats = req.body.use_stats || false;
+  /*  9 */ const use_eval_ = req.body.use_eval || false;
+  /* 10 */ const use_location = req.body.use_location || false;
+  /* 11 */ const location = req.body.location || "";
+  /* 12 */ const lang = req.body.lang || "en-US";
+  /* 13 */ const use_system_role = req.body.use_system_role || false;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
@@ -68,7 +72,10 @@ export default async function(req, res) {
   // Session
   const verifyResult = verifySessionId(session);
   if (!verifyResult.success) {
-    res.status(400).send(verifyResult.message);
+    res.status(400).json({
+      success: false,
+      error: verifyResult.message,
+    });
     return;
   }
 
@@ -76,7 +83,10 @@ export default async function(req, res) {
   if (use_access_control) {
     const uacResult = await getUacResult(user, ip);
     if (!uacResult.success) {
-      res.status(400).send(uacResult.error);
+      res.status(400).json({
+        success: false,
+        error: uacResult.error,
+      });
       return;
     }
   }
@@ -84,7 +94,7 @@ export default async function(req, res) {
   // Input
   input = req.body.user_input.trim() || "";
   if (input.trim().length === 0) return;
-  console.log(chalk.yellowBright("\nInput (session = " + session + "):"));
+  console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
   console.log(input + "\n");
 
   // Model switch
@@ -116,6 +126,7 @@ export default async function(req, res) {
     let messages = [];
     let mem = 0;
 
+    // Messages
     const generateMessagesResult = await generateMessages(use_system_role, lang,
                                                           user, model, input, inputType, files, images, 
                                                           session, mem_length,
@@ -126,14 +137,44 @@ export default async function(req, res) {
     messages = generateMessagesResult.messages;
     mem = generateMessagesResult.mem;
 
-    // endpoint: /v1/chat/completions
-    let chatCompletion;
-    chatCompletion = await openai.chat.completions.create({
-      model,
+    // Tools
+    console.log("--- tools ---");
+    let tools = await getTools(functions_);
+    console.log(JSON.stringify(tools) + "\n");
+
+    // OpenAI API key check
+    if (!OPENAI_API_KEY) {
+      console.log(chalk.redBright("Error: OpenAI API key is not set."));
+      res.status(500).json({
+        success: false,
+        error: "OpenAI API key is not set.",
+      });
+      return;
+    }
+
+    // OpenAI chat completion!
+    const chatCompletion = await openai.chat.completions.create({
       messages,
+      model,
+      frequency_penalty: 0,
+      logit_bias: null,
+      logprobs: null,
+      top_logprobs: null,
+      max_tokens,
+      n: 1,
+      presence_penalty: 0,
+      response_format: null,
+      seed: null,
+      service_tier: null,
+      stop: null,
+      stream: false,
+      stream_options: null,
       temperature,
       top_p,
-      max_tokens,
+      tools: (use_function_calling && tools.length > 0) ? tools : null,
+      tool_choice: (use_function_calling && tools.length > 0) ? "auto" : null,
+      parallel_tool_calls: true,
+      user: user.username,
     });
 
     // Get result
@@ -148,7 +189,7 @@ export default async function(req, res) {
 
     // Output the result
     if (output.trim().length === 0) output = "(null)";
-    console.log(chalk.blueBright("Output (session = "+ session + "):"));
+    console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(output + "\n");
 
     // Log
@@ -175,16 +216,18 @@ export default async function(req, res) {
       },
     });
   } catch (error) {
-    console.log("Error (Generate API):");
+    console.error("Error (Generate API):");
     if (error.response) {
       console.error(error.response.status, error.response.data);
-      res.status(error.response.status).json(error.response.data);
+      res.status(error.response.status).json({
+        success: false,
+        error: error.response.data
+      });
     } else {
       console.error(`${error.message}`);
       res.status(500).json({
-        error: {
-          message: "An error occurred during your request.",
-        },
+        success: false,
+        error: "An error occurred during your request.",
       });
     }
   }

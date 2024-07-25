@@ -1422,7 +1422,7 @@ export default function Home() {
     if (images.length > 0) console.log("Images: " + images.join(", "));
     if (files.length > 0)  console.log("Files: " + files.join(", "));
     
-    // Config
+    // Config (input)
     const config = {
       /*  1 */ time: sessionStorage.getItem("time"),
       /*  2 */ session: sessionStorage.getItem("session"), 
@@ -1742,7 +1742,7 @@ export default function Home() {
     if (images.length > 0) console.log("Images:\n" + images.join("\n"));
     if (files.length > 0) console.log("Files:\n" + files.join("\n"));
 
-    // Config
+    // Config (input)
     const config = {
       /*  1 */ time: sessionStorage.getItem("time"),
       /*  2 */ session: sessionStorage.getItem("session"), 
@@ -1827,7 +1827,7 @@ export default function Home() {
       ));
     } catch (error) {
       console.error(error);
-      alert(error);
+      printOutput(error);
     }
   }
   
