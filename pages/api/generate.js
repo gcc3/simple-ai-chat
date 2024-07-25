@@ -8,6 +8,7 @@ import { getUacResult } from "utils/uacUtils";
 import { countToken } from "utils/tokenUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 import { ensureSession } from "utils/logUtils";
+import { getUser } from "utils/sqliteUtils";
 
 // OpenAI
 const openai = new OpenAI();

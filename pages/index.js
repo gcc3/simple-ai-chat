@@ -1401,7 +1401,7 @@ export default function Home() {
     } else {
       // Use general simple API request
       printOutput(waiting === "" ? "Generating..." : waiting);
-      generate(input);
+      generate(input, image_urls_encoded, file_urls_encoded);
     }
   }
 
@@ -1417,60 +1417,51 @@ export default function Home() {
     // preapre speech
     var textSpoken = "";
 
-    const session = sessionStorage.getItem("session");
-    const time = sessionStorage.getItem("time");
-    const mem_length = sessionStorage.getItem("memLength");
-    const functions = localStorage.getItem("functions");
-    const role = sessionStorage.getItem("role");
-    const store = sessionStorage.getItem("store");
-    const node = sessionStorage.getItem("node");
-    const use_stats = localStorage.getItem("useStats");
-    const use_eval = localStorage.getItem("useEval");
-    const use_location = localStorage.getItem("useLocation");
-    const location = localStorage.getItem("location");
-    const lang = localStorage.getItem("lang").replace("force", "").trim();
-    const use_system_role = localStorage.getItem("useSystemRole");
-
-    // Vision: Will automatically use vision model if there is any image
+    // Input
     console.log("Input: " + input);
-    const config = {
-      session: session,
-      mem_length: mem_length,
-      functions: functions,
-      role: role,
-      store: store,
-      node: node,
-      use_stats: use_stats,
-      use_eval: use_eval,
-      use_location: use_location,
-      location: location,
-      images: images,
-      files: files,
-      lang: lang,
-      use_system_role: use_system_role,
-    };
+    if (images.length > 0) console.log("Images: " + images.join(", "));
+    if (files.length > 0)  console.log("Files: " + files.join(", "));
     
+    // Config
+    const config = {
+      /*  1 */ time: sessionStorage.getItem("time"),
+      /*  2 */ session: sessionStorage.getItem("session"), 
+      /*  3 */ mem_length: sessionStorage.getItem("memLength"),
+      /*  4 */ functions: localStorage.getItem("functions"),
+      /*  5 */ role: sessionStorage.getItem("role"),
+      /*  6 */ store: sessionStorage.getItem("store"),           
+      /*  7 */ node: sessionStorage.getItem("node"),
+      /*  8 */ use_stats: localStorage.getItem("useStats"),
+      /*  9 */ use_eval: localStorage.getItem("useEval"),
+      /* 10 */ use_location: localStorage.getItem("useLocation"),    
+      /* 11 */ location: localStorage.getItem("location"),
+      /* 12 */ lang: localStorage.getItem("lang").replace("force", "").trim(),            
+      /* 13 */ use_system_role: localStorage.getItem("useSystemRole"), 
+    };
     console.log("Config: " + JSON.stringify(config));
-    const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input) 
-                                                           + "&session=" + session
-                                                           + "&time=" + time
-                                                           + "&mem_length=" + mem_length
-                                                           + "&functions=" + functions
-                                                           + "&role=" + role
-                                                           + "&store=" + store
-                                                           + "&node=" + node
-                                                           + "&use_stats=" + use_stats
-                                                           + "&use_eval=" + use_eval
-                                                           + "&use_location=" + use_location
-                                                           + "&location=" + location
+
+    // Send SSE request
+    const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
                                                            + "&files=" + files.join(encodeURIComponent("###"))
-                                                           + "&lang=" + lang
-                                                           + "&use_system_role=" + use_system_role);
+                                                 /*  1 */  + "&time=" + config.time
+                                                 /*  2 */  + "&session=" + config.session
+                                                 /*  3 */  + "&mem_length=" + config.mem_length
+                                                 /*  4 */  + "&functions=" + config.functions
+                                                 /*  5 */  + "&role=" + config.role
+                                                 /*  6 */  + "&store=" + config.store
+                                                 /*  7 */  + "&node=" + config.node
+                                                 /*  8 */  + "&use_stats=" + config.use_stats
+                                                 /*  9 */  + "&use_eval=" + config.use_eval
+                                                 /* 10 */  + "&use_location=" + config.use_location
+                                                 /* 11 */  + "&location=" + config.location
+                                                 /* 12 */  + "&lang=" + config.lang
+                                                 /* 13 */  + "&use_system_role=" + config.use_system_role);
 
     let done_evaluating = false;
     let toolCalls = [];
 
+    // Handle the SSE events
     openaiEssSrouce.onopen = function(event) {
       console.log("Session start.");
     }
@@ -1592,14 +1583,14 @@ export default function Home() {
 
         // 2. Node
         // For node print "Generating...", because it will be slow.
-        if (node && (_status_.startsWith("Start pre-generating...") || _status_.startsWith("Start generating..."))) {
+        if (config.node && (_status_.startsWith("Start pre-generating...") || _status_.startsWith("Start generating..."))) {
           printOutput(generating);
         }
 
         if (_status_.startsWith("Node AI querying, prompt: ")) {
           const prompt = _status_.replace("Node AI querying, prompt: ", "");
           if (prompt) {
-            printOutput("Generating with \"" + node + "\" from prompt \"" + prompt + "\"...");
+            printOutput("Generating with \"" + config.node + "\" from prompt \"" + prompt + "\"...");
           }
         }
 
@@ -1744,23 +1735,28 @@ export default function Home() {
     };
   }
 
-  // Normal generate
-  async function generate(input) {    
+  // Generate (without SSE)
+  async function generate(input, images, files) {
+    // Input
     console.log("Input:\n" + input);
+    if (images.length > 0) console.log("Images:\n" + images.join("\n"));
+    if (files.length > 0) console.log("Files:\n" + files.join("\n"));
+
+    // Config
     const config = {
-      user_input: input, 
-      session: sessionStorage.getItem("session"),
-      time: sessionStorage.getItem("time"),
-      mem_length: sessionStorage.getItem("memLength"),
-      role: sessionStorage.getItem("role"),
-      store: sessionStorage.getItem("store"),
-      node: sessionStorage.getItem("node"),
-      use_stats: localStorage.getItem("useStats"),
-      use_eval: localStorage.getItem("useEval"),
-      use_location: localStorage.getItem("useLocation"),
-      location: localStorage.getItem("location"),
-      lang: localStorage.getItem("lang").replace("force", "").trim(),
-      use_system_role: localStorage.getItem("useSystemRole"),
+      /*  1 */ time: sessionStorage.getItem("time"),
+      /*  2 */ session: sessionStorage.getItem("session"), 
+      /*  3 */ mem_length: sessionStorage.getItem("memLength"),
+      /*  4 */ functions: localStorage.getItem("functions"),
+      /*  5 */ role: sessionStorage.getItem("role"),
+      /*  6 */ store: sessionStorage.getItem("store"),           
+      /*  7 */ node: sessionStorage.getItem("node"),
+      /*  8 */ use_stats: localStorage.getItem("useStats"),
+      /*  9 */ use_eval: localStorage.getItem("useEval"),
+      /* 10 */ use_location: localStorage.getItem("useLocation"),    
+      /* 11 */ location: localStorage.getItem("location"),
+      /* 12 */ lang: localStorage.getItem("lang").replace("force", "").trim(),            
+      /* 13 */ use_system_role: localStorage.getItem("useSystemRole"), 
     };
     console.log("Config: " + JSON.stringify(config));
 
@@ -1770,7 +1766,24 @@ export default function Home() {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(config),
+        body: JSON.stringify({
+          user_input: input,
+          images: images,
+          files: files,
+ /*  1 */ time: config.time,
+ /*  2 */ session: config.session,
+ /*  3 */ mem_length: config.mem_length,
+ /*  4 */ functions: config.functions,
+ /*  5 */ role: config.role,
+ /*  6 */ store: config.store,
+ /*  7 */ node: config.node,
+ /*  8 */ use_stats: config.use_stats,
+ /*  9 */ use_eval: config.use_eval,
+ /* 10 */ use_location: config.use_location,
+ /* 11 */ location: config.location,
+ /* 12 */ lang: config.lang,
+ /* 13 */ use_system_role: config.use_system_role,
+        }),
       });
 
       const data = await response.json();
