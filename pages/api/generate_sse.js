@@ -387,7 +387,7 @@ export default async function (req, res) {
       tools: (use_function_calling && tools.length > 0) ? tools : null,
       tool_choice: (use_function_calling && tools.length > 0) ? "auto" : null,
       parallel_tool_calls: true,
-      user: user.username,
+      user: user ? user.username : null,
     });
 
     res.write(`data: ###MODEL###${model}\n\n`);
