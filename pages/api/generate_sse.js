@@ -257,7 +257,8 @@ export default async function (req, res) {
     // Messages
     updateStatus("Start pre-generating...");
     const generateMessagesResult = await generateMessages(use_system_role, lang,
-                                                          user, model, input, inputType, files, images, 
+                                                          user, model,
+                                                          input, inputType, files, images, 
                                                           session, mem_length,
                                                           role, store, node, 
                                                           use_location, location,

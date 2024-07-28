@@ -82,6 +82,11 @@ export default async function(req, res) {
     return;
   }
 
+  // Model switch
+  const use_vision = images.length > 0;
+  const model = use_vision ? model_v : model_;
+  const use_eval = use_eval_ && use_stats && !use_vision;
+
   // User access control
   if (use_access_control) {
     const uacResult = await getUacResult(user, ip);
@@ -93,11 +98,6 @@ export default async function(req, res) {
       return;
     }
   }
-
-  // Model switch
-  const use_vision = images.length > 0;
-  const model = use_vision ? model_v : model_;
-  const use_eval = use_eval_ && use_stats && !use_vision;
 
   // Configuration info
   console.log("--- configuration info ---\n"
@@ -125,11 +125,14 @@ export default async function(req, res) {
 
     // Messages
     const generateMessagesResult = await generateMessages(use_system_role, lang,
-                                                          user, model, input, inputType, files, images, 
+                                                          user, model,
+                                                          input, inputType, files, images,
                                                           session, mem_length,
                                                           role, store, node,
                                                           use_location, location, 
-                                                          false, null, null);  // tool calls (function calling) is not supported
+                                                          use_function_calling, functionCalls, functionResults,
+                                                          null, null);
+
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
     mem = generateMessagesResult.mem;
