@@ -30,12 +30,10 @@ export default async function (req, res) {
   // Input
   let input = req.query.user_input.trim() || "";
   let inputType = TYPE.NORMAL;
-  const images_ = req.query.images || "";
-  const files_ = req.query.files || "";
 
   // Input: Images & files
-  const decodedImages = images_ || "";
-  const decodedFiles = files_ || "";
+  const decodedImages = req.query.images || "";
+  const decodedFiles = req.query.files || "";
   let images = [];
   let files = [];
   if (decodedImages) {
