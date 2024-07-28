@@ -1803,6 +1803,37 @@ export default function Home() {
       const output = data.result.text
       console.log("Output: \n" + output);
 
+      // Events
+      const events = data.result.events;
+      if (events.length > 0) {
+        events.map(event => {
+          console.log("Event: " + JSON.stringify(event));
+  
+          if (event.name === "redirect") {
+            console.log("Redirecting to " + event.parameters.url + "...");
+  
+            // Redirect to URL
+            if (!event.parameters.url.startsWith("http")) {
+              console.error("URL must start with http or https.");
+            } else {
+              // Redirect to URL
+              if (event.parameters.blank == true) {    
+                // Open with new tab
+                window.open(event.parameters.url, '_blank');
+              } else {
+                // Stop generating as it will be redirected.
+                global.STATE = STATES.IDLE;
+                window.speechSynthesis.cancel();
+  
+                // Redirect to URL
+                window.top.location.href = event.parameters.url;
+                return;
+              }
+            }
+          }
+        });
+      }
+
       // Tool calls (function calling)
       const toolCalls = data.result.tool_calls;
       if (toolCalls.length > 0) {

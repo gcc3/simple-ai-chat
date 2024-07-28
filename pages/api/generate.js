@@ -37,6 +37,7 @@ export default async function(req, res) {
   let outputType = TYPE.NORMAL;
   let eval_ = "";
   let toolCalls = [];
+  let events = [];
 
   // Config (input)
   /*  1 */ const time_ = req.body.time || "";
@@ -182,8 +183,11 @@ export default async function(req, res) {
           functionNames.push(functionName);
         }
 
-        // TODO: add function frontend events
-        // Maybe in the final result
+        // Trigger event
+        // Function trigger event
+        if (f.event) {
+          events.push(f.event);
+        }
       }
     }
   }
@@ -349,6 +353,7 @@ export default async function(req, res) {
       result: {
         text : output,
         tool_calls: toolCalls,
+        events: events,
         stats: {
           temperature: sysconf.temperature,
           top_p: sysconf.top_p,
