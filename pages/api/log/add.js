@@ -2,15 +2,13 @@ import { authenticate } from "utils/authUtils";
 import { logadd } from "utils/logUtils";
 
 export default async function (req, res) {
+   // Check method
+   if (req.method !== "POST") {
+    return res.status(405).end();
+  }
+
   try {
-    const time_ = req.query.time || "";
-
-    const session = req.query.session;
-    const model = req.query.model;
-    const input = req.query.input;
-    const output = req.query.output;
-    const images = req.query.images;
-
+    const { time: time_, session, model, input, output, images } = req.body;
     const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     const browser = req.headers['user-agent'];
 

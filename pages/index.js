@@ -1757,9 +1757,9 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user_input: input,
-        images: images,
-        files: files,
+         user_input: input,
+         images: images,
+         files: files,
 /*  1 */ time: config.time,
 /*  2 */ session: config.session,
 /*  3 */ mem_length: config.mem_length,
@@ -1812,38 +1812,61 @@ export default function Home() {
       username: localStorage.getItem("user")
     }
 
-    // Non-stream mode
-    if (!useStream) {
-      // OpenAI chat completion!
-      const chatCompletion = await openai.chat.completions.create({
-        messages: msg.messages,
-        model,
-        frequency_penalty: 0,
-        logit_bias: null,
-        logprobs: null,
-        top_logprobs: null,
-        max_tokens: sysconf.max_tokens,
-        n: 1,
-        presence_penalty: 0,
-        response_format: null,
-        seed: null,
-        service_tier: null,
-        stop: "###STOP###",
-        stream: useStream,
-        stream_options: null,
-        temperature: sysconf.temperature,
-        top_p: sysconf.top_p,
-        tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
-        tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
-        parallel_tool_calls: true,
-        user: user ? user.username : null,
+    // OpenAI chat completion!
+    const chatCompletion = await openai.chat.completions.create({
+      messages: msg.messages,
+      model,
+      frequency_penalty: 0,
+      logit_bias: null,
+      logprobs: null,
+      top_logprobs: null,
+      max_tokens: sysconf.max_tokens,
+      n: 1,
+      presence_penalty: 0,
+      response_format: null,
+      seed: null,
+      service_tier: null,
+      stop: "###STOP###",
+      stream: useStream,
+      stream_options: null,
+      temperature: sysconf.temperature,
+      top_p: sysconf.top_p,
+      tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
+      tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
+      parallel_tool_calls: true,
+      user: user ? user.username : null,
+    });
+
+    // Record log (chat history)
+    const logadd = async (input, output) => {
+      const response1 = await fetch("/api/log/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          input,
+          output,
+          model: sysconf.model,
+          session: sessionStorage.getItem("session"),
+          images: [],
+          time: Date.now(),
+        }),
       });
 
+      if (response1.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response1.status}`);
+      }
+    }
+
+    // Non-stream mode
+    if (!useStream) {
       // Get result
       const choices = chatCompletion.choices;
       if (!choices || choices.length === 0 || choices[0].message === null) {
         console.error("No choice\n");
-        output = "Silent...";
+        printOutput("Silent...");
+        return;
       } else {
         // 1. handle message output
         const content = choices[0].message.content;
@@ -1865,35 +1888,19 @@ export default function Home() {
           model: {sysconf.model}<br></br>
         </div>
       ));
+
+      // Formatter
+      markdownFormatter(elOutputRef.current);
+
+      // Trigger highlight.js
+      hljs.highlightAll();
+
+      // Add log
+      logadd(input, output);
     }
 
     // Stream mode
     if (useStream) {
-      // OpenAI chat completion!
-      const chatCompletion = await openai.chat.completions.create({
-        messages: msg.messages,
-        model,
-        frequency_penalty: 0,
-        logit_bias: null,
-        logprobs: null,
-        top_logprobs: null,
-        max_tokens: sysconf.max_tokens,
-        n: 1,
-        presence_penalty: 0,
-        response_format: null,
-        seed: null,
-        service_tier: null,
-        stop: "###STOP###",
-        stream: true,
-        stream_options: null,
-        temperature: sysconf.temperature,
-        top_p: sysconf.top_p,
-        tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
-        tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
-        parallel_tool_calls: true,
-        user: user ? user.username : null,
-      });
-
       // Convert the response stream into a readable stream
       const stream = Readable.from(chatCompletion);
 
@@ -1923,12 +1930,15 @@ export default function Home() {
       });
   
       // Resolve the Promise when the stream ends
-      stream.on('end', () => {
+      stream.on('end', async () => {
         // Formatter
         markdownFormatter(elOutputRef.current);
 
         // Trigger highlight.js
         hljs.highlightAll();
+
+        // Add log
+        logadd(input, output);
 
         // Reset state
         global.STATE = STATES.IDLE;
