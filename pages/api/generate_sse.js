@@ -28,8 +28,40 @@ const { model: model_, model_v, role_content_system, welcome_message, querying, 
 
 export default async function (req, res) {
   // Input
+  let input = req.query.user_input.trim() || "";
+  let inputType = TYPE.NORMAL;
   const images_ = req.query.images || "";
   const files_ = req.query.files || "";
+
+  // Input: Images & files
+  const decodedImages = images_ || "";
+  const decodedFiles = files_ || "";
+  let images = [];
+  let files = [];
+  if (decodedImages) {
+    if (decodedImages.includes("###")) {
+      images = decodedImages.split("###");
+    } else {
+      images.push(decodedImages);
+    }
+  }
+  if (decodedFiles) {
+    if (decodedFiles.includes("###")) {
+      files = decodedFiles.split("###");
+    } else {
+      files.push(decodedFiles);
+    }
+  }
+
+  // If input is all empty, return
+  if (input.trim().length === 0 && images.length == 0 && files.length == 0) {
+    console.log("Input is empty.");
+    return;
+  }
+
+  // Output
+  let output = "";
+  let outputType = TYPE.NORMAL;
 
   // Config (input)
   /*  1 */ const time_ = req.query.time || "";
@@ -65,12 +97,6 @@ export default async function (req, res) {
   // In sessions table, create session if not exists
   await ensureSession(session, user ? user.username : "");
 
-  // Input & output
-  let input = "";
-  let inputType = TYPE.NORMAL;
-  let output = "";
-  let outputType = TYPE.NORMAL;
-
   res.writeHead(200, {
     'connection': 'keep-alive',
     'Cache-Control': 'no-cache',
@@ -101,35 +127,6 @@ export default async function (req, res) {
     res.write(`data: ${verifyResult.message}\n\n`); res.flush();
     res.write(`data: [DONE]\n\n`); res.flush();
     res.end();
-    return;
-  }
-
-  // Input
-  input = req.query.user_input.trim() || "";
-
-  // Images & files
-  const decodedImages = images_ || "";
-  const decodedFiles = files_ || "";
-  let images = [];
-  let files = [];
-  if (decodedImages) {
-    if (decodedImages.includes("###")) {
-      images = decodedImages.split("###");
-    } else {
-      images.push(decodedImages);
-    }
-  }
-  if (decodedFiles) {
-    if (decodedFiles.includes("###")) {
-      files = decodedFiles.split("###");
-    } else {
-      files.push(decodedFiles);
-    }
-  }
-
-  // If input is all empty, return
-  if (input.trim().length === 0 && images.length == 0 && files.length == 0) {
-    console.log("Input is empty.");
     return;
   }
 
@@ -379,7 +376,7 @@ export default async function (req, res) {
       response_format: null,
       seed: null,
       service_tier: null,
-      stop: null,
+      stop: "###STOP###",
       stream: true,
       stream_options: null,
       temperature,

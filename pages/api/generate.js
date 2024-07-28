@@ -26,8 +26,17 @@ const { model : model_, model_v, role_content_system, welcome_message, querying,
 
 export default async function(req, res) {
   // Input
+  let input = req.body.user_input.trim() || "";
+  if (input.trim().length === 0) return;
+  console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+  console.log(input + "\n");
+  let inputType = TYPE.NORMAL;
   const images = req.body.images || null;
   const files = req.body.files || null;
+
+  // Output
+  let output = "";
+  let outputType = TYPE.NORMAL;
 
   // Config (input)
   /*  1 */ const time_ = req.body.time || "";
@@ -63,12 +72,6 @@ export default async function(req, res) {
   // In sessions table, create session if not exists
   await ensureSession(session, user ? user.username : "");
 
-  // Input & output
-  let input = "";
-  let inputType = TYPE.NORMAL;
-  let output = "";
-  let outputType = TYPE.NORMAL;
-
   // Session
   const verifyResult = verifySessionId(session);
   if (!verifyResult.success) {
@@ -90,12 +93,6 @@ export default async function(req, res) {
       return;
     }
   }
-
-  // Input
-  input = req.body.user_input.trim() || "";
-  if (input.trim().length === 0) return;
-  console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-  console.log(input + "\n");
 
   // Model switch
   const use_vision = images.length > 0;
@@ -166,7 +163,7 @@ export default async function(req, res) {
       response_format: null,
       seed: null,
       service_tier: null,
-      stop: null,
+      stop: "###STOP###",
       stream: false,
       stream_options: null,
       temperature,
