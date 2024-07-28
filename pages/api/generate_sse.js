@@ -157,7 +157,6 @@ export default async function (req, res) {
   const use_eval = use_eval_ && use_stats && !use_vision;
 
   // Use function calling
-  // Function calling is not supported in vision models
   let use_function_calling = sysconf.use_function_calling;
 
   // User access control

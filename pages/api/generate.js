@@ -105,6 +105,9 @@ export default async function(req, res) {
   const model = use_vision ? sysconf.model_v : sysconf.model;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
+  // Use function calling
+  let use_function_calling = sysconf.use_function_calling;
+
   // User access control
   if (sysconf.use_access_control) {
     const uacResult = await getUacResult(user, ip);
@@ -366,6 +369,7 @@ export default async function(req, res) {
     res.status(200).json({
       result: {
         text : output,
+        tool_calls: toolCalls,
         stats: {
           temperature: sysconf.temperature,
           top_p: sysconf.top_p,

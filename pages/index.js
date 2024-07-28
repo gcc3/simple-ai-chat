@@ -1737,6 +1737,10 @@ export default function Home() {
 
   // Generate (without SSE)
   async function generate(input, images, files) {
+    // If already doing, return
+    if (global.STATE === STATES.DOING) return;
+    global.STATE = STATES.DOING;
+
     // Input
     console.log("Input:\n" + input);
     if (images.length > 0) console.log("Images:\n" + images.join("\n"));
@@ -1792,9 +1796,37 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
+      // Reset state
+      global.STATE = STATES.IDLE;
+
       // Render output
       const output = data.result.text
       console.log("Output: \n" + output);
+
+      // Tool calls (function calling)
+      const toolCalls = data.result.tool_calls;
+      if (toolCalls.length > 0) {
+        let functions = [];
+        toolCalls.map((t) => {
+          functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
+        });
+        const functionInput = functions.join(",");
+
+        // Generate with tool calls (function calling)
+        if (input.startsWith("!")) {
+          input = input.split("Q=")[1];
+        }
+
+        // Reset time
+        const timeNow = Date.now();
+        setTime(timeNow);
+        sessionStorage.setItem("head", timeNow);
+
+        // Call generate with function
+        printOutput(querying);
+        generate(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
+        return;
+      }
 
       // Print output
       printOutput(output);
