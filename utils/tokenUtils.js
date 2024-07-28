@@ -4,6 +4,7 @@ import { get_encoding, encoding_for_model } from "tiktoken";
 // Refer: https://platform.openai.com/playground/chat
 const max_tokens_dict = {
   "gpt-4o": 4095,              // 4095 is the max token, not 4096
+  "gpt-4o-mini": 4095,         // maybe, same as gpt-4o
   "gpt-4-1106-preview": 4095,  // 4095 is the max token, not 4096
   "gpt-4": 8191,
   "gpt-3.5-turbo": 4096,       // 4096 is the max token

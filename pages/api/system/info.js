@@ -3,8 +3,8 @@ import log from "log";
 
 export default async function (req, res) {
   try {
-    // configurations
-    const { model, model_v, role_content_system, welcome_message, querying, generating, searching, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email, minimalist } = getSystemConfigurations();
+    // System configurations
+    const sysconf = getSystemConfigurations();
 
     // Access log
     await log(req);
@@ -12,21 +12,21 @@ export default async function (req, res) {
     res.status(200).json({
       result: {
         role_content_system: "***",
-        welcome_message: welcome_message,
-        querying: querying,
-        generating: generating,
-        searching: searching,
-        waiting: waiting,
-        init_placeholder: init_placeholder,
-        enter: enter,
-        temperature: temperature,
-        top_p: top_p,
-        max_tokens: max_tokens,
-        use_function_calling: use_function_calling,
-        use_node_ai: use_node_ai,
-        use_payment: use_payment,
-        use_email: use_email,
-        minimalist: minimalist,
+        welcome_message: sysconf.welcome_message,
+        querying: sysconf.querying,
+        generating: sysconf.generating,
+        searching: sysconf.searching,
+        waiting: sysconf.waiting,
+        init_placeholder: sysconf.init_placeholder,
+        enter: sysconf.enter,
+        temperature: sysconf.temperature,
+        top_p: sysconf.top_p,
+        max_tokens: sysconf.max_tokens,
+        use_function_calling: sysconf.use_function_calling,
+        use_node_ai: sysconf.use_node_ai,
+        use_payment: sysconf.use_payment,
+        use_email: sysconf.use_email,
+        minimalist: sysconf.minimalist,
       },
     });
   } catch (error) {

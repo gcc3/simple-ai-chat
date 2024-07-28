@@ -6,8 +6,8 @@ import { getSystemConfigurations } from "utils/sysUtils.js";
 // OpenAI
 const openai = new OpenAI();
 
-// configurations
-const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
+// System configurations
+const sysconf = getSystemConfigurations();
 
 export default async function (req, res) {
   const input = req.body.input || "";
@@ -69,11 +69,11 @@ export async function evaluate(user, input, raw_prompt, output) {
 
     // endpoint: /v1/chat/completions
     const chatCompletion = await openai.chat.completions.create({
-      model: model,
+      model: sysconf.model,
       messages: eval_message,
-      temperature: temperature,
-      top_p: top_p,
-      max_tokens: max_tokens,
+      temperature: sysconf.temperature,
+      top_p: sysconf.top_p,
+      max_tokens: sysconf.max_tokens,
     });
 
     // Get result
@@ -88,7 +88,7 @@ export async function evaluate(user, input, raw_prompt, output) {
     if (eval_output.trim().length === 0) eval_output = "null";
     return {
       success: true,
-      token_ct: countToken(model, eval_prompt),
+      token_ct: countToken(sysconf.model, eval_prompt),
       output: eval_output,
     };
   } catch (error) {

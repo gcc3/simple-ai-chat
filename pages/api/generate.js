@@ -23,25 +23,6 @@ const TYPE = {
 };
 
 // System configurations
-// model
-// model_v
-// role_content_system
-// welcome_message
-// querying
-// generating
-// searching
-// waiting
-// init_placeholder
-// enter
-// temperature
-// top_p
-// max_tokens
-// use_function_calling
-// use_node_ai
-// use_payment
-// use_access_control
-// use_email
-// minimalist
 const sysconf = getSystemConfigurations();
 
 export default async function(req, res) {
