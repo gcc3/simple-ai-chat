@@ -1440,7 +1440,7 @@ export default function Home() {
     };
     console.log("Config: " + JSON.stringify(config));
 
-    // Send SSE request
+    // Send SSE request!
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
                                                            + "&files=" + files.join(encodeURIComponent("###"))
@@ -1749,18 +1749,19 @@ export default function Home() {
       /*  3 */ mem_length: sessionStorage.getItem("memLength"),
       /*  4 */ functions: localStorage.getItem("functions"),
       /*  5 */ role: sessionStorage.getItem("role"),
-      /*  6 */ store: sessionStorage.getItem("store"),           
+      /*  6 */ store: sessionStorage.getItem("store"),
       /*  7 */ node: sessionStorage.getItem("node"),
-      /*  8 */ use_stats: localStorage.getItem("useStats"),
-      /*  9 */ use_eval: localStorage.getItem("useEval"),
-      /* 10 */ use_location: localStorage.getItem("useLocation"),    
+      /*  8 */ use_stats: localStorage.getItem("useStats") == 'true',
+      /*  9 */ use_eval: localStorage.getItem("useEval")  == 'true',
+      /* 10 */ use_location: localStorage.getItem("useLocation")  == 'true',
       /* 11 */ location: localStorage.getItem("location"),
       /* 12 */ lang: localStorage.getItem("lang").replace("force", "").trim(),            
-      /* 13 */ use_system_role: localStorage.getItem("useSystemRole"), 
+      /* 13 */ use_system_role: localStorage.getItem("useSystemRole")  == 'true',
     };
     console.log("Config: " + JSON.stringify(config));
 
     try {
+      // Send generate request!
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
@@ -1804,7 +1805,7 @@ export default function Home() {
       // Trigger highlight.js
       hljs.highlightAll();
 
-      if (localStorage.getItem('useStats') === "true") {
+      if (data.result.stats && config.use_stats) {
         !minimalist && setStats((
           <div>
             func: {data.result.stats.func.replaceAll('|', ", ") || "none"}<br></br>
@@ -1817,6 +1818,21 @@ export default function Home() {
             {data.result.stats.node ? "node: " + data.result.stats.node + "<br></br>" : ""}
           </div>
         ));
+
+        if (config.use_eval) {
+          const _eval_ = data.result.stats.eval;
+          const val = parseInt(_eval_);
+  
+          let valColor = "#767676";                // default
+          if (val >= 7)      valColor = "green";   // green
+          else if (val >= 4) valColor = "#CC7722"; // orange
+          else if (val >= 0) valColor = "#DE3163"; // red
+          !minimalist && setEvaluation(
+            <div>
+              self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
+            </div>
+          );
+        }
       }
 
       !minimalist && setInfo((

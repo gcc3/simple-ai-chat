@@ -10,6 +10,7 @@ import { getSystemConfigurations } from "utils/sysUtils";
 import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
+import { evaluate } from './evaluate';
 
 // OpenAI
 const openai = new OpenAI();
@@ -53,6 +54,7 @@ export default async function(req, res) {
   // Output
   let output = "";
   let outputType = TYPE.NORMAL;
+  let eval_ = "";
 
   // Config (input)
   /*  1 */ const time_ = req.body.time || "";
@@ -152,15 +154,17 @@ export default async function(req, res) {
   }
 
   // Type II. Tool calls (function calling) input
-  let functionNames = [];
-  let functionCalls = [];
-  let functionResults = [];
+  // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
+  // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
+  let functionNames = [];    // functionc called
+  let functionCalls = [];    // function calls in input
+  let functionResults = [];  // function call results
   if (input.startsWith("!")) {
     if (!use_function_calling) {
-      console.log(chalk.redBright("Error: function calling is not enabled."));
+      console.log(chalk.redBright("Error: function calling is disabled."));
       res.status(500).json({
         success: false,
-        error: "Function calling is not enabled.",
+        error: "Function calling is disabled.",
       });
       return;
     }
@@ -200,9 +204,13 @@ export default async function(req, res) {
   }
 
   try {
-    let token_ct;  // input token count
+    let token_ct;  // detailed token count
+    let input_token_ct = 0;
+    let output_token_ct = 0;
     let messages = [];
+    let raw_prompt = "";
     let mem = 0;
+    let toolCalls = [];
 
     // Messages
     const generateMessagesResult = await generateMessages(use_system_role, lang,
@@ -211,12 +219,12 @@ export default async function(req, res) {
                                                           session, mem_length,
                                                           role, store, node,
                                                           use_location, location, 
-                                                          sysconf.use_function_calling, functionCalls, functionResults,
-                                                          null, null);
+                                                          sysconf.use_function_calling, functionCalls, functionResults);
 
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
     mem = generateMessagesResult.mem;
+    raw_prompt = generateMessagesResult.raw_prompt;
 
     // Tools
     console.log("--- tools ---");
@@ -263,22 +271,57 @@ export default async function(req, res) {
 
     // Get result
     const choices = chatCompletion.choices;
-    if (!choices || choices.length === 0) {
+    if (!choices || choices.length === 0 || choices[0].message === null) {
       console.log(chalk.redBright("Error (session = " + session + "):"));
       console.error("No choice\n");
       output = "Silent...";
     } else {
-      output = choices[0].message.content;
+      // 1. handle message output
+      if (choices[0].message.content) {
+        output = choices[0].message.content;
+
+        // Output the result
+        if (output.trim().length === 0) output = "(null)";
+        console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+        console.log(output + "\n");
+      }
+
+      // 2. handle tool call output
+      if (choices[0].message.tool_calls) {
+        toolCalls = choices[0].message.tool_calls
+
+        // Tool calls output
+        const output_tool_calls = JSON.stringify(toolCalls);
+        if (output_tool_calls && toolCalls.length > 0) {
+          console.log("--- tool calls ---");
+          console.log(output_tool_calls + "\n");
+        }
+      }
     }
 
-    // Output the result
-    if (output.trim().length === 0) output = "(null)";
-    console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log(output + "\n");
+    // Evaluate result
+    // vision models not support evaluation
+    if (use_eval) {
+      if (output.trim().length > 0) {
+        const evalResult = await evaluate(user, input, raw_prompt, output);
+        if (evalResult.success) {
+          eval_ = evalResult.output;
+          console.log("eval: " + evalResult.output + "\n");
+          output_token_ct += evalResult.token_ct;
+        } else {
+          eval_ = evalResult.error;
+        }
+      }
+    }
 
-    // Log
-    const input_token_ct = token_ct.total;
-    const output_token_ct = countToken(model, output);
+    // Log (chat history)
+    // Must add tool calls log first, then add the general input output log
+    // TODO
+    // 1. tool calls
+    // await logadd(user, session, time++, model, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
+    // 2. general input/output log
+    input_token_ct = token_ct.total;
+    output_token_ct = countToken(model, output);
     logadd(user, session, time, model, input_token_ct, input, output_token_ct, output, JSON.stringify(images), ip, browser);
 
     res.status(200).json({
@@ -289,10 +332,11 @@ export default async function(req, res) {
           top_p: sysconf.top_p,
           token_ct: input_token_ct,
           mem: mem,
-          func: false,
+          func: functionNames.join('|'),
           role: role,
           store: store,
           node: node,
+          eval: eval_
         },
         info: {
           model: model,

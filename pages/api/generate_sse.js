@@ -210,9 +210,9 @@ export default async function (req, res) {
   // Type II. Tool calls (function calling) input
   // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
   // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
-  let functionNames = [];
-  let functionCalls = [];
-  let functionResults = [];
+  let functionNames = [];    // functionc called
+  let functionCalls = [];    // function calls in input
+  let functionResults = [];  // function call results
   if (input.startsWith("!")) {
     if (!use_function_calling) {
       res.write(`data: Function calling is disabled.\n\n`); res.flush();
@@ -282,6 +282,8 @@ export default async function (req, res) {
                                                           role, store, node, 
                                                           use_location, location,
                                                           use_function_calling, functionCalls, functionResults,
+
+                                                          // these 2 are callbacks
                                                           updateStatus, streamOutput);
 
     updateStatus("Pre-generating finished.");
@@ -472,9 +474,9 @@ export default async function (req, res) {
       console.log(output_tool_calls + "\n");
     }
 
-    // Token count and log
+    // Log (chat history)
     // Must add tool calls log first, then add the general input output log
-    // 1. tool calls
+    // 1. tool calls log
     if (functionCalls && functionCalls.length > 0 && functionResults && functionResults.length > 0) {
       for (let i = 0; i < functionResults.length; i++) {
         const f = functionResults[i];
@@ -491,7 +493,7 @@ export default async function (req, res) {
       }
     }
 
-    // 2. input
+    // 2. general input/output log
     output_token_ct += countToken(model, output);
     if (inputType === TYPE.TOOL_CALL) {
       // Function calling input is already logged
