@@ -156,7 +156,47 @@ export default async function(req, res) {
   let functionCalls = [];
   let functionResults = [];
   if (input.startsWith("!")) {
-    // TODO
+    if (!use_function_calling) {
+      console.log(chalk.redBright("Error: function calling is not enabled."));
+      res.status(500).json({
+        success: false,
+        error: "Function calling is not enabled.",
+      });
+      return;
+    }
+
+    inputType = TYPE.TOOL_CALL;
+    console.log(chalk.cyanBright("Tool calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+
+    // Curerently OpenAI only support function calling in tool calls.
+    // Function name and arguments
+    const functions = input.split("T=")[0].trim().substring(1).split(",!");
+    console.log("Functions: " + JSON.stringify(functions));
+
+    // Tool calls
+    functionCalls = JSON.parse(input.split("T=")[1].trim().split("Q=")[0].trim());
+
+    // Replace input with original
+    input = input.split("Q=")[1];
+
+    // Execute function
+    functionResults = await executeFunctions(functions);
+    console.log("Result:" + JSON.stringify(functionResults) + "\n");
+    if (functionResults.length > 0) {
+      for (let i = 0; i < functionResults.length; i++) {
+        const f = functionResults[i];
+        const c = functionCalls[i];  // not using here.
+
+        // Add function name
+        const functionName = f.function.split("(")[0].trim();
+        if (functionNames.indexOf(functionName) === -1) {
+          functionNames.push(functionName);
+        }
+
+        // TODO: add function frontend events
+        // Maybe in the final result
+      }
+    }
   }
 
   try {
@@ -182,6 +222,9 @@ export default async function(req, res) {
     console.log("--- tools ---");
     let tools = await getTools(functions_);
     console.log(JSON.stringify(tools) + "\n");
+
+    console.log("--- messages ---");
+    console.log(JSON.stringify(messages) + "\n");
 
     // OpenAI API key check
     if (!OPENAI_API_KEY) {
@@ -252,7 +295,7 @@ export default async function(req, res) {
           node: node,
         },
         info: {
-          model: process.env.MODEL,
+          model: model,
         }
       },
     });

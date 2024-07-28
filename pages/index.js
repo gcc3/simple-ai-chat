@@ -1401,7 +1401,7 @@ export default function Home() {
     } else {
       // Use general simple API request
       printOutput(waiting === "" ? "Generating..." : waiting);
-      generate(input, image_urls_encoded, file_urls_encoded);
+      generate(input, image_urls, file_urls);
     }
   }
 
