@@ -20,9 +20,14 @@ export function getMaxTokens(model) {
 }
 
 export function countToken(model, input) {
-  const encoding = encoding_for_model(model);
-  const tokens = encoding.encode(input);
-  const tokenCount = tokens.length;
-  encoding.free();
-  return tokenCount;
+  try {
+    const encoding = encoding_for_model(model);
+    const tokens = encoding.encode(input);
+    const tokenCount = tokens.length;
+    encoding.free();
+    return tokenCount;
+  } catch (error) {
+    console.log("tiktoken - ", error.message);
+    return 0;
+  }
 }
