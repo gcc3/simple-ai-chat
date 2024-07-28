@@ -137,9 +137,6 @@ export default async function (req, res) {
   const model = use_vision ? sysconf.model_v : sysconf.model;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
-  // Use function calling
-  let use_function_calling = sysconf.use_function_calling;
-
   // User access control
   if (sysconf.use_access_control) {
     const uacResult = await getUacResult(user, ip);
@@ -177,7 +174,7 @@ export default async function (req, res) {
     + "max_tokens: " + sysconf.max_tokens + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
-    + "use_function_calling: " + use_function_calling + "\n"
+    + "use_function_calling: " + sysconf.use_function_calling + "\n"
     + "use_node_ai: " + sysconf.use_node_ai + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
@@ -194,7 +191,7 @@ export default async function (req, res) {
   let functionCalls = [];    // function calls in input
   let functionResults = [];  // function call results
   if (input.startsWith("!")) {
-    if (!use_function_calling) {
+    if (!sysconf.use_function_calling) {
       res.write(`data: Function calling is disabled.\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
       res.end();
@@ -266,7 +263,7 @@ export default async function (req, res) {
                                        session, mem_length,
                                        role, store, node, 
                                        use_location, location,
-                                       use_function_calling, functionCalls, functionResults,
+                                       sysconf.use_function_calling, functionCalls, functionResults,
 
                                        // these 2 are callbacks
                                        updateStatus, streamOutput);
@@ -383,8 +380,8 @@ export default async function (req, res) {
       stream_options: null,
       temperature: sysconf.temperature,
       top_p: sysconf.top_p,
-      tools: (use_function_calling && tools && tools.length > 0) ? tools : null,
-      tool_choice: (use_function_calling && tools && tools.length > 0) ? "auto" : null,
+      tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
+      tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
       parallel_tool_calls: true,
       user: user ? user.username : null,
     });

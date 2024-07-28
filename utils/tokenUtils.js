@@ -28,7 +28,6 @@ export function countToken(model, input) {
     encoding.free();
     return tokenCount;
   } catch (error) {
-    console.log("tiktoken - ", error.message);
     return 0;
   }
 }
