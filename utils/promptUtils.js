@@ -67,7 +67,7 @@ export async function generateMessages(use_system_role, lang,
   let token_ct = {};
   let mem = 0;
   let input_images = [];
-  let input_file_content = "";
+  let file_content = "";
   let node_input = "";
   let node_output = "";
   let node_output_images = [];
@@ -105,7 +105,7 @@ export async function generateMessages(use_system_role, lang,
             fileContent = data.value;
           }
 
-          input_file_content += "User input file content:\n" + fileContent + "\n\n";
+          file_content += "User input file content:\n" + fileContent + "\n\n";
           files_text.push({
             file: files[i],
             text: fileContent,
@@ -683,7 +683,7 @@ export async function generateMessages(use_system_role, lang,
     token_ct,
     mem,
     input_images,
-    input_file_content,
+    file_content,
     node_input,
     node_output,
     node_output_images,

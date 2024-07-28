@@ -262,40 +262,42 @@ export default async function (req, res) {
     let token_ct = [];  // detailed token count
     let input_token_ct = 0;
     let output_token_ct = 0;
-    let messages = [];
-    let raw_prompt = "";
-    let mem = 0;
     let input_images = [];
-    let input_file_content = "";
     let node_input = "";
     let node_output = "";
     let node_output_images = [];
     let toolCalls = [];
 
     // Messages
+    // messages
+    // token_ct: { system, history, user_input, user_input_image, user_input_files, location, role, store, node, function, total }
+    // mem
+    // input_images
+    // input_file_content
+    // node_input
+    // node_output
+    // node_output_images
+    // raw_prompt: { system, role, history, user_input_file, function, store, node, location }
     updateStatus("Start pre-generating...");
-    const generateMessagesResult = await generateMessages(use_system_role, lang,
-                                                          user, model,
-                                                          input, inputType, files, images, 
-                                                          session, mem_length,
-                                                          role, store, node, 
-                                                          use_location, location,
-                                                          use_function_calling, functionCalls, functionResults,
+    const msg = await generateMessages(use_system_role, lang,
+                                       user, model,
+                                       input, inputType, files, images, 
+                                       session, mem_length,
+                                       role, store, node, 
+                                       use_location, location,
+                                       use_function_calling, functionCalls, functionResults,
 
-                                                          // these 2 are callbacks
-                                                          updateStatus, streamOutput);
+                                       // these 2 are callbacks
+                                       updateStatus, streamOutput);
 
     updateStatus("Pre-generating finished.");
-    token_ct.push(generateMessagesResult.token_ct);
-    messages = generateMessagesResult.messages;
-    input_token_ct += generateMessagesResult.token_ct.total;
-    raw_prompt = generateMessagesResult.raw_prompt;
-    mem = generateMessagesResult.mem;
-    input_images = generateMessagesResult.input_images;
-    input_file_content = generateMessagesResult.input_file_content;
-    node_input = generateMessagesResult.node_input;
-    node_output = generateMessagesResult.node_output;
-    node_output_images = generateMessagesResult.node_output_images;
+    token_ct.push(msg.token_ct);
+    input_token_ct += msg.token_ct.total;
+    input_images = msg.input_images;
+    
+    node_input = msg.node_input;
+    node_output = msg.node_output;
+    node_output_images = msg.node_output_images;
 
     if (node && nodeInfo) {
       const settings = JSON.parse(nodeInfo.settings);
@@ -327,7 +329,7 @@ export default async function (req, res) {
 
         // Print for non-stream
         if (!settings.useStream) {
-          let nodeOutput = raw_prompt["node"];
+          let nodeOutput = msg.raw_prompt["node"];
           if (nodeOutput) {
             nodeOutput = nodeOutput.trim().replaceAll("\n", "###RETURN###");
             res.write(`data: [CLEAR]\n\n`); res.flush();
@@ -367,7 +369,7 @@ export default async function (req, res) {
     console.log(JSON.stringify(tools) + "\n");
 
     console.log("--- messages ---");
-    console.log(JSON.stringify(messages) + "\n");
+    console.log(JSON.stringify(msg.messages) + "\n");
 
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");
@@ -383,7 +385,7 @@ export default async function (req, res) {
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
-      messages,
+      messages: msg.messages,
       model,
       frequency_penalty: 0,
       logit_bias: null,
@@ -407,7 +409,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###MODEL###${model}\n\n`);
-    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${msg.mem}\n\n`);
 
     // Print input images
     input_images.map(image => {
@@ -447,7 +449,7 @@ export default async function (req, res) {
     // vision models not support evaluation
     if (use_eval) {
       if (output.trim().length > 0) {
-        const evalResult = await evaluate(user, input, raw_prompt, output);
+        const evalResult = await evaluate(user, input, msg.raw_prompt, output);
         if (evalResult.success) {
           res.write(`data: ###EVAL###${evalResult.output}\n\n`); res.flush();
           console.log("eval: " + evalResult.output + "\n");
@@ -503,13 +505,13 @@ export default async function (req, res) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }
-    if (files.length > 0 && input_file_content) {
-      input += "\n\n" + input_file_content;
+    if (files.length > 0 && msg.file_content) {
+      input += "\n\n" + msg.file_content;
     }
     await logadd(user, session, time++, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
 
     // Stats (final)
-    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${msg.mem}\n\n`);
     
     // Done message
     updateStatus("Finished.");
