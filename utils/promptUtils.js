@@ -18,8 +18,27 @@ const TYPE = {
   TOOL_CALL: 1
 };
 
-// configurations
-const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
+// System configurations
+// model
+// model_v
+// role_content_system
+// welcome_message
+// querying
+// generating
+// searching
+// waiting
+// init_placeholder
+// enter
+// temperature
+// top_p
+// max_tokens
+// use_function_calling
+// use_node_ai
+// use_payment
+// use_access_control
+// use_email
+// minimalist
+const sysconf = getSystemConfigurations();
 
 /*
   Generate messages for chatCompletion
@@ -105,12 +124,12 @@ export async function generateMessages(use_system_role, lang,
 
   // -6. System master message, important
   let system_prompt = "";
-  if (use_system_role && role_content_system !== "") {
+  if (use_system_role && sysconf.role_content_system !== "") {
     if (!user) {
       // It's not a free service, need to tell the user to register a user first
       system_prompt += "Provide the user with a short answer, less than 80 words. If the answer needs to be longer than 90 words, inform them that login is required. In a new paragraph, add:\n\nYou haven't logged in, so the answer length is limited. If you're already a member, please log in to continue. Or, register as a member with the command `:user add username email password` (replace with your actual details).\n\n";
     } else {
-      system_prompt += role_content_system + "\n\n";
+      system_prompt += sysconf.role_content_system + "\n\n";
     }
 
     // User language, lang is the language code, e.g. "en-US"
@@ -290,7 +309,7 @@ export async function generateMessages(use_system_role, lang,
     };
   }
 
-  if (use_node_ai && node && user) {
+  if (sysconf.use_node_ai && node && user) {
     updateStatus && updateStatus("Node AI generating...");
     console.log("--- node ai ---");
     console.log("node: " + node);

@@ -21,15 +21,31 @@ const TYPE = {
   TOOL_CALL: 1
 };
 
-// configurations
-const { model : model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
+// System configurations
+// model
+// model_v
+// role_content_system
+// welcome_message
+// querying
+// generating
+// searching
+// waiting
+// init_placeholder
+// enter
+// temperature
+// top_p
+// max_tokens
+// use_function_calling
+// use_node_ai
+// use_payment
+// use_access_control
+// use_email
+// minimalist
+const sysconf = getSystemConfigurations();
 
 export default async function(req, res) {
   // Input
   let input = req.body.user_input.trim() || "";
-  if (input.trim().length === 0) return;
-  console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-  console.log(input + "\n");
   let inputType = TYPE.NORMAL;
   const images = req.body.images || null;
   const files = req.body.files || null;
@@ -83,12 +99,12 @@ export default async function(req, res) {
   }
 
   // Model switch
-  const use_vision = images.length > 0;
-  const model = use_vision ? model_v : model_;
+  const use_vision = images && images.length > 0;
+  const model = use_vision ? sysconf.model_v : sysconf.model;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
   // User access control
-  if (use_access_control) {
+  if (sysconf.use_access_control) {
     const uacResult = await getUacResult(user, ip);
     if (!uacResult.success) {
       res.status(400).json({
@@ -99,24 +115,49 @@ export default async function(req, res) {
     }
   }
 
-  // Configuration info
-  console.log("--- configuration info ---\n"
-  + "lang: " + lang + "\n"
-  + "model: " + model + "\n"
-  + "temperature: " + temperature + "\n"
-  + "top_p: " + top_p + "\n"
-  + "role_content_system (chat): " + role_content_system.replaceAll("\n", " ") + "\n"
-  + "max_tokens: " + max_tokens + "\n"
-  + "use_vision: " + use_vision + "\n"
-  + "use_eval: " + use_eval + "\n"
-  + "use_function_calling: " + use_function_calling + "\n"
-  + "use_node_ai: " + use_node_ai + "\n"
-  + "use_lcation: " + use_location + "\n"
-  + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
-  + "functions: " + (functions_ || "___") + "\n"
-  + "role: " + (role || "___") + "\n"
-  + "store: " + (store || "___") + "\n"
-  + "node: " + (node || "___") + "\n");
+  // Type I. Normal input
+  if (!input.startsWith("!")) {
+    inputType = TYPE.NORMAL;
+    console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(input + "\n");
+
+    // Images & files
+    if (images && images.length > 0) {
+      console.log("--- images ---");
+      console.log(images.join("\n") + "\n");
+    }
+    if (files && files.length > 0) {
+      console.log("--- files ---");
+      console.log(files.join("\n") + "\n");
+    }
+
+    // Configuration info
+    console.log("--- configuration info ---\n"
+    + "lang: " + lang + "\n"
+    + "model: " + model + "\n"
+    + "temperature: " + sysconf.temperature + "\n"
+    + "top_p: " + sysconf.top_p + "\n"
+    + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
+    + "max_tokens: " + sysconf.max_tokens + "\n"
+    + "use_vision: " + use_vision + "\n"
+    + "use_eval: " + use_eval + "\n"
+    + "use_function_calling: " + sysconf.use_function_calling + "\n"
+    + "use_node_ai: " + sysconf.use_node_ai + "\n"
+    + "use_lcation: " + use_location + "\n"
+    + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
+    + "functions: " + (functions_ || "___") + "\n"
+    + "role: " + (role || "___") + "\n"
+    + "store: " + (store || "___") + "\n"
+    + "node: " + (node || "___") + "\n");
+  }
+
+  // Type II. Tool calls (function calling) input
+  let functionNames = [];
+  let functionCalls = [];
+  let functionResults = [];
+  if (input.startsWith("!")) {
+    // TODO
+  }
 
   try {
     let token_ct;  // input token count
@@ -130,7 +171,7 @@ export default async function(req, res) {
                                                           session, mem_length,
                                                           role, store, node,
                                                           use_location, location, 
-                                                          use_function_calling, functionCalls, functionResults,
+                                                          sysconf.use_function_calling, functionCalls, functionResults,
                                                           null, null);
 
     token_ct = generateMessagesResult.token_ct;
@@ -160,7 +201,7 @@ export default async function(req, res) {
       logit_bias: null,
       logprobs: null,
       top_logprobs: null,
-      max_tokens,
+      max_tokens: sysconf.max_tokens,
       n: 1,
       presence_penalty: 0,
       response_format: null,
@@ -169,10 +210,10 @@ export default async function(req, res) {
       stop: "###STOP###",
       stream: false,
       stream_options: null,
-      temperature,
-      top_p,
-      tools: (use_function_calling && tools.length > 0) ? tools : null,
-      tool_choice: (use_function_calling && tools.length > 0) ? "auto" : null,
+      temperature: sysconf.temperature,
+      top_p: sysconf.top_p,
+      tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
+      tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
       parallel_tool_calls: true,
       user: user ? user.username : null,
     });
@@ -201,8 +242,8 @@ export default async function(req, res) {
       result: {
         text : output,
         stats: {
-          temperature: process.env.TEMPERATURE,
-          top_p: process.env.TOP_P,
+          temperature: sysconf.temperature,
+          top_p: sysconf.top_p,
           token_ct: input_token_ct,
           mem: mem,
           func: false,

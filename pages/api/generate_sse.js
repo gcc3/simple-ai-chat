@@ -23,8 +23,27 @@ const TYPE = {
   TOOL_CALL: 1
 };
 
-// configurations
-const { model: model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling: use_function_calling_, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
+// System configurations
+// model
+// model_v
+// role_content_system
+// welcome_message
+// querying
+// generating
+// searching
+// waiting
+// init_placeholder
+// enter
+// temperature
+// top_p
+// max_tokens
+// use_function_calling
+// use_node_ai
+// use_payment
+// use_access_control
+// use_email
+// minimalist
+const sysconf = getSystemConfigurations();
 
 export default async function (req, res) {
   // Input
@@ -133,16 +152,16 @@ export default async function (req, res) {
 
   // Model switch
   // For Midjourney node, use version model to input image to AI.
-  const use_vision = images.length > 0 || isNodeMultimodalityContains(nodeInfo, "image");
-  const model = use_vision ? model_v : model_;
+  const use_vision = (images && images.length > 0) || isNodeMultimodalityContains(nodeInfo, "image");
+  const model = use_vision ? sysconf.model_v : sysconf.model;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
   // Use function calling
   // Function calling is not supported in vision models
-  let use_function_calling = use_function_calling_;
+  let use_function_calling = sysconf.use_function_calling;
 
   // User access control
-  if (use_access_control) {
+  if (sysconf.use_access_control) {
     const uacResult = await getUacResult(user, ip);
     if (!uacResult.success) {
       res.write(`data: ${uacResult.error}\n\n`); res.flush();
@@ -159,11 +178,11 @@ export default async function (req, res) {
     console.log(input + "\n");
 
     // Images & files
-    if (images.length > 0) {
+    if (images && images.length > 0) {
       console.log("--- images ---");
       console.log(images.join("\n") + "\n");
     }
-    if (files.length > 0) {
+    if (files && files.length > 0) {
       console.log("--- files ---");
       console.log(files.join("\n") + "\n");
     }
@@ -172,14 +191,14 @@ export default async function (req, res) {
     console.log("--- configuration info ---\n"
     + "lang: " + lang + "\n"
     + "model: " + model + "\n"
-    + "temperature: " + temperature + "\n"
-    + "top_p: " + top_p + "\n"
-    + "role_content_system (chat): " + role_content_system.replaceAll("\n", " ") + "\n"
-    + "max_tokens: " + max_tokens + "\n"
+    + "temperature: " + sysconf.temperature + "\n"
+    + "top_p: " + sysconf.top_p + "\n"
+    + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
+    + "max_tokens: " + sysconf.max_tokens + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + use_function_calling + "\n"
-    + "use_node_ai: " + use_node_ai + "\n"
+    + "use_node_ai: " + sysconf.use_node_ai + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
     + "functions: " + (functions_ || "___") + "\n"
@@ -369,7 +388,7 @@ export default async function (req, res) {
       logit_bias: null,
       logprobs: null,
       top_logprobs: null,
-      max_tokens,
+      max_tokens: sysconf.max_tokens,
       n: 1,
       presence_penalty: 0,
       response_format: null,
@@ -378,16 +397,16 @@ export default async function (req, res) {
       stop: "###STOP###",
       stream: true,
       stream_options: null,
-      temperature,
-      top_p,
-      tools: (use_function_calling && tools.length > 0) ? tools : null,
-      tool_choice: (use_function_calling && tools.length > 0) ? "auto" : null,
+      temperature: sysconf.temperature,
+      top_p: sysconf.top_p,
+      tools: (use_function_calling && tools && tools.length > 0) ? tools : null,
+      tool_choice: (use_function_calling && tools && tools.length > 0) ? "auto" : null,
       parallel_tool_calls: true,
       user: user ? user.username : null,
     });
 
     res.write(`data: ###MODEL###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
 
     // Print input images
     input_images.map(image => {
@@ -489,7 +508,7 @@ export default async function (req, res) {
     await logadd(user, session, time++, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
 
     // Final stats
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
     
     // Done message
     updateStatus("Finished.");
