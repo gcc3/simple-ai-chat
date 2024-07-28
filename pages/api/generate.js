@@ -316,14 +316,40 @@ export default async function(req, res) {
 
     // Log (chat history)
     // Must add tool calls log first, then add the general input output log
-    // TODO
     // 1. tool calls
-    // await logadd(user, session, time++, model, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
-    // 2. general input/output log
-    input_token_ct = token_ct.total;
-    output_token_ct = countToken(model, output);
-    logadd(user, session, time, model, input_token_ct, input, output_token_ct, output, JSON.stringify(images), ip, browser);
+    if (functionCalls && functionCalls.length > 0 && functionResults && functionResults.length > 0) {
+      for (let i = 0; i < functionResults.length; i++) {
+        const f = functionResults[i];
+        const c = functionCalls[i];
 
+        // Add log
+        if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
+          const input_f = "F=" + JSON.stringify(c);
+          let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
+          const input_token_ct_f = countToken(model, input_f);
+          const output_token_ct_f = countToken(model, output_f);
+          await logadd(user, session, time++, model, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
+        }
+      }
+    }
+
+    // 2. general input/output log
+    output_token_ct = countToken(model, output);
+    if (inputType === TYPE.TOOL_CALL) {
+      // Function calling input is already logged
+      input_token_ct = 0;
+      input = "Q=" + input;
+    }
+    if (outputType === TYPE.TOOL_CALL) {
+      // Add tool calls output to log
+      output = "T=" + output_tool_calls;
+    }
+    if (files.length > 0 && input_file_content) {
+      input += "\n\n" + input_file_content;
+    }
+    await logadd(user, session, time++, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
+
+    // Stats
     res.status(200).json({
       result: {
         text : output,

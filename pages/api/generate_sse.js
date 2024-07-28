@@ -509,7 +509,7 @@ export default async function (req, res) {
     }
     await logadd(user, session, time++, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
 
-    // Final stats
+    // Stats (final)
     res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
     
     // Done message
