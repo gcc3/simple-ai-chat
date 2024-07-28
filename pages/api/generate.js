@@ -204,12 +204,14 @@ export default async function(req, res) {
   }
 
   try {
-    let token_ct;  // detailed token count
+    let token_ct = [];  // detailed token count
     let input_token_ct = 0;
     let output_token_ct = 0;
     let messages = [];
     let raw_prompt = "";
     let mem = 0;
+    let input_images = [];
+    let input_file_content = "";
     let toolCalls = [];
 
     // Messages
@@ -221,10 +223,14 @@ export default async function(req, res) {
                                                           use_location, location, 
                                                           sysconf.use_function_calling, functionCalls, functionResults);
 
+    token_ct.push(generateMessagesResult.token_ct);
     token_ct = generateMessagesResult.token_ct;
     messages = generateMessagesResult.messages;
-    mem = generateMessagesResult.mem;
+    input_token_ct += generateMessagesResult.token_ct.total;
     raw_prompt = generateMessagesResult.raw_prompt;
+    mem = generateMessagesResult.mem;
+    input_images = generateMessagesResult.input_images;
+    input_file_content = generateMessagesResult.input_file_content;
 
     // Tools
     console.log("--- tools ---");
@@ -277,25 +283,17 @@ export default async function(req, res) {
       output = "Silent...";
     } else {
       // 1. handle message output
-      if (choices[0].message.content) {
-        output = choices[0].message.content;
-
-        // Output the result
-        if (output.trim().length === 0) output = "(null)";
-        console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-        console.log(output + "\n");
+      const content = choices[0].message.content;
+      if (content) {
+        outputType = TYPE.NORMAL;
+        output += choices[0].message.content;
       }
 
       // 2. handle tool call output
-      if (choices[0].message.tool_calls) {
+      const tool_calls = choices[0].message.tool_calls
+      if (tool_calls) {
+        outputType = TYPE.TOOL_CALL;
         toolCalls = choices[0].message.tool_calls
-
-        // Tool calls output
-        const output_tool_calls = JSON.stringify(toolCalls);
-        if (output_tool_calls && toolCalls.length > 0) {
-          console.log("--- tool calls ---");
-          console.log(output_tool_calls + "\n");
-        }
       }
     }
 
@@ -312,6 +310,21 @@ export default async function(req, res) {
           eval_ = evalResult.error;
         }
       }
+    }
+
+    // Token
+    console.log("--- token_ct ---");
+    console.log(JSON.stringify(token_ct) + "\n");
+
+    // Output
+    console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log((output || "(null)") + "\n");
+
+    // Tool calls output
+    const output_tool_calls = JSON.stringify(toolCalls);
+    if (output_tool_calls && toolCalls.length > 0) {
+      console.log("--- tool calls ---");
+      console.log(output_tool_calls + "\n");
     }
 
     // Log (chat history)
