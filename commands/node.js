@@ -1,4 +1,5 @@
 import { initializeSession } from "utils/sessionUtils";
+import { getBaseURL } from "utils/urlUtils";
 
 export default async function node(args) {
   const command = args[0];
@@ -36,7 +37,34 @@ export default async function node(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return JSON.stringify(data.result, null, 2);
+      // Node info
+      let node = data.result;
+
+      // Try ping node from local
+      if (node.settings.useDirect) {
+        // ping node
+        await fetch(getBaseURL(node.settings.endpoint), {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((response) => {
+          if (response.status !== 200 || !response.ok) {
+            node.status.ping = "Inconnectable.";
+          } else {
+            return response.text();
+          }
+        }).then((text) => {
+          if (text) {
+            node.status.ping = text;
+          }
+        }).catch((error) => {
+          console.error(error);
+          node.status.ping = "Inconnectable.";
+        });
+      }
+
+      return JSON.stringify(node, null, 2);
     } catch (error) {
       console.error(error);
       return error;

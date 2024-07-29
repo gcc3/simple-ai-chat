@@ -1,4 +1,5 @@
 import { getUser, getNode, getUserNodes } from './sqliteUtils.js';
+import { getBaseURL } from './urlUtils.js';
 
 const axios = require('axios');
 const { Readable } = require('stream');
@@ -227,7 +228,7 @@ export async function pingNode(settings) {
 
   // Fetch from endpoint
   try {
-    const response = await fetch(endpoint, {
+    const response = await fetch(getBaseURL(endpoint), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
