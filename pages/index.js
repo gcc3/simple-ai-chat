@@ -35,6 +35,9 @@ import { getSettings } from "utils/settingsUtils";
 import { getAutoCompleteOptions } from "utils/autocompleteUtils";
 import clear from "commands/clear";
 import { sleep } from "utils/sleepUtils";
+import { loadConfig } from "utils/configUtils";
+import OpenAI from "openai";
+const { Readable } = require('stream');
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -1395,13 +1398,18 @@ export default function Home() {
 
     // Clear info and start generating
     resetInfo();
-    if (localStorage.getItem('useStream') === "true") {
-      // Use SSE request
-      generate_sse(input, image_urls_encoded, file_urls_encoded);
+
+    if (localStorage.getItem('useDirect') === "true") {
+      generate_direct(input, image_urls, file_urls);
     } else {
-      // Use general simple API request
-      printOutput(waiting === "" ? "Generating..." : waiting);
-      generate(input, image_urls_encoded, file_urls_encoded);
+      if (localStorage.getItem('useStream') === "true") {
+        // Use SSE request
+        generate_sse(input, image_urls_encoded, file_urls_encoded);
+      } else {
+        // Use general simple API request
+        printOutput(waiting === "" ? "Generating..." : waiting);
+        generate(input, image_urls, file_urls);
+      }
     }
   }
 
@@ -1423,24 +1431,10 @@ export default function Home() {
     if (files.length > 0)  console.log("Files: " + files.join(", "));
     
     // Config (input)
-    const config = {
-      /*  1 */ time: sessionStorage.getItem("time"),
-      /*  2 */ session: sessionStorage.getItem("session"), 
-      /*  3 */ mem_length: sessionStorage.getItem("memLength"),
-      /*  4 */ functions: localStorage.getItem("functions"),
-      /*  5 */ role: sessionStorage.getItem("role"),
-      /*  6 */ store: sessionStorage.getItem("store"),           
-      /*  7 */ node: sessionStorage.getItem("node"),
-      /*  8 */ use_stats: localStorage.getItem("useStats"),
-      /*  9 */ use_eval: localStorage.getItem("useEval"),
-      /* 10 */ use_location: localStorage.getItem("useLocation"),    
-      /* 11 */ location: localStorage.getItem("location"),
-      /* 12 */ lang: localStorage.getItem("lang").replace("force", "").trim(),            
-      /* 13 */ use_system_role: localStorage.getItem("useSystemRole"), 
-    };
+    const config = loadConfig();
     console.log("Config: " + JSON.stringify(config));
 
-    // Send SSE request
+    // Send SSE request!
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
                                                            + "&files=" + files.join(encodeURIComponent("###"))
@@ -1735,32 +1729,247 @@ export default function Home() {
     };
   }
 
+  // Direct
+  // Direct send API request to the server
+  // Warning: it will expose the API key.
+  async function generate_direct(input, images, files) {
+    // If already doing, return
+    if (global.STATE === STATES.DOING) return;
+    global.STATE = STATES.DOING;
+
+    // Add a waiting text
+    if (getOutput() !== querying) printOutput(waiting);
+
+    // Input
+    console.log("Input: " + input);
+    if (images.length > 0) console.log("Images: " + images.join(", "));
+    if (files.length > 0)  console.log("Files: " + files.join(", "));
+
+    // Output
+    let output = "";
+    
+    // Config (input)
+    const config = loadConfig();
+    console.log("Config: " + JSON.stringify(config));
+
+    // Generate messages
+    const response = await fetch("/api/generate_msg", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+         user_input: input,
+         images: images,
+         files: files,
+/*  1 */ time: config.time,
+/*  2 */ session: config.session,
+/*  3 */ mem_length: config.mem_length,
+/*  4 */ functions: config.functions,
+/*  5 */ role: config.role,
+/*  6 */ store: config.store,
+/*  7 */ node: config.node,
+/*  8 */ use_stats: config.use_stats,
+/*  9 */ use_eval: config.use_eval,
+/* 10 */ use_location: config.use_location,
+/* 11 */ location: config.location,
+/* 12 */ lang: config.lang,
+/* 13 */ use_system_role: config.use_system_role,
+      }),
+    });
+
+    const data = await response.json();
+    if (response.status !== 200) {
+      throw data.error || new Error(`Request failed with status ${response.status}`);
+    }
+    const msg = data.result.msg;
+
+    // Use stream
+    const useStream = localStorage.getItem('useStream') === "true";
+
+    // Configurations
+    const sysconf = {
+      baseURL: "http://localhost:11434/v1",
+      apiKey: "ollama",
+      model: "llama3.1",
+      model_v: "llava",
+      max_tokens: 4000,
+      use_function_calling: false,
+    }
+
+    // Model
+    const model = sysconf.model;
+
+    // Setup OpenAI API
+    const openai = new OpenAI({
+      baseURL: sysconf.baseURL,
+      apiKey: sysconf.apiKey,
+      dangerouslyAllowBrowser: true,
+      temperature: 0.7,
+      top_p: 1,
+    });
+
+    // User
+    const user = {
+      username: localStorage.getItem("user")
+    }
+
+    // OpenAI chat completion!
+    const chatCompletion = await openai.chat.completions.create({
+      messages: msg.messages,
+      model,
+      frequency_penalty: 0,
+      logit_bias: null,
+      logprobs: null,
+      top_logprobs: null,
+      max_tokens: sysconf.max_tokens,
+      n: 1,
+      presence_penalty: 0,
+      response_format: null,
+      seed: null,
+      service_tier: null,
+      stop: "###STOP###",
+      stream: useStream,
+      stream_options: null,
+      temperature: sysconf.temperature,
+      top_p: sysconf.top_p,
+      tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
+      tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
+      parallel_tool_calls: true,
+      user: user ? user.username : null,
+    });
+
+    // Record log (chat history)
+    const logadd = async (input, output) => {
+      const response1 = await fetch("/api/log/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          input,
+          output,
+          model: sysconf.model,
+          session: sessionStorage.getItem("session"),
+          images: [],
+          time: Date.now(),
+        }),
+      });
+
+      if (response1.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response1.status}`);
+      }
+    }
+
+    // Non-stream mode
+    if (!useStream) {
+      // Get result
+      const choices = chatCompletion.choices;
+      if (!choices || choices.length === 0 || choices[0].message === null) {
+        console.error("No choice\n");
+        printOutput("Silent...");
+        return;
+      } else {
+        // 1. handle message output
+        const content = choices[0].message.content;
+        if (content) {
+          output += choices[0].message.content;
+        }
+
+        // 2. handle tool calls
+        // Not support yet.
+      }
+
+      // Reset state
+      global.STATE = STATES.IDLE;
+      printOutput(output);
+
+      // Set model
+      !minimalist && setInfo((
+        <div>
+          model: {sysconf.model}<br></br>
+        </div>
+      ));
+
+      // Formatter
+      markdownFormatter(elOutputRef.current);
+
+      // Trigger highlight.js
+      hljs.highlightAll();
+
+      // Add log
+      logadd(input, output);
+    }
+
+    // Stream mode
+    if (useStream) {
+      // Convert the response stream into a readable stream
+      const stream = Readable.from(chatCompletion);
+
+      // Handle the data event to process each JSON line
+      stream.on('data', (chunk) => {
+        try {
+          // 1. handle message output
+          const content = chunk.choices[0].delta.content;
+          if (content) {
+            output += content;
+            printOutput(content, false, true);
+          }
+          // Set model
+          const model = chunk.model;
+          !minimalist && setInfo((
+            <div>
+              model: {model}<br></br>
+            </div>
+          ));
+
+          // 2. handle tool calls
+          // Not support yet.
+        } catch (error) {
+          console.error('Error parsing JSON line:', error);
+          stream.destroy(error); // Destroy the stream on error
+        }
+      });
+  
+      // Resolve the Promise when the stream ends
+      stream.on('end', async () => {
+        // Formatter
+        markdownFormatter(elOutputRef.current);
+
+        // Trigger highlight.js
+        hljs.highlightAll();
+
+        // Add log
+        logadd(input, output);
+
+        // Reset state
+        global.STATE = STATES.IDLE;
+      });
+  
+      // Reject the Promise on error
+      stream.on('error', (error) => {
+        printOutput(error);
+      });
+    }
+  }
+
   // Generate (without SSE)
   async function generate(input, images, files) {
+    // If already doing, return
+    if (global.STATE === STATES.DOING) return;
+    global.STATE = STATES.DOING;
+
     // Input
     console.log("Input:\n" + input);
     if (images.length > 0) console.log("Images:\n" + images.join("\n"));
     if (files.length > 0) console.log("Files:\n" + files.join("\n"));
 
     // Config (input)
-    const config = {
-      /*  1 */ time: sessionStorage.getItem("time"),
-      /*  2 */ session: sessionStorage.getItem("session"), 
-      /*  3 */ mem_length: sessionStorage.getItem("memLength"),
-      /*  4 */ functions: localStorage.getItem("functions"),
-      /*  5 */ role: sessionStorage.getItem("role"),
-      /*  6 */ store: sessionStorage.getItem("store"),           
-      /*  7 */ node: sessionStorage.getItem("node"),
-      /*  8 */ use_stats: localStorage.getItem("useStats"),
-      /*  9 */ use_eval: localStorage.getItem("useEval"),
-      /* 10 */ use_location: localStorage.getItem("useLocation"),    
-      /* 11 */ location: localStorage.getItem("location"),
-      /* 12 */ lang: localStorage.getItem("lang").replace("force", "").trim(),            
-      /* 13 */ use_system_role: localStorage.getItem("useSystemRole"), 
-    };
+    const config = loadConfig();
     console.log("Config: " + JSON.stringify(config));
 
     try {
+      // Send generate request!
       const response = await fetch("/api/generate", {
         method: "POST",
         headers: {
@@ -1791,9 +2000,68 @@ export default function Home() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
+      // Reset state
+      global.STATE = STATES.IDLE;
+
       // Render output
       const output = data.result.text
       console.log("Output: \n" + output);
+
+      // Events
+      const events = data.result.events;
+      if (events.length > 0) {
+        events.map(event => {
+          console.log("Event: " + JSON.stringify(event));
+  
+          if (event.name === "redirect") {
+            console.log("Redirecting to " + event.parameters.url + "...");
+  
+            // Redirect to URL
+            if (!event.parameters.url.startsWith("http")) {
+              console.error("URL must start with http or https.");
+            } else {
+              // Redirect to URL
+              if (event.parameters.blank == true) {    
+                // Open with new tab
+                window.open(event.parameters.url, '_blank');
+              } else {
+                // Stop generating as it will be redirected.
+                global.STATE = STATES.IDLE;
+                window.speechSynthesis.cancel();
+  
+                // Redirect to URL
+                window.top.location.href = event.parameters.url;
+                return;
+              }
+            }
+          }
+        });
+      }
+
+      // Tool calls (function calling)
+      const toolCalls = data.result.tool_calls;
+      if (toolCalls.length > 0) {
+        let functions = [];
+        toolCalls.map((t) => {
+          functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
+        });
+        const functionInput = functions.join(",");
+
+        // Generate with tool calls (function calling)
+        if (input.startsWith("!")) {
+          input = input.split("Q=")[1];
+        }
+
+        // Reset time
+        const timeNow = Date.now();
+        setTime(timeNow);
+        sessionStorage.setItem("head", timeNow);
+
+        // Call generate with function
+        printOutput(querying);
+        generate(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
+        return;
+      }
 
       // Print output
       printOutput(output);
@@ -1804,7 +2072,7 @@ export default function Home() {
       // Trigger highlight.js
       hljs.highlightAll();
 
-      if (localStorage.getItem('useStats') === "true") {
+      if (data.result.stats && config.use_stats) {
         !minimalist && setStats((
           <div>
             func: {data.result.stats.func.replaceAll('|', ", ") || "none"}<br></br>
@@ -1817,6 +2085,21 @@ export default function Home() {
             {data.result.stats.node ? "node: " + data.result.stats.node + "<br></br>" : ""}
           </div>
         ));
+
+        if (config.use_eval) {
+          const _eval_ = data.result.stats.eval;
+          const val = parseInt(_eval_);
+  
+          let valColor = "#767676";                // default
+          if (val >= 7)      valColor = "green";   // green
+          else if (val >= 4) valColor = "#CC7722"; // orange
+          else if (val >= 0) valColor = "#DE3163"; // red
+          !minimalist && setEvaluation(
+            <div>
+              self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
+            </div>
+          );
+        }
       }
 
       !minimalist && setInfo((

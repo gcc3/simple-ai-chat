@@ -5,7 +5,7 @@ import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { findNode, queryNodeAI, isNodeConfigured } from "utils/nodeUtils";
+import { findNode, queryNode, isNodeConfigured } from "utils/nodeUtils";
 import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
 import { generateMidjourneyPrompt } from "utils/midjourneyUtils";
 import fetch from 'node-fetch';
@@ -18,8 +18,8 @@ const TYPE = {
   TOOL_CALL: 1
 };
 
-// configurations
-const { model, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
+// System configurations
+const sysconf = getSystemConfigurations();
 
 /*
   Generate messages for chatCompletion
@@ -48,7 +48,7 @@ export async function generateMessages(use_system_role, lang,
   let token_ct = {};
   let mem = 0;
   let input_images = [];
-  let input_file_content = "";
+  let file_content = "";
   let node_input = "";
   let node_output = "";
   let node_output_images = [];
@@ -86,7 +86,7 @@ export async function generateMessages(use_system_role, lang,
             fileContent = data.value;
           }
 
-          input_file_content += "User input file content:\n" + fileContent + "\n\n";
+          file_content += "User input file content:\n" + fileContent + "\n\n";
           files_text.push({
             file: files[i],
             text: fileContent,
@@ -105,12 +105,12 @@ export async function generateMessages(use_system_role, lang,
 
   // -6. System master message, important
   let system_prompt = "";
-  if (use_system_role && role_content_system !== "") {
+  if (use_system_role && sysconf.role_content_system !== "") {
     if (!user) {
       // It's not a free service, need to tell the user to register a user first
       system_prompt += "Provide the user with a short answer, less than 80 words. If the answer needs to be longer than 90 words, inform them that login is required. In a new paragraph, add:\n\nYou haven't logged in, so the answer length is limited. If you're already a member, please log in to continue. Or, register as a member with the command `:user add username email password` (replace with your actual details).\n\n";
     } else {
-      system_prompt += role_content_system + "\n\n";
+      system_prompt += sysconf.role_content_system + "\n\n";
     }
 
     // User language, lang is the language code, e.g. "en-US"
@@ -290,7 +290,7 @@ export async function generateMessages(use_system_role, lang,
     };
   }
 
-  if (use_node_ai && node && user) {
+  if (sysconf.use_node_ai && node && user) {
     updateStatus && updateStatus("Node AI generating...");
     console.log("--- node ai ---");
     console.log("node: " + node);
@@ -298,8 +298,6 @@ export async function generateMessages(use_system_role, lang,
     // Get node info
     const nodeInfo = await findNode(node, user.username);
     const settings = JSON.parse(nodeInfo.settings);
-    console.log("override_output: " + settings.overrideOutputWithNodeResponse);
-    console.log("use_stream: " + settings.useStream);
 
     if (isNodeConfigured(settings)) {
       node_input = input;
@@ -336,11 +334,7 @@ export async function generateMessages(use_system_role, lang,
       console.log("node_input: " + node_input.replace(/\n/g, " "));
 
       // Show a message for generting
-      if (!settings.overrideOutputWithNodeResponse) {
-        updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
-      } else {
-        updateStatus && updateStatus("Start generating...");
-      }
+      updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
 
       // Start sending keep-alive messages
       const stopKeepAlive = await sendKeepAlive(updateStatus);
@@ -354,26 +348,26 @@ export async function generateMessages(use_system_role, lang,
       console.log("files: " + JSON.stringify(files));
 
       // Query Node AI
-      const queryNodeAIResult = await queryNodeAI(node_input, settings, histories, files_text, streamOutput);
+      const nodeResponse = await queryNode(node_input, settings, histories, files_text, streamOutput);
 
       // Stop sending keep-alive messages
       stopKeepAlive();
-      updateStatus && updateStatus("Node AI responsed, result: " + JSON.stringify(queryNodeAIResult));
+      updateStatus && updateStatus("Node AI responsed, result: " + JSON.stringify(nodeResponse));
 
-      if (queryNodeAIResult && queryNodeAIResult.success) {
+      if (nodeResponse && nodeResponse.success) {
         let content = "";
 
         // Format result
-        if (typeof queryNodeAIResult.result === "string") {
-          content += queryNodeAIResult.result;
-          node_output = queryNodeAIResult.result;
-        } else if (queryNodeAIResult.result.text || queryNodeAIResult.result.image) {
+        if (typeof nodeResponse.result === "string") {
+          content += nodeResponse.result;
+          node_output = nodeResponse.result;
+        } else if (nodeResponse.result.text || nodeResponse.result.image) {
 
           // Node AI generated images
-          if (queryNodeAIResult.result.images && queryNodeAIResult.result.images.length > 0) {
+          if (nodeResponse.result.images && nodeResponse.result.images.length > 0) {
 
-            node_output = queryNodeAIResult.result.text || "Here it is, a generated image.";
-            node_output_images = queryNodeAIResult.result.images;
+            node_output = nodeResponse.result.text || "Here it is, a generated image.";
+            node_output_images = nodeResponse.result.images;
 
             // Add aspect ratio to each image
             for (let i = 0; i < node_output_images.length; i++) {
@@ -395,7 +389,7 @@ export async function generateMessages(use_system_role, lang,
             images = [node_output_images[0]];
             console.log("Override the input images: " + JSON.stringify(images));
           } else {
-            content += queryNodeAIResult.result.text;
+            content += nodeResponse.result.text;
           }
         }
 
@@ -664,7 +658,7 @@ export async function generateMessages(use_system_role, lang,
     token_ct,
     mem,
     input_images,
-    input_file_content,
+    file_content,
     node_input,
     node_output,
     node_output_images,

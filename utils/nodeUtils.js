@@ -47,53 +47,14 @@ export function getNodeSettings(node) {
   return settings;
 }
 
-export function isNodeMultimodalityContains(node, value) {
-  if (!node) {
-    return false;
-  }
-
-  const settings = getNodeSettings(node);
-  if (!settings) {
-    return false;
-  }
-
-  if (!settings.multimodality) {
-    return false;
-  }
-
-  return settings.multimodality.includes(value);
-}
-
-export function doNodeOverrideOutput(node) {
-  if (!node) {
-    return false;
-  }
-
-  const settings = getNodeSettings(node);
-  if (!settings) {
-    return false;
-  }
-
-  if (!settings.overrideOutputWithNodeResponse) {
-    return false;
-  }
-
-  return settings.overrideOutputWithNodeResponse;
-}
-
-export async function queryNodeAI(input, settings, histories = null, files_text = null, streamOutput = null) {
+export async function queryNode(input, settings, histories = null, files_text = null, useStream = false, streamOutput = null) {
   if (!input) return {
     success: false,
     error: "Invalid query.",
   }
 
   const endpoint = settings.endpoint;
-  const method = settings.method;
-  const multimodality = settings.multimodality;
-  const overrideOutputWithNodeResponse = settings.overrideOutputWithNodeResponse;
-  const useStream = settings.useStream;
   const model = settings.model;
-  const description = settings.description;
 
   // I. Input
   // Prepare messages
@@ -244,7 +205,6 @@ export async function queryNodeAI(input, settings, histories = null, files_text 
 export function isNodeConfigured(settings) {
   if (!settings) return false;
   if (!settings.endpoint || settings.endpoint === "___") return false;
-  if (!settings.method || settings.method === "___") return false;
   return true;
 }
 
@@ -254,13 +214,6 @@ export function verifyNodeSettings(settings) {
   // Endpoint check
   if (!settings.endpoint || settings.endpoint === "___") {
     messages.push("Error: `endpoint` not set.");
-  }
-
-  // Method check
-  if (!settings.method || settings.method === "") {
-    messages.push("Error: `method` not set.");
-  } else if (settings.method !== "GET" && settings.method !== "POST") {
-    messages.push("Error: `method` must be either `GET` or `POST`.");
   }
 
   return messages;
@@ -323,12 +276,11 @@ export async function getAvailableNodesForUser(user) {
 // Settings and initial values
 export function getInitNodeSettings() {
   return {
-    "endpoint": "___",                         // the full endpoint of the node, example: "http://localhost:5000/api/chat"
-    "method": "GET",                           // the method of endpont, if use GET, the input is in query parameters, if use POST, the input is in body
-    "multimodality": "",                       // multimodality of input, like image, audio, video input, example: "image,audio"
-    "overrideOutputWithNodeResponse": false,   // If set to true, the output will only use node response.
-    "useStream": false,                        // Streamed output
-    "model": "",                               // Optional, if the endpoint support multipe models
-    "description": "",
+    "endpoint": "___",                        // the full endpoint of the node, example: "http://localhost:5000/api"
+    "apiKey": "___",                          // If the API key is necessary
+    "model": "___",                           // One of the model of the node
+    "modelV": "___",                          // The version of the model
+    "useDirect": false,                       // Use direct connection from client to node
+    "description": "",                        // The description of the node
   };
 }

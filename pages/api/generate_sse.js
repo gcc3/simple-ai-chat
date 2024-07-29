@@ -10,7 +10,7 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { doNodeOverrideOutput, findNode, isNodeMultimodalityContains } from "utils/nodeUtils";
+import { findNode } from "utils/nodeUtils";
 import { ensureSession } from "utils/logUtils";
 
 // OpenAI
@@ -23,19 +23,17 @@ const TYPE = {
   TOOL_CALL: 1
 };
 
-// configurations
-const { model: model_, model_v, role_content_system, welcome_message, querying, waiting, init_placeholder, enter, temperature, top_p, max_tokens, use_function_calling: use_function_calling_, use_node_ai, use_payment, use_access_control, use_email } = getSystemConfigurations();
+// System configurations
+const sysconf = getSystemConfigurations();
 
 export default async function (req, res) {
   // Input
   let input = req.query.user_input.trim() || "";
   let inputType = TYPE.NORMAL;
-  const images_ = req.query.images || "";
-  const files_ = req.query.files || "";
 
   // Input: Images & files
-  const decodedImages = images_ || "";
-  const decodedFiles = files_ || "";
+  const decodedImages = req.query.images || "";
+  const decodedFiles = req.query.files || "";
   let images = [];
   let files = [];
   if (decodedImages) {
@@ -135,16 +133,12 @@ export default async function (req, res) {
 
   // Model switch
   // For Midjourney node, use version model to input image to AI.
-  const use_vision = images.length > 0 || isNodeMultimodalityContains(nodeInfo, "image");
-  const model = use_vision ? model_v : model_;
+  const use_vision = images && images.length > 0;
+  const model = use_vision ? sysconf.model_v : sysconf.model;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
-  // Use function calling
-  // Function calling is not supported in vision models
-  let use_function_calling = use_function_calling_;
-
   // User access control
-  if (use_access_control) {
+  if (sysconf.use_access_control) {
     const uacResult = await getUacResult(user, ip);
     if (!uacResult.success) {
       res.write(`data: ${uacResult.error}\n\n`); res.flush();
@@ -161,11 +155,11 @@ export default async function (req, res) {
     console.log(input + "\n");
 
     // Images & files
-    if (images.length > 0) {
+    if (images && images.length > 0) {
       console.log("--- images ---");
       console.log(images.join("\n") + "\n");
     }
-    if (files.length > 0) {
+    if (files && files.length > 0) {
       console.log("--- files ---");
       console.log(files.join("\n") + "\n");
     }
@@ -174,14 +168,14 @@ export default async function (req, res) {
     console.log("--- configuration info ---\n"
     + "lang: " + lang + "\n"
     + "model: " + model + "\n"
-    + "temperature: " + temperature + "\n"
-    + "top_p: " + top_p + "\n"
-    + "role_content_system (chat): " + role_content_system.replaceAll("\n", " ") + "\n"
-    + "max_tokens: " + max_tokens + "\n"
+    + "temperature: " + sysconf.temperature + "\n"
+    + "top_p: " + sysconf.top_p + "\n"
+    + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
+    + "max_tokens: " + sysconf.max_tokens + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
-    + "use_function_calling: " + use_function_calling + "\n"
-    + "use_node_ai: " + use_node_ai + "\n"
+    + "use_function_calling: " + sysconf.use_function_calling + "\n"
+    + "use_node_ai: " + sysconf.use_node_ai + "\n"
     + "use_lcation: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
     + "functions: " + (functions_ || "___") + "\n"
@@ -193,11 +187,11 @@ export default async function (req, res) {
   // Type II. Tool calls (function calling) input
   // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
   // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
-  let functionNames = [];
-  let functionCalls = [];
-  let functionResults = [];
+  let functionNames = [];    // functionc called
+  let functionCalls = [];    // function calls in input
+  let functionResults = [];  // function call results
   if (input.startsWith("!")) {
-    if (!use_function_calling) {
+    if (!sysconf.use_function_calling) {
       res.write(`data: Function calling is disabled.\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
       res.end();
@@ -205,7 +199,7 @@ export default async function (req, res) {
     }
 
     inputType = TYPE.TOOL_CALL;
-    console.log(chalk.cyanBright("Tool calls (session = " + session + "):"));
+    console.log(chalk.cyanBright("Tool calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
  
     // Curerently OpenAI only support function calling in tool calls.
     // Function name and arguments
@@ -246,37 +240,42 @@ export default async function (req, res) {
     let token_ct = [];  // detailed token count
     let input_token_ct = 0;
     let output_token_ct = 0;
-    let messages = [];
-    let raw_prompt = "";
-    let mem = 0;
     let input_images = [];
-    let input_file_content = "";
     let node_input = "";
     let node_output = "";
     let node_output_images = [];
     let toolCalls = [];
 
     // Messages
+    // messages
+    // token_ct: { system, history, user_input, user_input_image, user_input_files, location, role, store, node, function, total }
+    // mem
+    // input_images
+    // input_file_content
+    // node_input
+    // node_output
+    // node_output_images
+    // raw_prompt: { system, role, history, user_input_file, function, store, node, location }
     updateStatus("Start pre-generating...");
-    const generateMessagesResult = await generateMessages(use_system_role, lang,
-                                                          user, model, input, inputType, files, images, 
-                                                          session, mem_length,
-                                                          role, store, node, 
-                                                          use_location, location,
-                                                          use_function_calling, functionCalls, functionResults,
-                                                          updateStatus, streamOutput);
+    const msg = await generateMessages(use_system_role, lang,
+                                       user, model,
+                                       input, inputType, files, images, 
+                                       session, mem_length,
+                                       role, store, node, 
+                                       use_location, location,
+                                       sysconf.use_function_calling, functionCalls, functionResults,
+
+                                       // these 2 are callbacks
+                                       updateStatus, streamOutput);
 
     updateStatus("Pre-generating finished.");
-    token_ct.push(generateMessagesResult.token_ct);
-    messages = generateMessagesResult.messages;
-    input_token_ct += generateMessagesResult.token_ct.total;
-    raw_prompt = generateMessagesResult.raw_prompt;
-    mem = generateMessagesResult.mem;
-    input_images = generateMessagesResult.input_images;
-    input_file_content = generateMessagesResult.input_file_content;
-    node_input = generateMessagesResult.node_input;
-    node_output = generateMessagesResult.node_output;
-    node_output_images = generateMessagesResult.node_output_images;
+    token_ct.push(msg.token_ct);
+    input_token_ct += msg.token_ct.total;
+    input_images = msg.input_images;
+    
+    node_input = msg.node_input;
+    node_output = msg.node_output;
+    node_output_images = msg.node_output_images;
 
     if (node && nodeInfo) {
       const settings = JSON.parse(nodeInfo.settings);
@@ -295,51 +294,6 @@ export default async function (req, res) {
           await logadd(user, session, time++, nodeModel, 0, node_input, 0, node_output, JSON.stringify([]), ip, browser);
         }
       }
-
-      // Node taken output override
-      if (doNodeOverrideOutput(nodeInfo)) {
-        // Print node output images
-        if (node_output_images.length > 0) {
-          node_output_images.map(image => {
-            res.write(`data: ###IMG###${image}\n\n`);
-          });
-          res.flush();
-        }
-
-        // Print for non-stream
-        if (!settings.useStream) {
-          let nodeOutput = raw_prompt["node"];
-          if (nodeOutput) {
-            nodeOutput = nodeOutput.trim().replaceAll("\n", "###RETURN###");
-            res.write(`data: [CLEAR]\n\n`); res.flush();
-
-            // model
-            if (settings.model && settings.model !== "") {
-              res.write(`data: ###MODEL###${settings.model}\n\n`); res.flush();
-            }
-
-            // text output
-            res.write(`data: ${nodeOutput}\n\n`); res.flush();
-          }
-        }
-
-        // Print stream
-        if (settings.useStream) {
-          // model
-          if (settings.model && settings.model !== "") {
-            res.write(`data: ###MODEL###${settings.model}\n\n`); res.flush();
-          }
-        }
-
-        // Print output
-        console.log(chalk.magentaBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-        console.log((node_output || "(null)") + "\n");
-
-        // Done message
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
-      }
     }
 
     // Tools
@@ -348,7 +302,7 @@ export default async function (req, res) {
     console.log(JSON.stringify(tools) + "\n");
 
     console.log("--- messages ---");
-    console.log(JSON.stringify(messages) + "\n");
+    console.log(JSON.stringify(msg.messages) + "\n");
 
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");
@@ -364,13 +318,13 @@ export default async function (req, res) {
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
-      messages,
+      messages: msg.messages,
       model,
       frequency_penalty: 0,
       logit_bias: null,
       logprobs: null,
       top_logprobs: null,
-      max_tokens,
+      max_tokens: sysconf.max_tokens,
       n: 1,
       presence_penalty: 0,
       response_format: null,
@@ -379,16 +333,16 @@ export default async function (req, res) {
       stop: "###STOP###",
       stream: true,
       stream_options: null,
-      temperature,
-      top_p,
-      tools: (use_function_calling && tools.length > 0) ? tools : null,
-      tool_choice: (use_function_calling && tools.length > 0) ? "auto" : null,
+      temperature: sysconf.temperature,
+      top_p: sysconf.top_p,
+      tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
+      tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
       parallel_tool_calls: true,
       user: user ? user.username : null,
     });
 
     res.write(`data: ###MODEL###${model}\n\n`);
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${msg.mem}\n\n`);
 
     // Print input images
     input_images.map(image => {
@@ -428,7 +382,7 @@ export default async function (req, res) {
     // vision models not support evaluation
     if (use_eval) {
       if (output.trim().length > 0) {
-        const evalResult = await evaluate(user, input, raw_prompt, output);
+        const evalResult = await evaluate(user, input, msg.raw_prompt, output);
         if (evalResult.success) {
           res.write(`data: ###EVAL###${evalResult.output}\n\n`); res.flush();
           console.log("eval: " + evalResult.output + "\n");
@@ -454,9 +408,9 @@ export default async function (req, res) {
       console.log(output_tool_calls + "\n");
     }
 
-    // Token count and log
+    // Log (chat history)
     // Must add tool calls log first, then add the general input output log
-    // 1. tool calls
+    // 1. tool calls log
     if (functionCalls && functionCalls.length > 0 && functionResults && functionResults.length > 0) {
       for (let i = 0; i < functionResults.length; i++) {
         const f = functionResults[i];
@@ -473,7 +427,7 @@ export default async function (req, res) {
       }
     }
 
-    // 2. input
+    // 2. general input/output log
     output_token_ct += countToken(model, output);
     if (inputType === TYPE.TOOL_CALL) {
       // Function calling input is already logged
@@ -484,13 +438,13 @@ export default async function (req, res) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }
-    if (files.length > 0 && input_file_content) {
-      input += "\n\n" + input_file_content;
+    if (files.length > 0 && msg.file_content) {
+      input += "\n\n" + msg.file_content;
     }
     await logadd(user, session, time++, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
 
-    // Final stats
-    res.write(`data: ###STATS###${temperature},${top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${mem}\n\n`);
+    // Stats (final)
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${msg.mem}\n\n`);
     
     // Done message
     updateStatus("Finished.");
