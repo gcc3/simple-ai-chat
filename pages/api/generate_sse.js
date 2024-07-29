@@ -10,7 +10,7 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { doNodeOverrideOutput, findNode, isNodeMultimodalityContains } from "utils/nodeUtils";
+import { findNode } from "utils/nodeUtils";
 import { ensureSession } from "utils/logUtils";
 
 // OpenAI
@@ -133,7 +133,7 @@ export default async function (req, res) {
 
   // Model switch
   // For Midjourney node, use version model to input image to AI.
-  const use_vision = (images && images.length > 0) || isNodeMultimodalityContains(nodeInfo, "image");
+  const use_vision = images && images.length > 0;
   const model = use_vision ? sysconf.model_v : sysconf.model;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
@@ -293,51 +293,6 @@ export default async function (req, res) {
         } else {
           await logadd(user, session, time++, nodeModel, 0, node_input, 0, node_output, JSON.stringify([]), ip, browser);
         }
-      }
-
-      // Node taken output override
-      if (doNodeOverrideOutput(nodeInfo)) {
-        // Print node output images
-        if (node_output_images.length > 0) {
-          node_output_images.map(image => {
-            res.write(`data: ###IMG###${image}\n\n`);
-          });
-          res.flush();
-        }
-
-        // Print for non-stream
-        if (!settings.useStream) {
-          let nodeOutput = msg.raw_prompt["node"];
-          if (nodeOutput) {
-            nodeOutput = nodeOutput.trim().replaceAll("\n", "###RETURN###");
-            res.write(`data: [CLEAR]\n\n`); res.flush();
-
-            // model
-            if (settings.model && settings.model !== "") {
-              res.write(`data: ###MODEL###${settings.model}\n\n`); res.flush();
-            }
-
-            // text output
-            res.write(`data: ${nodeOutput}\n\n`); res.flush();
-          }
-        }
-
-        // Print stream
-        if (settings.useStream) {
-          // model
-          if (settings.model && settings.model !== "") {
-            res.write(`data: ###MODEL###${settings.model}\n\n`); res.flush();
-          }
-        }
-
-        // Print output
-        console.log(chalk.magentaBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-        console.log((node_output || "(null)") + "\n");
-
-        // Done message
-        res.write(`data: [DONE]\n\n`); res.flush();
-        res.end();
-        return;
       }
     }
 

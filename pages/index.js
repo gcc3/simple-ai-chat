@@ -1730,6 +1730,8 @@ export default function Home() {
   }
 
   // Direct
+  // Direct send API request to the server
+  // Warning: it will expose the API key.
   async function generate_direct(input, images, files) {
     // If already doing, return
     if (global.STATE === STATES.DOING) return;

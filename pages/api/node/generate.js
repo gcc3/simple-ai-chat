@@ -1,5 +1,5 @@
 import { authenticate } from "utils/authUtils";
-import { queryNodeAI, isNodeConfigured } from "utils/nodeUtils";
+import { queryNode, isNodeConfigured } from "utils/nodeUtils";
 import { findNode } from "utils/nodeUtils";
 
 export default async function handler(req, res) {
@@ -42,7 +42,7 @@ export default async function handler(req, res) {
 
     // Query
     console.log("Querying node...");
-    const response = await queryNodeAI(input, settings);
+    const response = await queryNode(input, settings);
 
     // Return result
     if (!response.success) {

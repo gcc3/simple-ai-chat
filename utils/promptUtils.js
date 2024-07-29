@@ -5,7 +5,7 @@ import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { findNode, queryNodeAI, isNodeConfigured } from "utils/nodeUtils";
+import { findNode, queryNode, isNodeConfigured } from "utils/nodeUtils";
 import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
 import { generateMidjourneyPrompt } from "utils/midjourneyUtils";
 import fetch from 'node-fetch';
@@ -298,8 +298,6 @@ export async function generateMessages(use_system_role, lang,
     // Get node info
     const nodeInfo = await findNode(node, user.username);
     const settings = JSON.parse(nodeInfo.settings);
-    console.log("override_output: " + settings.overrideOutputWithNodeResponse);
-    console.log("use_stream: " + settings.useStream);
 
     if (isNodeConfigured(settings)) {
       node_input = input;
@@ -336,11 +334,7 @@ export async function generateMessages(use_system_role, lang,
       console.log("node_input: " + node_input.replace(/\n/g, " "));
 
       // Show a message for generting
-      if (!settings.overrideOutputWithNodeResponse) {
-        updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
-      } else {
-        updateStatus && updateStatus("Start generating...");
-      }
+      updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
 
       // Start sending keep-alive messages
       const stopKeepAlive = await sendKeepAlive(updateStatus);
@@ -354,26 +348,26 @@ export async function generateMessages(use_system_role, lang,
       console.log("files: " + JSON.stringify(files));
 
       // Query Node AI
-      const queryNodeAIResult = await queryNodeAI(node_input, settings, histories, files_text, streamOutput);
+      const nodeResponse = await queryNode(node_input, settings, histories, files_text, streamOutput);
 
       // Stop sending keep-alive messages
       stopKeepAlive();
-      updateStatus && updateStatus("Node AI responsed, result: " + JSON.stringify(queryNodeAIResult));
+      updateStatus && updateStatus("Node AI responsed, result: " + JSON.stringify(nodeResponse));
 
-      if (queryNodeAIResult && queryNodeAIResult.success) {
+      if (nodeResponse && nodeResponse.success) {
         let content = "";
 
         // Format result
-        if (typeof queryNodeAIResult.result === "string") {
-          content += queryNodeAIResult.result;
-          node_output = queryNodeAIResult.result;
-        } else if (queryNodeAIResult.result.text || queryNodeAIResult.result.image) {
+        if (typeof nodeResponse.result === "string") {
+          content += nodeResponse.result;
+          node_output = nodeResponse.result;
+        } else if (nodeResponse.result.text || nodeResponse.result.image) {
 
           // Node AI generated images
-          if (queryNodeAIResult.result.images && queryNodeAIResult.result.images.length > 0) {
+          if (nodeResponse.result.images && nodeResponse.result.images.length > 0) {
 
-            node_output = queryNodeAIResult.result.text || "Here it is, a generated image.";
-            node_output_images = queryNodeAIResult.result.images;
+            node_output = nodeResponse.result.text || "Here it is, a generated image.";
+            node_output_images = nodeResponse.result.images;
 
             // Add aspect ratio to each image
             for (let i = 0; i < node_output_images.length; i++) {
@@ -395,7 +389,7 @@ export async function generateMessages(use_system_role, lang,
             images = [node_output_images[0]];
             console.log("Override the input images: " + JSON.stringify(images));
           } else {
-            content += queryNodeAIResult.result.text;
+            content += nodeResponse.result.text;
           }
         }
 
