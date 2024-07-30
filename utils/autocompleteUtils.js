@@ -53,8 +53,8 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     const name = sessionStorage.getItem("node");
     const response = await getNode(name);
     if (response.success) {
-      const node = response.result;
-      return Object.keys(node.settings);
+      const nodeInfo = response.result;
+      return Object.keys(nodeInfo.settings);
     } else {
       return [];
     }
@@ -140,9 +140,9 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   return [];
 }
 
-async function getNode(name) {
+async function getNode(nodeName) {
   try {
-    const response = await fetch("/api/node/" + name, {
+    const response = await fetch("/api/node/" + nodeName, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -154,7 +154,9 @@ async function getNode(name) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    if (!data.result) {
+    // Node info
+    let nodeInfo = data.result;
+    if (!nodeInfo) {
       return {
         success: false,
         error: "Node not exists."

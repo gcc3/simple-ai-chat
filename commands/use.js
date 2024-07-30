@@ -41,18 +41,24 @@ export default async function use(args) {
   }
 
   // Find node
-  if (await findNode(name)) {
+  const nodeInfo = await findNode(name);
+  if (nodeInfo) {
     if (!localStorage.getItem("user")) {
       return "Please login.";
     }
 
     // Set node
     sessionStorage.setItem("node", name);
+
+    // Reset useDirect
+    sessionStorage.setItem("useDirect", nodeInfo.settings.useDirect);
+
     return "Node is set to \`" + name + "\`, you can directly talk to it, or use command \`:generate [input]\` to generate from it. Command \`:node\` shows current node information.";
   }
   
   // Find store
-  if (await findStore(name)) {
+  const storeInfo = await findStore(name);
+  if (storeInfo) {
     if (!localStorage.getItem("user")) {
       return "Please login.";
     }
@@ -95,11 +101,9 @@ async function findNode(nodeName) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    if (!data.result) {
-      return false;
-    } else {
-      return true;
-    }
+    // Node info
+    const nodeInfo = data.result;
+    return nodeInfo;
   } catch (error) {
     console.error(error);
     return false;
@@ -125,13 +129,10 @@ async function findStore(storeName) {
     const data = await response.json();
     if (response.status !== 200) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
-    } 
-
-    if (!data.result) {
-      return false;
-    } else {
-      return true;
     }
+
+    const storeInfo = data.result;
+    return storeInfo;
   } catch (error) {
     console.error(error);
     return false;

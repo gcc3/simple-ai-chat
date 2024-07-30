@@ -1,5 +1,5 @@
 import { initializeMemory } from "utils/sessionUtils";
-import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } from "utils/storageUtils";
+import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils";
 import { getFunctions } from "function";
 
 export default async function unuse(args) {
@@ -41,20 +41,26 @@ export default async function unuse(args) {
   }
 
   // Find node
-  if (await findNode(name)) {
+  const nodeInfo = await findNode(name);
+  if (nodeInfo) {
     if (!localStorage.getItem("user")) {
       return "Please login.";
     }
 
-    ssessionStorage.setItem("node", "");  // reset node
+    // clear node
+    sessionStorage.setItem("node", "");
+
+    // reset useDirect
+    sessionStorage.setItem("useDirect", false);
 
     // Reset session to forget previous memory
-    initializeSession();
+    initializeMemory();
     return "Node reset.";
   }
   
   // Find store
-  if (await findStore(name)) {
+  const storeInfo = await findStore(name);
+  if (storeInfo) {
     if (!localStorage.getItem("user")) {
       return "Please login.";
     }
@@ -100,11 +106,9 @@ async function findNode(nodeName) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    if (!data.result) {
-      return false;
-    } else {
-      return true;
-    }
+    // Node info
+    const nodeInfo = data.result;
+    return nodeInfo;
   } catch (error) {
     console.error(error);
     return false;
@@ -130,13 +134,10 @@ async function findStore(storeName) {
     const data = await response.json();
     if (response.status !== 200) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
-    } 
-
-    if (!data.result) {
-      return false;
-    } else {
-      return true;
     }
+
+    const storeInfo = data.result;
+    return storeInfo;
   } catch (error) {
     console.error(error);
     return false;
