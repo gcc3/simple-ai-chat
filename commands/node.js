@@ -42,6 +42,9 @@ export default async function node(args) {
 
       // Try ping node from local
       if (node.settings.useDirect) {
+        // Set the session storage to remember useDirect
+        sessionStorage.setItem("useDirect", true);
+
         // ping node
         await fetch(getBaseURL(node.settings.endpoint), {
           method: "GET",

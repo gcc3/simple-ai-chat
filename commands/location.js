@@ -12,14 +12,14 @@ export default async function location(args) {
         }, reject);
       });
     } catch (e) {
-      localStorage.setItem("useLocation", "false");
+      localStorage.setItem("useLocation", false);
       return "Location service failed.";
     }
 
     return "Location service enabled.";
   } else if (onoff === "off") {
     localStorage.setItem("location", "");
-    localStorage.setItem("useLocation", "false");
+    localStorage.setItem("useLocation", false);
     return "Location service disabled.";
   } else {
     return "Usage: :location [on|off]";

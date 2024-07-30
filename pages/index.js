@@ -351,16 +351,16 @@ export default function Home() {
     // Set default localStorage values
     if (localStorage.getItem("_up") === null) localStorage.setItem("_up", Date.now());
     if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
-    if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", "false");
-    if (localStorage.getItem("useEval") === null) localStorage.setItem("useEval", "false");
-    if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", "true");
-    if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", "false");
-    if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", "false");
+    if (localStorage.getItem("useStats") === null) localStorage.setItem("useStats", false);
+    if (localStorage.getItem("useEval") === null) localStorage.setItem("useEval", false);
+    if (localStorage.getItem("useStream") === null) localStorage.setItem("useStream", true);
+    if (localStorage.getItem("useSpeak") === null) localStorage.setItem("useSpeak", false);
+    if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", false);
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
     if (localStorage.getItem("functions") === null) localStorage.setItem("functions", "Time,Weather,Redirection");  // default functions
-    if (localStorage.getItem("passMask") === null) localStorage.setItem("passMask", "true");
-    if (localStorage.getItem("useSystemRole") === null) localStorage.setItem("useSystemRole", "true");
+    if (localStorage.getItem("passMask") === null) localStorage.setItem("passMask", true);
+    if (localStorage.getItem("useSystemRole") === null) localStorage.setItem("useSystemRole", true);
     if (localStorage.getItem("history") === null) localStorage.setItem("history", JSON.stringify([]));  // command history
 
     // Set default sessionStorage values
@@ -368,6 +368,7 @@ export default function Home() {
     if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");    // default role
     if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");  // default store
     if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");    // default node
+    if (sessionStorage.getItem("useDirect") === null) sessionStorage.setItem("useDirect", false);   // use direct mode (for node)
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);  // command history index
 
     // Set styles and themes
