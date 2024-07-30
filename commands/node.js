@@ -38,36 +38,39 @@ export default async function node(args) {
       }
 
       // Node info
-      let node = data.result;
+      const nodeInfo = data.result;
+      if (!nodeInfo) {
+        return "Node not found.";
+      }
 
       // Update useDirect
-      sessionStorage.setItem("useDirect", node.settings.useDirect);
+      sessionStorage.setItem("useDirect", nodeInfo.settings.useDirect);
 
       // Try ping node from local
-      if (node.settings.useDirect) {
+      if (nodeInfo.settings.useDirect) {
         // ping node
-        await fetch(getBaseURL(node.settings.endpoint), {
+        await fetch(getBaseURL(nodeInfo.settings.endpoint), {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
         }).then((response) => {
           if (response.status !== 200 || !response.ok) {
-            node.status.ping = "Inconnectable.";
+            nodeInfo.status.ping = "Inconnectable.";
           } else {
             return response.text();
           }
         }).then((text) => {
           if (text) {
-            node.status.ping = text;
+            nodeInfo.status.ping = text;
           }
         }).catch((error) => {
           console.error(error);
-          node.status.ping = "Inconnectable.";
+          nodeInfo.status.ping = "Inconnectable.";
         });
       }
 
-      return JSON.stringify(node, null, 2);
+      return JSON.stringify(nodeInfo, null, 2);
     } catch (error) {
       console.error(error);
       return error;
@@ -96,33 +99,36 @@ export default async function node(args) {
       }
 
       // Node info
-      let node = data.result;
+      const nodeInfo = data.result;
+      if (!nodeInfo) {
+        return "Node not found.";
+      }
 
       // Try ping node from local
-      if (node.settings.useDirect) {
+      if (nodeInfo.settings.useDirect) {
         // ping node
-        await fetch(getBaseURL(node.settings.endpoint), {
+        await fetch(getBaseURL(nodeInfo.settings.endpoint), {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
           },
         }).then((response) => {
           if (response.status !== 200 || !response.ok) {
-            node.status.ping = "Inconnectable.";
+            nodeInfo.status.ping = "Inconnectable.";
           } else {
             return response.text();
           }
         }).then((text) => {
           if (text) {
-            node.status.ping = text;
+            nodeInfo.status.ping = text;
           }
         }).catch((error) => {
           console.error(error);
-          node.status.ping = "Inconnectable.";
+          nodeInfo.status.ping = "Inconnectable.";
         });
       }
 
-      return JSON.stringify(node, null, 2);
+      return JSON.stringify(nodeInfo, null, 2);
     } catch (error) {
       console.error(error);
       return error;
@@ -242,12 +248,18 @@ export default async function node(args) {
         }
 
         // Node info
-        let node = data.result;
+        const nodeInfo = data.result;
+        if (!nodeInfo) {
+          return "Node not found.";
+        }
+        
+        // Set node
+        sessionStorage.setItem("node", nodeName);
 
         // Update useDirect
-        sessionStorage.setItem("useDirect", node.settings.useDirect);
+        sessionStorage.setItem("useDirect", nodeInfo.settings.useDirect);
 
-        if (!node) {
+        if (!nodeInfo) {
           return "Node not found.";
         }
       } catch (error) {
@@ -255,10 +267,7 @@ export default async function node(args) {
         return error;
       }
 
-      // Set node
-      sessionStorage.setItem("node", nodeName);
-
-      return "Node is set to \`" + nodeName + "\`, you can directly talk to it, or use command \`:generate [input]\` to generate from it. Command \`:node\` shows current node information.";
+      return "Node is set to \`" + nodeName + "\`, you can directly talk, or use command \`:generate [input]\` to generate from it. Command \`:node\` shows current node information.";
     }
 
     if (args[0] === "unuse") {
@@ -266,7 +275,10 @@ export default async function node(args) {
         return "Node `" + nodeName + "` is not being used.";
       }
 
+      // Clear node
       sessionStorage.setItem("node", "");
+
+      // Reset useDirect
       sessionStorage.setItem("useDirect", false);
       
       return "Node unset.";
