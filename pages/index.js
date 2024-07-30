@@ -1400,7 +1400,7 @@ export default function Home() {
     // Clear info and start generating
     resetInfo();
 
-    if (localStorage.getItem('useDirect') === "true") {
+    if (sessionStorage.getItem('useDirect') === "true") {
       generate_direct(input, image_urls, file_urls);
     } else {
       if (localStorage.getItem('useStream') === "true") {
