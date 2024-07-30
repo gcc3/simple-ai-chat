@@ -48,6 +48,7 @@ export default async function use(args) {
 
     // Set node
     sessionStorage.setItem("node", name);
+
     return "Node is set to \`" + name + "\`, you can directly talk to it, or use command \`:generate [input]\` to generate from it. Command \`:node\` shows current node information.";
   }
   
@@ -95,7 +96,10 @@ async function findNode(nodeName) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    if (!data.result) {
+    // Node info
+    const node = data.result;
+
+    if (!node) {
       return false;
     } else {
       return true;
@@ -125,9 +129,12 @@ async function findStore(storeName) {
     const data = await response.json();
     if (response.status !== 200) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
-    } 
+    }
 
-    if (!data.result) {
+    // Store info
+    const store = data.result;
+
+    if (!store) {
       return false;
     } else {
       return true;

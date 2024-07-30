@@ -100,7 +100,10 @@ async function findNode(nodeName) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    if (!data.result) {
+    // Node info
+    let node = data.result;
+
+    if (!node) {
       return false;
     } else {
       return true;

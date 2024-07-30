@@ -154,7 +154,10 @@ async function getNode(name) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    if (!data.result) {
+    // Node info
+    let node = data.result;
+
+    if (!node) {
       return {
         success: false,
         error: "Node not exists."

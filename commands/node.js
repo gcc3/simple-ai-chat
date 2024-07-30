@@ -40,11 +40,11 @@ export default async function node(args) {
       // Node info
       let node = data.result;
 
+      // Update useDirect
+      sessionStorage.setItem("useDirect", node.settings.useDirect);
+
       // Try ping node from local
       if (node.settings.useDirect) {
-        // Set the session storage to remember useDirect
-        sessionStorage.setItem("useDirect", true);
-
         // ping node
         await fetch(getBaseURL(node.settings.endpoint), {
           method: "GET",
@@ -95,7 +95,34 @@ export default async function node(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      return JSON.stringify(data.result, null, 2);
+      // Node info
+      let node = data.result;
+
+      // Try ping node from local
+      if (node.settings.useDirect) {
+        // ping node
+        await fetch(getBaseURL(node.settings.endpoint), {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((response) => {
+          if (response.status !== 200 || !response.ok) {
+            node.status.ping = "Inconnectable.";
+          } else {
+            return response.text();
+          }
+        }).then((text) => {
+          if (text) {
+            node.status.ping = text;
+          }
+        }).catch((error) => {
+          console.error(error);
+          node.status.ping = "Inconnectable.";
+        });
+      }
+
+      return JSON.stringify(node, null, 2);
     } catch (error) {
       console.error(error);
       return error;
@@ -214,7 +241,13 @@ export default async function node(args) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        if (!data.result) {
+        // Node info
+        let node = data.result;
+
+        // Update useDirect
+        sessionStorage.setItem("useDirect", node.settings.useDirect);
+
+        if (!node) {
           return "Node not found.";
         }
       } catch (error) {
@@ -234,6 +267,8 @@ export default async function node(args) {
       }
 
       sessionStorage.setItem("node", "");
+      sessionStorage.setItem("useDirect", false);
+      
       return "Node unset.";
     }
   }
