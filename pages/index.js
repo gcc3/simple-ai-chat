@@ -1400,13 +1400,20 @@ export default function Home() {
     // Clear info and start generating
     resetInfo();
 
-    if (sessionStorage.getItem('useDirect')) {
+    // Generation mode switch
+    if (sessionStorage.getItem("useDirect") == "true") {
+      console.log("Start generating (direct)...");
+
       generate_direct(input, image_urls, file_urls);
     } else {
-      if (localStorage.getItem('useStream')) {
+      if (localStorage.getItem('useStream') == "true") {
+        console.log("Start generating (SSE)...");
+
         // Use SSE request
         generate_sse(input, image_urls_encoded, file_urls_encoded);
       } else {
+        console.log("Start generating (Non-stream)...");
+
         // Use general simple API request
         printOutput(waiting === "" ? "Generating..." : waiting);
         generate(input, image_urls, file_urls);
@@ -1790,6 +1797,11 @@ export default function Home() {
 
     // Node info
     const nodeName = sessionStorage.getItem("node");
+    if (!nodeName) {
+      printOutput("Error.");
+      return;
+    }
+
     const nodeInfoResponse = await fetch("/api/node/" + nodeName, {
       method: "GET",
       headers: {
