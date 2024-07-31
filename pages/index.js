@@ -1402,19 +1402,14 @@ export default function Home() {
 
     // Generation mode switch
     if (sessionStorage.getItem("useDirect") == "true") {
-      console.log("Start generating (direct)...");
-
+      console.log("Start. (direct)");
       generate_direct(input, image_urls, file_urls);
     } else {
       if (localStorage.getItem('useStream') == "true") {
-        console.log("Start generating (SSE)...");
-
-        // Use SSE request
+        console.log("Start. (SSE)");
         generate_sse(input, image_urls_encoded, file_urls_encoded);
       } else {
-        console.log("Start generating (Non-stream)...");
-
-        // Use general simple API request
+        console.log("Start. (non-stream)");
         printOutput(waiting === "" ? "Generating..." : waiting);
         generate(input, image_urls, file_urls);
       }
