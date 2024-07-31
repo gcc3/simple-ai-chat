@@ -1400,10 +1400,10 @@ export default function Home() {
     // Clear info and start generating
     resetInfo();
 
-    if (sessionStorage.getItem('useDirect') === "true") {
+    if (sessionStorage.getItem('useDirect')) {
       generate_direct(input, image_urls, file_urls);
     } else {
-      if (localStorage.getItem('useStream') === "true") {
+      if (localStorage.getItem('useStream')) {
         // Use SSE request
         generate_sse(input, image_urls_encoded, file_urls_encoded);
       } else {
@@ -1754,7 +1754,7 @@ export default function Home() {
     console.log("Config: " + JSON.stringify(config));
 
     // Generate messages
-    const response = await fetch("/api/generate_msg", {
+    const msgResponse = await fetch("/api/generate_msg", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -1779,32 +1779,61 @@ export default function Home() {
       }),
     });
 
-    const data = await response.json();
-    if (response.status !== 200) {
-      throw data.error || new Error(`Request failed with status ${response.status}`);
+    const msgData = await msgResponse.json();
+    if (msgResponse.status !== 200) {
+      throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
     }
-    const msg = data.result.msg;
+    const msg = msgData.result.msg;
 
     // Use stream
     const useStream = localStorage.getItem('useStream') === "true";
 
-    // Configurations
-    const sysconf = {
-      baseURL: "http://localhost:11434/v1",
-      apiKey: "ollama",
-      model: "llama3.1",
-      model_v: "llava",
-      max_tokens: 4000,
-      use_function_calling: false,
+    // Node info
+    const nodeName = sessionStorage.getItem("node");
+    const nodeInfoResponse = await fetch("/api/node/" + nodeName, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const nodeInfoData = await nodeInfoResponse.json();
+    if (nodeInfoResponse.status !== 200) {
+      throw nodeInfoData.error || new Error(`Request failed with status ${response.status}`);
+    }
+
+    // Node info
+    const nodeInfo = nodeInfoData.result;
+    if (!nodeInfo) {
+      return "Node not found.";
+    }
+    console.log("Use node: " + JSON.stringify(nodeInfo));
+    
+    // Node settings
+    // endpoint
+    // apiKey
+    // model
+    // modelV
+    // useFunctionCalling
+    // useDirect
+    // description
+    const nodeSettings = nodeInfo.settings;
+
+    // Update useDirect
+    sessionStorage.setItem('useDirect', nodeSettings.useDirect);
+    if (nodeSettings.useDirect === "false") {
+      printOutput("Direct API request is disabled.");
+      return;
     }
 
     // Model
-    const model = sysconf.model;
+    const use_vision = images && images.length > 0;
+    const model = use_vision ? nodeSettings.modelV : nodeSettings.model;
 
     // Setup OpenAI API
     const openai = new OpenAI({
-      baseURL: sysconf.baseURL,
-      apiKey: sysconf.apiKey,
+      baseURL: nodeSettings.endpoint,
+      apiKey: nodeSettings.apiKey,
       dangerouslyAllowBrowser: true,
       temperature: 0.7,
       top_p: 1,
@@ -1823,7 +1852,7 @@ export default function Home() {
       logit_bias: null,
       logprobs: null,
       top_logprobs: null,
-      max_tokens: sysconf.max_tokens,
+      max_tokens: 4000,
       n: 1,
       presence_penalty: 0,
       response_format: null,
@@ -1832,10 +1861,10 @@ export default function Home() {
       stop: "###STOP###",
       stream: useStream,
       stream_options: null,
-      temperature: sysconf.temperature,
-      top_p: sysconf.top_p,
-      tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
-      tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
+      temperature: nodeSettings.temperature,
+      top_p: nodeSettings.top_p,
+      tools: (nodeSettings.useFunctionCalling && tools && tools.length > 0) ? tools : null,
+      tool_choice: (nodeSettings.useFunctionCalling && tools && tools.length > 0) ? "auto" : null,
       parallel_tool_calls: true,
       user: user ? user.username : null,
     });
@@ -1850,7 +1879,7 @@ export default function Home() {
         body: JSON.stringify({
           input,
           output,
-          model: sysconf.model,
+          model: nodeSettings.model,
           session: sessionStorage.getItem("session"),
           images: [],
           time: Date.now(),
@@ -1858,7 +1887,7 @@ export default function Home() {
       });
 
       if (response1.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response1.status}`);
+        throw msgData.error || new Error(`Request failed with status ${response1.status}`);
       }
     }
 
@@ -1888,7 +1917,7 @@ export default function Home() {
       // Set model
       !minimalist && setInfo((
         <div>
-          model: {sysconf.model}<br></br>
+          model: {nodeSettings.model}<br></br>
         </div>
       ));
 
