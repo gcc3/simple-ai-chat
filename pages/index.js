@@ -326,13 +326,6 @@ export default function Home() {
     reAdjustPlaceholder();
   }
 
-  // Clear placeholder
-  const clearPlaceholder = () => {
-    global.rawPlaceholder = global.initPlaceholder;
-    setPlaceholder({ text: global.rawPlaceholder, height: null });
-    reAdjustPlaceholder();
-  }
-
   // Clear hash tag
   const removeHashTag = () => {
     history.pushState(null, null, ' ' + window.location.href.split('#')[0]);
@@ -562,7 +555,8 @@ export default function Home() {
               // Clear all input and output, pleaceholder, previews
               clearInput();
               clearOutput();
-              clearPlaceholder();
+              global.rawPlaceholder = global.initPlaceholder;
+              setPlaceholder({ text: global.rawPlaceholder, height: null });
               clearPreviewImages();
               clearPreviewVideos();
               setInfo();
@@ -652,7 +646,6 @@ export default function Home() {
               getHistorySession("prev", sessionStorage.getItem("session"))
                 .then((session) => {
                   clearOutput(true);
-                  clearPlaceholder();
 
                   if (!session) {
                     console.log("No previous session.");
@@ -686,7 +679,6 @@ export default function Home() {
               getHistorySession("prev", sessionStorage.getItem("session"))
                 .then((session) => {
                   clearOutput(true);
-                  clearPlaceholder();
 
                   if (!session) {
                     console.log("No previous session.");
@@ -740,7 +732,6 @@ export default function Home() {
               getHistorySession("next", sessionStorage.getItem("session"))
                 .then((session) => {
                   clearOutput(true);
-                  clearPlaceholder();
 
                   if (!session) {
                     console.log("No next session.");
@@ -774,7 +765,6 @@ export default function Home() {
               getHistorySession("next", sessionStorage.getItem("session"))
                 .then((session) => {
                   clearOutput(true);
-                  clearPlaceholder();
 
                   if (!session) {
                     console.log("No next session.");
