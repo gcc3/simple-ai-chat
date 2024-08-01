@@ -328,8 +328,7 @@ export default function Home() {
 
   // Clear placeholder
   const clearPlaceholder = () => {
-    global.rawPlaceholder = global.initPlaceholder;
-    setPlaceholder({ text: global.rawPlaceholder, height: null });
+    setPlaceholder("");
     reAdjustPlaceholder();
   }
 
@@ -562,7 +561,8 @@ export default function Home() {
               // Clear all input and output, pleaceholder, previews
               clearInput();
               clearOutput();
-              clearPlaceholder();
+              global.rawPlaceholder = global.initPlaceholder;
+              setPlaceholder({ text: global.rawPlaceholder, height: null });
               clearPreviewImages();
               clearPreviewVideos();
               setInfo();
