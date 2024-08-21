@@ -69,6 +69,12 @@ global.initPlaceholder = "";
 
 // Donut interval id
 let dunutIntervalId = null;
+const clearDonutInterval = () => {
+  if (dunutIntervalId) {
+    clearInterval(dunutIntervalId);
+    dunutIntervalId = null;
+  }
+}
 
 export default function Home() { 
   // States
@@ -1086,6 +1092,7 @@ export default function Home() {
       setInfo();
       setStats();
       setEvaluation();
+      clearDonutInterval();
 
       // Focus on input
       const elInput = elInputRef.current;
@@ -1195,9 +1202,7 @@ export default function Home() {
         }, 50);
       } else {
         // Clear donut
-        if (dunutIntervalId && !commandString.startsWith("theme")) {
-          clearInterval(dunutIntervalId);
-        }
+        clearDonutInterval();
       }
 
       // If heavy command, show waiting text
@@ -2305,7 +2310,9 @@ export default function Home() {
   const reAdjustInputHeight = async (fullscreen_ = null, doSleepToFixAuto = true) => {
     const elInput = elInputRef.current;
     if (elInput) {
-      if (!fullscreen_) fullscreen_ = fullscreen;
+      if (!fullscreen_) {
+        fullscreen_ = localStorage.getItem("fullscreen");
+      }
 
       // Non-fullscreen
       if (fullscreen_ === "off") {

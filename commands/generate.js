@@ -7,6 +7,10 @@ export default async function generate(args) {
     return "Word must be quoted with double quotes.";
   }
 
+  if (sessionStorage.getItem("useDirect") === "true") {
+    return "`:generate` command is not available for node in direct API mode.";
+  }
+
   const node = sessionStorage.getItem("node");
   if (!node) {
     return "No node selected.";
