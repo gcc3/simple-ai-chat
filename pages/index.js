@@ -2310,7 +2310,9 @@ export default function Home() {
   const reAdjustInputHeight = async (fullscreen_ = null, doSleepToFixAuto = true) => {
     const elInput = elInputRef.current;
     if (elInput) {
-      if (!fullscreen_) fullscreen_ = fullscreen;
+      if (!fullscreen_) {
+        fullscreen_ = localStorage.getItem("fullscreen");
+      }
 
       // Non-fullscreen
       if (fullscreen_ === "off") {
