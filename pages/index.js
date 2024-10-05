@@ -1877,7 +1877,7 @@ export default function Home() {
       top_p: nodeSettings.top_p,
       tools: (nodeSettings.useFunctionCalling && tools && tools.length > 0) ? tools : null,
       tool_choice: (nodeSettings.useFunctionCalling && tools && tools.length > 0) ? "auto" : null,
-      parallel_tool_calls: true,
+      // parallel_tool_calls: true,  // no need, by default it is true
       user: user ? user.username : null,
     });
 
