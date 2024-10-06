@@ -392,7 +392,7 @@ export default function Home() {
         // Set defaults
         if (localStorage.getItem("functions") === null) localStorage.setItem("functions", systemInfo.default_functions);  // default functions
         if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", systemInfo.default_role);    // default role
-        if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", systemInfo.default_stores);  // default store
+        if (sessionStorage.getItem("stores") === null) sessionStorage.setItem("stores", systemInfo.default_stores);  // default store
         if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", systemInfo.default_node);    // default node
       } catch (error) {
         console.error("There was an error fetching the data:", error);

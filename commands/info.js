@@ -7,7 +7,7 @@ export default function info(args) {
                "Functions (key: `functions`): " + (localStorage.getItem("functions") || "___") + "\n" +
                "Memory length (key: `memLength`, default: 7): " + sessionStorage.getItem("memLength") + "\n" +
                "Role (key: `role`): " + (sessionStorage.getItem("role") || "___") + "\n" +
-               "Store (key: `store`): " + (sessionStorage.getItem("store") || "___") + "\n" +
+               "Stores (key: `stores`): " + (sessionStorage.getItem("stores") || "___") + "\n" +
                "Node (key: `node`): " + (sessionStorage.getItem("node") || "___") + "\n" +
                "Show stats (key: `useStats`): " + localStorage.getItem("useStats") + "\n" +
                "Use Self Evaluation (key: `useEval`): " + localStorage.getItem("useEval") + "\n" +

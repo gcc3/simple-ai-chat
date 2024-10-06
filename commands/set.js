@@ -114,8 +114,8 @@ export default function set(args) {
     case "role":
       sessionStorage.setItem("role", value);
       break;
-    case "store":
-      sessionStorage.setItem("store", value);
+    case "stores":
+      sessionStorage.setItem("stores", value);
       break;
     case "node":
       sessionStorage.setItem("node", value);

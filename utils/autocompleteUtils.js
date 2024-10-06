@@ -28,7 +28,11 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   }
 
   if (prefix === ":store set ") {
-    const name = sessionStorage.getItem("store");
+    const name = sessionStorage.getItem("stores");
+    if (name.indexOf(",") > -1) {
+      // Multiple stores, not supported
+      return [];
+    }
     const response = await getStore(name);
     if (response.success) {
       const store = response.result;

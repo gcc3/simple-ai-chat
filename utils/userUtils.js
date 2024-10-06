@@ -61,8 +61,8 @@ export function setUserLocalStorage(user) {
     }
 
     // store
-    if (settings.store) {
-      sessionStorage.setItem("store", settings.store);
+    if (settings.stores) {
+      sessionStorage.setItem("stores", settings.store);
     }
 
     // node
@@ -94,8 +94,8 @@ export function clearUserWebStorage() {
   }
 
   // Reset store
-  if (sessionStorage.getItem("store")) {
-    sessionStorage.setItem("store", "");
+  if (sessionStorage.getItem("stores")) {
+    sessionStorage.setItem("stores", "");
   }
 
   // Reset node
