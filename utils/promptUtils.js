@@ -5,7 +5,7 @@ import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { findNode, queryNode, isNodeConfigured } from "utils/nodeUtils";
+import { findNode, queryNode, checkIsNodeConfigured } from "utils/nodeUtils";
 import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
 import { generateMidjourneyPrompt } from "utils/midjourneyUtils";
 import fetch from 'node-fetch';
@@ -290,16 +290,23 @@ export async function generateMessages(use_system_role, lang,
     };
   }
 
-  if (sysconf.use_node_ai && node && user) {
+  if (sysconf.use_node_ai && node) {
     updateStatus && updateStatus("Node AI generating...");
     console.log("--- node ai ---");
     console.log("node: " + node);
 
-    // Get node info
-    const nodeInfo = await findNode(node, user.username);
-    const nodeSettings = JSON.parse(nodeInfo.settings);
+    // Get node
+    const nodeInfo = await findNode(node, user ? user.username : "root");  // root user's node is public, everyone can use it
 
-    if (isNodeConfigured(nodeSettings)) {
+    // Verify node
+    let isNodeConfigured = false;
+    let nodeSettings = null;
+    if (nodeInfo) {
+      nodeSettings = JSON.parse(nodeInfo.settings);
+      isNodeConfigured = checkIsNodeConfigured(nodeSettings)
+    }
+    
+    if (nodeInfo && nodeSettings && isNodeConfigured) {
       node_input = input;
 
       // Midjourney
@@ -349,7 +356,7 @@ export async function generateMessages(use_system_role, lang,
         }))
         console.log("histories: " + JSON.stringify(histories));
       } else {
-        console.log("histories is disabled.");
+        console.log("histories: disabled.");
       }
 
       // files
@@ -410,7 +417,7 @@ export async function generateMessages(use_system_role, lang,
         node_prompt += content;
       }
     } else {
-      console.log("Node not configured.");
+      console.log("Node not found or not configured.");
     }
 
     // Count tokens
