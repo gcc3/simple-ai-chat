@@ -48,14 +48,15 @@ export function getNodeSettings(node) {
   return settings;
 }
 
-export async function queryNode(input, settings, histories = null, files_text = null, useStream = false, streamOutput = null) {
+export async function queryNode(input, nodeSettings, histories = null, files_text = null, useStream = false, streamOutput = null) {
   if (!input) return {
     success: false,
     error: "Invalid query.",
   }
 
-  const endpoint = settings.endpoint;
-  const model = settings.model;
+  const endpoint = nodeSettings.endpoint;
+  const model = nodeSettings.model;
+  const useHistory = nodeSettings.useHistory;
 
   // I. Input
   // Prepare messages
@@ -73,7 +74,7 @@ export async function queryNode(input, settings, histories = null, files_text = 
   }
 
   // -1. History messages
-  if (histories && histories.length > 0) {
+  if (useHistory && histories && histories.length > 0) {
     histories.map((h) => {
       messages.push({ role: 'user', content: h.input });
       messages.push({ role: 'assistant', content: h.output });
@@ -96,7 +97,6 @@ export async function queryNode(input, settings, histories = null, files_text = 
       model: model,
       messages: messages,
     }, { responseType: 'stream' });
-
 
     // Convert the response stream into a readable stream
     const stream = Readable.from(response.data);
@@ -281,6 +281,7 @@ export function getInitNodeSettings() {
     "apiKey": "___",              // If the API key is necessary
     "model": "___",               // One of the model of the node
     "modelV": "___",              // The version of the model
+    "useHistory": false,          // Use history or not
     "useFuncitonCalling": false,  // Use function calling or not, some model not support
     "useDirect": false,           // Use direct connection from client to node
     "description": "",            // The description of the node

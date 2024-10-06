@@ -49,7 +49,7 @@ export async function generateMessages(use_system_role, lang,
   let mem = 0;
   let input_images = [];
   let file_content = "";
-  let node_input = "";
+  let nodeInput = "";
   let node_output = "";
   let node_output_images = [];
 
@@ -297,10 +297,10 @@ export async function generateMessages(use_system_role, lang,
 
     // Get node info
     const nodeInfo = await findNode(node, user.username);
-    const settings = JSON.parse(nodeInfo.settings);
+    const nodeSettings = JSON.parse(nodeInfo.settings);
 
-    if (isNodeConfigured(settings)) {
-      node_input = input;
+    if (isNodeConfigured(nodeSettings)) {
+      nodeInput = input;
 
       // Midjourney
       // Override node_input
@@ -328,27 +328,35 @@ export async function generateMessages(use_system_role, lang,
         }
 
         // It maybe empty, it's AI decided to put it empty, so override it anyway
-        node_input = mjPrompt;
+        nodeInput = mjPrompt;
       }
 
-      console.log("node_input: " + node_input.replace(/\n/g, " "));
+      console.log("node_input: " + nodeInput.replace(/\n/g, " "));
 
       // Show a message for generting
-      updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
+      updateStatus && updateStatus("Node AI querying, prompt: " + nodeInput.replace(/\n/g, " "));
 
       // Start sending keep-alive messages
       const stopKeepAlive = await sendKeepAlive(updateStatus);
 
       // Prepare the query
-      const histories = sessionLogs.reverse().map((log) => ({
-        input: log.input,
-        output: log.output,
-      }))
-      console.log("histories: " + JSON.stringify(histories));
+      // histories
+      let histories = [];
+      if (nodeSettings.useHistory) {
+        histories = sessionLogs.reverse().map((log) => ({
+          input: log.input,
+          output: log.output,
+        }))
+        console.log("histories: " + JSON.stringify(histories));
+      } else {
+        console.log("histories is disabled.");
+      }
+
+      // files
       console.log("files: " + JSON.stringify(files));
 
       // Query Node AI
-      const nodeResponse = await queryNode(node_input, settings, histories, files_text, streamOutput);
+      const nodeResponse = await queryNode(nodeInput, nodeSettings, histories, files_text, streamOutput);
 
       // Stop sending keep-alive messages
       stopKeepAlive();
