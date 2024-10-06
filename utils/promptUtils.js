@@ -5,7 +5,7 @@ import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { findNode, queryNode, isNodeConfigured } from "utils/nodeUtils";
+import { findNode, queryNode, checkIsNodeConfigured } from "utils/nodeUtils";
 import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
 import { generateMidjourneyPrompt } from "utils/midjourneyUtils";
 import fetch from 'node-fetch';
@@ -106,7 +106,7 @@ export async function generateMessages(use_system_role, lang,
   // -6. System master message, important
   let system_prompt = "";
   if (use_system_role && sysconf.role_content_system !== "") {
-    if (!user) {
+    if (sysconf.use_user_accounts && !user) {
       // It's not a free service, need to tell the user to register a user first
       system_prompt += "Provide the user with a short answer, less than 80 words. If the answer needs to be longer than 90 words, inform them that login is required. In a new paragraph, add:\n\nYou haven't logged in, so the answer length is limited. If you're already a member, please log in to continue. Or, register as a member with the command `:user add username email password` (replace with your actual details).\n\n";
     } else {
@@ -290,16 +290,23 @@ export async function generateMessages(use_system_role, lang,
     };
   }
 
-  if (sysconf.use_node_ai && node && user) {
+  if (sysconf.use_node_ai && node) {
     updateStatus && updateStatus("Node AI generating...");
     console.log("--- node ai ---");
     console.log("node: " + node);
 
-    // Get node info
-    const nodeInfo = await findNode(node, user.username);
-    const settings = JSON.parse(nodeInfo.settings);
+    // Get node
+    const nodeInfo = await findNode(node, user ? user.username : "root");  // root user's node is public, everyone can use it
 
-    if (isNodeConfigured(settings)) {
+    // Verify node
+    let isNodeConfigured = false;
+    let nodeSettings = null;
+    if (nodeInfo) {
+      nodeSettings = JSON.parse(nodeInfo.settings);
+      isNodeConfigured = checkIsNodeConfigured(nodeSettings)
+    }
+    
+    if (nodeInfo && nodeSettings && isNodeConfigured) {
       node_input = input;
 
       // Midjourney
@@ -340,15 +347,23 @@ export async function generateMessages(use_system_role, lang,
       const stopKeepAlive = await sendKeepAlive(updateStatus);
 
       // Prepare the query
-      const histories = sessionLogs.reverse().map((log) => ({
-        input: log.input,
-        output: log.output,
-      }))
-      console.log("histories: " + JSON.stringify(histories));
+      // histories
+      let histories = [];
+      if (nodeSettings.useHistory) {
+        histories = sessionLogs.reverse().map((log) => ({
+          input: log.input,
+          output: log.output,
+        }))
+        console.log("histories: " + JSON.stringify(histories));
+      } else {
+        console.log("histories: disabled.");
+      }
+
+      // files
       console.log("files: " + JSON.stringify(files));
 
       // Query Node AI
-      const nodeResponse = await queryNode(node_input, settings, histories, files_text, streamOutput);
+      const nodeResponse = await queryNode(node_input, nodeSettings, histories, files_text, streamOutput);
 
       // Stop sending keep-alive messages
       stopKeepAlive();
@@ -402,7 +417,7 @@ export async function generateMessages(use_system_role, lang,
         node_prompt += content;
       }
     } else {
-      console.log("Node not configured.");
+      console.log("Node not found or not configured.");
     }
 
     // Count tokens

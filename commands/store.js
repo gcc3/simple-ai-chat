@@ -21,12 +21,12 @@ export default async function store(args, files) {
       return "Please login.";
     }
 
-    const store = sessionStorage.getItem("store");
-    if (!store) {
+    const stores = sessionStorage.getItem("stores");
+    if (!stores) {
       return "No data store is set, please use command \`:store use [name]\` to set a store.";
     }
 
-    const storeNames = store.split(",").filter((store) => store !== "");
+    const storeNames = stores.split(",").filter((store) => store !== "");
     let results = [];
     for (let i = 0; i < storeNames.length; i++) {
       try {
@@ -239,11 +239,11 @@ export default async function store(args, files) {
 
   // Reset store
   if (command === "reset") {
-    if (sessionStorage.getItem("store") === "") {
+    if (sessionStorage.getItem("stores") === "") {
       return "Store is already empty.";
     }
 
-    sessionStorage.setItem("store", "");  // reset store
+    sessionStorage.setItem("stores", "");  // reset store
     return "Store reset.";
   }
 
@@ -330,7 +330,7 @@ export default async function store(args, files) {
       }
     } else {
       // Use current store
-      storeName = sessionStorage.getItem("store");
+      storeName = sessionStorage.getItem("stores");
     }
 
     if (!storeName) {
@@ -379,7 +379,7 @@ export default async function store(args, files) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: sessionStorage.getItem("store"),
+          name: sessionStorage.getItem("stores"),
           files,  // array of file URLs
         }),
       });
@@ -412,15 +412,19 @@ export default async function store(args, files) {
       return "Store name must be quoted with double quotes.";
     }
 
-    let name = "";
+    let storeName = "";
     if (args.length === 2) {
-      name = sessionStorage.getItem("store");
-      if (!name) {
+      storeName = sessionStorage.getItem("stores");
+      if (!storeName) {
         return "No data store is set, please use command \`:store use [name]\` to set a store.";
       }
+
+      if (storeName.indexOf(",") !== -1) {
+        return "Multiple stores are being used. Please unuse all but one store.";
+      }
     } else {
-      name = args[2].slice(1, -1);
-      if (!name) {
+      storeName = args[2].slice(1, -1);
+      if (!storeName) {
         return "Invalid store name.";
       }
     }
@@ -432,7 +436,7 @@ export default async function store(args, files) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name,
+          name: storeName,
         }),
       });
 
@@ -505,9 +509,13 @@ export default async function store(args, files) {
       return "Please login.";
     }
 
-    const storeName = sessionStorage.getItem("store");
+    const storeName = sessionStorage.getItem("stores");
     if (!storeName) {
       return "No data store is set, please use command \`:store use [name]\` to set a store.";
+    }
+
+    if (storeName.indexOf(",") !== -1) {
+      return "Multiple stores are being used. Please unuse all but one store.";
     }
 
     const owner = args[2];
@@ -550,9 +558,13 @@ export default async function store(args, files) {
       return "Please login.";
     }
 
-    const storeName = sessionStorage.getItem("store");
+    const storeName = sessionStorage.getItem("stores");
     if (!storeName) {
       return "No data store is set, please use command \`:store use [name]\` to set a store.";
+    }
+
+    if (storeName.indexOf(",") !== -1) {
+      return "Multiple stores are being used. Please unuse all but one store.";
     }
 
     // Check value must be quoted with double quotes.

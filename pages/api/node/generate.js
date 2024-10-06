@@ -1,5 +1,5 @@
 import { authenticate } from "utils/authUtils";
-import { queryNode, isNodeConfigured } from "utils/nodeUtils";
+import { queryNode, checkIsNodeConfigured } from "utils/nodeUtils";
 import { findNode } from "utils/nodeUtils";
 
 export default async function handler(req, res) {
@@ -32,7 +32,7 @@ export default async function handler(req, res) {
     
     // Get settings
     const settings = JSON.parse(nodeInfo.settings);
-    if (!isNodeConfigured(settings)) {
+    if (!checkIsNodeConfigured(settings)) {
       res.status(400).json({
         success: false,
         error: "Node not configured. Use `:node set [key] [value]` to configure settings.",

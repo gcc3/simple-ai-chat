@@ -16,10 +16,15 @@ export function getSystemConfigurations() {
   const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
   const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
   const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
+  const use_user_accounts = process.env.USE_USER_ACCOUNTS == "true" ? true : false;
   const use_payment = process.env.USE_PAYMENT == "true" ? true : false;
   const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
   const use_email = process.env.USE_EMAIL == "true" ? true : false;
   const minimalist = process.env.MINIMALIST == "true" ? true : false;
+  const default_functions = process.env.DEFAULT_FUNCTIONS ? process.env.DEFAULT_FUNCTIONS : "";
+  const default_role = process.env.DEFAULT_ROLE ? process.env.DEFAULT_ROLE : "";
+  const default_stores = process.env.DEFAULT_STORES ? process.env.DEFAULT_STORES : "";
+  const default_node = process.env.DEFAULT_NODE ? process.env.DEFAULT_NODE : "";
 
   return {
     model: model,
@@ -37,9 +42,14 @@ export function getSystemConfigurations() {
     max_tokens: max_tokens,
     use_function_calling: use_function_calling,
     use_node_ai: use_node_ai,
+    use_user_accounts: use_user_accounts,
     use_payment: use_payment,
     use_access_control: use_access_control,
     use_email: use_email,
     minimalist: minimalist,
+    default_functions: default_functions,
+    default_role: default_role,
+    default_stores: default_stores,
+    default_node: default_node,
   };
 }

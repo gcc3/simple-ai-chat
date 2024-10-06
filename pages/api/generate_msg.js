@@ -242,7 +242,7 @@ export default async function(req, res) {
       },
     });
   } catch (error) {
-    console.error("Error (Generate API):");
+    console.error("Error (Generate Messages):");
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.status(error.response.status).json({

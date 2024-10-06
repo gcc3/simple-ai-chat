@@ -48,14 +48,59 @@ export function getNodeSettings(node) {
   return settings;
 }
 
-export async function queryNode(input, settings, histories = null, files_text = null, useStream = false, streamOutput = null) {
-  if (!input) return {
+export async function queryNode(nodeInput, nodeSettings, histories = null, files_text = null, useStream = false, streamOutput = null) {
+  if (!nodeInput) return {
     success: false,
     error: "Invalid query.",
   }
 
-  const endpoint = settings.endpoint;
-  const model = settings.model;
+  const endpoint = nodeSettings.endpoint;
+  const isSimpleNode = nodeSettings.isSimpleNode;
+  const model = nodeSettings.model;
+  const useHistory = nodeSettings.useHistory;
+
+  // 0. Simple node
+  if (isSimpleNode) {
+    // Fetch
+    const queryParams = new URLSearchParams({
+      user_input: nodeInput,
+    }).toString();
+
+    try {
+      const response = await fetch(`${endpoint}?${queryParams}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      if (response.status !== 200 || !response.ok) {
+        return {
+          success: false,
+          error: "An error occurred during your request.",
+        };
+      }
+      const data = await response.json();
+
+      // Verify format
+      if (!data.result) {
+        return {
+          success: false,
+          error: "Invalid response format.",
+        };
+      }
+
+      return {
+        success: true,
+        result: data.result
+      };
+    } catch (error) {
+      return {
+        success: false,
+        error: error,
+      };
+    }
+  }
 
   // I. Input
   // Prepare messages
@@ -73,7 +118,7 @@ export async function queryNode(input, settings, histories = null, files_text = 
   }
 
   // -1. History messages
-  if (histories && histories.length > 0) {
+  if (useHistory && histories && histories.length > 0) {
     histories.map((h) => {
       messages.push({ role: 'user', content: h.input });
       messages.push({ role: 'assistant', content: h.output });
@@ -81,8 +126,8 @@ export async function queryNode(input, settings, histories = null, files_text = 
   }
 
   // 0. User messages
-  if (input) {
-    messages.push({ role: 'user', content: input });
+  if (nodeInput) {
+    messages.push({ role: 'user', content: nodeInput });
   }
 
   // II. Output
@@ -96,7 +141,6 @@ export async function queryNode(input, settings, histories = null, files_text = 
       model: model,
       messages: messages,
     }, { responseType: 'stream' });
-
 
     // Convert the response stream into a readable stream
     const stream = Readable.from(response.data);
@@ -203,7 +247,7 @@ export async function queryNode(input, settings, histories = null, files_text = 
 }
 
 // Check necessary settings
-export function isNodeConfigured(settings) {
+export function checkIsNodeConfigured(settings) {
   if (!settings) return false;
   if (!settings.endpoint || settings.endpoint === "___") return false;
   return true;
@@ -281,8 +325,10 @@ export function getInitNodeSettings() {
     "apiKey": "___",              // If the API key is necessary
     "model": "___",               // One of the model of the node
     "modelV": "___",              // The version of the model
+    "useHistory": false,          // Use history or not
     "useFuncitonCalling": false,  // Use function calling or not, some model not support
     "useDirect": false,           // Use direct connection from client to node
     "description": "",            // The description of the node
+    "isSimpleNode": false,        // A simple node only accept "user_input" (not messages) and use "result" as output
   };
 }
