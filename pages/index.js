@@ -354,6 +354,52 @@ export default function Home() {
   useEffect(() => { 
     initializeSession();
 
+    // Get system configurations and IP info
+    const getSystemInfo = async () => {
+      try {
+        console.log("Fetching system info...");
+
+        // System info
+        const systemInfoResponse = await fetch('/api/system/info');
+        const systemInfo = (await systemInfoResponse.json()).result;
+        console.log("System info:", JSON.stringify(systemInfo, null, 2));
+
+        if (systemInfo.init_placeholder) {
+          global.initPlaceholder = systemInfo.init_placeholder;
+          global.rawPlaceholder = systemInfo.init_placeholder;
+          setPlaceholder({ text: systemInfo.init_placeholder, height: null });  // Set placeholder text
+        }
+        if (systemInfo.enter) {
+          dispatch(toggleEnterChange(systemInfo.enter));
+        }
+        if (systemInfo.waiting) setWaiting(systemInfo.waiting);  // Set waiting text
+        if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
+        if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
+        if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
+        if (systemInfo.use_payment) {
+          // Set use payment
+          setSubscriptionDisplay(true);
+          setUsageDisplay(true);
+        }
+        if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
+
+        // Set welcome message
+        if (systemInfo.welcome_message && !localStorage.getItem("user")) {
+          printOutput(systemInfo.welcome_message);
+          markdownFormatter(elOutputRef.current);
+        }
+
+        // Set defaults
+        if (localStorage.getItem("functions") === null) localStorage.setItem("functions", systemInfo.default_functions);  // default functions
+        if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", systemInfo.default_role);    // default role
+        if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", systemInfo.default_stores);  // default store
+        if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", systemInfo.default_node);    // default node
+      } catch (error) {
+        console.error("There was an error fetching the data:", error);
+      }
+    }
+    getSystemInfo();
+
     // Set default localStorage values
     if (localStorage.getItem("_up") === null) localStorage.setItem("_up", Date.now());
     if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
@@ -364,16 +410,12 @@ export default function Home() {
     if (localStorage.getItem("useLocation") === null) localStorage.setItem("useLocation", false);
     if (localStorage.getItem("fullscreen") === null) localStorage.setItem("fullscreen", "off");
     if (localStorage.getItem("theme") === null) localStorage.setItem("theme", "light");
-    if (localStorage.getItem("functions") === null) localStorage.setItem("functions", "Time,Weather,Redirection");  // default functions
     if (localStorage.getItem("passMask") === null) localStorage.setItem("passMask", true);
     if (localStorage.getItem("useSystemRole") === null) localStorage.setItem("useSystemRole", true);
     if (localStorage.getItem("history") === null) localStorage.setItem("history", JSON.stringify([]));  // command history
 
     // Set default sessionStorage values
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
-    if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", "");    // default role
-    if (sessionStorage.getItem("store") === null) sessionStorage.setItem("store", "");  // default store
-    if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", "");    // default node
     if (sessionStorage.getItem("useDirect") === null) sessionStorage.setItem("useDirect", false);   // use direct mode (for node)
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);  // command history index
 
@@ -488,7 +530,6 @@ export default function Home() {
 
     // Handle global shortcut keys
     const handleKeyDown = (event) => {
-
       switch (event.key) {
         case "Escape":
           console.log("Shortcut: ESC");
@@ -882,44 +923,6 @@ export default function Home() {
       }
     };
     window.addEventListener("keydown", handleKeyDown, true);
-
-    // Get system configurations and IP info
-    const getSystemInfo = async () => {
-      try {
-        console.log("Fetching system info...");
-
-        // System info
-        const systemInfoResponse = await fetch('/api/system/info');
-        const systemInfo = (await systemInfoResponse.json()).result;
-        if (systemInfo.init_placeholder) {
-          global.initPlaceholder = systemInfo.init_placeholder;
-          global.rawPlaceholder = systemInfo.init_placeholder;
-          setPlaceholder({ text: systemInfo.init_placeholder, height: null });  // Set placeholder text
-        }
-        if (systemInfo.enter) {
-          dispatch(toggleEnterChange(systemInfo.enter));
-        }
-        if (systemInfo.waiting) setWaiting(systemInfo.waiting);  // Set waiting text
-        if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
-        if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
-        if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
-        if (systemInfo.use_payment) {
-          // Set use payment
-          setSubscriptionDisplay(true);
-          setUsageDisplay(true);
-        }
-        if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
-
-        // Set welcome message
-        if (systemInfo.welcome_message && !localStorage.getItem("user")) {
-          printOutput(systemInfo.welcome_message);
-          markdownFormatter(elOutputRef.current);
-        }
-      } catch (error) {
-        console.error("There was an error fetching the data:", error);
-      }
-    }
-    getSystemInfo();
 
     // Initialize global output mutation observer
     global.outputMutationObserver = new MutationObserver(mutationsList => {

@@ -27,6 +27,10 @@ export default async function (req, res) {
         use_payment: sysconf.use_payment,
         use_email: sysconf.use_email,
         minimalist: sysconf.minimalist,
+        default_functions: sysconf.default_functions,
+        default_role: sysconf.default_role,
+        default_stores: sysconf.default_stores,
+        default_node: sysconf.default_node,
       },
     });
   } catch (error) {

@@ -21,6 +21,10 @@ export function getSystemConfigurations() {
   const use_access_control = process.env.USE_ACCESS_CONTROL == "true" ? true : false;
   const use_email = process.env.USE_EMAIL == "true" ? true : false;
   const minimalist = process.env.MINIMALIST == "true" ? true : false;
+  const default_functions = process.env.DEFAULT_FUNCTIONS ? process.env.DEFAULT_FUNCTIONS : "";
+  const default_role = process.env.DEFAULT_ROLE ? process.env.DEFAULT_ROLE : "";
+  const default_stores = process.env.DEFAULT_STORES ? process.env.DEFAULT_STORES : "";
+  const default_node = process.env.DEFAULT_NODE ? process.env.DEFAULT_NODE : "";
 
   return {
     model: model,
@@ -43,5 +47,9 @@ export function getSystemConfigurations() {
     use_access_control: use_access_control,
     use_email: use_email,
     minimalist: minimalist,
+    default_functions: default_functions,
+    default_role: default_role,
+    default_stores: default_stores,
+    default_node: default_node,
   };
 }
