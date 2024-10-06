@@ -97,6 +97,11 @@ export function clearUserWebStorage() {
   if (sessionStorage.getItem("store")) {
     sessionStorage.setItem("store", "");
   }
+
+  // Reset node
+  if (sessionStorage.getItem("node")) {
+    sessionStorage.setItem("node", "");
+  }
 }
 
 export function generatePassword(length=8) {
