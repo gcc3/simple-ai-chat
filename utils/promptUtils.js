@@ -49,7 +49,7 @@ export async function generateMessages(use_system_role, lang,
   let mem = 0;
   let input_images = [];
   let file_content = "";
-  let nodeInput = "";
+  let node_input = "";
   let node_output = "";
   let node_output_images = [];
 
@@ -300,7 +300,7 @@ export async function generateMessages(use_system_role, lang,
     const nodeSettings = JSON.parse(nodeInfo.settings);
 
     if (isNodeConfigured(nodeSettings)) {
-      nodeInput = input;
+      node_input = input;
 
       // Midjourney
       // Override node_input
@@ -328,13 +328,13 @@ export async function generateMessages(use_system_role, lang,
         }
 
         // It maybe empty, it's AI decided to put it empty, so override it anyway
-        nodeInput = mjPrompt;
+        node_input = mjPrompt;
       }
 
-      console.log("node_input: " + nodeInput.replace(/\n/g, " "));
+      console.log("node_input: " + node_input.replace(/\n/g, " "));
 
       // Show a message for generting
-      updateStatus && updateStatus("Node AI querying, prompt: " + nodeInput.replace(/\n/g, " "));
+      updateStatus && updateStatus("Node AI querying, prompt: " + node_input.replace(/\n/g, " "));
 
       // Start sending keep-alive messages
       const stopKeepAlive = await sendKeepAlive(updateStatus);
@@ -356,7 +356,7 @@ export async function generateMessages(use_system_role, lang,
       console.log("files: " + JSON.stringify(files));
 
       // Query Node AI
-      const nodeResponse = await queryNode(nodeInput, nodeSettings, histories, files_text, streamOutput);
+      const nodeResponse = await queryNode(node_input, nodeSettings, histories, files_text, streamOutput);
 
       // Stop sending keep-alive messages
       stopKeepAlive();
