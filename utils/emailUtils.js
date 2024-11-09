@@ -18,6 +18,14 @@ export async function evalEmailAddress(email) {
     };
   }
 
+  // Allow some email domains
+  const allowDomainsRegex = /@qq\.com$/;
+  if (allowDomainsRegex.test(email)) {
+    return {
+      success: true,
+    };
+  }
+
   // Use hunter.io API to check if the email is valid.
   try {
     const response = await fetch("https://api.hunter.io/v2/email-verifier?email=" + email + "&api_key=" + process.env.HUNTER_API_KEY);
