@@ -131,17 +131,11 @@ def main(test):
     # Loop all keys check if there is new keys
     print("Checking is there new keys scanned...")
     new_keys_count = 0
-    new_keysets = {}
     for file_name, keyset in keysets.items():
         for key in keyset:
             if not is_key_exist(file_name, key):
                 print(f"New key: {file_name},{key}", end="")
                 add_key(file_name, key)
-
-                # Create new_keysets
-                if file_name not in new_keysets:
-                    new_keysets[file_name] = set()
-                new_keysets[file_name].add(key)
 
                 new_keys_count += 1
                 print(" ...added.")
