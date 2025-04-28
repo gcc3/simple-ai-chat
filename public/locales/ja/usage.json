@@ -37,6 +37,5 @@
   "Monthly usage": "過去３０日間の使用量",
   "You are the `root_user`.": "あなたは `root_user` です。",
   "Unlimited": "無制限",
-  "banking fee {{bankingFee}} included": "銀行手数料 {{bankingFee}} 含む",
   "Loading...": "読み込み中..."
 }

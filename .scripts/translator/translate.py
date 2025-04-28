@@ -73,6 +73,43 @@ def add_key(translation_file, key, value=None, language_code="en"):
         json.dump(target_data, file, ensure_ascii=False, indent=2)
 
 
+def remove_key(translation_file, key, language_code="en"):
+    base_path = "../../public/locales"
+    file_path = os.path.join(base_path, language_code, translation_file + ".json")
+    with open(file_path, "r", encoding="utf-8") as file:
+        target_data = json.load(file)
+
+    # Remove the key
+    if key in target_data:
+        del target_data[key]
+
+    # Write the updated data back to the file
+    with open(file_path, "w", encoding="utf-8") as file:
+        json.dump(target_data, file, ensure_ascii=False, indent=2)
+
+
+translation_files = [
+    "documentation",
+    "privacy_policy",
+    "settings",
+    "subscriptions",
+    # "translation", # Ignore this file as it will be updated manually
+    "usage",
+]
+
+
+# Define the base path to the 'locales' folder
+source_language_code = "en"
+base_path = "../../public/locales"
+
+# Read the language codes and names from the languages.csv
+languages = {}
+with open("languages.csv", newline="", encoding="utf-8") as csvfile:
+    for row in csv.reader(csvfile):
+        code, name = row
+        languages[code] = name
+
+
 # Parse command-line arguments
 @click.command()
 @click.option("--test", is_flag=True, help="Print keys and exit without translating")
@@ -81,72 +118,102 @@ def main(test):
     print("Scanning for new keys...")
     scan_files()
 
-    if not is_key_exist("documentation", "GPT Text Generation1"):
-        add_key("documentation", "GPT Text Generation1")
+    # Read the target keys and associated file names from keys.csv
+    # and map them to each file
+    keysets = {}
+    with open("keys.csv", newline="", encoding="utf-8") as csvfile:
+        for row in csv.reader(csvfile):
+            file_name, key = row
+            if file_name not in keysets:
+                keysets[file_name] = set()
+            keysets[file_name].add(key)
 
-    # # Define the base path to the 'locales' folder
-    # source_language_code = "en"
-    # base_path = "../../public/locales"
+    # Loop all keys check if there is new keys
+    print("Checking is there new keys scanned...")
+    new_keys_count = 0
+    new_keysets = {}
+    for file_name, keyset in keysets.items():
+        for key in keyset:
+            if not is_key_exist(file_name, key):
+                print(f"New key: {file_name},{key}", end="")
+                add_key(file_name, key)
 
-    # # Read the language codes and names from the languages.csv
-    # languages = {}
-    # with open("languages.csv", newline="", encoding="utf-8") as csvfile:
-    #     csv_reader = csv.reader(csvfile)
-    #     for row in csv_reader:
-    #         code, name = row
-    #         languages[code] = name
+                # Create new_keysets
+                if file_name not in new_keysets:
+                    new_keysets[file_name] = set()
+                new_keysets[file_name].add(key)
 
-    # # Read the target keys and associated file names from keys.csv
-    # # and map them to each file
-    # keys = {}
-    # with open("keys.csv", newline="", encoding="utf-8") as csvfile:
-    #     csv_reader = csv.reader(csvfile)
-    #     for row in csv_reader:
-    #         file_name, key = row
-    #         if file_name not in keys:
-    #             keys[file_name] = set()
-    #         keys[file_name].add(key)
+                new_keys_count += 1
+                print(" ...added.")
+    if new_keys_count == 0:
+        print("No new keys found.")
+    else:
+        print(f"{new_keys_count} new keys added.")
 
-    # # Read the source language file to get the base values for translation
-    # source_data = {}
-    # for file_name in keys:
-    #     source_file_path = os.path.join(
-    #         base_path, source_language_code, file_name + ".json"
-    #     )
-    #     with open(source_file_path, "r", encoding="utf-8") as file:
-    #         source_data[file_name] = json.load(file)
+    # Loop all translation files for all languages and all existing keys, check is ther any extra keys
+    print("Checking is there extra keys in translation files...")
+    extra_keys_count = 0
+    for lang_code, lang_name in languages.items():
+        for trasnlation_file in translation_files:
+            with open(
+                os.path.join(base_path, lang_code, trasnlation_file + ".json"),
+                "r",
+                encoding="utf-8",
+            ) as file:
+                target_data = json.load(file)
+            keyset = keysets.get(trasnlation_file, set())
+            for key in target_data.keys():
+                if key not in keyset:
+                    print(f"Extra key: {lang_code},{trasnlation_file},{key}", end="")
+                    remove_key(trasnlation_file, key, lang_code)
+                    extra_keys_count += 1
+                    print(" ...removed.")
+    if extra_keys_count == 0:
+        print("No extra keys found.")
+    else:
+        print(f"{extra_keys_count} extra keys removed.")
 
-    # # Translate and update each target language file with translated values from the source language file
-    # for lang_code, lang_name in languages.items():
-    #     if lang_code == source_language_code:
-    #         continue  # Skip the source language
+    # Translate new keys
+    # Read the source language translation file to get the base values for translation
+    source_data = {}
+    for file_name in keysets:
+        source_file_path = os.path.join(
+            base_path, source_language_code, file_name + ".json"
+        )
+        with open(source_file_path, "r", encoding="utf-8") as file:
+            source_data[file_name] = json.load(file)
 
-    #     for file_name, keys_to_translate in keys.items():
-    #         target_file_path = os.path.join(base_path, lang_code, file_name + ".json")
+    # Translate and update each target language file with translated values from the source language file
+    for lang_code, lang_name in languages.items():
+        if lang_code == source_language_code:
+            continue  # Skip the source language
 
-    #         # If the target file exists, read it, otherwise create a new dictionary
-    #         with open(target_file_path, "r", encoding="utf-8") as file:
-    #             target_data = json.load(file)
+        for file_name, new_keyset in new_keysets.items():
+            target_file_path = os.path.join(base_path, lang_code, file_name + ".json")
 
-    #         # Translate and update the target data
-    #         for key in keys_to_translate:
-    #             if key in source_data[file_name]:
-    #                 original_text = source_data[file_name][key]
-    #                 if test:
-    #                     print(f"{file_name}: {original_text}")
-    #                 else:
-    #                     translated_text = translate(original_text, lang_name)
-    #                     target_data[key] = translated_text
-    #             else:
-    #                 print(f"Key: `{key}` not found in source data.")
+            # If the target file exists, read it, otherwise create a new dictionary
+            with open(target_file_path, "r", encoding="utf-8") as file:
+                target_data = json.load(file)
 
-    #         # Save the updated target language file
-    #         if not test:
-    #             with open(target_file_path, "w", encoding="utf-8") as file:
-    #                 json.dump(target_data, file, ensure_ascii=False, indent=2)
-    #             print(
-    #                 f"Updated file: {target_file_path} with keys translated to {lang_name}."
-    #             )
+            # Translate and update the target data
+            for key in new_keyset:
+                if key in source_data[file_name]:
+                    original_text = source_data[file_name][key]
+                    if test:
+                        print(f"{file_name}: {original_text}")
+                    else:
+                        translated_text = translate(original_text, lang_name)
+                        target_data[key] = translated_text
+                else:
+                    print(f"Key: `{key}` not found in source data.")
+
+            # Save the updated target language file
+            if not test:
+                with open(target_file_path, "w", encoding="utf-8") as file:
+                    json.dump(target_data, file, ensure_ascii=False, indent=2)
+                print(
+                    f"Updated file: {target_file_path} with keys translated to {lang_name}."
+                )
 
     print("---\nFinished updating JSON files.")
 

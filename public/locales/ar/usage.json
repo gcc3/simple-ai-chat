@@ -9,7 +9,6 @@
   "Last Month": "الشهر الماضي",
   "Usage Fees": "رسوم الاستخدام",
   "For token pricing, refer to the OpenAI official pricing document.": "لتسعير الرمز، راجع وثيقة تسعير OpenAI الرسمية.",
-  "1% ~ 3% for maintenance service.": "1% ~ 3% لخدمة الصيانة.",
   "Frequencies": "الترددات",
   "Use Count": "عدد الاستخدامات",
   "Input": "الإدخال",
@@ -37,6 +36,5 @@
   "Monthly usage": "الاستخدام الشهري",
   "You are the `root_user`.": "أنت `root_user`.",
   "Unlimited": "غير محدود",
-  "banking fee {{bankingFee}} included": "رسوم بنكية {{bankingFee}} مشمولة",
   "Loading...": "جاري التحميل..."
 }

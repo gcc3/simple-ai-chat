@@ -1,14 +1,8 @@
 {
   "Settings": "Inställningar",
-  "User information not found. Please login with command `:login [username] [password]`.": "Användarinformation hittades inte. Vänligen logga in med kommandot `:login [username] [password]`.",
   "Subscribe": "Prenumerera",
   "Unsubscribe": "Avsluta prenumeration",
-  "You're subscribed.": "Du är prenumerant.",
-  "You've already subscribed.": "Du är redan prenumerant.",
-  "You're subscribed, email sent.": "Du är prenumerant, e-post skickad.",
-  "You're unsubscribed.": "Du är avprenumererad.",
   "Email Subscription": "E-postprenumeration",
   "Loading...": "Laddar...",
-  "Settings updated.": "Inställningar uppdaterade.",
   "Language": "Språk"
 }

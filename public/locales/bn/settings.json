@@ -1,14 +1,8 @@
 {
   "Settings": "সেটিংস",
-  "User information not found. Please login with command `:login [username] [password]`.": "ব্যবহারকারীর তথ্য পাওয়া যায়নি। অনুগ্রহ করে কমান্ড `:login [username] [password]` ব্যবহার করে লগইন করুন।",
   "Subscribe": "সাবস্ক্রাইব",
   "Unsubscribe": "আনসাবস্ক্রাইব",
-  "You're subscribed.": "আপনি সাবস্ক্রাইব করেছেন।",
-  "You've already subscribed.": "আপনি ইতিমধ্যে সাবস্ক্রাইব করেছেন।",
-  "You're subscribed, email sent.": "আপনি সাবস্ক্রাইব করেছেন, ইমেইল পাঠানো হয়েছে।",
-  "You're unsubscribed.": "আপনি সাবস্ক্রিপশন থেকে বাতিল করা হয়েছে।",
   "Email Subscription": "ইমেইল সাবস্ক্রিপশন",
   "Loading...": "লোড হচ্ছে...",
-  "Settings updated.": "সেটিংস আপডেট হয়েছে।",
   "Language": "ভাষা"
 }
