@@ -23,13 +23,12 @@ def translate(text, target_language_name):
                 + "The content (word or sentence) is in Documentation, Usage, Subscriptions, and Prvacy Policy page.\n"
                 + "Remember:\n"
                 + '1. Don\'t translate word "Simple AI", keep it.\n'
-                + '2. Don\'t translate word "Midjourney", keep it.\n'
-                + '3. Don\'t translate word "token", keep it.\n'
-                + "4. Keep the HTML tag if it's in the text.\n"
-                + "5. Keep the escape charactors if it's in the text.\n"
-                + "6. Don't translate command, a command starts with `:`, example: `:login [username] [password]`.\n"
-                + "7. Don't translate the text inside {{ }}, example: banking fee {{bankingFee}} included\n"
-                + "8, When translating the word `usage`, it means `how much` user used, not means `how to use`, and the word transted should be short.\n",
+                + '2. Don\'t translate word "token", keep it.\n'
+                + "3. Keep the HTML tag if it's in the text.\n"
+                + "4. Keep the escape charactors if it's in the text.\n"
+                + "5. Don't translate command, a command starts with `:`, example: `:login [username] [password]`.\n"
+                + "6. Don't translate the text inside {{ }}, example: banking fee {{bankingFee}} included\n"
+                + "7, When translating the word `usage`, it means `how much` user used, not means `how to use`, and the word transted should be short.\n",
             },
             {
                 "role": "user",
