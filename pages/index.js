@@ -105,6 +105,7 @@ export default function Home() {
 
   // i18n
   const { t, i18n } = useTranslation();
+  const { t: tt } = useTranslation("translation");
 
   // Toggle display
   const toggleDisplay = () => {
@@ -485,7 +486,7 @@ export default function Home() {
       i18n.changeLanguage(i18nLang)
         .then(() => {
           console.log("Language: " + lang + ", i18n: " + i18n.language);
-          console.log('Language test:', t('hello'));
+          console.log('Language test:', tt("hello"));
           setRtl(i18nLang === "ar");
         });
     } else {

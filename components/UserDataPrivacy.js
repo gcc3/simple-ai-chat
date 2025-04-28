@@ -24,7 +24,7 @@ function UserDataPrivacy() {
       <Trans
         i18nKey="email_support_privacy_policy"
         components={{ 1: <a href="mailto:support@simple-ai.io" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
-        ns="privacy_policy"
+        ns="translation"
       />
     </div>
   )

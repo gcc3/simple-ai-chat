@@ -61,7 +61,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
         <Trans
           i18nKey="email_support_subscriptions"
           components={{ 1: <a href="mailto:support@simple-ai.io" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
-          ns="subscriptions"
+          ns="translation"
         />
       </div>
     </div>

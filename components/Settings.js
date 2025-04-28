@@ -11,6 +11,7 @@ function Settings() {
   const [message, setMessage] = useState(null);
 
   const { t, i18n, ready } = useTranslation("settings");
+  const { t: tt } = useTranslation("translation");
 
   useEffect(() => {
     const loadBasicSettings = async () => {
@@ -66,7 +67,7 @@ function Settings() {
     i18n.changeLanguage(i18nLang)
     .then(async () => {
       console.log("Language: " + lang_ + ", i18n: " + i18n.language);
-      console.log('Language test:', t('hello'));
+      console.log('Language test:', tt("hello"));
       setRtl(i18nLang === "ar");
 
       // Update user settings
