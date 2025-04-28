@@ -55,7 +55,7 @@ function Settings() {
     if (data.success) {
       localStorage.setItem(key, value);
       console.log("Settings updated.");
-      setMessage(t(data.message));
+      setMessage(t("Settings updated."));
     }
   }
 
