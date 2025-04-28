@@ -68,18 +68,18 @@ def main(test):
 
     # Read the target keys and associated file names from keys.csv
     # and map them to each file
-    keys_per_file = {}
+    keys = {}
     with open("keys.csv", newline="", encoding="utf-8") as csvfile:
         csv_reader = csv.reader(csvfile)
         for row in csv_reader:
             file_name, key = row
-            if file_name not in keys_per_file:
-                keys_per_file[file_name] = set()
-            keys_per_file[file_name].add(key)
+            if file_name not in keys:
+                keys[file_name] = set()
+            keys[file_name].add(key)
 
     # Read the source language file to get the base values for translation
     source_data = {}
-    for file_name in keys_per_file:
+    for file_name in keys:
         source_file_path = os.path.join(
             base_path, source_language_code, file_name + ".json"
         )
@@ -92,7 +92,7 @@ def main(test):
         if lang_code == source_language_code:
             continue  # Skip the source language
 
-        for file_name, keys_to_translate in keys_per_file.items():
+        for file_name, keys_to_translate in keys.items():
             target_file_path = os.path.join(base_path, lang_code, file_name + ".json")
 
             # If the target file exists, read it, otherwise create a new dictionary
