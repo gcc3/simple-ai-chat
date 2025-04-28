@@ -12,20 +12,20 @@ with open("languages.csv", newline="", encoding="utf-8") as csvfile:
     for row in csv_reader:
         language_codes.append(row[0])
 
-# Read the target keys and associated file names from target_keys.csv
+# Read the target keys and associated file names from keys.csv
 # and map them to each file
-target_keys_per_file = {}
-with open("target_keys.csv", newline="", encoding="utf-8") as csvfile:
+keys_per_file = {}
+with open("keys.csv", newline="", encoding="utf-8") as csvfile:
     csv_reader = csv.reader(csvfile)
     for row in csv_reader:
         file_name, key = row
-        if file_name not in target_keys_per_file:
-            target_keys_per_file[file_name] = set()
-        target_keys_per_file[file_name].add(key)
+        if file_name not in keys_per_file:
+            keys_per_file[file_name] = set()
+        keys_per_file[file_name].add(key)
 
 # For each language code and each target file, remove the specified target keys
 for lang_code in language_codes:
-    for file_name, keys_to_delete in target_keys_per_file.items():
+    for file_name, keys_to_delete in keys_per_file.items():
         # Construct the file path
         file_path = os.path.join(base_path, lang_code, file_name + ".json")
 

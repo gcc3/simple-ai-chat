@@ -114,7 +114,7 @@ function Subscription() {
     <>
       {!user && <div>{ t("User information not found. Please login with command `:login [username] [password]`.") }</div>}
       {user && <div>
-        <div>- { t("Subcription Status") }</div>
+        <div>- { t("Subscription Status") }</div>
         <div className="mt-1">{ t("User") }: {user.username}</div>
         <div>{ t("Email") }: {user.email}</div>
         <div>{ t("Subscription") }: `{user.role}`</div>
@@ -146,11 +146,11 @@ function Subscription() {
             {((user.role_expires_at !== null && getRoleLevel(user.role) > getRoleLevel(targetRole) && user.role_expires_at > new Date()) 
            || (user.role_expires_at === null && getRoleLevel(user.role) > getRoleLevel(targetRole)))
             && <div>
-              - { t("You are a `{user.role}`, you can downgrade to `{targetRole}` after your current subscription expires.", { role: user.role, targetRole: targetRole }) }
+              - { t("You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.", { role: user.role, targetRole: targetRole }) }
               </div>}
             {<div className="mt-1">
               {user.role_expires_at === null && getRoleLevel(user.role) >= getRoleLevel(targetRole) && <div>
-                  - { t("You already have an unlimited expiration date for `{user.role}`.", { role: user.role }) }
+                  - { t("You already have an unlimited expiration date for `{{role}}`.", { role: user.role }) }
                 </div>}
               {((getRoleLevel(targetRole) > getRoleLevel(user.role))
                || (targetRole === user.role && user.role_expires_at !== null)
@@ -188,7 +188,7 @@ function Subscription() {
   return (
     <div className="Subcription">
       <div className="text-center mb-4">
-        <div>{ t("Subcriptions") }</div>
+        <div>{ t("Subscriptions") }</div>
       </div>
       {loading ? <div>{t("Loading...")}</div> : <div>{content}</div>}
     </div>

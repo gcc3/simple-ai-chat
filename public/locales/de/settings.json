@@ -1,14 +1,10 @@
 {
   "Settings": "Einstellungen",
-  "User information not found. Please login with command `:login [username] [password]`.": "Benutzerinformationen nicht gefunden. Bitte loggen Sie sich mit dem Befehl `:login [username] [password]` ein.",
   "Subscribe": "Abonnieren",
   "Unsubscribe": "Abmelden",
-  "You're subscribed.": "Sie sind abonniert.",
-  "You've already subscribed.": "Sie haben bereits abonniert.",
-  "You're subscribed, email sent.": "Sie sind abonniert, E-Mail gesendet.",
-  "You're unsubscribed.": "Sie wurden abgemeldet.",
   "Email Subscription": "E-Mail-Abonnement",
   "Loading...": "Laden...",
+  "Language": "Sprache",
   "Settings updated.": "Einstellungen aktualisiert.",
-  "Language": "Sprache"
+  "Email subscription updated.": "E-Mail-Abonnement aktualisiert."
 }

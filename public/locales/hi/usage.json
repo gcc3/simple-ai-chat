@@ -10,7 +10,7 @@
   "Usage Fees": "उपयोग शुल्क",
   "For token pricing, refer to the OpenAI official pricing document.": "टोकन मूल्य निर्धारण के लिए, OpenAI के आधिकारिक मूल्य निर्धारण दस्तावेज़ का संदर्भ लें।",
   "1% ~ 3% for maintaince service.": "रखरखाव सेवा के लिए 1% ~ 3%।",
-  "Fequencies": "आवृत्तियाँ",
+  "Frequencies": "आवृत्तियाँ",
   "Use Count": "उपयोग गिनती",
   "Input": "इनपुट",
   "Output": "आउटपुट",
@@ -26,7 +26,7 @@
   "Paypal or Credit Card": "पेपाल या क्रेडिट कार्ड",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "आपका भुगतान बैंकिंग प्रणाली के माध्यम से सुरक्षित रूप से संभाला जाएगा; हम आपके भुगतान विवरण संग्रहीत या एकत्र नहीं करते हैं।",
   "Usage": "उपयोग",
-  "Subcription Status": "सदस्यता स्थिति",
+  "Subscription Status": "सदस्यता स्थिति",
   "Add Balance": "शेष जोड़ें",
   "Select amount": "राशि चुनें",
   "Pay": "भुगतान करें",
@@ -37,6 +37,5 @@
   "Monthly usage": "मासिक उपयोग",
   "You are the `root_user`.": "आप `root_user` हैं।",
   "Unlimited": "असीमित",
-  "banking fee {{bankingFee}} included": "बैंकिंग शुल्क {{bankingFee}} सम्मिलित",
   "Loading...": "लोड हो रहा है..."
 }

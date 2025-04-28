@@ -2,7 +2,7 @@
   "hello": "世界、こんにちは。",
   "Documentation": "ドキュメント",
   "Usage": "使用量",
-  "Subcriptions": "サブスクリプション",
+  "Subscriptions": "サブスクリプション",
   "Privacy Policy": "個人情報保護方針",
   "quick_start_6": "ログイン後、`:use \"WolframAlpha\"` を使用して高度な数学機能を有効にしてください。🏛️ ヒント：`Tab` キーを使用して自動補完します。💡",
   "quick_start_3": "パスワードを忘れた場合は、コマンド `:user reset pass [username] [email]` を使用してリセットしてください。🆘",
@@ -13,5 +13,10 @@
   "quick_start_2": "ログインするには、コマンド `:login [username] [password]` を使用してください。",
   "quick_start_7": "フルスクリーンに切り替えるには `F11`（macOSの場合は⌃F11）。分割画面には `Ctrl+|` を使用してください。🖥️",
   "quick_start_4": "ドキュメントにアクセスして使用状況を確認するには、画面の角にあるドット（•）をクリックしてください。📄",
-  "Settings": "設定"
+  "Settings": "設定",
+  "github_issues": "何か問題に遭遇した場合やアイデアを共有したり、プロジェクトに貢献したい場合は、私たちのGitHubの問題点(<1><2>リンク</2></1>)を訪問して報告することができます。",
+  "discord_server": "他のユーザーと議論するために、私たちのDiscordサーバー（<1><2>リンク</2></1>）に参加することができます。",
+  "email_support": "メールでお問い合わせいただけます `<1><2>support@simple-ai.io</2></1>`。",
+  "email_support_privacy_policy": "このプライバシーポリシーについてご質問やご不明点がある場合は、`<1><2>support@simple-ai.io</2></1>`までご連絡ください。",
+  "email_support_subscriptions": "エンタープライズ利用の場合は、`<1><2>support@simple-ai.io</2></1>`までご連絡ください。"
 }

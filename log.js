@@ -6,6 +6,16 @@ const path = require('path');
 const readFilterList = async () => {
   try {
     const configFile = path.join(process.cwd(), 'log.config');
+
+    // Create the `log.config` from `log.config.example` if it doesn't exist
+    if (!fs.existsSync(configFile)) {
+      const exampleFile = path.join(process.cwd(), 'log.config.example');
+      const exampleContent = await fs.promises.readFile(exampleFile, 'utf8');
+      await fs.promises.writeFile(configFile, exampleContent);
+      console.log('Created log.config from log.config.example');
+      return [];
+    }
+
     const content = await fs.promises.readFile(configFile, 'utf8');
     const lines = content.split(/\r?\n/); // Split lines for both UNIX and Windows line endings
     const filteredIPs = lines.map(line => {

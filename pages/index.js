@@ -105,6 +105,7 @@ export default function Home() {
 
   // i18n
   const { t, i18n } = useTranslation();
+  const { t: tt } = useTranslation("translation");
 
   // Toggle display
   const toggleDisplay = () => {
@@ -485,7 +486,7 @@ export default function Home() {
       i18n.changeLanguage(i18nLang)
         .then(() => {
           console.log("Language: " + lang + ", i18n: " + i18n.language);
-          console.log('Language test:', t('hello'));
+          console.log('Language test:', tt("hello"));
           setRtl(i18nLang === "ar");
         });
     } else {
@@ -2540,7 +2541,7 @@ export default function Home() {
               <div className={styles.nav}>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{ t("Documentation") }</div>
                 {usageDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>{ t("Usage") }</div>}
-                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>{ t("Subcriptions")} </div>}
+                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>{ t("Subscriptions")} </div>}
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.SETTINGS)}>{ t("Settings") }</div>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>{ t("Privacy Policy") }</div>
               </div>

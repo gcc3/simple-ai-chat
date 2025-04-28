@@ -2,7 +2,7 @@
   "hello": "Witaj świecie!",
   "Documentation": "Dokumentacja",
   "Usage": "Zużycie",
-  "Subcriptions": "Subskrypcje",
+  "Subscriptions": "Subskrypcje",
   "Privacy Policy": "Polityka prywatności",
   "quick_start_6": "Po zalogowaniu użyj `:use \"WolframAlpha\"`, aby włączyć zaawansowane funkcje matematyczne.🏛️ Wskazówka: użyj klawisza `Tab`, aby uzupełnić automatycznie.💡",
   "quick_start_3": "Jeśli zapomniałeś swojego hasła, zresetuj je używając komendy `:user reset pass [username] [email]`.🆘",
@@ -13,5 +13,10 @@
   "quick_start_2": "Aby się zalogować, użyj komendy `:login [username] [password]`.",
   "quick_start_7": "Przełącz na pełny ekran za pomocą klawisza `F11` (⌃F11 dla systemu macOS). Aby użyć podzielonego ekranu, użyj `Ctrl+|`.🖥️",
   "quick_start_4": "Aby uzyskać dostęp do dokumentacji i potwierdzić użycie, kliknij kropkę (•) w rogu ekranu.📄",
-  "Settings": "Ustawienia"
+  "Settings": "Ustawienia",
+  "github_issues": "Możesz odwiedzić nasze zgłoszenia na GitHubie (<1><2>link</2></1>), aby zgłosić napotkane problemy, podzielić się swoimi pomysłami lub przyczynić się do projektu.",
+  "discord_server": "Możesz dołączyć do naszego serwera Discord (<1><2>link</2></1>), aby dyskutować z innymi użytkownikami.",
+  "email_support": "Możesz się z nami skontaktować za pośrednictwem e-maila `<1><2>support@simple-ai.io</2></1>`.",
+  "email_support_privacy_policy": "Jeśli masz jakiekolwiek pytania lub wątpliwości dotyczące tej polityki prywatności, prosimy o kontakt z nami pod adresem `<1><2>support@simple-ai.io</2></1>`.",
+  "email_support_subscriptions": "* W przypadku zastosowania w przedsiębiorstwie prosimy o kontakt z nami pod adresem `<1><2>support@simple-ai.io</2></1>`."
 }

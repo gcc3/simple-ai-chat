@@ -2,7 +2,7 @@
   "hello": "Hallo Welt!",
   "Documentation": "Dokumentation",
   "Usage": "Verbrauch",
-  "Subcriptions": "Abonnements",
+  "Subscriptions": "Abonnements",
   "Privacy Policy": "Datenschutzrichtlinie",
   "quick_start_8": "Um das Thema zu ändern, verwenden Sie `:theme [light|dark|terminal]`.🌈",
   "quick_start_3": "Wenn Sie Ihr Passwort vergessen haben, setzen Sie es mit dem Befehl `:user reset pass [Benutzername] [E-Mail]` zurück.🆘",
@@ -13,5 +13,10 @@
   "quick_start_4": "Um auf die Dokumentation zuzugreifen und die Nutzung zu bestätigen, klicken Sie auf den Punkt (•) in der Bildschirmecke.📄",
   "quick_start_7": "Wechseln Sie mit `F11` in den Vollbildmodus (⌃F11 für macOS). Für geteilten Bildschirm verwenden Sie `Strg+|`.🖥️",
   "quick_start_0": "Simple AI funktioniert mit einer Befehlsschnittstelle, Tastenkombinationen und Gesten. Befehle beginnen alle mit `:` (halbbreiter Doppelpunkt).⌨️",
-  "Settings": "Einstellungen"
+  "Settings": "Einstellungen",
+  "github_issues": "Sie können unsere GitHub-Probleme (<1><2>Link</2></1>) besuchen, um alle Probleme zu melden, auf die Sie stoßen, Ihre Ideen zu teilen oder zum Projekt beizutragen.",
+  "discord_server": "Sie können unserem Discord-Server (<1><2>Link</2></1>) beitreten, um mit anderen Benutzern zu diskutieren.",
+  "email_support": "Sie können uns per E-Mail kontaktieren `<1><2>support@simple-ai.io</2></1>`.",
+  "email_support_privacy_policy": "Wenn Sie Fragen oder Bedenken bezüglich dieser Datenschutzrichtlinie haben, kontaktieren Sie uns bitte unter `<1><2>support@simple-ai.io</2></1>`.",
+  "email_support_subscriptions": "Für den Unternehmenseinsatz kontaktieren Sie uns bitte unter `<1><2>support@simple-ai.io</2></1>`."
 }

@@ -2,7 +2,7 @@
   "hello": "Halo Dunia!",
   "Documentation": "Dokumentasi",
   "Usage": "Penggunaan",
-  "Subcriptions": "Langganan",
+  "Subscriptions": "Langganan",
   "Privacy Policy": "Kebijakan Privasi",
   "quick_start_6": "Setelah masuk, gunakan `:use \"WolframAlpha\"` untuk mengaktifkan matematika tingkat lanjut.🏛️ Tips: gunakan tombol `Tab` untuk autolengkap.💡",
   "quick_start_3": "Jika Anda lupa kata sandi, atur ulang dengan menggunakan perintah `:user reset pass [username] [email]`.🆘",
@@ -13,5 +13,10 @@
   "quick_start_2": "Untuk masuk, gunakan perintah `:login [username] [password]`.",
   "quick_start_7": "Beralih ke layar penuh dengan `F11` (⌃F11 untuk macOS). Untuk layar terbagi, gunakan `Ctrl+|`.🖥️",
   "quick_start_4": "Untuk mengakses dokumentasi dan konfirmasi penggunaan, klik titik (•) di sudut layar.📄",
-  "Settings": "Pengaturan"
+  "Settings": "Pengaturan",
+  "github_issues": "Anda dapat mengunjungi masalah GitHub kami (<1><2>tautan</2></1>) untuk melaporkan masalah yang Anda temui, berbagi ide Anda, atau berkontribusi pada proyek.",
+  "discord_server": "Anda dapat bergabung dengan server Discord kami (<1><2>link</2></1>) untuk berdiskusi dengan pengguna lain.",
+  "email_support": "Anda dapat menghubungi kami melalui email `<1><2>support@simple-ai.io</2></1>`.",
+  "email_support_privacy_policy": "Jika Anda memiliki pertanyaan atau kekhawatiran mengenai kebijakan privasi ini, silakan hubungi kami di `<1><2>support@simple-ai.io</2></1>`.",
+  "email_support_subscriptions": "* Untuk penggunaan enterprise, silakan hubungi kami di `<1><2>support@simple-ai.io</2></1>`."
 }

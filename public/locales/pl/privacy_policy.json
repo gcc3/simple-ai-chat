@@ -9,12 +9,11 @@
   "How We Store and Protect Your Information": "Jak przechowujemy i chronimy Państwa informacje",
   "Your data is securely stored in our website's database. We implement a variety of security measures to maintain the safety of your personal information.": "Państwa dane są bezpiecznie przechowywane w bazie danych naszej strony internetowej. Wdrażamy różnorodne środki bezpieczeństwa, aby zachować bezpieczeństwo Państwa danych osobowych.",
   "Your Rights": "Państwa prawa",
-  "You have the right to access, update, or delete your personal information at any time. When you delele your account, we will delete all your personal information from our database.": "Mają Państwo prawo dostępu, aktualizacji lub usunięcia swoich danych osobowych w dowolnym momencie. Kiedy usuną Państwo swoje konto, usuniemy wszystkie Państwa dane osobowe z naszej bazy danych.",
   "Changes to This Policy": "Zmiany w polityce",
   "We may modify this privacy policy at any time, so please review it frequently. Changes will take effect immediately upon their posting on the website.": "Możemy modyfikować tę politykę prywatności w dowolnym momencie, dlatego prosimy o jej regularne przeglądanie. Zmiany wejdą w życie natychmiast po ich opublikowaniu na stronie internetowej.",
   "Contact Us": "Kontakt z nami",
   "Privacy Policy": "Polityka Prywatności",
   "This information may include": "Te informacje mogą zawierać",
-  "- Usage data: email address will be used for account registeration, password recovery and service updates notification.": "- Dane użytkowania: adres e-mail będzie używany do rejestracji konta, odzyskiwania hasła oraz powiadomień o aktualizacjach serwisu.",
-  "email_support_privacy_policy": "Jeśli mają Państwo jakiekolwiek pytania lub wątpliwości dotyczące tej polityki prywatności, prosimy o kontakt z nami pod adresem `<1><2>support@simple-ai.io</2></1>`."
+  "- Usage data: email address will be used for account registration, password recovery and service updates notification.": "- Dane użytkowania: adres e-mail będzie używany do rejestracji konta, odzyskiwania hasła oraz powiadomień o aktualizacjach serwisu.",
+  "You have the right to access, update, or delete your personal information at any time. When you delete your account, we will delete all your personal information from our database.": "Masz prawo dostępu, aktualizacji lub usunięcia swoich danych osobowych w każdym czasie. Kiedy usuniesz swoje konto, usuniemy wszystkie Twoje dane osobowe z naszej bazy danych."
 }

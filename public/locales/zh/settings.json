@@ -1,14 +1,10 @@
 {
   "Settings": "设置",
-  "User information not found. Please login with command `:login [username] [password]`.": "未找到用户信息。请使用命令 `:login [username] [password]` 登录。",
   "Subscribe": "订阅",
   "Unsubscribe": "取消订阅",
-  "You're subscribed.": "您已订阅。",
-  "You've already subscribed.": "您已经订阅。",
-  "You're subscribed, email sent.": "您已订阅，邮件已发送。",
-  "You're unsubscribed.": "您已取消订阅。",
   "Email Subscription": "电子邮件订阅",
   "Loading...": "加载中...",
+  "Language": "语言",
   "Settings updated.": "设置已更新。",
-  "Language": "语言"
+  "Email subscription updated.": "电子邮件订阅已更新。"
 }

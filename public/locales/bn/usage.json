@@ -10,7 +10,7 @@
   "Usage Fees": "ব্যবহারের ফি",
   "For token pricing, refer to the OpenAI official pricing document.": "টোকেনের মূল্য নির্ধারণের জন্য, OpenAI এর অফিশিয়াল মূল্য নির্ধারণ নথিতে দেখুন।",
   "1% ~ 3% for maintaince service.": "রক্ষণাবেক্ষণ সেবার জন্য ১% ~ ৩%।",
-  "Fequencies": "ফ্রিকোয়েন্সি",
+  "Frequencies": "ফ্রিকোয়েন্সি",
   "Use Count": "ব্যবহারের সংখ্যা",
   "Input": "ইনপুট",
   "Output": "আউটপুট",
@@ -26,7 +26,7 @@
   "Paypal or Credit Card": "পেপ্যাল অথবা ক্রেডিট কার্ড",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "আপনার পেমেন্ট ব্যাংকিং সিস্টেমের মাধ্যমে নিরাপদে পরিচালিত হবে; আমরা আপনার পেমেন্টের বিবরণ সংরক্ষণ বা সংগ্রহ করি না।",
   "Usage": "ব্যবহার",
-  "Subcription Status": "সাবস্ক্রিপশন অবস্থা",
+  "Subscription Status": "সাবস্ক্রিপশন অবস্থা",
   "Add Balance": "ব্যালান্স যোগ করুন",
   "Select amount": "পরিমাণ নির্বাচন করুন",
   "Pay": "পে",
@@ -37,6 +37,5 @@
   "Monthly usage": "মাসিক ব্যবহার",
   "You are the `root_user`.": "আপনি `root_user`।",
   "Unlimited": "আনলিমিটেড",
-  "banking fee {{bankingFee}} included": "ব্যাংকিং ফি {{bankingFee}} অন্তর্ভুক্ত",
   "Loading...": "লোড হচ্ছে..."
 }

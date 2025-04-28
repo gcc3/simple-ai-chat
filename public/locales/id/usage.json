@@ -10,7 +10,7 @@
   "Usage Fees": "Biaya Penggunaan",
   "For token pricing, refer to the OpenAI official pricing document.": "Untuk harga token, lihat dokumen harga resmi OpenAI.",
   "1% ~ 3% for maintaince service.": "1% ~ 3% untuk layanan pemeliharaan.",
-  "Fequencies": "Frekuensi",
+  "Frequencies": "Frekuensi",
   "Use Count": "Jumlah Penggunaan",
   "Input": "Masukan",
   "Output": "Keluaran",
@@ -26,7 +26,7 @@
   "Paypal or Credit Card": "Paypal atau Kartu Kredit",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "Pembayaran Anda akan ditangani dengan aman melalui sistem perbankan; kami tidak menyimpan atau mengumpulkan detail pembayaran Anda.",
   "Usage": "Penggunaan",
-  "Subcription Status": "Status Berlangganan",
+  "Subscription Status": "Status Berlangganan",
   "Add Balance": "Tambah Saldo",
   "Select amount": "Pilih Jumlah",
   "Pay": "Bayar",
@@ -37,6 +37,5 @@
   "Monthly usage": "Penggunaan Bulanan",
   "You are the `root_user`.": "Anda adalah `root_user`.",
   "Unlimited": "Tak Terbatas",
-  "banking fee {{bankingFee}} included": "biaya perbankan {{bankingFee}} termasuk",
   "Loading...": "Memuat..."
 }

@@ -37,7 +37,7 @@ const Documentation = () => {
     { name: t("Function calls"), description: t("GPT will choise function to use to get information he need. Such as weather and time queries. Functions can be called by user directlly from the input as well. To list all available functions use `:function ls`. Also refer: Functions") },
     { name: t("Page redirection"), description: t("As one of the `functions calls`, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.") },
     { name: t("Location-based query"), description: t("Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.") },
-    { name: t("Code highlighting"), description: t("Code highting for different themes, support all programming languages.") },
+    { name: t("Code highlighting"), description: t("Code highlighting for different themes, support all programming languages.") },
     { name: t("Mathematical Equation"), description: t("Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.") },
     { name: t("Shortcuts"), description: t("Supports convenient shortcut operations. Refer: `Shortcuts`") },
     { name: t("Internationalization and localization"), description: t("Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.") },
@@ -318,21 +318,21 @@ const Documentation = () => {
         - <Trans
             i18nKey="discord_server"
             components={{ 1: <a href="https://discord.gg/sRcj4HZyzU" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
-            ns="documentation"
+            ns="translation"
           />
       </div>
       <div>
         - <Trans
             i18nKey="email_support"
             components={{ 1: <a href="mailto:support@simple-ai.io" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
-            ns="documentation"
+            ns="translation"
           />
       </div>
       <div>
         - <Trans
             i18nKey="github_issues"
             components={{ 1: <a href="https://github.com/gcc3/simple-ai-chat/issues" target="_blank" rel="noopener noreferrer">{ t('link') }</a>, 2: <u></u> }}
-            ns="documentation"
+            ns="translation"
           />
       </div>
     </>

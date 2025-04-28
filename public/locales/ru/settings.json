@@ -1,14 +1,10 @@
 {
   "Settings": "Настройки",
-  "User information not found. Please login with command `:login [username] [password]`.": "Информация о пользователе не найдена. Пожалуйста, войдите в систему с помощью команды `:login [username] [password]`.",
   "Subscribe": "Подписаться",
   "Unsubscribe": "Отписаться",
-  "You're subscribed.": "Вы подписаны.",
-  "You've already subscribed.": "Вы уже подписаны.",
-  "You're subscribed, email sent.": "Вы подписаны, письмо отправлено.",
-  "You're unsubscribed.": "Вы отписаны.",
   "Email Subscription": "Подписка на рассылку",
   "Loading...": "Загрузка...",
+  "Language": "Язык",
   "Settings updated.": "Настройки обновлены.",
-  "Language": "Язык"
+  "Email subscription updated.": "Подписка на рассылку обновлена."
 }

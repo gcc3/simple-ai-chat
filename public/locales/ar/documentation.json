@@ -28,7 +28,7 @@
   "Location-based query": "استعلام قائم على الموقع الجغرافي",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "الاستفسار بناءً على معلومات الموقع الجغرافي للمستخدم. على سبيل المثال، الإجابة على سؤال 'كيف حال الطقس اليوم؟' من خلال الحصول تلقائيًا على الموقع. لاستخدام ميزة الموقع، استخدم الأمر ':location on'.",
   "Code highlighting": "تمييز الكود",
-  "Code highting for different themes, support all programming languages.": "تظليل الأكواد لألوان مختلفة للثيمات، يدعم جميع لغات البرمجة.",
+  "Code highlighting for different themes, support all programming languages.": "تظليل الأكواد لألوان مختلفة للثيمات، يدعم جميع لغات البرمجة.",
   "Mathematical Equation": "معادلة رياضية",
   "Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.": "يدعم عرض المعادلات الرياضية بصيغة LaTeX في النتائج. عندما ينسخ المستخدم النص في المعادلة، سيتم نسخ LaTeX الأصلي.",
   "Shortcuts": "اختصارات",
@@ -59,7 +59,6 @@
   "How to share a session?": "كيفية مشاركة جلسة؟",
   "more...": "المزيد...",
   "General": "عام",
-  "Session": "جلسة",
   "Stats & Self-evaluation": "الإحصاءات وتقييم الذات",
   "Speak": "تكلم",
   "Data Store": "متجر البيانات",
@@ -110,9 +109,6 @@
   "Feedback & Support": "الملاحظات والدعم",
   "Documentation": "وثائق",
   "Sessions & Logs": "الجلسات والسجلات",
-  "github_issues": "يمكنك زيارة مشاكل GitHub الخاصة بنا (<1><2>رابط</2></1>) للإبلاغ عن أي مشاكل تواجهها، مشاركة أفكارك، أو المساهمة في المشروع.",
-  "discord_server": "يمكنك الانضمام إلى خادم الديسكورد الخاص بنا (<1><2>الرابط</2></1>) للنقاش مع المستخدمين الآخرين.",
-  "email_support": "يمكنكم التواصل معنا عبر البريد الإلكتروني `<1><2>support@simple-ai.io</2></1>`.",
   "Auto input/Autocomplete.": "إدخال تلقائي / إكمال تلقائي.",
   "Delete input.": "حذف المُدخل",
   "Touch swipe on input box.": "السحب باللمس على مربع الإدخال",
@@ -131,7 +127,6 @@
   "Internationalization and localization": "العولمة والموضعة",
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "يدعم Simple AI 18 لغة: العربية، البنغالية، الصينية، الهولندية، الإنجليزية، الفرنسية، الألمانية، الهندية، الإندونيسية، الإيطالية، اليابانية، الكورية، البولندية، البرتغالية، الروسية، الإسبانية، السويدية، التركية. يرجى إعلامنا إذا كنت بحاجة إلى دعم للغتك.",
   "introduction": "مرحبًا، أهلاً بك في Simple AI (simple-ai.io)! 🚀 أعمل على توفير واجهة مستخدم أكثر احترافية وملائمة للمبرمجين للتفاعل مع الذكاء الاصطناعي.",
-  "Options": "خيارات",
   "Command options": "خيارات الأمر",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "نحن نقدم عدة وظائف مدمجة تسمح لكل من المستخدمين والذكاء الاصطناعي باسترجاع المعلومات من الواجهة البرمجية للتطبيقات أو تنفيذ مهام معينة. لعرض قائمة الوظائف المتاحة، استخدم الأمر `:function ls`.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "يمكنك الضغط على مفتاح Control (أو مفتاح command لأجهزة macOS) والنقر على اسم النموذج، وسيتم نسخ أمر `:session attach` مع معرف الجلسة تلقائيًا إلى الحافظة الخاصة بك."
