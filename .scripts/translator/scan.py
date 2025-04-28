@@ -9,15 +9,15 @@ PROJECT_ROOT = os.path.abspath(os.path.join(SCRIPT_DIR, "..", ".."))
 COMPONENTS_DIR = os.path.join(PROJECT_ROOT, "components")
 OUTPUT_FILE = os.path.join(SCRIPT_DIR, "keys.csv")
 
-# Regex to match t("...") or tt("...") and avoid other functions ending with 't'
-pattern = re.compile(r'\b(?:t|tt)\s*\(\s*"([^\"]+)"\s*\)')
+# Regex to match t("...") or tt("...") capturing function name
+pattern = re.compile(r'\b(t{1,2})\s*\(\s*"([^\"]+)"\s*\)')
 
 # Mapping for component filenames to desired CSV key prefixes
 mapping = {
     "documentation": "documentation",
     "settings": "settings",
-    "subscription": "subscription",
-    "subscriptioncomparisontable": "subscription",
+    "subscription": "subscriptions",
+    "subscriptioncomparisontable": "subscriptions",
     "usage": "usage",
     "userdataprivacy": "privacy_policy",
 }
@@ -40,11 +40,15 @@ def scan_files():
                             content = f.read()
                     except Exception:
                         continue
+
                     # Find all matches
-                    for match in pattern.findall(content):
-                        if (base, match) not in seen:
-                            seen.add((base, match))
-                            writer.writerow([base, match])
+                    for func, match in pattern.findall(content):
+                        # override base for tt() calls
+                        entry_base = "translation" if func == "tt" else base
+                        if (entry_base, match) not in seen:
+                            seen.add((entry_base, match))
+                            writer.writerow([entry_base, match])
+
     print(f"Extraction complete. Keys saved to {OUTPUT_FILE}")
 
 
