@@ -5,6 +5,7 @@ import sys
 import click
 from dotenv import load_dotenv
 from openai import OpenAI
+from scan import scan_files
 
 # Load the API key from .env file
 load_dotenv()
@@ -52,11 +53,13 @@ def translate(text, target_language_name):
 @click.command()
 @click.option("--test", is_flag=True, help="Print keys and exit without translating")
 def main(test):
-    # Define the base path to the 'locales' folder
-    base_path = "../../public/locales"
+    # Scan new keys
+    print("Scanning for new keys...")
+    scan_files()
 
-    # Read the source language code (will not translate this)
+    # Define the base path to the 'locales' folder
     source_language_code = "en"
+    base_path = "../../public/locales"
 
     # Read the language codes and names from the languages.csv
     languages = {}
@@ -83,9 +86,8 @@ def main(test):
         source_file_path = os.path.join(
             base_path, source_language_code, file_name + ".json"
         )
-        if os.path.isfile(source_file_path):
-            with open(source_file_path, "r", encoding="utf-8") as file:
-                source_data[file_name] = json.load(file)
+        with open(source_file_path, "r", encoding="utf-8") as file:
+            source_data[file_name] = json.load(file)
 
     # Translate and update each target language file with translated values from the source language file
     for lang_code, lang_name in languages.items():

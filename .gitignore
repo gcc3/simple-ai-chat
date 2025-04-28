@@ -43,3 +43,5 @@ role.csv
 # log files
 *.log
 log.config
+
+__pycache__/
