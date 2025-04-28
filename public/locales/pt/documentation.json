@@ -28,7 +28,7 @@
   "Location-based query": "Consulta baseada em localização",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "Questionamento baseado na informação geográfica do utilizador. Por exemplo, responder a 'Como está o tempo hoje?' obtendo automaticamente a localização. Para utilizar a funcionalidade de localização, use o comando ':location on'.",
   "Code highlighting": "Destaque de código",
-  "Code highting for different themes, support all programming languages.": "Destaque de código para diferentes temas, suporte a todas as linguagens de programação.",
+  "Code highlighting for different themes, support all programming languages.": "Destaque de código para diferentes temas, suporte a todas as linguagens de programação.",
   "Mathematical Equation": "Equação Matemática",
   "Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.": "Suporta a exibição de equações matemáticas em formato LaTeX nos resultados. Quando o usuário copiar o texto da equação, o LaTeX original será copiado.",
   "Shortcuts": "Atalhos",

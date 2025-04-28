@@ -1,6 +1,6 @@
 {
   "User information not found. Please login with command `:login [username] [password]`.": "Gebruikersinformatie niet gevonden. Log alstublieft in met het commando `:login [username] [password]`.",
-  "Subcription Status": "Abonnementsstatus",
+  "Subscription Status": "Abonnementsstatus",
   "User": "Gebruiker",
   "Email": "E-mail",
   "Subscription": "Abonnement",
@@ -19,7 +19,7 @@
   "Payment methods": "Betaalmethoden",
   "Paypal or Credit Card": "Paypal of Creditcard",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "Uw betaling wordt veilig afgehandeld via het banksysteem; wij slaan uw betalingsgegevens niet op of verzamelen deze niet.",
-  "Subcriptions": "Abonnementen",
+  "Subscriptions": "Abonnementen",
   "Upgrade to": "Upgraden naar",
   "Downgrade to": "Downgraden naar",
   "Roles": "Rollen",

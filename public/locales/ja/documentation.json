@@ -28,7 +28,7 @@
   "Location-based query": "位置情報に基づくクエリ",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "ユーザーの地理的位置情報に基づいた質問。例えば、`今日の天気はどうですか？` の答えなど",
   "Code highlighting": "コードハイライト",
-  "Code highting for different themes, support all programming languages.": "異なるテーマに対するコードハイライト、すべてのプログラミング言語をサポート。",
+  "Code highlighting for different themes, support all programming languages.": "異なるテーマに対するコードハイライト、すべてのプログラミング言語をサポート。",
   "Mathematical Equation": "数学方程式",
   "Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.": "結果においてLaTeX形式で数学方程式の表示をサポートします。ユーザーが方程式のテキストをコピーすると、元のLaTeXがコピーされます。",
   "Shortcuts": "ショートカット",

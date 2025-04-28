@@ -28,7 +28,7 @@
   "Location-based query": "অবস্থান-ভিত্তিক প্রশ্ন",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "ব্যবহারকারীর ভৌগোলিক অবস্থানের তথ্যের ভিত্তিতে প্রশ্ন করা। উদাহরণস্বরূপ, 'আজকের আবহাওয়া কেমন?' প্রশ্নের উত্তর স্বয়ংক্রিয়ভাবে অবস্থান নির্ধারণ করে দেওয়া। অবস্থান বৈশিষ্ট্য ব্যবহার করতে, ':location on' কমান্ড ব্যবহার করুন।",
   "Code highlighting": "কোড হাইলাইটিং",
-  "Code highting for different themes, support all programming languages.": "বিভিন্ন থিমের জন্য কোড হাইলাইটিং, সমস্ত প্রোগ্রামিং ভাষা সাপোর্ট করে।",
+  "Code highlighting for different themes, support all programming languages.": "বিভিন্ন থিমের জন্য কোড হাইলাইটিং, সমস্ত প্রোগ্রামিং ভাষা সাপোর্ট করে।",
   "Mathematical Equation": "গাণিতিক সমীকরণ",
   "Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.": "ফলাফলে LaTeX ফর্ম্যাটে গণিতীয় সমীকরণ প্রদর্শন করা সমর্থন করে। যখন ব্যবহারকারী সমীকরণের টেক্সট কপি করেন, মূল LaTeX কপি হবে।",
   "Shortcuts": "শর্টকাট",

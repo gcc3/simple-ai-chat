@@ -2,7 +2,7 @@
   "hello": "Halo Dunia!",
   "Documentation": "Dokumentasi",
   "Usage": "Penggunaan",
-  "Subcriptions": "Langganan",
+  "Subscriptions": "Langganan",
   "Privacy Policy": "Kebijakan Privasi",
   "quick_start_6": "Setelah masuk, gunakan `:use \"WolframAlpha\"` untuk mengaktifkan matematika tingkat lanjut.🏛️ Tips: gunakan tombol `Tab` untuk autolengkap.💡",
   "quick_start_3": "Jika Anda lupa kata sandi, atur ulang dengan menggunakan perintah `:user reset pass [username] [email]`.🆘",

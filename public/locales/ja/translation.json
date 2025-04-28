@@ -2,7 +2,7 @@
   "hello": "世界、こんにちは。",
   "Documentation": "ドキュメント",
   "Usage": "使用量",
-  "Subcriptions": "サブスクリプション",
+  "Subscriptions": "サブスクリプション",
   "Privacy Policy": "個人情報保護方針",
   "quick_start_6": "ログイン後、`:use \"WolframAlpha\"` を使用して高度な数学機能を有効にしてください。🏛️ ヒント：`Tab` キーを使用して自動補完します。💡",
   "quick_start_3": "パスワードを忘れた場合は、コマンド `:user reset pass [username] [email]` を使用してリセットしてください。🆘",

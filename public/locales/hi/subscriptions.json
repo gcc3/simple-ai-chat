@@ -1,6 +1,6 @@
 {
   "User information not found. Please login with command `:login [username] [password]`.": "उपयोगकर्ता की जानकारी नहीं मिली। कृपया कमांड `:login [username] [password]` के साथ लॉगिन करें।",
-  "Subcription Status": "सब्सक्रिप्शन स्थिति",
+  "Subscription Status": "सब्सक्रिप्शन स्थिति",
   "User": "उपयोगकर्ता",
   "Email": "ईमेल",
   "Subscription": "सब्सक्रिप्शन",
@@ -19,7 +19,7 @@
   "Payment methods": "भुगतान के तरीके",
   "Paypal or Credit Card": "पेपाल या क्रेडिट कार्ड",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "आपका भुगतान बैंकिंग प्रणाली के माध्यम से सुरक्षित रूप से संभाला जाएगा; हम आपके भुगतान विवरण संग्रहित या एकत्र नहीं करते हैं।",
-  "Subcriptions": "सब्सक्रिप्शन",
+  "Subscriptions": "सब्सक्रिप्शन",
   "Upgrade to": "में उन्नत करें",
   "Downgrade to": "में अवनत करें",
   "Roles": "भूमिकाएँ",

@@ -28,7 +28,7 @@
   "Location-based query": "위치 기반 쿼리",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "사용자의 지리적 위치 정보에 기반한 질문하기. 예를 들어, '오늘 날씨가 어때요?'라는 질문에 자동으로 위치를 파악하여 대답합니다. 위치 기능을 사용하려면 `:location on` 명령어를 사용하세요.",
   "Code highlighting": "코드 하이라이팅",
-  "Code highting for different themes, support all programming languages.": "다양한 테마에 대한 코드 하이라이팅, 모든 프로그래밍 언어 지원.",
+  "Code highlighting for different themes, support all programming languages.": "다양한 테마에 대한 코드 하이라이팅, 모든 프로그래밍 언어 지원.",
   "Mathematical Equation": "수학 방정식",
   "Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.": "결과에서 LaTeX 형식의 수학 방정식 표시를 지원합니다. 사용자가 방정식 내의 텍스트를 복사하면 원래의 LaTeX가 복사됩니다.",
   "Shortcuts": "바로 가기",

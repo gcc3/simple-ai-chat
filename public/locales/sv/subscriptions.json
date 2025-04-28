@@ -1,6 +1,6 @@
 {
   "User information not found. Please login with command `:login [username] [password]`.": "Kullanıcı bilgisi bulunamadı. Lütfen `:login [kullanıcı adı] [şifre]` komutuyla giriş yapın.",
-  "Subcription Status": "Abonelik Durumu",
+  "Subscription Status": "Abonelik Durumu",
   "User": "Kullanıcı",
   "Email": "E-posta",
   "Subscription": "Abonelik",
@@ -19,7 +19,7 @@
   "Payment methods": "Ödeme Yöntemleri",
   "Paypal or Credit Card": "Paypal veya Kredi Kartı",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "Ödemeniz banka sistemi aracılığıyla güvenli bir şekilde işlenecek; ödeme detaylarınızı saklamıyoruz veya toplamıyoruz.",
-  "Subcriptions": "Abonelikler",
+  "Subscriptions": "Abonelikler",
   "Upgrade to": "Yükselt",
   "Downgrade to": "Düşür",
   "Roles": "Roller",

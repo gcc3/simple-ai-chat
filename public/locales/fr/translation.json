@@ -2,7 +2,7 @@
   "hello": "Bonjour tout le monde !",
   "Documentation": "Documentation",
   "Usage": "Utilisation",
-  "Subcriptions": "Abonnements",
+  "Subscriptions": "Abonnements",
   "Privacy Policy": "Politique de Confidentialité",
   "quick_start_6": "Après vous être connecté, utilisez `:use \"WolframAlpha\"` pour activer les mathématiques avancées.🏛️ Conseils : utilisez la touche `Tab` pour l'auto-complétion.💡",
   "quick_start_3": "Si vous avez oublié votre mot de passe, réinitialisez-le en utilisant la commande `:user reset pass [username] [email]`.🆘",

@@ -2,7 +2,7 @@
   "hello": "안녕 세계!",
   "Documentation": "문서화",
   "Usage": "사용법",
-  "Subcriptions": "구독",
+  "Subscriptions": "구독",
   "Privacy Policy": "개인정보 처리방침",
   "quick_start_6": "로그인 후 `:use \"WolframAlpha\"`를 사용하여 고급 수학 기능을 활성화하세요.🏛️ 팁: 자동완성 기능을 사용하려면 `Tab` 키를 사용하세요.💡",
   "quick_start_3": "비밀번호를 잊어버린 경우, `:user reset pass [username] [email]` 명령어를 사용하여 재설정하세요.🆘",

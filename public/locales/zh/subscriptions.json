@@ -1,6 +1,6 @@
 {
   "User information not found. Please login with command `:login [username] [password]`.": "未找到用户信息。请使用 `:login [用户名] [密码]` 命令登录。",
-  "Subcription Status": "订阅状态",
+  "Subscription Status": "订阅状态",
   "User": "用户",
   "Email": "电子邮件",
   "Subscription": "订阅",
@@ -19,7 +19,7 @@
   "Payment methods": "支付方式",
   "Paypal or Credit Card": "Paypal 或信用卡",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "您的支付将通过银行系统安全处理；我们不会存储或收集您的支付详情。",
-  "Subcriptions": "订阅",
+  "Subscriptions": "订阅",
   "Upgrade to": "升级至",
   "Downgrade to": "降级至",
   "Roles": "角色",

@@ -28,7 +28,7 @@
   "Location-based query": "Locatiegebaseerde zoekopdracht",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "Vragen stellen gebaseerd op de geografische locatie-informatie van de gebruiker. Bijvoorbeeld het beantwoorden van 'Hoe is het weer vandaag?' door automatisch de locatie op te halen. Om de locatiefunctie te gebruiken, gebruik je het commando ':location on'.",
   "Code highlighting": "Code markering",
-  "Code highting for different themes, support all programming languages.": "Code highlighting voor verschillende thema's, ondersteunt alle programmeertalen.",
+  "Code highlighting for different themes, support all programming languages.": "Code highlighting voor verschillende thema's, ondersteunt alle programmeertalen.",
   "Mathematical Equation": "Wiskundige Vergelijking",
   "Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.": "Ondersteunt de weergave van wiskundige vergelijkingen in LaTeX-formaat in de resultaten. Wanneer een gebruiker de tekst in de vergelijking kopieert, wordt de originele LaTeX gekopieerd.",
   "Shortcuts": "Sneltoetsen",

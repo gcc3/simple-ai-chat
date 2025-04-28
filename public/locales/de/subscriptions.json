@@ -1,6 +1,6 @@
 {
   "User information not found. Please login with command `:login [username] [password]`.": "Benutzerinformationen nicht gefunden. Bitte melden Sie sich mit dem Befehl `:login [username] [password]` an.",
-  "Subcription Status": "Abonnementstatus",
+  "Subscription Status": "Abonnementstatus",
   "User": "Benutzer",
   "Email": "E-Mail",
   "Subscription": "Abonnement",
@@ -19,7 +19,7 @@
   "Payment methods": "Zahlungsmethoden",
   "Paypal or Credit Card": "Paypal oder Kreditkarte",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "Ihre Zahlung wird sicher über das Banksystem abgewickelt; wir speichern oder sammeln Ihre Zahlungsdetails nicht.",
-  "Subcriptions": "Abonnements",
+  "Subscriptions": "Abonnements",
   "Upgrade to": "Upgrade auf",
   "Downgrade to": "Downgrade auf",
   "Roles": "Rollen",

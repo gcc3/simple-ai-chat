@@ -28,7 +28,7 @@
   "Location-based query": "Konum tabanlı sorgu",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "Kullanıcının coğrafi konum bilgilerine dayalı sorgulama. Örneğin, `Bugün hava nasıl?` sorusunu otomatik olarak konum alarak yanıtlama. Konum özelliğini kullanmak için `:location on` komutunu kullanın.",
   "Code highlighting": "Kod vurgulama",
-  "Code highting for different themes, support all programming languages.": "Farklı temalar için kod vurgulama, tüm programlama dillerini destekler.",
+  "Code highlighting for different themes, support all programming languages.": "Farklı temalar için kod vurgulama, tüm programlama dillerini destekler.",
   "Mathematical Equation": "Matematik Denklemi",
   "Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.": "Sonuçlarda LaTeX formatında matematiksel denklemlerin görüntülenmesini destekler. Kullanıcı denklemdeki metni kopyaladığında, orijinal LaTeX kopyalanır.",
   "Shortcuts": "Kısayollar",

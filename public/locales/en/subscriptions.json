@@ -1,6 +1,6 @@
 {
   "User information not found. Please login with command `:login [username] [password]`.": "User information not found. Please login with command `:login [username] [password]`.",
-  "Subcription Status": "Subcription Status",
+  "Subscription Status": "Subscription Status",
   "User": "User",
   "Email": "Email",
   "Subscription": "Subscription",
@@ -19,7 +19,7 @@
   "Payment methods": "Payment methods",
   "Paypal or Credit Card": "Paypal or Credit Card",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "Your payment will be securely handled through the banking system; we do not store or collect your payment details.",
-  "Subcriptions": "Subcriptions",
+  "Subscriptions": "Subscriptions",
   "Upgrade to": "Upgrade to",
   "Downgrade to": "Downgrade to",
   "1/day(trial)": "1/day(trial)",

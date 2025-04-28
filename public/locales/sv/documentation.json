@@ -28,7 +28,7 @@
   "Location-based query": "Positionsbaserad förfrågan",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "Frågor baserat på användarens geografiska platsinformation. T.ex. att besvara 'Hur är vädret idag?' genom att automatiskt hämta platsen. För att använda platsfunktionen, använd kommandot ':location on'.",
   "Code highlighting": "Kodmarkering",
-  "Code highting for different themes, support all programming languages.": "Kodmarkering för olika teman, stöd för alla programmeringsspråk.",
+  "Code highlighting for different themes, support all programming languages.": "Kodmarkering för olika teman, stöd för alla programmeringsspråk.",
   "Mathematical Equation": "Matematisk ekvation",
   "Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.": "Stöder visning av matematiska ekvationer i LaTeX-format i resultaten. När användaren kopierar texten i ekvationen kommer den ursprungliga LaTeX-koden att kopieras.",
   "Shortcuts": "Genvägar",

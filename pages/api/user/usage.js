@@ -85,8 +85,8 @@ export default async function (req, res) {
       const feeThisMonth = feeCal(model, tokenUsageThisMonth.input, tokenUsageThisMonth.output);
       const feeLastMonth = feeCal(model, tokenUsageLastMonth.input, tokenUsageLastMonth.output);
 
-      // Token fequencies
-      const tokenFequencies = await getModelTokenFequencies(user.username, model);
+      // Token frequencies
+      const tokenFrequencies = await getModelTokenFrequencies(user.username, model);
 
       // Append to model usage
       modelUsageList.push({
@@ -99,7 +99,7 @@ export default async function (req, res) {
           this_month: npre(feeThisMonth),
           last_month: npre(feeLastMonth),
         },
-        token_fequencies: tokenFequencies,
+        token_frequencies: tokenFrequencies,
       });
 
       // Add to total
@@ -119,10 +119,10 @@ export default async function (req, res) {
         },
         // Model usage
         model_usage: modelUsageList,
-        // Fequencies
+        // Frequencies
         // Daily usage, weekly usage, monthly usage
         // This will display bar charts
-        use_count_fequencies: await getUseCountFequenciesWithLimit(user.username, user.role),
+        use_count_frequencies: await getUseCountFrequenciesWithLimit(user.username, user.role),
         // Total usage fee
         total_usage_fee_this_month: totalUsageFeeThisMonth,
         total_usage_fee_last_month: totalUsageFeeLastMonth,
@@ -160,8 +160,8 @@ async function getUseCountByMonth(username, year, month) {
   return await countChatsForUser(username, startTime, endTime);
 }
 
-// Use count fequencies
-async function getUseCountFequenciesWithLimit(username, role) {
+// Use count frequencies
+async function getUseCountFrequenciesWithLimit(username, role) {
   const daily = await countChatsForUser(username, Date.now() - 86400000, Date.now());
   const weekly = await countChatsForUser(username, Date.now() - 604800000, Date.now());
   const monthly = await countChatsForUser(username, Date.now() - 2592000000, Date.now());
@@ -240,8 +240,8 @@ async function getModelTokenUsageByMonth(username, model, year, month) {
   return await countTokenForUserByModel(username, model, start, end);
 }
 
-// Token fequencies
-async function getModelTokenFequencies(username, model) {
+// Token frequencies
+async function getModelTokenFrequencies(username, model) {
   const dailyStart = Date.now() - 86400000;
   const weeklyStart = Date.now() - 604800000;
   const monthlyStart = Date.now() - 2592000000;

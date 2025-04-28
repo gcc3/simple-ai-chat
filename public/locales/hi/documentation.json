@@ -28,7 +28,7 @@
   "Location-based query": "स्थान-आधारित प्रश्न",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "प्रयोगकर्ता की भौगोलिक स्थान जानकारी पर आधारित प्रश्न। उदाहरण के लिए, 'आज मौसम कैसा है?' का उत्तर स्थान की जानकारी को स्वचालित रूप से प्राप्त करके देना। स्थान सुविधा का उपयोग करने के लिए, कमांड ':location on' का उपयोग करें।",
   "Code highlighting": "कोड हाइलाइटिंग",
-  "Code highting for different themes, support all programming languages.": "विभिन्न थीम्स के लिए कोड हाइलाइटिंग, सभी प्रोग्रामिंग भाषाओं का समर्थन।",
+  "Code highlighting for different themes, support all programming languages.": "विभिन्न थीम्स के लिए कोड हाइलाइटिंग, सभी प्रोग्रामिंग भाषाओं का समर्थन।",
   "Mathematical Equation": "गणितीय समीकरण",
   "Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.": "परिणामों में LaTeX प्रारूप में गणितीय समीकरणों के प्रदर्शन का समर्थन करता है। जब उपयोगकर्ता समीकरण में पाठ की प्रतिलिपि बनाएंगे, तो मूल LaTeX की प्रतिलिपि बनाई जाएगी।",
   "Shortcuts": "शॉर्टकट",

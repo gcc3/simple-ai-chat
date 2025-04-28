@@ -1,6 +1,6 @@
 {
   "User information not found. Please login with command `:login [username] [password]`.": "لم يتم العثور على معلومات المستخدم. الرجاء تسجيل الدخول باستخدام الأمر `:login [اسم المستخدم] [كلمة المرور]`.",
-  "Subcription Status": "حالة الاشتراك",
+  "Subscription Status": "حالة الاشتراك",
   "User": "المستخدم",
   "Email": "البريد الإلكتروني",
   "Subscription": "الاشتراك",
@@ -19,7 +19,7 @@
   "Payment methods": "طرق الدفع",
   "Paypal or Credit Card": "باي بال أو بطاقة الائتمان",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "سيتم التعامل مع دفعتك بأمان من خلال النظام المصرفي؛ نحن لا نخزن أو نجمع تفاصيل الدفع الخاصة بك.",
-  "Subcriptions": "الاشتراكات",
+  "Subscriptions": "الاشتراكات",
   "Upgrade to": "ترقية إلى",
   "Downgrade to": "تخفيض إلى",
   "Roles": "الأدوار",

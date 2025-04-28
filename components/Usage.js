@@ -94,7 +94,7 @@ function Usage() {
       {!user && <div>{ t("User information not found. Please login with command `:login [username] [password]`.") }</div>}
       {user && <div>
         <div>
-          <div className="mb-1">- { t("Subcription Status") }</div>
+          <div className="mb-1">- { t("Subscription Status") }</div>
           <div>{ t("User") }: {user.username}</div>
           <div>{ t("Email") }: {user.email}</div>
           <div>{ t("Subscription") }: `{user.role}`</div>
@@ -137,14 +137,14 @@ function Usage() {
             ))}
             <div className="mt-2">* { t("For token pricing, refer to the OpenAI official pricing document.") } (<a href="https://openai.com/pricing#language-models"><u>link</u></a>) </div>
             <div>* { t("1% ~ 3% for maintaince service.") }</div>
-            <div className="mt-3">- { t("Fequencies") }</div>
+            <div className="mt-3">- { t("Frequencies") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
                   <td className="mr-3">{ t("Use Count") }</td>
-                  <td className="mr-3">{ t("Daily") }: {usage.use_count_fequencies.daily}</td>
-                  <td className="mr-3">{ t("Weekly") }: {usage.use_count_fequencies.weekly}</td>
-                  <td className="mr-3">{ t("Monthly") }: {usage.use_count_fequencies.monthly}</td>
+                  <td className="mr-3">{ t("Daily") }: {usage.use_count_frequencies.daily}</td>
+                  <td className="mr-3">{ t("Weekly") }: {usage.use_count_frequencies.weekly}</td>
+                  <td className="mr-3">{ t("Monthly") }: {usage.use_count_frequencies.monthly}</td>
                 </tr>
               </tbody>
             </table>
@@ -155,28 +155,28 @@ function Usage() {
                   <tbody>
                     <tr>
                       <td className="mr-3">{ t("Input") }</td>
-                      <td className="mr-3">{ t("Daily") }: {modelUsage.token_fequencies.daily.input}</td>
-                      <td className="mr-3">{ t("Weekly") }: {modelUsage.token_fequencies.weekly.input}</td>
-                      <td className="mr-3">{ t("Monthly") }: {modelUsage.token_fequencies.monthly.input}</td>
+                      <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.input}</td>
+                      <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.input}</td>
+                      <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.input}</td>
                     </tr>
                     <tr>
                       <td className="mr-3">{ t("Output") }</td>
-                      <td className="mr-3">{ t("Daily") }: {modelUsage.token_fequencies.daily.output}</td>
-                      <td className="mr-3">{ t("Weekly") }: {modelUsage.token_fequencies.weekly.output}</td>
-                      <td className="mr-3">{ t("Monthly") }: {modelUsage.token_fequencies.monthly.output}</td>
+                      <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.output}</td>
+                      <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.output}</td>
+                      <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.output}</td>
                     </tr>
                   </tbody>
                 </table>
               </React.Fragment>
             ))}
             <div className="mt-3">
-              {usage.use_count_fequencies.daily_limit && <ProgressBar label={ t("Daily usage") } 
-                progress={usage.use_count_fequencies.daily} progressMax={usage.use_count_fequencies.daily_limit} />}
-              {usage.use_count_fequencies.weekly_limit && <ProgressBar label={ t("Weekly usage") } 
-                progress={usage.use_count_fequencies.weekly} progressMax={usage.use_count_fequencies.weekly_limit} />}
-              {usage.use_count_fequencies.monthly_limit && <ProgressBar label={ t("Monthly usage") } 
-                progress={usage.use_count_fequencies.monthly} progressMax={usage.use_count_fequencies.monthly_limit} />}
-              {usage.use_count_fequencies.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
+              {usage.use_count_frequencies.daily_limit && <ProgressBar label={ t("Daily usage") } 
+                progress={usage.use_count_frequencies.daily} progressMax={usage.use_count_frequencies.daily_limit} />}
+              {usage.use_count_frequencies.weekly_limit && <ProgressBar label={ t("Weekly usage") } 
+                progress={usage.use_count_frequencies.weekly} progressMax={usage.use_count_frequencies.weekly_limit} />}
+              {usage.use_count_frequencies.monthly_limit && <ProgressBar label={ t("Monthly usage") } 
+                progress={usage.use_count_frequencies.monthly} progressMax={usage.use_count_frequencies.monthly_limit} />}
+              {usage.use_count_frequencies.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
             </div>
             {getRoleLevel(user.role) >= 2 && <div className="mt-3">
               <div>- { t("File Storage Usage") }</div>

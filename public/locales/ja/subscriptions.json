@@ -1,6 +1,6 @@
 {
   "User information not found. Please login with command `:login [username] [password]`.": "ログイン情報が見つかりませんでした。コマンド `:login [username] [password]` でログインしてください。",
-  "Subcription Status": "サブスクリプションの状況",
+  "Subscription Status": "サブスクリプションの状況",
   "User": "ユーザー",
   "Email": "メール",
   "Subscription": "サブスクリプション",
@@ -19,7 +19,7 @@
   "Payment methods": "支払い方法",
   "Paypal or Credit Card": "ペイパルまたはクレジットカード",
   "Your payment will be securely handled through the banking system; we do not store or collect your payment details.": "お客様の支払いは銀行システムを通じて安全に処理されます。私たちはお客様の支払い情報を保存または収集しません。",
-  "Subcriptions": "サブスクリプション",
+  "Subscriptions": "サブスクリプション",
   "Upgrade to": "アップグレード：",
   "Downgrade to": "ダウングレード：",
   "Roles": "役割",

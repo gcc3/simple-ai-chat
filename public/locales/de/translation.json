@@ -2,7 +2,7 @@
   "hello": "Hallo Welt!",
   "Documentation": "Dokumentation",
   "Usage": "Verbrauch",
-  "Subcriptions": "Abonnements",
+  "Subscriptions": "Abonnements",
   "Privacy Policy": "Datenschutzrichtlinie",
   "quick_start_8": "Um das Thema zu ändern, verwenden Sie `:theme [light|dark|terminal]`.🌈",
   "quick_start_3": "Wenn Sie Ihr Passwort vergessen haben, setzen Sie es mit dem Befehl `:user reset pass [Benutzername] [E-Mail]` zurück.🆘",

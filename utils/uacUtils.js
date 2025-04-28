@@ -49,9 +49,9 @@ export async function getUacResult(user, ip) {
 
   // Check usage exceeded or not
   if (isLogin) {
-    // Check fequencies
-    const fequenciesExceeded = await checkFequenciesExceeded(user);
-    if (fequenciesExceeded) {
+    // Check frequencies
+    const frequenciesExceeded = await checkFrequenciesExceeded(user);
+    if (frequenciesExceeded) {
       return {
         success: false,
         error: "Your usage frequency has exceeded the limit. You can upgrade your subscription to increase the limit.",
@@ -74,7 +74,7 @@ export async function getUacResult(user, ip) {
   };
 }
 
-async function checkFequenciesExceeded(user) {
+async function checkFrequenciesExceeded(user) {
   if (user.role == "root_user") {
     return false;
   }

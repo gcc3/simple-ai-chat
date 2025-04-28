@@ -114,7 +114,7 @@ function Subscription() {
     <>
       {!user && <div>{ t("User information not found. Please login with command `:login [username] [password]`.") }</div>}
       {user && <div>
-        <div>- { t("Subcription Status") }</div>
+        <div>- { t("Subscription Status") }</div>
         <div className="mt-1">{ t("User") }: {user.username}</div>
         <div>{ t("Email") }: {user.email}</div>
         <div>{ t("Subscription") }: `{user.role}`</div>
@@ -188,7 +188,7 @@ function Subscription() {
   return (
     <div className="Subcription">
       <div className="text-center mb-4">
-        <div>{ t("Subcriptions") }</div>
+        <div>{ t("Subscriptions") }</div>
       </div>
       {loading ? <div>{t("Loading...")}</div> : <div>{content}</div>}
     </div>

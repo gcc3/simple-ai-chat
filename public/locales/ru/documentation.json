@@ -28,7 +28,7 @@
   "Location-based query": "Запрос на основе местоположения",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "Запрашивание на основе информации о географическом положении пользователя. Например, отвечать на вопрос `Какая сегодня погода?`, автоматически получая данные о местоположении. Чтобы использовать функцию геолокации, используйте команду `:location on`.",
   "Code highlighting": "Подсветка кода",
-  "Code highting for different themes, support all programming languages.": "Подсветка кода для различных тем, поддержка всех языков программирования.",
+  "Code highlighting for different themes, support all programming languages.": "Подсветка кода для различных тем, поддержка всех языков программирования.",
   "Mathematical Equation": "Математическое уравнение",
   "Supports the display of mathematical equations in LaTeX format in the results. When user copy the text in equation, the original LaTeX will be copied.": "Поддерживает отображение математических уравнений в формате LaTeX в результатах. При копировании пользователем текста в уравнении будет скопирован исходный LaTeX.",
   "Shortcuts": "Ярлыки",
