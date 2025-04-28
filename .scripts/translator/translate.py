@@ -153,10 +153,10 @@ def main(test):
     # Loop all translation files for all languages and all existing keys, check is ther any extra keys
     print("Checking is there extra keys in translation files...")
     extra_keys_count = 0
-    for lang_code, lang_name in languages.items():
+    for target_lang_code, lang_name in languages.items():
         for trasnlation_file in translation_files:
             with open(
-                os.path.join(base_path, lang_code, trasnlation_file + ".json"),
+                os.path.join(base_path, target_lang_code, trasnlation_file + ".json"),
                 "r",
                 encoding="utf-8",
             ) as file:
@@ -164,8 +164,11 @@ def main(test):
             keyset = keysets.get(trasnlation_file, set())
             for key in target_data.keys():
                 if key not in keyset:
-                    print(f"Extra key: {lang_code},{trasnlation_file},{key}", end="")
-                    remove_key(trasnlation_file, key, lang_code)
+                    print(
+                        f"Extra key: {target_lang_code},{trasnlation_file},{key}",
+                        end="",
+                    )
+                    remove_key(trasnlation_file, key, target_lang_code)
                     extra_keys_count += 1
                     print(" ...removed.")
     if extra_keys_count == 0:
@@ -184,36 +187,38 @@ def main(test):
             source_data[file_name] = json.load(file)
 
     # Translate and update each target language file with translated values from the source language file
-    for lang_code, lang_name in languages.items():
-        if lang_code == source_language_code:
+    for target_lang_code, lang_name in languages.items():
+        if target_lang_code == source_language_code:
             continue  # Skip the source language
 
-        for file_name, new_keyset in new_keysets.items():
-            target_file_path = os.path.join(base_path, lang_code, file_name + ".json")
+        for translation_file in translation_files:
+            target_file_path = os.path.join(
+                base_path, target_lang_code, translation_file + ".json"
+            )
 
             # If the target file exists, read it, otherwise create a new dictionary
             with open(target_file_path, "r", encoding="utf-8") as file:
                 target_data = json.load(file)
 
-            # Translate and update the target data
-            for key in new_keyset:
-                if key in source_data[file_name]:
-                    original_text = source_data[file_name][key]
-                    if test:
-                        print(f"{file_name}: {original_text}")
-                    else:
+            # Loop through source data and check if the keys exist in the target data
+            # If the key does not exist, add it to the target data with translated value
+            for key in source_data[translation_file]:
+                if key not in target_data:
+                    # Add the new key with the original text
+                    original_text = source_data[translation_file][key]
+                    if not test:
                         translated_text = translate(original_text, lang_name)
                         target_data[key] = translated_text
-                else:
-                    print(f"Key: `{key}` not found in source data.")
+                        print(
+                            f"Translate: {target_lang_code},{translation_file},{key} -> {translated_text}"
+                        )
+                    else:
+                        print(f"Translate: {target_lang_code},{translation_file},{key}")
 
             # Save the updated target language file
             if not test:
                 with open(target_file_path, "w", encoding="utf-8") as file:
                     json.dump(target_data, file, ensure_ascii=False, indent=2)
-                print(
-                    f"Updated file: {target_file_path} with keys translated to {lang_name}."
-                )
 
     print("---\nFinished updating JSON files.")
 
