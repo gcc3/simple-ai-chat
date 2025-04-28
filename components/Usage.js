@@ -193,9 +193,6 @@ function Usage() {
               <table className="table-fixed mt-1">
                 <tbody>
                   <tr>
-                    <td className="mr-3 mt-1">Midjourney: 0</td>
-                  </tr>
-                  <tr>
                     <td className="mr-3 mt-1">WolframAlpha: 0</td>
                   </tr>
                 </tbody>

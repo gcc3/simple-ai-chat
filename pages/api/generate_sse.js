@@ -132,7 +132,6 @@ export default async function (req, res) {
   const nodeInfo = user && await findNode(node, user.username);
 
   // Model switch
-  // For Midjourney node, use version model to input image to AI.
   const use_vision = images && images.length > 0;
   const model = use_vision ? sysconf.model_v : sysconf.model;
   const use_eval = use_eval_ && use_stats && !use_vision;

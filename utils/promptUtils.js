@@ -1,13 +1,12 @@
 import { loglist } from './logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
-import { getRole, getLastLogBySessionAndModel } from './sqliteUtils.js';
+import { getRole } from './sqliteUtils.js';
 import { getAddress } from "utils/googleMapsUtils";
 import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 import { findNode, queryNode, checkIsNodeConfigured } from "utils/nodeUtils";
 import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
-import { generateMidjourneyPrompt } from "utils/midjourneyUtils";
 import fetch from 'node-fetch';
 import { getLanguageName } from './langUtils.js';
 import { translate } from './translateUtils.js';
@@ -309,35 +308,8 @@ export async function generateMessages(use_system_role, lang,
     if (nodeInfo && nodeSettings && isNodeConfigured) {
       node_input = input;
 
-      // Midjourney
       // Override node_input
       let ar = 1;
-      if (nodeInfo.name.toLowerCase() === "midjourney") {
-        updateStatus && updateStatus("Midjourney prompt generating...");
-        console.log("Midjourney prompt generating...");
-        
-        // Get last Midjourney prompt
-        const lastMjLog = await getLastLogBySessionAndModel(session, "Midjourney");
-        const lastMjPrompt = lastMjLog ? lastMjLog.input : null;
-        if (lastMjPrompt) {
-          updateStatus && updateStatus("last Midjourney prompt: " + lastMjPrompt);
-          console.log("last Midjourney prompt: " + lastMjPrompt);
-        }
-
-        // Generate Midjourney prompt
-        const mjPrompt = await generateMidjourneyPrompt(input, lastMjPrompt);
-
-        // Get aspect ratio from the prompt
-        const arPrompt = mjPrompt.match(/--ar\s+\d+:\d+/g);
-        if (arPrompt && arPrompt.length > 0) {
-          const wh = arPrompt[0].split(" ")[1].split(":").map(x => parseInt(x));
-          ar = parseFloat((wh[0] / wh[1]).toFixed(6)).toString();
-        }
-
-        // It maybe empty, it's AI decided to put it empty, so override it anyway
-        node_input = mjPrompt;
-      }
-
       console.log("node_input: " + node_input.replace(/\n/g, " "));
 
       // Show a message for generting

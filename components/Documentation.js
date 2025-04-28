@@ -1,7 +1,6 @@
 import React from 'react';
 import { getCommands } from '/command';
 import { getFunctions } from '../function';
-import YouTube from 'react-youtube';
 import { useTranslation, Trans } from 'react-i18next';
 
 const Documentation = () => {
@@ -22,7 +21,6 @@ const Documentation = () => {
 
   const features = [
     { id: "features-gpt-textgeneration", name: t("GPT Text Generation"), description: t("Chat with the state-of-the-art GPT model powered by OpenAI.") },
-    { id: "features-imagegeneration-midjourney", name: t("Image Generation (Midjourney)"), description: t("Midjourney is the first system Node AI. It utilizes the most advanced image generation AI, the Midjourney in combination with ChatGPT prompts to generate high-quality certified images. To use turn this feature on, use command `:use \"Midjourney\"`.") },
     { id: "features-gpt-vision", name: t("GPT Vision"), description: t("Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.") },
     { id: "features-fileinput", name: t("File Input"), description: t("Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.") },
     { id: "features-roles", name: t("Roles"), description: t("Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.") },
@@ -94,7 +92,6 @@ const Documentation = () => {
           <div className="mt-2"><a href="#features"><u>{ t("Features") }</u></a></div>
           <div className="ml-3">
             <div><a href="#features-gpt-textgeneration">- <u>{ t("GPT Text Generation") }</u></a></div>
-            <div><a href="#features-imagegeneration-midjourney">- <u>{ t("Image Generation (Midjourney)") }</u></a></div>
             <div><a href="#features-gpt-vision">- <u>{ t("GPT Vision") }</u></a></div>
             <div><a href="#features-fileinput">- <u>{ t("File Input") }</u></a></div>
             <div><a href="#features-roles">- <u>{ t("Roles") }</u></a></div>
@@ -144,10 +141,6 @@ const Documentation = () => {
         <div className="mt-1">
           { t("2. Advanced Use") }<br/>
           { t("* Solve complex mathematical problems. (with WolframAlpha)") }<br/>
-          { t("* Generate high-quality images. (with Midjourney)") }<br/>
-        </div>
-        <div className="mt-1">
-          { t("3. Professional Use") }<br/>
           { t("* Link with your own data. We support link to relational database and vector database.") }<br/>
           { t("* Build to link with other AI systems, or your own APIs.") }<br/>
           <div className="ml-5">{ t("And more...") }</div>
