@@ -96,7 +96,7 @@ function Settings() {
 
     if (data.success) {
       console.log("Email subscription updated.");
-      setMessage(t(data.message));
+      setMessage(t("Email subscription updated."));
     }
   }, [user, t]);
 
