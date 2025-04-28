@@ -4,7 +4,7 @@
   "Usage": "Kullanım",
   "Subcriptions": "Abonelikler",
   "Privacy Policy": "Gizlilik Politikası",
-  "quick_start_6": "Giriş yaptıktan sonra, resim oluşturmayı etkinleştirmek için `:use \"Midjourney\"` kullanın.⛵ Gelişmiş matematiği etkinleştirmek için `:use \"WolframAlpha\"` kullanın.🏛️ İpucu: Otomatik tamamlama için `Tab` tuşunu kullanabilirsiniz.💡",
+  "quick_start_6": "Giriş yaptıktan sonra gelişmiş matematik özelliklerini etkinleştirmek için `:use \"WolframAlpha\"` komutunu kullanın.🏛️ İpucu: Otomatik tamamlama için `Tab` tuşunu kullanın.💡",
   "quick_start_3": "Şifrenizi unuttuysanız, `:user reset pass [kullanıcı adı] [e-posta]` komutunu kullanarak sıfırlayın.🆘",
   "quick_start_1": "Lütfen kullanmaya başlamadan önce `kullanıcı` olarak `:user add [kullanıcı adı] [e-posta] [şifre?]` komutu ile kayıt olun. Örneğin, `:user add john john@example.com ********`. Not: Komutunuzda köşeli parantezleri dahil etmeyin.✅",
   "quick_start_5": "Sohbet geçmişleri arasında gezinmek için `⬅️` ve `➡️` ok tuşlarını kullanın. (Veya akıllı telefonlarda sola ve sağa kaydırın.📱) Oturumlar arasında gezinmek için `⬆️` ve `⬇️` ok tuşlarını kullanın.",

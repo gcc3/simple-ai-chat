@@ -4,7 +4,7 @@
   "Usage": "Utilisation",
   "Subcriptions": "Abonnements",
   "Privacy Policy": "Politique de Confidentialité",
-  "quick_start_6": "Après vous être connecté, utilisez `:use \"Midjourney\"` pour activer la génération d'images.⛵ Utilisez `:use \"WolframAlpha\"` pour activer les mathématiques avancées.🏛️ Astuces : vous pouvez utiliser la touche `Tab` pour l'autocomplétion.💡",
+  "quick_start_6": "Après vous être connecté, utilisez `:use \"WolframAlpha\"` pour activer les mathématiques avancées.🏛️ Conseils : utilisez la touche `Tab` pour l'auto-complétion.💡",
   "quick_start_3": "Si vous avez oublié votre mot de passe, réinitialisez-le en utilisant la commande `:user reset pass [username] [email]`.🆘",
   "quick_start_1": "Avant de commencer à utiliser, veuillez vous inscrire en tant que `utilisateur` avec la commande `:user add [nom d'utilisateur] [email] [mot de passe?]`. Par exemple, `:user add john john@example.com ********`. Remarque : N'incluez pas les crochets dans votre commande.✅",
   "quick_start_5": "Pour naviguer entre les historiques de chat, utilisez les touches fléchées `⬅️` et `➡️`. (Ou balayez vers la gauche et la droite sur les smartphones.📱) Pour naviguer entre les `sessions`, utilisez les touches fléchées `⬆️` et `⬇️`.",
