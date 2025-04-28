@@ -13,5 +13,10 @@
   "quick_start_2": "로그인하려면 `:login [username] [password]` 명령을 사용하세요.",
   "quick_start_7": "전체 화면으로 전환하려면 `F11`을(맥OS의 경우 ⌃F11) 사용하세요. 분할 화면의 경우 `Ctrl+|`을 사용하세요.🖥️",
   "quick_start_4": "문서에 접근하고 사용량을 확인하려면 화면 구석의 점(•)을 클릭하세요.📄",
-  "Settings": "설정"
+  "Settings": "설정",
+  "github_issues": "GitHub 이슈(<1><2>링크</2></1>)를 방문하여 겪고 있는 문제를 보고하거나, 아이디어를 공유하거나, 프로젝트에 기여할 수 있습니다.",
+  "discord_server": "다른 사용자들과 토론할 수 있는 우리의 Discord 서버에 참여할 수 있습니다 (<1><2>링크</2></1>).",
+  "email_support": "이메일 `<1><2>support@simple-ai.io</2></1>`을 통해 문의하실 수 있습니다.",
+  "email_support_privacy_policy": "이 개인정보 보호정책에 대해 궁금한 점이나 우려사항이 있으시면 `<1><2>support@simple-ai.io</2></1>`로 문의해 주세요.",
+  "email_support_subscriptions": "* 기업 사용을 위해서는 `<1><2>support@simple-ai.io</2></1>`로 문의해 주세요."
 }

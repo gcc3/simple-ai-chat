@@ -13,5 +13,10 @@
   "quick_start_2": "要登录，请使用命令 `:login [username] [password]`。",
   "quick_start_7": "切换到全屏请按 `F11`（macOS 系统为 ⌃F11）。分屏使用 `Ctrl+|`。🖥️",
   "quick_start_4": "要访问文档并确认使用情况，请点击屏幕角落的圆点（•）。📄",
-  "Settings": "设置"
+  "Settings": "设置",
+  "github_issues": "您可以访问我们的 GitHub 问题（<1><2>链接</2></1>）来报告您遇到的任何问题，分享您的想法，或为项目做出贡献。",
+  "discord_server": "您可以加入我们的Discord服务器（<1><2>链接</2></1>）与其他用户进行讨论。",
+  "email_support": "您可以通过电子邮件与我们联系 `<1><2>support@simple-ai.io</2></1>`。",
+  "email_support_privacy_policy": "如果您对本隐私政策有任何疑问或担忧，请通过`<1><2>support@simple-ai.io</2></1>`与我们联系。",
+  "email_support_subscriptions": "如需企业使用，请通过 `<1><2>support@simple-ai.io</2></1>` 与我们联系。"
 }

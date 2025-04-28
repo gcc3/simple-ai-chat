@@ -13,5 +13,10 @@
   "quick_start_2": "Giriş yapmak için `:login [kullanıcı adı] [şifre]` komutunu kullanın.",
   "quick_start_7": "Tam ekrana geçmek için `F11` (macOS için ⌃F11) tuşlarını kullanın. Bölünmüş ekran için `Ctrl+|` kullanın.🖥️",
   "quick_start_4": "Dokümantasyona erişmek ve kullanımı onaylamak için ekran köşesindeki noktaya (•) tıklayın.📄",
-  "Settings": "Ayarlar"
+  "Settings": "Ayarlar",
+  "github_issues": "Karşılaştığınız sorunları bildirmek, fikirlerinizi paylaşmak veya projeye katkıda bulunmak için GitHub sorunlarımızı (<1><2>bağlantı</2></1>) ziyaret edebilirsiniz.",
+  "discord_server": "Diğer kullanıcılarla tartışmak için Discord sunucumuza (<1><2>bağlantı</2></1>) katılabilirsiniz.",
+  "email_support": "Bize e-posta yoluyla `<1><2>support@simple-ai.io</2></1>` adresinden ulaşabilirsiniz.",
+  "email_support_privacy_policy": "Bu gizlilik politikası hakkında herhangi bir sorunuz veya endişeniz varsa, lütfen `<1><2>support@simple-ai.io</2></1>` adresinden bizimle iletişime geçin.",
+  "email_support_subscriptions": "* Kurumsal kullanım için lütfen `<1><2>support@simple-ai.io</2></1>` adresinden bizimle iletişime geçin."
 }

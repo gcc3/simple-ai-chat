@@ -93,7 +93,7 @@ translation_files = [
     "privacy_policy",
     "settings",
     "subscriptions",
-    # "translation", # Ignore this file as it will be updated manually
+    "translation",
     "usage",
 ]
 
@@ -132,6 +132,10 @@ def main(test):
     print("Checking is there new keys scanned...")
     new_keys_count = 0
     for file_name, keyset in keysets.items():
+        if file_name == "translation":
+            # Skip the translation file, it will be handled manually
+            continue
+
         for key in keyset:
             if not is_key_exist(file_name, key):
                 print(f"New key: {file_name},{key}", end="")
@@ -148,21 +152,25 @@ def main(test):
     print("Checking is there extra keys in translation files...")
     extra_keys_count = 0
     for target_lang_code, lang_name in languages.items():
-        for trasnlation_file in translation_files:
+        for translation_file in translation_files:
+            if translation_file == "translation":
+                # Skip the translation file, it will be handled manually
+                continue
+
             with open(
-                os.path.join(base_path, target_lang_code, trasnlation_file + ".json"),
+                os.path.join(base_path, target_lang_code, translation_file + ".json"),
                 "r",
                 encoding="utf-8",
             ) as file:
                 target_data = json.load(file)
-            keyset = keysets.get(trasnlation_file, set())
+            keyset = keysets.get(translation_file, set())
             for key in target_data.keys():
                 if key not in keyset:
                     print(
-                        f"Extra key: {target_lang_code},{trasnlation_file},{key}",
+                        f"Extra key: {target_lang_code},{translation_file},{key}",
                         end="",
                     )
-                    remove_key(trasnlation_file, key, target_lang_code)
+                    remove_key(translation_file, key, target_lang_code)
                     extra_keys_count += 1
                     print(" ...removed.")
     if extra_keys_count == 0:
@@ -173,12 +181,12 @@ def main(test):
     # Translate new keys
     # Read the source language translation file to get the base values for translation
     source_data = {}
-    for file_name in keysets:
+    for translation_file in translation_files:
         source_file_path = os.path.join(
-            base_path, source_language_code, file_name + ".json"
+            base_path, source_language_code, translation_file + ".json"
         )
         with open(source_file_path, "r", encoding="utf-8") as file:
-            source_data[file_name] = json.load(file)
+            source_data[translation_file] = json.load(file)
 
     # Translate and update each target language file with translated values from the source language file
     for target_lang_code, lang_name in languages.items():

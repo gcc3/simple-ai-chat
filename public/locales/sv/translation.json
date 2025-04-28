@@ -13,5 +13,10 @@
   "quick_start_2": "För att logga in, använd kommandot `:login [användarnamn] [lösenord]`.",
   "quick_start_7": "Byt till helskärm med `F11` (⌃F11 för macOS). För delad skärm, använd `Ctrl+|`.🖥️",
   "quick_start_4": "För att komma åt dokumentationen och bekräfta användning, klicka på punkten (•) i skärmhörnet.📄",
-  "Settings": "Inställningar"
+  "Settings": "Inställningar",
+  "github_issues": "Du kan besöka våra GitHub-problem (<1><2>länk</2></1>) för att rapportera eventuella problem du stöter på, dela med dig av dina idéer eller bidra till projektet.",
+  "discord_server": "Du kan gå med i vår Discord-server (<1><2>länk</2></1>) för att diskutera med andra användare.",
+  "email_support": "Du kan kontakta oss via e-post `<1><2>support@simple-ai.io</2></1>`.",
+  "email_support_privacy_policy": "Om du har några frågor eller funderingar om denna integritetspolicy, vänligen kontakta oss på `<1><2>support@simple-ai.io</2></1>`.",
+  "email_support_subscriptions": "För företagsanvändning, vänligen kontakta oss på `<1><2>support@simple-ai.io</2></1>`."
 }
