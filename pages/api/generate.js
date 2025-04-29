@@ -252,7 +252,6 @@ export default async function(req, res) {
       top_p: sysconf.top_p,
       tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
       tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
-      // parallel_tool_calls: true,  // no need, by default it is true
       user: user ? user.username : null,
     });
 
