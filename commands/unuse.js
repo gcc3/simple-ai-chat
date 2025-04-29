@@ -1,6 +1,7 @@
 import { initializeMemory } from "utils/sessionUtils";
-import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils";
+import { isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils";
 import { getFunctions } from "function";
+import { updateUserSetting } from 'utils/userUtils.js';
 
 export default async function unuse(args) {
   const usage = "Usage: :unuse [function|store]\n";
