@@ -129,9 +129,6 @@ Control the custom welcome message, placeholder text and enter key text.
 * WAITING, QUERYING, GENERATING, SEARCHING  
 Indicating the message that will show when waiting and querying.  
 
-* MAX_TOKENS  
-Control the max tokens generate in the chat completion.  
-
 * USE_FUNCTION_CALLING  
 Use function calling feature, value should be `true` or `false`.  
 

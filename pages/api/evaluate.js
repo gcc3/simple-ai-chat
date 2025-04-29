@@ -1,5 +1,4 @@
 import OpenAI from "openai";
-import { getMaxTokens } from "utils/tokenUtils.js";
 import { countToken } from "utils/tokenUtils.js";
 import { getSystemConfigurations } from "utils/sysUtils.js";
 
@@ -73,7 +72,6 @@ export async function evaluate(user, input, raw_prompt, output) {
       messages: eval_message,
       temperature: sysconf.temperature,
       top_p: sysconf.top_p,
-      max_tokens: sysconf.max_tokens,
     });
 
     // Get result
