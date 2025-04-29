@@ -143,12 +143,6 @@ Get from https://products.wolframalpha.com/api
 [Simple AI Node](https://github.com/gcc3/simple-ai-node) is available to help the chat answer with data.
 To use multiple node, consider use [Simple AI Hub](https://github.com/gcc3/simple-ai-hub).  
 
-* VECTARA_API_KEY  
-The API key of the vectara, can generate from the console.  
-
-* VECTARA_CUSTOMER_ID  
-The customer ID of vectara, can get from user profile.  
-
 * DB  
 Database engline, example `DB=sqlite`.  
 Supported engine: `sqlite`.  
