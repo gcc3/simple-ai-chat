@@ -203,7 +203,7 @@ function Usage() {
           {message && <div>{message}</div>}
           {!message && <div>
             {user.role !== "root_user" && <div>
-              <div>- { t("Charge Balance") }</div>
+              <div>- { t("Add Balance") }</div>
               <div className="flex flex-wrap items-center mt-1">
                 <div>{ t("Select amount") }:</div>
                 <button className="ml-2 w-11" onClick={handleSetAmount(1)}>$1</button>
