@@ -1,4 +1,5 @@
 import { getFunctions } from "function";
+import { updateUserSetting } from 'utils/userUtils.js';
 
 export default async function function_(args) {
   const usage = "Usage: :function [ls|list]\n"
