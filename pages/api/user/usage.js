@@ -4,9 +4,6 @@ import { createToken } from 'utils/authUtils.js';
 import { getRoleFequencyLimit } from 'utils/usageUtils.js';
 import { feeCal } from "utils/usageUtils";
 import { npre } from "utils/numberUtils";
-import { getModelName } from "utils/llmUtils";
-
-const moment = require('moment');
 
 export default async function (req, res) {
   // Check method
@@ -90,7 +87,7 @@ export default async function (req, res) {
 
       // Append to model usage
       modelUsageList.push({
-        model: getModelName(model),
+        model: model,
         token: {
           this_month: tokenUsageThisMonth,
           last_month: tokenUsageLastMonth,
