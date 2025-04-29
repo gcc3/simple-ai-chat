@@ -136,7 +136,7 @@ function Usage() {
               </React.Fragment>
             ))}
             <div className="mt-2">* { t("For token pricing, refer to the OpenAI official pricing document.") } (<a href="https://openai.com/api/pricing/"><u>link</u></a>) </div>
-            <div>* { t("1% ~ 3% for maintaince service.") }</div>
+            <div>* { t("1% ~ 3% for maintenance service.") }</div>
             <div className="mt-3">- { t("Rate Limits") }</div>
             <table className="table-fixed mt-1">
               <tbody>
