@@ -3,7 +3,10 @@ Simple AI Chat
 ==============
 
 
-Simple AI Chat is a command-based AI chat application, aimed at providing users with an easy and simple AI experience. This application is deployed to [simple-ai.io](https://simple-ai.io). You can fork this code and deploy it on your machine for non-commercial use. (For details, please refer to the LICENSE file.) For bugs or suggestions, please report to the repository's GitHub Issues.  
+Simple AI Chat is a command-based AI chat application, aimed at providing users with an easy and simple AI experience.  
+This application is deployed to [simple-ai.io](https://simple-ai.io).  
+You can fork this code and deploy it on your machine for non-commercial use. (For details, please refer to the LICENSE file.)  
+For bugs or suggestions, please report to the repository's GitHub Issues.  
 
 
 Dependencies
@@ -20,18 +23,29 @@ tailwind https://tailwindcss.com/docs/
 Ollama https://ollama.com/  
 
 
-Features
---------
+Setup
+-----
 
-Refer the [Documentation](https://simple-ai.io) page.  
-Click the dot in the screen corner.  
+1. Install the requirements  
+   `$ npm install`  
+   `$ npm install next -g`  
+
+2. Create necessary files.  
+   Create `.env` from `.env.example`  
+   Create `role.csv` from `role.csv.example` (optional)  
+   `role.csv.example` is got from https://github.com/f/awesome-chatgpt-prompts  
+   * `db.sqlite` will be created automatically.  
+
+3. Build and run the app.  
+   `$ npm run build`  
+   `$ npm run dev` or `$npm start`
 
 
-Node (AI Node)
+Node (Node AI)
 --------------
 
 Simple AI is able to link to another support AI or data source.  
-The API format will use a OpenAI compitible format.  
+The API format will use an OpenAI compatible format.  
 To use AI links, set `USE_NODE_AI` to `true`.  
 
 * Request example:  
@@ -74,92 +88,30 @@ To use AI links, set `USE_NODE_AI` to `true`.
 
 * Ollama support  
 
-[Ollama](https://ollama.com/) compatible APIs are supported by Simple AI with Node feature. Both stream or non-stream mode.  
+[Ollama](https://ollama.com/) compatible APIs are supported by Simple AI with Node feature.  
 
-
-Setup
------
-
-1. Install the requirements  
-   `$ npm install`  
-   `$ npm install next -g`  
-
-2. Create necessary files.  
-   Create `.env` from `.env.example`  
-   Create `role.csv` from `role.csv.example` (optional)  
-   `role.csv.example` is got from https://github.com/f/awesome-chatgpt-prompts  
-   * `db.sqlite` will be created automatically.  
-
-3. Build and run the app.  
-   `$ npm run build`  
-   `$ npm run dev` or `$npm start`
-
-
-Limitation
-----------
-
-Limitation below is tested available.  
-
-Model: GPT-4o  
-Tokens: 123,453  
-Characters: 370358  
-Used GPT-4 [tokenizer](https://platform.openai.com/tokenizer) as GPT-4o is not available yet. 
-
-
-Coding rules
-------------
-
-For API response
-Return a RESTful API response, with correct response code.  
-If there is an error, exmple response as below:  
-
-```
-return res.status(400).json({
-   success: false,
-   error: "Error message",
-});
-```
-
-Or  
-
-```
-return res.status(400).json({
-   success: false,
-   error: error,  // If there is error handling
-});
-```
-
-If success, example response as below:
-
-```
-res.status(200).json({
-   success: true,
-   message: "Success message.",
-   some_additonal_obj,
-});
-```
 
 .env
 ----
 
 * NODE_ENV  
-For development environment use `development`.
-For production environment use `production`.
+For development environment use `development`.  
+For production environment use `production`.  
 
 * NEXT_PUBLIC_BASE_URL  
 Fill in the base URL, for example: `http://localhost:3000`  
 
 * ROOT_PASS  
-System root password, will be set when database initialized.
+System root password, will be set when database initialized.  
 
 * OPENAI_API_KEY  
 Get from https://platform.openai.com/account/api-keys  
 
 * MODEL  
-`gpt-4`, `gpt-3.5-turbo`, etc...
+`gpt-4`, `gpt-3.5-turbo`, etc...  
 
 * MODEL_V  
-Vision models.  
+Vision models, `gpt-4o`, etc...  
 
 * TEMPERATURE  
 What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random  
@@ -168,16 +120,13 @@ lower values like 0.2 will make it more focused and deterministic.
 * TOP_P  
 Range 0 ~ 1, 0.1 means only the tokens comprising the top 10% probability mass are considered.  
 
-* N  
-How many completions to generate for each prompt.
-
 * ROLE_CONTENT_SYSTEM  
-Set the role system's content to role play.  
+Set the system prompt.  
 
-* INIT_PLACEHOLDER and ENTER  
-Control the default placeholder text and enter key text.  
+* WELCOME_MESSAGE, INIT_PLACEHOLDER and ENTER  
+Control the custom welcome message, placeholder text and enter key text.  
 
-* WAITING and QUERYING  
+* WAITING, QUERYING, GENERATING, SEARCHING  
 Indicating the message that will show when waiting and querying.  
 
 * MAX_TOKENS  
@@ -246,9 +195,6 @@ Use for detect accurate address.
 For minimalist, a more simple UI.  
 The value should be `true` or `false`.  
 
-* WELCOME_MESSAGE  
-Set a custom welcome message.  
-
 * IPINFO_TOKEN  
 IP info (`ipinfo.io`) is used for getting country from IP.   
 Use IP info is for enable or disable the IP support, the value should be `true` or `false`.  
@@ -263,5 +209,11 @@ VECTARA_CLIENT_ID
 VECTARA_CLIENT_SECRET  
 DOCUMENT_CORPUS_ID  
 Default vectara database settings, and documentation corpus ID.   
+
+* USE_USER_ACCOUNTS  
+Enable user accounts, the value should be `true` or `false`.  
+
+* DEFAULT_FUNCTIONS, DEFAULT_ROLE, DEFAULT_STORES, DEFAULT_NODE  
+Default functions, role, stores and node.
 
 _Originally Forked from https://github.com/openai/openai-quickstart-node_  
