@@ -36,7 +36,7 @@ export async function translate(input, target_language_name) {
       model: "gpt-4-1106-preview",
       response_format: { type: "json_object" },
       messages: messages,
-      temperature: 0.8,
+      temperature: 1,
       top_p: 1,
     });
 

@@ -126,7 +126,6 @@ export default async function(req, res) {
     + "temperature: " + sysconf.temperature + "\n"
     + "top_p: " + sysconf.top_p + "\n"
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
-    + "max_tokens: " + sysconf.max_tokens + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + sysconf.use_function_calling + "\n"

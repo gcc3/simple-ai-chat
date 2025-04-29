@@ -1,5 +1,3 @@
-import { getMaxTokens } from "utils/tokenUtils";
-
 export function getSystemConfigurations() {
   const model = process.env.MODEL ? process.env.MODEL : "";
   const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
@@ -13,7 +11,6 @@ export function getSystemConfigurations() {
   const enter = process.env.ENTER ? process.env.ENTER : "";
   const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
   const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
-  const max_tokens = process.env.MAX_TOKENS ? Number(process.env.MAX_TOKENS) : getMaxTokens(model);
   const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
   const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
   const use_user_accounts = process.env.USE_USER_ACCOUNTS == "true" ? true : false;
@@ -39,7 +36,6 @@ export function getSystemConfigurations() {
     enter: enter,
     temperature: temperature,
     top_p: top_p,
-    max_tokens: max_tokens,
     use_function_calling: use_function_calling,
     use_node_ai: use_node_ai,
     use_user_accounts: use_user_accounts,

@@ -21,7 +21,6 @@ export default async function (req, res) {
         enter: sysconf.enter,
         temperature: sysconf.temperature,
         top_p: sysconf.top_p,
-        max_tokens: sysconf.max_tokens,
         use_function_calling: sysconf.use_function_calling,
         use_node_ai: sysconf.use_node_ai,
         use_payment: sysconf.use_payment,

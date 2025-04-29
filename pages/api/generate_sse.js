@@ -4,7 +4,7 @@ import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils";
 import { evaluate } from './evaluate';
 import { executeFunctions, getTools } from "function.js";
-import { countToken, getMaxTokens } from "utils/tokenUtils";
+import { countToken } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
@@ -170,7 +170,6 @@ export default async function (req, res) {
     + "temperature: " + sysconf.temperature + "\n"
     + "top_p: " + sysconf.top_p + "\n"
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
-    + "max_tokens: " + sysconf.max_tokens + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + sysconf.use_function_calling + "\n"
@@ -321,15 +320,11 @@ export default async function (req, res) {
       model,
       frequency_penalty: 0,
       logit_bias: null,
-      logprobs: null,
-      top_logprobs: null,
-      max_tokens: sysconf.max_tokens,
       n: 1,
       presence_penalty: 0,
       response_format: null,
       seed: null,
       service_tier: null,
-      stop: "###STOP###",
       stream: true,
       stream_options: null,
       temperature: sysconf.temperature,
