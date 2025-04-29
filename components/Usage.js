@@ -117,12 +117,12 @@ function Usage() {
                 <table className="table-fixed mt-1">
                   <tbody>
                     <tr>
-                      <td className="mr-3">{ t("Input") }</td>
+                      <td className="mr-3">{ t("Input Tokens") }</td>
                       <td className="mr-3">{ t("This Month") }: {modelUsage.token.this_month.input}</td>
                       <td className="mr-3">{ t("Last Month") }: {modelUsage.token.last_month.input}</td>
                     </tr>
                     <tr>
-                      <td className="mr-3">{ t("Output") }</td>
+                      <td className="mr-3">{ t("Output Tokens") }</td>
                       <td className="mr-3">{ t("This Month") }: {modelUsage.token.this_month.output}</td>
                       <td className="mr-3">{ t("Last Month") }: {modelUsage.token.last_month.output}</td>
                     </tr>
@@ -135,9 +135,9 @@ function Usage() {
                 </table>
               </React.Fragment>
             ))}
-            <div className="mt-2">* { t("For token pricing, refer to the OpenAI official pricing document.") } (<a href="https://openai.com/pricing#language-models"><u>link</u></a>) </div>
+            <div className="mt-2">* { t("For token pricing, refer to the OpenAI official pricing document.") } (<a href="https://openai.com/api/pricing/"><u>link</u></a>) </div>
             <div>* { t("1% ~ 3% for maintaince service.") }</div>
-            <div className="mt-3">- { t("Frequencies") }</div>
+            <div className="mt-3">- { t("Rate Limits") }</div>
             <table className="table-fixed mt-1">
               <tbody>
                 <tr>
@@ -154,13 +154,13 @@ function Usage() {
                 <table className="table-fixed mt-1">
                   <tbody>
                     <tr>
-                      <td className="mr-3">{ t("Input") }</td>
+                      <td className="mr-3">{ t("Input Tokens") }</td>
                       <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.input}</td>
                       <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.input}</td>
                       <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.input}</td>
                     </tr>
                     <tr>
-                      <td className="mr-3">{ t("Output") }</td>
+                      <td className="mr-3">{ t("Output Tokens") }</td>
                       <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.output}</td>
                       <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.output}</td>
                       <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.output}</td>
@@ -178,16 +178,6 @@ function Usage() {
                 progress={usage.use_count_frequencies.monthly} progressMax={usage.use_count_frequencies.monthly_limit} />}
               {usage.use_count_frequencies.exceeded === true && <div className="mt-2">The usage limitation has been reached.</div>}
             </div>
-            {getRoleLevel(user.role) >= 2 && <div className="mt-3">
-              <div>- { t("File Storage Usage") }</div>
-              <table className="table-fixed mt-1">
-                <tbody>
-                  <tr>
-                    <td className="mr-3 mt-1">{ t("Size") }: 0MB</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>}
             {getRoleLevel(user.role) >= 3 && <div className="mt-3">
               <div>- { t("Services Usage") }</div>
               <table className="table-fixed mt-1">
@@ -213,7 +203,7 @@ function Usage() {
           {message && <div>{message}</div>}
           {!message && <div>
             {user.role !== "root_user" && <div>
-              <div>- { t("Add Balance") }</div>
+              <div>- { t("Charge Balance") }</div>
               <div className="flex flex-wrap items-center mt-1">
                 <div>{ t("Select amount") }:</div>
                 <button className="ml-2 w-11" onClick={handleSetAmount(1)}>$1</button>

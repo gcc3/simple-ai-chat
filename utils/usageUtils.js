@@ -15,6 +15,31 @@ export function feeCal(model, input_token_ct, output_token_ct) {
     output_pricing = 0.0000006;
   }
 
+  if (model === "o3") {
+    input_pricing = 0.00001;
+    output_pricing = 0.00004;
+  }
+  
+  if (model === "o4-mini") {
+    input_pricing = 0.0000011;
+    output_pricing = 0.0000044;
+  }
+  
+  if (model === "gpt-4.1") {
+    input_pricing = 0.000002;
+    output_pricing = 0.000008;
+  }
+  
+  if (model === "gpt-4.1-mini") {
+    input_pricing = 0.0000004;
+    output_pricing = 0.0000016;
+  }
+  
+  if (model === "gpt-4.1-nano") {
+    input_pricing = 0.0000001;
+    output_pricing = 0.0000004;
+  }
+
   const fee = input_token_ct * input_pricing + output_token_ct * output_pricing;
   return npre(fee); // Rounds to 5 decimal places
 }
