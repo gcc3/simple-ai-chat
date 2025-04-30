@@ -396,7 +396,7 @@ export default function Home() {
         if (sessionStorage.getItem("stores") === null) sessionStorage.setItem("stores", systemInfo.default_stores);  // default store
         if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", systemInfo.default_node);    // default node
         if (sessionStorage.getItem("model") === null) sessionStorage.setItem("model", systemInfo.model);  // default mode
-        if (sessionStorage.getItem("model_v") === null) sessionStorage.setItem("model_v", systemInfo.model_v);  // default model version
+        if (sessionStorage.getItem("modelV") === null) sessionStorage.setItem("modelV", systemInfo.model_v);  // default model version
       } catch (error) {
         console.error("There was an error fetching the data:", error);
       }
@@ -419,7 +419,7 @@ export default function Home() {
 
     // Set default sessionStorage values
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
-    if (sessionStorage.getItem("useLocalModel") === null) sessionStorage.setItem("useLocalModel", false);   // use local model (for example: `ollama`)
+    if (sessionStorage.getItem("baseUrl") === null) sessionStorage.setItem("baseUrl", "");
     if (sessionStorage.getItem("useDirect") === null) sessionStorage.setItem("useDirect", false);   // use direct mode (for node)
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);  // command history index
 
@@ -1413,10 +1413,12 @@ export default function Home() {
     resetInfo();
 
     // Generation mode switch
-    if (sessionStorage.getItem("useLocalModel") == "true") {
+    if (sessionStorage.getItem("baseUrl").includes("localhost") || sessionStorage.getItem("baseUrl").includes("127.0.0.1")) {
+      // Local model
       console.log("Start. (Local)");
       generate_msg(input, image_urls, file_urls);
     } else {
+      // Server model
       if (localStorage.getItem('useStream') == "true") {
         console.log("Start. (SSE)");
         generate_sse(input, image_urls_encoded, file_urls_encoded);
@@ -1806,65 +1808,19 @@ export default function Home() {
     // Use stream
     const useStream = localStorage.getItem('useStream') === "true";
 
-    // Node info
-    const nodeName = sessionStorage.getItem("node");
-    if (!nodeName) {
-      printOutput("Error.");
-      return;
-    }
-
-    const nodeInfoResponse = await fetch("/api/node/" + nodeName, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const nodeInfoData = await nodeInfoResponse.json();
-    if (nodeInfoResponse.status !== 200) {
-      throw nodeInfoData.error || new Error(`Request failed with status ${response.status}`);
-    }
-
-    // Node info
-    const nodeInfo = nodeInfoData.result;
-    if (!nodeInfo) {
-      return "Node not found.";
-    }
-    console.log("Use node: " + JSON.stringify(nodeInfo));
-    
-    // Node settings
-    // endpoint
-    // apiKey
-    // model
-    // modelV
-    // useFunctionCalling
-    // useDirect
-    // description
-    const nodeSettings = nodeInfo.settings;
-
-    // Update useDirect
-    sessionStorage.setItem('useDirect', nodeSettings.useDirect);
-    if (nodeSettings.useDirect === "false") {
-      printOutput("Direct API request is disabled.");
-      return;
-    }
-
-    // Model
-    const use_vision = images && images.length > 0;
-    const model = use_vision ? nodeSettings.modelV : nodeSettings.model;
-
     // User
     const user = {
       username: localStorage.getItem("user")
     }
 
-    // OpenAI API
+    // Model switch
+    const use_vision = images && images.length > 0;
+    const model = use_vision ? config.model_v : config.model;
+
     const openai = new OpenAI({
-      baseURL: nodeSettings.endpoint,
-      apiKey: nodeSettings.apiKey,
+      baseURL: config.base_url,
+      apiKey: "",  // not necessary for local model, but required for OpenAI API
       dangerouslyAllowBrowser: true,
-      temperature: 0.7,
-      top_p: 1,
     });
 
     // OpenAI chat completion!
@@ -1880,10 +1836,10 @@ export default function Home() {
       service_tier: null,
       stream: useStream,
       stream_options: null,
-      temperature: nodeSettings.temperature,
-      top_p: nodeSettings.top_p,
-      tools: (nodeSettings.useFunctionCalling && tools && tools.length > 0) ? tools : null,
-      tool_choice: (nodeSettings.useFunctionCalling && tools && tools.length > 0) ? "auto" : null,
+      temperature: 1,
+      top_p: 1,
+      tools: null,  // TODO
+      tool_choice: null,  // TODO
       user: user ? user.username : null,
     });
 
@@ -1897,7 +1853,7 @@ export default function Home() {
         body: JSON.stringify({
           input,
           output,
-          model: nodeSettings.model,
+          model: model,
           session: sessionStorage.getItem("session"),
           images: [],
           time: Date.now(),
@@ -1935,7 +1891,7 @@ export default function Home() {
       // Set model
       !minimalist && setInfo((
         <div>
-          model: {nodeSettings.model}<br></br>
+          model: {model}<br></br>
         </div>
       ));
 

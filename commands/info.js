@@ -3,8 +3,8 @@ export default function info(args) {
                                         + new Date(parseInt(localStorage.getItem("_up"))).toLocaleString() + ")\n" +
                "Session ID (key: `session`): " + sessionStorage.getItem("session") + "\n" +
                "Model (key: `model`): " + sessionStorage.getItem("model") + "\n" +
-               "Model Version (key: `model_v`): " + sessionStorage.getItem("model_v") + "\n" +
-               "Local Model (key: `useLocalModel`): " + sessionStorage.getItem("useLocalModel") + "\n" +
+               "Model Version (key: `modelV`): " + sessionStorage.getItem("modelV") + "\n" +
+               "Model Base URL (key: `baseUrl`): " + (sessionStorage.getItem("baseUrl") || "___") + "\n" +
                "Timeline (key: `time`): " + sessionStorage.getItem("time") + "\n" +
                "Language (key: `lang`): " + (localStorage.getItem("lang") || "___") + "\n" +
                "Functions (key: `functions`): " + (localStorage.getItem("functions") || "___") + "\n" +
