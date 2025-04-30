@@ -395,7 +395,7 @@ export default async function(req, res) {
         stats: {
           temperature: sysconf.temperature,
           top_p: sysconf.top_p,
-          token_ct: input_token_ct,
+          token_ct: chatCompletion.usage.total_tokens,
           mem: msg.mem,
           func: functionNames.join('|'),
           role: role,
