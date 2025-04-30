@@ -143,8 +143,33 @@ const initializeDatabase = (db) => {
                                 if (err) {
                                   return reject(err);
                                 }
-        
-                                resolve();
+
+                                db.run(
+                                  `CREATE TABLE IF NOT EXISTS models (
+                                    id TEXT PRIMARY KEY,
+                                    provider TEXT NOT NULL,
+                                    name TEXT NOT NULL,
+                                    owner TEXT NOT NULL,
+                                    base_url TEXT NOT NULL,
+                                    price_input REAL,
+                                    price_output REAL,
+                                    is_vision INTEGER,
+                                    is_audio INTEGER,
+                                    is_reasoning INTEGER,
+                                    context_window INTEGER,
+                                    max_output INTEGER,
+                                    created_by TEXT NOT NULL,
+                                    created_at TEXT NOT NULL,
+                                    updated_at TEXT
+                                  );`,
+                                  (err) => {
+                                    if (err) {
+                                      return reject(err);
+                                    }
+            
+                                    resolve();
+                                  }
+                                );
                               }
                             );
                           }
