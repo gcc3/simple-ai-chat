@@ -321,7 +321,7 @@ export async function getAvailableNodesForUser(user) {
 // Settings and initial values
 export function getInitNodeSettings() {
   return {
-    "endpoint": "___",            // the full endpoint of the node, example: "http://localhost:5000/api"
+    "endpoint": "___",            // the full endpoint of the node, example: "http://localhost:5000/api/v1/"
     "apiKey": "___",              // If the API key is necessary
     "model": "___",               // One of the model of the node
     "modelV": "___",              // The version of the model

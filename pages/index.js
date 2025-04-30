@@ -395,6 +395,8 @@ export default function Home() {
         if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", systemInfo.default_role);    // default role
         if (sessionStorage.getItem("stores") === null) sessionStorage.setItem("stores", systemInfo.default_stores);  // default store
         if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", systemInfo.default_node);    // default node
+        if (sessionStorage.getItem("model") === null) sessionStorage.setItem("model", systemInfo.model);  // default mode
+        if (sessionStorage.getItem("model_v") === null) sessionStorage.setItem("model_v", systemInfo.model_v);  // default model version
       } catch (error) {
         console.error("There was an error fetching the data:", error);
       }
@@ -1450,19 +1452,21 @@ export default function Home() {
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
                                                            + "&files=" + files.join(encodeURIComponent("###"))
-                                                 /*  1 */  + "&time=" + config.time
-                                                 /*  2 */  + "&session=" + config.session
-                                                 /*  3 */  + "&mem_length=" + config.mem_length
-                                                 /*  4 */  + "&functions=" + config.functions
-                                                 /*  5 */  + "&role=" + config.role
-                                                 /*  6 */  + "&store=" + config.store
-                                                 /*  7 */  + "&node=" + config.node
-                                                 /*  8 */  + "&use_stats=" + config.use_stats
-                                                 /*  9 */  + "&use_eval=" + config.use_eval
-                                                 /* 10 */  + "&use_location=" + config.use_location
-                                                 /* 11 */  + "&location=" + config.location
-                                                 /* 12 */  + "&lang=" + config.lang
-                                                 /* 13 */  + "&use_system_role=" + config.use_system_role);
+                                                           + "&time=" + config.time
+                                                           + "&session=" + config.session
+                                                           + "&model=" + config.model
+                                                           + "&model_v=" + config.model_v
+                                                           + "&mem_length=" + config.mem_length
+                                                           + "&functions=" + config.functions
+                                                           + "&role=" + config.role
+                                                           + "&store=" + config.store
+                                                           + "&node=" + config.node
+                                                           + "&use_stats=" + config.use_stats
+                                                           + "&use_eval=" + config.use_eval
+                                                           + "&use_location=" + config.use_location
+                                                           + "&location=" + config.location
+                                                           + "&lang=" + config.lang
+                                                           + "&use_system_role=" + config.use_system_role);
 
     let done_evaluating = false;
     let toolCalls = [];
@@ -1774,19 +1778,21 @@ export default function Home() {
          user_input: input,
          images: images,
          files: files,
-/*  1 */ time: config.time,
-/*  2 */ session: config.session,
-/*  3 */ mem_length: config.mem_length,
-/*  4 */ functions: config.functions,
-/*  5 */ role: config.role,
-/*  6 */ store: config.store,
-/*  7 */ node: config.node,
-/*  8 */ use_stats: config.use_stats,
-/*  9 */ use_eval: config.use_eval,
-/* 10 */ use_location: config.use_location,
-/* 11 */ location: config.location,
-/* 12 */ lang: config.lang,
-/* 13 */ use_system_role: config.use_system_role,
+         time: config.time,
+         session: config.session,
+         model: config.model,
+         model_v: config.model_v,
+         mem_length: config.mem_length,
+         functions: config.functions,
+         role: config.role,
+         store: config.store,
+         node: config.node,
+         use_stats: config.use_stats,
+         use_eval: config.use_eval,
+         use_location: config.use_location,
+         location: config.location,
+         lang: config.lang,
+         use_system_role: config.use_system_role,
       }),
     });
 
@@ -2020,19 +2026,21 @@ export default function Home() {
           user_input: input,
           images: images,
           files: files,
- /*  1 */ time: config.time,
- /*  2 */ session: config.session,
- /*  3 */ mem_length: config.mem_length,
- /*  4 */ functions: config.functions,
- /*  5 */ role: config.role,
- /*  6 */ store: config.store,
- /*  7 */ node: config.node,
- /*  8 */ use_stats: config.use_stats,
- /*  9 */ use_eval: config.use_eval,
- /* 10 */ use_location: config.use_location,
- /* 11 */ location: config.location,
- /* 12 */ lang: config.lang,
- /* 13 */ use_system_role: config.use_system_role,
+          time: config.time,
+          session: config.session,
+          model: config.model,
+          model_v: config.model_v,
+          mem_length: config.mem_length,
+          functions: config.functions,
+          role: config.role,
+          store: config.store,
+          node: config.node,
+          use_stats: config.use_stats,
+          use_eval: config.use_eval,
+          use_location: config.use_location,
+          location: config.location,
+          lang: config.lang,
+          use_system_role: config.use_system_role,
         }),
       });
 
