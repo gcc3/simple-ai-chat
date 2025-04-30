@@ -11,7 +11,7 @@ import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
-import { getModels } from "utils/modelUtils.js";
+import { getModels } from "utils/sqliteUtils.js";
 
 // Input output type
 const TYPE = {
@@ -323,7 +323,8 @@ export default async function(req, res) {
 
     // Token
     console.log("--- token_ct ---");
-    console.log(JSON.stringify(msg.token_ct) + "\n");
+    console.log("response_token_ct: " + JSON.stringify(chatCompletion.usage) + "\n");
+    console.log("msg_token_ct: " + JSON.stringify(msg.token_ct) + "\n");
 
     // Output
     console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
