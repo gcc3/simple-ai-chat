@@ -46,8 +46,8 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     const response = await fetch("/api/node/list");
     const data = await response.json();
     if (response.status === 200 && data.success) {
-      const node = [].concat(data.result.user_nodes, data.result.group_nodes, data.result.system_nodes).flat()
-      return node.map((s) => s.name);
+      const nodes = [].concat(data.result.user_nodes, data.result.group_nodes, data.result.system_nodes).flat()
+      return nodes.map((s) => s.name);
     } else {
       return [];
     }
@@ -59,6 +59,17 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     if (response.success) {
       const nodeInfo = response.result;
       return Object.keys(nodeInfo.settings);
+    } else {
+      return [];
+    }
+  }
+
+  if (prefix === ":model " || prefix === ":model use " || prefix === ":model unuse ") {
+    const response = await fetch("/api/model/list");
+    const data = await response.json();
+    if (response.status === 200 && data.success) {
+      const models = [].concat(data.result.user_models, data.result.group_models, data.result.system_models).flat()
+      return models.map((m) => m.name);
     } else {
       return [];
     }
@@ -124,6 +135,17 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
                       .find((r) => r.role.startsWith(nameToBeComleted));
       if (role) {
         return [role.role];
+      }
+    }
+
+    // 4. Models
+    const responseModel = await fetch("/api/model/list");
+    const dataModel = await responseModel.json();
+    if (responseModel.status === 200 && dataModel.success) {
+      const model = [].concat(dataModel.result.user_models, dataModel.result.system_models).flat()
+                      .find((m) => m.model.startsWith(nameToBeComleted));
+      if (model) {
+        return [model.model];
       }
     }
   }

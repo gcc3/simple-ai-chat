@@ -2275,6 +2275,9 @@ export default function Home() {
         autocomplete(":use ", true);
         autocomplete(":unuse ", true);
         autocomplete(":voice use ", true);
+        autocomplete(":model ", true);
+        autocomplete(":model use ", true);
+        autocomplete(":model unuse ", true);
       }
     }
   };
