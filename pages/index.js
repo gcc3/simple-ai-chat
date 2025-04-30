@@ -399,7 +399,7 @@ export default function Home() {
         // Set model
         global.model = systemInfo.model;
         global.modelV = systemInfo.model_v;
-        if (sessionStorage.getItem("model") === null) sessionStorage.setItem("model", systemInfo.model);  // default mode
+        if (sessionStorage.getItem("model") === null) sessionStorage.setItem("model", systemInfo.model);  // default model
         if (sessionStorage.getItem("modelV") === null) sessionStorage.setItem("modelV", systemInfo.model_v);  // default model version
       } catch (error) {
         console.error("There was an error fetching the data:", error);
