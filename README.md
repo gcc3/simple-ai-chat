@@ -104,14 +104,15 @@ Fill in the base URL, for example: `http://localhost:3000`
 * ROOT_PASS  
 System root password, will be set when database initialized.  
 
-* OPENAI_API_KEY  
-Get from https://platform.openai.com/account/api-keys  
+* OPENAI_BASE_URL and OPENAI_API_KEY  
+Key can get from https://platform.openai.com/account/api-keys  
+Base URL by default is `https://api.openai.com/v1`.  
 
 * MODEL  
-`gpt-4`, `gpt-3.5-turbo`, etc...  
+Text generation model, `gpt-4o`, etc...  
 
 * MODEL_V  
-Vision models, `gpt-4o`, etc...  
+Vision model, `gpt-4o`, etc...  
 
 * TEMPERATURE  
 What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random  
