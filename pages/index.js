@@ -395,6 +395,10 @@ export default function Home() {
         if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", systemInfo.default_role);    // default role
         if (sessionStorage.getItem("stores") === null) sessionStorage.setItem("stores", systemInfo.default_stores);  // default store
         if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", systemInfo.default_node);    // default node
+
+        // Set model
+        global.model = systemInfo.model;
+        global.modelV = systemInfo.model_v;
         if (sessionStorage.getItem("model") === null) sessionStorage.setItem("model", systemInfo.model);  // default mode
         if (sessionStorage.getItem("modelV") === null) sessionStorage.setItem("modelV", systemInfo.model_v);  // default model version
       } catch (error) {

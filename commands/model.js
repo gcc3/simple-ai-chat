@@ -215,10 +215,10 @@ export default async function model(args) {
         return "Model `" + name + "` is not being used.";
       }
 
-      // Clear model
-      sessionStorage.setItem("model", "");
+      sessionStorage.setItem("model", global.model);  // reset model
+      sessionStorage.setItem("baseUrl", "");  // reset base url
 
-      return "Model unset.";
+      return "Model unused.";
     }
   }
 
@@ -229,11 +229,12 @@ export default async function model(args) {
       return "Model is already empty.";
     }
 
-    sessionStorage.setItem("model", "");  // reset model
+    sessionStorage.setItem("model", global.model);  // reset model
+    sessionStorage.setItem("baseUrl", "");  // reset base url
 
     // Reset session to forget previous memory
     initializeSession();
-    return "Model reset.";
+    return "Model reset, and session reset.";
   }
 
   return usage;
