@@ -321,22 +321,6 @@ export default async function(req, res) {
       }
     }
 
-    // Token
-    console.log("--- token_ct ---");
-    console.log("response_token_ct: " + JSON.stringify(chatCompletion.usage));
-    console.log("msg_token_ct: " + JSON.stringify(msg.token_ct) + "\n");
-
-    // Fee
-    console.log("--- fee_calc ---");
-    const input_fee = chatCompletion.usage.prompt_tokens * modelInfo.price_input;
-    const output_fee = chatCompletion.usage.completion_tokens * modelInfo.price_output;
-    const total_fee = input_fee + output_fee;
-    console.log("input_fee = " + chatCompletion.usage.prompt_tokens + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
-    console.log("output_fee = " + chatCompletion.usage.completion_tokens + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
-    console.log("total_fee: " + total_fee.toFixed(5));
-    addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
-    console.log("💰User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
-
     // Output
     console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log((output || "(null)") + "\n");
@@ -382,6 +366,23 @@ export default async function(req, res) {
       input += "\n\n" + msg.file_content;
     }
     await logadd(user, session, time++, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
+
+    // Token
+    console.log("--- token_ct ---");
+    console.log("input_token_ct: " + JSON.stringify(msg.token_ct));
+    console.log("output_token_ct: " + output_token_ct);
+    console.log("response_token_ct: " + JSON.stringify(chatCompletion.usage) + "\n");
+
+    // Fee
+    console.log("--- fee_calc ---");
+    const input_fee = chatCompletion.usage.prompt_tokens * modelInfo.price_input;
+    const output_fee = chatCompletion.usage.completion_tokens * modelInfo.price_output;
+    const total_fee = input_fee + output_fee;
+    console.log("input_fee = " + chatCompletion.usage.prompt_tokens + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
+    console.log("output_fee = " + chatCompletion.usage.completion_tokens + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
+    console.log("total_fee: " + total_fee.toFixed(5));
+    addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
+    console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
 
     // Result
     res.status(200).json({

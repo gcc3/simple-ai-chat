@@ -10,8 +10,9 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getModels, getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
-import { findNode } from "utils/nodeUtils";
-import { ensureSession } from "utils/logUtils";
+import { findNode } from "utils/nodeUtils.js";
+import { ensureSession } from "utils/logUtils.js";
+import { addUserUsage } from "utils/sqliteUtils.js";
 
 // Input output type
 const TYPE = {
@@ -415,10 +416,6 @@ export default async function (req, res) {
       }
     }
 
-    // Token
-    console.log("--- token_ct ---");
-    console.log(JSON.stringify(token_ct) + "\n");
-
     // Output
     console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log((output || "(null)") + "\n");
@@ -464,6 +461,22 @@ export default async function (req, res) {
       input += "\n\n" + msg.file_content;
     }
     await logadd(user, session, time++, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
+
+    // Token
+    console.log("--- token_ct ---");
+    console.log(JSON.stringify(token_ct));
+    console.log("output_token_ct: " + output_token_ct + "\n");
+
+    // Fee
+    console.log("--- fee_calc ---");
+    const input_fee = msg.token_ct.total * modelInfo.price_input;
+    const output_fee = output_token_ct * modelInfo.price_output;
+    const total_fee = input_fee + output_fee;
+    console.log("input_fee = " + msg.token_ct.total + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
+    console.log("output_fee = " + output_token_ct + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
+    console.log("total_fee: " + total_fee.toFixed(5));
+    addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
+    console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
 
     // Stats (final)
     res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${msg.mem}\n\n`);
