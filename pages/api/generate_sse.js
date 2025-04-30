@@ -311,9 +311,20 @@ export default async function (req, res) {
       return;
     }
 
+    // OpenAI API base URL check
+    const OPENAI_BASE_URL = process.env.OPENAI_BASE_URL || "";
+    if (!OPENAI_BASE_URL) {
+      updateStatus("OpenAI base URL is not set.");
+      res.write(`data: ###ERR###OpenAI base URL is not set.\n\n`);
+      res.write(`data: [DONE]\n\n`);
+      res.end();
+      return;
+    }
+
     // OpenAI
     const openai = new OpenAI({
       apiKey: OPENAI_API_KEY,
+      baseURL: OPENAI_BASE_URL,
     });
 
     // OpenAI chat completion!
