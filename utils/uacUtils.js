@@ -50,8 +50,8 @@ export async function getUacResult(user, ip) {
   // Check usage exceeded or not
   if (isLogin) {
     // Check frequencies
-    const frequenciesExceeded = await checkFrequenciesExceeded(user);
-    if (frequenciesExceeded) {
+    const isFrequenciesExceeded = await checkFrequenciesExceeded(user);
+    if (isFrequenciesExceeded) {
       return {
         success: false,
         error: "Your usage frequency has exceeded the limit. You can upgrade your subscription to increase the limit.",
@@ -59,8 +59,8 @@ export async function getUacResult(user, ip) {
     }
 
     // Check usage fee
-    const usageExceeded = await checkUsageExceeded(user);
-    if (usageExceeded) {
+    const isUsageExceeded = await checkUsageExceeded(user);
+    if (isUsageExceeded) {
       return {
         success: false,
         error: "You have exceeded your usage limit. While Simple AI offers free features, the OpenAI API and associated tokens incur costs. Please add funds to your balance to continue.",
@@ -92,13 +92,9 @@ async function checkFrequenciesExceeded(user) {
 }
 
 async function checkUsageExceeded(user) {
-  // Total fee
-  const totalFee = getTotalFee(user.username);
-
-  // Add plus system fee
-  const plusFee = plusFeeCal(user.role, totalFee);
-
-  if (totalFee + plusFee > user.balance) {
+  // Check usage fee
+  if (user.usage > user.balance) {
+    console.log("⚠️ Usage exceeded, user: " + user.name + ", usage: " + user.usage + ", balance: " + user.balance);
     // Usage exceeded
     return true;
   } else {

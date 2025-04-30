@@ -57,9 +57,6 @@ export default async function unuse(args) {
     // clear node
     sessionStorage.setItem("node", "");
 
-    // reset useDirect
-    sessionStorage.setItem("useDirect", false);
-
     // Reset session to forget previous memory
     initializeMemory();
     return "Node reset.";
