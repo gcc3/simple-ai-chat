@@ -345,6 +345,7 @@ export default async function (req, res) {
     });
 
     // OpenAI chat completion!
+    let chatCompletionUsage = { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 };
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
       model,
@@ -356,7 +357,9 @@ export default async function (req, res) {
       seed: null,
       service_tier: null,
       stream: true,
-      stream_options: null,
+      stream_options: {
+        include_usage: true,
+      },
       temperature: sysconf.temperature,
       top_p: sysconf.top_p,
       tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
@@ -375,29 +378,36 @@ export default async function (req, res) {
 
     // Hanldle output
     for await (const part of chatCompletion) {
-      // 1. handle message output
-      const content = part.choices[0].delta.content;
-      if (content) {
-        outputType = TYPE.NORMAL;
-        output += content;
-        streamOutput(content);
+      if (part.choices.length > 0) {
+        // 1. handle message output
+        const content = part.choices[0].delta.content;
+        if (content) {
+          outputType = TYPE.NORMAL;
+          output += content;
+          streamOutput(content);
+        }
+
+        // 2. handle tool calls output
+        const tool_calls = part.choices[0].delta.tool_calls;
+        if (tool_calls) {
+          outputType = TYPE.TOOL_CALL;
+          res.write(`data: ###CALL###${JSON.stringify(tool_calls)}\n\n`); res.flush();
+
+          const toolCall = tool_calls[0];
+          const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
+          if (toolCallSameIndex) {
+            // Found same index tool
+            toolCallSameIndex.function.arguments += toolCall.function.arguments;
+          } else {
+            // If not found, add the tool
+            toolCalls.push(toolCall);
+          }
+        }
       }
 
-      // 2. handle tool calls output
-      const tool_calls = part.choices[0].delta.tool_calls;
-      if (tool_calls) {
-        outputType = TYPE.TOOL_CALL;
-        res.write(`data: ###CALL###${JSON.stringify(tool_calls)}\n\n`); res.flush();
-
-        const toolCall = tool_calls[0];
-        const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
-        if (toolCallSameIndex) {
-          // Found same index tool
-          toolCallSameIndex.function.arguments += toolCall.function.arguments;
-        } else {
-          // If not found, add the tool
-          toolCalls.push(toolCall);
-        }
+      // For the last part, it will include the usage
+      if (part.usage) {
+        chatCompletionUsage = part.usage;
       }
     }
 
@@ -460,26 +470,29 @@ export default async function (req, res) {
     if (files.length > 0 && msg.file_content) {
       input += "\n\n" + msg.file_content;
     }
-    await logadd(user, session, time++, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
 
     // Token
     console.log("--- token_ct ---");
     console.log(JSON.stringify(token_ct));
-    console.log("output_token_ct: " + output_token_ct + "\n");
+    console.log("output_token_ct: " + output_token_ct);
+    console.log("response_token_ct: " + JSON.stringify(chatCompletionUsage) + "\n");
 
     // Fee
     console.log("--- fee_calc ---");
-    const input_fee = msg.token_ct.total * modelInfo.price_input;
-    const output_fee = output_token_ct * modelInfo.price_output;
+    const input_fee = chatCompletionUsage.prompt_tokens * modelInfo.price_input;
+    const output_fee = chatCompletionUsage.completion_tokens * modelInfo.price_output;
     const total_fee = input_fee + output_fee;
-    console.log("input_fee = " + msg.token_ct.total + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
-    console.log("output_fee = " + output_token_ct + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
+    console.log("input_fee = " + chatCompletionUsage.prompt_tokens + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
+    console.log("output_fee = " + chatCompletionUsage.completion_tokens + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
     console.log("total_fee: " + total_fee.toFixed(5));
     await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
-    console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
+    console.log("💰 User usage added (SSE), user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
+
+    // Log
+    await logadd(user, session, time++, model, chatCompletionUsage.prompt_tokens, input, chatCompletionUsage.completion_tokens, output, JSON.stringify(input_images), ip, browser);
 
     // Stats (final)
-    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${msg.mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${chatCompletionUsage.total_tokens},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${msg.mem}\n\n`);
     
     // Done message
     updateStatus("Finished.");
