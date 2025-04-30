@@ -48,8 +48,8 @@ export default function set(args) {
     case "model":
       sessionStorage.setItem("model", value);
       break;
-    case "modelV":
-      sessionStorage.setItem("modelV", value);
+    case "modelv":
+      sessionStorage.setItem("modelv", value);
       break;
     case "time":
       if (isNaN(value)) {
