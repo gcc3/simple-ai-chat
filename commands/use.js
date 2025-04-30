@@ -20,6 +20,19 @@ export default async function use(args) {
     return "Invalid name.";
   }
 
+  // Find model
+  const modelInfo = await findModel(name);
+  if (modelInfo) {
+    if (!localStorage.getItem("user")) {
+      return "Please login.";
+    }
+
+    // Set model
+    sessionStorage.setItem("model", name);
+
+    return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
+  }
+
   // Find function
   const functions = getFunctions();
   const function_ = functions.find((f) => f.name === name || f.friendly_name === name);
@@ -84,6 +97,31 @@ export default async function use(args) {
   }
 
   return "Resource not found.";
+}
+
+async function findModel(modelName) {
+  // Check if the model exists
+  try {
+    const response = await fetch("/api/model/" + modelName, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (response.status !== 200) {
+      throw data.error || new Error(`Request failed with status ${response.status}`);
+    }
+
+    // Model info
+    const modelInfo = data.result;
+    return modelInfo;
+  }
+  catch (error) {
+    console.error(error);
+    return false;
+  }
 }
 
 async function findNode(nodeName) {

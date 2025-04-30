@@ -30,6 +30,7 @@ export default async function (req, res) {
           provider:        model.provider,
           owner:           model.owner,
           base_url:        model.base_url,
+          api_key:         "***",
           price_input:     model.price_input,
           price_output:    model.price_output,
           is_vision:       model.is_vision,

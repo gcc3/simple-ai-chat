@@ -29,6 +29,26 @@ export default async function(req, res) {
       systemModels.push(...await getUserModels('root'));
     }
 
+    // Hide the API key
+    userModels = userModels.map(model => {
+      return {
+        ...model,
+        api_key: "***",
+      };
+    });
+    groupModels = groupModels.map(model => {
+      return {
+        ...model,
+        api_key: "***",
+      };
+    });
+    systemModels = systemModels.map(model => {
+      return {
+        ...model,
+        api_key: "***",
+      };
+    });
+
     // Output the result
     res.status(200).json({
       success: true,

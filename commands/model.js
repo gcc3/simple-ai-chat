@@ -173,15 +173,15 @@ export default async function model(args) {
       return "Model name must be quoted with double quotes.";
     }
 
-    const modelName = args[1].slice(1, -1);
-    if (!modelName) {
+    const name = args[1].slice(1, -1);
+    if (!name) {
       return "Invalid model name.";
     }
 
     if (args[0] === "use") {
       // Check if the model exists
       try {
-        const response = await fetch("/api/model/" + modelName, {
+        const response = await fetch("/api/model/" + name, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -200,7 +200,7 @@ export default async function model(args) {
         }
         
         // Set model
-        sessionStorage.setItem("model", modelName);
+        sessionStorage.setItem("model", name);
 
         if (!modelInfo) {
           return "Model not found.";
@@ -210,12 +210,12 @@ export default async function model(args) {
         return error;
       }
 
-      return "Model is set to \`" + modelName + "\`. Command \`:model\` shows current model information.";
+      return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
     }
 
     if (args[0] === "unuse") {
-      if (sessionStorage.getItem("model") !== modelName) {
-        return "Model `" + modelName + "` is not being used.";
+      if (sessionStorage.getItem("model") !== name) {
+        return "Model `" + name + "` is not being used.";
       }
 
       // Clear model

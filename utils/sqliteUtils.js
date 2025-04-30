@@ -150,6 +150,7 @@ const initializeDatabase = (db) => {
                                     name TEXT NOT NULL,
                                     owner TEXT NOT NULL,
                                     base_url TEXT NOT NULL,
+                                    api_key TEXT NOT NULL,
                                     price_input REAL,
                                     price_output REAL,
                                     is_vision TEXT NOT NULL,
@@ -1682,6 +1683,24 @@ const getModel = async (name, user) => {
   }
 };
 
+// Get models
+const getModels = async () => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM models`, [], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+// Get user models
 const getUserModels = async (user) => {
   const db = await getDatabaseConnection();
   try {
@@ -1768,5 +1787,6 @@ export {
   getNextSession,
   insertSession,
   getModel,
+  getModels,
   getUserModels,
 };

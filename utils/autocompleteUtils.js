@@ -142,10 +142,10 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     const responseModel = await fetch("/api/model/list");
     const dataModel = await responseModel.json();
     if (responseModel.status === 200 && dataModel.success) {
-      const model = [].concat(dataModel.result.user_models, dataModel.result.system_models).flat()
-                      .find((m) => m.model.startsWith(nameToBeComleted));
+      const model = [].concat(dataModel.result.user_models, dataModel.result.group_models, dataModel.result.system_models).flat()
+                      .find((m) => m.name.startsWith(nameToBeComleted));
       if (model) {
-        return [model.model];
+        return [model.name];
       }
     }
   }

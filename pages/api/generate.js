@@ -11,6 +11,7 @@ import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
+import { getModels } from "utils/modelUtils.js";
 
 // Input output type
 const TYPE = {
@@ -20,6 +21,9 @@ const TYPE = {
 
 // System configurations
 const sysconf = getSystemConfigurations();
+
+// Models
+const models = await getModels();
 
 export default async function(req, res) {
   // Input
@@ -225,22 +229,30 @@ export default async function(req, res) {
     console.log("--- messages ---");
     console.log(JSON.stringify(msg.messages) + "\n");
 
-    // OpenAI API key check
-    const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-    if (!OPENAI_API_KEY) {
-      console.log(chalk.redBright("Error: OpenAI API key is not set."));
-      res.status(500).json({
-        success: false,
-        error: "OpenAI API key is not set.",
-      });
+    // Model setup
+    const modelInfo = models.find(m => m.name === model);
+    if (!modelInfo) {
+      updateStatus("Model not exists.");
+      res.write(`data: ###ERR###Model not exists.\n\n`);
+      res.write(`data: [DONE]\n\n`);
+      res.end();
+      return;
+    }
+
+    const apiKey = modelInfo.api_key;
+    if (!apiKey) {
+      updateStatus("Model's API key is not set.");
+      res.write(`data: ###ERR###Model's API key is not set.\n\n`);
+      res.write(`data: [DONE]\n\n`);
+      res.end();
       return;
     }
 
     // OpenAI API base URL check
-    const OPENAI_BASE_URL = process.env.OPENAI_BASE_URL || "";
-    if (!OPENAI_BASE_URL) {
-      updateStatus("OpenAI base URL is not set.");
-      res.write(`data: ###ERR###OpenAI base URL is not set.\n\n`);
+    const baseUrl = modelInfo.base_url;
+    if (!baseUrl) {
+      updateStatus("Model's base URL is not set.");
+      res.write(`data: ###ERR###Model's base URL is not set.\n\n`);
       res.write(`data: [DONE]\n\n`);
       res.end();
       return;
@@ -248,8 +260,8 @@ export default async function(req, res) {
 
     // OpenAI
     const openai = new OpenAI({
-      apiKey: OPENAI_API_KEY,
-      baseURL: OPENAI_BASE_URL,
+      apiKey: apiKey,
+      baseURL: baseUrl,
     });
 
     // OpenAI chat completion!
