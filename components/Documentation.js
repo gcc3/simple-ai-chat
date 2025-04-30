@@ -106,6 +106,7 @@ const Documentation = () => {
           <div className="ml-3">
             <div><a href="#commands-general">- <u>{ t("General") }</u></a></div>
             <div><a href="#commands-session">- <u>{ t("Sessions & Logs") }</u></a></div>
+            <div><a href="#commands-model">- <u>{ t("Models") }</u></a></div>
             <div><a href="#commands-eval">- <u>{ t("Stats & Self-evaluation") }</u></a></div>
             <div><a href="#commands-speak">- <u>{ t("Speak") }</u></a></div>
             <div><a href="#commands-role">- <u>{ t("Roles") }</u></a></div>

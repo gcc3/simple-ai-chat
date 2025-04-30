@@ -8,10 +8,10 @@ export async function findNode(nodeName, username) {
   let node = null;
   const user = await getUser(username);
 
-  // 1. user users
+  // 1. user node
   node = await getNode(nodeName, user.username);
 
-  // 2. group nodes
+  // 2. group node
   if (!node) {
     const groups = user.group.split(',');
     for (const group of groups) {
@@ -25,7 +25,7 @@ export async function findNode(nodeName, username) {
     }
   }
 
-  // 3. system nodes
+  // 3. system node
   if (!node) {
     node = await getNode(nodeName, 'root');
   }

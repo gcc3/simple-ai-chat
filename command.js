@@ -33,6 +33,7 @@ import attach from "commands/attach.js";
 import use from "commands/use.js";
 import split from "commands/split.js";
 import unuse from "commands/unuse.js";
+import model from "commands/model.js";
 
 export default function commands(input, files) {
   let command = input;
@@ -84,6 +85,7 @@ export default function commands(input, files) {
   if (command.startsWith(":use")) return use(args);
   if (command.startsWith(":split")) return split(args);
   if (command.startsWith(":unuse")) return unuse(args);
+  if (command.startsWith(":model")) return model(args);
   return "Unknown command.";
 }
 
@@ -131,6 +133,10 @@ export function getCommands() {
     { id: "", title: "", annotation: "", command: ":session", options: "", short_description: "Show session info.", description: "Check current session infromation, like parent session ID, created by." },
     { id: "", title: "", annotation: "", command: ":session [ls|list]", options: "", short_description: "List sessions.", description: "List sessions with short user input." },
     { id: "", title: "", annotation: "", command: ":session attach [session_id]", options: "", short_description: "Attach to a session.", description: "Attach to a session. When attached to a session, you can use left/right arraw key or J/K key to navigate between session logs." },
+    { id: "commands-model", title: "Models", annotation: "", command: ":model [name?]", options: "", short_description: "Show model detail.", description: "The model name is optional. If no model is input, it will return the current model details, the prompt must be enclosed in double quotes." },
+    { id: "", title: "", annotation: "", command: ":model [ls|list]", options: "", short_description: "List available models.", description: "Include user models and shared models." },
+    { id: "", title: "", annotation: "", command: ":model [use|unuse] [name]", options: "", short_description: "Use/unuse a model.", description: "" },
+    { id: "", title: "", annotation: "", command: ":model reset", options: "", short_description: "Reset model to system default model.", description: "" },
     { id: "commands-eval", title: "Stats & Self-evaluation", annotation: "", command: ":stats [on|off]", options: "", short_description: "Show stats info.", description: "A stats information will show below." },
     { id: "", title: "", annotation: "", command: ":eval [on|off]", options: "", short_description: "Enable the self evaluation score.", description: "" },
     { id: "commands-speak", title: "Speak", annotation: "", command: ":speak [on|off]", options: "", short_description: "Switch on/off auto speak.", description: "Auto read the result with system TTS voice." },
