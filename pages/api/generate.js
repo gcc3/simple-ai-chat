@@ -365,7 +365,6 @@ export default async function(req, res) {
     if (files.length > 0 && msg.file_content) {
       input += "\n\n" + msg.file_content;
     }
-    await logadd(user, session, time++, model, input_token_ct, input, output_token_ct, output, JSON.stringify(input_images), ip, browser);
 
     // Token
     console.log("--- token_ct ---");
@@ -383,6 +382,9 @@ export default async function(req, res) {
     console.log("total_fee: " + total_fee.toFixed(5));
     await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
     console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
+
+    // Log
+    await logadd(user, session, time++, model, chatCompletion.usage.prompt_tokens, input, chatCompletion.usage.completion_tokens, output, JSON.stringify(input_images), ip, browser);
 
     // Result
     res.status(200).json({
