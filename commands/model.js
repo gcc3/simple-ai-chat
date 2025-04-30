@@ -202,9 +202,6 @@ export default async function model(args) {
         // Set model
         sessionStorage.setItem("model", modelName);
 
-        // Update useDirect
-        sessionStorage.setItem("useDirect", modelInfo.settings.useDirect);
-
         if (!modelInfo) {
           return "Model not found.";
         }
