@@ -12,10 +12,6 @@ import { getUser } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
 
-// OpenAI
-const openai = new OpenAI();
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-
 // Input output type
 const TYPE = {
   NORMAL: 0,
@@ -226,6 +222,7 @@ export default async function(req, res) {
     console.log(JSON.stringify(msg.messages) + "\n");
 
     // OpenAI API key check
+    const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
     if (!OPENAI_API_KEY) {
       console.log(chalk.redBright("Error: OpenAI API key is not set."));
       res.status(500).json({
@@ -234,6 +231,11 @@ export default async function(req, res) {
       });
       return;
     }
+
+    // OpenAI
+    const openai = new OpenAI({
+      apiKey: OPENAI_API_KEY,
+    });
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({

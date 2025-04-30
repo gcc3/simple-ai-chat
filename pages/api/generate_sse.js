@@ -13,10 +13,6 @@ import { getSystemConfigurations } from "utils/sysUtils";
 import { findNode } from "utils/nodeUtils";
 import { ensureSession } from "utils/logUtils";
 
-// OpenAI
-const openai = new OpenAI();
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-
 // Input output type
 const TYPE = {
   NORMAL: 0,
@@ -306,6 +302,7 @@ export default async function (req, res) {
     updateStatus("Create chat completion.");
 
     // OpenAI API key check
+    const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
     if (!OPENAI_API_KEY) {
       updateStatus("OpenAI API key is not set.");
       res.write(`data: ###ERR###OpenAI API key is not set.\n\n`);
@@ -313,6 +310,11 @@ export default async function (req, res) {
       res.end();
       return;
     }
+
+    // OpenAI
+    const openai = new OpenAI({
+      apiKey: OPENAI_API_KEY,
+    });
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({

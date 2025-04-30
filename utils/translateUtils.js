@@ -1,8 +1,5 @@
 import OpenAI from "openai";
 
-// OpenAI
-const openai = new OpenAI();
-
 // Awesome translator
 export async function translate(input, target_language_name) {
   if (!input || input.trim().length === 0) {
@@ -29,6 +26,9 @@ export async function translate(input, target_language_name) {
     role: "user",
     content: input,
   });
+
+  // OpenAI
+  const openai = new OpenAI();
 
   try {
     let chatCompletion;

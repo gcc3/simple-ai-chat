@@ -1846,7 +1846,12 @@ export default function Home() {
     const use_vision = images && images.length > 0;
     const model = use_vision ? nodeSettings.modelV : nodeSettings.model;
 
-    // Setup OpenAI API
+    // User
+    const user = {
+      username: localStorage.getItem("user")
+    }
+
+    // OpenAI API
     const openai = new OpenAI({
       baseURL: nodeSettings.endpoint,
       apiKey: nodeSettings.apiKey,
@@ -1854,11 +1859,6 @@ export default function Home() {
       temperature: 0.7,
       top_p: 1,
     });
-
-    // User
-    const user = {
-      username: localStorage.getItem("user")
-    }
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
