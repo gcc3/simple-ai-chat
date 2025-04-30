@@ -1664,6 +1664,40 @@ const insertSession = async (id, parentId, createdBy) => {
   }
 }
 
+// VIII. Models
+// Get model by name
+const getModel = async (name, user) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM models WHERE name = ? AND (owner = ? OR created_by = ?)`, [name, user, user], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+const getUserModels = async (user) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM models WHERE owner = ? OR created_by = ?`, [user, user], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
 export {
   getLogs,
   countLogs,
@@ -1733,4 +1767,6 @@ export {
   getPreviousSession,
   getNextSession,
   insertSession,
+  getModel,
+  getUserModels,
 };
