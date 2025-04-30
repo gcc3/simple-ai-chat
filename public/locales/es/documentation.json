@@ -129,5 +129,6 @@
   "introduction": "¡Hola, bienvenido a Simple AI (simple-ai.io)! 🚀 Estoy trabajando para proporcionar una interfaz de usuario más profesional y amigable para programadores para interactuar con la IA.",
   "Command options": "Opciones de comando",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Ofrecemos varias funciones integradas que permiten tanto a los usuarios como a la Inteligencia Artificial recuperar información de la API o realizar ciertas tareas. Para ver una lista de las funciones disponibles, utilice el comando `:function ls`.",
-  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Puede presionar la tecla Control (para macOS presione la tecla command) y hacer clic en el nombre del modelo, un comando `:session attach` con el ID de la sesión se copiará automáticamente en su portapapeles."
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Puede presionar la tecla Control (para macOS presione la tecla command) y hacer clic en el nombre del modelo, un comando `:session attach` con el ID de la sesión se copiará automáticamente en su portapapeles.",
+  "Models": "Modelos"
 }

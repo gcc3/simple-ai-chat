@@ -143,8 +143,33 @@ const initializeDatabase = (db) => {
                                 if (err) {
                                   return reject(err);
                                 }
-        
-                                resolve();
+
+                                db.run(
+                                  `CREATE TABLE IF NOT EXISTS models (
+                                    id INTEGER PRIMARY KEY,
+                                    name TEXT NOT NULL,
+                                    owner TEXT NOT NULL,
+                                    base_url TEXT NOT NULL,
+                                    api_key TEXT NOT NULL,
+                                    price_input REAL,
+                                    price_output REAL,
+                                    is_vision TEXT NOT NULL,
+                                    is_audio TEXT NOT NULL,
+                                    is_reasoning TEXT NOT NULL,
+                                    context_window INTEGER,
+                                    max_output INTEGER,
+                                    created_by TEXT NOT NULL,
+                                    created_at TEXT NOT NULL,
+                                    updated_at TEXT
+                                  );`,
+                                  (err) => {
+                                    if (err) {
+                                      return reject(err);
+                                    }
+            
+                                    resolve();
+                                  }
+                                );
                               }
                             );
                           }
@@ -1640,6 +1665,58 @@ const insertSession = async (id, parentId, createdBy) => {
   }
 }
 
+// VIII. Models
+// Get model by name
+const getModel = async (name, user) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT * FROM models WHERE name = ? AND (owner = ? OR created_by = ?)`, [name, user, user], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+// Get models
+const getModels = async () => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM models`, [], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
+// Get user models
+const getUserModels = async (user) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM models WHERE owner = ? OR created_by = ?`, [user, user], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
 export {
   getLogs,
   countLogs,
@@ -1709,4 +1786,7 @@ export {
   getPreviousSession,
   getNextSession,
   insertSession,
+  getModel,
+  getModels,
+  getUserModels,
 };

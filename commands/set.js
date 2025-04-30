@@ -45,6 +45,12 @@ export default function set(args) {
       }
       setSession(value);
       break;
+    case "model":
+      sessionStorage.setItem("model", value);
+      break;
+    case "model_v":
+      sessionStorage.setItem("model_v", value);
+      break;
     case "time":
       if (isNaN(value)) {
         return "Invalid value. Value must be a number.";

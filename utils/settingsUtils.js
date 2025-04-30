@@ -6,6 +6,8 @@ export function getSettings(format = "json", theme = "light", fullscreen = "off"
 
   const localSettings = {
     _up: "",
+    model: "",
+    model_v: "",
     user: "",
     userRole: "",
     time: "",
@@ -39,20 +41,22 @@ export function getSettings(format = "json", theme = "light", fullscreen = "off"
 
   // Settings with default value
   const userSettings = {
-    /*  1 */ lang:          "",
-    /*  2 */ theme:         theme,
-    /*  3 */ fullscreen:    fullscreen,
-    /*  4 */ useSpeak:      false,
-    /*  5 */ useStats:      false,
-    /*  6 */ useEval:       false,
-    /*  7 */ useSystemRole: true,
-    /*  8 */ functions:     "Time,Weather,Redirection",
-    /*  9 */ role:          "",
-    /* 10 */ stores:        "",
-    /* 11 */ node:          "",
-    /* 12 */ memLength:     7,
-    /* 13 */ passMask:      true,
-    /* 14 */ groupPassword: generatePassword(),
+    lang:          "",
+    theme:         theme,
+    fullscreen:    fullscreen,
+    useSpeak:      false,
+    useStats:      false,
+    useEval:       false,
+    useSystemRole: true,
+    model:         "",
+    model_v:       "",
+    functions:     "Time,Weather,Redirection",
+    role:          "",
+    stores:        "",
+    node:          "",
+    memLength:     7,
+    passMask:      true,
+    groupPassword: generatePassword(),
   }
 
   if (format === "json") {
@@ -74,6 +78,8 @@ export function getSettings(format = "json", theme = "light", fullscreen = "off"
   if (format === "full_array") {
     result = [
       { name: "Up Time",               key: "_up",           storage: "localStorage",    userSettings: "",               default: "",                         description: "" },
+      { name: "Model",                 key: "model",         storage: "sessionStorage",  userSettings: "",               default: "",                         description: "" },
+      { name: "Model Version",         key: "model_v",       storage: "sessionStorage",  userSettings: "",               default: "",                         description: "" },
       { name: "User",                  key: "user",          storage: "localStorage",    userSettings: "",               default: "",                         description: "" },
       { name: "User Role",             key: "userRole",      storage: "localStorage",    userSettings: "",               default: "",                         description: "" },
       { name: "Timeline",              key: "time",          storage: "sessionStorage",  userSettings: "",               default: "",                         description: "" },

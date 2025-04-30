@@ -4,7 +4,7 @@ import { getFunctions } from "function";
 import { updateUserSetting } from 'utils/userUtils.js';
 
 export default async function unuse(args) {
-  const usage = "Usage: :unuse [function|store]\n";
+  const usage = "Usage: :unuse [name]\n";
 
   // Use node
   if (args.length != 1) {
@@ -41,13 +41,19 @@ export default async function unuse(args) {
     return "Function \`" + name + "\` is disabled for calling.";
   }
 
+  // Find model
+  const modelInfo = await findModel(name);
+  if (modelInfo) {
+    // Set model
+    sessionStorage.setItem("model", global.model);  // reset model
+    sessionStorage.setItem("baseUrl", "");  // reset base url
+
+    return "Model unused, and reset to default model.";
+  }
+
   // Find node
   const nodeInfo = await findNode(name);
   if (nodeInfo) {
-    if (!localStorage.getItem("user")) {
-      return "Please login.";
-    }
-
     // clear node
     sessionStorage.setItem("node", "");
 
@@ -62,10 +68,6 @@ export default async function unuse(args) {
   // Find store
   const storeInfo = await findStore(name);
   if (storeInfo) {
-    if (!localStorage.getItem("user")) {
-      return "Please login.";
-    }
-
     /// Check store active
     if (!isStoreActive(name)) {
       return "Store \`" + name + "\` is not active";
@@ -90,6 +92,31 @@ export default async function unuse(args) {
   }
 
   return "Resource not found.";
+}
+
+async function findModel(modelName) {
+  // Check if the model exists
+  try {
+    const response = await fetch("/api/model/" + modelName, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await response.json();
+    if (response.status !== 200) {
+      throw data.error || new Error(`Request failed with status ${response.status}`);
+    }
+
+    // Model info
+    const modelInfo = data.result;
+    return modelInfo;
+  }
+  catch (error) {
+    console.error(error);
+    return false;
+  }
 }
 
 async function findNode(nodeName) {

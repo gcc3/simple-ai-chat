@@ -3,6 +3,12 @@ import fs from 'fs';
 import { fixLastRowNotEmpty } from './fileUtils';
 
 export async function getSystemRoles() {
+  // Check if the file exists, if not create from role.csv.example
+  if (!fs.existsSync('./role.csv')) {
+    fs.copyFileSync('./role.csv.example', './role.csv');
+    console.log('role.csv created from role.csv.example');
+  }
+
   fixLastRowNotEmpty('role.csv');
   let roles = [];
 

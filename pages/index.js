@@ -395,6 +395,12 @@ export default function Home() {
         if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", systemInfo.default_role);    // default role
         if (sessionStorage.getItem("stores") === null) sessionStorage.setItem("stores", systemInfo.default_stores);  // default store
         if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", systemInfo.default_node);    // default node
+
+        // Set model
+        global.model = systemInfo.model;
+        global.modelV = systemInfo.model_v;
+        if (sessionStorage.getItem("model") === null) sessionStorage.setItem("model", systemInfo.model);  // default model
+        if (sessionStorage.getItem("modelV") === null) sessionStorage.setItem("modelV", systemInfo.model_v);  // default model version
       } catch (error) {
         console.error("There was an error fetching the data:", error);
       }
@@ -417,6 +423,7 @@ export default function Home() {
 
     // Set default sessionStorage values
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
+    if (sessionStorage.getItem("baseUrl") === null) sessionStorage.setItem("baseUrl", "");
     if (sessionStorage.getItem("useDirect") === null) sessionStorage.setItem("useDirect", false);   // use direct mode (for node)
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);  // command history index
 
@@ -1410,10 +1417,12 @@ export default function Home() {
     resetInfo();
 
     // Generation mode switch
-    if (sessionStorage.getItem("useDirect") == "true") {
-      console.log("Start. (direct)");
-      generate_direct(input, image_urls, file_urls);
+    if (sessionStorage.getItem("baseUrl").includes("localhost") || sessionStorage.getItem("baseUrl").includes("127.0.0.1")) {
+      // Local model
+      console.log("Start. (Local)");
+      generate_msg(input, image_urls, file_urls);
     } else {
+      // Server model
       if (localStorage.getItem('useStream') == "true") {
         console.log("Start. (SSE)");
         generate_sse(input, image_urls_encoded, file_urls_encoded);
@@ -1450,19 +1459,21 @@ export default function Home() {
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
                                                            + "&files=" + files.join(encodeURIComponent("###"))
-                                                 /*  1 */  + "&time=" + config.time
-                                                 /*  2 */  + "&session=" + config.session
-                                                 /*  3 */  + "&mem_length=" + config.mem_length
-                                                 /*  4 */  + "&functions=" + config.functions
-                                                 /*  5 */  + "&role=" + config.role
-                                                 /*  6 */  + "&store=" + config.store
-                                                 /*  7 */  + "&node=" + config.node
-                                                 /*  8 */  + "&use_stats=" + config.use_stats
-                                                 /*  9 */  + "&use_eval=" + config.use_eval
-                                                 /* 10 */  + "&use_location=" + config.use_location
-                                                 /* 11 */  + "&location=" + config.location
-                                                 /* 12 */  + "&lang=" + config.lang
-                                                 /* 13 */  + "&use_system_role=" + config.use_system_role);
+                                                           + "&time=" + config.time
+                                                           + "&session=" + config.session
+                                                           + "&model=" + config.model
+                                                           + "&model_v=" + config.model_v
+                                                           + "&mem_length=" + config.mem_length
+                                                           + "&functions=" + config.functions
+                                                           + "&role=" + config.role
+                                                           + "&store=" + config.store
+                                                           + "&node=" + config.node
+                                                           + "&use_stats=" + config.use_stats
+                                                           + "&use_eval=" + config.use_eval
+                                                           + "&use_location=" + config.use_location
+                                                           + "&location=" + config.location
+                                                           + "&lang=" + config.lang
+                                                           + "&use_system_role=" + config.use_system_role);
 
     let done_evaluating = false;
     let toolCalls = [];
@@ -1744,7 +1755,7 @@ export default function Home() {
   // Direct
   // Direct send API request to the server
   // Warning: it will expose the API key.
-  async function generate_direct(input, images, files) {
+  async function generate_msg(input, images, files) {
     // If already doing, return
     if (global.STATE === STATES.DOING) return;
     global.STATE = STATES.DOING;
@@ -1774,19 +1785,21 @@ export default function Home() {
          user_input: input,
          images: images,
          files: files,
-/*  1 */ time: config.time,
-/*  2 */ session: config.session,
-/*  3 */ mem_length: config.mem_length,
-/*  4 */ functions: config.functions,
-/*  5 */ role: config.role,
-/*  6 */ store: config.store,
-/*  7 */ node: config.node,
-/*  8 */ use_stats: config.use_stats,
-/*  9 */ use_eval: config.use_eval,
-/* 10 */ use_location: config.use_location,
-/* 11 */ location: config.location,
-/* 12 */ lang: config.lang,
-/* 13 */ use_system_role: config.use_system_role,
+         time: config.time,
+         session: config.session,
+         model: config.model,
+         model_v: config.model_v,
+         mem_length: config.mem_length,
+         functions: config.functions,
+         role: config.role,
+         store: config.store,
+         node: config.node,
+         use_stats: config.use_stats,
+         use_eval: config.use_eval,
+         use_location: config.use_location,
+         location: config.location,
+         lang: config.lang,
+         use_system_role: config.use_system_role,
       }),
     });
 
@@ -1799,66 +1812,20 @@ export default function Home() {
     // Use stream
     const useStream = localStorage.getItem('useStream') === "true";
 
-    // Node info
-    const nodeName = sessionStorage.getItem("node");
-    if (!nodeName) {
-      printOutput("Error.");
-      return;
-    }
-
-    const nodeInfoResponse = await fetch("/api/node/" + nodeName, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-
-    const nodeInfoData = await nodeInfoResponse.json();
-    if (nodeInfoResponse.status !== 200) {
-      throw nodeInfoData.error || new Error(`Request failed with status ${response.status}`);
-    }
-
-    // Node info
-    const nodeInfo = nodeInfoData.result;
-    if (!nodeInfo) {
-      return "Node not found.";
-    }
-    console.log("Use node: " + JSON.stringify(nodeInfo));
-    
-    // Node settings
-    // endpoint
-    // apiKey
-    // model
-    // modelV
-    // useFunctionCalling
-    // useDirect
-    // description
-    const nodeSettings = nodeInfo.settings;
-
-    // Update useDirect
-    sessionStorage.setItem('useDirect', nodeSettings.useDirect);
-    if (nodeSettings.useDirect === "false") {
-      printOutput("Direct API request is disabled.");
-      return;
-    }
-
-    // Model
-    const use_vision = images && images.length > 0;
-    const model = use_vision ? nodeSettings.modelV : nodeSettings.model;
-
-    // Setup OpenAI API
-    const openai = new OpenAI({
-      baseURL: nodeSettings.endpoint,
-      apiKey: nodeSettings.apiKey,
-      dangerouslyAllowBrowser: true,
-      temperature: 0.7,
-      top_p: 1,
-    });
-
     // User
     const user = {
       username: localStorage.getItem("user")
     }
+
+    // Model switch
+    const use_vision = images && images.length > 0;
+    const model = use_vision ? config.model_v : config.model;
+
+    const openai = new OpenAI({
+      baseURL: config.base_url,
+      apiKey: "",  // not necessary for local model, but required for OpenAI API
+      dangerouslyAllowBrowser: true,
+    });
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
@@ -1873,11 +1840,10 @@ export default function Home() {
       service_tier: null,
       stream: useStream,
       stream_options: null,
-      temperature: nodeSettings.temperature,
-      top_p: nodeSettings.top_p,
-      tools: (nodeSettings.useFunctionCalling && tools && tools.length > 0) ? tools : null,
-      tool_choice: (nodeSettings.useFunctionCalling && tools && tools.length > 0) ? "auto" : null,
-      // parallel_tool_calls: true,  // no need, by default it is true
+      temperature: 1,
+      top_p: 1,
+      tools: null,  // TODO
+      tool_choice: null,  // TODO
       user: user ? user.username : null,
     });
 
@@ -1891,7 +1857,7 @@ export default function Home() {
         body: JSON.stringify({
           input,
           output,
-          model: nodeSettings.model,
+          model: model,
           session: sessionStorage.getItem("session"),
           images: [],
           time: Date.now(),
@@ -1929,7 +1895,7 @@ export default function Home() {
       // Set model
       !minimalist && setInfo((
         <div>
-          model: {nodeSettings.model}<br></br>
+          model: {model}<br></br>
         </div>
       ));
 
@@ -2021,19 +1987,21 @@ export default function Home() {
           user_input: input,
           images: images,
           files: files,
- /*  1 */ time: config.time,
- /*  2 */ session: config.session,
- /*  3 */ mem_length: config.mem_length,
- /*  4 */ functions: config.functions,
- /*  5 */ role: config.role,
- /*  6 */ store: config.store,
- /*  7 */ node: config.node,
- /*  8 */ use_stats: config.use_stats,
- /*  9 */ use_eval: config.use_eval,
- /* 10 */ use_location: config.use_location,
- /* 11 */ location: config.location,
- /* 12 */ lang: config.lang,
- /* 13 */ use_system_role: config.use_system_role,
+          time: config.time,
+          session: config.session,
+          model: config.model,
+          model_v: config.model_v,
+          mem_length: config.mem_length,
+          functions: config.functions,
+          role: config.role,
+          store: config.store,
+          node: config.node,
+          use_stats: config.use_stats,
+          use_eval: config.use_eval,
+          use_location: config.use_location,
+          location: config.location,
+          lang: config.lang,
+          use_system_role: config.use_system_role,
         }),
       });
 
@@ -2268,6 +2236,9 @@ export default function Home() {
         autocomplete(":use ", true);
         autocomplete(":unuse ", true);
         autocomplete(":voice use ", true);
+        autocomplete(":model ", true);
+        autocomplete(":model use ", true);
+        autocomplete(":model unuse ", true);
       }
     }
   };

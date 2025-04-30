@@ -12,10 +12,6 @@ import { getUser } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
 
-// OpenAI
-const openai = new OpenAI();
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
-
 // Input output type
 const TYPE = {
   NORMAL: 0,

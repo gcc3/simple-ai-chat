@@ -295,7 +295,7 @@ export default async function node(args) {
 
     // Reset session to forget previous memory
     initializeSession();
-    return "Node reset.";
+    return "Node reset, and session reset.";
   }
 
   // Add a node

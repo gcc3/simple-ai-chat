@@ -11,10 +11,7 @@ import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
-
-// OpenAI
-const openai = new OpenAI();
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
+import { getModels } from "utils/modelUtils.js";
 
 // Input output type
 const TYPE = {
@@ -24,6 +21,9 @@ const TYPE = {
 
 // System configurations
 const sysconf = getSystemConfigurations();
+
+// Models
+const models = await getModels();
 
 export default async function(req, res) {
   // Input
@@ -40,19 +40,21 @@ export default async function(req, res) {
   let events = [];
 
   // Config (input)
-  /*  1 */ const time_ = req.body.time || "";
-  /*  2 */ const session = req.body.session || "";
-  /*  3 */ const mem_length = req.body.mem_length || 0;
-  /*  4 */ const functions_ = req.body.functions || "";
-  /*  5 */ const role = req.body.role || "";
-  /*  6 */ const store = req.body.store || "";
-  /*  7 */ const node = req.body.node || "";
-  /*  8 */ const use_stats = req.body.use_stats || false;
-  /*  9 */ const use_eval_ = req.body.use_eval || false;
-  /* 10 */ const use_location = req.body.use_location || false;
-  /* 11 */ const location = req.body.location || "";
-  /* 12 */ const lang = req.body.lang || "en-US";
-  /* 13 */ const use_system_role = req.body.use_system_role || false;
+  const time_ = req.body.time || "";
+  const session = req.body.session || "";
+  let model = req.body.model || sysconf.model;
+  const model_v = req.body.model_v || sysconf.model_v;
+  const mem_length = req.body.mem_length || 0;
+  const functions_ = req.body.functions || "";
+  const role = req.body.role || "";
+  const store = req.body.store || "";
+  const node = req.body.node || "";
+  const use_stats = req.body.use_stats || false;
+  const use_eval_ = req.body.use_eval || false;
+  const use_location = req.body.use_location || false;
+  const location = req.body.location || "";
+  const lang = req.body.lang || "en-US";
+  const use_system_role = req.body.use_system_role || false;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
@@ -85,7 +87,9 @@ export default async function(req, res) {
 
   // Model switch
   const use_vision = images && images.length > 0;
-  const model = use_vision ? sysconf.model_v : sysconf.model;
+  if (use_vision) {
+    model = model_v;
+  }
   const use_eval = use_eval_ && use_stats && !use_vision;
 
   // Use function calling
@@ -225,15 +229,40 @@ export default async function(req, res) {
     console.log("--- messages ---");
     console.log(JSON.stringify(msg.messages) + "\n");
 
-    // OpenAI API key check
-    if (!OPENAI_API_KEY) {
-      console.log(chalk.redBright("Error: OpenAI API key is not set."));
-      res.status(500).json({
-        success: false,
-        error: "OpenAI API key is not set.",
-      });
+    // Model setup
+    const modelInfo = models.find(m => m.name === model);
+    if (!modelInfo) {
+      updateStatus("Model not exists.");
+      res.write(`data: ###ERR###Model not exists.\n\n`);
+      res.write(`data: [DONE]\n\n`);
+      res.end();
       return;
     }
+
+    const apiKey = modelInfo.api_key;
+    if (!apiKey) {
+      updateStatus("Model's API key is not set.");
+      res.write(`data: ###ERR###Model's API key is not set.\n\n`);
+      res.write(`data: [DONE]\n\n`);
+      res.end();
+      return;
+    }
+
+    // OpenAI API base URL check
+    const baseUrl = modelInfo.base_url;
+    if (!baseUrl) {
+      updateStatus("Model's base URL is not set.");
+      res.write(`data: ###ERR###Model's base URL is not set.\n\n`);
+      res.write(`data: [DONE]\n\n`);
+      res.end();
+      return;
+    }
+
+    // OpenAI
+    const openai = new OpenAI({
+      apiKey: apiKey,
+      baseURL: baseUrl,
+    });
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
@@ -252,7 +281,6 @@ export default async function(req, res) {
       top_p: sysconf.top_p,
       tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
       tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
-      // parallel_tool_calls: true,  // no need, by default it is true
       user: user ? user.username : null,
     });
 

@@ -8,14 +8,10 @@ import { countToken } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
-import { getUser } from "utils/sqliteUtils";
+import { getModels, getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 import { findNode } from "utils/nodeUtils";
 import { ensureSession } from "utils/logUtils";
-
-// OpenAI
-const openai = new OpenAI();
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 
 // Input output type
 const TYPE = {
@@ -25,6 +21,9 @@ const TYPE = {
 
 // System configurations
 const sysconf = getSystemConfigurations();
+
+// Models
+const models = await getModels();
 
 export default async function (req, res) {
   // Input
@@ -62,19 +61,21 @@ export default async function (req, res) {
   let outputType = TYPE.NORMAL;
 
   // Config (input)
-  /*  1 */ const time_ = req.query.time || "";
-  /*  2 */ const session = req.query.session || "";
-  /*  3 */ const mem_length = req.query.mem_length || 0;
-  /*  4 */ const functions_ = req.query.functions || "";
-  /*  5 */ const role = req.query.role || "";
-  /*  6 */ const store = req.query.store || "";
-  /*  7 */ const node = req.query.node || "";
-  /*  8 */ const use_stats = req.query.use_stats === "true" ? true : false;
-  /*  9 */ const use_eval_ = req.query.use_eval === "true" ? true : false;
-  /* 10 */ const use_location = req.query.use_location === "true" ? true : false;
-  /* 11 */ const location = req.query.location || "";
-  /* 12 */ const lang = req.query.lang || "en-US";
-  /* 13 */ const use_system_role = req.query.use_system_role === "true" ? true : false;
+  const time_ = req.query.time || "";
+  const session = req.query.session || "";
+  let model = req.query.model || sysconf.model;
+  const model_v = req.query.model_v || sysconf.model_v;
+  const mem_length = req.query.mem_length || 0;
+  const functions_ = req.query.functions || "";
+  const role = req.query.role || "";
+  const store = req.query.store || "";
+  const node = req.query.node || "";
+  const use_stats = req.query.use_stats === "true" ? true : false;
+  const use_eval_ = req.query.use_eval === "true" ? true : false;
+  const use_location = req.query.use_location === "true" ? true : false;
+  const location = req.query.location || "";
+  const lang = req.query.lang || "en-US";
+  const use_system_role = req.query.use_system_role === "true" ? true : false;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
@@ -108,16 +109,6 @@ export default async function (req, res) {
     res.write(`data: ###STATUS###${status}\n\n`); res.flush();
   }
   updateStatus("Preparing...");
-
-  // Stream output
-  const streamOutput = (message, model = null) => {
-    message = message.replaceAll("\n", "###RETURN###");
-    res.write(`data: ${message}\n\n`); res.flush();
-
-    if (model) {
-      res.write(`data: ###MODEL###${model}\n\n`); res.flush();
-    }
-  }
   
   // Session ID
   const verifyResult = verifySessionId(session);
@@ -133,8 +124,20 @@ export default async function (req, res) {
 
   // Model switch
   const use_vision = images && images.length > 0;
-  const model = use_vision ? sysconf.model_v : sysconf.model;
+  if (use_vision) {
+    model = model_v;
+  }
   const use_eval = use_eval_ && use_stats && !use_vision;
+
+  // Stream output
+  const streamOutput = (message, model = null) => {
+    message = message.replaceAll("\n", "###RETURN###");
+    res.write(`data: ${message}\n\n`); res.flush();
+
+    if (model) {
+      res.write(`data: ###MODEL###${model}\n\n`); res.flush();
+    }
+  }
 
   // User access control
   if (sysconf.use_access_control) {
@@ -305,14 +308,40 @@ export default async function (req, res) {
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");
 
-    // OpenAI API key check
-    if (!OPENAI_API_KEY) {
-      updateStatus("OpenAI API key is not set.");
-      res.write(`data: ###ERR###OpenAI API key is not set.\n\n`);
+    // Model setup
+    const modelInfo = models.find(m => m.name === model);
+    if (!modelInfo) {
+      updateStatus("Model not exists.");
+      res.write(`data: ###ERR###Model not exists.\n\n`);
       res.write(`data: [DONE]\n\n`);
       res.end();
       return;
     }
+
+    const apiKey = modelInfo.api_key;
+    if (!apiKey) {
+      updateStatus("Model's API key is not set.");
+      res.write(`data: ###ERR###Model's API key is not set.\n\n`);
+      res.write(`data: [DONE]\n\n`);
+      res.end();
+      return;
+    }
+
+    // OpenAI API base URL check
+    const baseUrl = modelInfo.base_url;
+    if (!baseUrl) {
+      updateStatus("Model's base URL is not set.");
+      res.write(`data: ###ERR###Model's base URL is not set.\n\n`);
+      res.write(`data: [DONE]\n\n`);
+      res.end();
+      return;
+    }
+
+    // OpenAI
+    const openai = new OpenAI({
+      apiKey: apiKey,
+      baseURL: baseUrl,
+    });
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
@@ -331,7 +360,6 @@ export default async function (req, res) {
       top_p: sysconf.top_p,
       tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
       tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
-      // parallel_tool_calls: true,  // no need, by default it is true
       user: user ? user.username : null,
     });
 

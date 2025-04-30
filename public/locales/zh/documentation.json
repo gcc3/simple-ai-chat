@@ -129,5 +129,6 @@
   "introduction": "嗨，欢迎来到Simple AI (simple-ai.io)！🚀 我正在努力提供一个更专业和对程序员更友好的用户界面，以便与AI进行交互。",
   "Command options": "命令选项",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "我们提供了几个内置功能，允许用户和AI从API检索信息或执行特定任务。要查看可用功能列表，请使用`:function ls`命令。",
-  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "您可以按下 Control 键（macOS 用户请按 command 键）并点击模型名称，`:session attach` 命令及会话 ID 将自动复制到您的剪贴板。"
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "您可以按下 Control 键（macOS 用户请按 command 键）并点击模型名称，`:session attach` 命令及会话 ID 将自动复制到您的剪贴板。",
+  "Models": "模型"
 }

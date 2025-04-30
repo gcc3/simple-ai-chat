@@ -11,6 +11,8 @@ export default async function (req, res) {
     
     res.status(200).json({
       result: {
+        model: sysconf.model,
+        model_v: sysconf.model_v,
         role_content_system: "***",
         welcome_message: sysconf.welcome_message,
         querying: sysconf.querying,

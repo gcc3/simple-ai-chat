@@ -3,9 +3,6 @@ import { mysqlQuery } from "./mysqlUtils";
 import { getUser, getStore, getUserStores } from "./sqliteUtils";
 import OpenAI from "openai";
 
-// OpenAI
-const openai = new OpenAI();
-
 export async function findStore(storeName, username) {
   let store = null;
   const user = await getUser(username);
@@ -151,6 +148,9 @@ async function generateMysqlQuery(input, description, schema, tableColumnsDef) {
     role: "user",
     content: input,
   });
+
+  // OpenAI
+  const openai = new OpenAI();
 
   try {
     let chatCompletion;
