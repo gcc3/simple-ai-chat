@@ -30,6 +30,14 @@ export default async function use(args) {
     // Set model
     sessionStorage.setItem("model", name);
 
+    // Set local model  
+    // If the model base URL containts "localhost" or "127.0.0.1", set it to local model
+    if (modelInfo.base_url.includes("localhost") || modelInfo.base_url.includes("127.0.0.1")) {
+      sessionStorage.setItem("useLocalModel", true);
+    } else {
+      sessionStorage.setItem("useLocalModel", false);
+    }
+
     return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
   }
 

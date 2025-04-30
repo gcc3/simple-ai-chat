@@ -419,6 +419,7 @@ export default function Home() {
 
     // Set default sessionStorage values
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
+    if (sessionStorage.getItem("useLocalModel") === null) sessionStorage.setItem("useLocalModel", false);   // use local model (for example: `ollama`)
     if (sessionStorage.getItem("useDirect") === null) sessionStorage.setItem("useDirect", false);   // use direct mode (for node)
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);  // command history index
 
@@ -1412,9 +1413,9 @@ export default function Home() {
     resetInfo();
 
     // Generation mode switch
-    if (sessionStorage.getItem("useDirect") == "true") {
-      console.log("Start. (direct)");
-      generate_direct(input, image_urls, file_urls);
+    if (sessionStorage.getItem("useLocalModel") == "true") {
+      console.log("Start. (Local)");
+      generate_msg(input, image_urls, file_urls);
     } else {
       if (localStorage.getItem('useStream') == "true") {
         console.log("Start. (SSE)");
@@ -1748,7 +1749,7 @@ export default function Home() {
   // Direct
   // Direct send API request to the server
   // Warning: it will expose the API key.
-  async function generate_direct(input, images, files) {
+  async function generate_msg(input, images, files) {
     // If already doing, return
     if (global.STATE === STATES.DOING) return;
     global.STATE = STATES.DOING;

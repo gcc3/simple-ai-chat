@@ -11,11 +11,6 @@ import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
-import { getModels } from "utils/modelUtils";
-
-// OpenAI
-const openai = new OpenAI();
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY || "";
 
 // Input output type
 const TYPE = {
@@ -25,9 +20,6 @@ const TYPE = {
 
 // System configurations
 const sysconf = getSystemConfigurations();
-
-// Models
-const models = await getModels();
 
 export default async function(req, res) {
   // Input
