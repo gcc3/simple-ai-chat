@@ -345,7 +345,7 @@ export default async function (req, res) {
     });
 
     // OpenAI chat completion!
-    let chatCompletionUsage;
+    let chatCompletionUsage = { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 };
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
       model,
