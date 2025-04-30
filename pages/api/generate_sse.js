@@ -475,7 +475,7 @@ export default async function (req, res) {
     console.log("input_fee = " + msg.token_ct.total + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
     console.log("output_fee = " + output_token_ct + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
     console.log("total_fee: " + total_fee.toFixed(5));
-    addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
+    await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
     console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
 
     // Stats (final)
