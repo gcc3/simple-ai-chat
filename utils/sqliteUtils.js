@@ -146,8 +146,7 @@ const initializeDatabase = (db) => {
 
                                 db.run(
                                   `CREATE TABLE IF NOT EXISTS models (
-                                    id TEXT PRIMARY KEY,
-                                    provider TEXT NOT NULL,
+                                    id INTEGER PRIMARY KEY,
                                     name TEXT NOT NULL,
                                     owner TEXT NOT NULL,
                                     base_url TEXT NOT NULL,
