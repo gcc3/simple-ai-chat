@@ -43,33 +43,6 @@ export default async function node(args) {
         return "Node not found.";
       }
 
-      // Update useDirect
-      sessionStorage.setItem("useDirect", nodeInfo.settings.useDirect);
-
-      // Try ping node from local
-      if (nodeInfo.settings.useDirect) {
-        // ping node
-        await fetch(getBaseURL(nodeInfo.settings.endpoint), {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((response) => {
-          if (response.status !== 200 || !response.ok) {
-            nodeInfo.status.ping = "Inconnectable.";
-          } else {
-            return response.text();
-          }
-        }).then((text) => {
-          if (text) {
-            nodeInfo.status.ping = text;
-          }
-        }).catch((error) => {
-          console.error(error);
-          nodeInfo.status.ping = "Inconnectable.";
-        });
-      }
-
       return JSON.stringify(nodeInfo, null, 2);
     } catch (error) {
       console.error(error);
@@ -102,30 +75,6 @@ export default async function node(args) {
       const nodeInfo = data.result;
       if (!nodeInfo) {
         return "Node not found.";
-      }
-
-      // Try ping node from local
-      if (nodeInfo.settings.useDirect) {
-        // ping node
-        await fetch(getBaseURL(nodeInfo.settings.endpoint), {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }).then((response) => {
-          if (response.status !== 200 || !response.ok) {
-            nodeInfo.status.ping = "Inconnectable.";
-          } else {
-            return response.text();
-          }
-        }).then((text) => {
-          if (text) {
-            nodeInfo.status.ping = text;
-          }
-        }).catch((error) => {
-          console.error(error);
-          nodeInfo.status.ping = "Inconnectable.";
-        });
       }
 
       return JSON.stringify(nodeInfo, null, 2);
@@ -256,9 +205,6 @@ export default async function node(args) {
         // Set node
         sessionStorage.setItem("node", nodeName);
 
-        // Update useDirect
-        sessionStorage.setItem("useDirect", nodeInfo.settings.useDirect);
-
         if (!nodeInfo) {
           return "Node not found.";
         }
@@ -278,9 +224,6 @@ export default async function node(args) {
       // Clear node
       sessionStorage.setItem("node", "");
 
-      // Reset useDirect
-      sessionStorage.setItem("useDirect", false);
-      
       return "Node unset.";
     }
   }

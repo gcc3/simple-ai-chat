@@ -64,9 +64,6 @@ export default async function use(args) {
     // Set node
     sessionStorage.setItem("node", name);
 
-    // Reset useDirect
-    sessionStorage.setItem("useDirect", nodeInfo.settings.useDirect);
-
     return "Node is set to \`" + name + "\`, you can directly talk to it, or use command \`:generate [input]\` to generate from it. Command \`:node\` shows current node information.";
   }
   

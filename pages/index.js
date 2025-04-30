@@ -424,7 +424,6 @@ export default function Home() {
     // Set default sessionStorage values
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
     if (sessionStorage.getItem("baseUrl") === null) sessionStorage.setItem("baseUrl", "");
-    if (sessionStorage.getItem("useDirect") === null) sessionStorage.setItem("useDirect", false);   // use direct mode (for node)
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);  // command history index
 
     // Set styles and themes

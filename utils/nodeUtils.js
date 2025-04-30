@@ -327,7 +327,6 @@ export function getInitNodeSettings() {
     "modelV": "___",              // The version of the model
     "useHistory": false,          // Use history or not
     "useFuncitonCalling": false,  // Use function calling or not, some model not support
-    "useDirect": false,           // Use direct connection from client to node
     "description": "",            // The description of the node
     "isSimpleNode": false,        // A simple node only accept "user_input" (not messages) and use "result" as output
   };

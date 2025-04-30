@@ -33,7 +33,7 @@ export default async function (req, res) {
           created_by: node.created_by,
           settings: settings,
           status: {
-            ping: settings.useDirect ? "-" : await pingNode(settings),
+            ping: await pingNode(settings),
             configured: checkIsNodeConfigured(settings),
             messages: verifyNodeSettings(settings),
           }
