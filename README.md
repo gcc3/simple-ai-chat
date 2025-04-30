@@ -106,7 +106,7 @@ System root password, will be set when database initialized.
 
 * OPENAI_BASE_URL and OPENAI_API_KEY  
 Key can get from https://platform.openai.com/account/api-keys  
-Base URL by default is `https://api.openai.com/v1`.  
+Base URL is the API endpont, `https://api.openai.com/v1`, etc...
 
 * MODEL  
 Text generation model, `gpt-4o`, etc...  
