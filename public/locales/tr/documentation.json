@@ -129,5 +129,6 @@
   "introduction": "Merhaba, Simple AI'ye (simple-ai.io) hoş geldiniz! 🚀 Yapay Zeka ile etkileşimde bulunmak için daha profesyonel ve programcı dostu bir kullanıcı arayüzü sağlamak için çalışıyorum.",
   "Command options": "Komut seçenekleri",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Kullanıcıların ve Yapay Zekanın API'den bilgi almasına veya belirli görevleri yerine getirmesine olanak tanıyan birkaç yerleşik fonksiyon sunuyoruz. Kullanılabilir fonksiyonların bir listesini görmek için `:function ls` komutunu kullanın.",
-  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control tuşuna basabilirsiniz (macOS için command tuşuna basın) ve model adının üzerine tıklayın, oturum kimliği ile birlikte bir `:session attach` komutu otomatik olarak panonuza kopyalanacaktır."
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control tuşuna basabilirsiniz (macOS için command tuşuna basın) ve model adının üzerine tıklayın, oturum kimliği ile birlikte bir `:session attach` komutu otomatik olarak panonuza kopyalanacaktır.",
+  "Models": "Modeller"
 }

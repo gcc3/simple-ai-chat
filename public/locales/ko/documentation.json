@@ -129,5 +129,6 @@
   "introduction": "안녕하세요, Simple AI(simple-ai.io)에 오신 것을 환영합니다! 🚀 저는 AI와 상호 작용하는 데 있어 더 전문적이고 프로그래머 친화적인 사용자 인터페이스를 제공하기 위해 노력하고 있습니다.",
   "Command options": "명령어 옵션",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "우리는 사용자와 AI가 API에서 정보를 검색하거나 특정 작업을 수행할 수 있도록 여러 내장 기능을 제공합니다. 사용 가능한 기능 목록을 보려면 `:function ls` 명령을 사용하세요.",
-  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control 키를 누르고 모델 이름을 클릭하면(맥OS의 경우 command 키), `:session attach` 명령어와 세션 ID가 자동으로 클립보드에 복사됩니다."
+  "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control 키를 누르고 모델 이름을 클릭하면(맥OS의 경우 command 키), `:session attach` 명령어와 세션 ID가 자동으로 클립보드에 복사됩니다.",
+  "Models": "모델"
 }

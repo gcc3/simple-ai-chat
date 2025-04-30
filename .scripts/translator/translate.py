@@ -8,11 +8,11 @@ from openai import OpenAI
 from scan import scan_files
 
 # Load the API key from .env file
-load_dotenv()
+load_dotenv("../../.env")
 api_key = os.getenv("OPENAI_API_KEY")
 
 # Initialize the OpenAI client
-openai = OpenAI(api_key=api_key)
+openai = OpenAI(api_key=api_key, base_url="https://api.openai.com/v1")
 
 
 # Move translate out of main
@@ -41,8 +41,7 @@ def translate(text, target_language_name):
                 + 'json format: {"content": "translated text"}',
             },
         ],
-        temperature=0,
-        model="gpt-4-1106-preview",
+        model="o4-mini",
         response_format={"type": "json_object"},
     )
     translated_json = json.loads(completion.choices[0].message.content)
