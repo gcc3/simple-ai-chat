@@ -48,7 +48,7 @@ export default async function unuse(args) {
     sessionStorage.setItem("model", global.model);  // reset model
     sessionStorage.setItem("baseUrl", "");  // reset base url
 
-    return "Model unused.";
+    return "Model unused, and reset to default model.";
   }
 
   // Find node

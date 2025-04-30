@@ -218,7 +218,7 @@ export default async function model(args) {
       sessionStorage.setItem("model", global.model);  // reset model
       sessionStorage.setItem("baseUrl", "");  // reset base url
 
-      return "Model unused.";
+      return "Model unused, and reset to default model.";
     }
   }
 
@@ -234,7 +234,7 @@ export default async function model(args) {
 
     // Reset session to forget previous memory
     initializeSession();
-    return "Model reset, and session reset.";
+    return "Model reset to default model, and session reset.";
   }
 
   return usage;
