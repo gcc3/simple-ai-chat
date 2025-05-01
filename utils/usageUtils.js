@@ -66,7 +66,7 @@ export function getRoleFequencyLimit(role) {
   }
 
   let usage_limit = null;
-  const role_usage_limit = process.env.NEXT_PUBLIC_ROLE_USAGE_LIMIT ? process.env.NEXT_PUBLIC_ROLE_USAGE_LIMIT : "";
+  const role_usage_limit = process.env.NEXT_PUBLIC_ROLE_USAGE_LIMIT || "";
   const foundItem = role_usage_limit.split(";").find((item) => {
     return item.split(":")[0] === role;
   });
@@ -79,9 +79,9 @@ export function getRoleFequencyLimit(role) {
   // If role is not found, return 0
   if (!usage_limit) {
     return {
-      daily_limit: 0,
-      weekly_limit: 0,
-      monthly_limit: 0,
+      daily_limit: 1,
+      weekly_limit: 1,
+      monthly_limit: 1,
     };
   }
 

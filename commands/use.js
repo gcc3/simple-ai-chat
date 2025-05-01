@@ -36,7 +36,7 @@ export default async function use(args) {
 
   // Find function
   const functions = getFunctions();
-  const function_ = functions.find((f) => f.name === name || f.friendly_name === name);
+  const function_ = functions.find((f) => f.name === name);
   if (function_) {
     // Add to localhostStorage and remote
     const currentFunctions = (localStorage.getItem("functions")).split(",");

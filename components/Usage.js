@@ -46,6 +46,8 @@ function Usage() {
   
       // Refresh user and usage
       const [user, usage] = await Promise.all([getUserInfo(), getUserUsage()]);
+      console.log("User usage: " + JSON.stringify(usage, null, 2));
+
       setUser(user);
       setUsage(usage);
     } else {
@@ -61,6 +63,8 @@ function Usage() {
 
       // Refresh user and usage
       const [user, usage] = await Promise.all([getUserInfo(), getUserUsage()]);
+      console.log("User usage: " + JSON.stringify(usage, null, 2));
+
       setUser(user);
       setUsage(usage);
 

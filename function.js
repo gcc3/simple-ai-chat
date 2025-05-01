@@ -108,7 +108,6 @@ export function getFunctions(functions_ = null) {
   if (!functions_ || callables.includes("get_time") || callables.includes("Time")) {
     functions.push({
       name: 'get_time',
-      friendly_name: 'Time',
       description: 'Provide the current time. If user ask question related to time, this function should be called.',
       parameters: {
         type: "object",
@@ -127,7 +126,6 @@ export function getFunctions(functions_ = null) {
   if (!functions_ || callables.includes("get_weather") || callables.includes("Weather")) {
     functions.push({
       name: 'get_weather',
-      friendly_name: 'Weather',
       description: 'Get current weather for a given location or city, e.g. San Francisco, CA. When using this function, the location must be provided, if not provided ask user to provide first.',
       parameters: {
         type: "object",
@@ -146,7 +144,6 @@ export function getFunctions(functions_ = null) {
   if (!functions_ || callables.includes("ask_wolframalpha") || callables.includes("WolframAlpha")) {
     functions.push({
       name: 'ask_wolframalpha',
-      friendly_name: 'WolframAlpha',
       description: 'This function send request to WolframAlpha, a computational knowledge engine mainly for resoving mathematical questions. It can answer questions in these fields: Mathematical Problems, Statistics and Data Analysis, Physics, Chemistry, Biology, History and Geography, Units and Measurements, Weather and Astronomy, Economics and Finance, Computational Sciences, Health and Medicine, Technology and Engineering, Music and Arts, Everyday Life. Other than these fileds cannot give answer. Here are 2 example questions, "What is the population of San Francisco?", "What is the capital of France?". The keyword is extracted from the question, it should be a terminology word.',
       parameters: {
         type: "object",
@@ -169,7 +166,6 @@ export function getFunctions(functions_ = null) {
   if (!functions_ || callables.includes("redirect_to_url") || callables.includes("Redirection")) {
     functions.push({
       name: 'redirect_to_url',
-      friendly_name: 'Redirection',
       description: 'Redirect to a URL.',
       parameters: {
         type: "object",

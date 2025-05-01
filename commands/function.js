@@ -18,7 +18,7 @@ export default async function function_(args) {
 
       // Callable functions
       const callables = functions
-        .filter((f) => enabledFunctions.includes(f.name) || enabledFunctions.includes(f.friendly_name))
+        .filter((f) => enabledFunctions.includes(f.name))
         .map((f) => {
           const args =(() => Object.keys(f.parameters.properties).map((p) => {
             const type = f.parameters.properties[p].type;
@@ -36,13 +36,13 @@ export default async function function_(args) {
 
       // Available functions
       let availables = "\\" + functions.map((f) => {
-        return f.name + " (" + f.friendly_name + ")";
+        return f.name;
       }).join(" \\");
 
       // Add * to available functions
       for (const f of functions) {
-        if (enabledFunctions.includes(f.name) || enabledFunctions.includes(f.friendly_name)) {
-          availables = availables.replaceAll("\\" + f.name + " (" + f.friendly_name + ")", "*\\" + f.name + " (" + f.friendly_name + ")");
+        if (enabledFunctions.includes(f.name)) {
+          availables = availables.replaceAll("\\" + f.name, "*\\" + f.name);
         }
       }
 
@@ -68,7 +68,7 @@ export default async function function_(args) {
 
     // Check if the function exists
     const functions = getFunctions();
-    const function_ = functions.find((f) => f.name === functionName || f.friendly_name === functionName);
+    const function_ = functions.find((f) => f.name === functionName);
     if (!function_) {
       return "Function not found.";
     }

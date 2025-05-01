@@ -275,13 +275,9 @@ export default async function(req, res) {
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
       model,
-      frequency_penalty: 0,
-      logit_bias: null,
       n: 1,
       presence_penalty: 0,
       response_format: null,
-      seed: null,
-      service_tier: null,
       stream: false,
       stream_options: null,
       temperature: sysconf.temperature,
