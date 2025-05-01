@@ -17,7 +17,7 @@ import Subscription from "components/Subscription";
 import Documentation from "components/Documentation";
 import Copyrights from "components/Copyrights";
 import Settings from "components/Settings";
-import { refreshUserInfo, updateUserSetting } from "utils/userUtils";
+import { refreshLocalUserInfo, updateUserSetting } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
 import { generateFileURl } from "utils/awsUtils";
@@ -504,9 +504,12 @@ export default function Home() {
     hljs.highlightAll();  // highlight.js
 
     // Check login user credential
-    // If authentication failed, clear local user data
     if (localStorage.getItem("user") !== null) {
-      refreshUserInfo();
+      // This function get user info with API
+      // and set user info (settings) to local
+      // If authentication failed, it will clear local user data
+      console.log("Refreshing user info...");
+      refreshLocalUserInfo();
     } else {
       console.log("User not logged in.");
     }

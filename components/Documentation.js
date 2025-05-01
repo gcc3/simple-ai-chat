@@ -211,7 +211,7 @@ const Documentation = () => {
           <tbody>
             {functions.map((f, index) => (
               <tr key={index}>
-                <td>{f.name}<br></br> {"(" + f.friendly_name + ")"}</td>
+                <td>{f.name}</td>
                 <td>{(() => {
                   const args =(() => Object.keys(f.parameters.properties).map((p) => {
                     const type = f.parameters.properties[p].type;

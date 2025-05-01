@@ -24,7 +24,7 @@ const TYPE = {
 const sysconf = getSystemConfigurations();
 
 // Models
-const models = await getModels();
+let models = await getModels();
 
 export default async function (req, res) {
   // Input
@@ -310,13 +310,20 @@ export default async function (req, res) {
     updateStatus("Create chat completion.");
 
     // Model setup
-    const modelInfo = models.find(m => m.name === model);
+    let modelInfo = models.find(m => m.name === model);
     if (!modelInfo) {
-      updateStatus("Model not exists.");
-      res.write(`data: ###ERR###Model not exists.\n\n`);
-      res.write(`data: [DONE]\n\n`);
-      res.end();
-      return;
+      // Try update models
+      models = await getModels();
+
+      // Still not found
+      modelInfo = models.find(m => m.name === model);
+      if (!modelInfo) {
+        updateStatus("Model not exists.");
+        res.write(`data: ###ERR###Model not exists.\n\n`);
+        res.write(`data: [DONE]\n\n`);
+        res.end();
+        return;
+      }
     }
 
     const apiKey = modelInfo.api_key;
@@ -349,13 +356,9 @@ export default async function (req, res) {
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
       model,
-      frequency_penalty: 0,
-      logit_bias: null,
       n: 1,
       presence_penalty: 0,
       response_format: null,
-      seed: null,
-      service_tier: null,
       stream: true,
       stream_options: {
         include_usage: true,
