@@ -17,12 +17,21 @@ Dependencies
 OpenAI API https://platform.openai.com/docs/api-reference  
 openai-node https://github.com/openai/openai-node  
 React https://reactjs.org/  
-Redux https://redux.js.org/  
 Next.js https://nextjs.org/  
+tailwind https://tailwindcss.com/docs/  
+
+- LLM Providers  
+OpenAI https://platform.openai.com/docs/models  
+Anthropic https://www.anthropic.com/  
+Google AI https://ai.google.dev/gemini-api/docs  
+xAI https://x.ai/  
+
+- Local AI Engine  
+Ollama https://ollama.com/  
+
+- Data Sources  
 WolframAlpha APIs https://products.wolframalpha.com/api  
 Vectara https://vectara.com/  
-tailwind https://tailwindcss.com/docs/  
-Ollama https://ollama.com/  
 
 
 Setup
@@ -34,19 +43,18 @@ Setup
 
 2. Create necessary files.  
    Create `.env` from `.env.example`  
-   Create `role.csv` from `role.csv.example` (optional)  
-   `role.csv.example` is got from https://github.com/f/awesome-chatgpt-prompts  
-   * `db.sqlite` will be created automatically.  
+   Other files `db.sqlite`, `role.csv`, `log.config` will be created automatically.  
+   * `role.csv.example` is from https://github.com/f/awesome-chatgpt-prompts  
 
 3. Build and run the app.  
    `$ npm run build`  
    `$ npm run dev` or `$npm start`
 
 
-Node (Node AI)
+AI Link (node)
 --------------
 
-Simple AI is able to link to any AI (node) or data source in an OpenAI compatible format.  
+Simple AI is able to link to any AI or data source in an OpenAI compatible format.  
 
 * Request example:  
 
