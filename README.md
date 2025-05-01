@@ -38,17 +38,23 @@ Setup
 -----
 
 1. Install the requirements  
+
    `$ npm install`  
    `$ npm install next -g`  
 
 2. Create necessary files.  
+
    Create `.env` from `.env.example`  
-   Other files `db.sqlite`, `role.csv`, `log.config` will be created automatically.  
-   * `role.csv.example` is from https://github.com/f/awesome-chatgpt-prompts  
 
 3. Build and run the app.  
+
    `$ npm run build`  
    `$ npm run dev` or `$npm start`
+
+- Files automatically created:
+  - `db.sqlite`
+  - `role.csv` created from [`role.csv.example`](https://github.com/f/awesome-chatgpt-prompts)  
+  - `log.config` created from `log.config.example`
 
 
 AI Link (node)
@@ -98,6 +104,7 @@ Simple AI is able to link to any AI or data source in an OpenAI compatible forma
 - Repository providing the AI link:  
   - [Simple AI Node](https://github.com/gcc3/simple-ai-node)  
   - [Simple AI Hub](https://github.com/gcc3/simple-ai-hub)  
+
 
 .env
 ----
