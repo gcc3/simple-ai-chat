@@ -144,6 +144,10 @@ export default async function model(args) {
                       + models.join(" ") + "\n\n"; 
         }
 
+        if (userModels === "" && groupModels === "" && systemModels === "") {
+          return "No available model found.";
+        }
+
         return userModels + groupModels + systemModels;
       }
     } catch (error) {

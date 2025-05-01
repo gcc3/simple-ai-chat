@@ -143,6 +143,10 @@ export default async function store(args, files) {
                        + stores.join(" ") + "\n\n"; 
         }
 
+        if (userStores === "" && groupStores === "" && systemStores === "") {
+          return "No available store found.";
+        }
+
         return userStores + groupStores + systemStores;
       }
     } catch (error) {

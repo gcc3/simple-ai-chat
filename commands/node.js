@@ -148,6 +148,10 @@ export default async function node(args) {
                       + nodes.join(" ") + "\n\n"; 
         }
 
+        if (userNodes === "" && groupNodes === "" && systemNodes === "") {
+          return "No available node found.";
+        }
+
         return userNodes + groupNodes + systemNodes;
       }
     } catch (error) {
