@@ -1,4 +1,3 @@
-
 import { isCommandMusked } from "utils/passwordUtils.js";
 import help from "./commands/help.js";
 import stats from "./commands/stats.js";
@@ -52,40 +51,41 @@ export default function commands(input, files) {
     }
   }
   
-  if (command.startsWith(":help")) return help(args);
-  if (command.startsWith(":stats")) return stats(args);
-  if (command.startsWith(":eval")) return eval_(args);
-  if (command.startsWith(":stream")) return stream(args);
-  if (command.startsWith(":login")) return login(args);
-  if (command.startsWith(":logout")) return logout(args);
-  if (command.startsWith(":log")) return log(args);
-  if (command.startsWith(":info")) return info(args);
-  if (command.startsWith(":ls")) return ls(args);
-  if (command.startsWith(":session")) return session(args);
-  if (command.startsWith(":role")) return role(args);
-  if (command.startsWith(":clear")) return clear(args);
-  if (command.startsWith(":reset")) return reset(args);
-  if (command.startsWith(":speak")) return speak(args);
-  if (command.startsWith(":lang")) return lang(args);
-  if (command.startsWith(":stop")) return stop(args);
-  if (command.startsWith(":function")) return function_(args);
-  if (command.startsWith(":location")) return location(args);
-  if (command.startsWith(":voice")) return voice(args);
-  if (command.startsWith(":system")) return system(args);
-  if (command.startsWith(":fullscreen")) return fullscreen(args);
-  if (command.startsWith(":theme")) return theme(args);
-  if (command.startsWith(":user")) return user(args);
-  if (command.startsWith(":store")) return store(args, files);
-  if (command.startsWith(":search")) return search(args);
-  if (command.startsWith(":node")) return node(args);
-  if (command.startsWith(":set")) return set(args);
-  if (command.startsWith(":generate")) return generate(args);
-  if (command.startsWith(":invite")) return invite(args);
-  if (command.startsWith(":attach")) return attach(args);
-  if (command.startsWith(":use")) return use(args);
-  if (command.startsWith(":split")) return split(args);
-  if (command.startsWith(":unuse")) return unuse(args);
-  if (command.startsWith(":model")) return model(args);
+  // Use strict equality for command matching to avoid partial matches
+  if (command === ":help") return help(args);
+  if (command === ":stats") return stats(args);
+  if (command === ":eval") return eval_(args);
+  if (command === ":stream") return stream(args);
+  if (command === ":login") return login(args);
+  if (command === ":logout") return logout(args);
+  if (command === ":log") return log(args);
+  if (command === ":info") return info(args);
+  if (command === ":ls") return ls(args);
+  if (command === ":session") return session(args);
+  if (command === ":role") return role(args);
+  if (command === ":clear") return clear(args);
+  if (command === ":reset") return reset(args);
+  if (command === ":speak") return speak(args);
+  if (command === ":lang") return lang(args);
+  if (command === ":stop") return stop(args);
+  if (command === ":function") return function_(args);
+  if (command === ":location") return location(args);
+  if (command === ":voice") return voice(args);
+  if (command === ":system") return system(args);
+  if (command === ":fullscreen") return fullscreen(args);
+  if (command === ":theme") return theme(args);
+  if (command === ":user") return user(args);
+  if (command === ":store") return store(args, files);
+  if (command === ":search") return search(args);
+  if (command === ":node") return node(args);
+  if (command === ":set") return set(args);
+  if (command === ":generate") return generate(args);
+  if (command === ":invite") return invite(args);
+  if (command === ":attach") return attach(args);
+  if (command === ":use") return use(args);
+  if (command === ":split") return split(args);
+  if (command === ":unuse") return unuse(args);
+  if (command === ":model") return model(args);
   return "Unknown command.";
 }
 
