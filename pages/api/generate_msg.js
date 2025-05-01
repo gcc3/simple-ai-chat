@@ -36,19 +36,19 @@ export default async function(req, res) {
   let events = [];
 
   // Config (input)
-  /*  1 */ const time_ = req.body.time || "";
-  /*  2 */ const session = req.body.session || "";
-  /*  3 */ const mem_length = req.body.mem_length || 0;
-  /*  4 */ const functions_ = req.body.functions || "";
-  /*  5 */ const role = req.body.role || "";
-  /*  6 */ const store = req.body.store || "";
-  /*  7 */ const node = req.body.node || "";
-  /*  8 */ const use_stats = req.body.use_stats || false;
-  /*  9 */ const use_eval_ = req.body.use_eval || false;
-  /* 10 */ const use_location = req.body.use_location || false;
-  /* 11 */ const location = req.body.location || "";
-  /* 12 */ const lang = req.body.lang || "en-US";
-  /* 13 */ const use_system_role = req.body.use_system_role || false;
+  const time_ = req.body.time || "";
+  const session = req.body.session || "";
+  const mem_length = req.body.mem_length || 0;
+  const functions_ = req.body.functions || "";
+  const role = req.body.role || "";
+  const store = req.body.store || "";
+  const node = req.body.node || "";
+  const use_stats = req.body.use_stats || false;
+  const use_eval_ = req.body.use_eval || false;
+  const use_location = req.body.use_location || false;
+  const location = req.body.location || "";
+  const lang = req.body.lang || "en-US";
+  const use_system_role = req.body.use_system_role || false;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];

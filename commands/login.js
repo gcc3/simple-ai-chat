@@ -1,5 +1,5 @@
 import { initializeSession } from "utils/sessionUtils";
-import { setUserLocalStorage } from "utils/userUtils.js";
+import { setUserWebStorage } from "utils/userUtils.js";
 
 export default async function login(args) {
   if (args.length < 2 && args.length > 4) {
@@ -54,7 +54,7 @@ export default async function login(args) {
         throw new Error("User not found.");
       }
 
-      setUserLocalStorage(user);
+      setUserWebStorage(user);
       console.log("User is set to \"" + localStorage.getItem("user") + "\".");
 
       if (userLoginPreviously) {

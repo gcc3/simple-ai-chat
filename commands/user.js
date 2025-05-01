@@ -1,6 +1,6 @@
 import { verifiyEmailAddress } from "utils/emailUtils";
 import { getSettings } from "utils/settingsUtils";
-import { refreshUserInfo, clearUserWebStorage, setUserLocalStorage } from "utils/userUtils";
+import { refreshLocalUserInfo, clearUserWebStorage, setUserWebStorage } from "utils/userUtils";
 
 export default async function entry(args) {
   const command = args[0];
@@ -42,7 +42,7 @@ export default async function entry(args) {
 
     if (user) {
       // Settings is a part of user info, so update it.
-      setUserLocalStorage(user);
+      setUserWebStorage(user);
 
       return JSON.stringify(user, null, 2)
     } else {
@@ -242,7 +242,7 @@ export default async function entry(args) {
       }
 
       if (data.success) {
-        refreshUserInfo();
+        refreshLocalUserInfo();
         return data.message;
       } else {
         return data.error;

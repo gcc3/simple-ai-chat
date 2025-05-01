@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import PayPalButton from "./PayPalButton";
-import { refreshUserInfo, getRoleLevel, getUserInfo } from "utils/userUtils";
+import { getRoleLevel, getUserInfo } from "utils/userUtils";
 import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
 import { npre } from "utils/numberUtils";
 import { useTranslation } from "react-i18next";

@@ -3,82 +3,104 @@ import store from '../store.js';
 import { toggleFullscreen } from '../states/fullscreenSlice.js';
 import { initializeSession } from "./sessionUtils";
 
-export function setUserLocalStorage(user) {
+export function setUserWebStorage(user) {
+  if (!user.username || !user.settings) {
+    console.warn("User data is incomplete, clearing local user data...");
+
+    // Clear local user data
+    if (localStorage.getItem("user")) {
+      clearUserWebStorage();
+
+      // Clear auth cookie
+      document.cookie = "auth=; Path=/;";
+      console.log("User data is incomplete, local user data cleared.");
+    }
+    return;
+  }
+
   // 1. Set local user
   localStorage.setItem("user", user.username);
 
   // 2. Overwrite local settings
-  if (user.settings) {
-    const settings = user.settings;
+  const settings = user.settings;
 
-    // lang
-    if (settings.lang) {
-      localStorage.setItem("lang", settings.lang);
-    }
+  // lang
+  if (settings.lang) {
+    localStorage.setItem("lang", settings.lang);
+  }
 
-    // theme
-    if (settings.theme) {
-      localStorage.setItem("theme", settings.theme);
-      setTheme(localStorage.getItem("theme"));
-    }
+  // theme
+  if (settings.theme) {
+    localStorage.setItem("theme", settings.theme);
+    setTheme(localStorage.getItem("theme"));
+  }
 
-    // fullscreen
-    if (settings.fullscreen) {
-      if (settings.fullscreen != localStorage.getItem("fullscreen") && !localStorage.getItem("fullscreen").includes("force")) {
-        localStorage.setItem("fullscreen", settings.fullscreen);
-        store.dispatch(toggleFullscreen(settings.fullscreen));
-      }
+  // fullscreen
+  if (settings.fullscreen) {
+    if (settings.fullscreen != localStorage.getItem("fullscreen") && !localStorage.getItem("fullscreen").includes("force")) {
+      localStorage.setItem("fullscreen", settings.fullscreen);
+      store.dispatch(toggleFullscreen(settings.fullscreen));
     }
+  }
 
-    // useSpeak
-    if (settings.useSpeak) {
-      localStorage.setItem("useSpeak", settings.useSpeak == "true" ? true : false);
-    }
+  // useSpeak
+  if (settings.useSpeak) {
+    localStorage.setItem("useSpeak", settings.useSpeak == "true" ? true : false);
+  }
 
-    // useStats
-    if (settings.useStats) {
-      localStorage.setItem("useStats", settings.useStats == "true" ? true : false);
-    }
+  // useStats
+  if (settings.useStats) {
+    localStorage.setItem("useStats", settings.useStats == "true" ? true : false);
+  }
 
-    // useEval
-    if (settings.useEval) {
-      localStorage.setItem("useEval", settings.useEval == "true" ? true : false);
-    }
+  // useEval
+  if (settings.useEval) {
+    localStorage.setItem("useEval", settings.useEval == "true" ? true : false);
+  }
 
-    // useSystemRole
-    if (settings.useSystemRole) {
-      localStorage.setItem("useSystemRole", settings.useSystemRole == "true" ? true : false);
-    }
+  // useSystemRole
+  if (settings.useSystemRole) {
+    localStorage.setItem("useSystemRole", settings.useSystemRole == "true" ? true : false);
+  }
 
-    // functions
-    if (settings.functions) {
-      localStorage.setItem("functions", settings.functions);
-    }
+  // model
+  if (settings.model) {
+    sessionStorage.setItem("model", settings.model);
+  }
 
-    // role
-    if (settings.role) {
-      sessionStorage.setItem("role", settings.role);
-    }
+  // modelV
+  if (settings.modelV) {
+    sessionStorage.setItem("modelV", settings.modelV);
+  }
 
-    // store
-    if (settings.stores) {
-      sessionStorage.setItem("stores", settings.store);
-    }
+  // functions
+  if (settings.functions) {
+    localStorage.setItem("functions", settings.functions);
+  }
 
-    // node
-    if (settings.node) {
-      sessionStorage.setItem("node", settings.node);
-    }
+  // role
+  if (settings.role) {
+    sessionStorage.setItem("role", settings.role);
+  }
 
-    // memLength
-    if (settings.memLength) {
-      sessionStorage.setItem("memLength", settings.memLength);
-    }
+  // store
+  if (settings.stores) {
+    sessionStorage.setItem("stores", settings.stores);
+  }
 
-    // passMask
-    if (settings.passMask) {
-      localStorage.setItem("passMask", settings.passMask);
-    }
+  // node
+  if (settings.node) {
+    sessionStorage.setItem("node", settings.node);
+  }
+
+  // memLength
+  if (settings.memLength) {
+    sessionStorage.setItem("memLength", settings.memLength);
+  }
+
+  // passMask
+  if (settings.passMask) {
+    localStorage.setItem("passMask", settings.passMask);
   }
 }
 
@@ -144,13 +166,18 @@ export async function getUserUsage() {
 }
 
 // User get user info to check user credential
-export async function refreshUserInfo() {
+export async function refreshLocalUserInfo() {
   const user = await getUserInfo();
 
   if (user) {
+    console.log("User info - settings: ", JSON.stringify(user.settings, null, 2));
+
     // Refresh local user data
-    setUserLocalStorage(user);
+    setUserWebStorage(user);
   } else {
+    console.warn("User not found or authentication failed, clearing local user data...");
+
+    // Clear local user data
     if (localStorage.getItem("user")) {
       clearUserWebStorage();
 
