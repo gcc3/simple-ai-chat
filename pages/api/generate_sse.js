@@ -381,6 +381,10 @@ export default async function (req, res) {
 
     // Hanldle output
     for await (const part of chatCompletion) {
+      if (!part.choices) {
+        continue;
+      }
+
       if (part.choices.length > 0) {
         // 1. handle message output
         const content = part.choices[0].delta.content;
