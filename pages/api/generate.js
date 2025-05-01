@@ -380,8 +380,10 @@ export default async function(req, res) {
     console.log("input_fee = " + chatCompletion.usage.prompt_tokens + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
     console.log("output_fee = " + chatCompletion.usage.completion_tokens + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
     console.log("total_fee: " + total_fee.toFixed(5));
-    await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
-    console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
+    if (user && user.username) {
+      await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
+      console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
+    }
 
     // Log
     await logadd(user, session, time++, model, chatCompletion.usage.prompt_tokens, input, chatCompletion.usage.completion_tokens, output, JSON.stringify(input_images), ip, browser);
