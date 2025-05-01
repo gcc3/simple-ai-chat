@@ -120,9 +120,6 @@ export default async function model(args) {
           });
           userModels = "User models: \n" 
                      + models.join(" ") + "\n\n";
-        } else {
-          userModels = "User models: \n" 
-                     + "No model found." + "\n\n";
         }
 
         // Group models
@@ -134,9 +131,6 @@ export default async function model(args) {
           });
           groupModels = "Group models: \n" 
                     + models.join(" ") + "\n\n"; 
-        } else {
-          groupModels = "Group models: \n" 
-                      + "No model found." + "\n\n";
         }
 
         // System models
@@ -148,9 +142,6 @@ export default async function model(args) {
           });
           systemModels = "System models: \n" 
                       + models.join(" ") + "\n\n"; 
-        } else {
-          systemModels = "System models: \n" 
-                      + "No model found." + "\n\n";
         }
 
         return userModels + groupModels + systemModels;

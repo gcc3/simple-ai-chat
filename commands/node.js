@@ -124,9 +124,6 @@ export default async function node(args) {
           });
           userNodes = "User nodes: \n" 
                      + nodes.join(" ") + "\n\n";
-        } else {
-          userNodes = "User nodes: \n" 
-                     + "No node found." + "\n\n";
         }
 
         // Group nodes
@@ -138,9 +135,6 @@ export default async function node(args) {
           });
           groupNodes = "Group nodes: \n" 
                     + nodes.join(" ") + "\n\n"; 
-        } else {
-          groupNodes = "Group nodes: \n" 
-                      + "No node found." + "\n\n";
         }
 
         // System nodes
@@ -152,9 +146,6 @@ export default async function node(args) {
           });
           systemNodes = "System nodes: \n" 
                       + nodes.join(" ") + "\n\n"; 
-        } else {
-          systemNodes = "System nodes: \n" 
-                      + "No node found." + "\n\n";
         }
 
         return userNodes + groupNodes + systemNodes;

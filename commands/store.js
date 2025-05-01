@@ -119,9 +119,6 @@ export default async function store(args, files) {
           });
           userStores = "User stores: \n" 
                      + stores.join(" ") + "\n\n";
-        } else {
-          userStores = "User stores: \n" 
-                     + "No store found." + "\n\n";
         }
 
         // Group stores
@@ -133,9 +130,6 @@ export default async function store(args, files) {
           });
           groupStores = "Group Stores: \n" 
                       + stores.join(" ") + "\n\n"; 
-        } else {
-          groupStores = "Group Stores: \n" 
-                      + "No store found." + "\n\n";
         }
 
         // System stores
@@ -147,9 +141,6 @@ export default async function store(args, files) {
           });
           systemStores = "System Stores: \n" 
                        + stores.join(" ") + "\n\n"; 
-        } else {
-          systemStores = "System Stores: \n" 
-                       + "No store found." + "\n\n";
         }
 
         return userStores + groupStores + systemStores;
