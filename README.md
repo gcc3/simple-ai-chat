@@ -3,6 +3,8 @@ Simple AI Chat
 ==============
 
 
+<img src="https://github.com/user-attachments/assets/1f8f0f14-23d6-4e45-9a32-ad79a390b35b" width="400" />
+
 Simple AI Chat is a command-based AI chat application, aimed at providing users with an easy and simple AI experience.  
 This application is deployed to [simple-ai.io](https://simple-ai.io).  
 You can fork this code and deploy it on your machine for non-commercial use. (For details, please refer to the LICENSE file.)  
