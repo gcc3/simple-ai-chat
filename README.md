@@ -46,9 +46,7 @@ Setup
 Node (Node AI)
 --------------
 
-Simple AI is able to link to another support AI or data source.  
-The API format will use an OpenAI compatible format.  
-To use AI links, set `USE_NODE_AI` to `true`.  
+Simple AI is able to link to any AI (node) or data source in an OpenAI compatible format.  
 
 * Request example:  
 
@@ -88,10 +86,10 @@ To use AI links, set `USE_NODE_AI` to `true`.
 }
 ```
 
-* Ollama support  
-
-[Ollama](https://ollama.com/) compatible APIs are supported by Simple AI with Node feature.  
-
+- To use AI links, set `USE_NODE_AI` to `true`.  
+- Repository providing the AI link:  
+  - [Simple AI Node](https://github.com/gcc3/simple-ai-node)  
+  - [Simple AI Hub](https://github.com/gcc3/simple-ai-hub)  
 
 .env
 ----
@@ -208,6 +206,9 @@ Default vectara database settings, and documentation corpus ID.
 Enable user accounts, the value should be `true` or `false`.  
 
 * DEFAULT_FUNCTIONS, DEFAULT_ROLE, DEFAULT_STORES, DEFAULT_NODE  
-Default functions, role, stores and node.
+Default functions, role, stores and node.  
+Example: 
+DEFAULT_FUNCTIONS=get_time,get_weather,redirect_to_url  
+DEFAULT_STORES=store1,store2  
 
 _Originally Forked from https://github.com/openai/openai-quickstart-node_  
