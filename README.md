@@ -1,11 +1,11 @@
 
-Simple AI Chat
-==============
+Simple AI
+=========
 
 
 <img src="https://github.com/user-attachments/assets/1f8f0f14-23d6-4e45-9a32-ad79a390b35b" width="400" />
 
-Simple AI Chat is a command-based AI chat application, aimed at providing users with an easy and simple AI experience.  
+Simple AI (`simple-ai-chat`) is a command-based AI chat application, aimed at providing users with an easy and simple AI experience.  
 This application is deployed to [simple-ai.io](https://simple-ai.io).  
 You can fork this code and deploy it on your machine for non-commercial use. (For details, please refer to the LICENSE file.)  
 For bugs or suggestions, please report to the repository's GitHub Issues.  
@@ -17,38 +17,50 @@ Dependencies
 OpenAI API https://platform.openai.com/docs/api-reference  
 openai-node https://github.com/openai/openai-node  
 React https://reactjs.org/  
-Redux https://redux.js.org/  
 Next.js https://nextjs.org/  
+tailwind https://tailwindcss.com/docs/  
+
+- LLM Providers  
+OpenAI https://platform.openai.com/docs/models  
+Anthropic https://www.anthropic.com/  
+Google AI https://ai.google.dev/gemini-api/docs  
+xAI https://x.ai/  
+
+- Local AI Engine  
+Ollama https://ollama.com/  
+
+- Data Sources  
 WolframAlpha APIs https://products.wolframalpha.com/api  
 Vectara https://vectara.com/  
-tailwind https://tailwindcss.com/docs/  
-Ollama https://ollama.com/  
 
 
 Setup
 -----
 
 1. Install the requirements  
+
    `$ npm install`  
    `$ npm install next -g`  
 
 2. Create necessary files.  
+
    Create `.env` from `.env.example`  
-   Create `role.csv` from `role.csv.example` (optional)  
-   `role.csv.example` is got from https://github.com/f/awesome-chatgpt-prompts  
-   * `db.sqlite` will be created automatically.  
 
 3. Build and run the app.  
+
    `$ npm run build`  
    `$ npm run dev` or `$npm start`
 
+- Files automatically created:
+  - `db.sqlite`
+  - `role.csv` created from [`role.csv.example`](https://github.com/f/awesome-chatgpt-prompts)  
+  - `log.config` created from `log.config.example`
 
-Node (Node AI)
+
+AI Link (node)
 --------------
 
-Simple AI is able to link to another support AI or data source.  
-The API format will use an OpenAI compatible format.  
-To use AI links, set `USE_NODE_AI` to `true`.  
+Simple AI is able to link to any AI or data source in an OpenAI compatible format.  
 
 * Request example:  
 
@@ -88,9 +100,10 @@ To use AI links, set `USE_NODE_AI` to `true`.
 }
 ```
 
-* Ollama support  
-
-[Ollama](https://ollama.com/) compatible APIs are supported by Simple AI with Node feature.  
+- To use AI links, set `USE_NODE_AI` to `true`.  
+- Repository providing the AI link:  
+  - [Simple AI Node](https://github.com/gcc3/simple-ai-node)  
+  - [Simple AI Hub](https://github.com/gcc3/simple-ai-hub)  
 
 
 .env
@@ -208,6 +221,9 @@ Default vectara database settings, and documentation corpus ID.
 Enable user accounts, the value should be `true` or `false`.  
 
 * DEFAULT_FUNCTIONS, DEFAULT_ROLE, DEFAULT_STORES, DEFAULT_NODE  
-Default functions, role, stores and node.
+Default functions, role, stores and node.  
+Example: 
+DEFAULT_FUNCTIONS=get_time,get_weather,redirect_to_url  
+DEFAULT_STORES=store1,store2  
 
 _Originally Forked from https://github.com/openai/openai-quickstart-node_  
