@@ -24,7 +24,7 @@ const TYPE = {
 const sysconf = getSystemConfigurations();
 
 // Models
-const models = await getModels();
+let models = await getModels();
 
 export default async function (req, res) {
   // Input
