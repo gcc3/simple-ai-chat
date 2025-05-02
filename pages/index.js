@@ -449,6 +449,7 @@ export default function Home() {
         const modelInfo = (await modelInfoResponse.json()).result;
         if (modelInfo) {
           // Found remote model
+          console.log("Set baseUrl: " + modelInfo.base_url);
           sessionStorage.setItem("baseUrl", modelInfo.base_url);
         } else {
           if (await pingOllamaAPI()) {
@@ -456,6 +457,7 @@ export default function Home() {
             const ollamaModel = ollamaModels.find(o => o.name === modelName);
             if (ollamaModel) {
               // Found ollama model
+              console.log("Set baseUrl: " + ollamaModel.base_url);
               sessionStorage.setItem("baseUrl", ollamaModel.base_url);
             } else {
               // Both remote and local model not found, set baseUrl to empty
