@@ -1,3 +1,4 @@
+import { listOllamaModels, pingOllamaAPI } from "utils/ollamaUtils";
 import { initializeSession } from "utils/sessionUtils";
 
 export default async function model(args) {
@@ -118,7 +119,7 @@ export default async function model(args) {
           Object.entries(data.result.user_models).forEach(([key, value]) => {
             models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
           });
-          userModels = "User models: \n" 
+          userModels = "User models:\n" 
                      + models.join(" ") + "\n\n";
         }
 
@@ -129,7 +130,7 @@ export default async function model(args) {
           Object.entries(data.result.group_models).forEach(([key, value]) => {
             models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
           });
-          groupModels = "Group models: \n" 
+          groupModels = "Group models:\n" 
                     + models.join(" ") + "\n\n"; 
         }
 
@@ -140,15 +141,29 @@ export default async function model(args) {
           Object.entries(data.result.system_models).forEach(([key, value]) => {
             models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
           });
-          systemModels = "System models: \n" 
+          systemModels = "System models:\n" 
                       + models.join(" ") + "\n\n"; 
         }
 
-        if (userModels === "" && groupModels === "" && systemModels === "") {
+        // Ollama models
+        let ollamaModels = "";
+        if (await pingOllamaAPI()) {
+          const ollamaModelList = await listOllamaModels();
+          if (ollamaModelList && ollamaModelList.length > 0) {
+            let models = [];
+            ollamaModelList.forEach((model) => {
+              models.push((currentModel === model ? "*\\" : "\\") + model);
+            });
+            ollamaModels = "Ollama models:\n" 
+                        + models.join(" ") + "\n\n"; 
+          }
+        }
+
+        if (userModels === "" && groupModels === "" && systemModels === "" && ollamaModels === "") {
           return "No available model found.";
         }
 
-        return userModels + groupModels + systemModels;
+        return userModels + groupModels + systemModels + ollamaModels;
       }
     } catch (error) {
       console.error(error);
