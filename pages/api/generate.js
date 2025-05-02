@@ -45,7 +45,7 @@ export default async function(req, res) {
   const mem_length = req.body.mem_length || 0;
   const functions_ = req.body.functions || "";
   const role = req.body.role || "";
-  const store = req.body.store || "";
+  const stores = req.body.stores || "";
   const node = req.body.node || "";
   const use_stats = req.body.use_stats || false;
   const use_eval_ = req.body.use_eval || false;
@@ -134,7 +134,7 @@ export default async function(req, res) {
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
     + "functions: " + (functions_ || "___") + "\n"
     + "role: " + (role || "___") + "\n"
-    + "store: " + (store || "___") + "\n"
+    + "stores: " + (stores || "___") + "\n"
     + "node: " + (node || "___") + "\n");
   }
 
@@ -197,20 +197,11 @@ export default async function(req, res) {
     let input_images = [];
 
     // Messages
-    // messages
-    // token_ct: { system, history, user_input, user_input_image, user_input_files, location, role, store, node, function, total }
-    // mem
-    // input_images
-    // input_file_content
-    // node_input
-    // node_output
-    // node_output_images
-    // raw_prompt: { system, role, history, user_input_file, function, store, node, location }
     const msg = await generateMessages(use_system_role, lang,
                                        user, model,
                                        input, inputType, files, images,
                                        session, mem_length,
-                                       role, store, node,
+                                       role, stores, node,
                                        use_location, location, 
                                        sysconf.use_function_calling, functionCalls, functionResults);
     
@@ -411,7 +402,7 @@ export default async function(req, res) {
           mem: msg.mem,
           func: functionNames.join('|'),
           role: role,
-          store: store,
+          store: stores,
           node: node,
           eval: eval_
         },

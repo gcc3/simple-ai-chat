@@ -67,7 +67,7 @@ export default async function (req, res) {
   const mem_length = req.query.mem_length || 0;
   const functions_ = req.query.functions || "";
   const role = req.query.role || "";
-  const store = req.query.store || "";
+  const stores = req.query.stores || "";
   const node = req.query.node || "";
   const use_stats = req.query.use_stats === "true" ? true : false;
   const use_eval_ = req.query.use_eval === "true" ? true : false;
@@ -178,7 +178,7 @@ export default async function (req, res) {
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
     + "functions: " + (functions_ || "___") + "\n"
     + "role: " + (role || "___") + "\n"
-    + "store: " + (store || "___") + "\n"
+    + "stores: " + (stores || "___") + "\n"
     + "node: " + (node || "___") + "\n");
   }
 
@@ -245,21 +245,12 @@ export default async function (req, res) {
     let toolCalls = [];
 
     // Messages
-    // messages
-    // token_ct: { system, history, user_input, user_input_image, user_input_files, location, role, store, node, function, total }
-    // mem
-    // input_images
-    // input_file_content
-    // node_input
-    // node_output
-    // node_output_images
-    // raw_prompt: { system, role, history, user_input_file, function, store, node, location }
     updateStatus("Start pre-generating...");
     const msg = await generateMessages(use_system_role, lang,
                                        user, model,
                                        input, inputType, files, images, 
                                        session, mem_length,
-                                       role, store, node, 
+                                       role, stores, node, 
                                        use_location, location,
                                        sysconf.use_function_calling, functionCalls, functionResults,
 
@@ -378,7 +369,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###MODEL###${model}\n\n`);
-    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${msg.mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node},${msg.mem}\n\n`);
 
     // Print input images
     input_images.map(image => {
@@ -508,7 +499,7 @@ export default async function (req, res) {
     await logadd(user, session, time++, model, chatCompletionUsage.prompt_tokens, input, chatCompletionUsage.completion_tokens, output, JSON.stringify(input_images), ip, browser);
 
     // Stats (final)
-    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${chatCompletionUsage.total_tokens},${use_eval},${functionNames.join('|')},${role},${store.replaceAll(",","|")},${node},${msg.mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${chatCompletionUsage.total_tokens},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node},${msg.mem}\n\n`);
     
     // Done message
     updateStatus("Finished.");

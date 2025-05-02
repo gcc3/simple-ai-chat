@@ -147,13 +147,13 @@ export async function generateMessages(use_system_role, lang,
     token_ct["role"] = countToken(model, role_prompt);
   }
 
-  // -4. Data store search result
-  let store_prompt = "";
+  // -4. Data stores search result
+  let stores_prompt = "";
   
   // General store search
   if (stores && user) {
-    updateStatus && updateStatus("Data store searching...");
-    console.log("--- data store search ---");
+    updateStatus && updateStatus("Data stores searching...");
+    console.log("--- data stores search ---");
     console.log("stores: " + stores);
 
     // Search all active stores
@@ -173,7 +173,7 @@ export async function generateMessages(use_system_role, lang,
               const response = await fetch(file);
               const fileContent = await response.text();
 
-              store_prompt += "\n\n" + fileContent + "\n\n";
+              stores_prompt += "\n\n" + fileContent + "\n\n";
             } catch (error) {
               console.error("Error fetching file:", error);
               console.log("store `" + store + "`: " + "error fetching file: " + file + "\n" + error);
@@ -200,7 +200,7 @@ export async function generateMessages(use_system_role, lang,
               mysqlPrompt += "Query result: \n";
               mysqlPrompt += queryResult.message.trim();
 
-              store_prompt += "\n\n" + mysqlPrompt + "\n\n";
+              stores_prompt += "\n\n" + mysqlPrompt + "\n\n";
             }
           }
         }
@@ -209,12 +209,12 @@ export async function generateMessages(use_system_role, lang,
 
     messages.push({
       "role": "system",
-      "content": "Support data:" + store_prompt,
+      "content": "Support data:" + stores_prompt,
     })
     console.log("");  // add new line
 
     // Count tokens
-    token_ct["store"] = countToken(model, store_prompt);
+    token_ct["store"] = countToken(model, stores_prompt);
   }
 
   // -3. Node AI result
@@ -602,7 +602,7 @@ export async function generateMessages(use_system_role, lang,
       history: chat_history_prompt,
       user_input_file: user_input_file_prompt,
       function: function_prompt,
-      store: store_prompt,
+      stores: stores_prompt,
       node: node_prompt,
       location: location_prompt,
     }

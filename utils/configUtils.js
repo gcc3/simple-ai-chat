@@ -7,7 +7,7 @@ export function loadConfig() {
     mem_length: sessionStorage.getItem("memLength"),
     functions: localStorage.getItem("functions"),
     role: sessionStorage.getItem("role"),
-    store: sessionStorage.getItem("stores"),           
+    stores: sessionStorage.getItem("stores"),           
     node: sessionStorage.getItem("node"),
     use_stats: localStorage.getItem("useStats"),
     use_eval: localStorage.getItem("useEval"),
