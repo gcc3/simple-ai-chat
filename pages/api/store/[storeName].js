@@ -29,6 +29,13 @@ export default async function (req, res) {
     let settings = JSON.parse(store.settings);
     let status = {};
 
+    // File store
+    if (store.engine === "file") {
+      status = {
+        available: settings.files.length > 0,
+      }
+    }
+
     // MySQL store
     if (store.engine === "mysql") {
       status = {

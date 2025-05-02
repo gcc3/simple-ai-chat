@@ -7,7 +7,7 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
-  const { name, files } = req.body;
+  const { name, file } = req.body;
 
   // Authentication
   const authResult = authenticate(req);
@@ -35,6 +35,8 @@ export default async function (req, res) {
       error: "You are not the owner or creator of this store."
     });
   }
+
+  console.log("Store file URL: ", file);
 
   return res.status(400).json({ 
     success: false, 
