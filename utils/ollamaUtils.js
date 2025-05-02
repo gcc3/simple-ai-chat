@@ -1,8 +1,18 @@
 // Ping Ollama API to check if it is running
 export async function pingOllamaAPI(baseUrl = 'http://localhost:11434') {
   try {
-    const response = await fetch(`${baseUrl}`);
-    if (!response.ok) return false;
+    // set up timeout for 100ms
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 100);
+    const response = await fetch(`${baseUrl}`, { 
+      signal: controller.signal,
+      method: 'GET',
+      headers: { 'Accept': 'text/plain' }
+    });
+    clearTimeout(timeoutId);
+    if (!response.ok) {
+      return false;
+    }
     const text = await response.text();
     return text === 'Ollama is running';
   } catch {
