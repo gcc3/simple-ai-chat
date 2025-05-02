@@ -8,7 +8,6 @@
   "Roles": "Rôles",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "Permettez à GPT d'agir comme un rôle pour fournir des réponses plus satisfaisantes. Vous pouvez utiliser soit des rôles de système pré-définis, soit créer des instructions personnalisées pour adapter les rôles des utilisateurs à vos besoins spécifiques.",
   "Data Stores": "Magasins de données",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Prise en charge de la recherche et de l'interrogation pour les bases de données vectorielles et les bases de données relationnelles. Pour la base de données vectorielle, l'utilisateur peut télécharger des fichiers dans sa base de données personnelle. Lorsqu'un magasin est utilisé, les résultats seront insérés comme des invites pour fournir des réponses éclairées. Plusieurs magasins de données peuvent être utilisés simultanément.",
   "Nodes (Node AI)": "Nœuds (Intelligence Artificielle des Nœuds)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "Connectez-vous à une autre IA ou à toute autre source de données pour utiliser ses données. Lorsqu'un nœud est utilisé, les résultats seront utilisés comme invite fournies pour l'IA.",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Connaissances Améliorées & Mathématiques (WolframAlpha)",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "Donnez à GPT une instruction prédéfinie ou un jeu de rôle.",
   "2. Advanced Use": "2. Utilisation Avancée",
   "* Solve complex mathematical problems. (with WolframAlpha)": "Résoudre des problèmes mathématiques complexes. (avec WolframAlpha)",
-  "* Link with your own data. We support link to relational database and vector database.": "Associez avec vos propres données. Nous prenons en charge la liaison avec des bases de données relationnelles et des bases de données vectorielles.",
   "* Build to link with other AI systems, or your own APIs.": "Construisez pour vous connecter avec d'autres systèmes IA, ou vos propres API.",
   "And more...": "Et plus encore...",
   "Quick Start": "Démarrage rapide",
@@ -130,5 +128,7 @@
   "Command options": "Options de commande",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Nous proposons plusieurs fonctions intégrées qui permettent aux utilisateurs et à l'IA de récupérer des informations de l'API ou d'effectuer certaines tâches. Pour voir une liste des fonctions disponibles, utilisez la commande `:function ls`.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Vous pouvez appuyer sur la touche Control (pour macOS, appuyez sur la touche command) et cliquer sur le nom du modèle, une commande `:session attach` avec l'ID de session sera automatiquement copiée dans votre presse-papiers.",
-  "Models": "Modèles"
+  "Models": "Modèles",
+  "* Link with your own data. Support link to relational database.": "* Lien avec vos propres données. Prise en charge du lien vers une base de données relationnelle.",
+  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Prise en charge des requêtes de bases de données relationnelles. Si un magasin de données est utilisé, les résultats de la requête seront insérés comme prompts pour fournir des réponses expertes. Plusieurs magasins de données peuvent être utilisés simultanément."
 }

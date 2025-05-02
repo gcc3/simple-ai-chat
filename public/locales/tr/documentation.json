@@ -8,7 +8,6 @@
   "Roles": "Roller",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "GPT'nin daha tatmin edici yanıtlar sağlamak için bir rol olarak hareket etmesine izin verin. Önceden tanımlanmış sistem rollerini kullanabilir veya belirli ihtiyaçlarınıza göre kullanıcı rollerini özelleştirmek için özel talimat istemleri oluşturabilirsiniz.",
   "Data Stores": "Veri Depoları",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Vektör veritabanı ve ilişkisel veritabanı arama ve sorgulama desteği. Vektör veritabanı kullanıcıları kişisel veritabanınıza dosya yükleyebilir. Bir depo kullanıldığında, sonuçlar bilgi verici yanıtlar sağlamak için ipuçları olarak eklenir. Birden fazla veri deposu aynı anda kullanılabilir.",
   "Nodes (Node AI)": "Düğümler (Düğüm AI)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "Başka bir yapay zeka ya da herhangi bir veri kaynağına bağlanarak verilerini kullanın. Bir düğüm kullanıldığında, sonuçlar yapay zekaya sağlanan komutlar olarak kullanılacaktır.",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Gelişmiş Bilgi & Matematik (WolframAlpha)",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "GPT'ye önceden belirlenmiş bir talimat verin ya da rol yapma oyunu oynayın.",
   "2. Advanced Use": "Gelişmiş Kullanım",
   "* Solve complex mathematical problems. (with WolframAlpha)": "Karmaşık matematiksel problemleri çözün. (WolframAlpha ile)",
-  "* Link with your own data. We support link to relational database and vector database.": "Kendi verilerinizle bağlantı kurun. İlişkisel veritabanı ve vektör veritabanına bağlantıyı destekliyoruz.",
   "* Build to link with other AI systems, or your own APIs.": "Diğer AI sistemleriyle veya kendi API'lerinizle bağlantı kuracak şekilde oluşturun.",
   "And more...": "Ve daha fazlası...",
   "Quick Start": "Hızlı Başlangıç",
@@ -130,5 +128,7 @@
   "Command options": "Komut seçenekleri",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Kullanıcıların ve Yapay Zekanın API'den bilgi almasına veya belirli görevleri yerine getirmesine olanak tanıyan birkaç yerleşik fonksiyon sunuyoruz. Kullanılabilir fonksiyonların bir listesini görmek için `:function ls` komutunu kullanın.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control tuşuna basabilirsiniz (macOS için command tuşuna basın) ve model adının üzerine tıklayın, oturum kimliği ile birlikte bir `:session attach` komutu otomatik olarak panonuza kopyalanacaktır.",
-  "Models": "Modeller"
+  "Models": "Modeller",
+  "* Link with your own data. Support link to relational database.": "* Kendi verilerinizle bağlantı kurun. İlişkisel veritabanına bağlantıyı destekler.",
+  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "İlişkisel veritabanı sorgusunu destekler. Bir veri deposu kullanılırsa, sorgu sonuçları bilgili yanıtlar sağlamak için istem olarak eklenecektir. Birden fazla veri deposu aynı anda kullanılabilir."
 }

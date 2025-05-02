@@ -8,7 +8,6 @@
   "Roles": "भूमिकाएँ",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "GPT को अधिक संतोषजनक उत्तर प्रदान करने के लिए एक भूमिका के रूप में कार्य करने दें। आप पूर्व-निर्धारित सिस्टम भूमिकाओं का उपयोग कर सकते हैं या अपनी विशिष्ट आवश्यकताओं के अनुरूप उपयोगकर्ता भूमिकाओं को दर्जी बनाने के लिए कस्टम निर्देश संकेत बना सकते हैं।",
   "Data Stores": "डेटा स्टोर्स",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "वेक्टर डेटाबेस और संबंधी डेटाबेस खोज और क्वेरी के लिए समर्थन। वेक्टर डेटाबेस उपयोगकर्ता अपने निजी डेटाबेस में फाइलें अपलोड कर सकते हैं। जब एक स्टोर का उपयोग किया जाता है, परिणामों को प्रेरणादायक उत्तर प्रदान करने के लिए संकेत के रूप में डाल दिया जाएगा। एक साथ कई डेटा स्टोर का उपयोग किया जा सकता है।",
   "Nodes (Node AI)": "नोड्स (नोड AI)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "किसी अन्य AI या किसी भी डेटा स्रोत से कनेक्ट करें ताकि उसके डेटा का उपयोग किया जा सके। जब कोई नोड का उपयोग किया जाता है, परिणामों का उपयोग AI के लिए दी गई प्रॉम्प्ट्स के रूप में किया जाएगा।",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "उन्नत ज्ञान और गणित (वोल्फ्रामअल्फा)",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "जीपीटी को एक नियत निर्देश दें, या रोल प्ले करें।",
   "2. Advanced Use": "2. उन्नत प्रयोग",
   "* Solve complex mathematical problems. (with WolframAlpha)": "जटिल गणितीय समस्याओं को हल करें। (WolframAlpha के साथ)",
-  "* Link with your own data. We support link to relational database and vector database.": "अपने डेटा के साथ लिंक करें। हम संबंधपरक डेटाबेस और वेक्टर डेटाबेस से लिंक करने का समर्थन करते हैं।",
   "* Build to link with other AI systems, or your own APIs.": "अन्य AI सिस्टम्स से जोड़ने के लिए या आपके स्वयं के APIs के साथ बिल्ड करें।",
   "And more...": "और भी...",
   "Quick Start": "त्वरित आरंभ",
@@ -130,5 +128,7 @@
   "Command options": "कमांड विकल्प",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "हम कई बिल्ट-इन फंक्शन्स प्रदान करते हैं जो उपयोगकर्ताओं और AI को API से जानकारी प्राप्त करने या कुछ कार्य करने की अनुमति देते हैं। उपलब्ध फंक्शन्स की सूची देखने के लिए, `:function ls` कमांड का उपयोग करें।",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "आप Control कुंजी दबा सकते हैं (macOS के लिए command कुंजी दबाएं) और मॉडल का नाम क्लिक करें, एक `:session attach` कमांड सत्र ID के साथ स्वतः ही आपके क्लिपबोर्ड में कॉपी हो जाएगी।",
-  "Models": "मॉडलों"
+  "Models": "मॉडलों",
+  "* Link with your own data. Support link to relational database.": "* अपने डेटा के साथ लिंक करें। रिलेशनल डेटाबेस से लिंक का समर्थन करें।",
+  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "रिलेशनल डेटाबेस क्वेरी का समर्थन। यदि कोई स्टोर इस्तेमाल किया जाता है, तो क्वेरी परिणामों को जानकारीयुक्त उत्तर प्रदान करने के लिए प्रॉम्प्ट के रूप में सम्मिलित किया जाएगा। एकाधिक डेटा स्टोरों का एक साथ उपयोग किया जा सकता है।"
 }

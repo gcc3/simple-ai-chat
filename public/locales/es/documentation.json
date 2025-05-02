@@ -8,7 +8,6 @@
   "Roles": "Roles",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "Permita que GPT actúe como un rol para proporcionar respuestas más satisfactorias. Puede utilizar roles de sistema predefinidos o crear indicaciones de instrucciones personalizadas para adaptar los roles de usuario a sus requisitos específicos.",
   "Data Stores": "Almacenes de Datos",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Soporte para búsqueda y consulta en bases de datos vectoriales y bases de datos relacionales. Los usuarios de bases de datos vectoriales pueden subir archivos a su base de datos personal. Cuando se utiliza un almacén, los resultados se insertarán como indicaciones para proporcionar respuestas informadas. Se pueden utilizar simultáneamente múltiples almacenes de datos.",
   "Nodes (Node AI)": "Nodos (Nodo AI)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "Conéctese a otro IA o a cualquier fuente de datos para utilizar sus datos. Cuando se usa un nodo, los resultados se utilizarán como indicaciones proporcionadas para la IA.",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Conocimiento Avanzado y Matemáticas (WolframAlpha)",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "Dale a GPT una instrucción preestablecida o haz un juego de rol.",
   "2. Advanced Use": "2. Uso Avanzado",
   "* Solve complex mathematical problems. (with WolframAlpha)": "Resuelve problemas matemáticos complejos. (con WolframAlpha)",
-  "* Link with your own data. We support link to relational database and vector database.": "Vincula con tus propios datos. Ofrecemos soporte para enlazar con bases de datos relacionales y bases de datos vectoriales.",
   "* Build to link with other AI systems, or your own APIs.": "Diseñado para enlazar con otros sistemas de IA, o tus propias API.",
   "And more...": "Y más...",
   "Quick Start": "Inicio Rápido",
@@ -130,5 +128,7 @@
   "Command options": "Opciones de comando",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Ofrecemos varias funciones integradas que permiten tanto a los usuarios como a la Inteligencia Artificial recuperar información de la API o realizar ciertas tareas. Para ver una lista de las funciones disponibles, utilice el comando `:function ls`.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Puede presionar la tecla Control (para macOS presione la tecla command) y hacer clic en el nombre del modelo, un comando `:session attach` con el ID de la sesión se copiará automáticamente en su portapapeles.",
-  "Models": "Modelos"
+  "Models": "Modelos",
+  "* Link with your own data. Support link to relational database.": "* Vincula tus propios datos. Soporta enlaces a bases de datos relacionales.",
+  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Soporte para consultas en bases de datos relacionales. Si se utiliza un almacén de datos, los resultados de la consulta se insertarán como indicaciones para proporcionar respuestas fundamentadas. Se pueden utilizar múltiples almacenes de datos simultáneamente."
 }

@@ -8,7 +8,6 @@
   "Roles": "Rollen",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "Sta GPT toe om als rol te fungeren om meer bevredigende antwoorden te verschaffen. U kunt vooraf gedefinieerde systeemrollen gebruiken of aangepaste instructieprompts maken om gebruikersrollen aan te passen aan uw specifieke vereisten.",
   "Data Stores": "Data Opslagplaatsen",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Ondersteuning voor vector database en relationele database zoek- en queryfuncties. Voor de vector database kan de gebruiker bestanden uploaden naar uw persoonlijke database. Wanneer een gegevensopslag wordt gebruikt, worden de resultaten ingevoerd als prompts om deskundige antwoorden te geven. Meerdere gegevensopslagen kunnen tegelijkertijd worden gebruikt.",
   "Nodes (Node AI)": "Knooppunten (Node AI)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "Verbind met een andere AI of een willekeurige gegevensbron om zijn gegevens te gebruiken. Wanneer een knooppunt wordt gebruikt, zullen de resultaten gebruikt worden als prompts die voor de AI worden verstrekt.",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Verbeterde Kennis & Wiskunde (WolframAlpha)",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "Geef GPT een vooraf ingestelde instructie of doe een rollenspel.",
   "2. Advanced Use": "2. Gevorderd Gebruik",
   "* Solve complex mathematical problems. (with WolframAlpha)": "Los complexe wiskundige problemen op. (met WolframAlpha)",
-  "* Link with your own data. We support link to relational database and vector database.": "Koppel met uw eigen gegevens. We ondersteunen koppeling naar relationele database en vector database.",
   "* Build to link with other AI systems, or your own APIs.": "Bouw om te koppelen met andere AI-systemen of uw eigen API's.",
   "And more...": "En meer...",
   "Quick Start": "Snelle Start",
@@ -130,5 +128,7 @@
   "Command options": "Commando opties",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "We bieden verschillende ingebouwde functies die zowel gebruikers als de AI in staat stellen om informatie op te halen uit de API of bepaalde taken uit te voeren. Om een lijst van beschikbare functies te bekijken, gebruik je het `:function ls` commando.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "U kunt de Control-toets indrukken (voor macOS drukt u op de command-toets) en op de modelnaam klikken, een `:session attach` commando met de sessie-ID wordt automatisch naar uw klembord gekopieerd.",
-  "Models": "Modellen"
+  "Models": "Modellen",
+  "* Link with your own data. Support link to relational database.": "* Koppel met je eigen data. Ondersteunt koppelingen met relationele databases.",
+  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Ondersteuning voor query’s op relationele databases. Als een gegevensopslag wordt gebruikt, worden de queryresultaten ingevoegd als prompts om deskundige antwoorden te geven. Meerdere gegevensopslagen kunnen gelijktijdig worden gebruikt."
 }

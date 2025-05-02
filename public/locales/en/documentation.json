@@ -8,7 +8,6 @@
   "Roles": "Roles",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.",
   "Data Stores": "Data Stores",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.",
   "Nodes (Node AI)": "Nodes (Node AI)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Enhanced Knowledge & Mathematics (WolframAlpha)",
@@ -83,7 +82,6 @@
   "* Give GPT a preset instruction, or role play.": "* Give GPT a preset instruction, or role play.",
   "2. Advanced Use": "2. Advanced Use",
   "* Solve complex mathematical problems. (with WolframAlpha)": "* Solve complex mathematical problems. (with WolframAlpha)",
-  "* Link with your own data. We support link to relational database and vector database.": "* Link with your own data. We support link to relational database and vector database.",
   "* Build to link with other AI systems, or your own APIs.": "* Build to link with other AI systems, or your own APIs.",
   "And more...": "And more...",
   "Quick Start": "Quick Start",
@@ -130,5 +128,7 @@
   "Command options": "Command options",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.",
-  "Models": "Models"
+  "Models": "Models",
+  "* Link with your own data. Support link to relational database.": "* Link with your own data. Support link to relational database.",
+  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously."
 }

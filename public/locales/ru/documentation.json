@@ -8,7 +8,6 @@
   "Roles": "Роли",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "Позвольте GPT выступать в роли, чтобы предоставлять более удовлетворительные ответы. Вы можете использовать заранее определенные системные роли или создать настраиваемые инструкции, чтобы подогнать пользовательские роли под ваши конкретные требования.",
   "Data Stores": "Хранилища данных",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Поддержка поиска и запросов в векторных базах данных и реляционных базах данных. Пользователи векторной базы данных могут загружать файлы в вашу личную базу данных. Когда используется хранилище, результаты будут вставлены в качестве подсказок для предоставления обоснованных ответов. Можно одновременно использовать несколько хранилищ данных.",
   "Nodes (Node AI)": "Узлы (Искусственный интеллект узла)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "Подключитесь к другому ИИ или любому другому источнику данных для использования его данных. Когда узел используется, результаты будут использоваться в качестве подсказок, предоставляемых для ИИ.",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Расширенные знания и математика (WolframAlpha)",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "Дайте GPT предустановленную инструкцию или задание на ролевую игру.",
   "2. Advanced Use": "2. Продвинутое использование",
   "* Solve complex mathematical problems. (with WolframAlpha)": "Решайте сложные математические задачи (с помощью WolframAlpha).",
-  "* Link with your own data. We support link to relational database and vector database.": "Свяжите с вашими собственными данными. Мы поддерживаем связь с реляционными базами данных и векторными базами данных.",
   "* Build to link with other AI systems, or your own APIs.": "Создан для интеграции с другими системами ИИ или вашими собственными API.",
   "And more...": "И еще...",
   "Quick Start": "Быстрый старт",
@@ -130,5 +128,7 @@
   "Command options": "Опции команды",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Мы предлагаем несколько встроенных функций, которые позволяют как пользователям, так и AI извлекать информацию из API или выполнять определенные задачи. Чтобы просмотреть список доступных функций, используйте команду `:function ls`.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Вы можете нажать клавишу Control (для macOS нажмите клавишу command) и кликнуть по названию модели, команда `:session attach` вместе с ID сессии будет автоматически скопирована в ваш буфер обмена.",
-  "Models": "Модели"
+  "Models": "Модели",
+  "* Link with your own data. Support link to relational database.": "* Подключайте собственные данные. Поддерживается подключение к реляционной базе данных.",
+  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Поддержка запросов к реляционным базам данных. Если используется хранилище данных, результаты запроса будут вставлены в качестве подсказок для предоставления компетентных ответов. Можно одновременно использовать несколько хранилищ данных."
 }
