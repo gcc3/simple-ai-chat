@@ -38,7 +38,7 @@ const sysconf = getSystemConfigurations();
 export async function generateMessages(use_system_role, lang,
                                        user, model, input, inputType, files, images,
                                        session, mem_limit = 7,
-                                       role, store, node,
+                                       role, stores, node,
                                        use_location, location,
                                        use_function_calling, functionCalls, functionResults,
                                        updateStatus = null, streamOutput = null) {
@@ -151,49 +151,66 @@ export async function generateMessages(use_system_role, lang,
   let store_prompt = "";
   
   // General store search
-  if (store && user) {
+  if (stores && user) {
     updateStatus && updateStatus("Data store searching...");
     console.log("--- data store search ---");
-    console.log("store: " + store);
+    console.log("stores: " + stores);
 
     // Search all active stores
-    const activeStores = store.split(",").filter(s => s !== "");
+    const activeStores = stores.split(",").filter(s => s !== "");
     for (const store of activeStores) {
       // Get store info
       const storeInfo = await findStore(store, user.username);
       if (storeInfo) {
         const settings = JSON.parse(storeInfo.settings);
 
-        if (isInitialized(storeInfo.engine, settings)) {
-          let queryResult = null;
-          let prompt = "";
+        // File store
+        if (storeInfo.engine === "file") {
+          const files = settings.files || [];
+          // Loop through each file and fetch the content
+          for (const file of files) {
+            try {
+              const response = await fetch(file);
+              const fileContent = await response.text();
 
-          // Query
-          if (storeInfo.engine === "mysql") {
-            prompt += "\nQuery MySQL database\n";
-            prompt += "Database description: " + (settings.description || "No description") + "\n";
+              store_prompt += "\n\n" + fileContent + "\n\n";
+            } catch (error) {
+              console.error("Error fetching file:", error);
+              console.log("store `" + store + "`: " + "error fetching file: " + file + "\n" + error);
+            }
+          }
+        }
 
+        // MySQL store
+        if (storeInfo.engine === "mysql") {
+          if (isInitialized(storeInfo.engine, settings)) {
+            let queryResult = null;
+            let mysqlPrompt = "";
+
+            // Query
+            mysqlPrompt += "\nQuery MySQL database\n";
+            mysqlPrompt += "Database description: " + (settings.description || "No description") + "\n";
             updateStatus && updateStatus("Start searching...");
             queryResult = await searchMysqlStore(settings, input);
-          }
 
-          if (queryResult.success) {
-            if (queryResult.query) {
-              prompt += "Query: " + queryResult.query + "\n";
+            if (queryResult.success) {
+              if (queryResult.query) {
+                mysqlPrompt += "Query: " + queryResult.query + "\n";
+              }
+              mysqlPrompt += "Query result: \n";
+              mysqlPrompt += queryResult.message.trim();
+
+              store_prompt += "\n\n" + mysqlPrompt + "\n\n";
             }
-            prompt += "Query result: \n";
-            prompt += queryResult.message.trim();
-            messages.push({
-              "role": "system",
-              "content": prompt,
-            });
-            
-            store_prompt += prompt;
-            console.log("response: " + prompt.trim());
           }
         }
       }
     }
+
+    messages.push({
+      "role": "system",
+      "content": "Support data:" + store_prompt,
+    })
     console.log("");  // add new line
 
     // Count tokens
