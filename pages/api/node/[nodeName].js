@@ -24,27 +24,19 @@ export default async function (req, res) {
       });
     }
 
-    const settings = JSON.parse(node.settings);
-    if (node) {
-      return res.status(200).json({ 
-        result: {
-          node: node.name,
-          owner: node.owner,
-          created_by: node.created_by,
-          settings: settings,
-          status: {
-            ping: await pingNode(settings),
-            configured: checkIsNodeConfigured(settings),
-            messages: verifyNodeSettings(settings),
-          }
-        },
-      });
-    } else {
-      return res.status(200).json({
-        success: false,
-        error: "Node not exists."
-      });
-    }
+    return res.status(200).json({ 
+      result: {
+        node: node.name,
+        owner: node.owner,
+        created_by: node.created_by,
+        settings: JSON.parse(node.settings),
+        status: {
+          ping: await pingNode(settings),
+          configured: checkIsNodeConfigured(settings),
+          messages: verifyNodeSettings(settings),
+        }
+      },
+    });
   } catch (error) {
     console.error(error);
     res.status(500).json({

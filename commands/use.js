@@ -2,6 +2,7 @@ import { initializeMemory } from "utils/sessionUtils";
 import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } from "utils/storageUtils";
 import { getFunctions } from "function";
 import { updateUserSetting } from "utils/userUtils";
+import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 
 export default async function use(args) {
   const usage = "Usage: :use [function|node|store|role]\n";
@@ -97,10 +98,22 @@ export default async function use(args) {
   return "Resource not found.";
 }
 
-async function findModel(modelName) {
+async function findModel(name) {
+  // Check local Ollama models
+  if (await pingOllamaAPI()) {
+    const ollamModels = await listOllamaModels();
+    const ollamModelInfo = ollamModels.find((m) => m.name === name);
+    if (ollamModelInfo) {
+      // Set model to session storage
+      sessionStorage.setItem("model", name);
+      sessionStorage.setItem("baseUrl", ollamModelInfo.base_url);
+      return ollamModelInfo;
+    }
+  }
+
   // Check if the model exists
   try {
-    const response = await fetch("/api/model/" + modelName, {
+    const response = await fetch("/api/model/" + name, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -122,10 +135,10 @@ async function findModel(modelName) {
   }
 }
 
-async function findNode(nodeName) {
+async function findNode(name) {
   // Check if the node exists
   try {
-    const response = await fetch("/api/node/" + nodeName, {
+    const response = await fetch("/api/node/" + name, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -146,16 +159,16 @@ async function findNode(nodeName) {
   }
 }
 
-async function findStore(storeName) {
+async function findStore(name) {
   // Check store active
-  if (isStoreActive(storeName)) {
+  if (isStoreActive(name)) {
     // Already active
     return false;
   }
 
   // Check if the store exists
   try {
-    const response = await fetch("/api/store/" + storeName, {
+    const response = await fetch("/api/store/" + name, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -175,7 +188,7 @@ async function findStore(storeName) {
   }
 }
 
-async function findRole(roleName) {
+async function findRole(name) {
   // Check role exists
   try {
     const response = await fetch("/api/role/list", {
@@ -190,8 +203,8 @@ async function findRole(roleName) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    if (!data.result.system_roles.some((role) => role.role === roleName) 
-    && (!data.result.user_roles || !Object.entries(data.result.user_roles).some(([key, value]) => value.role === roleName))) {
+    if (!data.result.system_roles.some((role) => role.role === name) 
+    && (!data.result.user_roles || !Object.entries(data.result.user_roles).some(([key, value]) => value.role === name))) {
       return false;
     } else {
       return true;
