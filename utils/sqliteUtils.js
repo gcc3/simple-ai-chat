@@ -925,7 +925,7 @@ const updateUserIPAndLastLogin = async (username, ip, lastLogin) => {
   }
 };
 
-const updateUserSettings = async (username, key, value) => {
+const updateUserSetting = async (username, key, value) => {
   const db = await getDatabaseConnection();
   const user = await getUser(username);
 
@@ -975,6 +975,28 @@ const updateUserSettings = async (username, key, value) => {
     db.close();
   }
 };
+
+const updateUserSettings = async (username, settings) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare("UPDATE users SET settings = ?, updated_at = ? WHERE username = ?");
+      stmt.run([settings, getTimestamp(), username], function (err) {
+        if (err) {
+          reject(err);
+        }
+        if (this.changes > 0) {
+          resolve(true);
+        } else {
+          resolve(false);
+        }
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+}
 
 const updateUserStatus = async (username, status) => {
   const db = await getDatabaseConnection();
@@ -1772,6 +1794,7 @@ export {
   extendUserRole,
   updateUserIPAddr,
   updateUserIPAndLastLogin,
+  updateUserSetting,
   updateUserSettings,
   updateUserStatus,
   getUserByEmail,

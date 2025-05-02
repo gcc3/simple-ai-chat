@@ -1,4 +1,4 @@
-import { updateUserSettings, getUser, getUserRoles } from 'utils/sqliteUtils.js';
+import { updateUserSetting, getUser, getUserRoles } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 import { getAvailableStoresForUser } from 'utils/storeUtils';
 import { getAvailableNodesForUser } from 'utils/nodeUtils';
@@ -193,7 +193,7 @@ export default async function (req, res) {
     }
 
     // Update user settings
-    const wasSuccessful = await updateUserSettings(username, key, value);
+    const wasSuccessful = await updateUserSetting(username, key, value);
 
     if (wasSuccessful) {
       return res.status(200).json({ 
