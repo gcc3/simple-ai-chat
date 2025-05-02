@@ -152,7 +152,7 @@ export async function generateMessages(use_system_role, lang,
   let store_prompt = "";
 
   // No user login, give him a Simple AI Documentation search
-  if (!user) {
+  if (!user && process.env.DOCUMENT_CORPUS_ID) {
     updateStatus && updateStatus("Data store searching...");
     console.log("--- data store search ---");
     console.log("store: " + "Simple AI Documentation (non-login user)");
