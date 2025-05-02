@@ -101,15 +101,13 @@ export default async function use(args) {
 async function findModel(name) {
   // Check local Ollama models
   if (await pingOllamaAPI()) {
-    const models = await listOllamaModels();
-    if (models.includes(name)) {
-      return { 
-        model: name,
-        api_key: "",
-        base_url: "http://localhost:11434/v1",
-        price_input: 0,
-        price_output: 0,
-      };
+    const ollamModels = await listOllamaModels();
+    const ollamModelInfo = ollamModels.find((m) => m.name === name);
+    if (ollamModelInfo) {
+      // Set model to session storage
+      sessionStorage.setItem("model", name);
+      sessionStorage.setItem("baseUrl", ollamModelInfo.base_url);
+      return ollamModelInfo;
     }
   }
 

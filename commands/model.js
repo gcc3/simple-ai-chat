@@ -8,7 +8,7 @@ export default async function model(args) {
                 "       :model [use|unuse] [name]\n" +
                 "       :model reset\n";
 
-  // Get model info
+  // Get model info without name (will use current model as name)
   // :model [name?]
   if (!command) {
     if (!localStorage.getItem("user")) {
@@ -18,6 +18,15 @@ export default async function model(args) {
     const modelName = sessionStorage.getItem("model");
     if (!modelName) {
       return "No model is set, please use command \`:model use [name]\` to set a model.";
+    }
+
+    // Check local Ollama models
+    if (await pingOllamaAPI()) {
+      const ollamaModelList = await listOllamaModels();
+      const ollamaModelInfo = ollamaModelList.find((m) => m.name === modelName);
+      if (ollamaModelInfo) {
+        return JSON.stringify(ollamaModelInfo, null, 2);
+      }
     }
 
     try {
@@ -52,6 +61,15 @@ export default async function model(args) {
     const modelName = args[0].slice(1, -1);
     if (!modelName) {
       return "Invalid model name.";
+    }
+
+    // Check local Ollama models
+    if (await pingOllamaAPI()) {
+      const ollamaModelList = await listOllamaModels();
+      const ollamaModelInfo = ollamaModelList.find((m) => m.name === modelName);
+      if (ollamaModelInfo) {
+        return JSON.stringify(ollamaModelInfo, null, 2);
+      }
     }
 
     try {
@@ -152,7 +170,7 @@ export default async function model(args) {
           if (ollamaModelList && ollamaModelList.length > 0) {
             let models = [];
             ollamaModelList.forEach((model) => {
-              models.push((currentModel === model ? "*\\" : "\\") + model);
+              models.push((currentModel === model.name ? "*\\" : "\\") + model.name);
             });
             ollamaModels = "Ollama models:\n" 
                         + models.join(" ") + "\n\n"; 
@@ -189,6 +207,20 @@ export default async function model(args) {
     }
 
     if (args[0] === "use") {
+      // Check local Ollama models
+      if (await pingOllamaAPI()) {
+        const ollamModels = await listOllamaModels();
+        const ollamModelInfo = ollamModels.find((m) => m.name === name);
+        if (ollamModelInfo) {
+          // Set model to session storage
+          sessionStorage.setItem("model", name);
+          sessionStorage.setItem("baseUrl", ollamModelInfo.base_url);
+
+          return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
+        }
+      }
+
+      // Check remote models
       // Check if the model exists
       try {
         const response = await fetch("/api/model/" + name, {

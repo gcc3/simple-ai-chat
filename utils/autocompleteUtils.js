@@ -3,6 +3,7 @@ import { getLangCodes } from "./langUtils";
 import { getSettings } from "./settingsUtils";
 import { getThemes } from "./themeUtils";
 import { getVoices } from "./voiceUtils";
+import { listOllamaModels, pingOllamaAPI } from "./ollamaUtils";
 
 export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   if (prefix === ":role " || prefix === ":role use " || prefix === ":role unuse ") {
@@ -65,10 +66,15 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   }
 
   if (prefix === ":model " || prefix === ":model use " || prefix === ":model unuse ") {
+    let ollamaModels = [];
+    if (await pingOllamaAPI()) {
+      ollamaModels = await listOllamaModels();
+    }
+
     const response = await fetch("/api/model/list");
     const data = await response.json();
     if (response.status === 200 && data.success) {
-      const models = [].concat(data.result.user_models, data.result.group_models, data.result.system_models).flat()
+      const models = [].concat(data.result.user_models, data.result.group_models, data.result.system_models, ollamaModels).flat();
       return models.map((m) => m.name);
     } else {
       return [];
@@ -139,10 +145,14 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     }
 
     // 4. Models
+    let ollamaModels = [];
+    if (await pingOllamaAPI()) {
+      ollamaModels = await listOllamaModels();
+    }
     const responseModel = await fetch("/api/model/list");
     const dataModel = await responseModel.json();
     if (responseModel.status === 200 && dataModel.success) {
-      const model = [].concat(dataModel.result.user_models, dataModel.result.group_models, dataModel.result.system_models).flat()
+      const model = [].concat(dataModel.result.user_models, dataModel.result.group_models, dataModel.result.system_models, ollamaModels).flat()
                       .find((m) => m.name.startsWith(nameToBeComleted));
       if (model) {
         return [model.name];
