@@ -395,7 +395,7 @@ export default async function store(args, files) {
 
   // Reset a store
   if (command === "data" && args[1] === "reset") {
-    if (args.length !== 2 && args.length !== 3) {
+    if (args.length !== 3) {
       return "Usage: :store data reset [name?]\n";
     }
 

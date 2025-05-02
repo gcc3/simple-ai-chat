@@ -2360,6 +2360,14 @@ export default function Home() {
 
   // +img[], +image[], +file[]
   const filePlus = async (blob, type) => {
+    const fileName = blob.name;
+    const fileSize = blob.size;
+
+    // Fix markdown file type
+    if (fileName.endsWith(".md")) {
+      type = "text/markdown";
+    }
+
     // Insert placeholder text for the image
     const file_id = Date.now().toString();
 
@@ -2382,18 +2390,19 @@ export default function Home() {
     reAdjustInputHeight();  // Re-adjust input height as input changed
 
     // Grab the file
-    console.log('Image/file pasted/dropped: ' + blob.name + ' (' + type + ')');
+    console.log('Image/file pasted/dropped: ' + fileName + ' (' + type + ')');
 
     let message = "null";
     
     // 1. Check file size
-    const fileSize = blob.size;
     if (fileSize > 10485760) {
       // 10MB
       message = "file_id:" + file_id + "(failed: file size exceeds 10MB)";
     } else {
       const supportedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
-      const supportedFileTypes = ["text/plain", "application/pdf", "application/json",
+      const supportedFileTypes = ["text/plain", "text/markdown",
+                                  "application/pdf",
+                                  "application/json",
                                   "text/csv", "application/vnd.ms-excel",
                                   "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
       const supportedTypes = supportedImageTypes.concat(supportedFileTypes);
@@ -2403,9 +2412,9 @@ export default function Home() {
         // Upload the image to S3
         const uploadResult = await generateFileURl(blob, file_id, type);
         if (!uploadResult.success) {
-          // Print error message
+          // Print error message 
           console.error(uploadResult.message);
-          message = "file_id:" + file_id + "(failed:" + uploadResult.message + ")";
+          message = "file_id:" + file_id + "(failed: " + uploadResult.message + ")";
         } else {
           // Replace the placeholder text with the image URL
           message = uploadResult.objectUrl;

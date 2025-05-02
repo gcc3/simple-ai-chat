@@ -1,5 +1,6 @@
 import { authenticate } from "utils/authUtils.js";
 import { findStore } from "utils/storeUtils.js";
+import { updateStoreSetting } from 'utils/sqliteUtils.js';
 
 export default async function (req, res) {
   // Check method
@@ -7,7 +8,7 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
-  const { name, file } = req.body;
+  const { name, files } = req.body;
 
   // Authentication
   const authResult = authenticate(req);
@@ -36,7 +37,25 @@ export default async function (req, res) {
     });
   }
 
-  console.log("Store file URL: ", file);
+  if (store.engine === "file") {
+    const settings = JSON.parse(store.settings) || {};
+    const currentFilesList = settings.files || [];
+    const newFilesList = [...currentFilesList, ...files];
+
+    // TODO check if key and value is valid
+    const wasSuccessful = await updateStoreSetting(store.name, username, "files", newFilesList);
+    if (wasSuccessful) {
+      return res.status(200).json({ 
+        success: true, 
+        message: "Store setting updated."
+      });
+    } else {
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Failed to update store settings or user not found.'
+      });
+    }
+  }
 
   return res.status(400).json({ 
     success: false, 

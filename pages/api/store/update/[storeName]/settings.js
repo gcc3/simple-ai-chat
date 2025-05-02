@@ -60,12 +60,12 @@ export default async function (req, res) {
     if (wasSuccessful) {
       return res.status(200).json({ 
         success: true, 
-        message: "Setting updated."
+        message: "Store setting updated."
       });
     } else {
       return res.status(400).json({ 
         success: false, 
-        error: 'Failed to update settings or user not found.'
+        error: 'Failed to update store settings or user not found.'
       });
     }
   } catch (error) {
