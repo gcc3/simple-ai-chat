@@ -1,5 +1,5 @@
-import { countChatsForIP, countChatsForUser, countTokenForUserByModel, getUsageModelsForUser } from './sqliteUtils';
-import { getRoleFequencyLimit, feeCal } from './usageUtils';
+import { countChatsForIP, countChatsForUser } from './sqliteUtils';
+import { getRoleFequencyLimit } from './usageUtils';
 
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
@@ -100,61 +100,4 @@ async function checkUsageExceeded(user) {
   } else {
     return false;
   }
-}
-
-// Usage models (this month first day ~ now)
-async function getUsageModels(username) {
-  // Now
-  const now = new Date();
-
-  // Clock (last month)
-  const clock = now;
-  const year = clock.getUTCFullYear();
-  const month = clock.getUTCMonth() + 1;
-
-  const start = new Date(year, month - 1, 1).getTime();  // start of last month
-  const end = new Date();
-  return getUsageModelsForUser(username, start, end);
-}
-
-// Get total fee
-async function getTotalFee(username) {
-  // Get used models this month
-  const usageModels = await getUsageModels(username);
-
-  // Get total fee
-  let totalUsageFeeThisMonth = 0;
-  for (const model of usageModels) {
-    // Count token
-    const tokenUsageThisMonth = await getModelTokenUsageThisMonth(username, model);
-
-    // Fee calculation
-    const feeThisMonth = feeCal(model, tokenUsageThisMonth.input, tokenUsageThisMonth.output);
-
-    // Add to total
-    totalUsageFeeThisMonth += feeThisMonth;
-  }
-
-  // Total fee
-  return totalUsageFeeThisMonth;
-}
-
-// Token
-async function getModelTokenUsageThisMonth(username, model) {
-  // Now
-  const now = new Date();
-
-  // Clock (this month)
-  const clock = now;
-  const year = clock.getUTCFullYear();
-  const month = clock.getUTCMonth() + 1; // Add 1 because getUTCMonth() returns 0-11
-
-  return getModelTokenUsageByMonth(username, model, year, month);
-}
-
-async function getModelTokenUsageByMonth(username, model, year, month) {
-  const daysInMonth = new Date(year, month, 0).getDate();
-  const start = new Date(year, month - 1, 1).getTime();
-  const end = new Date(year, month - 1, daysInMonth, 23, 59, 59).getTime();
-  return await countTokenForUserByModel(username, model, start, end);
 }
