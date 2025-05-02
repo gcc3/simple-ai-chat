@@ -130,5 +130,5 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "আপনি কন্ট্রোল কী (ম্যাকওএস এর জন্য কমান্ড কী) চেপে এবং মডেলের নামে ক্লিক করতে পারেন, একটি `:session attach` কমান্ড সেশন আইডি সহ আপনার ক্লিপবোর্ডে স্বয়ংক্রিয়ভাবে কপি হয়ে যাবে।",
   "Models": "মডেলগুলি",
   "* Link with your own data. Support link to relational database.": "* আপনার নিজস্ব ডেটার সাথে সংযোগ করুন। রিলেশনাল ডাটাবেসের সাথে সংযোগ সমর্থন করুন।",
-  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "রিলেশনাল ডাটাবেস কোয়েরির সমর্থন। যদি কোনো স্টোর ব্যবহার করা হয় তবে ক্যুয়েরি ফলাফলগুলি জ্ঞানসম্পন্ন উত্তর দিতে প্রম্পট হিসেবে সন্নিবেশ করা হবে। একাধিক ডেটা স্টোর একসাথে ব্যবহার করা যেতে পারে।"
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "ফাইল এবং রিলেশনাল ডেটাবেস কোয়েরির জন্য সমর্থন। যদি কোনো স্টোর ব্যবহার করা হয়, তাহলে কোয়েরি ফলাফলগুলো জ্ঞানসমৃদ্ধ উত্তর প্রদানের জন্য প্রম্পট হিসেবে সংযুক্ত করা হবে। একাধিক ডেটা স্টোর একযোগে ব্যবহার করা যেতে পারে।"
 }

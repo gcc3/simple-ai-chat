@@ -130,5 +130,5 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control 키를 누르고 모델 이름을 클릭하면(맥OS의 경우 command 키), `:session attach` 명령어와 세션 ID가 자동으로 클립보드에 복사됩니다.",
   "Models": "모델",
   "* Link with your own data. Support link to relational database.": "* 자신의 데이터와 연동하세요. 관계형 데이터베이스 연동을 지원합니다.",
-  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "관계형 데이터베이스 쿼리를 지원합니다. 스토어를 사용하는 경우, 쿼리 결과가 프롬프트로 삽입되어 지식이 풍부한 답변을 제공합니다. 여러 데이터 스토어를 동시에 사용할 수 있습니다."
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "파일 및 관계형 데이터베이스 쿼리를 지원합니다. 저장소를 사용하는 경우 쿼리 결과가 프롬프트로 삽입되어 지식 기반의 응답을 제공합니다. 여러 데이터 저장소를 동시에 사용할 수 있습니다."
 }

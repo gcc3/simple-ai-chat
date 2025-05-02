@@ -130,5 +130,5 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Du kan trycka på Control-tangenten (för macOS tryck på command-tangenten) och klicka på modellnamnet, ett `:session attach` kommando med session-ID kommer automatiskt att kopieras till ditt urklipp.",
   "Models": "Modeller",
   "* Link with your own data. Support link to relational database.": "* Koppla till dina egna data. Stöder koppling till relationsdatabas.",
-  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Stöd för frågor mot relationsdatabaser. Om ett lagringssystem används kommer frågeresultaten att infogas som prompts för att ge kunniga svar. Flera lagringssystem kan användas samtidigt."
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Stöd för filer och relationsdatabasfrågor. Om ett datalager används kommer frågeresultaten att infogas som uppmaningar för att ge kunniga svar. Flera datalager kan användas samtidigt."
 }

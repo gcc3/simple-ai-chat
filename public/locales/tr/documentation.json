@@ -130,5 +130,5 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control tuşuna basabilirsiniz (macOS için command tuşuna basın) ve model adının üzerine tıklayın, oturum kimliği ile birlikte bir `:session attach` komutu otomatik olarak panonuza kopyalanacaktır.",
   "Models": "Modeller",
   "* Link with your own data. Support link to relational database.": "* Kendi verilerinizle bağlantı kurun. İlişkisel veritabanına bağlantıyı destekler.",
-  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "İlişkisel veritabanı sorgusunu destekler. Bir veri deposu kullanılırsa, sorgu sonuçları bilgili yanıtlar sağlamak için istem olarak eklenecektir. Birden fazla veri deposu aynı anda kullanılabilir."
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Dosyalar ve ilişkisel veritabanı sorgularına destek. Bir veri deposu kullanıldığında, sorgu sonuçları bilgiye dayalı yanıtlar sunmak üzere istemler olarak eklenir. Birden çok veri deposu aynı anda kullanılabilir."
 }

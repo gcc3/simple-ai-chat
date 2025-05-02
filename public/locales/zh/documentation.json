@@ -130,5 +130,5 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "您可以按下 Control 键（macOS 用户请按 command 键）并点击模型名称，`:session attach` 命令及会话 ID 将自动复制到您的剪贴板。",
   "Models": "模型",
   "* Link with your own data. Support link to relational database.": "* 链接您自己的数据。支持与关系型数据库的连接。",
-  "Support for relational database query. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "支持关系型数据库查询。如果使用了数据存储，查询结果将作为提示插入，以提供有见地的回答。可以同时使用多个数据存储。"
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "支持对文件和关系数据库的查询。如果使用数据存储，查询结果将被插入为提示，以提供有见地的回答。可同时使用多个数据存储。"
 }
