@@ -1,8 +1,7 @@
 import { authenticate } from 'utils/authUtils.js';
-import { getUser, countChatsForUser, countTokenForUserByModel, getUsageModelsForUser } from 'utils/sqliteUtils.js';
+import { getUser, countChatsForUser, countTokenForUserByModel, getUsageModelsForUser, getModels } from 'utils/sqliteUtils.js';
 import { createToken } from 'utils/authUtils.js';
 import { getRoleFequencyLimit } from 'utils/usageUtils.js';
-import { feeCal } from "utils/usageUtils";
 import { npre } from "utils/numberUtils";
 
 export default async function (req, res) {
@@ -68,19 +67,26 @@ export default async function (req, res) {
     const usageModelObjs = await getUsageModels(user.username);
     let modelUsageList = [];
 
+    // Models
+    let models = await getModels();
+
     // Loop through usage models
     let totalUsageFeeThisMonth = 0;
     let totalUsageFeeLastMonth = 0;
     for (const modelObj of usageModelObjs) {
       const model = modelObj.model;
+      const modelInfo = models.find(m => m.name === model);
+      if (!modelInfo) {
+        continue;
+      }
 
       // Count token
       const tokenUsageThisMonth = await getModelTokenUsageThisMonth(user.username, model);
       const tokenUsageLastMonth = await getModelTokenUsageLastMonth(user.username, model);
 
       // Fee calculation
-      const feeThisMonth = feeCal(model, tokenUsageThisMonth.input, tokenUsageThisMonth.output);
-      const feeLastMonth = feeCal(model, tokenUsageLastMonth.input, tokenUsageLastMonth.output);
+      const feeThisMonth = modelInfo.price_input * tokenUsageThisMonth.input + modelInfo.price_output * tokenUsageThisMonth.output;
+      const feeLastMonth = modelInfo.price_input * tokenUsageLastMonth.input + modelInfo.price_output * tokenUsageLastMonth.output;
 
       // Token frequencies
       const tokenFrequencies = await getModelTokenFrequencies(user.username, model);

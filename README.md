@@ -7,7 +7,7 @@ Simple AI
 
 Simple AI (`simple-ai-chat`) is a command-based AI chat application, aimed at providing users with an easy and simple AI experience.  
 This application is deployed to [simple-ai.io](https://simple-ai.io).  
-You can fork this code and deploy it on your machine for non-commercial use. (For details, please refer to the LICENSE file.)  
+You can fork this code and deploy it on your machine for non-commercial use. (For details, please refer to the [LICENSE](https://github.com/gcc3/simple-ai-chat/blob/master/LICENSE) file.)  
 For bugs or suggestions, please report to the repository's GitHub Issues.  
 
 
@@ -37,24 +37,33 @@ Vectara https://vectara.com/
 Setup
 -----
 
+0. Prerequisites  
+  - `node` and `npm` (recommend to use [`nvm`](https://github.com/nvm-sh/nvm) to install)  
+  - OpenAI API key (get from https://platform.openai.com/account/api-keys)    
+
+  * Optional:  
+    - AWS S3 Bucket, secret and key (if you want to use file upload feature)  
+    - PayPal account (if you want to use user's payment feature)  
+    - Hunter API key (if you want to use email gate)  
+    - Vectara API key (if you want to use Vectara's vector databases)  
+
 1. Install the requirements  
-
+    `git clone` the repository.  
+    In directory run the following commands:  
    `$ npm install`  
-   `$ npm install next -g`  
 
-2. Create necessary files.  
-
+2. Create `.env` and setup  
    Create `.env` from `.env.example`  
+   For setup refer to the `.env` section below.
 
 3. Build and run the app.  
-
    `$ npm run build`  
    `$ npm run dev` or `$npm start`
 
-- Files automatically created:
-  - `db.sqlite`
-  - `role.csv` created from [`role.csv.example`](https://github.com/f/awesome-chatgpt-prompts)  
-  - `log.config` created from `log.config.example`
+  * Files automatically created:
+    - `db.sqlite`
+    - `role.csv` created from [`role.csv.example`](https://github.com/f/awesome-chatgpt-prompts)  
+    - `log.config` created from `log.config.example`
 
 
 AI Link (node)

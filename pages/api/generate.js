@@ -235,14 +235,25 @@ export default async function(req, res) {
       // Try update models
       models = await getModels();
 
-      // Still not found
-      modelInfo = models.find(m => m.name === model);
-      if (!modelInfo) {
-        updateStatus("Model not exists.");
-        res.write(`data: ###ERR###Model not exists.\n\n`);
-        res.write(`data: [DONE]\n\n`);
-        res.end();
-        return;
+      if (models.length === 0) {
+        // Developer didn't setup models table
+        modelInfo = {
+          name: process.env.MODEL,
+          api_key: process.env.OPENAI_API_KEY,
+          base_url: process.env.OPENAI_BASE_URL,
+          price_input: 0,
+          price_output: 0,
+        }
+      } else {
+        // Already setup models but not found
+        modelInfo = models.find(m => m.name === model);
+        if (!modelInfo) {
+          updateStatus("Model not exists.");
+          res.write(`data: ###ERR###Model not exists.\n\n`);
+          res.write(`data: [DONE]\n\n`);
+          res.end();
+          return;
+        }
       }
     }
 

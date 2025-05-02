@@ -1,16 +1,21 @@
 export function getSystemConfigurations() {
+  // Welcome message
+  let welcome_message = process.env.WELCOME_MESSAGE ? process.env.WELCOME_MESSAGE : "";
+  if (!process.env.ROOT_PASS) welcome_message = "Hi, you need to setup the `.env` to initialize the program.\n\nFollow this [guide](https://github.com/gcc3/simple-ai-chat?tab=readme-ov-file#env) to setup.";
+  if (!process.env.OPENAI_API_KEY) welcome_message = "`OPENAI_API_KEY` is required.";
+  if (!process.env.MODEL) welcome_message = "`MODEL` is required.";
+
   const model = process.env.MODEL ? process.env.MODEL : "";
   const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
   const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
-  const welcome_message = process.env.WELCOME_MESSAGE ? process.env.WELCOME_MESSAGE : "";
   const querying = process.env.QUERYING ? process.env.QUERYING : "Querying...";
   const generating = process.env.GENERATING ? process.env.GENERATING : "";
   const searching = process.env.SEARCHING ? process.env.SEARCHING : "";
   const waiting = process.env.WAITING ? process.env.WAITING : "";
-  const init_placeholder = process.env.INIT_PLACEHOLDER ? process.env.INIT_PLACEHOLDER : "";
+  const init_placeholder = process.env.INIT_PLACEHOLDER ? process.env.INIT_PLACEHOLDER : ":help";
   const enter = process.env.ENTER ? process.env.ENTER : "";
-  const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 0.7;  // default is 0.7
-  const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;                      // default is 1
+  const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 1;
+  const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;
   const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
   const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
   const use_user_accounts = process.env.USE_USER_ACCOUNTS == "true" ? true : false;

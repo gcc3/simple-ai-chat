@@ -83,6 +83,7 @@ export default async function (req, res) {
         role_expires_at: user.role_expires_at,
         role_expires_at_h: (user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : "-"),
         balance: user.balance,
+        usage: user.usage,
         user_role_count: (await countUserRoles(user.username)).count,
         store_count: (await getAvailableStoresForUser(user)).length,
         node_count: (await getAvailableNodesForUser(user)).length,
