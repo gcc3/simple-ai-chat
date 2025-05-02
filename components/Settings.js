@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { getUserInfo } from "utils/userUtils";
+import { fetchUserInfo } from "utils/userUtils";
 import { useTranslation } from "react-i18next";
 import { setRtl } from "utils/rtlUtils.js";
 
@@ -21,7 +21,7 @@ function Settings() {
 
     const loadUserSettings = async () => {
       setLoading(true);
-      const user = await getUserInfo()
+      const user = await fetchUserInfo()
       setUser(user);
       setLoading(false);
     }

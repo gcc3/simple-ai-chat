@@ -136,8 +136,7 @@ export function generatePassword(length=8) {
   return result;
 }
 
-// Basic user info
-export async function getUserInfo() {
+export async function fetchUserInfo() {
   console.log("Fetching user info...");
 
   let user = null;
@@ -152,7 +151,7 @@ export async function getUserInfo() {
 
 // User usage
 // Include tokens, fees, etc.
-export async function getUserUsage() {
+export async function fetchUserUsage() {
   console.log("Fetching user usage...");
 
   let usage = null;
@@ -167,7 +166,7 @@ export async function getUserUsage() {
 
 // User get user info to check user credential
 export async function refreshLocalUserInfo() {
-  const user = await getUserInfo();
+  const user = await fetchUserInfo();
 
   if (user) {
     console.log("User info - settings: ", JSON.stringify(user.settings, null, 2));

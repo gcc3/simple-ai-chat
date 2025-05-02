@@ -34,7 +34,7 @@ import { sleep } from "utils/sleepUtils";
 import { loadConfig } from "utils/configUtils";
 import OpenAI from "openai";
 const { Readable } = require('stream');
-import { getUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSetting } from "utils/userUtils";
+import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSetting } from "utils/userUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -373,76 +373,74 @@ export default function Home() {
 
     // System and user configurations
     const getSystemInfo = async () => {
-      try {
-        // User info
-        if (localStorage.getItem("user") !== null) {
-          console.log("Fetching user info...");
-          const user = await getUserInfo();
-          if (user) {
-            console.log("User info - settings: ", JSON.stringify(user.settings, null, 2));
-        
-            // Refresh local user data
-            setUserWebStorage(user);
-          } else {
-            console.warn("User not found or authentication failed, clearing local user data...");
-        
-            // Clear local user data
-            if (localStorage.getItem("user")) {
-              clearUserWebStorage();
-        
-              // Clear auth cookie
-              document.cookie = "auth=; Path=/;";
-              console.log("User authentication failed, local user data cleared.");
-            }
-          }
+      // User info
+      if (localStorage.getItem("user") !== null) {
+        console.log("Fetching user info...");
+        const user = await fetchUserInfo();
+        if (user) {
+          console.log("User info - settings: ", JSON.stringify(user.settings, null, 2));
+      
+          // Refresh local user data
+          setUserWebStorage(user);
         } else {
-          console.log("User not logged in.");
+          console.warn("User not found or authentication failed, clearing local user data...");
+      
+          // Clear local user data
+          if (localStorage.getItem("user")) {
+            clearUserWebStorage();
+      
+            // Clear auth cookie
+            document.cookie = "auth=; Path=/;";
+            console.log("User authentication failed, local user data cleared.");
+          }
         }
-        
-        // System info
-        console.log("Fetching system info...");
-        const systemInfoResponse = await fetch('/api/system/info');
-        const systemInfo = (await systemInfoResponse.json()).result;
-        console.log("System info:", JSON.stringify(systemInfo, null, 2));
+      } else {
+        console.log("User not logged in.");
+      }
+      
+      // System info
+      console.log("Fetching system info...");
+      const systemInfoResponse = await fetch('/api/system/info');
+      const systemInfo = (await systemInfoResponse.json()).result;
+      console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
-        if (systemInfo.init_placeholder) {
-          global.initPlaceholder = systemInfo.init_placeholder;
-          global.rawPlaceholder = systemInfo.init_placeholder;
-          setPlaceholder({ text: systemInfo.init_placeholder, height: null });  // Set placeholder text
-        }
-        if (systemInfo.enter) {
-          dispatch(toggleEnterChange(systemInfo.enter));
-        }
-        if (systemInfo.waiting) setWaiting(systemInfo.waiting);  // Set waiting text
-        if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
-        if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
-        if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
-        if (systemInfo.use_payment) {
-          // Set use payment
-          setSubscriptionDisplay(true);
-          setUsageDisplay(true);
-        }
-        if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
+      if (systemInfo.init_placeholder) {
+        global.initPlaceholder = systemInfo.init_placeholder;
+        global.rawPlaceholder = systemInfo.init_placeholder;
+        setPlaceholder({ text: systemInfo.init_placeholder, height: null });  // Set placeholder text
+      }
+      if (systemInfo.enter) {
+        dispatch(toggleEnterChange(systemInfo.enter));
+      }
+      if (systemInfo.waiting) setWaiting(systemInfo.waiting);  // Set waiting text
+      if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
+      if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
+      if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
+      if (systemInfo.use_payment) {
+        // Set use payment
+        setSubscriptionDisplay(true);
+        setUsageDisplay(true);
+      }
+      if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
 
-        // Set welcome message
-        if (systemInfo.welcome_message && !localStorage.getItem("user")) {
-          printOutput(systemInfo.welcome_message);
-          markdownFormatter(elOutputRef.current);
-        }
+      // Set welcome message
+      if (systemInfo.welcome_message && !localStorage.getItem("user")) {
+        printOutput(systemInfo.welcome_message);
+        markdownFormatter(elOutputRef.current);
+      }
 
-        // Set defaults
-        if (!localStorage.getItem("functions")) localStorage.setItem("functions", systemInfo.default_functions);  // default functions
-        if (!sessionStorage.getItem("role")) sessionStorage.setItem("role", systemInfo.default_role);    // default role
-        if (!sessionStorage.getItem("stores")) sessionStorage.setItem("stores", systemInfo.default_stores);  // default store
-        if (!sessionStorage.getItem("node")) sessionStorage.setItem("node", systemInfo.default_node);    // default node
+      // Set defaults
+      if (!localStorage.getItem("functions")) localStorage.setItem("functions", systemInfo.default_functions);  // default functions
+      if (!sessionStorage.getItem("role")) sessionStorage.setItem("role", systemInfo.default_role);    // default role
+      if (!sessionStorage.getItem("stores")) sessionStorage.setItem("stores", systemInfo.default_stores);  // default store
+      if (!sessionStorage.getItem("node")) sessionStorage.setItem("node", systemInfo.default_node);    // default node
 
-        // Set model
-        global.model = systemInfo.model;
-        global.baseUrl = systemInfo.base_url;
-        if (!sessionStorage.getItem("model")) sessionStorage.setItem("model", systemInfo.model);  // default model
-        if (!sessionStorage.getItem("baseUrl")) sessionStorage.setItem("baseUrl", systemInfo.base_url);  // default base url
-      } catch (error) {
-        console.error("There was an error fetching the data:", error);
+      // Set model
+      global.model = systemInfo.model;
+      global.baseUrl = systemInfo.base_url;
+      if (!sessionStorage.getItem("model")) {
+        sessionStorage.setItem("model", systemInfo.model);  // default model
+        sessionStorage.setItem("baseUrl", systemInfo.base_url);  // default base url
       }
     }
     getSystemInfo();
