@@ -140,7 +140,6 @@ function Usage() {
               </React.Fragment>
             ))}
             <div className="mt-2">* { t("For token pricing, refer to the OpenAI official pricing document.") } (<a href="https://openai.com/api/pricing/"><u>link</u></a>) </div>
-            <div>* { t("1% ~ 3% for maintenance service.") }</div>
             <div className="mt-3">- { t("Rate Limits") }</div>
             <table className="table-fixed mt-1">
               <tbody>
@@ -194,11 +193,9 @@ function Usage() {
             </div>}
             <div className="mt-3">
               <div>- { t("Fees and Balance") }</div>
-              <ProgressBar label={ t("Usage") } progress={npre(usage.total_usage_fee_this_month 
-                                                        + plusFeeCal(user.role, usage.total_usage_fee_this_month))} 
+              <ProgressBar label={ t("Usage") } progress={npre(user.usage)} 
                                                           progressMax={npre(user.balance)} />
-              <div className="mt-3">{ t("Total Fees") }: ${npre(usage.total_usage_fee_this_month 
-                                                         + plusFeeCal(user.role, usage.total_usage_fee_this_month))}</div>
+              <div className="mt-3">{ t("Total Fees") }: ${npre(user.usage)}</div>
               <div>{ t("Balance") }: ${npre(user.balance)}</div>
             </div>
           </div>}
