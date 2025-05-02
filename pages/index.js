@@ -35,6 +35,7 @@ import { loadConfig } from "utils/configUtils";
 import OpenAI from "openai";
 const { Readable } = require('stream');
 import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSetting } from "utils/userUtils";
+import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -436,11 +437,32 @@ export default function Home() {
       if (!sessionStorage.getItem("node")) sessionStorage.setItem("node", systemInfo.default_node);    // default node
 
       // Set model
+      // Auto setup the base URL too
       global.model = systemInfo.model;
       global.baseUrl = systemInfo.base_url;
       if (!sessionStorage.getItem("model")) {
         sessionStorage.setItem("model", systemInfo.model);  // default model
         sessionStorage.setItem("baseUrl", systemInfo.base_url);  // default base url
+      } else {
+        const modelName = sessionStorage.getItem("model");
+        const modelInfoResponse = await fetch('/api/model/' + modelName);
+        const modelInfo = (await modelInfoResponse.json()).result;
+        if (modelInfo) {
+          // Found remote model
+          sessionStorage.setItem("baseUrl", modelInfo.base_url);
+        } else {
+          if (await pingOllamaAPI()) {
+            const ollamaModels = await listOllamaModels();
+            const ollamaModel = ollamaModels.find(o => o.name === modelName);
+            if (ollamaModel) {
+              // Found ollama model
+              sessionStorage.setItem("baseUrl", ollamaModel.base_url);
+            } else {
+              // Both remote and local model not found, set baseUrl to empty
+              sessionStorage.setItem("baseUrl", "");
+            }
+          }
+        }
       }
     }
     getSystemInfo();
