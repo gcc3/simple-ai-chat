@@ -46,7 +46,7 @@ export default async function unuse(args) {
   if (modelInfo) {
     // Set model
     sessionStorage.setItem("model", global.model);  // reset model
-    sessionStorage.setItem("baseUrl", "");  // reset base url
+    sessionStorage.setItem("baseUrl", global.baseUrl);  // reset base url
 
     return "Model unused, and reset to default model.";
   }

@@ -459,6 +459,7 @@ export default function Home() {
               sessionStorage.setItem("baseUrl", ollamaModel.base_url);
             } else {
               // Both remote and local model not found, set baseUrl to empty
+              console.warn("Model `" + modelName + "` not found, set baseUrl to empty.");
               sessionStorage.setItem("baseUrl", "");
             }
           }

@@ -60,6 +60,14 @@ export default async function (req, res) {
 
   let settings = {};
 
+  // File store
+  if (engine === "file") {
+    settings = {
+      url: "",
+      description: "",
+    }
+  }
+
   // MySQL store
   if (engine === "mysql") {
     settings = {

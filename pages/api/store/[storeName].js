@@ -32,10 +32,10 @@ export default async function (req, res) {
     // MySQL store
     if (store.engine === "mysql") {
       status = {
-        testConnectable: await testConnection({ host: settings.host, port: settings.port, user: settings.user, password: settings.password, database: settings.database })
+        initialized: isInitialized(store.engine, settings),
+        connected: await testConnection({ host: settings.host, port: settings.port, user: settings.user, password: settings.password, database: settings.database })
                                   .then(() => true)
                                   .catch(() => false),
-        initialized: isInitialized(store.engine, settings),
       };
       settings = {
         ...settings,
