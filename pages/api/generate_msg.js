@@ -188,10 +188,6 @@ export default async function(req, res) {
   }
 
   try {
-    let input_token_ct = 0;
-    let output_token_ct = 0;
-    let input_images = [];
-
     // Messages
     const msg = await generateMessages(use_system_role, lang,
                                        user, model,
@@ -217,7 +213,7 @@ export default async function(req, res) {
         stats: {
           temperature: sysconf.temperature,
           top_p: sysconf.top_p,
-          token_ct: input_token_ct,
+          token_ct: 0,
           mem: msg.mem,
           func: functionNames.join('|'),
           role: role,

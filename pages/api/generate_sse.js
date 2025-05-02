@@ -235,9 +235,6 @@ export default async function (req, res) {
   }
 
   try {
-    let token_ct = [];  // detailed token count
-    let input_token_ct = 0;
-    let output_token_ct = 0;
     let input_images = [];
     let node_input = "";
     let node_output = "";
@@ -258,8 +255,6 @@ export default async function (req, res) {
                                        updateStatus, streamOutput);
 
     updateStatus("Pre-generating finished.");
-    token_ct.push(msg.token_ct);
-    input_token_ct += msg.token_ct.total;
     input_images = msg.input_images;
     
     node_input = msg.node_input;
@@ -369,7 +364,7 @@ export default async function (req, res) {
     });
 
     res.write(`data: ###MODEL###${model}\n\n`);
-    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${input_token_ct + output_token_ct},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node},${msg.mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${0},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node},${msg.mem}\n\n`);
 
     // Print input images
     input_images.map(image => {
@@ -424,7 +419,6 @@ export default async function (req, res) {
         if (evalResult.success) {
           res.write(`data: ###EVAL###${evalResult.output}\n\n`); res.flush();
           console.log("eval: " + evalResult.output + "\n");
-          output_token_ct += evalResult.token_ct;
         } else {
           res.write(`data: ###EVAL###${evalResult.error}\n\n`); res.flush();
         }
@@ -462,10 +456,8 @@ export default async function (req, res) {
     }
 
     // 2. general input/output log
-    output_token_ct += countToken(model, output);
     if (inputType === TYPE.TOOL_CALL) {
       // Function calling input is already logged
-      input_token_ct = 0;
       input = "Q=" + input;
     }
     if (outputType === TYPE.TOOL_CALL) {
@@ -478,8 +470,6 @@ export default async function (req, res) {
 
     // Token
     console.log("--- token_ct ---");
-    console.log(JSON.stringify(token_ct));
-    console.log("output_token_ct: " + output_token_ct);
     console.log("response_token_ct: " + JSON.stringify(chatCompletionUsage) + "\n");
 
     // Fee

@@ -43,7 +43,6 @@ export async function generateMessages(use_system_role, lang,
                                        use_function_calling, functionCalls, functionResults,
                                        updateStatus = null, streamOutput = null) {
   let messages = [];
-  let token_ct = {};
   let mem = 0;
   let input_images = [];
   let file_content = "";
@@ -121,9 +120,6 @@ export async function generateMessages(use_system_role, lang,
       role: "system",
       content: system_prompt,
     });
-
-    // Count tokens
-    token_ct["system"] = countToken(model, system_prompt);
   }
 
   // -5. Role prompt
@@ -142,9 +138,6 @@ export async function generateMessages(use_system_role, lang,
       role: "system",
       content: role_prompt,
     });
-
-    // Count tokens
-    token_ct["role"] = countToken(model, role_prompt);
   }
 
   // -4. Data stores search result
@@ -212,9 +205,6 @@ export async function generateMessages(use_system_role, lang,
       "content": "Support data:" + stores_prompt,
     })
     console.log("");  // add new line
-
-    // Count tokens
-    token_ct["store"] = countToken(model, stores_prompt);
   }
 
   // -3. Node AI result
@@ -340,7 +330,6 @@ export async function generateMessages(use_system_role, lang,
     }
 
     // Count tokens
-    token_ct["node"] = countToken(model, node_prompt);
     console.log("response: " + node_output.trim().replace(/\n/g, " "));
     if (node_output_images.length > 0) console.log("response images: " + JSON.stringify(node_output_images));
     console.log("");
@@ -382,9 +371,6 @@ export async function generateMessages(use_system_role, lang,
       "role": "system",
       "content": location_prompt
     });
-
-    // Count tokens
-    token_ct["location"] = countToken(model, location_prompt);
   }
 
   // -1. Chat history
@@ -479,9 +465,6 @@ export async function generateMessages(use_system_role, lang,
 
       chat_history_prompt += log.input + log.output + "\n";
     });
-
-    // Count tokens
-    token_ct["history"] = countToken(model, chat_history_prompt);
   }
 
   // 0. User input
@@ -498,9 +481,6 @@ export async function generateMessages(use_system_role, lang,
             text: input
         });
         
-        // Count tokens
-        token_ct["user_input"] = countToken(model, input);
-
         // File input (extracted text)
         if (files_text && files_text.length > 0) {
           for (let i = 0; i < files_text.length; i++) {
@@ -512,7 +492,6 @@ export async function generateMessages(use_system_role, lang,
               user_input_file_prompt += "File content: " + files_text[i].text;
             }
           }
-          token_ct["user_input_file"] = countToken(model, user_input_file_prompt);
         }
 
         // Vision model
@@ -537,7 +516,6 @@ export async function generateMessages(use_system_role, lang,
               input_images.push(images[i]);
             }
           }
-          token_ct["user_input_image"] = image_token_ct;
         }
         return c;
       })()  // Immediately-invoked function expression (IIFE)
@@ -575,21 +553,10 @@ export async function generateMessages(use_system_role, lang,
         }
       }
     }
-
-    // Count tokens
-    token_ct["function"] = countToken(model, function_prompt);
   }
-
-  // Total token count
-  let token_ct_total = 0;
-  for (const key in token_ct) {
-    token_ct_total += token_ct[key];
-  }
-  token_ct["total"] = token_ct_total;
 
   return {
     messages,
-    token_ct,
     mem,
     input_images,
     file_content,
