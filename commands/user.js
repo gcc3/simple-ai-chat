@@ -11,6 +11,7 @@ export default async function entry(args) {
                 "       :user set email [value]" + "\n" +
                 "       :user set [key] [value]" + "\n" +
                 "       :user reset pass [username] [email]" + "\n" +
+                "       :user reset settings" + "\n" +
                 "       :user role [add|set] [role_name] [prompt]" + "\n" +
                 "       :user role [del|delete] [role_name]" + "\n"
                 "       :user join [group] [password]" + "\n" +
@@ -277,6 +278,27 @@ export default async function entry(args) {
           username: username,
           email: email,
         }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Reset settings
+  // :user reset settings
+  if (command === "reset" && args[1] === "settings") {
+    try {
+      const response = await fetch("/api/user/reset-settings", {
+        method: "POST",
+        credentials: 'include',
       });
 
       const data = await response.json();

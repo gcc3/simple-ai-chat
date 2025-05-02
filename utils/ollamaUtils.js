@@ -22,9 +22,13 @@ export async function pingOllamaAPI(baseUrl = 'http://localhost:11434') {
 
 // List available models
 export async function listOllamaModels(baseUrl = 'http://localhost:11434') {
-  console.log("Listing models from Ollama API...");
   try {
-    const response = await fetch(`${baseUrl}/v1/models`);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 100);
+    const response = await fetch(`${baseUrl}/v1/models`, { 
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
     if (!response.ok) return [];
     const data = await response.json();
     const models = data.data.map(model => model.id);
@@ -46,5 +50,29 @@ export async function listOllamaModels(baseUrl = 'http://localhost:11434') {
   } catch (error) { 
     console.error("Error fetching models from Ollama API:", error);
     return [];
+  }
+}
+
+// Check model is running for given model name
+export async function isModelRunning(modelName, baseUrl = 'http://localhost:11434') {
+  try {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 100);
+    const response = await fetch(`${baseUrl}/api/ps`, { 
+      signal: controller.signal
+    });
+    clearTimeout(timeoutId);
+
+    if (!response.ok) return false;
+    const data = await response.json();
+    
+    const psModels = data.models || [];
+    return psModels.some(m => {
+      const id = m.model || m.name;
+      const trimmed = id.endsWith(':latest') ? id.slice(0, -7) : id;
+      return trimmed === modelName;
+    });
+  } catch (error) {
+    return false;
   }
 }

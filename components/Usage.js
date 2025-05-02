@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import ProgressBar from "./ProgressBar";
-import { getRoleLevel, getUserInfo, getUserUsage } from "utils/userUtils";
+import { getRoleLevel, fetchUserInfo, fetchUserUsage } from "utils/userUtils";
 import PayPalButton from "./PayPalButton";
 import { npre } from "utils/numberUtils";
 import { useTranslation } from "react-i18next";
@@ -44,7 +44,7 @@ function Usage() {
       setMessage(data.message);
   
       // Refresh user and usage
-      const [user, usage] = await Promise.all([getUserInfo(), getUserUsage()]);
+      const [user, usage] = await Promise.all([fetchUserInfo(), fetchUserUsage()]);
       console.log("User usage: " + JSON.stringify(usage, null, 2));
 
       setUser(user);
@@ -61,7 +61,7 @@ function Usage() {
       setLoading(true);
 
       // Refresh user and usage
-      const [user, usage] = await Promise.all([getUserInfo(), getUserUsage()]);
+      const [user, usage] = await Promise.all([fetchUserInfo(), fetchUserUsage()]);
       console.log("User usage: " + JSON.stringify(usage, null, 2));
 
       setUser(user);

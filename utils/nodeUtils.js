@@ -324,7 +324,6 @@ export function getInitNodeSettings() {
     "endpoint": "___",            // the full endpoint of the node, example: "http://localhost:5000/api/v1/"
     "apiKey": "___",              // If the API key is necessary
     "model": "___",               // One of the model of the node
-    "modelV": "___",              // The version of the model
     "useHistory": false,          // Use history or not
     "useFuncitonCalling": false,  // Use function calling or not, some model not support
     "description": "",            // The description of the node

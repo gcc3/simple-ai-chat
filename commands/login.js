@@ -1,4 +1,4 @@
-import { initializeSession } from "utils/sessionUtils";
+import { initializeSessionMemory } from "utils/sessionUtils";
 import { setUserWebStorage } from "utils/userUtils.js";
 
 export default async function login(args) {
@@ -58,7 +58,7 @@ export default async function login(args) {
       console.log("User is set to \"" + localStorage.getItem("user") + "\".");
 
       if (userLoginPreviously) {
-        initializeSession();
+        initializeSessionMemory();
       }
       return "You're logged in as " + user.username + " (role: `" + user.role + "`, expires in: `" + expiresIn +  "`).\n\n";
     }

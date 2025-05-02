@@ -1,5 +1,4 @@
-import { initializeSession } from "utils/sessionUtils";
-import { getBaseURL } from "utils/urlUtils";
+import { initializeSessionMemory } from "utils/sessionUtils";
 
 export default async function node(args) {
   const command = args[0];
@@ -232,7 +231,7 @@ export default async function node(args) {
     sessionStorage.setItem("node", "");  // reset node
 
     // Reset session to forget previous memory
-    initializeSession();
+    initializeSessionMemory();
     return "Node reset, and session reset.";
   }
 

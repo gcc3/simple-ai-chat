@@ -17,11 +17,10 @@ import Subscription from "components/Subscription";
 import Documentation from "components/Documentation";
 import Copyrights from "components/Copyrights";
 import Settings from "components/Settings";
-import { refreshLocalUserInfo, updateUserSetting } from "utils/userUtils";
 import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
 import { generateFileURl } from "utils/awsUtils";
-import { initializeSession, setSession, setTime } from "utils/sessionUtils";
+import { initializeSessionMemory, setSession, setTime } from "utils/sessionUtils";
 import Image from 'next/image';
 import { getQueryParameterValue } from "utils/urlUtils";
 import 'katex/dist/katex.min.css';
@@ -29,15 +28,14 @@ import { asciiframe } from "utils/donutUtils";
 import { checkUserAgent } from "utils/userAgentUtils";
 import { getLangCodes } from "utils/langUtils";
 import { useTranslation } from 'react-i18next';
-import { getFunctions } from "function";
 import { simulateKeyPress } from "utils/keyboardUtils";
-import { getSettings } from "utils/settingsUtils";
 import { getAutoCompleteOptions } from "utils/autocompleteUtils";
-import clear from "commands/clear";
 import { sleep } from "utils/sleepUtils";
 import { loadConfig } from "utils/configUtils";
 import OpenAI from "openai";
 const { Readable } = require('stream');
+import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSetting } from "utils/userUtils";
+import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -353,60 +351,8 @@ export default function Home() {
 
   // Initializing
   useEffect(() => { 
-    initializeSession();
-
-    // Get system configurations and IP info
-    const getSystemInfo = async () => {
-      try {
-        console.log("Fetching system info...");
-
-        // System info
-        const systemInfoResponse = await fetch('/api/system/info');
-        const systemInfo = (await systemInfoResponse.json()).result;
-        console.log("System info:", JSON.stringify(systemInfo, null, 2));
-
-        if (systemInfo.init_placeholder) {
-          global.initPlaceholder = systemInfo.init_placeholder;
-          global.rawPlaceholder = systemInfo.init_placeholder;
-          setPlaceholder({ text: systemInfo.init_placeholder, height: null });  // Set placeholder text
-        }
-        if (systemInfo.enter) {
-          dispatch(toggleEnterChange(systemInfo.enter));
-        }
-        if (systemInfo.waiting) setWaiting(systemInfo.waiting);  // Set waiting text
-        if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
-        if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
-        if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
-        if (systemInfo.use_payment) {
-          // Set use payment
-          setSubscriptionDisplay(true);
-          setUsageDisplay(true);
-        }
-        if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
-
-        // Set welcome message
-        if (systemInfo.welcome_message && !localStorage.getItem("user")) {
-          printOutput(systemInfo.welcome_message);
-          markdownFormatter(elOutputRef.current);
-        }
-
-        // Set defaults
-        if (localStorage.getItem("functions") === null) localStorage.setItem("functions", systemInfo.default_functions);  // default functions
-        if (sessionStorage.getItem("role") === null) sessionStorage.setItem("role", systemInfo.default_role);    // default role
-        if (sessionStorage.getItem("stores") === null) sessionStorage.setItem("stores", systemInfo.default_stores);  // default store
-        if (sessionStorage.getItem("node") === null) sessionStorage.setItem("node", systemInfo.default_node);    // default node
-
-        // Set model
-        global.model = systemInfo.model;
-        global.modelV = systemInfo.model_v;
-        if (sessionStorage.getItem("model") === null) sessionStorage.setItem("model", systemInfo.model);  // default model
-        if (sessionStorage.getItem("modelV") === null) sessionStorage.setItem("modelV", systemInfo.model_v);  // default model version
-      } catch (error) {
-        console.error("There was an error fetching the data:", error);
-      }
-    }
-    getSystemInfo();
-
+    initializeSessionMemory();
+    
     // Set default localStorage values
     if (localStorage.getItem("_up") === null) localStorage.setItem("_up", Date.now());
     if (localStorage.getItem("lang") === null) localStorage.setItem("lang", "en-US");  // by default use English
@@ -425,6 +371,101 @@ export default function Home() {
     if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
     if (sessionStorage.getItem("baseUrl") === null) sessionStorage.setItem("baseUrl", "");
     if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);  // command history index
+
+    // System and user configurations
+    const getSystemInfo = async () => {
+      // User info
+      if (localStorage.getItem("user") !== null) {
+        console.log("Fetching user info...");
+        const user = await fetchUserInfo();
+        if (user) {
+          console.log("User info - settings: ", JSON.stringify(user.settings, null, 2));
+      
+          // Refresh local user data
+          setUserWebStorage(user);
+        } else {
+          console.warn("User not found or authentication failed, clearing local user data...");
+      
+          // Clear local user data
+          if (localStorage.getItem("user")) {
+            clearUserWebStorage();
+      
+            // Clear auth cookie
+            document.cookie = "auth=; Path=/;";
+            console.log("User authentication failed, local user data cleared.");
+          }
+        }
+      } else {
+        console.log("User not logged in.");
+      }
+      
+      // System info
+      console.log("Fetching system info...");
+      const systemInfoResponse = await fetch('/api/system/info');
+      const systemInfo = (await systemInfoResponse.json()).result;
+      console.log("System info:", JSON.stringify(systemInfo, null, 2));
+
+      if (systemInfo.init_placeholder) {
+        global.initPlaceholder = systemInfo.init_placeholder;
+        global.rawPlaceholder = systemInfo.init_placeholder;
+        setPlaceholder({ text: systemInfo.init_placeholder, height: null });  // Set placeholder text
+      }
+      if (systemInfo.enter) {
+        dispatch(toggleEnterChange(systemInfo.enter));
+      }
+      if (systemInfo.waiting) setWaiting(systemInfo.waiting);  // Set waiting text
+      if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
+      if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
+      if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
+      if (systemInfo.use_payment) {
+        // Set use payment
+        setSubscriptionDisplay(true);
+        setUsageDisplay(true);
+      }
+      if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
+
+      // Set welcome message
+      if (systemInfo.welcome_message && !localStorage.getItem("user")) {
+        printOutput(systemInfo.welcome_message);
+        markdownFormatter(elOutputRef.current);
+      }
+
+      // Set defaults
+      if (!localStorage.getItem("functions")) localStorage.setItem("functions", systemInfo.default_functions);  // default functions
+      if (!sessionStorage.getItem("role")) sessionStorage.setItem("role", systemInfo.default_role);    // default role
+      if (!sessionStorage.getItem("stores")) sessionStorage.setItem("stores", systemInfo.default_stores);  // default store
+      if (!sessionStorage.getItem("node")) sessionStorage.setItem("node", systemInfo.default_node);    // default node
+
+      // Set model
+      // Auto setup the base URL too
+      global.model = systemInfo.model;
+      global.baseUrl = systemInfo.base_url;
+      if (!sessionStorage.getItem("model")) {
+        sessionStorage.setItem("model", systemInfo.model);  // default model
+        sessionStorage.setItem("baseUrl", systemInfo.base_url);  // default base url
+      } else {
+        const modelName = sessionStorage.getItem("model");
+        const modelInfoResponse = await fetch('/api/model/' + modelName);
+        const modelInfo = (await modelInfoResponse.json()).result;
+        if (modelInfo) {
+          // Found remote model
+          sessionStorage.setItem("baseUrl", modelInfo.base_url);
+        } else {
+          if (await pingOllamaAPI()) {
+            const ollamaModels = await listOllamaModels();
+            const ollamaModel = ollamaModels.find(o => o.name === modelName);
+            if (ollamaModel) {
+              // Found ollama model
+              sessionStorage.setItem("baseUrl", ollamaModel.base_url);
+            } else {
+              // Both remote and local model not found, set baseUrl to empty
+              sessionStorage.setItem("baseUrl", "");
+            }
+          }
+        }
+      }
+    }
+    getSystemInfo();
 
     // Set styles and themes
     const dispatchFullscreen = (mode, force = false) => {
@@ -502,17 +543,6 @@ export default function Home() {
     // Theme
     setTheme(localStorage.getItem("theme"))
     hljs.highlightAll();  // highlight.js
-
-    // Check login user credential
-    if (localStorage.getItem("user") !== null) {
-      // This function get user info with API
-      // and set user info (settings) to local
-      // If authentication failed, it will clear local user data
-      console.log("Refreshing user info...");
-      refreshLocalUserInfo();
-    } else {
-      console.log("User not logged in.");
-    }
 
     // Handle window resize
     const handleResize = () => {
@@ -1419,7 +1449,8 @@ export default function Home() {
     resetInfo();
 
     // Generation mode switch
-    if (sessionStorage.getItem("baseUrl").includes("localhost") || sessionStorage.getItem("baseUrl").includes("127.0.0.1")) {
+    if (sessionStorage.getItem("baseUrl").includes("localhost") 
+     || sessionStorage.getItem("baseUrl").includes("127.0.0.1")) {
       // Local model
       console.log("Start. (Local)");
       generate_msg(input, image_urls, file_urls);
@@ -1464,7 +1495,6 @@ export default function Home() {
                                                            + "&time=" + config.time
                                                            + "&session=" + config.session
                                                            + "&model=" + config.model
-                                                           + "&model_v=" + config.model_v
                                                            + "&mem_length=" + config.mem_length
                                                            + "&functions=" + config.functions
                                                            + "&role=" + config.role
@@ -1777,6 +1807,10 @@ export default function Home() {
     const config = loadConfig();
     console.log("Config: " + JSON.stringify(config));
 
+    // Model switch
+    const use_vision = images && images.length > 0;
+    const model = config.model;
+
     // Generate messages
     const msgResponse = await fetch("/api/generate_msg", {
       method: "POST",
@@ -1790,7 +1824,6 @@ export default function Home() {
          time: config.time,
          session: config.session,
          model: config.model,
-         model_v: config.model_v,
          mem_length: config.mem_length,
          functions: config.functions,
          role: config.role,
@@ -1819,10 +1852,6 @@ export default function Home() {
       username: localStorage.getItem("user")
     }
 
-    // Model switch
-    const use_vision = images && images.length > 0;
-    const model = use_vision ? config.model_v : config.model;
-
     const openai = new OpenAI({
       baseURL: config.base_url,
       apiKey: "",  // not necessary for local model, but required for OpenAI API
@@ -1832,7 +1861,7 @@ export default function Home() {
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
-      model,
+      model: model,
       frequency_penalty: 0,
       logit_bias: null,
       n: 1,
@@ -1992,7 +2021,6 @@ export default function Home() {
           time: config.time,
           session: config.session,
           model: config.model,
-          model_v: config.model_v,
           mem_length: config.mem_length,
           functions: config.functions,
           role: config.role,

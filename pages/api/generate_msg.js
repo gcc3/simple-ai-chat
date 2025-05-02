@@ -81,7 +81,7 @@ export default async function(req, res) {
 
   // Model switch
   const use_vision = images && images.length > 0;
-  const model = use_vision ? sysconf.model_v : sysconf.model;
+  const model = sysconf.model;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
   // Use function calling
