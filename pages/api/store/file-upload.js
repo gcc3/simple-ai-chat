@@ -1,6 +1,6 @@
 import { authenticate } from "utils/authUtils.js";
-import { createVectaraJtwToken, uploadFileToVectaraCorpus } from "utils/vectaraUtils";
 import { findStore } from "utils/storeUtils.js";
+import { updateStoreSetting } from 'utils/sqliteUtils.js';
 
 export default async function (req, res) {
   // Check method
@@ -37,56 +37,28 @@ export default async function (req, res) {
     });
   }
 
-  const settings = JSON.parse(store.settings);
+  if (store.engine === "file") {
+    const settings = JSON.parse(store.settings) || {};
+    const currentFilesList = settings.files || [];
+    const newFilesList = [...currentFilesList, ...files];
 
-  if (store.engine === "vectara") {
-    const uploadResult = await uploadFileToVectaraStore(settings, files[0]);
-    if (!uploadResult.success) {
+    // TODO check if key and value is valid
+    const wasSuccessful = await updateStoreSetting(store.name, username, "files", newFilesList);
+    if (wasSuccessful) {
+      return res.status(200).json({ 
+        success: true, 
+        message: "Store setting updated."
+      });
+    } else {
       return res.status(400).json({ 
         success: false, 
-        error: uploadResult.error 
+        error: 'Failed to update store settings or user not found.'
       });
     }
-    return res.status(200).json({ 
-      success: true, 
-      message: uploadResult.message 
-    });
   }
 
   return res.status(400).json({ 
     success: false, 
     error: "Invalid engine for data upload." 
   });
-}
-
-async function uploadFileToVectaraStore(settings, file) {
-  if (!settings.apiKey || !settings.corpusId || !settings.clientId || !settings.clientSecret || !settings.customerId) {
-    return { 
-      success: false, 
-      error: "Store has invalid settings." 
-    };
-  }
-
-  const jwtToken = await createVectaraJtwToken(settings.clientId, settings.clientSecret, settings.customerId, settings.apiKey);
-  if (!jwtToken) {
-    console.log("Failed to create JWT token.");
-    return {
-      success: false,
-      error: "Failed to upload file.",
-    };
-  }
-
-  // Upload file
-  if (!await uploadFileToVectaraCorpus(settings.corpusId, file, jwtToken, settings.customerId)) {
-    console.log("Failed to upload file.");
-    return {
-      success: false,
-      error: "Failed to upload file.",
-    };
-  }
-
-  return {
-    success: true,
-    message: "File uploaded to store \"" + store.name + "\", please wait for indexing.",
-  };
 }

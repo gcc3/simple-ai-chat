@@ -8,7 +8,6 @@
   "Roles": "역할",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "GPT가 더 만족스러운 답변을 제공할 수 있도록 역할을 수행하게 허용합니다. 사전에 정의된 시스템 역할을 사용하거나 사용자 역할을 특정 요구 사항에 맞추기 위해 맞춤 지시 프롬프트를 만들 수 있습니다.",
   "Data Stores": "데이터 저장소",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "벡터 데이터베이스 및 관계형 데이터베이스 검색 및 쿼리 지원합니다. 벡터 데이터베이스 사용자는 파일을 개인 데이터베이스에 업로드할 수 있습니다. 스토어가 사용될 때 결과는 지식 있는 답변을 제공하기 위해 프롬프트로 삽입됩니다. 여러 데이터 스토어를 동시에 사용할 수 있습니다.",
   "Nodes (Node AI)": "노드 (노드 AI)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "다른 AI 또는 데이터 소스에 연결하여 그 데이터를 사용하십시오. 노드가 사용되면 그 결과는 AI에 제공되는 프롬프트로 활용됩니다.",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "향상된 지식 & 수학 (WolframAlpha)",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "GPT에 사전 지시를 주거나 롤플레이를 해보세요.",
   "2. Advanced Use": "2. 고급 사용법",
   "* Solve complex mathematical problems. (with WolframAlpha)": "복잡한 수학 문제를 풀다. (WolframAlpha 사용)",
-  "* Link with your own data. We support link to relational database and vector database.": "자신의 데이터와 연결하세요. 관계형 데이터베이스 및 벡터 데이터베이스에 대한 연결을 지원합니다.",
   "* Build to link with other AI systems, or your own APIs.": "다른 AI 시스템이나 여러분의 API와 연동하도록 구축합니다.",
   "And more...": "그리고 더 많은 것들...",
   "Quick Start": "빠른 시작",
@@ -130,5 +128,7 @@
   "Command options": "명령어 옵션",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "우리는 사용자와 AI가 API에서 정보를 검색하거나 특정 작업을 수행할 수 있도록 여러 내장 기능을 제공합니다. 사용 가능한 기능 목록을 보려면 `:function ls` 명령을 사용하세요.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control 키를 누르고 모델 이름을 클릭하면(맥OS의 경우 command 키), `:session attach` 명령어와 세션 ID가 자동으로 클립보드에 복사됩니다.",
-  "Models": "모델"
+  "Models": "모델",
+  "* Link with your own data. Support link to relational database.": "* 자신의 데이터와 연동하세요. 관계형 데이터베이스 연동을 지원합니다.",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "파일 및 관계형 데이터베이스 쿼리를 지원합니다. 저장소를 사용하는 경우 쿼리 결과가 프롬프트로 삽입되어 지식 기반의 응답을 제공합니다. 여러 데이터 저장소를 동시에 사용할 수 있습니다."
 }

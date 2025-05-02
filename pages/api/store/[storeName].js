@@ -28,23 +28,21 @@ export default async function (req, res) {
     // Mask settings
     let settings = JSON.parse(store.settings);
     let status = {};
-    if (store.engine === "vectara") {
+
+    // File store
+    if (store.engine === "file") {
+      status = {
+        available: settings.files.length > 0,
+      }
+    }
+
+    // MySQL store
+    if (store.engine === "mysql") {
       status = {
         initialized: isInitialized(store.engine, settings),
-      };
-      settings = {
-        ...settings,
-        apiKey: maskString(settings.apiKey),
-        customerId: maskString(settings.customerId),
-        clientId: maskString(settings.clientId),
-        clientSecret: maskString(settings.clientSecret),
-      };
-    } else if (store.engine === "mysql") {
-      status = {
-        testConnectable: await testConnection({ host: settings.host, port: settings.port, user: settings.user, password: settings.password, database: settings.database })
+        connected: await testConnection({ host: settings.host, port: settings.port, user: settings.user, password: settings.password, database: settings.database })
                                   .then(() => true)
                                   .catch(() => false),
-        initialized: isInitialized(store.engine, settings),
       };
       settings = {
         ...settings,

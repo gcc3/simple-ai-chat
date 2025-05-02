@@ -59,6 +59,19 @@ export default async function (req, res) {
   }
 
   let settings = {};
+  let message = "Store \"" + name + "\" is created. You can use command `:store \"" + name + "\"` to check store status and settings.";
+
+  // File store
+  if (engine === "file") {
+    settings = {
+      files: [],
+      description: "",
+    }
+
+    message += " Use `:store upload` to upload files to the store.";
+  }
+
+  // MySQL store
   if (engine === "mysql") {
     settings = {
       host: "",
@@ -71,26 +84,16 @@ export default async function (req, res) {
       tableColumnsDef: "",
       description: "",
     }
+
+    message += " Use `:store set [key] [value]` to configure the connection and then use `:store init [engine]` to initialize from the configuration.";
   }
 
-  if (engine === "vectara") {
-    settings = {
-      language: "",
-      apiKey: "",
-      customerId: "",
-      clientId: "",
-      clientSecret: "",
-      corpusId: "",
-      description: "",
-      threshold: 0.3,
-      numberOfResults: 5,
-    }
-  }
+  message += " Store \"" + name + "\" is now active.";
 
-  insertStore(name, engine, JSON.stringify(settings), username);
+  await insertStore(name, engine, JSON.stringify(settings), username);
   
   return res.status(200).json({ 
     success: true,
-    message: "Store \"" + name + "\" is created. You can use command `:store \"" + name + "\"` to check store status and settings. Use \`:store set [key] [value]\` to configure the connection and then use `:store init [engine]` to initialize from the configuration. Store `" + name + "` is now active.",
+    message: message,
   });
 }

@@ -433,7 +433,7 @@ export default function Home() {
       // Set defaults
       if (!localStorage.getItem("functions")) localStorage.setItem("functions", systemInfo.default_functions);  // default functions
       if (!sessionStorage.getItem("role")) sessionStorage.setItem("role", systemInfo.default_role);    // default role
-      if (!sessionStorage.getItem("stores")) sessionStorage.setItem("stores", systemInfo.default_stores);  // default store
+      if (!sessionStorage.getItem("stores")) sessionStorage.setItem("stores", systemInfo.default_stores);  // default stores
       if (!sessionStorage.getItem("node")) sessionStorage.setItem("node", systemInfo.default_node);    // default node
 
       // Set model
@@ -449,6 +449,7 @@ export default function Home() {
         const modelInfo = (await modelInfoResponse.json()).result;
         if (modelInfo) {
           // Found remote model
+          console.log("Set baseUrl: " + modelInfo.base_url);
           sessionStorage.setItem("baseUrl", modelInfo.base_url);
         } else {
           if (await pingOllamaAPI()) {
@@ -456,9 +457,11 @@ export default function Home() {
             const ollamaModel = ollamaModels.find(o => o.name === modelName);
             if (ollamaModel) {
               // Found ollama model
+              console.log("Set baseUrl: " + ollamaModel.base_url);
               sessionStorage.setItem("baseUrl", ollamaModel.base_url);
             } else {
               // Both remote and local model not found, set baseUrl to empty
+              console.warn("Model `" + modelName + "` not found, set baseUrl to empty.");
               sessionStorage.setItem("baseUrl", "");
             }
           }
@@ -1498,7 +1501,7 @@ export default function Home() {
                                                            + "&mem_length=" + config.mem_length
                                                            + "&functions=" + config.functions
                                                            + "&role=" + config.role
-                                                           + "&store=" + config.store
+                                                           + "&stores=" + config.stores
                                                            + "&node=" + config.node
                                                            + "&use_stats=" + config.use_stats
                                                            + "&use_eval=" + config.use_eval
@@ -1581,7 +1584,7 @@ export default function Home() {
           const use_eval = _stats_[3];
           const func = _stats_[4];
           const role = _stats_[5];
-          const store = _stats_[6].replaceAll('|', ", ");
+          const stores = _stats_[6].replaceAll('|', ", ");
           const node = _stats_[7];
           const mem = _stats_[8];
 
@@ -1601,7 +1604,7 @@ export default function Home() {
               token_ct: {token_ct}<br></br>
               mem: {mem}/{sessionStorage.getItem("memLength")}<br></br>
               {role && <div>role: {role}<br></br></div>}
-              {store && <div>store: {store}<br></br></div>}
+              {stores && <div>stores: {stores}<br></br></div>}
               {node && <div>node: {node}<br></br></div>}
             </div>
           );
@@ -1625,7 +1628,7 @@ export default function Home() {
         console.log("Status: " + _status_);
 
         // 1. Store
-        // For store print "Searching..."
+        // For stores print "Searching..."
         if (_status_.startsWith("Start searching...")) {
           printOutput(searching);
         }
@@ -1827,7 +1830,7 @@ export default function Home() {
          mem_length: config.mem_length,
          functions: config.functions,
          role: config.role,
-         store: config.store,
+         stores: config.stores,
          node: config.node,
          use_stats: config.use_stats,
          use_eval: config.use_eval,
@@ -2024,7 +2027,7 @@ export default function Home() {
           mem_length: config.mem_length,
           functions: config.functions,
           role: config.role,
-          store: config.store,
+          stores: config.stores,
           node: config.node,
           use_stats: config.use_stats,
           use_eval: config.use_eval,
@@ -2121,7 +2124,7 @@ export default function Home() {
             token_ct: {data.result.stats.token_ct}<br></br>
             mem: {data.result.stats.mem}/{sessionStorage.getItem("memLength")}<br></br>
             {data.result.stats.role ? "role: " + data.result.stats.role + "<br></br>" : ""}
-            {data.result.stats.store ? "store: " + data.result.stats.store + "<br></br>" : ""}
+            {data.result.stats.stores ? "stores: " + data.result.stats.stores + "<br></br>" : ""}
             {data.result.stats.node ? "node: " + data.result.stats.node + "<br></br>" : ""}
           </div>
         ));
@@ -2359,6 +2362,14 @@ export default function Home() {
 
   // +img[], +image[], +file[]
   const filePlus = async (blob, type) => {
+    const fileName = blob.name;
+    const fileSize = blob.size;
+
+    // Fix markdown file type
+    if (fileName.endsWith(".md")) {
+      type = "text/markdown";
+    }
+
     // Insert placeholder text for the image
     const file_id = Date.now().toString();
 
@@ -2381,18 +2392,19 @@ export default function Home() {
     reAdjustInputHeight();  // Re-adjust input height as input changed
 
     // Grab the file
-    console.log('Image/file pasted/dropped: ' + blob.name + ' (' + type + ')');
+    console.log('Image/file pasted/dropped: ' + fileName + ' (' + type + ')');
 
     let message = "null";
     
     // 1. Check file size
-    const fileSize = blob.size;
     if (fileSize > 10485760) {
       // 10MB
       message = "file_id:" + file_id + "(failed: file size exceeds 10MB)";
     } else {
       const supportedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
-      const supportedFileTypes = ["text/plain", "application/pdf", "application/json",
+      const supportedFileTypes = ["text/plain", "text/markdown",
+                                  "application/pdf",
+                                  "application/json",
                                   "text/csv", "application/vnd.ms-excel",
                                   "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
       const supportedTypes = supportedImageTypes.concat(supportedFileTypes);
@@ -2402,9 +2414,9 @@ export default function Home() {
         // Upload the image to S3
         const uploadResult = await generateFileURl(blob, file_id, type);
         if (!uploadResult.success) {
-          // Print error message
+          // Print error message 
           console.error(uploadResult.message);
-          message = "file_id:" + file_id + "(failed:" + uploadResult.message + ")";
+          message = "file_id:" + file_id + "(failed: " + uploadResult.message + ")";
         } else {
           // Replace the placeholder text with the image URL
           message = uploadResult.objectUrl;

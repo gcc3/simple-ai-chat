@@ -34,7 +34,6 @@ Ollama https://ollama.com/
 
 - Data Sources  
 WolframAlpha APIs https://products.wolframalpha.com/api  
-Vectara https://vectara.com/  
 
 
 Setup
@@ -48,7 +47,6 @@ Setup
     - AWS S3 Bucket, secret and key (if you want to use file upload feature)  
     - PayPal account (if you want to use user's payment feature)  
     - Hunter API key (if you want to use email gate)  
-    - Vectara API key (if you want to use Vectara's vector databases)  
 
 1. Install the requirements  
     `git clone` the repository.  
@@ -218,13 +216,6 @@ Use IP info is for enable or disable the IP support, the value should be `true` 
 
 * NEXT_PUBLIC_DISCORD and NEXT_PUBLIC_YOUTUBE  
 Discord invitation link and YouTube channel link.  
-
-* VECTARA_API_KEY  
-VECTARA_CUSTOMER_ID  
-VECTARA_CLIENT_ID  
-VECTARA_CLIENT_SECRET  
-DOCUMENT_CORPUS_ID  
-Default vectara database settings, and documentation corpus ID.   
 
 * USE_USER_ACCOUNTS  
 Enable user accounts, the value should be `true` or `false`.  

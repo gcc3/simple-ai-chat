@@ -6,10 +6,9 @@ import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/sysUtils";
 import { findNode, queryNode, checkIsNodeConfigured } from "utils/nodeUtils";
-import { findStore, isInitialized, searchVectaraStore, searchMysqlStore } from "utils/storeUtils";
+import { findStore, isInitialized, searchMysqlStore } from "utils/storeUtils";
 import fetch from 'node-fetch';
 import { getLanguageName } from './langUtils.js';
-import { translate } from './translateUtils.js';
 
 // Input output type
 const TYPE = {
@@ -39,12 +38,11 @@ const sysconf = getSystemConfigurations();
 export async function generateMessages(use_system_role, lang,
                                        user, model, input, inputType, files, images,
                                        session, mem_limit = 7,
-                                       role, store, node,
+                                       role, stores, node,
                                        use_location, location,
                                        use_function_calling, functionCalls, functionResults,
                                        updateStatus = null, streamOutput = null) {
   let messages = [];
-  let token_ct = {};
   let mem = 0;
   let input_images = [];
   let file_content = "";
@@ -122,9 +120,6 @@ export async function generateMessages(use_system_role, lang,
       role: "system",
       content: system_prompt,
     });
-
-    // Count tokens
-    token_ct["system"] = countToken(model, system_prompt);
   }
 
   // -5. Role prompt
@@ -143,131 +138,73 @@ export async function generateMessages(use_system_role, lang,
       role: "system",
       content: role_prompt,
     });
-
-    // Count tokens
-    token_ct["role"] = countToken(model, role_prompt);
   }
 
-  // -4. Data store search result
-  let store_prompt = "";
-
-  // No user login, give him a Simple AI Documentation search
-  if (!user && process.env.DOCUMENT_CORPUS_ID) {
-    updateStatus && updateStatus("Data store searching...");
-    console.log("--- data store search ---");
-    console.log("store: " + "Simple AI Documentation (non-login user)");
-
-    // Get store info
-    const storeInfo = await findStore("Simple AI Documentation", "root");
-    if (storeInfo) {
-      const settings = JSON.parse(storeInfo.settings);
-
-      if (isInitialized(storeInfo.engine, settings)) {
-        let queryResult = null;
-        let prompt = "";
-  
-        prompt += "\nQuery Vector database\n";
-        prompt += "Database description: " + (settings.description || "No description") + "\n";
-
-        // Query with store language
-        let vectaraQuery = input;
-        const storeLanguageCode = settings.language || "en-US";
-        console.log("user language: " + lang);
-        console.log("store language: " + storeLanguageCode);
-        if (storeLanguageCode && storeLanguageCode !== lang) {
-          vectaraQuery = await translate(vectaraQuery, getLanguageName(storeLanguageCode));
-          console.log("input translation to store language: " + vectaraQuery);
-        }
-
-        updateStatus && updateStatus("Start searching...");
-        queryResult = await searchVectaraStore(settings, vectaraQuery);
-
-        if (queryResult.success) {
-          if (queryResult.query) {
-            prompt += "Query: " + queryResult.query + "\n";
-          }
-          prompt += "Query result: \n";
-          prompt += queryResult.message.trim();
-          messages.push({
-            "role": "system",
-            "content": prompt,
-          });
-          
-          store_prompt += prompt;
-          console.log("response: " + prompt.trim());
-        }
-      }
-    }
-    console.log("");  // add new line
-
-    // Count tokens
-    token_ct["store"] = countToken(model, store_prompt);
-  }
+  // -4. Data stores search result
+  let stores_prompt = "";
   
   // General store search
-  if (store && user) {
-    updateStatus && updateStatus("Data store searching...");
-    console.log("--- data store search ---");
-    console.log("store: " + store);
+  if (stores && user) {
+    updateStatus && updateStatus("Data stores searching...");
+    console.log("--- data stores search ---");
+    console.log("stores: " + stores);
 
     // Search all active stores
-    const activeStores = store.split(",").filter(s => s !== "");
+    const activeStores = stores.split(",").filter(s => s !== "");
     for (const store of activeStores) {
       // Get store info
       const storeInfo = await findStore(store, user.username);
       if (storeInfo) {
         const settings = JSON.parse(storeInfo.settings);
 
-        if (isInitialized(storeInfo.engine, settings)) {
-          let queryResult = null;
-          let prompt = "";
+        // File store
+        if (storeInfo.engine === "file") {
+          const files = settings.files || [];
+          // Loop through each file and fetch the content
+          for (const file of files) {
+            try {
+              const response = await fetch(file);
+              const fileContent = await response.text();
 
-          // Query
-          if (storeInfo.engine === "vectara") {
-            prompt += "\nQuery Vector database\n";
-            prompt += "Database description: " + (settings.description || "No description") + "\n";
-
-            // Query with store language
-            let vectaraQuery = input;
-            const storeLanguageCode = settings.language;
-            console.log("user language: " + lang);
-            console.log("store language: " + storeLanguageCode || "___");
-            if (storeLanguageCode && storeLanguageCode !== lang) {
-              vectaraQuery = await translate(vectaraQuery, getLanguageName(storeLanguageCode));
-              console.log("input translation to store language: " + vectaraQuery);
+              stores_prompt += "\n\n" + fileContent + "\n\n";
+            } catch (error) {
+              console.error("Error fetching file:", error);
+              console.log("store `" + store + "`: " + "error fetching file: " + file + "\n" + error);
             }
+          }
+        }
 
-            updateStatus && updateStatus("Start searching...");
-            queryResult = await searchVectaraStore(settings, vectaraQuery);
-          } else if (storeInfo.engine === "mysql") {
-            prompt += "\nQuery MySQL database\n";
-            prompt += "Database description: " + (settings.description || "No description") + "\n";
+        // MySQL store
+        if (storeInfo.engine === "mysql") {
+          if (isInitialized(storeInfo.engine, settings)) {
+            let queryResult = null;
+            let mysqlPrompt = "";
 
+            // Query
+            mysqlPrompt += "\nQuery MySQL database\n";
+            mysqlPrompt += "Database description: " + (settings.description || "No description") + "\n";
             updateStatus && updateStatus("Start searching...");
             queryResult = await searchMysqlStore(settings, input);
-          }
 
-          if (queryResult.success) {
-            if (queryResult.query) {
-              prompt += "Query: " + queryResult.query + "\n";
+            if (queryResult.success) {
+              if (queryResult.query) {
+                mysqlPrompt += "Query: " + queryResult.query + "\n";
+              }
+              mysqlPrompt += "Query result: \n";
+              mysqlPrompt += queryResult.message.trim();
+
+              stores_prompt += "\n\n" + mysqlPrompt + "\n\n";
             }
-            prompt += "Query result: \n";
-            prompt += queryResult.message.trim();
-            messages.push({
-              "role": "system",
-              "content": prompt,
-            });
-            
-            store_prompt += prompt;
-            console.log("response: " + prompt.trim());
           }
         }
       }
     }
-    console.log("");  // add new line
 
-    // Count tokens
-    token_ct["store"] = countToken(model, store_prompt);
+    messages.push({
+      "role": "system",
+      "content": "Support data:" + stores_prompt,
+    })
+    console.log("");  // add new line
   }
 
   // -3. Node AI result
@@ -393,7 +330,6 @@ export async function generateMessages(use_system_role, lang,
     }
 
     // Count tokens
-    token_ct["node"] = countToken(model, node_prompt);
     console.log("response: " + node_output.trim().replace(/\n/g, " "));
     if (node_output_images.length > 0) console.log("response images: " + JSON.stringify(node_output_images));
     console.log("");
@@ -435,9 +371,6 @@ export async function generateMessages(use_system_role, lang,
       "role": "system",
       "content": location_prompt
     });
-
-    // Count tokens
-    token_ct["location"] = countToken(model, location_prompt);
   }
 
   // -1. Chat history
@@ -532,9 +465,6 @@ export async function generateMessages(use_system_role, lang,
 
       chat_history_prompt += log.input + log.output + "\n";
     });
-
-    // Count tokens
-    token_ct["history"] = countToken(model, chat_history_prompt);
   }
 
   // 0. User input
@@ -551,9 +481,6 @@ export async function generateMessages(use_system_role, lang,
             text: input
         });
         
-        // Count tokens
-        token_ct["user_input"] = countToken(model, input);
-
         // File input (extracted text)
         if (files_text && files_text.length > 0) {
           for (let i = 0; i < files_text.length; i++) {
@@ -565,7 +492,6 @@ export async function generateMessages(use_system_role, lang,
               user_input_file_prompt += "File content: " + files_text[i].text;
             }
           }
-          token_ct["user_input_file"] = countToken(model, user_input_file_prompt);
         }
 
         // Vision model
@@ -590,7 +516,6 @@ export async function generateMessages(use_system_role, lang,
               input_images.push(images[i]);
             }
           }
-          token_ct["user_input_image"] = image_token_ct;
         }
         return c;
       })()  // Immediately-invoked function expression (IIFE)
@@ -628,21 +553,10 @@ export async function generateMessages(use_system_role, lang,
         }
       }
     }
-
-    // Count tokens
-    token_ct["function"] = countToken(model, function_prompt);
   }
-
-  // Total token count
-  let token_ct_total = 0;
-  for (const key in token_ct) {
-    token_ct_total += token_ct[key];
-  }
-  token_ct["total"] = token_ct_total;
 
   return {
     messages,
-    token_ct,
     mem,
     input_images,
     file_content,
@@ -655,7 +569,7 @@ export async function generateMessages(use_system_role, lang,
       history: chat_history_prompt,
       user_input_file: user_input_file_prompt,
       function: function_prompt,
-      store: store_prompt,
+      stores: stores_prompt,
       node: node_prompt,
       location: location_prompt,
     }

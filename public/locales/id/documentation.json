@@ -8,7 +8,6 @@
   "Roles": "Peran",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "Biarkan GPT bertindak sebagai peran untuk memberikan jawaban yang lebih memuaskan. Anda dapat menggunakan peran sistem yang telah ditentukan sebelumnya atau membuat instruksi khusus untuk menyesuaikan peran pengguna sesuai dengan kebutuhan spesifik Anda.",
   "Data Stores": "Toko Data",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Dukungan untuk pencarian dan kueri basis data vektor serta basis data relasional. Pengguna basis data vektor dapat mengunggah file ke basis data pribadi Anda. Ketika toko digunakan, hasilnya akan dimasukkan sebagai petunjuk untuk memberikan jawaban yang berpengetahuan. Beberapa penyimpanan data dapat digunakan secara bersamaan.",
   "Nodes (Node AI)": "Simpul (Node AI)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "Terhubung dengan AI lain atau sumber data apa pun untuk menggunakan datanya. Ketika sebuah node digunakan, hasilnya akan dimanfaatkan sebagai petunjuk yang disediakan untuk AI.",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Pengetahuan & Matematika yang Ditingkatkan (WolframAlpha)",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "Berikan GPT sebuah instruksi yang telah ditentukan sebelumnya, atau bermain peran.",
   "2. Advanced Use": "Penggunaan Tingkat Lanjut",
   "* Solve complex mathematical problems. (with WolframAlpha)": "Selesaikan masalah matematika yang kompleks. (dengan WolframAlpha)",
-  "* Link with your own data. We support link to relational database and vector database.": "Tautkan dengan data Anda sendiri. Kami mendukung tautan ke basis data relasional dan basis data vektor.",
   "* Build to link with other AI systems, or your own APIs.": "Dibangun untuk terhubung dengan sistem AI lainnya, atau API Anda sendiri.",
   "And more...": "Dan lain-lain...",
   "Quick Start": "Mulai Cepat",
@@ -130,5 +128,7 @@
   "Command options": "Opsi perintah",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Kami menawarkan beberapa fungsi bawaan yang memungkinkan baik pengguna maupun AI untuk mengambil informasi dari API atau melakukan tugas-tugas tertentu. Untuk melihat daftar fungsi yang tersedia, gunakan perintah `:function ls`.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Anda dapat menekan tombol Control (untuk macOS tekan tombol command) dan klik nama model, perintah `:session attach` dengan ID sesi akan secara otomatis disalin ke papan klip Anda.",
-  "Models": "Model"
+  "Models": "Model",
+  "* Link with your own data. Support link to relational database.": "* Hubungkan data Anda sendiri. Mendukung tautan ke basis data relasional.",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Dukungan untuk file dan kueri basis data relasional. Jika sebuah penyimpanan data digunakan, hasil kueri akan disisipkan sebagai prompt untuk memberikan jawaban yang informatif. Beberapa penyimpanan data dapat digunakan secara bersamaan."
 }

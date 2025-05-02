@@ -1,6 +1,6 @@
 import { authenticate } from "utils/authUtils.js";
-import { createVectaraJtwToken, resetVectaraCorpus } from "utils/vectaraUtils";
 import { findStore } from "utils/storeUtils.js";
+import { updateStoreSetting } from "utils/sqliteUtils.js";
 
 export default async function (req, res) {
   // Check method
@@ -38,25 +38,19 @@ export default async function (req, res) {
     });
   }
 
-  const settings = JSON.parse(store.settings);
-  if (!store.engine) {
-    return res.status(400).json({ 
-      success: false, 
-      error: "Store not initialized. Use `:store init [engine]` to initialize a data store." 
-    });
-  }
-
-  if (store.engine === "vectara") {
-    const vectaraResult = await resetVectaraStore(settings);
-    if (!vectaraResult.success) {
-      return res.status(400).json({ 
-        success: false, 
-        error: vectaraResult.error
+  if (store.engine === "file") {
+    // Reset the store data to default
+    // TODO check if key and value is valid
+    const wasSuccessful = await updateStoreSetting(store.name, username, "files", []);
+    if (wasSuccessful) {
+      return res.status(200).json({ 
+        success: true, 
+        message: "Store settings reset to default."
       });
     } else {
-      return res.status(200).json({ 
-        success: true,
-        message: "Store \"" + name + "\" is reset.",
+      return res.status(400).json({ 
+        success: false, 
+        error: 'Failed to reset store settings or user not found.'
       });
     }
   }
@@ -65,32 +59,4 @@ export default async function (req, res) {
     success: false, 
     error: "Invalid engine for reset." 
   });
-}
-
-async function resetVectaraStore(settings) {
-  if (!settings.apiKey || !settings.corpusId || !settings.clientId || !settings.clientSecret || !settings.customerId) {
-    return { 
-      success: false, 
-      error: "Store has invalid settings." 
-    };
-  }
-
-  // Get JWT token
-  const jwtToken = await createVectaraJtwToken(settings.clientId, settings.clientSecret, settings.customerId, settings.apiKey);
-  if (!jwtToken) {
-    console.log("Failed to create JWT token.");
-    return { 
-      success: false,
-      error: "Failed to reset data store.",
-    };
-  }
-
-  // Reset store
-  if (!await resetVectaraCorpus(settings.corpusId, jwtToken, settings.customerId)) {
-    console.log("Failed to reset corpus.");
-    return {
-      success: false,
-      error: "Failed to reset data store.",
-    };
-  }
 }

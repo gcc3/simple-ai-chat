@@ -8,7 +8,6 @@
   "Roles": "Funções",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "Permita que o GPT atue como um papel para fornecer respostas mais satisfatórias. Você pode usar funções do sistema predefinidas ou criar prompts de instruções personalizadas para adequar os papéis dos usuários às suas necessidades específicas.",
   "Data Stores": "Armazenamento de Dados",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Suporte para pesquisa e consulta em banco de dados vetorial e banco de dados relacional. Para o banco de dados vetorial, o usuário pode enviar arquivos para o seu banco de dados pessoal. Quando uma loja é utilizada, os resultados serão inseridos como instruções para fornecer respostas informadas. Múltiplos armazenamentos de dados podem ser utilizados simultaneamente.",
   "Nodes (Node AI)": "Nós (Nó de IA)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "Conecte-se a outro IA ou qualquer fonte de dados para usar seus dados. Quando um nó é utilizado, os resultados serão usados como prompts fornecidos para a IA.",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Conhecimento Avançado & Matemática (WolframAlpha)",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "Dê ao GPT uma instrução predefinida ou faça um role play.",
   "2. Advanced Use": "2. Uso Avançado",
   "* Solve complex mathematical problems. (with WolframAlpha)": "Resolva problemas matemáticos complexos. (com WolframAlpha)",
-  "* Link with your own data. We support link to relational database and vector database.": "Conecte-se com seus próprios dados. Nós oferecemos suporte à conexão com banco de dados relacional e banco de dados vetorial.",
   "* Build to link with other AI systems, or your own APIs.": "Construir para se conectar com outros sistemas de IA ou com suas próprias APIs.",
   "And more...": "E mais...",
   "Quick Start": "Início Rápido",
@@ -130,5 +128,7 @@
   "Command options": "Opções de comando",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Oferecemos várias funções integradas que permitem tanto aos usuários quanto à IA recuperar informações da API ou realizar determinadas tarefas. Para ver uma lista das funções disponíveis, use o comando `:function ls`.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Você pode pressionar a tecla Control (para macOS pressione a tecla command) e clicar no nome do modelo, um comando `:session attach` com o ID da sessão será automaticamente copiado para a sua área de transferência.",
-  "Models": "Modelos"
+  "Models": "Modelos",
+  "* Link with your own data. Support link to relational database.": "* Vincule seus próprios dados. Suporta conexão a banco de dados relacional.",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Suporte a arquivos e consultas em bancos de dados relacionais. Se um repositório de dados for usado, os resultados da consulta serão inseridos como prompts para fornecer respostas informadas. Múltiplos repositórios de dados podem ser usados simultaneamente."
 }

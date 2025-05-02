@@ -8,7 +8,6 @@
   "Roles": "Roller",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "Tillåt GPT att agera som en roll för att ge mer tillfredsställande svar. Du kan antingen använda fördefinierade systemroller eller skapa anpassade instruktionsfraser för att skräddarsy användarroller till dina specifika krav.",
   "Data Stores": "Data Stores\n\njson format: {\"content\": \"översatt text\"}",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Stöd för vektordatabas och relationsdatabas sökning och förfrågan. För vektordatabas kan användaren ladda upp filer till din personliga databas. När en butik används kommer resultaten att sättas in som ledtrådar för att ge kunniga svar. Flera datalagringar kan användas samtidigt.",
   "Nodes (Node AI)": "Noder (Node AI)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "Anslut till en annan AI eller någon datakälla för att använda dess data. När en nod används kommer resultaten att utnyttjas som uppmaningar som tillhandahålls för AI:n.",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "Utökat Kunskap & Matematik (WolframAlpha)",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "Ge GPT en förinställd instruktion eller rollspel.",
   "2. Advanced Use": "Avancerad användning",
   "* Solve complex mathematical problems. (with WolframAlpha)": "Lös komplexa matematiska problem. (med WolframAlpha)",
-  "* Link with your own data. We support link to relational database and vector database.": "Länka med dina egna data. Vi stöder länkning till relationsdatabaser och vektordatabaser.",
   "* Build to link with other AI systems, or your own APIs.": "Bygg för att länka samman med andra AI-system eller dina egna API:er.",
   "And more...": "Och mer...",
   "Quick Start": "Snabbstart",
@@ -130,5 +128,7 @@
   "Command options": "Kommandon alternativ",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Vi erbjuder flera inbyggda funktioner som tillåter både användare och AI att hämta information från API:et eller utföra vissa uppgifter. För att se en lista över tillgängliga funktioner, använd kommandot `:function ls`.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Du kan trycka på Control-tangenten (för macOS tryck på command-tangenten) och klicka på modellnamnet, ett `:session attach` kommando med session-ID kommer automatiskt att kopieras till ditt urklipp.",
-  "Models": "Modeller"
+  "Models": "Modeller",
+  "* Link with your own data. Support link to relational database.": "* Koppla till dina egna data. Stöder koppling till relationsdatabas.",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Stöd för filer och relationsdatabasfrågor. Om ett datalager används kommer frågeresultaten att infogas som uppmaningar för att ge kunniga svar. Flera datalager kan användas samtidigt."
 }

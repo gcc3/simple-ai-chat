@@ -24,7 +24,7 @@ const Documentation = () => {
     { id: "features-gpt-vision", name: t("GPT Vision"), description: t("Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.") },
     { id: "features-fileinput", name: t("File Input"), description: t("Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.") },
     { id: "features-roles", name: t("Roles"), description: t("Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.") },
-    { id: "features-stores", name: t("Data Stores"), description: t("Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.") },
+    { id: "features-stores", name: t("Data Stores"), description: t("Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.") },
     { id: "features-nodes", name: t("Nodes (Node AI)"), description: t("Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.") },
     { id: "features-mathematics-wolframalpha", name: t("Enhanced Knowledge & Mathematics (WolframAlpha)"), description: t("As one of the AI callable function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided.") },
   ];
@@ -74,8 +74,8 @@ const Documentation = () => {
   ];
 
   const apis = [
-    { endpoint: "GET /api/generate_sse", parameters: "session, mem_length, role, store, node, use_stats, use_eval, use_location, location, images, files", description: t("Generate a response from the AI model with stream.") },
-    { endpoint: "POST /api/generate", parameters: "session, mem_length, role, store, node, use_stats, use_eval, use_location, location, images, files", description: t("Generate a response from the AI model.") },
+    { endpoint: "GET /api/generate_sse", parameters: "session, mem_length, role, stores, node, use_stats, use_eval, use_location, location, images, files", description: t("Generate a response from the AI model with stream.") },
+    { endpoint: "POST /api/generate", parameters: "session, mem_length, role, stores, node, use_stats, use_eval, use_location, location, images, files", description: t("Generate a response from the AI model.") },
   ];
 
   const faqs = [
@@ -142,7 +142,7 @@ const Documentation = () => {
         <div className="mt-1">
           { t("2. Advanced Use") }<br/>
           { t("* Solve complex mathematical problems. (with WolframAlpha)") }<br/>
-          { t("* Link with your own data. We support link to relational database and vector database.") }<br/>
+          { t("* Link with your own data. Support link to relational database.") }<br/>
           { t("* Build to link with other AI systems, or your own APIs.") }<br/>
           <div className="ml-5">{ t("And more...") }</div>
         </div>

@@ -65,12 +65,9 @@ export function setUserWebStorage(user) {
 
   // model
   if ("model" in settings) {
+    // If user indeed set a model, not empty, use it!
     if (settings.model) {
       sessionStorage.setItem("model", settings.model);
-    } else {
-      // Model is empty, use default
-      sessionStorage.setItem("model", global.model);
-      sessionStorage.setItem("baseUrl", global.baseUrl);
     }
   }
 

@@ -8,7 +8,6 @@
   "Roles": "角色",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "允许GPT扮演角色以提供更满意的答案。您可以使用预先定义的系统角色，或创建自定义指令提示来定制用户角色以满足您的特定需求。",
   "Data Stores": "数据存储",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "支持向量数据库和关系数据库的搜索和查询。对于向量数据库用户，可以将文件上传到您的个人数据库。当使用存储时，结果将被插入为提示，以提供知识性答案。可以同时使用多个数据存储。",
   "Nodes (Node AI)": "节点（Node AI）",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "连接到另一个AI或任何数据源以使用其数据。当使用节点时，结果将被用作为AI提供的提示。",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "增强型知识与数学（WolframAlpha）",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "* 给予 GPT 预设指令或角色扮演。",
   "2. Advanced Use": "2. 高级使用",
   "* Solve complex mathematical problems. (with WolframAlpha)": "* 解决复杂的数学问题。（借助 WolframAlpha）",
-  "* Link with your own data. We support link to relational database and vector database.": "* 与您自己的数据链接。我们支持链接到关系数据库和向量数据库。",
   "* Build to link with other AI systems, or your own APIs.": "* 构建与其他AI系统的链接，或者链接到您自己的API。",
   "And more...": "等等...",
   "Quick Start": "快速开始",
@@ -130,5 +128,7 @@
   "Command options": "命令选项",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "我们提供了几个内置功能，允许用户和AI从API检索信息或执行特定任务。要查看可用功能列表，请使用`:function ls`命令。",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "您可以按下 Control 键（macOS 用户请按 command 键）并点击模型名称，`:session attach` 命令及会话 ID 将自动复制到您的剪贴板。",
-  "Models": "模型"
+  "Models": "模型",
+  "* Link with your own data. Support link to relational database.": "* 链接您自己的数据。支持与关系型数据库的连接。",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "支持对文件和关系数据库的查询。如果使用数据存储，查询结果将被插入为提示，以提供有见地的回答。可同时使用多个数据存储。"
 }

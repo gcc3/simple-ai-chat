@@ -8,7 +8,6 @@
   "Roles": "ロール",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "GPTにロールを持たせてより満足のいく答えを提供する。事前に定義されたシステムのロールを使用することもできる",
   "Data Stores": "データストア",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "ベクターデータベースに対応",
   "Nodes (Node AI)": "ノード（Node AI）",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "他のAIや任意のデータソースに接続して、そのデータを使用します。ノードが使用されると、その結果はAIに提供されるプロンプトとして利用されます。",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "強化された知識と数学（WolframAlpha）",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "* GPTにプリセットの指示を与える、またはロールプレイをする。",
   "2. Advanced Use": "2. 上級者向けの使用",
   "* Solve complex mathematical problems. (with WolframAlpha)": "* 複雑な数学の問題を解決する。（WolframAlphaを使用）",
-  "* Link with your own data. We support link to relational database and vector database.": "* 自分のデータとのリンク。私たちはリレーショナルデータベースとベクトルデータベースへのリンクをサポートしています。",
   "* Build to link with other AI systems, or your own APIs.": "* 他のAIシステムや独自のAPIとリンクするための構築。",
   "And more...": "など...",
   "Quick Start": "クイックスタート",
@@ -130,5 +128,7 @@
   "Command options": "コマンドオプション",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "いくつかの組み込み関数を提供しており、ユーザーとAIの両方がAPIから情報を取得したり、特定のタスクを実行したりすることができます。利用可能な関数のリストを表示するには、`:function ls` コマンドを使用してください。",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Controlキーを押しながら（macOSの場合はcommandキー）モデル名をクリックすると、セッションIDを含む`:session attach`コマンドが自動的にクリップボードにコピーされます。",
-  "Models": "モデル"
+  "Models": "モデル",
+  "* Link with your own data. Support link to relational database.": "* 自分のデータとリンク。リレーショナルデータベースへのリンクをサポート。",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "ファイルおよびリレーショナルデータベースクエリをサポートします。ストアが使用されている場合、クエリ結果はプロンプトとして挿入され、知識豊富な回答を提供します。複数のデータストアを同時に使用できます。"
 }

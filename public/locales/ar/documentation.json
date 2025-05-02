@@ -8,7 +8,6 @@
   "Roles": "الأدوار",
   "Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.": "السماح لـ GPT بأداء دور يوفر إجابات أكثر رضا. يمكنك استخدام أدوار النظام المحددة مسبقًا أو إنشاء تعليمات مخصصة لتخصيص أدوار المستخدمين لمتطلباتك الخاصة.",
   "Data Stores": "متاجر البيانات",
-  "Support for vector database and relational database search and query. For vector database user can upload files to your personal database. When a store is used, the results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "الدعم لقاعدة بيانات الفكتور والبحث في قاعدة البيانات العلاقية والاستعلام عنها. بالنسبة لمستخدمي قاعدة البيانات الفكتور، يمكن رفع الملفات إلى قاعدة البيانات الشخصية الخاصة بك. عند استخدام المتجر، سيتم إدراج النتائج كمطالبات لتوفير إجابات معرفية. يمكن استخدام متاجر البيانات المتعددة في الوقت نفسه.",
   "Nodes (Node AI)": "العُقَد (العقدة الذكية AI)",
   "Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.": "قم بالاتصال بذكاء اصطناعي آخر أو أي موارد بيانات أخرى لاستخدام بياناتها. عند استخدام عقدة ما، سيتم استخدام النتائج كمطالبات مقدمة للذكاء الاصطناعي.",
   "Enhanced Knowledge & Mathematics (WolframAlpha)": "المعرفة والرياضيات المحسّنة (WolframAlpha)",
@@ -78,7 +77,6 @@
   "* Give GPT a preset instruction, or role play.": "أعطِ GPT تعليمات محددة مسبقًا، أو مارس لعب الأدوار.",
   "2. Advanced Use": "الاستخدام المتقدم",
   "* Solve complex mathematical problems. (with WolframAlpha)": "حل المشكلات الرياضية المعقدة. (باستخدام وولفرام ألفا)",
-  "* Link with your own data. We support link to relational database and vector database.": "ارتبط ببياناتك الخاصة. نحن ندعم الربط بقاعدة البيانات العلائقية وقاعدة البيانات المتجهة.",
   "* Build to link with other AI systems, or your own APIs.": "بناء للربط مع أنظمة الذكاء الاصطناعي الأخرى، أو واجهات برمجة التطبيقات الخاصة بك.",
   "And more...": "والمزيد...",
   "Quick Start": "بداية سريعة",
@@ -130,5 +128,7 @@
   "Command options": "خيارات الأمر",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "نحن نقدم عدة وظائف مدمجة تسمح لكل من المستخدمين والذكاء الاصطناعي باسترجاع المعلومات من الواجهة البرمجية للتطبيقات أو تنفيذ مهام معينة. لعرض قائمة الوظائف المتاحة، استخدم الأمر `:function ls`.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "يمكنك الضغط على مفتاح Control (أو مفتاح command لأجهزة macOS) والنقر على اسم النموذج، وسيتم نسخ أمر `:session attach` مع معرف الجلسة تلقائيًا إلى الحافظة الخاصة بك.",
-  "Models": "النماذج"
+  "Models": "النماذج",
+  "* Link with your own data. Support link to relational database.": "* ربط بياناتك الخاصة. دعم الربط بقاعدة بيانات علائقية.",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "دعم الملفات واستعلامات قواعد البيانات العلائقية. إذا تم استخدام مخزن بيانات، فسيتم إدراج نتائج الاستعلام كمدخلات لتقديم إجابات مدعمة بالمعرفة. يمكن استخدام عدة مخازن بيانات في وقت واحد."
 }
