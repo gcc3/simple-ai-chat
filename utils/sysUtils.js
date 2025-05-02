@@ -6,7 +6,6 @@ export function getSystemConfigurations() {
   if (!process.env.MODEL) welcome_message = "`MODEL` is required.";
 
   const model = process.env.MODEL ? process.env.MODEL : "";
-  const model_v = process.env.MODEL_V ? process.env.MODEL_V : "";
   const base_url = process.env.OPENAI_BASE_URL ? process.env.OPENAI_BASE_URL : "";
   const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
   const querying = process.env.QUERYING ? process.env.QUERYING : "Querying...";
@@ -31,7 +30,6 @@ export function getSystemConfigurations() {
 
   return {
     model: model,
-    model_v: model_v,
     base_url: base_url,
     role_content_system: role_content_system,
     welcome_message: welcome_message,

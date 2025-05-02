@@ -64,8 +64,6 @@ export default async function (req, res) {
   // Config (input)
   const time_ = req.query.time || "";
   const session = req.query.session || "";
-  let model = req.query.model || sysconf.model;
-  const model_v = req.query.model_v || sysconf.model_v;
   const mem_length = req.query.mem_length || 0;
   const functions_ = req.query.functions || "";
   const role = req.query.role || "";
@@ -124,10 +122,8 @@ export default async function (req, res) {
   const nodeInfo = user && await findNode(node, user.username);
 
   // Model switch
+  let model = req.query.model || sysconf.model;
   const use_vision = images && images.length > 0;
-  if (use_vision) {
-    model = model_v;
-  }
   const use_eval = use_eval_ && use_stats && !use_vision;
 
   // Stream output

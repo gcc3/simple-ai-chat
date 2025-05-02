@@ -68,11 +68,6 @@ export function setUserWebStorage(user) {
     sessionStorage.setItem("model", settings.model);
   }
 
-  // modelV
-  if ("modelV" in settings) {
-    sessionStorage.setItem("modelV", settings.modelV);
-  }
-
   // baseUrl
   if ("baseUrl" in settings) {
     sessionStorage.setItem("baseUrl", settings.baseUrl);

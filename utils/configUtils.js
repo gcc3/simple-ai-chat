@@ -3,7 +3,6 @@ export function loadConfig() {
     time: sessionStorage.getItem("time"),
     session: sessionStorage.getItem("session"), 
     model: sessionStorage.getItem("model"),
-    model_v: sessionStorage.getItem("modelV"),
     base_url: sessionStorage.getItem("baseUrl"),
     mem_length: sessionStorage.getItem("memLength"),
     functions: localStorage.getItem("functions"),

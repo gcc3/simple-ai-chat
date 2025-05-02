@@ -42,8 +42,6 @@ export default async function(req, res) {
   // Config (input)
   const time_ = req.body.time || "";
   const session = req.body.session || "";
-  let model = req.body.model || sysconf.model;
-  const model_v = req.body.model_v || sysconf.model_v;
   const mem_length = req.body.mem_length || 0;
   const functions_ = req.body.functions || "";
   const role = req.body.role || "";
@@ -86,10 +84,8 @@ export default async function(req, res) {
   }
 
   // Model switch
+  let model = req.body.model || sysconf.model;
   const use_vision = images && images.length > 0;
-  if (use_vision) {
-    model = model_v;
-  }
   const use_eval = use_eval_ && use_stats && !use_vision;
 
   // Use function calling

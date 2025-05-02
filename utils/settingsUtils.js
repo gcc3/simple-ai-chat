@@ -7,7 +7,6 @@ export function getSettings(format = "json", theme = "light", fullscreen = "off"
   const localSettings = {
     _up: "",
     model: "",
-    model_v: "",
     user: "",
     userRole: "",
     time: "",
@@ -49,7 +48,6 @@ export function getSettings(format = "json", theme = "light", fullscreen = "off"
     useEval:       false,
     useSystemRole: true,
     model:         "",
-    modelV:        "",
     functions:     "get_time,get_weather,redirect_to_url",
     role:          "",
     stores:        "",
@@ -79,7 +77,6 @@ export function getSettings(format = "json", theme = "light", fullscreen = "off"
     result = [
       { name: "Up Time",               key: "_up",           storage: "localStorage",    userSettings: "",              default: "",                                     description: "" },
       { name: "Model",                 key: "model",         storage: "sessionStorage",  userSettings: "",              default: "",                                     description: "" },
-      { name: "Model Version",         key: "modelV",        storage: "sessionStorage",  userSettings: "",              default: "",                                     description: "" },
       { name: "User",                  key: "user",          storage: "localStorage",    userSettings: "",              default: "",                                     description: "" },
       { name: "User Role",             key: "userRole",      storage: "localStorage",    userSettings: "",              default: "",                                     description: "" },
       { name: "Timeline",              key: "time",          storage: "sessionStorage",  userSettings: "",              default: "",                                     description: "" },

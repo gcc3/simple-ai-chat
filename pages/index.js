@@ -438,10 +438,8 @@ export default function Home() {
 
         // Set model
         global.model = systemInfo.model;
-        global.modelV = systemInfo.model_v;
         global.baseUrl = systemInfo.base_url;
         if (!sessionStorage.getItem("model")) sessionStorage.setItem("model", systemInfo.model);  // default model
-        if (!sessionStorage.getItem("modelV")) sessionStorage.setItem("modelV", systemInfo.model_v);  // default model version
         if (!sessionStorage.getItem("baseUrl")) sessionStorage.setItem("baseUrl", systemInfo.base_url);  // default base url
       } catch (error) {
         console.error("There was an error fetching the data:", error);
@@ -1477,7 +1475,6 @@ export default function Home() {
                                                            + "&time=" + config.time
                                                            + "&session=" + config.session
                                                            + "&model=" + config.model
-                                                           + "&model_v=" + config.model_v
                                                            + "&mem_length=" + config.mem_length
                                                            + "&functions=" + config.functions
                                                            + "&role=" + config.role
@@ -1790,6 +1787,10 @@ export default function Home() {
     const config = loadConfig();
     console.log("Config: " + JSON.stringify(config));
 
+    // Model switch
+    const use_vision = images && images.length > 0;
+    const model = config.model;
+
     // Generate messages
     const msgResponse = await fetch("/api/generate_msg", {
       method: "POST",
@@ -1803,7 +1804,6 @@ export default function Home() {
          time: config.time,
          session: config.session,
          model: config.model,
-         model_v: config.model_v,
          mem_length: config.mem_length,
          functions: config.functions,
          role: config.role,
@@ -1832,10 +1832,6 @@ export default function Home() {
       username: localStorage.getItem("user")
     }
 
-    // Model switch
-    const use_vision = images && images.length > 0;
-    const model = use_vision ? config.model_v : config.model;
-
     const openai = new OpenAI({
       baseURL: config.base_url,
       apiKey: "",  // not necessary for local model, but required for OpenAI API
@@ -1845,7 +1841,7 @@ export default function Home() {
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
-      model,
+      model: model,
       frequency_penalty: 0,
       logit_bias: null,
       n: 1,
@@ -2005,7 +2001,6 @@ export default function Home() {
           time: config.time,
           session: config.session,
           model: config.model,
-          model_v: config.model_v,
           mem_length: config.mem_length,
           functions: config.functions,
           role: config.role,
