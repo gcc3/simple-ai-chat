@@ -59,6 +59,8 @@ export default async function (req, res) {
   }
 
   let settings = {};
+
+  // MySQL store
   if (engine === "mysql") {
     settings = {
       host: "",
@@ -70,20 +72,6 @@ export default async function (req, res) {
       schema: "",
       tableColumnsDef: "",
       description: "",
-    }
-  }
-
-  if (engine === "vectara") {
-    settings = {
-      language: "",
-      apiKey: "",
-      customerId: "",
-      clientId: "",
-      clientSecret: "",
-      corpusId: "",
-      description: "",
-      threshold: 0.3,
-      numberOfResults: 5,
     }
   }
 

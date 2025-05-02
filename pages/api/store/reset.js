@@ -1,5 +1,4 @@
 import { authenticate } from "utils/authUtils.js";
-import { createVectaraJtwToken, resetVectaraCorpus } from "utils/vectaraUtils";
 import { findStore } from "utils/storeUtils.js";
 
 export default async function (req, res) {
@@ -38,7 +37,6 @@ export default async function (req, res) {
     });
   }
 
-  const settings = JSON.parse(store.settings);
   if (!store.engine) {
     return res.status(400).json({ 
       success: false, 
@@ -46,51 +44,8 @@ export default async function (req, res) {
     });
   }
 
-  if (store.engine === "vectara") {
-    const vectaraResult = await resetVectaraStore(settings);
-    if (!vectaraResult.success) {
-      return res.status(400).json({ 
-        success: false, 
-        error: vectaraResult.error
-      });
-    } else {
-      return res.status(200).json({ 
-        success: true,
-        message: "Store \"" + name + "\" is reset.",
-      });
-    }
-  }
-
   return res.status(400).json({ 
     success: false, 
     error: "Invalid engine for reset." 
   });
-}
-
-async function resetVectaraStore(settings) {
-  if (!settings.apiKey || !settings.corpusId || !settings.clientId || !settings.clientSecret || !settings.customerId) {
-    return { 
-      success: false, 
-      error: "Store has invalid settings." 
-    };
-  }
-
-  // Get JWT token
-  const jwtToken = await createVectaraJtwToken(settings.clientId, settings.clientSecret, settings.customerId, settings.apiKey);
-  if (!jwtToken) {
-    console.log("Failed to create JWT token.");
-    return { 
-      success: false,
-      error: "Failed to reset data store.",
-    };
-  }
-
-  // Reset store
-  if (!await resetVectaraCorpus(settings.corpusId, jwtToken, settings.customerId)) {
-    console.log("Failed to reset corpus.");
-    return {
-      success: false,
-      error: "Failed to reset data store.",
-    };
-  }
 }

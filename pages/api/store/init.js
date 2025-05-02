@@ -1,6 +1,5 @@
 import { updateStoreSettings } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
-import { createVectaraCorpus, generateVectaraApiKey, createVectaraJtwToken } from "utils/vectaraUtils.js";
 import { mysqlQuery } from "utils/mysqlUtils.js";
 import { findStore } from "utils/storeUtils.js";
 
@@ -49,23 +48,7 @@ export default async function (req, res) {
 
   console.log("Initializing store \"" + name + "\"...");
 
-  if (store.engine === "vectara") {
-    const initResult = await initializeVectaraStore(store);
-    if (!initResult.success) {
-      return res.status(400).json({ 
-        success: false, 
-        error: initResult.error
-      });
-    }
-
-    const settings = JSON.stringify(initResult.settings);
-    updateStoreSettings(name, username, settings);
-    return res.status(200).json({ 
-      success: true,
-      message: "Store \"" + name + "\" is initialized. You can use command `:store \"" + name + "\"` to check store status and settings.",
-    });
-  }
-
+  // MySQL store
   if (store.engine === "mysql") {
     const initResult = await initializeMysqlStore(store);
     if (!initResult.success) {
@@ -85,7 +68,7 @@ export default async function (req, res) {
 
   return res.status(400).json({ 
     success: false, 
-    error: "Engine not supported, supported engine: \"vectara\", \"mysql\"."
+    error: "Engine not supported, supported engine: \"mysql\"."
   });
 }
 
@@ -151,67 +134,6 @@ async function initializeMysqlStore(store) {
   settings = {
     ...settings,
     schema: database_schema_string,
-  };
-
-  return {
-    success: true,
-    settings: settings
-  }
-}
-
-async function initializeVectaraStore(store) {
-  const { name, owner } = store;
-  let settings = JSON.parse(store.settings);
-
-  if (!settings.apiKey || !settings.customerId || !settings.clientId || !settings.clientSecret) {
-    return { 
-      success: false, 
-      error: "Vectara API key, customer ID, client ID and client secret are required."
-    };
-  }
-
-  // Get JWT token
-  const jwtToken = await createVectaraJtwToken(settings.clientId, settings.clientSecret, settings.customerId, settings.apiKey);
-  if (!jwtToken) {
-    console.log("Failed to get JTW token.");
-    return { 
-      success: false, 
-      error: "Failed to create store." 
-    };
-  }
-
-  console.log("Got JTW token.");
-
-  // Create store
-  const corpusName = "i-" + Date.now();
-  const description = "store: " + name + ", created by: " + owner;
-  const corpusId = await createVectaraCorpus(corpusName, description, jwtToken, settings.customerId);
-  if (!corpusId) {
-    console.log("Failed to create corpus.");
-    return { 
-      success: false, 
-      error: "Failed to create store." 
-    };
-  }
-
-  console.log("Created corpus: " + corpusId);
-
-  // Get API key
-  const apiKey = await generateVectaraApiKey(corpusId, jwtToken, settings.customerId);
-  if (!apiKey) {
-    console.log("Failed to get API key.");
-    return { 
-      success: false, 
-      error: "Failed to create store." 
-    };
-  }
-
-  console.log("Got API key.");
-
-  settings = {
-    ...settings,
-    corpusId: corpusId,
-    apiKey: apiKey,
   };
 
   return {

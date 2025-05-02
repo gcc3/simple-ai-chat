@@ -270,7 +270,7 @@ export default async function store(args, files) {
       return "Invalid store name.";
     }
 
-    const vaildEngines = ["mysql", "vectara"];
+    const vaildEngines = ["file", "mysql"];
     if (!vaildEngines.includes(engine)) {
       return "Invalid engine. Valid engines are: " + vaildEngines.join(", ");
     }

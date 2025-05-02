@@ -1,4 +1,3 @@
-import { vectaraQuery } from "./vectaraUtils";
 import { mysqlQuery } from "./mysqlUtils";
 import { getUser, getStore, getUserStores } from "./sqliteUtils";
 import OpenAI from "openai";
@@ -30,44 +29,6 @@ export async function findStore(storeName, username) {
   }
 
   return store;
-}
-
-export async function searchVectaraStore(settings, query) {
-  const corpusId = settings.corpusId;
-  const apiKey = settings.apiKey;
-  const threshold = settings.threshold;
-  const numberOfResults = settings.numberOfResults;
-  const customerId = settings.customerId;
-
-  if (!apiKey || !corpusId || !threshold || !numberOfResults || !customerId) {
-    return {
-      success: false,
-      error: "Store not configured. Use `:store set [key] [value]` to configure the store settings.",
-    };
-  }
-
-  // Query
-  const queryResult = await vectaraQuery(query, corpusId, apiKey, threshold, numberOfResults, customerId);
-  if (queryResult && queryResult.length > 0) {
-    let result = [];
-    for (let i = 0; i < queryResult.length; i++) {
-      result.push({
-        "document": queryResult[i].document.trim(),
-        "title": queryResult[i].title.trim(),
-        "Score": queryResult[i].score,
-        "Content": queryResult[i].content.trim(),
-      });
-    }
-    return {
-      success: true,
-      message: JSON.stringify(result, null, 2),
-    };
-  } else {
-    return {
-      success: true,
-      message: "No results found.",
-    };
-  }
 }
 
 export async function searchMysqlStore(settings, input) {
@@ -217,15 +178,14 @@ export async function generateStoreFunction(store) {
 
 export function isInitialized(engine, settings) {
   let isInitialized = false;
+  
+  // MySQL store
   if (engine === "mysql") {
     if (settings.host !== "" && settings.user !== "" && settings.password !== "" && settings.database !== "" && settings.schema !== "") {
       isInitialized = true;
     }
-  } else if (engine === "vectara") {
-    if (settings.apiKey !== "" && settings.customerId !== "" && settings.clientId !== "" && settings.clientSecret !== "" && settings.corpusId !== "") {
-      isInitialized = true;
-    }
   }
+
   return isInitialized;
 }
 

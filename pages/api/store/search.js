@@ -1,5 +1,5 @@
 import { authenticate } from "utils/authUtils";
-import { searchVectaraStore, searchMysqlStore, isInitialized } from "utils/storeUtils";
+import { searchMysqlStore, isInitialized } from "utils/storeUtils";
 import { findStore } from "utils/storeUtils.js";
 
 export default async function handler(req, res) {
@@ -37,23 +37,7 @@ export default async function handler(req, res) {
       return;
     }
 
-    if (storeInfo.engine === "vectara") {
-      const queryResult = await searchVectaraStore(settings, query);
-      if (!queryResult.success) {
-        res.status(400).json({
-          success: false,
-          error: queryResult.error,
-        });
-        return;
-      }
-      res.status(200).json({
-        success: true,
-        message: "Engine: " + storeInfo.engine + "\n"
-               + "Result: \n" + queryResult.message,
-      });
-      return;
-    }
-
+    // MySQL store
     if (storeInfo.engine === "mysql") {
       const queryResult = await searchMysqlStore(settings, query);
       if (!queryResult.success) {
