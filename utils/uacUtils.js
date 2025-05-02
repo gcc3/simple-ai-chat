@@ -1,5 +1,5 @@
 import { countChatsForIP, countChatsForUser, countTokenForUserByModel, getUsageModelsForUser } from './sqliteUtils';
-import { getRoleFequencyLimit, feeCal, gpt4vFeeCal, dbFeeCal, plusFeeCal } from './usageUtils';
+import { getRoleFequencyLimit, feeCal } from './usageUtils';
 
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
 

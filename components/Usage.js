@@ -3,7 +3,6 @@ import ProgressBar from "./ProgressBar";
 import { getRoleLevel, getUserInfo, getUserUsage } from "utils/userUtils";
 import PayPalButton from "./PayPalButton";
 import { npre } from "utils/numberUtils";
-import { plusFeeCal } from "utils/usageUtils";
 import { useTranslation } from "react-i18next";
 
 const moment = require('moment');

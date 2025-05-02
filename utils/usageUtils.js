@@ -44,18 +44,6 @@ export function feeCal(model, input_token_ct, output_token_ct) {
   return npre(fee); // Rounds to 5 decimal places
 }
 
-export function plusFeeCal(role, totalFee) {
-  let plusSystemFee = 0;
-  if (role === "user") plusSystemFee = totalFee * 0.03;
-  if (role === "pro_user") plusSystemFee = totalFee * 0.02;
-  if (role === "super_user") plusSystemFee = totalFee * 0.01;
-  return npre(plusSystemFee);
-}
-
-export function dbFeeCal(sizeInKb) {
-  return sizeInKb * (5 * 1024 / 1.25);
-}
-
 export function getRoleFequencyLimit(role) {
   if (role === "root_user") {
     return {
