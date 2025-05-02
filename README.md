@@ -3,7 +3,11 @@ Simple AI
 =========
 
 
-<img src="https://github.com/user-attachments/assets/1f8f0f14-23d6-4e45-9a32-ad79a390b35b" width="400" />
+<div align="center">
+  <a href="https://ollama.com">
+    <img alt="ollama" height="200px" src="https://github.com/user-attachments/assets/1f8f0f14-23d6-4e45-9a32-ad79a390b35b">
+  </a>
+</div>
 
 Simple AI (`simple-ai-chat`) is a command-based AI chat application, aimed at providing users with an easy and simple AI experience.  
 This application is deployed to [simple-ai.io](https://simple-ai.io).  
