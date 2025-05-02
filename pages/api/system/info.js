@@ -13,6 +13,7 @@ export default async function (req, res) {
       result: {
         model: sysconf.model,
         model_v: sysconf.model_v,
+        base_url: sysconf.base_url,
         role_content_system: "***",
         welcome_message: sysconf.welcome_message,
         querying: sysconf.querying,

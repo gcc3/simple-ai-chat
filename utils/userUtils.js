@@ -1,7 +1,7 @@
 import { setTheme } from "./themeUtils";
 import store from '../store.js';
 import { toggleFullscreen } from '../states/fullscreenSlice.js';
-import { initializeSession } from "./sessionUtils";
+import { initializeSessionMemory } from "./sessionUtils";
 
 export function setUserWebStorage(user) {
   if (!user.username || !user.settings) {
@@ -25,18 +25,18 @@ export function setUserWebStorage(user) {
   const settings = user.settings;
 
   // lang
-  if (settings.lang) {
+  if ("lang" in settings) {
     localStorage.setItem("lang", settings.lang);
   }
 
   // theme
-  if (settings.theme) {
+  if ("theme" in settings) {
     localStorage.setItem("theme", settings.theme);
     setTheme(localStorage.getItem("theme"));
   }
 
   // fullscreen
-  if (settings.fullscreen) {
+  if ("fullscreen" in settings) {
     if (settings.fullscreen != localStorage.getItem("fullscreen") && !localStorage.getItem("fullscreen").includes("force")) {
       localStorage.setItem("fullscreen", settings.fullscreen);
       store.dispatch(toggleFullscreen(settings.fullscreen));
@@ -44,62 +44,67 @@ export function setUserWebStorage(user) {
   }
 
   // useSpeak
-  if (settings.useSpeak) {
+  if ("useSpeak" in settings) {
     localStorage.setItem("useSpeak", settings.useSpeak == "true" ? true : false);
   }
 
   // useStats
-  if (settings.useStats) {
+  if ("useStats" in settings) {
     localStorage.setItem("useStats", settings.useStats == "true" ? true : false);
   }
 
   // useEval
-  if (settings.useEval) {
+  if ("useEval" in settings) {
     localStorage.setItem("useEval", settings.useEval == "true" ? true : false);
   }
 
   // useSystemRole
-  if (settings.useSystemRole) {
+  if ("useSystemRole" in settings) {
     localStorage.setItem("useSystemRole", settings.useSystemRole == "true" ? true : false);
   }
 
   // model
-  if (settings.model) {
+  if ("model" in settings) {
     sessionStorage.setItem("model", settings.model);
   }
 
   // modelV
-  if (settings.modelV) {
+  if ("modelV" in settings) {
     sessionStorage.setItem("modelV", settings.modelV);
   }
 
+  // baseUrl
+  if ("baseUrl" in settings) {
+    sessionStorage.setItem("baseUrl", settings.baseUrl);
+  }
+
   // functions
-  if (settings.functions) {
+  if ("functions" in settings) {
     localStorage.setItem("functions", settings.functions);
   }
 
   // role
-  if (settings.role) {
+  if ("role" in settings) {
     sessionStorage.setItem("role", settings.role);
   }
 
   // store
-  if (settings.stores) {
+  if ("stores" in settings) {
     sessionStorage.setItem("stores", settings.stores);
   }
 
   // node
-  if (settings.node) {
+  if ("node" in settings) {
     sessionStorage.setItem("node", settings.node);
   }
 
   // memLength
-  if (settings.memLength) {
+  if ("memLength" in settings) {
     sessionStorage.setItem("memLength", settings.memLength);
   }
 
   // passMask
-  if (settings.passMask) {
+  if ("passMask" in settings) {
     localStorage.setItem("passMask", settings.passMask);
   }
 }
@@ -108,7 +113,7 @@ export function clearUserWebStorage() {
   localStorage.removeItem("user");
   
   // Reset session to forget previous memory
-  initializeSession();
+  initializeSessionMemory();
 
   // Reset role
   if (sessionStorage.getItem("role")) {

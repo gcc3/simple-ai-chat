@@ -22,11 +22,12 @@ export async function pingOllamaAPI(baseUrl = 'http://localhost:11434') {
 
 // List available models
 export async function listOllamaModels(baseUrl = 'http://localhost:11434') {
-  console.log("Listing models from Ollama API...");
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 100);
-    const response = await fetch(`${baseUrl}/v1/models`, { signal: controller.signal });
+    const response = await fetch(`${baseUrl}/v1/models`, { 
+      signal: controller.signal
+    });
     clearTimeout(timeoutId);
     if (!response.ok) return [];
     const data = await response.json();
@@ -57,10 +58,14 @@ export async function isModelRunning(modelName, baseUrl = 'http://localhost:1143
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 100);
-    const response = await fetch(`${baseUrl}/api/ps`, { signal: controller.signal });
+    const response = await fetch(`${baseUrl}/api/ps`, { 
+      signal: controller.signal
+    });
     clearTimeout(timeoutId);
+
     if (!response.ok) return false;
     const data = await response.json();
+    
     const psModels = data.models || [];
     return psModels.some(m => {
       const id = m.model || m.name;
@@ -68,7 +73,6 @@ export async function isModelRunning(modelName, baseUrl = 'http://localhost:1143
       return trimmed === modelName;
     });
   } catch (error) {
-    console.error("Error checking if model is running:", error);
     return false;
   }
 }

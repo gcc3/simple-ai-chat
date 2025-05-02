@@ -6,7 +6,7 @@ export function initializeMemory() {
   console.log("Session is initialized.");
 }
 
-export function initializeSession() {
+export function initializeSessionMemory() {
   console.log("Session initializing...");
   initializeMemory();
   sessionStorage.setItem("head", "");

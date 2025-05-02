@@ -1,7 +1,7 @@
-import { initializeSession } from "utils/sessionUtils";
+import { initializeSessionMemory } from "utils/sessionUtils";
 
 export default async function clear(args) {
-  initializeSession();
+  initializeSessionMemory();
 
   sessionStorage.setItem("stores", "");
   sessionStorage.setItem("node", "");
