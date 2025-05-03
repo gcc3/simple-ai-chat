@@ -1,4 +1,5 @@
 import { isCommandMusked } from "./utils/passwordUtils.js";
+import { isNode } from "./utils/cliUtils.js";
 import help from "./commands/help.js";
 import stats from "./commands/stats.js";
 import eval_ from "./commands/eval.js";
@@ -195,6 +196,11 @@ export function pushCommandHistory(command) {
     return;
   }
 
+  if (isNode()) {
+    // Node.js environment
+    return;
+  }
+  
   // Get the existing history or initialize a new array
   let commandHistories = JSON.parse(localStorage.getItem("history")) || [];
 
@@ -209,6 +215,11 @@ export function pushCommandHistory(command) {
 }
 
 export function getHistoryCommand(index) {
+  if (isNode()) {
+    // Node.js environment
+    return;
+  }
+
   if (localStorage.getItem("history") === null) {
     localStorage.setItem("history", JSON.stringify([]));
   }
@@ -218,6 +229,11 @@ export function getHistoryCommand(index) {
 }
 
 export function getHistoryCommandIndex() {
+  if (isNode()) {
+    // Node.js environment
+    return;
+  }
+
   if (sessionStorage.getItem("historyIndex") === null) {
     sessionStorage.setItem("historyIndex", -1);
   }
