@@ -5,6 +5,13 @@ import readline from "node:readline";
 import command from "../command.js";
 
 
+// Simulate a localStorage
+import { createRequire } from "module";
+const require = createRequire(import.meta.url);
+const { LocalStorage } = require("node-localstorage");
+globalThis.localStorage = new LocalStorage('./cli/scratch');
+
+
 const ENDPOINT = "https://simple-ai.io/api/generate_sse";
 const MODEL = "gpt-4.1";
 
