@@ -7,8 +7,6 @@
   "Expire at": "만료 시각",
   "Subscription plans": "구독 플랜",
   "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "1. `user`: 일반 사용자를 제공합니다. 무료입니다. (사용한 토큰 수수료는 지불해야 합니다.)",
-  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: 전문가용 고급 기능 및 지원을 제공합니다.",
-  "`super_user`: provide accessibility for all latest features and support.": "`super_user`: 모든 최신 기능 및 지원에 대한 접근성을 제공합니다.",
   "Extend, Upgrade or Downgrade": "연장, 업그레이드 또는 다운그레이드",
   "Select plan": "플랜 선택",
   "Cancel": "취소",
@@ -38,5 +36,6 @@
   "Free": "무료",
   "GPT Vision": "GPT 비전",
   "GPT Text Generation": "GPT 텍스트 생성",
-  "Loading...": "로딩 중..."
+  "Loading...": "로딩 중...",
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: 전문적인 용도를 위한 고급 기능 및 지원을 제공합니다."
 }

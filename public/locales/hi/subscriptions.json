@@ -7,8 +7,6 @@
   "Expire at": "समाप्ति",
   "Subscription plans": "सब्सक्रिप्शन योजनाएँ",
   "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`: एक सामान्य उपयोगकर्ता प्रदान करता है। यह मुफ्त है। (आपको अभी भी इस्तेमाल किए गए टोकन शुल्क का भुगतान करना होगा।)",
-  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: पेशेवर उपयोगों के लिए उन्नत सुविधाएँ और समर्थन प्रदान करता है।",
-  "`super_user`: provide accessibility for all latest features and support.": "`super_user`: सभी नवीनतम सुविधाओं और समर्थन के लिए पहुँच प्रदान करता है।",
   "Extend, Upgrade or Downgrade": "विस्तार, अपग्रेड या डाउनग्रेड",
   "Select plan": "योजना चुनें",
   "Cancel": "रद्द करें",
@@ -38,5 +36,6 @@
   "Free": "निःशुल्क",
   "GPT Vision": "GPT दृष्टि",
   "GPT Text Generation": "GPT पाठ सृजन",
-  "Loading...": "लोड हो रहा है..."
+  "Loading...": "लोड हो रहा है...",
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: उन्नत सुविधाएँ और पेशेवर उपयोग के लिए समर्थन प्रदान करता है।"
 }

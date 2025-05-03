@@ -3,6 +3,7 @@ import json
 import csv
 import sys
 import click
+import shutil
 from dotenv import load_dotenv
 from openai import OpenAI
 from scan import scan_files
@@ -100,6 +101,11 @@ translation_files = [
 # Define the base path to the 'locales' folder
 source_language_code = "en"
 base_path = "../../public/locales"
+
+# Ensure languages.csv exists, if not, create from languages.csv.example
+if not os.path.exists("languages.csv"):
+    if os.path.exists("languages.csv.example"):
+        shutil.copy("languages.csv.example", "languages.csv")
 
 # Read the language codes and names from the languages.csv
 languages = {}

@@ -7,8 +7,6 @@
   "Expire at": "Scade il",
   "Subscription plans": "Piani di Abbonamento",
   "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "1. `user`: fornisce un utente generico. È gratuito. (Dovrai comunque pagare la tassa del token che hai utilizzato.)",
-  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: fornisce funzionalità avanzate e supporto per usi professionali.",
-  "`super_user`: provide accessibility for all latest features and support.": "`super_user`: fornisce accessibilità a tutte le ultime funzionalità e supporto.",
   "Extend, Upgrade or Downgrade": "Estendi, Aggiorna o Downgrade",
   "Select plan": "Seleziona piano",
   "Cancel": "Annulla",
@@ -38,5 +36,6 @@
   "Free": "Gratuito",
   "GPT Vision": "Visione GPT",
   "GPT Text Generation": "Generazione di Testo GPT",
-  "Loading...": "Caricamento in corso..."
+  "Loading...": "Caricamento in corso...",
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: fornisce funzionalità avanzate e supporto per usi professionali."
 }
