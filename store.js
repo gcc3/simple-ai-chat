@@ -1,5 +1,4 @@
-import pkg from '@reduxjs/toolkit';
-const { configureStore } = pkg;
+import { configureStore } from '@reduxjs/toolkit';
 
 import fullscreenReducer from './states/fullscreenSlice.js';
 import enterReducer from './states/enterSlice.js';
