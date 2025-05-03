@@ -27,16 +27,11 @@ export default async function (req, res) {
       error: "Store `name` is required and cannot be empty." 
     });
   }
+  
   if (name.length > 32) {
     return res.status(400).json({ 
       success: false, 
       error: "Store `name` is at most 32 characters long." 
-    });
-  }
-  if (!/^[a-zA-Z0-9_-]+$/.test(name)) {
-    return res.status(400).json({ 
-      success: false, 
-      error: "Store `name` can only contain letters, numbers, underscores and hyphens." 
     });
   }
 

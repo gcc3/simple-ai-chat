@@ -1,4 +1,4 @@
-import { clearUserWebStorage } from "utils/userUtils";
+import { clearUserWebStorage } from "../utils/userUtils.js";
 
 export default async function logout(args) {
   const username = localStorage.getItem("user");

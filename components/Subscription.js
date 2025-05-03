@@ -4,8 +4,8 @@ import { getRoleLevel, fetchUserInfo } from "utils/userUtils";
 import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
 import { npre } from "utils/numberUtils";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 
-const moment = require('moment');
 
 // Get amount
 function getPrice(subscriptions, role) {

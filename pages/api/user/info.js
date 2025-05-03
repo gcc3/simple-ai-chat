@@ -4,8 +4,8 @@ import { createToken } from 'utils/authUtils.js';
 import { getAvailableStoresForUser } from 'utils/storeUtils';
 import { getAvailableNodesForUser } from 'utils/nodeUtils';
 import { npre } from "utils/numberUtils";
+import moment from 'moment';
 
-const moment = require('moment');
 
 export default async function (req, res) {
   // Check method

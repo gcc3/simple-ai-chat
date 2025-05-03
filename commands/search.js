@@ -1,4 +1,4 @@
-import { getActiveStores } from "utils/storageUtils";
+import { getActiveStores } from "../utils/storageUtils.js";
 
 export default async function search(args) {
   if (args.length != 1) {

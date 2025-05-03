@@ -1,7 +1,5 @@
-import store from '../store.js';
-import { toggleFullscreen } from '../states/fullscreenSlice.js';
-import { toggleEnterChange } from '../states/enterSlice.js';
-import { updateUserSetting } from 'utils/userUtils.js';
+import { updateUserSetting } from '../utils/userUtils.js';
+import emitter from '../utils/eventsUtils.js';
 
 export default function fullscreen(args) {
   const usage = "Usage: :split" + "\n";
@@ -13,10 +11,11 @@ export default function fullscreen(args) {
   // Configure
   if (args.length === 0) {
     // Triggle enter key text change
-    if (store.getState().enter === "enter")  store.dispatch(toggleEnterChange("⌃enter"));
+    emitter.emit("ui:set_enter", "⌃enter");
 
     localStorage.setItem('fullscreen', "split");
-    store.dispatch(toggleFullscreen("split"));
+    emitter.emit("ui:set_fullscreen", "split");
+
     if (localStorage.getItem("user")) {
       updateUserSetting("fullscreen", "split");
     }

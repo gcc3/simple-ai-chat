@@ -1,7 +1,5 @@
-import store from '../store.js';
-import { toggleFullscreen } from '../states/fullscreenSlice.js';
-import { toggleEnterChange } from '../states/enterSlice.js';
-import { updateUserSetting } from 'utils/userUtils.js';
+import { updateUserSetting } from '../utils/userUtils.js';
+import emitter from '../utils/eventsUtils.js';
 
 export default function fullscreen(args) {
   const usage = "Usage: :fullscreen" + "\n" +
@@ -10,7 +8,8 @@ export default function fullscreen(args) {
   // If no argument is provided
   if (args.length === 0) {
     localStorage.setItem('fullscreen', "default");
-    store.dispatch(toggleFullscreen("default"));
+    emitter.emit("ui:set_fullscreen", "default");
+    
     if (localStorage.getItem("user")) {
       updateUserSetting("fullscreen", "default");
     }
@@ -22,12 +21,17 @@ export default function fullscreen(args) {
     const config = args[0];
 
     // Triggle enter key text change
-    if (config === "split" && store.getState().enter === "enter")  store.dispatch(toggleEnterChange("⌃enter"));
-    if (config !== "split" && store.getState().enter === "⌃enter") store.dispatch(toggleEnterChange("enter"));
+    if (config === "split") {
+      emitter.emit("ui:set_enter", "⌃enter");
+    }
+    if (config !== "split") {
+      emitter.emit("ui:set_enter", "enter");
+    }
 
     if (config === "split") {
       localStorage.setItem('fullscreen', "split");
-      store.dispatch(toggleFullscreen("split"));
+      emitter.emit("ui:set_fullscreen", "split");
+      
       if (localStorage.getItem("user")) {
         updateUserSetting("fullscreen", "split");
       }
@@ -36,7 +40,8 @@ export default function fullscreen(args) {
 
     if (config === "off") {
       localStorage.setItem('fullscreen', "off");
-      store.dispatch(toggleFullscreen("off"));
+      emitter.emit("ui:set_fullscreen", "off");
+
       if (localStorage.getItem("user")) {
         updateUserSetting("fullscreen", "off");
       }

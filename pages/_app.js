@@ -1,14 +1,13 @@
 import '../styles/globals.css';
 import '../styles/tailwind.css';
-import { Provider } from 'react-redux';
-import store from '../store';
-import '../i18n'
+import '../i18n';
+import Providers from '../contexts/Providers';
 
 function App({ Component, pageProps }) {
   return (
-    <Provider store={store}>
+    <Providers>
       <Component {...pageProps} />
-    </Provider>
+    </Providers>
   );
 }
 

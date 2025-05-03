@@ -5,13 +5,13 @@ const nextConfig = {
   async headers() {
     return [
       {
-        source: '/:path*',  // all routes
+        source: '/:path*', // all routes
         headers: [
-          { key: 'Access-Control-Allow-Origin', value: '*' },  // CORS
+          { key: 'Access-Control-Allow-Origin', value: '*' }, // CORS
         ],
       },
     ]
   }
 }
 
-module.exports = nextConfig
+export default nextConfig

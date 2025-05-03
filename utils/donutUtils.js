@@ -1,16 +1,16 @@
-global.A = 1;
-global.B = 1;
+globalThis.A = 1;
+globalThis.B = 1;
 
 export function asciiframe(targetElement) {
   let b = [];
   let z = [];
-  global.A += 0.07;
-  global.B += 0.03;
+  globalThis.A += 0.07;
+  globalThis.B += 0.03;
 
-  let cA = Math.cos(global.A);
-  let sA = Math.sin(global.A);
-  let cB = Math.cos(global.B);
-  let sB = Math.sin(global.B);
+  let cA = Math.cos(globalThis.A);
+  let sA = Math.sin(globalThis.A);
+  let cB = Math.cos(globalThis.B);
+  let sB = Math.sin(globalThis.B);
 
   const width = 62;
   const height = 22;

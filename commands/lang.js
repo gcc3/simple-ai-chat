@@ -1,4 +1,4 @@
-import { getLangCodes, getLanguageName } from "utils/langUtils";
+import { getLangCodes, getLanguageName } from "../utils/langUtils.js";
 
 export default async function lang(args) {
   const command = args[0];

@@ -1,7 +1,7 @@
-import { initializeMemory } from "utils/sessionUtils";
-import { isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils";
-import { getFunctions } from "function";
-import { updateUserSetting } from 'utils/userUtils.js';
+import { initializeMemory } from "../utils/sessionUtils.js";
+import { isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
+import { getFunctions } from "../function.js";
+import { updateUserSetting } from '../utils/userUtils.js';
 
 export default async function unuse(args) {
   const usage = "Usage: :unuse [name]\n";
@@ -45,8 +45,8 @@ export default async function unuse(args) {
   const modelInfo = await findModel(name);
   if (modelInfo) {
     // Set model
-    sessionStorage.setItem("model", global.model);  // reset model
-    sessionStorage.setItem("baseUrl", global.baseUrl);  // reset base url
+    sessionStorage.setItem("model", globalThis.model);  // reset model
+    sessionStorage.setItem("baseUrl", globalThis.baseUrl);  // reset base url
 
     return "Model unused, and reset to default model.";
   }

@@ -1,7 +1,7 @@
 import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import redirectToUrl from "./functions/redirect_to_url.js";
-import askWolframalpha from "functions/ask_wolframalpha.js";
+import askWolframalpha from "./functions/ask_wolframalpha.js";
 
 // `tools` is a generated json from OpenAI API
 export function toolsToFunctions(tools) {
