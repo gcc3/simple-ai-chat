@@ -19,6 +19,7 @@ export default async function search(args) {
   let results = [];
   for (const store of activeStores) {
     try {
+      // This will search a single store
       const response = await fetch("/api/store/search", {
         method: "POST",
         headers: {

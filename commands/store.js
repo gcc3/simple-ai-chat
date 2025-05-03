@@ -30,6 +30,7 @@ export default async function store(args, files) {
     let results = [];
     for (let i = 0; i < storeNames.length; i++) {
       try {
+        // Get a signle store info
         const response = await fetch("/api/store/" + storeNames[i], {
           method: "GET",
           headers: {
@@ -60,7 +61,7 @@ export default async function store(args, files) {
     }
 
     try {
-      const response = await fetch("/api/store/" + storeName, {
+      const response = await fetch("/api/store/" + storeName + "?verbose=true", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -425,7 +426,7 @@ export default async function store(args, files) {
     }
 
     try {
-      const response = await fetch("/api/store/reset", {
+      const response = await fetch("/api/store/data-reset", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

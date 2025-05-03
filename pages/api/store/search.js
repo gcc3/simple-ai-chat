@@ -55,7 +55,8 @@ export default async function handler(req, res) {
 
           for (let i = 0; i < lines.length; i++) {
             if (regex.test(lines[i])) {
-              const highlightedLine = lines[i].replace(regex, "**$1**"); // Highlight the matched word
+                const sanitizedLine = lines[i].replace(/\r/g, ""); // Remove carriage return characters
+                const highlightedLine = sanitizedLine.replace(regex, "**$1**"); // Highlight the matched word
               matches.push({
                 file,
                 line: i + 1, // Line number (1-based index)
@@ -73,20 +74,13 @@ export default async function handler(req, res) {
       }
 
       // Return all matches or a message if no matches were found
-      if (matches.length > 0) {
-        res.status(200).json({
-          success: true,
-          message: "Engine: " + storeInfo.engine + "\n"
-            + "Search: \"" + search + "\"\n"
-            + "Matches count: " + matches.length + "\n"
-            + "Matches: " + JSON.stringify(matches, null, 2),
-        });
-      } else {
-        res.status(404).json({
-          success: false,
-          error: "No matches found in any files.",
-        });
-      }
+      res.status(200).json({
+        success: true,
+        message: "Engine: \"" + storeInfo.engine + "\"\n"
+          + "Search: \"" + search + "\"\n"
+          + "Matches count: " + matches.length + "\n"
+          + "Matches: " + (matches.length > 0 ? JSON.stringify(matches, null, 2) : "(No matches found.)"),
+      });
     }
 
     // MySQL store
@@ -95,7 +89,7 @@ export default async function handler(req, res) {
       if (!isInitialized(storeInfo.engine, settings)) {
         res.status(400).json({
           success: false,
-          error: "Store not initialized. Use `:store init [engine]` to initialize a data store.",
+          error: "Store \`" + storeInfo.store + "\` not initialized. Use `:store init [engine]` to initialize a data store.",
         });
         return;
       }
@@ -111,7 +105,7 @@ export default async function handler(req, res) {
 
       res.status(200).json({
         success: true,
-        message: "Engine: " + storeInfo.engine + "\n"
+        message: "Engine: \"" + storeInfo.engine + "\"\n"
                + "Search: \"" + search + "\"\n"
                + "Query: " + queryResult.query + "\n"
                + "Result: \n" + queryResult.message,

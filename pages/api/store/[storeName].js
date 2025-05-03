@@ -3,7 +3,7 @@ import { findStore, isInitialized } from 'utils/storeUtils';
 import { testConnection } from 'utils/mysqlUtils';
 
 export default async function (req, res) {
-  const { storeName } = req.query;
+  const { storeName, verbose } = req.query;
 
   // Authentication
   const authResult = authenticate(req);
@@ -27,40 +27,86 @@ export default async function (req, res) {
   try {
     // Mask settings
     let settings = JSON.parse(store.settings);
-    let status = {};
 
     // File store
     if (store.engine === "file") {
-      status = {
-        available: settings.files.length > 0,
+      // If verbose is true, then return the file content
+      if (verbose === "true") {
+        const files = settings.files || [];
+        if (files.length === 0) {
+          return res.status(400).json({
+            success: false,
+            error: "No files found in the store.",
+          });
+        }
+
+        // Initialize an array to store all matches
+        const fileContentList = [];
+
+        // Loop through each file and fetch the content
+        for (const file of files) {
+          try {
+            const response = await fetch(file);
+            const fileContent = await response.text();
+            fileContentList.push({ file, content: fileContent });
+          } catch (error) {
+            console.error(`Error fetching file ${file}:`, error);
+          }
+        }
+
+        return res.status(200).json({ 
+          result: {
+            id: store.id,
+            store: store.name,
+            owner: store.owner,
+            created_by: store.created_by,
+            engine: store.engine,
+            settings: settings,
+            status: {
+              available: settings.files.length > 0,
+            },
+            content: fileContentList, // Return the file content
+          },
+        });
       }
+
+      return res.status(200).json({ 
+        result: {
+          id: store.id,
+          store: store.name,
+          owner: store.owner,
+          created_by: store.created_by,
+          engine: store.engine,
+          settings: settings,
+          status: {
+            available: settings.files.length > 0,
+          },
+        },
+      });
     }
 
     // MySQL store
     if (store.engine === "mysql") {
-      status = {
-        initialized: isInitialized(store.engine, settings),
-        connected: await testConnection({ host: settings.host, port: settings.port, user: settings.user, password: settings.password, database: settings.database })
-                                  .then(() => true)
-                                  .catch(() => false),
-      };
-      settings = {
-        ...settings,
-        password: maskString(settings.password, 0),
-      };
+      return res.status(200).json({ 
+        result: {
+          id: store.id,
+          store: store.name,
+          owner: store.owner,
+          created_by: store.created_by,
+          engine: store.engine,
+          settings: {
+            ...settings,
+            password: maskString(settings.password, 0),
+          },
+          status: {
+            initialized: isInitialized(store.engine, settings),
+            connected: await testConnection({ host: settings.host, port: settings.port, user: settings.user, password: settings.password, database: settings.database })
+                                      .then(() => true)
+                                      .catch(() => false),
+          },
+        },
+      });
     }
-
-    return res.status(200).json({ 
-      result: {
-        id: store.id,
-        store: store.name,
-        owner: store.owner,
-        created_by: store.created_by,
-        engine: store.engine,
-        settings,
-        status,
-      },
-    });
   } catch (error) {
     console.error(error);
     res.status(500).json({
