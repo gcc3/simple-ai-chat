@@ -6,9 +6,9 @@ export default async function search(args) {
   }
 
   if (!args[0].startsWith("\"") || !args[0].endsWith("\"")) {
-    return "Query text must be quoted with double quotes.";
+    return "Search text must be quoted with double quotes.";
   }
-  const query = args[0].slice(1, -1);
+  const search = args[0].slice(1, -1);
 
   const activeStores = getActiveStores();
   if (activeStores.length === 0) {
@@ -19,13 +19,14 @@ export default async function search(args) {
   let results = [];
   for (const store of activeStores) {
     try {
+      // This will search a single store
       const response = await fetch("/api/store/search", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          query,
+          search,
           store,
         }),
       });
