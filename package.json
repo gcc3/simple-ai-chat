@@ -58,5 +58,8 @@
     "cross-env": "^7.0.3",
     "postcss": "^8.4.31",
     "tailwindcss": "^3.3.5"
+  },
+  "bin": {
+    "spchat": "./cli.js"
   }
 }
