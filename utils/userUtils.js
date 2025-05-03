@@ -1,7 +1,6 @@
 import { setTheme } from "./themeUtils.js";
-import store from '../store.js';
-import { toggleFullscreen } from '../states/fullscreenSlice.js';
 import { initializeSessionMemory } from "./sessionUtils.js";
+import emitter from "./eventsUtils.js";
 
 export function setUserWebStorage(user) {
   if (!user.username || !user.settings) {
@@ -39,7 +38,7 @@ export function setUserWebStorage(user) {
   if ("fullscreen" in settings) {
     if (settings.fullscreen != localStorage.getItem("fullscreen") && !localStorage.getItem("fullscreen").includes("force")) {
       localStorage.setItem("fullscreen", settings.fullscreen);
-      store.dispatch(toggleFullscreen(settings.fullscreen));
+      emitter.emit("ui:set_fullscreen", settings.fullscreen);
     }
   }
 

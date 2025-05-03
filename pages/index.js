@@ -7,8 +7,6 @@ import command, { getHistoryCommand, getHistoryCommandIndex, pushCommandHistory 
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { setRtl } from "utils/rtlUtils.js";
-import { useDispatch, useSelector } from "react-redux";
-import { toggleFullscreen } from "../states/fullscreenSlice.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
 import { passwordFormatter, maskPassword, isCommandMusked } from "utils/passwordUtils";
 import UserDataPrivacy from "components/UserDataPrivacy";
@@ -17,7 +15,6 @@ import Subscription from "components/Subscription";
 import Documentation from "components/Documentation";
 import Copyrights from "components/Copyrights";
 import Settings from "components/Settings";
-import { toggleEnterChange } from "states/enterSlice";
 import hljs from 'highlight.js';
 import { generateFileURl } from "utils/awsUtils";
 import { initializeSessionMemory, setSession, setTime } from "utils/sessionUtils";
@@ -36,6 +33,7 @@ import OpenAI from "openai";
 import { Readable } from "stream";
 import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSetting } from "utils/userUtils";
 import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
+import { useUI } from '../contexts/UIContext';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -75,6 +73,8 @@ const clearDonutInterval = () => {
 }
 
 export default function Home() { 
+  const { fullscreen, setFullscreen, enter, setEnter } = useUI();
+
   // States
   const [placeholder, setPlaceholder] = useState("");
   const [waiting, setWaiting] = useState("");
@@ -95,11 +95,6 @@ export default function Home() {
   const elInputRef = useRef(null);
   const elOutputRef = useRef(null);
   const elWrapperRef = useRef(null);
-
-  // Global states with Redux
-  const dispatch = useDispatch();
-  const fullscreen = useSelector(state => state.fullscreen);
-  const enter = useSelector(state => state.enter);
 
   // i18n
   const { t, i18n } = useTranslation();
@@ -479,14 +474,14 @@ export default function Home() {
       }
 
       localStorage.setItem('fullscreen', mode + (force ? " force" : ""));
-      dispatch(toggleFullscreen(mode));
+      setFullscreen(mode);
 
-      if (enter === "enter" && mode === "split") {
+      if (mode === "split") {
         // fullscreen split mode  use ⌃enter
-        dispatch(toggleEnterChange("⌃enter"));
+        setEnter("⌃enter");
       } else {
         // fullscreen default mode use enter
-        dispatch(toggleEnterChange("enter"));
+        setEnter("enter");
       }
       
       // User logged in
