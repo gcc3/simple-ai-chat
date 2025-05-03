@@ -1,5 +1,5 @@
-import { initializeSessionMemory } from "utils/sessionUtils";
-import { setUserWebStorage } from "utils/userUtils.js";
+import { initializeSessionMemory } from "../utils/sessionUtils.js";
+import { setUserWebStorage } from "../utils/userUtils.js";
 
 export default async function login(args) {
   if (args.length < 2 && args.length > 4) {

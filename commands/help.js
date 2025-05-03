@@ -1,4 +1,4 @@
-import { getCommands } from "command.js";
+import { getCommands } from "../command.js";
 
 export default function help(args) {
   let command = args[0];

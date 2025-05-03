@@ -26,7 +26,7 @@ import katex from 'katex';
 */
 export function markdownFormatter(elOutput) {
   if (!elOutput) return;
-  let output = global.rawOutput;
+  let output = globalThis.rawOutput;
   
   // Check the code black is closed or not
   let codeBlockOpen = false;
@@ -44,7 +44,7 @@ export function markdownFormatter(elOutput) {
   if (equationBlockOpen) return;
 
   // Temporarily stop observing
-  global.outputMutationObserver.disconnect();
+  globalThis.outputMutationObserver.disconnect();
 
   // Format the output
   let omitLines = [];
@@ -185,7 +185,7 @@ export function markdownFormatter(elOutput) {
   })(output);
 
   // Resume observing
-  global.outputMutationObserver.observe(elOutput, { 
+  globalThis.outputMutationObserver.observe(elOutput, { 
     childList: true, 
     attributes: false, 
     subtree: true, 

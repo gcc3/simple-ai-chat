@@ -1,8 +1,8 @@
-import { initializeMemory } from "utils/sessionUtils";
-import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } from "utils/storageUtils";
-import { getFunctions } from "function";
-import { updateUserSetting } from "utils/userUtils";
-import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
+import { initializeMemory } from "../utils/sessionUtils.js";
+import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } from "../utils/storageUtils.js";
+import { getFunctions } from "../function.js";
+import { updateUserSetting } from "../utils/userUtils.js";
+import { pingOllamaAPI, listOllamaModels } from "../utils/ollamaUtils.js";
 
 export default async function use(args) {
   const usage = "Usage: :use [function|node|store|role]\n";

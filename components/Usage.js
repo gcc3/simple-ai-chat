@@ -4,10 +4,10 @@ import { getRoleLevel, fetchUserInfo, fetchUserUsage } from "utils/userUtils";
 import PayPalButton from "./PayPalButton";
 import { npre } from "utils/numberUtils";
 import { useTranslation } from "react-i18next";
+import moment from "moment";
 
-const moment = require('moment');
 
-function Usage() {
+export default function Usage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [usage, setUsage] = useState(null);
@@ -251,5 +251,3 @@ function Usage() {
     </div>
   );
 }
-
-export default Usage;

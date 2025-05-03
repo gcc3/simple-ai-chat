@@ -1,4 +1,4 @@
-import { attachSession } from "utils/sessionUtils.js";
+import { attachSession } from "../utils/sessionUtils.js";
 
 export default async function attach(args) {
   const usage = "Usage: :attach [session_id]";

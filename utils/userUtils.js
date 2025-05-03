@@ -1,7 +1,7 @@
-import { setTheme } from "./themeUtils";
+import { setTheme } from "./themeUtils.js";
 import store from '../store.js';
 import { toggleFullscreen } from '../states/fullscreenSlice.js';
-import { initializeSessionMemory } from "./sessionUtils";
+import { initializeSessionMemory } from "./sessionUtils.js";
 
 export function setUserWebStorage(user) {
   if (!user.username || !user.settings) {

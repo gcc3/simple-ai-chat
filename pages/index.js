@@ -33,13 +33,13 @@ import { getAutoCompleteOptions } from "utils/autocompleteUtils";
 import { sleep } from "utils/sleepUtils";
 import { loadConfig } from "utils/configUtils";
 import OpenAI from "openai";
-const { Readable } = require('stream');
+import { Readable } from "stream";
 import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSetting } from "utils/userUtils";
 import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
-global.STATE = STATES.IDLE;  // a global state
+globalThis.STATE = STATES.IDLE;  // a global state
 
 // Front or back display
 const DISPLAY = { FRONT: 0, BACK: 1 };
@@ -55,15 +55,15 @@ const CONTENT = {
 // Mutation observer
 // will setup in useEffect
 // For input change can handle by onChange
-global.outputMutationObserver = null;
+globalThis.outputMutationObserver = null;
 
 // Global raw input/output buffer
-global.rawInput = "";
-global.rawOutput = "";
-global.rawPlaceholder = "";
+globalThis.rawInput = "";
+globalThis.rawOutput = "";
+globalThis.rawPlaceholder = "";
 
 // Initial placeholder
-global.initPlaceholder = "";
+globalThis.initPlaceholder = "";
 
 // Donut interval id
 let dunutIntervalId = null;
@@ -117,7 +117,7 @@ export default function Home() {
       if (ignoreFormatter) {
         // Temproary stop observing
         // For some output, we don't want to format it
-        global.outputMutationObserver.disconnect();
+        globalThis.outputMutationObserver.disconnect();
       }
 
       // Print the output
@@ -129,15 +129,15 @@ export default function Home() {
 
       if (append) {
         elOutput.innerHTML += textHtml;
-        global.rawOutput += textRaw;
+        globalThis.rawOutput += textRaw;
       } else {
         elOutput.innerHTML = textHtml;
-        global.rawOutput = textRaw;
+        globalThis.rawOutput = textRaw;
       }
 
       if (ignoreFormatter) {
         // Resume observing
-        global.outputMutationObserver.observe((elOutput), { 
+        globalThis.outputMutationObserver.observe((elOutput), { 
           childList: true, 
           attributes: false, 
           subtree: true,
@@ -257,12 +257,12 @@ export default function Home() {
     clearOutput(true);
 
     // Print input
-    global.rawPlaceholder = log["input"].trim();
+    globalThis.rawPlaceholder = log["input"].trim();
     reAdjustPlaceholder();
 
     // Print output
     printOutput(log["output"].trim());
-    global.rawOutput = log["output"].trim();
+    globalThis.rawOutput = log["output"].trim();
 
     // Print images
     if (log["images"]) {
@@ -321,7 +321,7 @@ export default function Home() {
   // Set input
   const setInput = (text) => {
     elInputRef.current.value = text;
-    global.rawInput = text;
+    globalThis.rawInput = text;
   }
 
   // Clear input
@@ -406,8 +406,8 @@ export default function Home() {
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
       if (systemInfo.init_placeholder) {
-        global.initPlaceholder = systemInfo.init_placeholder;
-        global.rawPlaceholder = systemInfo.init_placeholder;
+        globalThis.initPlaceholder = systemInfo.init_placeholder;
+        globalThis.rawPlaceholder = systemInfo.init_placeholder;
         setPlaceholder({ text: systemInfo.init_placeholder, height: null });  // Set placeholder text
       }
       if (systemInfo.enter) {
@@ -438,8 +438,8 @@ export default function Home() {
 
       // Set model
       // Auto setup the base URL too
-      global.model = systemInfo.model;
-      global.baseUrl = systemInfo.base_url;
+      globalThis.model = systemInfo.model;
+      globalThis.baseUrl = systemInfo.base_url;
       if (!sessionStorage.getItem("model")) {
         sessionStorage.setItem("model", systemInfo.model);  // default model
         sessionStorage.setItem("baseUrl", systemInfo.base_url);  // default base url
@@ -621,7 +621,7 @@ export default function Home() {
           if (event.ctrlKey) {
             console.log("Shortcut: ⌃c");
 
-            if (global.STATE === STATES.DOING) {
+            if (globalThis.STATE === STATES.DOING) {
               event.preventDefault();
               command(":stop");
 
@@ -638,15 +638,15 @@ export default function Home() {
           if (event.ctrlKey && !event.shiftKey) {
             console.log("Shortcut: ⌃r");
 
-            if (global.STATE === STATES.IDLE) {
+            if (globalThis.STATE === STATES.IDLE) {
               event.preventDefault();
 
               // Same as :clear
               // Clear all input and output, pleaceholder, previews
               clearInput();
               clearOutput();
-              global.rawPlaceholder = global.initPlaceholder;
-              setPlaceholder({ text: global.rawPlaceholder, height: null });
+              globalThis.rawPlaceholder = globalThis.initPlaceholder;
+              setPlaceholder({ text: globalThis.rawPlaceholder, height: null });
               clearPreviewImages();
               clearPreviewVideos();
               setInfo();
@@ -665,7 +665,7 @@ export default function Home() {
           if (event.ctrlKey && event.shiftKey) {
             console.log("Shortcut: ⇧⌃r");
 
-            if (global.STATE === STATES.IDLE) {
+            if (globalThis.STATE === STATES.IDLE) {
               event.preventDefault();
 
               console.log("Sending `reset` command...");
@@ -707,7 +707,7 @@ export default function Home() {
 
         case "ArrowUp":
           // Command history (↑)
-          if (global.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if (globalThis.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             console.log("Shortcut: ↑");
             event.preventDefault();
 
@@ -726,7 +726,7 @@ export default function Home() {
             console.log("Shortcut: ⌃↑");
             event.preventDefault();
 
-            if (global.STATE === STATES.IDLE) {
+            if (globalThis.STATE === STATES.IDLE) {
               if (!localStorage.getItem("user")) {
                 console.error("User not logged in.");
                 printOutput("Please log in to view session history.");
@@ -759,7 +759,7 @@ export default function Home() {
             event.preventDefault();
             console.log("Shortcut: h");
 
-            if (global.STATE === STATES.IDLE) {
+            if (globalThis.STATE === STATES.IDLE) {
               if (!localStorage.getItem("user")) {
                 console.error("User not logged in.");
                 printOutput("Please log in to view session history.");
@@ -788,7 +788,7 @@ export default function Home() {
 
         case "ArrowDown":
           // Command history (↓)
-          if (global.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          if (globalThis.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
             console.log("Shortcut: ↓");
             event.preventDefault();
 
@@ -812,7 +812,7 @@ export default function Home() {
             console.log("Shortcut: ⌃↓");
             event.preventDefault();
 
-            if (global.STATE === STATES.IDLE) {
+            if (globalThis.STATE === STATES.IDLE) {
               if (!localStorage.getItem("user")) {
                 console.error("User not logged in.");
                 printOutput("Please log in to view session history.");
@@ -845,7 +845,7 @@ export default function Home() {
             console.log("Shortcut: l");
             event.preventDefault();
 
-            if (global.STATE === STATES.IDLE) {
+            if (globalThis.STATE === STATES.IDLE) {
               if (!localStorage.getItem("user")) {
                 console.error("User not logged in.");
                 printOutput("Please log in to view session history.");
@@ -878,7 +878,7 @@ export default function Home() {
             event.preventDefault();
 
             // Print session log (previous)
-            if (global.STATE === STATES.IDLE) {
+            if (globalThis.STATE === STATES.IDLE) {
               getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
@@ -901,7 +901,7 @@ export default function Home() {
             event.preventDefault();
 
             // Print session log (previous)
-            if (global.STATE === STATES.IDLE) {
+            if (globalThis.STATE === STATES.IDLE) {
               getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
@@ -924,7 +924,7 @@ export default function Home() {
             event.preventDefault();
 
             // Print session log (next)
-            if (global.STATE === STATES.IDLE) {
+            if (globalThis.STATE === STATES.IDLE) {
               getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
@@ -947,7 +947,7 @@ export default function Home() {
             event.preventDefault();
 
             // Print session log (next)
-            if (global.STATE === STATES.IDLE) {
+            if (globalThis.STATE === STATES.IDLE) {
               getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
@@ -968,11 +968,11 @@ export default function Home() {
     window.addEventListener("keydown", handleKeyDown, true);
 
     // Initialize global output mutation observer
-    global.outputMutationObserver = new MutationObserver(mutationsList => {
+    globalThis.outputMutationObserver = new MutationObserver(mutationsList => {
       for (let mutation of mutationsList) {
         if (mutation.type === 'childList' || mutation.type === 'characterData') {
           // Formatter should only works when generating
-          if (global.STATE === STATES.DOING) {
+          if (globalThis.STATE === STATES.DOING) {
 
             // Markdown formatter
             markdownFormatter(elOutputRef.current);
@@ -983,7 +983,7 @@ export default function Home() {
 
     // Start observing
     const observingConfig = { childList: true, attributes: false, subtree: true, characterData: true };
-    global.outputMutationObserver.observe(elOutputRef.current, observingConfig);
+    globalThis.outputMutationObserver.observe(elOutputRef.current, observingConfig);
 
     // Handle hash tag auto removing
     window.addEventListener('hashchange', removeHashTag, false);
@@ -1047,7 +1047,7 @@ export default function Home() {
           }
 
           // Left swipe show next log
-          if (global.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.IDLE) {
             getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
               .then((r) => {
                 if (!r.result || Object.entries(r.result).length === 0) {
@@ -1069,7 +1069,7 @@ export default function Home() {
           }
 
           // Right swipe show previous log
-          if (global.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.IDLE) {
             getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
               .then((r) => {
                 if (!r.result || Object.entries(r.result).length === 0) {
@@ -1122,17 +1122,17 @@ export default function Home() {
 
   // On submit input
   async function onSubmit(event) {
-    if (global.STATE === STATES.DOING) return;
+    if (globalThis.STATE === STATES.DOING) return;
     event.preventDefault();
 
-    if (global.rawInput === "") return;
-    if (global.rawInput.startsWith(":clear")) {
+    if (globalThis.rawInput === "") return;
+    if (globalThis.rawInput.startsWith(":clear")) {
       // Same as ⌃r
       // Clear all input and output, pleaceholder, previews
       clearInput();
       clearOutput();
-      global.rawPlaceholder = global.initPlaceholder;
-      setPlaceholder({ text: global.rawPlaceholder, height: null });
+      globalThis.rawPlaceholder = globalThis.initPlaceholder;
+      setPlaceholder({ text: globalThis.rawPlaceholder, height: null });
       clearPreviewImages();
       clearPreviewVideos();
       setInfo();
@@ -1147,7 +1147,7 @@ export default function Home() {
       return;
     }
 
-    if (global.rawInput.startsWith(":fullscreen") || global.rawInput.startsWith(":theme")) {
+    if (globalThis.rawInput.startsWith(":fullscreen") || globalThis.rawInput.startsWith(":theme")) {
       // Don't clean output and input
     } else {
       // Clear output and preview images
@@ -1168,7 +1168,7 @@ export default function Home() {
     // files starts with +file[url] or +image[url] or +img[url]
     let image_urls = [], image_urls_encoded = [];
     let file_urls = [], file_urls_encoded = [];
-    let matches = [...global.rawInput.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
+    let matches = [...globalThis.rawInput.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
     matches.forEach(match => {
       const block = match[1] + "[" + match[2] + "]";
 
@@ -1192,7 +1192,7 @@ export default function Home() {
       }
 
       // Remove the block from the raw input
-      global.rawInput = global.rawInput.replace(block, "");
+      globalThis.rawInput = globalThis.rawInput.replace(block, "");
     });
     if (image_urls.length > 0) {
       console.log("Images (input):\n" + image_urls.join("\n"));
@@ -1202,7 +1202,7 @@ export default function Home() {
     }
 
     // 2. Replace the full-width characters with half-width
-    const input = global.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+    const input = globalThis.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
 
@@ -1220,7 +1220,7 @@ export default function Home() {
     if (elInput.value.startsWith(":login") || elInput.value.startsWith(":user set pass") || elInput.value.startsWith(":user add") || elInput.value.startsWith(":user join")) {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
-    global.rawPlaceholder = placeholder;
+    globalThis.rawPlaceholder = placeholder;
     
     // Clear input
     clearInput();
@@ -1294,7 +1294,7 @@ export default function Home() {
           });
         }
 
-        if (global.rawInput.startsWith(":fullscree") || global.rawInput.startsWith(":theme")) {
+        if (globalThis.rawInput.startsWith(":fullscree") || globalThis.rawInput.startsWith(":theme")) {
           // Do't print and clean info
         } else {
           // Print the output
@@ -1473,8 +1473,8 @@ export default function Home() {
   // SSE
   function generate_sse(input, images, files) {
     // If already doing, return
-    if (global.STATE === STATES.DOING) return;
-    global.STATE = STATES.DOING;
+    if (globalThis.STATE === STATES.DOING) return;
+    globalThis.STATE = STATES.DOING;
 
     // Add a waiting text
     if (getOutput() !== querying) printOutput(waiting);
@@ -1519,7 +1519,7 @@ export default function Home() {
     }
 
     openaiEssSrouce.onmessage = function(event) {
-      if (global.STATE == STATES.IDLE) {
+      if (globalThis.STATE == STATES.IDLE) {
         openaiEssSrouce.close();
         console.log("Session closed by state control.")
         return;
@@ -1673,10 +1673,10 @@ export default function Home() {
         console.log("Session closed.")
 
         // Print raw output
-        console.log(global.rawOutput);
+        console.log(globalThis.rawOutput);
 
         // Reset state
-        global.STATE = STATES.IDLE;
+        globalThis.STATE = STATES.IDLE;
 
         // Tool calls (function calling)
         if (toolCalls.length > 0) {
@@ -1706,7 +1706,7 @@ export default function Home() {
 
         // Try speak some rest text
         if (localStorage.getItem("useSpeak") === "true") {
-          let restText = global.rawOutput.replace(textSpoken, "");
+          let restText = globalThis.rawOutput.replace(textSpoken, "");
           restText = restText.replaceAll("<br>", " ");
           if (restText.length > 0)
             speak(restText);
@@ -1716,7 +1716,7 @@ export default function Home() {
 
       // VI. Handle error
       if (event.data.startsWith("###ERR###") || event.data.startsWith('[ERR]')) {
-        global.STATE = STATES.IDLE;
+        globalThis.STATE = STATES.IDLE;
         window.speechSynthesis.cancel();
         openaiEssSrouce.close();
 
@@ -1744,7 +1744,7 @@ export default function Home() {
               window.open(_event.parameters.url, '_blank');
             } else {
               // Stop generating as it will be redirected.
-              global.STATE = STATES.IDLE;
+              globalThis.STATE = STATES.IDLE;
               window.speechSynthesis.cancel();
               openaiEssSrouce.close();
 
@@ -1763,14 +1763,14 @@ export default function Home() {
 
       // Stream output
       let output = event.data;
-      if (global.STATE === STATES.DOING) {
+      if (globalThis.STATE === STATES.DOING) {
         // Print output
         printOutput(output, false, true);
         console.log(event.data);
 
         // Try speak
         if (localStorage.getItem("useSpeak") === "true") {
-          textSpoken = trySpeak(global.rawOutput, textSpoken);
+          textSpoken = trySpeak(globalThis.rawOutput, textSpoken);
         }
       } else {
         // If not doing, close the stream
@@ -1792,8 +1792,8 @@ export default function Home() {
   // Warning: it will expose the API key.
   async function generate_msg(input, images, files) {
     // If already doing, return
-    if (global.STATE === STATES.DOING) return;
-    global.STATE = STATES.DOING;
+    if (globalThis.STATE === STATES.DOING) return;
+    globalThis.STATE = STATES.DOING;
 
     // Add a waiting text
     if (getOutput() !== querying) printOutput(waiting);
@@ -1923,7 +1923,7 @@ export default function Home() {
       }
 
       // Reset state
-      global.STATE = STATES.IDLE;
+      globalThis.STATE = STATES.IDLE;
       printOutput(output);
 
       // Set model
@@ -1985,7 +1985,7 @@ export default function Home() {
         logadd(input, output);
 
         // Reset state
-        global.STATE = STATES.IDLE;
+        globalThis.STATE = STATES.IDLE;
       });
   
       // Reject the Promise on error
@@ -1998,8 +1998,8 @@ export default function Home() {
   // Generate (without SSE)
   async function generate(input, images, files) {
     // If already doing, return
-    if (global.STATE === STATES.DOING) return;
-    global.STATE = STATES.DOING;
+    if (globalThis.STATE === STATES.DOING) return;
+    globalThis.STATE = STATES.DOING;
 
     // Input
     console.log("Input:\n" + input);
@@ -2044,7 +2044,7 @@ export default function Home() {
       }
 
       // Reset state
-      global.STATE = STATES.IDLE;
+      globalThis.STATE = STATES.IDLE;
 
       // Render output
       const output = data.result.text
@@ -2069,7 +2069,7 @@ export default function Home() {
                 window.open(event.parameters.url, '_blank');
               } else {
                 // Stop generating as it will be redirected.
-                global.STATE = STATES.IDLE;
+                globalThis.STATE = STATES.IDLE;
                 window.speechSynthesis.cancel();
   
                 // Redirect to URL
@@ -2214,7 +2214,7 @@ export default function Home() {
 
       // Input from placeholder when pressing tab
       if (elInput.value.length === 0) {
-        setInput(global.rawPlaceholder);
+        setInput(globalThis.rawPlaceholder);
         reAdjustInputHeight();
       }
 
@@ -2283,14 +2283,14 @@ export default function Home() {
     if (elInput.value.startsWith(':login') || elInput.value.startsWith(':user set pass') || elInput.value.startsWith(":user add") || elInput.value.startsWith(":user join")) {
       // Password input
       if (localStorage.getItem("passMask") === "true") {
-        global.rawInput = elInput.value.replace(/\*/g, (match, index) => global.rawInput[index] || '');  // store real password
+        globalThis.rawInput = elInput.value.replace(/\*/g, (match, index) => globalThis.rawInput[index] || '');  // store real password
         passwordFormatter(elInputRef.current);
       } else {
-        global.rawInput = elInput.value;
+        globalThis.rawInput = elInput.value;
       }
     } else {
       // General input
-      global.rawInput = elInput.value;
+      globalThis.rawInput = elInput.value;
     }
     
     // Re-adjust input height
@@ -2303,7 +2303,7 @@ export default function Home() {
     if (!fullscreen_) fullscreen_ = localStorage.getItem("fullscreen");
     fullscreen_ = fullscreen_.replace("force", "").trim();
     
-    const placeholder = global.rawPlaceholder;
+    const placeholder = globalThis.rawPlaceholder;
     const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? 
                                  placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
     setPlaceholder({ text: placeholderShortern, height: null });
@@ -2536,7 +2536,7 @@ export default function Home() {
                 // Copy attach session command to share
                 copyText = ":session attach " + sessionStorage.getItem("session");
               } else {
-                copyText = global.rawOutput;
+                copyText = globalThis.rawOutput;
               }
               navigator.clipboard.writeText(copyText);
               console.log("Copied:\n" + copyText);

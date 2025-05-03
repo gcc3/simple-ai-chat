@@ -1,4 +1,4 @@
-import { initializeSessionMemory } from "utils/sessionUtils";
+import { initializeSessionMemory } from "../utils/sessionUtils.js";
 
 export default async function clear(args) {
   initializeSessionMemory();

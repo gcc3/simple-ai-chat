@@ -2,6 +2,7 @@
 
 import { program } from "commander";
 import readline from "node:readline";
+import command from "../command.js";
 
 
 const ENDPOINT = "https://simple-ai.io/api/generate_sse";

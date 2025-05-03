@@ -1,5 +1,5 @@
-import { listOllamaModels, pingOllamaAPI } from "utils/ollamaUtils";
-import { initializeSessionMemory } from "utils/sessionUtils";
+import { listOllamaModels, pingOllamaAPI } from "../utils/ollamaUtils.js";
+import { initializeSessionMemory } from "../utils/sessionUtils.js";
 
 export default async function model(args) {
   const command = args[0];
@@ -257,8 +257,8 @@ export default async function model(args) {
         return "Model `" + name + "` is not being used.";
       }
 
-      sessionStorage.setItem("model", global.model);  // reset model
-      sessionStorage.setItem("baseUrl", global.baseUrl);  // reset base url
+      sessionStorage.setItem("model", globalThis.model);  // reset model
+      sessionStorage.setItem("baseUrl", globalThis.baseUrl);  // reset base url
 
       return "Model unused, and reset to default model.";
     }
@@ -271,8 +271,8 @@ export default async function model(args) {
       return "Model is already empty.";
     }
 
-    sessionStorage.setItem("model", global.model);  // reset model
-    sessionStorage.setItem("baseUrl", global.baseUrl);  // reset base url
+    sessionStorage.setItem("model", globalThis.model);  // reset model
+    sessionStorage.setItem("baseUrl", globalThis.baseUrl);  // reset base url
 
     // Reset session to forget previous memory
     initializeSessionMemory();

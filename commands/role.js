@@ -1,4 +1,4 @@
-import { initializeMemory } from "utils/sessionUtils";
+import { initializeMemory } from "../utils/sessionUtils.js";
 
 export default async function role(args) {
   const command = args[0];

@@ -1,6 +1,5 @@
-// logger.js
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 // Read the log.config file and parse the CSV content into an array of IPs
 const readFilterList = async () => {
@@ -20,8 +19,8 @@ const readFilterList = async () => {
     const lines = content.split(/\r?\n/); // Split lines for both UNIX and Windows line endings
     const filteredIPs = lines.map(line => {
       const [key, value] = line.split(',');
-      return value.trim();
-    });
+      return value ? value.trim() : '';
+    }).filter(Boolean);
     return filteredIPs;
   } catch (error) {
     console.error('Error reading filter list:', error);
@@ -55,4 +54,4 @@ const log = async (req) => {
   await appendFileAsync(logFilePath, data);
 };
 
-module.exports = log;
+export default log;

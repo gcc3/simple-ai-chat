@@ -1,4 +1,5 @@
-import { createSlice } from '@reduxjs/toolkit';
+import pkg from '@reduxjs/toolkit';
+const { createSlice } = pkg;
 
 const initialState = "off";
 

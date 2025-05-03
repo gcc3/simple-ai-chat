@@ -1,5 +1,5 @@
-import { setSession, setTime } from "utils/sessionUtils";
-import { getSettings } from "utils/settingsUtils";
+import { setSession, setTime } from "../utils/sessionUtils.js";
+import { getSettings } from "../utils/settingsUtils.js";
 
 export default function set(args) {
   if (args.length != 2) {

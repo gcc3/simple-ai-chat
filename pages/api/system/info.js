@@ -1,5 +1,5 @@
 import { getSystemConfigurations } from "utils/sysUtils";
-import log from "log";
+import log from "../../../log.js";
 
 export default async function (req, res) {
   try {

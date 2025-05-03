@@ -1,7 +1,7 @@
 import store from '../store.js';
 import { toggleFullscreen } from '../states/fullscreenSlice.js';
 import { toggleEnterChange } from '../states/enterSlice.js';
-import { updateUserSetting } from 'utils/userUtils.js';
+import { updateUserSetting } from '../utils/userUtils.js';
 
 export default function fullscreen(args) {
   const usage = "Usage: :split" + "\n";

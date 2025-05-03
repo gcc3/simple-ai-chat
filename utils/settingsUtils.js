@@ -1,4 +1,4 @@
-import { generatePassword } from "utils/userUtils.js";
+import { generatePassword } from "./userUtils.js";
 
 // Setting key, default value
 export function getSettings(format = "json", theme = "light", fullscreen = "off") {
