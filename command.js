@@ -35,13 +35,6 @@ import unuse from "./commands/unuse.js";
 import model from "./commands/model.js";
 
 
-// localStorage
-// import { createRequire } from "module";
-// const require = createRequire(import.meta.url);
-// const { LocalStorage } = require("node-localstorage");
-// globalThis.localStorage = new LocalStorage('./cli/scratch');
-
-
 export default function commands(input, files) {
   let command = input;
   let args = [];
