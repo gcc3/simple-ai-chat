@@ -108,13 +108,13 @@ program
       if (!line) continue;
 
       if (line.toLowerCase() === ":exit") break;
-      // if (line.startsWith(":")) {
-      //   const commandResult = command(line, []);
-      //   if (commandResult) {
-      //     console.log(commandResult);
-      //   }
-      //   continue;
-      // }
+      if (line.startsWith(":")) {
+        const commandResult = command(line, []);
+        if (commandResult) {
+          console.log(commandResult);
+        }
+        continue;
+      }
 
       try {
         // Stream output
