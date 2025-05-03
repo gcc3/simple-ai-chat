@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 
-const { program } = require("commander");
-const readline = require("readline");
-const fetch = global.fetch;
+import { program } from "commander";
+import readline from "node:readline";
+
 
 const ENDPOINT = "https://simple-ai.io/api/generate_sse";
 const MODEL = "gpt-4.1";
@@ -44,14 +44,14 @@ async function callGenerate(prompt, model) {
   while (!done) {
     const { value, done: streamDone } = await reader.read();
     if (streamDone) break;
-    
+
     buffer += decoder.decode(value, { stream: true });
     const parts = buffer.split("\n\n");
     buffer = parts.pop();
 
     for (const part of parts) {
       if (!part.startsWith("data:")) continue;
-      
+
       const dataStr = part.replace(/^data:\s*/, "");
 
       if (dataStr.startsWith("###STATUS###")) {
@@ -105,7 +105,16 @@ program
     while (true) {
       const line = (await ask(">>> ")).trim();
       if (!line) continue;
+
       if (line.toLowerCase() === ":exit") break;
+      // if (line.startsWith(":")) {
+      //   const commandResult = command(line, []);
+      //   if (commandResult) {
+      //     console.log(commandResult);
+      //   }
+      //   continue;
+      // }
+
       try {
         // Stream output
         await callGenerate(line, opts.model);
