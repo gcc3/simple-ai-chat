@@ -30,7 +30,7 @@ export default async function store(args, files) {
     let results = [];
     for (let i = 0; i < storeNames.length; i++) {
       try {
-        // Get a signle store info
+        // Get a single store info
         const response = await fetch("/api/store/" + storeNames[i], {
           method: "GET",
           headers: {
