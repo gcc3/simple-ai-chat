@@ -7,8 +7,6 @@
   "Expire at": "有効期限",
   "Subscription plans": "サブスクリプションプラン",
   "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`：一般的なユーザーに提供されます。無料です。（使用したトークン料金は支払う必要があります。）",
-  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`：プロフェッショナルな使用に高度な機能とサポートを提供します。",
-  "`super_user`: provide accessibility for all latest features and support.": "`super_user`：最新機能へのアクセスとサポートを提供します。",
   "Extend, Upgrade or Downgrade": "延長、アップグレード、またはダウングレード",
   "Select plan": "プランを選択",
   "Cancel": "取消し",
@@ -38,5 +36,6 @@
   "Free": "無料",
   "GPT Vision": "GPTビジョン",
   "GPT Text Generation": "GPTテキスト生成",
-  "Loading...": "読み込み中..."
+  "Loading...": "読み込み中...",
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: 高度な機能とプロフェッショナル用途向けのサポートを提供します。"
 }

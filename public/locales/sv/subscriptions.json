@@ -7,8 +7,6 @@
   "Expire at": "Bitiş Tarihi",
   "Subscription plans": "Abonelik Planları",
   "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "1. `user`: genel bir kullanıcı sağlar. Ücretsizdir. (Kullandığınız token ücretini ödemeye devam etmeniz gerekecek.)",
-  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: profesyonel kullanımlar için gelişmiş özellikler ve destek sağlar.",
-  "`super_user`: provide accessibility for all latest features and support.": "`super_user`: tüm en son özelliklere ve desteğe erişim sağlar.",
   "Extend, Upgrade or Downgrade": "Uzat, Yükselt veya Düşür",
   "Select plan": "Plan Seç",
   "Cancel": "İptal",
@@ -38,5 +36,6 @@
   "Free": "Gratis",
   "GPT Vision": "GPT Vision",
   "GPT Text Generation": "GPT-textgenerering",
-  "Loading...": "Laddar..."
+  "Loading...": "Laddar...",
+  "`plus_user`: provides advanced features and support for professional uses.": "plus_user: tillhandahåller avancerade funktioner och stöd för professionellt bruk."
 }

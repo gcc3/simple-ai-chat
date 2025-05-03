@@ -7,8 +7,6 @@
   "Expire at": "Истекает",
   "Subscription plans": "Планы подписки",
   "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "1. `user`: предоставляет общий доступ пользователя. Это бесплатно. (Вам все равно нужно будет заплатить комиссию за использованный токен.)",
-  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: предоставляет расширенные функции и поддержку для профессионального использования.",
-  "`super_user`: provide accessibility for all latest features and support.": "`super_user`: обеспечивает доступ ко всем последним функциям и поддержке.",
   "Extend, Upgrade or Downgrade": "Продлить, Обновить или Понизить",
   "Select plan": "Выбрать план",
   "Cancel": "Отменить",
@@ -38,5 +36,6 @@
   "Free": "Бесплатно",
   "GPT Vision": "GPT Видение",
   "GPT Text Generation": "Генерация текста GPT",
-  "Loading...": "Загрузка..."
+  "Loading...": "Загрузка...",
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: предоставляет расширенные функции и поддержку для профессионального использования."
 }

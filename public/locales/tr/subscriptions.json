@@ -7,8 +7,6 @@
   "Expire at": "Expire le",
   "Subscription plans": "Plans d'abonnement",
   "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`: fournit un utilisateur général. C'est gratuit. (Vous devrez toujours payer les frais de jeton utilisés.)",
-  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: fournit des fonctionnalités avancées et un support pour des usages professionnels.",
-  "`super_user`: provide accessibility for all latest features and support.": "`super_user`: offre une accessibilité à toutes les dernières fonctionnalités et support.",
   "Extend, Upgrade or Downgrade": "Étendre, Améliorer ou Réduire",
   "Select plan": "Sélectionnez le plan",
   "Cancel": "Annuler",
@@ -38,5 +36,6 @@
   "Free": "Ücretsiz",
   "GPT Vision": "GPT Vizyonu",
   "GPT Text Generation": "GPT Metin Üretimi",
-  "Loading...": "Yükleniyor..."
+  "Loading...": "Yükleniyor...",
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: profesyonel kullanımlar için gelişmiş özellikler ve destek sunar."
 }

@@ -124,8 +124,7 @@ function Subscription() {
         <div>- { t("Subscription plans") }</div>
         <div className="mt-1">
           1. { t("`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)") }<br></br>
-          2. { t("`pro_user`: provides advanced features and support for professional uses.") }<br></br>
-          3. { t("`super_user`: provide accessibility for all latest features and support.") }<br></br>
+          2. { t("`plus_user`: provides advanced features and support for professional uses.") }<br></br>
         </div>
       </div>
       {subscriptions && <SubscriptionComparisonTable subscriptions={subscriptions} />}
@@ -137,8 +136,7 @@ function Subscription() {
             <div className="flex flex-wrap items-center mt-2">
               <div>{ t("Select plan") }:</div>
               <button className="ml-2" onClick={handleSetTargetRole("user")}>`user`</button>
-              <button className="ml-2" onClick={handleSetTargetRole("pro_user")}>`pro_user`</button>
-              <button className="ml-2" onClick={handleSetTargetRole("super_user")}>`super_user`</button>
+              <button className="ml-2" onClick={handleSetTargetRole("plus_user")}>`plus_user`</button>
               {targetRole && <button className="ml-2 w-20" onClick={handleSetTargetRole(null)}>{ t("Cancel") }</button>}
             </div>
           </div>}

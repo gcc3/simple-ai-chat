@@ -1,5 +1,4 @@
 import React from "react";
-import { getRoleFequencyLimit } from "utils/usageUtils";
 import { useTranslation, Trans } from "react-i18next";
 
 // Get amount
@@ -15,15 +14,15 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
   const { t } = useTranslation("subscriptions");
 
   const comparison = [
-    { name: t("GPT Text Generation"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
-    { name: t("GPT Vision"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
-    { name: t("File Input"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
-    { name: t("Roles"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
-    { name: t("Data Stores"), user: t("Yes"), pro_user: t("Yes +support"), super_user: t("Yes +support") },
-    { name: t("Nodes (Node AI)"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes +support") },
-    { name: t("Enhanced Knowledge & Mathematics (WolframAlpha)"), user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
-    { name: "API", user: t("Yes"), pro_user: t("Yes"), super_user: t("Yes") },
-    { name: t("Pricing"), user: getPriceString(subscriptions, "user", t), pro_user: getPriceString(subscriptions, "pro_user", t), super_user: getPriceString(subscriptions, "super_user", t)},
+    { name: t("GPT Text Generation"), user: t("Yes"), plus_user: t("Yes") },
+    { name: t("GPT Vision"), user: t("Yes"), plus_user: t("Yes") },
+    { name: t("File Input"), user: t("Yes"), plus_user: t("Yes") },
+    { name: t("Roles"), user: t("Yes"), plus_user: t("Yes +support") },
+    { name: t("Data Stores"), user: t("Yes"), plus_user: t("Yes +support") },
+    { name: t("Nodes (Node AI)"), user: t("Yes"), plus_user: t("Yes +support") },
+    { name: t("Enhanced Knowledge & Mathematics (WolframAlpha)"), user: t("Yes"), plus_user: t("Yes") },
+    { name: "API", user: t("Yes"), plus_user: t("Yes") },
+    { name: t("Pricing"), user: getPriceString(subscriptions, "user", t), plus_user: getPriceString(subscriptions, "plus_user", t) },
   ];
 
   return (
@@ -36,12 +35,11 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
           <thead>
             <tr>
               <th rowSpan="2">{ t("Features") }</th>
-              <th colSpan="3">{ t("Subscriptions") }</th>
+              <th colSpan="2">{ t("Subscriptions") }</th>
             </tr>
             <tr>
               <th>`user`</th>
-              <th>`pro_user`</th>
-              <th>`super_user`</th>
+              <th>`plus_user`</th>
             </tr>
           </thead>
           <tbody>
@@ -49,8 +47,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
               <tr key={index}>
                 <td>{item.name}</td>
                 <td>{item.user}</td>
-                <td>{item.pro_user}</td>
-                <td>{item.super_user}</td>
+                <td>{item.plus_user}</td>
               </tr>
             ))}
           </tbody>

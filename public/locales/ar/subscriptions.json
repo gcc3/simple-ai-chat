@@ -7,8 +7,6 @@
   "Expire at": "ينتهي في",
   "Subscription plans": "خطط الاشتراك",
   "`user`: provides a general user. It's free. (You'll still need to pay the token fee you used.)": "`user`: يوفر للمستخدم العام. إنه مجاني. (ستظل بحاجة إلى دفع رسوم الرمز التي استخدمتها.)",
-  "`pro_user`: provides advanced features and support for professional uses.": "`pro_user`: يوفر ميزات متقدمة ودعم للاستخدامات المهنية.",
-  "`super_user`: provide accessibility for all latest features and support.": "`super_user`: يوفر إمكانية الوصول لجميع أحدث الميزات والدعم.",
   "Extend, Upgrade or Downgrade": "تمديد، ترقية أو تخفيض",
   "Select plan": "اختر الخطة",
   "Cancel": "إلغاء",
@@ -38,5 +36,6 @@
   "Free": "مجاني",
   "GPT Vision": "رؤية GPT",
   "GPT Text Generation": "توليد نص GPT",
-  "Loading...": "جار التحميل..."
+  "Loading...": "جار التحميل...",
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: يوفر ميزات متقدمة ودعمًا للاستخدامات المهنية."
 }

@@ -8,15 +8,10 @@ export default async function(req, res) {
         price: getRolePrice("user"),
         usage_limit: getRoleFequencyLimit("user"),
       },
-      pro_user: {
-        name: "Pro User",
-        price: getRolePrice("pro_user"),
-        usage_limit: getRoleFequencyLimit("pro_user"),
-      },
-      super_user: {
-        name: "Super User",
-        price : getRolePrice("super_user"),
-        usage_limit: getRoleFequencyLimit("super_user"),
+      plus_user: {
+        name: "Plus User",
+        price: getRolePrice("plus_user"),
+        usage_limit: getRoleFequencyLimit("plus_user"),
       }
     });
   } catch (error) {
