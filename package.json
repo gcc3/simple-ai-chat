@@ -1,10 +1,9 @@
 {
   "name": "simple-ai-chat",
   "description": "simple-ai.io",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "author": "Heyang Liu",
-  "license": "MIT",
-  "private": true,
+  "license": "Simple AI License",
   "type": "module",
   "scripts": {
     "build": "next build",

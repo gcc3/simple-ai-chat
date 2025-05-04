@@ -14,62 +14,51 @@ You can fork this code and deploy it on your machine for non-commercial use. (Fo
 For bugs or suggestions, please report to the repository's GitHub Issues.  
 
 
-Dependencies
-------------
+CLI Support
+-----------
 
-OpenAI API https://platform.openai.com/docs/api-reference  
-openai-node https://github.com/openai/openai-node  
-React https://reactjs.org/  
-Next.js https://nextjs.org/  
-tailwind https://tailwindcss.com/docs/  
+Install:  
+`npm i simple-ai-chat -g`  
 
-- LLM Providers  
-OpenAI https://platform.openai.com/docs/models  
-Anthropic https://www.anthropic.com/  
-Google AI https://ai.google.dev/gemini-api/docs  
-xAI https://x.ai/  
-
-- Local AI Engine  
-Ollama https://ollama.com/  
-
-- Data Sources  
-WolframAlpha APIs https://products.wolframalpha.com/api  
+Start  
+`spchat` 
 
 
-Setup
------
+Installlation
+-------------
 
 0. Prerequisites  
   - `node` and `npm` (recommend to use [`nvm`](https://github.com/nvm-sh/nvm) to install)  
   - OpenAI API key (get from https://platform.openai.com/account/api-keys)    
 
-  * Optional:  
-    - AWS S3 Bucket, secret and key (if you want to use file upload feature)  
-    - PayPal account (if you want to use user's payment feature)  
-    - Hunter API key (if you want to use email gate)  
-
 1. Install the requirements  
     `git clone` the repository.  
     In directory run the following commands:  
-   `$ npm install`  
+  `$ npm install`  
 
 2. Create `.env` and setup  
-   Create `.env` from `.env.example`  
-   For setup refer to the `.env` section below.
+  Create `.env` from `.env.example`  
+  For setup refer to the `.env` section below.
 
 3. Build and run the app.  
-   `$ npm run build`  
-   `$ npm run dev` or `$npm start`
+  `$ npm run build`  
+  `$ npm run dev` or `$npm start`
 
-  * Files automatically created:
-    - `db.sqlite`
-    - `role.csv` created from [`role.csv.example`](https://github.com/f/awesome-chatgpt-prompts)  
-    - `log.config` created from `log.config.example`
+    * Files automatically created:
+      - `db.sqlite`
+      - `role.csv` created from [`role.csv.example`](https://github.com/f/awesome-chatgpt-prompts)  
+      - `log.config` created from `log.config.example`
+
+* Optional:  
+  - AWS S3 Bucket, secret and key (if you want to use file upload feature)  
+  - PayPal account (if you want to use user's payment feature)  
+  - Hunter API key (if you want to use email gate)  
 
 
 AI Link (node)
 --------------
 
+(This feature is currently in development and may not be fully functional.)
 Simple AI is able to link to any AI or data source in an OpenAI compatible format.  
 
 * Request example:  
@@ -114,6 +103,28 @@ Simple AI is able to link to any AI or data source in an OpenAI compatible forma
 - Repository providing the AI link:  
   - [Simple AI Node](https://github.com/gcc3/simple-ai-node)  
   - [Simple AI Hub](https://github.com/gcc3/simple-ai-hub)  
+
+
+Dependencies
+------------
+
+OpenAI API https://platform.openai.com/docs/api-reference  
+openai-node https://github.com/openai/openai-node  
+React https://reactjs.org/  
+Next.js https://nextjs.org/  
+tailwind https://tailwindcss.com/docs/  
+
+- LLM Providers  
+OpenAI https://platform.openai.com/docs/models  
+Anthropic https://www.anthropic.com/  
+Google AI https://ai.google.dev/gemini-api/docs  
+xAI https://x.ai/  
+
+- Local AI Engine  
+Ollama https://ollama.com/  
+
+- Data Sources  
+WolframAlpha APIs https://products.wolframalpha.com/api  
 
 
 .env
