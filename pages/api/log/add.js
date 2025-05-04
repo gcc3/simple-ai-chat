@@ -14,22 +14,12 @@ export default async function (req, res) {
 
     // Time
     let time = Number(time_);
-
-    // Only login user allow to add
-    // Authenticate user
-    const authResult = authenticate(req);
-    if (!authResult.success) {
-      res.status(401).json({
-        success: false,
-        error: authResult.error,
-      });
-      return;
-    }
     
     // Get user
     const user = authResult.user;
 
     // Add log
+    // TODO, should only allow login user add log, else will be injected
     await logadd(user, session, time, model, 0, input, 0, output, JSON.stringify(images), ip, browser);
 
     // Output the result

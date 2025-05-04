@@ -292,7 +292,7 @@ async function generate_msg(input, images=[], files=[]) {
         const content = chunk.choices[0].delta.content;
         if (content) {
           output += content;
-          printOutput(content, false, true);
+          printOutput(content, true);
         }
 
         // 2. handle tool calls
