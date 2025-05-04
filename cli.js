@@ -20,9 +20,8 @@ globalThis.localStorage = new LocalStorage('./.scratch');
 globalThis.sessionStorage = require("node-sessionstorage");
 
 
-globalThis.serverBaseUrl = "https://simple-ai.io";
-
 // Monkey-patch the fetch function to use the BASE_URL and handle cookies
+globalThis.serverBaseUrl = "https://simple-ai.io";
 const cookieJar = new tough.CookieJar();  // Handle cookies
 const fetch_ = globalThis.fetch;  // Save the original fetch function
 const fetch_c = fetchCookie(fetch_, cookieJar);
@@ -35,6 +34,7 @@ globalThis.fetch = async (url, options) => {
 
 // Monkey-patch the console.log to stop print out in the command line
 console.log = function() {};
+
 
 async function generate_sse(input) {
   // Config (input)
