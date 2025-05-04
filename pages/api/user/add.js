@@ -130,17 +130,17 @@ export default async function (req, res) {
     const to = email;
     const subject = "Welcome to simple-ai.io";
     const body
-    = "Dear Mr./Ms. " + username + "," + "<br>"
+    = "Hi, " + username + "," + "<br>"
     + "<br>"
     + "Welcome to Simple AI!" + " " + "Your account has been created successfully." + (!password ? " " + "Initial password is " + generatedPassword + ", you can change it after login." : "") + "<br>"
     + "<br>"
-    + `Please click the following link to verify your email before using our services.` + "<br>" 
+    + `Use the following link to verify your email before using our services.` + "<br>" 
     + `<a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>` + "<br>"
     + "<br>"
-    + "Tips:" + "<br>"
-    + "1. You can log in with command `:login [username] [password]` (no brackets needed), e.g `:login john ********`" + "<br>"
+    + "Quick Start:" + "<br>"
+    + "1. You can log in with command `:login [username] [password]` (no brackets needed), e.g `:login jack ********`" + "<br>"
     + "2. To check the Documentation, Usage, or change Settings, click the little dot at the screen corner." + "<br>"
-    + "3. Use `:help` to see all available commands." + "<br>"
+    + "3. Use TAB key to auto complete the placeholder text." + "<br>"
     + "<br>"
     + "Thank you, enjoy." + "<br>"
     + "<br>"
@@ -195,7 +195,7 @@ export default async function (req, res) {
     let message = "";
     let passwordGuide = !password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "";
     if (userResume) {
-      message = "Welcome back! we've resumed your subscription status." + passwordGuide;
+      message = "Welcome back! We've resumed your subscription status." + passwordGuide;
     } else {
       // No email provided, send password to console
       message = "User \"" + username + "\" is created." + passwordGuide + loginComamndGuide;
