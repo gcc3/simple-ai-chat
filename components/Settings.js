@@ -15,8 +15,17 @@ function Settings() {
 
   useEffect(() => {
     const loadBasicSettings = async () => {
-      const languagesJson = await (await fetch("/api/system/languages")).json();
-      setLanguages(languagesJson);
+      const response = await fetch("/api/system/languages");
+      
+      const data = await response.json();
+      if (response.status !== 200) {
+        console.log(data.error);
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      if (data.success) {
+        setLanguages(data.languages);
+      }
     }
 
     const loadUserSettings = async () => {
