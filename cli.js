@@ -387,7 +387,7 @@ program
       const responseText = await pingResponse.text();
       if (responseText !== "Simple AI is alive.") {
       console.log("Ping response: " + responseText);
-      printOutput("\`" + globalThis.serverBaseUrl + "` is not response, please check the server status...");
+      printOutput("The Simple AI server (\`" + globalThis.serverBaseUrl + "`) is currently unavailable. You can still connect to your local server using the `--base-url` option.");
       process.exit(1);
       }
     } catch (error) {
