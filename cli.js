@@ -21,7 +21,6 @@ globalThis.sessionStorage = require("node-sessionstorage");
 
 
 const BASE_URL = "https://simple-ai.io";
-const MODEL = "gpt-4.1";
 
 // Monkey-patch the fetch function to use the BASE_URL and handle cookies
 const cookieJar = new tough.CookieJar();  // Handle cookies
@@ -36,9 +35,6 @@ globalThis.fetch = async (url, options) => {
 
 // Monkey-patch the console.log to stop print out in the command line
 console.log = function() {};
-
-// Global variables
-globalThis.model = MODEL;
 
 async function generate_sse(input) {
   // Config (input)
@@ -164,7 +160,7 @@ program
   .description("Simple AI Chat CLI")
   .version("0.1.0")
   .argument("[prompt...]", "prompt text")
-  .option("-m, --model <name>", "model name", MODEL)
+  .option("-m, --model <name>", "model name")
   .option("-v, --verbose", "enable verbose logging")
   .action(async (promptArr, opts) => {
     // Options
