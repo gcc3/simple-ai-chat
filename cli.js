@@ -37,7 +37,7 @@ console.log = function() {};
 // Global variables
 globalThis.model = MODEL;
 
-async function generate_sse(prompt, model) {
+async function generate_sse(prompt) {
   // Build query parameters for SSE GET request
   const params = new URLSearchParams({
     user_input: prompt,
@@ -45,7 +45,7 @@ async function generate_sse(prompt, model) {
     files: "",
     time: Date.now().toString(),
     session: sessionStorage.getItem("session"),
-    model,
+    model: globalThis.model,
     mem_length: "7",
     functions: "",
     role: "",
@@ -219,7 +219,7 @@ program
 
       try {
         // Stream output
-        await generate_sse(line, opts.model);
+        await generate_sse(line);
       } catch (e) {
         console.error("Error:", e.message + "\n");
       }
