@@ -1865,6 +1865,7 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
+          user: localStorage.getItem("user") || "",
           input,
           output,
           model: model,

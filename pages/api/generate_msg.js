@@ -93,7 +93,9 @@ export default async function(req, res) {
     if (!uacResult.success) {
       res.status(400).json({
         success: false,
-        error: uacResult.error,
+        error: {
+          message: uacResult.error,
+        }
       });
       return;
     }

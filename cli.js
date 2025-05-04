@@ -243,6 +243,7 @@ async function generate_msg(input, images=[], files=[]) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+        user: localStorage.getItem("user") || "",
         input,
         output,
         model: model,
@@ -278,6 +279,9 @@ async function generate_msg(input, images=[], files=[]) {
 
     // Add log
     logadd(input, output);
+
+    // Print output
+    printOutput(output.trim() + "\n");
   }
 
   // Stream mode
@@ -306,7 +310,10 @@ async function generate_msg(input, images=[], files=[]) {
     // Resolve the Promise when the stream ends
     stream.on('end', async () => {
       // Add log
-      logadd(input, output);
+      await logadd(input, output);
+
+      // Add new line
+      printOutput("\n");
     });
 
     // Reject the Promise on error
@@ -463,7 +470,7 @@ program
       try {
         // Generation mode switch
         if (globalThis.baseUrl.includes("localhost") 
-          || globalThis.baseUrl.includes("127.0.0.1")) {
+         || globalThis.baseUrl.includes("127.0.0.1")) {
           // Local model
           console.log("Start. (Local)");
           await generate_msg(input);
