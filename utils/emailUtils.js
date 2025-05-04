@@ -15,6 +15,7 @@ export async function evalEmailAddress(email) {
   const safeEmailDomains = [
     "gmail.com",
     "yahoo.com",
+    "yahoo.co.jp",
     "outlook.com",
     "hotmail.com",
     "aol.com",
