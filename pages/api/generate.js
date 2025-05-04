@@ -6,7 +6,7 @@ import { authenticate } from "utils/authUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { getUacResult } from "utils/uacUtils";
 import { countToken } from "utils/tokenUtils";
-import { getSystemConfigurations } from "utils/sysUtils";
+import { getSystemConfigurations } from "utils/systemUtils";
 import { ensureSession } from "utils/logUtils";
 import { getUser, addUserUsage } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
