@@ -1448,8 +1448,8 @@ export default function Home() {
     }
   }
 
-  // SSE
-  function generate_sse(input, images=[], files=[]) {
+  // Generate SSE
+  async function generate_sse(input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -1457,7 +1457,7 @@ export default function Home() {
     // Add a waiting text
     if (getOutput() !== querying) printOutput(waiting);
 
-    // preapre speech
+    // prepare speech
     var textSpoken = "";
 
     // Input
