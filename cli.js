@@ -3,6 +3,8 @@
 import { program } from "commander";
 import readline from "node:readline";
 import command from "./command.js";
+import tough from 'tough-cookie';
+import fetchCookie from 'fetch-cookie';
 
 
 // Simulate a localStorage and sessionStorage in Node.js
@@ -17,12 +19,14 @@ const BASE_URL = "https://simple-ai.io";
 const MODEL = "gpt-4.1";
 
 // Monkey-patch the fetch function to use the BASE_URL
+const cookieJar = new tough.CookieJar();  // Handle cookies
 const fetch_ = globalThis.fetch;  // Save the original fetch function
+const fetch_c = fetchCookie(fetch_, cookieJar);
 globalThis.fetch = async (url, options) => {
   if (url.startsWith("/")) {
     url = BASE_URL + url;
   }
-  return fetch_(url, options);
+  return fetch_c(url, options);
 };
 
 async function generate_sse(prompt, model) {
