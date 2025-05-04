@@ -12,6 +12,8 @@ import { loadConfig } from "./utils/configUtils.js";
 import { setTime } from "./utils/sessionUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 
 // Disable process warnings (node)
@@ -343,10 +345,22 @@ function printOutput(output, append=false) {
   }
 }
 
+// Get version from package.json
+function getVersion() {
+  try {
+    const packageJsonPath = join(process.cwd(), "package.json");
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
+    return packageJson.version || "";
+  } catch (error) {
+    console.error("Error reading package.json:", error.message);
+    return "";
+  }
+}
+
 program
   .name("simple-ai-chat")
   .description("Simple AI Chat CLI")
-  .version("0.1.0")
+  .version(getVersion())
   .argument("[prompt...]", "prompt text")
   .option("-m, --model <name>", "model name")
   .option("-v, --verbose", "enable verbose logging")
@@ -394,7 +408,7 @@ program
       output: process.stdout,
     });
 
-    printOutput("simple-ai-chat (cli) v0.1.0\n");
+    printOutput("simple-ai-chat (cli) " + program.version());
     
     try {
       // Ping the server
