@@ -1925,49 +1925,54 @@ export default function Home() {
       // Convert the response stream into a readable stream
       const stream = Readable.from(chatCompletion);
 
-      // Handle the data event to process each JSON line
-      stream.on('data', (chunk) => {
-        try {
-          // 1. handle message output
-          const content = chunk.choices[0].delta.content;
-          if (content) {
-            output += content;
-            printOutput(content, false, true);
+      await new Promise((resolve, reject) => {
+        // Handle the data event to process each JSON line
+        stream.on('data', (chunk) => {
+          try {
+            // 1. handle message output
+            const content = chunk.choices[0].delta.content;
+            if (content) {
+              output += content;
+              printOutput(content, false, true);
+            }
+            // Set model
+            const model = chunk.model;
+            !minimalist && setInfo((
+              <div>
+                model: {model}<br></br>
+              </div>
+            ));
+
+            // 2. handle tool calls
+            // Not support yet.
+          } catch (error) {
+            console.error('Error parsing JSON line:', error);
+            stream.destroy(error); // Destroy the stream on error
+            reject(error);
           }
-          // Set model
-          const model = chunk.model;
-          !minimalist && setInfo((
-            <div>
-              model: {model}<br></br>
-            </div>
-          ));
+        });
+    
+        // Resolve the Promise when the stream ends
+        stream.on('end', async () => {
+          // Formatter
+          markdownFormatter(elOutputRef.current);
 
-          // 2. handle tool calls
-          // Not support yet.
-        } catch (error) {
-          console.error('Error parsing JSON line:', error);
-          stream.destroy(error); // Destroy the stream on error
-        }
-      });
-  
-      // Resolve the Promise when the stream ends
-      stream.on('end', async () => {
-        // Formatter
-        markdownFormatter(elOutputRef.current);
+          // Trigger highlight.js
+          hljs.highlightAll();
 
-        // Trigger highlight.js
-        hljs.highlightAll();
+          // Add log
+          logadd(input, output);
 
-        // Add log
-        logadd(input, output);
-
-        // Reset state
-        globalThis.STATE = STATES.IDLE;
-      });
-  
-      // Reject the Promise on error
-      stream.on('error', (error) => {
-        printOutput(error);
+          // Reset state
+          globalThis.STATE = STATES.IDLE;
+          resolve();
+        });
+    
+        // Reject the Promise on error
+        stream.on('error', (error) => {
+          printOutput(error);
+          reject(error);
+        });
       });
     }
   }

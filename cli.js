@@ -278,7 +278,7 @@ async function generate_msg(input, images=[], files=[]) {
     }
 
     // Add log
-    logadd(input, output);
+    await logadd(input, output);
 
     // Print output
     printOutput(output.trim() + "\n");
@@ -289,36 +289,41 @@ async function generate_msg(input, images=[], files=[]) {
     // Convert the response stream into a readable stream
     const stream = Readable.from(chatCompletion);
 
-    // Handle the data event to process each JSON line
-    stream.on('data', (chunk) => {
-      try {
-        // 1. handle message output
-        const content = chunk.choices[0].delta.content;
-        if (content) {
-          output += content;
-          printOutput(content, true);
+    await new Promise((resolve, reject) => {
+      // Handle the data event to process each JSON line
+      stream.on('data', (chunk) => {
+        try {
+          // 1. handle message output
+          const content = chunk.choices[0].delta.content;
+          if (content) {
+            output += content;
+            printOutput(content, true);
+          }
+
+          // 2. handle tool calls
+          // Not support yet.
+        } catch (error) {
+          console.error('Error parsing JSON line:', error);
+          stream.destroy(error); // Destroy the stream on error
+          reject(error);
         }
+      });
 
-        // 2. handle tool calls
-        // Not support yet.
-      } catch (error) {
-        console.error('Error parsing JSON line:', error);
-        stream.destroy(error); // Destroy the stream on error
-      }
-    });
+      // Resolve the Promise when the stream ends
+      stream.on('end', async () => {
+        // Add log
+        await logadd(input, output);
 
-    // Resolve the Promise when the stream ends
-    stream.on('end', async () => {
-      // Add log
-      await logadd(input, output);
+        // Add new line
+        printOutput("\n");
+        resolve();
+      });
 
-      // Add new line
-      printOutput("\n");
-    });
-
-    // Reject the Promise on error
-    stream.on('error', (error) => {
-      printOutput(error);
+      // Reject the Promise on error
+      stream.on('error', (error) => {
+        printOutput(error);
+        reject(error);
+      });
     });
   }
 }
