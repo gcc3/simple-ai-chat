@@ -5,11 +5,12 @@ import readline from "node:readline";
 import command from "./command.js";
 
 
-// Simulate a localStorage
+// Simulate a localStorage and sessionStorage in Node.js
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const { LocalStorage } = require("node-localstorage");
 globalThis.localStorage = new LocalStorage('./scratch');
+globalThis.sessionStorage = require("node-sessionstorage");
 
 
 const ENDPOINT = "https://simple-ai.io/api/generate_sse";
