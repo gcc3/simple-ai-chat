@@ -14,14 +14,20 @@ You can fork this code and deploy it on your machine for non-commercial use. (Fo
 For bugs or suggestions, please report to the repository's [GitHub Issues page](https://github.com/gcc3/simple-ai-chat/issues).  
 
 
-CLI Support
------------
+How To Use
+----------
+
+1. The CLI
 
 Install:  
 `npm i simple-ai-chat -g`  
 
 Start:  
 `spchat` 
+
+2. The Web App
+
+`https://simple-ai.io`
 
 
 Installation
