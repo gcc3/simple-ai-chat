@@ -41,6 +41,8 @@ globalThis.fetch = async (url, options) => {
 
 // Monkey-patch the console.log to stop print out in the command line
 console.log = function() {};
+console.error = function() {};
+console.warn = function() {};
 
 
 // M1. Generate SSE
@@ -356,7 +358,15 @@ program
       console.log = (...args) => {
         printOutput("DEBUG: " + args.join(' ')); 
       };
-    }
+
+      console.error = (...args) => {
+        printOutput("ERROR: " + args.join(' '));
+      }
+
+      console.warn = (...args) => {
+        printOutput("WARNING: " + args.join(' '));
+      }
+    } 
 
     // Set the base URL
     if (opts.baseUrl) {

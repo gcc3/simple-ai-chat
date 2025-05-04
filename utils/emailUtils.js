@@ -11,16 +11,50 @@ export function verifiyEmailAddress(email) {
 }
 
 export async function evalEmailAddress(email) {
-  if (!process.env.HUNTER_API_KEY) {
-    console.warn("Hunter API key not found.");
+  // Safe domain no check
+  const safeEmailDomains = [
+    "gmail.com",
+    "yahoo.com",
+    "outlook.com",
+    "hotmail.com",
+    "aol.com",
+    "icloud.com",
+    "mail.com",
+    "msn.com",
+    "live.com",
+    "ymail.com",
+    "zoho.com",
+    "protonmail.com",
+    "gmx.com",
+    "me.com",
+    "comcast.net",
+    "sbcglobal.net",
+    "att.net",
+    "verizon.net",
+    "bellsouth.net",
+    "rocketmail.com",
+    "yandex.com",
+    "hushmail.com",
+    "aim.com",
+    "rediffmail.com",
+    "mail.ru",
+    "fastmail.com",
+    "lycos.com",
+    "qq.com",
+    "163.com",
+    "126.com",
+    "sina.com",
+    "inbox.com",
+    "blueyonder.co.uk"
+  ];
+  if (safeEmailDomains.some(domain => email.endsWith(domain))) {
     return {
       success: true,
     };
   }
 
-  // Allow some email domains
-  const allowDomainsRegex = /@qq\.com$/;
-  if (allowDomainsRegex.test(email)) {
+  if (!process.env.HUNTER_API_KEY) {
+    console.warn("Hunter API key not found.");
     return {
       success: true,
     };
@@ -36,7 +70,7 @@ export async function evalEmailAddress(email) {
       throw data.errors || new Error(`Request failed with status ${response.status}`);
     }
 
-    if (data.data.result !== "deliverable" || data.data.score < 80) {
+    if (data.data.result !== "deliverable" || data.data.score < 50) {
       return {
         success: false,
         error: "The email address provided does not meet our verification standards. Please use a different email address to proceed with the registration.",
