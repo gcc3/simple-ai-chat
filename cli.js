@@ -47,16 +47,16 @@ async function generate_sse(prompt) {
     session: sessionStorage.getItem("session"),
     model: globalThis.model,
     mem_length: "7",
-    functions: "",
-    role: "",
-    stores: "",
-    node: "",
+    functions: localStorage.getItem("functions"),
+    role: sessionStorage.getItem("role"),
+    stores: sessionStorage.getItem("stores"),
+    node: sessionStorage.getItem("node"),
     use_stats: "false",
     use_eval: "false",
     use_location: "false",
     location: "",
     lang: "en-US",
-    use_system_role: "false",
+    use_system_role: "true",
   });
 
   const url = `${BASE_URL}/api/generate_sse?${params.toString()}`;
