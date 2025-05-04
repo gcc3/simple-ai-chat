@@ -472,9 +472,6 @@ program
     }
     await getSystemInfo();
 
-    // Clear the console
-    process.stdout.write('\x1Bc');
-
     // Command line start
     while (true) {
       const input = (await ask(globalThis.model + "> ")).trim();
