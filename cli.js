@@ -60,24 +60,21 @@ async function callGenerate(prompt, model) {
     for (const part of parts) {
       if (!part.startsWith("data:")) continue;
 
-      const dataStr = part.replace(/^data:\s*/, "");
+      const dataStr = part.replace(/^data: /, "");
 
-      if (dataStr.startsWith("###STATUS###")) {
+      // Status messages
+      if (/^###.+?###/.test(dataStr)) {
         continue;
       }
 
+      // DONE message
       if (dataStr === "[DONE]") {
         done = true;
         break;
       }
 
-      try {
-        const msg = JSON.parse(dataStr);
-        const text = msg.result?.text ?? dataStr;
-        process.stdout.write(text);
-      } catch {
-        process.stdout.write(dataStr);
-      }
+      // Message
+      process.stdout.write(dataStr);
     }
   }
   process.stdout.write("\n");
