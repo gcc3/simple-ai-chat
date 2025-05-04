@@ -1,3 +1,4 @@
+import { isNode } from "../utils/cliUtils.js";
 import { getCommands } from "../command.js";
 
 export default function help(args) {
@@ -43,6 +44,10 @@ export default function help(args) {
     commands.forEach((command) => {
       result += `${command.command} - ${command.short_description}\n`;
     });
+
+    if (isNode()) {
+      result += ":exit - Exit the program\n";
+    }
     result = result.trim();
   }
 
