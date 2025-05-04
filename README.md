@@ -9,235 +9,169 @@ Simple AI
 =========
 
 Simple AI (`simple-ai-chat`) is a command-based AI chat web application, aimed at providing users with an easy and simple AI experience.  
-This application is deployed to [simple-ai.io](https://simple-ai.io).  
-You can fork this code and deploy it on your machine for non-commercial use. (For details, please refer to the [LICENSE](https://github.com/gcc3/simple-ai-chat/blob/master/LICENSE) file.)  
-For bugs or suggestions, please report to the repository's [GitHub Issues page](https://github.com/gcc3/simple-ai-chat/issues).  
+The application is deployed to [simple-ai.io](https://simple-ai.io).  
+
+You can fork this code and deploy it on your machine for non-commercial use. (For details, please refer to the [LICENSE](https://github.com/gcc3/simple-ai-chat/blob/master/LICENSE) file.) For bugs or suggestions, please report to the repository's [GitHub Issues page](https://github.com/gcc3/simple-ai-chat/issues).  
 
 
-How To Use
-----------
+Quick Start
+-----------
 
-1. The CLI
+1. Command-line interface (CLI) use  
+    Install: `npm i simple-ai-chat -g`  
+    Start: `spchat`  
+    NPM package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)  
 
-Install:  
-`npm i simple-ai-chat -g`  
-
-Start:  
-`spchat` 
-
-2. The Web App
-
-`https://simple-ai.io`
+2. Web use  
+    [`https://simple-ai.io`](https://simple-ai.io)  
 
 
-Installation
-------------
+Documentation
+-------------
+
+The documentation is available at [`simple-ai.io`](https://simple-ai.io).  In the webpage, there is a littile dot on the bottom right corner, click it to open the back page. Alternatively, you can use the command `:store use "Simple AI Documentation"` to enable the data to AI, and ask it.  
+
+
+Local Installation
+------------------
 
 0. Prerequisites  
-  - `node` and `npm` (recommend to use [`nvm`](https://github.com/nvm-sh/nvm) to install)  
-  - OpenAI API key (get from https://platform.openai.com/account/api-keys)    
+   OpenAI API key (get from https://platform.openai.com/account/api-keys)  
 
-1. Install the requirements  
-    `git clone` the repository.  
-    In directory run the following commands:  
-  `$ npm install`  
+1. Install the requirements.  
+  `npm install`  
 
-2. Create `.env` and setup  
+2. Create `.env` and setup it.  
   Create `.env` from `.env.example`  
   For setup refer to the `.env` section below.
 
 3. Build and run the app.  
-  `$ npm run build`  
-  `$ npm run dev` or `$npm start`
-
-    * Files automatically created:
-      - `db.sqlite`
-      - `role.csv` created from [`role.csv.example`](https://github.com/f/awesome-chatgpt-prompts)  
-      - `log.config` created from `log.config.example`
-
-* Optional:  
-  - AWS S3 Bucket, secret and key (if you want to use file upload feature)  
-  - PayPal account (if you want to use user's payment feature)  
-  - Hunter API key (if you want to use email gate)  
-
-
-AI Link (node)
---------------
-
-(This feature is currently in development and may not be fully functional.)  
-Simple AI is able to link to any AI or data source in an OpenAI compatible format.  
-
-* Request example:  
-
-```
-{
-  "model": "llama3",
-  "messages": [
-    {
-      "role": "system",
-      "content": "You are a helpful assistant."
-    },
-    {
-      "role": "user",
-      "content": "Hi."
-    },
-    {
-      "role": "assistant",
-      "content": "Hi! It's nice to meet you. Is there something I can help you with or would you like to chat?"
-    },
-    {
-      "role": "user",
-      "content": "What can you do?"
-    }
-  ],
-  "stream": false
-}
-```
-
-* Response example  
-
-```
-{
-  "message": {
-      "role": "assistant",
-      "content": "Hello"
-  }
-}
-```
-
-- To use AI links, set `USE_NODE_AI` to `true`.  
-- Repository providing the AI link:  
-  - [simple-ai-node](https://github.com/gcc3/simple-ai-node)  
-  - [simple-ai-hub](https://github.com/gcc3/simple-ai-hub)  
+  `npm run build`  
+  Then use `npm run dev` or `npm start`  
 
 
 Dependencies
 ------------
 
-OpenAI API https://platform.openai.com/docs/api-reference  
-openai-node https://github.com/openai/openai-node  
+OpenAI https://platform.openai.com/docs/api-reference  
 React https://reactjs.org/  
 Next.js https://nextjs.org/  
 tailwind https://tailwindcss.com/docs/  
-
-- LLM Providers  
 OpenAI https://platform.openai.com/docs/models  
 Anthropic https://www.anthropic.com/  
 Google AI https://ai.google.dev/gemini-api/docs  
 xAI https://x.ai/  
-
-- Local AI Engine  
 Ollama https://ollama.com/  
-
-- Data Sources  
 WolframAlpha APIs https://products.wolframalpha.com/api  
 
 
 .env
 ----
 
-* NODE_ENV  
+Copy `.env.example` to `.env` and fill in the values.  
+
+NODE_ENV  
 For development environment use `development`.  
 For production environment use `production`.  
 
-* NEXT_PUBLIC_BASE_URL  
+NEXT_PUBLIC_BASE_URL  
 Fill in the base URL, for example: `http://localhost:3000`  
 
-* ROOT_PASS  
+ROOT_PASS  
 System root password, will be set when database initialized.  
 
-* OPENAI_BASE_URL and OPENAI_API_KEY  
+OPENAI_BASE_URL and OPENAI_API_KEY  
 Key can get from https://platform.openai.com/account/api-keys  
 Base URL is the API endpont, `https://api.openai.com/v1`, etc...
 
-* MODEL  
+MODEL  
 Large language model, `gpt-4o`, etc...  
 
-* TEMPERATURE  
+TEMPERATURE  
 What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random  
 lower values like 0.2 will make it more focused and deterministic.  
 
-* TOP_P  
+TOP_P  
 Range 0 ~ 1, 0.1 means only the tokens comprising the top 10% probability mass are considered.  
 
-* ROLE_CONTENT_SYSTEM  
+ROLE_CONTENT_SYSTEM  
 Set the system prompt.  
 
-* WELCOME_MESSAGE, INIT_PLACEHOLDER and ENTER  
+WELCOME_MESSAGE, INIT_PLACEHOLDER and ENTER  
 Control the custom welcome message, placeholder text and enter key text.  
 
-* WAITING, QUERYING, GENERATING, SEARCHING  
+WAITING, QUERYING, GENERATING, SEARCHING  
 Indicating the message that will show when waiting and querying.  
 
-* USE_FUNCTION_CALLING  
+USE_FUNCTION_CALLING  
 Use function calling feature, value should be `true` or `false`.  
 
-* WOLFRAM_ALPHA_APPID  
+WOLFRAM_ALPHA_APPID  
 For API calls for wolfram alpha API.  
 Get from https://products.wolframalpha.com/api
 
-* USE_NODE_AI  
+USE_NODE_AI  
 [Simple AI Node](https://github.com/gcc3/simple-ai-node) is available to help the chat answer with data.
 To use multiple node, consider use [Simple AI Hub](https://github.com/gcc3/simple-ai-hub).  
 
-* DB  
+DB  
 Database engline, example `DB=sqlite`.  
 Supported engine: `sqlite`.  
 
-* JWT_SECRET  
+JWT_SECRET  
 Secret for user authentication.  
 Generate with `openssl rand -hex 16`.  
 
-* AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_S3_BUCKET_NAME  
+AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_S3_BUCKET_NAME  
 Config to use AWS service, eg, S3 Bucket, SES.  
 
-* USE_ACCESS_CONTROL  
+USE_ACCESS_CONTROL  
 When it enabled, will count user usage and limit access for normal `user`.
 The value should be `true` or `false`.
 
-* USE_PAYMENT  
+USE_PAYMENT  
 Enabel payment for upgrading user account.  
 The value should be `true` or `false`.  
 
-* PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET  
+PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET  
 When using paypal as a payment method.
 
-* SAME_SITE_COOKIE  
+SAME_SITE_COOKIE  
 In production set to `SameSite=Lax; Secure`
 
-* USE_EMAIL  
+USE_EMAIL  
 Use email to reset password or notifications.  
 The value should be `true` or `false`.  
 
-* NEXT_PUBLIC_ROLE_USAGE_LIMIT and NEXT_PUBLIC_ROLE_AMOUNT  
+NEXT_PUBLIC_ROLE_USAGE_LIMIT and NEXT_PUBLIC_ROLE_AMOUNT  
 Useage limit is for seting limit for different roles.  
 Format: `role:daily_limit,weekly_limit,monthly_limit`.  
 Role amount is for setting price.  
 Format `role:amount`.  
 Roles are separated by `;`.  
 
-* HUNTER_API_KEY  
+HUNTER_API_KEY  
 Use hunter API to verify email.  
 
-* GOOGLE_API_KEY  
+GOOGLE_API_KEY  
 Use for detect accurate address.   
 
-* MINIMALIST  
+MINIMALIST  
 For minimalist, a more simple UI.  
 The value should be `true` or `false`.  
 
-* IPINFO_TOKEN  
+IPINFO_TOKEN  
 IP info (`ipinfo.io`) is used for getting country from IP.   
 Use IP info is for enable or disable the IP support, the value should be `true` or `false`.  
 `ipinfo.io` token will be used.  
 
-* NEXT_PUBLIC_DISCORD and NEXT_PUBLIC_YOUTUBE  
+NEXT_PUBLIC_DISCORD and NEXT_PUBLIC_YOUTUBE  
 Discord invitation link and YouTube channel link.  
 
-* USE_USER_ACCOUNTS  
+USE_USER_ACCOUNTS  
 Enable user accounts, the value should be `true` or `false`.  
 
-* DEFAULT_FUNCTIONS, DEFAULT_ROLE, DEFAULT_STORES, DEFAULT_NODE  
+DEFAULT_FUNCTIONS, DEFAULT_ROLE, DEFAULT_STORES, DEFAULT_NODE  
 Default functions, role, stores and node.  
 Example: 
 DEFAULT_FUNCTIONS=get_time,get_weather,redirect_to_url  
