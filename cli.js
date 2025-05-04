@@ -5,7 +5,8 @@ import readline from "node:readline";
 import command from "./command.js";
 import tough from 'tough-cookie';
 import fetchCookie from 'fetch-cookie';
-
+import { initializeStorage } from "./utils/storageUtils.js";
+import { initializeSessionMemory } from "./utils/sessionUtils.js";
 
 // Simulate a localStorage and sessionStorage in Node.js
 import { createRequire } from "module";
@@ -18,7 +19,7 @@ globalThis.sessionStorage = require("node-sessionstorage");
 const BASE_URL = "https://simple-ai.io";
 const MODEL = "gpt-4.1";
 
-// Monkey-patch the fetch function to use the BASE_URL
+// Monkey-patch the fetch function to use the BASE_URL and handle cookies
 const cookieJar = new tough.CookieJar();  // Handle cookies
 const fetch_ = globalThis.fetch;  // Save the original fetch function
 const fetch_c = fetchCookie(fetch_, cookieJar);
@@ -36,7 +37,7 @@ async function generate_sse(prompt, model) {
     images: "",
     files: "",
     time: Date.now().toString(),
-    session: Date.now().toString(),
+    session: sessionStorage.getItem("session"),
     model,
     mem_length: "7",
     functions: "",
@@ -121,6 +122,12 @@ program
     });
 
     console.log("simple-ai-chat (cli) v0.1.0");
+
+    // Initialization
+    initializeStorage();
+    initializeSessionMemory();
+
+    // Command line start
     while (true) {
       const line = (await ask(">>> ")).trim();
       if (!line) continue;
