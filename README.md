@@ -20,14 +20,20 @@ Quick Start
 1. Command-line interface (CLI) use  
     Install: `npm i simple-ai-chat -g`  
     Start: `spchat`  
-    NPM package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)
+    NPM package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)  
 
 2. Web use  
-    [`https://simple-ai.io`](https://simple-ai.io)
+    [`https://simple-ai.io`](https://simple-ai.io)  
 
 
-Installation
-------------
+Documentation
+-------------
+
+The documentation is available at [`simple-ai.io`](https://simple-ai.io).  In the webpage, there is a littile dot on the bottom right corner, click it to open the back page. Alternatively, you can use the command `:store use "Simple AI Documentation"` to enable the data to AI, and ask it.  
+
+
+Local Installation
+------------------
 
 0. Prerequisites  
    OpenAI API key (get from https://platform.openai.com/account/api-keys)  
@@ -41,7 +47,7 @@ Installation
 
 3. Build and run the app.  
   `npm run build`  
-  then `npm run dev` or `npm start`  
+  Then use `npm run dev` or `npm start`  
 
 
 Dependencies
@@ -61,6 +67,8 @@ WolframAlpha APIs https://products.wolframalpha.com/api
 
 .env
 ----
+
+Copy `.env.example` to `.env` and fill in the values.  
 
 NODE_ENV  
 For development environment use `development`.  
