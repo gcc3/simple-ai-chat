@@ -8,6 +8,9 @@ import fetchCookie from 'fetch-cookie';
 import { initializeStorage } from "./utils/storageUtils.js";
 import { initializeSessionMemory } from "./utils/sessionUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "./utils/ollamaUtils.js";
+import { loadConfig } from "./utils/configUtils.js";
+import { setTime } from "./utils/sessionUtils.js";
+
 
 // Simulate a localStorage and sessionStorage in Node.js
 import { createRequire } from "module";
@@ -37,17 +40,21 @@ console.log = function() {};
 // Global variables
 globalThis.model = MODEL;
 
-async function generate_sse(prompt) {
+async function generate_sse(input) {
+  // Config (input)
+  const config = loadConfig();
+  console.log("Config: " + JSON.stringify(config));
+
   // Build query parameters for SSE GET request
   const params = new URLSearchParams({
-    user_input: prompt,
+    user_input: input,
     images: "",
     files: "",
     time: Date.now().toString(),
     session: sessionStorage.getItem("session"),
     model: globalThis.model,
     mem_length: "7",
-    functions: "",  // TODO
+    functions: localStorage.getItem("functions"),
     role: sessionStorage.getItem("role"),
     stores: sessionStorage.getItem("stores"),
     node: sessionStorage.getItem("node"),
@@ -64,6 +71,8 @@ async function generate_sse(prompt) {
   if (!res.ok) {
     throw new Error(`[${res.status}] ${await res.text()}`);
   }
+
+  let toolCalls = [];
 
   // Stream SSE events
   const reader = res.body.getReader();
@@ -86,12 +95,49 @@ async function generate_sse(prompt) {
 
       // Status messages
       if (/^###.+?###/.test(dataStr)) {
+        // Handle the callings (tool calls)
+        if (dataStr.startsWith("###CALL###")) {
+          const toolCall = (JSON.parse(dataStr.replace("###CALL###", "")))[0];
+          const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
+          if (toolCallSameIndex) {
+            // Found same index tool
+            toolCallSameIndex.function.arguments += toolCall.function.arguments;
+            console.log(toolCall.function.arguments);
+          } else {
+            // If not found, add the tool
+            toolCalls.push(toolCall);
+            console.log(JSON.stringify(toolCall));
+          }
+        }
         continue;
       }
 
       // DONE message
       if (dataStr === "[DONE]") {
         done = true;
+
+        // Tool calls (function calling)
+        if (toolCalls.length > 0) {
+          let functions = [];
+          toolCalls.map((t) => {
+            functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
+          });
+          const functionInput = functions.join(",");
+
+          // Generate with tool calls (function calling)
+          if (input.startsWith("!")) {
+            input = input.split("Q=")[1];
+          }
+
+          // Reset time
+          const timeNow = Date.now();
+          setTime(timeNow);
+          sessionStorage.setItem("head", timeNow);
+
+          // Call generate with function
+          await generate_sse(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
+          break;
+        }
 
         // Print new line
         printOutput("\n");
