@@ -41,12 +41,12 @@ export default function help(args) {
   if (!command) {
     const commands = getCommands();
     result = "Commands:\n";
-    commands.forEach((command) => {
+    for (const command of commands) {
+      // Show CLI commands only if in Node.js
+      if (!isNode() && command.id === "commands-cli") {
+        break;
+      }
       result += `${command.command} - ${command.short_description}\n`;
-    });
-
-    if (isNode()) {
-      result += ":exit - Exit the program\n";
     }
     result = result.trim();
   }
