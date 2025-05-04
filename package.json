@@ -4,7 +4,6 @@
   "version": "0.1.0",
   "author": "Heyang Liu",
   "license": "MIT",
-  "private": true,
   "type": "module",
   "scripts": {
     "build": "next build",
