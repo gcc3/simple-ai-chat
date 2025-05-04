@@ -3,7 +3,7 @@
   "description": "simple-ai.io",
   "version": "0.1.0",
   "author": "Heyang Liu",
-  "license": "MIT",
+  "license": "Simple AI License",
   "type": "module",
   "scripts": {
     "build": "next build",
