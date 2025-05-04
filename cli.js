@@ -8,7 +8,6 @@ import fetchCookie from 'fetch-cookie';
 import { initializeStorage } from "./utils/storageUtils.js";
 import { initializeSessionMemory } from "./utils/sessionUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "./utils/ollamaUtils.js";
-import { fetchUserInfo, clearUserWebStorage, setUserWebStorage } from "./utils/userUtils.js";
 
 // Simulate a localStorage and sessionStorage in Node.js
 import { createRequire } from "module";
@@ -31,6 +30,9 @@ globalThis.fetch = async (url, options) => {
   }
   return fetch_c(url, options);
 };
+
+// Monkey-patch the console.log to stop print out in the command line
+console.log = function() {};
 
 // Global variables
 globalThis.model = MODEL;
@@ -80,7 +82,7 @@ async function generate_sse(prompt, model) {
     for (const part of parts) {
       if (!part.startsWith("data:")) continue;
 
-      const dataStr = part.replace(/^data: /, "");
+      let dataStr = part.replace(/^data: /, "");
 
       // Status messages
       if (/^###.+?###/.test(dataStr)) {
@@ -90,19 +92,25 @@ async function generate_sse(prompt, model) {
       // DONE message
       if (dataStr === "[DONE]") {
         done = true;
+
+        // Print new line
+        printOutput("\n");
         break;
       }
 
       // Message
-      process.stdout.write(dataStr);
+      dataStr = dataStr.replace(/###RETURN###/g, "\n");  // Replace all "###RETUREN###" with "\n"
+      printOutput(dataStr, true);
     }
   }
-  process.stdout.write("\n");
 }
 
 // Function to print output
-function printOutput(output) {
-  console.log(output);
+function printOutput(output, append=false) {
+  process.stdout.write(output);
+  if (!append) {
+    process.stdout.write("\n");
+  }
 }
 
 program
@@ -132,37 +140,12 @@ program
     });
 
     // Initialization
-    console.log("simple-ai-chat (cli) v0.1.0");
+    printOutput("simple-ai-chat (cli) v0.1.0\n");
     initializeStorage();
     initializeSessionMemory();
 
     // System and user configurations
     const getSystemInfo = async () => {
-      // User info
-      if (localStorage.getItem("user") !== null) {
-        console.log("Fetching user info...");
-        const user = await fetchUserInfo();
-        if (user) {
-          console.log("User info - settings: ", JSON.stringify(user.settings, null, 2));
-      
-          // Refresh local user data
-          setUserWebStorage(user);
-        } else {
-          console.warn("User not found or authentication failed, clearing local user data...");
-      
-          // Clear local user data
-          if (localStorage.getItem("user")) {
-            clearUserWebStorage();
-      
-            // Clear auth cookie
-            cookieJar.removeAllCookies();
-            console.log("User authentication failed, local user data cleared.");
-          }
-        }
-      } else {
-        console.log("User not logged in.");
-      }
-      
       // System info
       console.log("Fetching system info...");
       const systemInfoResponse = await fetch('/api/system/info');
@@ -229,7 +212,7 @@ program
       if (line.startsWith(":")) {
         const commandResult = await command(line, []);
         if (commandResult) {
-          printOutput(commandResult);
+          printOutput(commandResult.trim() + "\n");
         }
         continue;
       }
@@ -237,7 +220,6 @@ program
       try {
         // Stream output
         await generate_sse(line, opts.model);
-        console.log();
       } catch (e) {
         console.error("Error:", e.message + "\n");
       }
@@ -248,6 +230,7 @@ program
 // Exit
 function exitProgram() {
   // Something to do before exit
+  localStorage.clear();
 }
 process.on('exit', exitProgram);
 process.on('SIGINT', () => {

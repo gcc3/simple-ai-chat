@@ -43,6 +43,7 @@ export default function help(args) {
     commands.forEach((command) => {
       result += `${command.command} - ${command.short_description}\n`;
     });
+    result = result.trim();
   }
 
   return result;

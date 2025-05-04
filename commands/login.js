@@ -60,7 +60,7 @@ export default async function login(args) {
       if (userLoginPreviously) {
         initializeSessionMemory();
       }
-      return "You're logged in as " + user.username + " (role: `" + user.role + "`, expires in: `" + expiresIn +  "`).\n\n";
+      return "You're logged in as " + user.username + " (role: `" + user.role + "`, expires in: `" + expiresIn +  "`).";
     }
   } catch (error) {
     // Login failed
