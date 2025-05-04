@@ -165,7 +165,16 @@ program
   .version("0.1.0")
   .argument("[prompt...]", "prompt text")
   .option("-m, --model <name>", "model name", MODEL)
+  .option("-v, --verbose", "enable verbose logging")
   .action(async (promptArr, opts) => {
+    // Options
+    // Enable verbose logging if requested
+    if (opts.verbose) {
+      console.log = (...args) => {
+        printOutput("DEBUG: " + args.join(' ')); 
+      };
+    }
+
     const ask = async (question) =>
       new Promise((r) => rl.question(question, r));
 
@@ -247,7 +256,7 @@ program
         }
       }
     }
-    getSystemInfo();
+    await getSystemInfo();
 
     // Command line start
     while (true) {
