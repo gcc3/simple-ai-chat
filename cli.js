@@ -47,7 +47,7 @@ async function generate_sse(prompt) {
     session: sessionStorage.getItem("session"),
     model: globalThis.model,
     mem_length: "7",
-    functions: localStorage.getItem("functions"),
+    functions: "",  // TODO
     role: sessionStorage.getItem("role"),
     stores: sessionStorage.getItem("stores"),
     node: sessionStorage.getItem("node"),
