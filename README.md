@@ -11,7 +11,7 @@ Simple AI
 Simple AI (`simple-ai-chat`) is a command-based AI chat web application, aimed at providing users with an easy and simple AI experience.  
 This application is deployed to [simple-ai.io](https://simple-ai.io).  
 You can fork this code and deploy it on your machine for non-commercial use. (For details, please refer to the [LICENSE](https://github.com/gcc3/simple-ai-chat/blob/master/LICENSE) file.)  
-For bugs or suggestions, please report to the repository's GitHub Issues.  
+For bugs or suggestions, please report to the repository's [GitHub Issues page](https://github.com/gcc3/simple-ai-chat/issues).  
 
 
 CLI Support
@@ -20,12 +20,12 @@ CLI Support
 Install:  
 `npm i simple-ai-chat -g`  
 
-Start  
+Start:  
 `spchat` 
 
 
-Installlation
--------------
+Installation
+------------
 
 0. Prerequisites  
   - `node` and `npm` (recommend to use [`nvm`](https://github.com/nvm-sh/nvm) to install)  
@@ -58,7 +58,7 @@ Installlation
 AI Link (node)
 --------------
 
-(This feature is currently in development and may not be fully functional.)
+(This feature is currently in development and may not be fully functional.)  
 Simple AI is able to link to any AI or data source in an OpenAI compatible format.  
 
 * Request example:  
@@ -101,8 +101,8 @@ Simple AI is able to link to any AI or data source in an OpenAI compatible forma
 
 - To use AI links, set `USE_NODE_AI` to `true`.  
 - Repository providing the AI link:  
-  - [Simple AI Node](https://github.com/gcc3/simple-ai-node)  
-  - [Simple AI Hub](https://github.com/gcc3/simple-ai-hub)  
+  - [simple-ai-node](https://github.com/gcc3/simple-ai-node)  
+  - [simple-ai-hub](https://github.com/gcc3/simple-ai-hub)  
 
 
 Dependencies
