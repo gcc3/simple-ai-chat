@@ -13,10 +13,19 @@ globalThis.localStorage = new LocalStorage('./scratch');
 globalThis.sessionStorage = require("node-sessionstorage");
 
 
-const ENDPOINT = "https://simple-ai.io/api/generate_sse";
+const BASE_URL = "https://simple-ai.io";
 const MODEL = "gpt-4.1";
 
-async function callGenerate(prompt, model) {
+// Monkey-patch the fetch function to use the BASE_URL
+const fetch_ = globalThis.fetch;  // Save the original fetch function
+globalThis.fetch = async (url, options) => {
+  if (url.startsWith("/")) {
+    url = BASE_URL + url;
+  }
+  return fetch_(url, options);
+};
+
+async function generate_sse(prompt, model) {
   // Build query parameters for SSE GET request
   const params = new URLSearchParams({
     user_input: prompt,
@@ -38,7 +47,7 @@ async function callGenerate(prompt, model) {
     use_system_role: "false",
   });
 
-  const url = `${ENDPOINT}?${params.toString()}`;
+  const url = `${BASE_URL}/api/generate_sse?${params.toString()}`;
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error(`[${res.status}] ${await res.text()}`);
@@ -94,7 +103,7 @@ program
     if (promptArr.length) {
       try {
         // Stream output directly without extra console.log to avoid 'undefined'
-        await callGenerate(promptArr.join(" "), opts.model);
+        await generate_sse(promptArr.join(" "), opts.model);
       } catch (e) {
         console.error("Error:", e.message);
         process.exit(1);
@@ -123,7 +132,7 @@ program
 
       try {
         // Stream output
-        await callGenerate(line, opts.model);
+        await generate_sse(line, opts.model);
         console.log();
       } catch (e) {
         console.error("Error:", e.message + "\n");
