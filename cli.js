@@ -162,6 +162,7 @@ program
   .argument("[prompt...]", "prompt text")
   .option("-m, --model <name>", "model name")
   .option("-v, --verbose", "enable verbose logging")
+  .option("-b, --base-url <url>", "base URL for the server")
   .action(async (promptArr, opts) => {
     // Options
     // Enable verbose logging if requested
@@ -169,6 +170,13 @@ program
       console.log = (...args) => {
         printOutput("DEBUG: " + args.join(' ')); 
       };
+    }
+
+    // Set the base URL
+    if (opts.baseUrl) {
+      globalThis.serverBaseUrl = opts.baseUrl;
+    } else {
+      globalThis.serverBaseUrl = "https://simple-ai.io";
     }
 
     const ask = async (question) =>
