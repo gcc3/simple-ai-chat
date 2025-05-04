@@ -1448,7 +1448,7 @@ export default function Home() {
     }
   }
 
-  // Generate SSE
+  // M1. Generate SSE
   async function generate_sse(input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
@@ -1765,7 +1765,7 @@ export default function Home() {
     };
   }
 
-  // Generate message from server, and then call local model engine
+  // M2. Generate message from server, and then call local model engine
   async function generate_msg(input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
@@ -1971,7 +1971,7 @@ export default function Home() {
     }
   }
 
-  // Generate (without SSE)
+  // M0. Generate (without SSE)
   // Legacy generate function
   async function generate(input, images=[], files=[]) {
     // If already doing, return
