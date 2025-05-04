@@ -12,7 +12,7 @@ import { initializeSessionMemory } from "./utils/sessionUtils.js";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const { LocalStorage } = require("node-localstorage");
-globalThis.localStorage = new LocalStorage('./scratch');
+globalThis.localStorage = new LocalStorage('./.scratch');
 globalThis.sessionStorage = require("node-sessionstorage");
 
 
@@ -29,6 +29,9 @@ globalThis.fetch = async (url, options) => {
   }
   return fetch_c(url, options);
 };
+
+// Global variables
+globalThis.model = MODEL;
 
 async function generate_sse(prompt, model) {
   // Build query parameters for SSE GET request
@@ -129,12 +132,12 @@ program
 
     // Command line start
     while (true) {
-      const line = (await ask(">>> ")).trim();
+      const line = (await ask(globalThis.model + "> ")).trim();
       if (!line) continue;
 
       if (line.toLowerCase() === ":exit") break;
       if (line.startsWith(":")) {
-        const commandResult = command(line, []);
+        const commandResult = await command(line, []);
         if (commandResult) {
           console.log(commandResult);
         }
@@ -151,5 +154,24 @@ program
     }
     rl.close();
   });
+
+// Exit
+function exitProgram() {
+  // Clear storage
+  localStorage.clear();
+}
+process.on('exit', exitProgram);
+process.on('SIGINT', () => {
+  exitProgram();
+  process.exit(0);
+});
+process.on('SIGTERM', () => {
+  exitProgram();
+  process.exit(0);
+});
+process.on('uncaughtException', err => {
+  exitProgram();
+  process.exit(1);
+});
 
 program.parseAsync();

@@ -17,6 +17,7 @@ export function initializeStorage() {
 
   // Set default sessionStorage values
   if (sessionStorage.getItem("memLength") === null) sessionStorage.setItem("memLength", 7);
+  if (sessionStorage.getItem("model") === null) sessionStorage.setItem("model", "");
   if (sessionStorage.getItem("baseUrl") === null) sessionStorage.setItem("baseUrl", "");
   if (sessionStorage.getItem("historyIndex") === null) sessionStorage.setItem("historyIndex", -1);  // command history index
 }
