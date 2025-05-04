@@ -359,10 +359,8 @@ function getVersion() {
 
 program
   .name("simple-ai-chat")
-  .description("Simple AI Chat CLI")
+  .description("simple-ai-chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
   .version(getVersion())
-  .argument("[prompt...]", "prompt text")
-  .option("-m, --model <name>", "model name")
   .option("-v, --verbose", "enable verbose logging")
   .option("-b, --base-url <url>", "base URL for the server")
   .action(async (promptArr, opts) => {
@@ -392,24 +390,11 @@ program
     const ask = async (question) =>
       new Promise((r) => rl.question(question, r));
 
-    if (promptArr.length) {
-      try {
-        // Stream output directly without extra console.log to avoid 'undefined'
-        await generate_sse(promptArr.join(" "), opts.model);
-      } catch (e) {
-        console.error("Error:", e.message);
-        process.exit(1);
-      }
-      return;
-    }
-
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
     });
 
-    printOutput("simple-ai-chat (cli) " + program.version());
-    
     try {
       // Ping the server
       const pingResponse = await fetch('/api/ping');
@@ -487,12 +472,20 @@ program
     }
     await getSystemInfo();
 
+    // Clear the console
+    process.stdout.write('\x1Bc');
+
     // Command line start
     while (true) {
       const input = (await ask(globalThis.model + "> ")).trim();
       if (!input) continue;
 
       if (input.toLowerCase() === ":exit") break;
+      if (input.toLowerCase() === ":clear") {
+        process.stdout.write('\x1Bc');
+        continue;
+      }
+
       if (input.startsWith(":")) {
         const commandResult = await command(input, []);
         if (commandResult) {
@@ -507,12 +500,12 @@ program
          || globalThis.baseUrl.includes("127.0.0.1")) {
           // Local model
           console.log("Start. (Local)");
-          await generate_msg(input);
+          await generate_msg(input, [], []);
         } else {
           // Server model
           if (localStorage.getItem('useStream') == "true") {
             console.log("Start. (SSE)");
-            await generate_sse(input);
+            await generate_sse(input, [], []);
           } else {
             // TODO
             printOutput("Not support yet for non-stream mode.");
