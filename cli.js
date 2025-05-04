@@ -20,7 +20,7 @@ globalThis.localStorage = new LocalStorage('./.scratch');
 globalThis.sessionStorage = require("node-sessionstorage");
 
 
-const BASE_URL = "https://simple-ai.io";
+globalThis.serverBaseUrl = "https://simple-ai.io";
 
 // Monkey-patch the fetch function to use the BASE_URL and handle cookies
 const cookieJar = new tough.CookieJar();  // Handle cookies
@@ -28,7 +28,7 @@ const fetch_ = globalThis.fetch;  // Save the original fetch function
 const fetch_c = fetchCookie(fetch_, cookieJar);
 globalThis.fetch = async (url, options) => {
   if (url.startsWith("/")) {
-    url = BASE_URL + url;
+    url = globalThis.serverBaseUrl + url;
   }
   return fetch_c(url, options);
 };
@@ -190,8 +190,23 @@ program
       output: process.stdout,
     });
 
-    // Initialization
     printOutput("simple-ai-chat (cli) v0.1.0\n");
+    
+    try {
+      // Ping the server
+      const pingResponse = await fetch('/api/ping');
+      const responseText = await pingResponse.text();
+      if (responseText !== "Simple AI is alive.") {
+      console.log("Ping response: " + responseText);
+      printOutput("\`" + globalThis.serverBaseUrl + "` is not response, please check the server status...");
+      process.exit(1);
+      }
+    } catch (error) {
+      console.error("Error during server ping:", error.message);
+      process.exit(1);
+    }
+
+    // Initialization
     initializeStorage();
     initializeSessionMemory();
 
