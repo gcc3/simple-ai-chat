@@ -1449,7 +1449,7 @@ export default function Home() {
   }
 
   // SSE
-  function generate_sse(input, images, files) {
+  function generate_sse(input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -1765,10 +1765,8 @@ export default function Home() {
     };
   }
 
-  // Direct
-  // Direct send API request to the server
-  // Warning: it will expose the API key.
-  async function generate_msg(input, images, files) {
+  // Generate message from server, and then call local model engine
+  async function generate_msg(input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -1974,7 +1972,8 @@ export default function Home() {
   }
 
   // Generate (without SSE)
-  async function generate(input, images, files) {
+  // Legacy generate function
+  async function generate(input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;

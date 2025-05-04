@@ -36,7 +36,7 @@ globalThis.fetch = async (url, options) => {
 console.log = function() {};
 
 
-async function generate_sse(input) {
+async function generate_sse(input, images=[], files=[]) {
   // Config (input)
   const config = loadConfig();
   console.log("Config: " + JSON.stringify(config));
@@ -146,6 +146,8 @@ async function generate_sse(input) {
     }
   }
 }
+
+
 
 // Function to print output
 function printOutput(output, append=false) {
