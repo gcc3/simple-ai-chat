@@ -14,6 +14,11 @@ import { Readable } from "stream";
 import { OpenAI } from "openai";
 
 
+// Disable process warnings (node)
+process.removeAllListeners('warning');
+process.on('warning', () => {});
+
+
 // Simulate a localStorage and sessionStorage in Node.js
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
