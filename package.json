@@ -20,6 +20,7 @@
     "csv": "^6.3.0",
     "csv-writer": "^1.6.0",
     "eslint-config-next": "^14.0.4",
+    "fetch-cookie": "^3.1.0",
     "form-data": "^4.0.0",
     "highlight.js": "^11.9.0",
     "i18next": "^23.7.18",
@@ -36,6 +37,7 @@
     "next": "^15.3.1",
     "node-fetch": "^3.3.2",
     "node-localstorage": "^3.0.5",
+    "node-sessionstorage": "^1.0.0",
     "openai": "^4.96.2",
     "pdf-parse": "^1.1.1",
     "react": "^19.1.0",
@@ -45,6 +47,7 @@
     "sharp": "^0.33.1",
     "sqlite3": "^5.1.6",
     "tiktoken": "^1.0.21",
+    "tough-cookie": "^5.1.2",
     "universal-cookie": "^8.0.1",
     "xml2js": "^0.6.0"
   },
@@ -58,6 +61,6 @@
     "tailwindcss": "^3.3.5"
   },
   "bin": {
-    "spchat": "./cli/cli.js"
+    "spchat": "./cli.js"
   }
 }

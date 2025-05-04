@@ -45,3 +45,6 @@ role.csv
 log.config
 
 __pycache__/
+
+# cli
+.scratch/

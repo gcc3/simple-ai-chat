@@ -9,7 +9,7 @@ import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getModels, getUser } from "utils/sqliteUtils";
-import { getSystemConfigurations } from "utils/sysUtils";
+import { getSystemConfigurations } from "utils/systemUtils";
 import { findNode } from "utils/nodeUtils.js";
 import { ensureSession } from "utils/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";

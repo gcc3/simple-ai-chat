@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import { countToken } from "utils/tokenUtils.js";
-import { getSystemConfigurations } from "utils/sysUtils.js";
+import { getSystemConfigurations } from "utils/systemUtils.js";
 
 // OpenAI
 const openai = new OpenAI();

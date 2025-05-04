@@ -1,6 +1,10 @@
+import { isNode } from './cliUtils.js';
 import { enableCSSRulesBySelector, disableCSSRulesBySelector, setHighlightjsTheme, unsetHighlightjsTheme } from './cssUtils.js';
 
 export function setTheme(theme) {
+  // Support cli
+  if (isNode()) return;
+
   if (theme == "light") {
     document.documentElement.style.setProperty("--background-color", "transparent");
     document.documentElement.style.setProperty("--text-color", "#000000");

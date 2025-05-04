@@ -213,6 +213,8 @@ export default async function model(args) {
         const ollamModelInfo = ollamModels.find((m) => m.name === name);
         if (ollamModelInfo) {
           // Set model to session storage
+          globalThis.model = name;
+          globalThis.baseUrl = ollamModelInfo.base_url;
           sessionStorage.setItem("model", name);
           sessionStorage.setItem("baseUrl", ollamModelInfo.base_url);
 
@@ -242,6 +244,8 @@ export default async function model(args) {
         }
         
         // Set model
+        globalThis.model = modelInfo.model;
+        globalThis.baseUrl = modelInfo.base_url;
         sessionStorage.setItem("model", modelInfo.model);
         sessionStorage.setItem("baseUrl", modelInfo.base_url);
       } catch (error) {

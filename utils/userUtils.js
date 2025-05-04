@@ -36,7 +36,7 @@ export function setUserWebStorage(user) {
 
   // fullscreen
   if ("fullscreen" in settings) {
-    if (settings.fullscreen != localStorage.getItem("fullscreen") && !localStorage.getItem("fullscreen").includes("force")) {
+    if (localStorage.getItem("fullscreen") && settings.fullscreen != localStorage.getItem("fullscreen") && !localStorage.getItem("fullscreen").includes("force")) {
       localStorage.setItem("fullscreen", settings.fullscreen);
       emitter.emit("ui:set_fullscreen", settings.fullscreen);
     }

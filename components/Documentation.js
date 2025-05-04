@@ -114,6 +114,7 @@ const Documentation = () => {
             <div><a href="#commands-node">- <u>{ t("Node (Node AI)") }</u></a></div>
             <div><a href="#commands-user">- <u>{ t("User") }</u></a></div>
             <div><a href="#commands-config">- <u>{ t("Information") }</u></a></div>
+            <div><a href="#commands-cli">- <u>{ t("CLI (Command-line Interface)") }</u></a></div>
           </div>
         </div>
         <div className="mt-2"><a href="#functions"><u>{ t("Functions") }</u></a></div>
