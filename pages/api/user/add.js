@@ -96,7 +96,7 @@ export default async function (req, res) {
   // New user info
   const role = "user";
   const role_expires_at = null;  // for `user` there is no expiration
-  const balance = 0.3;  // for trial
+  const balance = 1;  // for trial
   const password_ = password ? password : generatedPassword;
   const loginComamndGuide = " You can login with command: `:login [username] [password]`.";
 
