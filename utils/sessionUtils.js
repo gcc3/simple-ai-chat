@@ -58,7 +58,7 @@ export function verifySessionId(session) {
     };
   }
 
-  if (session.length != 13 || session <= 1669766400000 || session >= 2016921600000) {
+  if (session <= 1669766400000 || session >= 2016921600000) {
     return {
       success: false,
       error: "Time traveler detected."

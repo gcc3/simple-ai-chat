@@ -8,28 +8,15 @@ export default async function (req, res) {
   }
 
   try {
-    const { time: time_, session, model, input, output, images } = req.body;
+    const { user, time: time_, session, model, input, output, images } = req.body;
     const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     const browser = req.headers['user-agent'];
 
     // Time
     let time = Number(time_);
-
-    // Only login user allow to add
-    // Authenticate user
-    const authResult = authenticate(req);
-    if (!authResult.success) {
-      res.status(401).json({
-        success: false,
-        error: authResult.error,
-      });
-      return;
-    }
     
-    // Get user
-    const user = authResult.user;
-
     // Add log
+    // TODO, should only allow login user add log, else will be injected
     await logadd(user, session, time, model, 0, input, 0, output, JSON.stringify(images), ip, browser);
 
     // Output the result
