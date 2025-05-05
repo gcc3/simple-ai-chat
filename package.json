@@ -1,6 +1,7 @@
 {
   "name": "simple-ai-chat",
-  "description": "simple-ai.io",
+  "description": "AI chat application base on LLM, support web and command-line interface, and hosted at `simple-ai.io`.",
+  "keywords": ["simple", "ai", "chat", "llm", "cli"],
   "version": "0.1.3",
   "author": "Heyang Liu",
   "license": "Simple AI License",
