@@ -197,11 +197,7 @@ export default async function model(args) {
       return "Usage: :model [use|unuse] [name]\n"
     }
 
-    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
-      return "Model name must be quoted with double quotes.";
-    }
-
-    const name = args[1].slice(1, -1);
+    const name = args[1].replace(/"/g, "");
     if (!name) {
       return "Invalid model name.";
     }
