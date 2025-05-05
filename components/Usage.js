@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-import ProgressBar from "./ProgressBar";
-import { getRoleLevel, fetchUserInfo, fetchUserUsage } from "utils/userUtils";
-import PayPalButton from "./PayPalButton";
-import { npre } from "utils/numberUtils";
+import ProgressBar from "./ProgressBar.js";
+import { getRoleLevel, fetchUserInfo, fetchUserUsage } from "../utils/userUtils.js";
+import PayPalButton from "./PayPalButton.js";
+import { npre } from "../utils/numberUtils.js";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 

@@ -1,8 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
-import PayPalButton from "./PayPalButton";
-import { getRoleLevel, fetchUserInfo } from "utils/userUtils";
-import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
-import { npre } from "utils/numberUtils";
+import PayPalButton from "./PayPalButton.js";
+import { getRoleLevel, fetchUserInfo } from "../utils/userUtils.js";
+import SubscriptionComparisonTable from "./SubscriptionComparisonTable.js";
+import { npre } from "../utils/numberUtils.js";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
 

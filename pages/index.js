@@ -3,39 +3,39 @@ import { useState, useEffect, useRef } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
-import command, { getHistoryCommand, getHistoryCommandIndex, pushCommandHistory } from "command.js";
-import { speak, trySpeak } from "utils/speakUtils.js";
-import { setTheme } from "utils/themeUtils.js";
-import { setRtl } from "utils/rtlUtils.js";
+import command, { getHistoryCommand, getHistoryCommandIndex, pushCommandHistory } from "../command.js";
+import { speak, trySpeak } from "../utils/speakUtils.js";
+import { setTheme } from "../utils/themeUtils.js";
+import { setRtl } from "../utils/rtlUtils.js";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleFullscreen } from "../states/fullscreenSlice.js";
-import { markdownFormatter } from "utils/markdownUtils.js";
-import { passwordFormatter, maskPassword, isCommandMusked } from "utils/passwordUtils";
-import UserDataPrivacy from "components/UserDataPrivacy";
-import Usage from "components/Usage";
-import Subscription from "components/Subscription";
-import Documentation from "components/Documentation";
-import Copyrights from "components/Copyrights";
-import Settings from "components/Settings";
-import { toggleEnterChange } from "states/enterSlice";
+import { markdownFormatter } from "../utils/markdownUtils.js";
+import { passwordFormatter, maskPassword, isCommandMusked } from "../utils/passwordUtils";
+import UserDataPrivacy from "../components/UserDataPrivacy";
+import Usage from "../components/Usage";
+import Subscription from "../components/Subscription";
+import Documentation from "../components/Documentation";
+import Copyrights from "../components/Copyrights";
+import Settings from "../components/Settings";
+import { toggleEnterChange } from "../states/enterSlice";
 import hljs from 'highlight.js';
-import { generateFileURl } from "utils/awsUtils";
-import { initializeSessionMemory, setSession, setTime } from "utils/sessionUtils";
+import { generateFileURl } from "../utils/awsUtils";
+import { initializeSessionMemory, setSession, setTime } from "../utils/sessionUtils";
 import Image from 'next/image';
-import { getQueryParameterValue } from "utils/urlUtils";
+import { getQueryParameterValue } from "../utils/urlUtils";
 import 'katex/dist/katex.min.css';
-import { asciiframe } from "utils/donutUtils";
-import { checkUserAgent } from "utils/userAgentUtils";
-import { getLangCodes } from "utils/langUtils";
+import { asciiframe } from "../utils/donutUtils";
+import { checkUserAgent } from "../utils/userAgentUtils";
+import { getLangCodes } from "../utils/langUtils";
 import { useTranslation } from 'react-i18next';
-import { simulateKeyPress } from "utils/keyboardUtils";
-import { getAutoCompleteOptions } from "utils/autocompleteUtils";
-import { sleep } from "utils/sleepUtils";
-import { loadConfig } from "utils/configUtils";
+import { simulateKeyPress } from "../utils/keyboardUtils";
+import { getAutoCompleteOptions } from "../utils/autocompleteUtils";
+import { sleep } from "../utils/sleepUtils";
+import { loadConfig } from "../utils/configUtils";
 import OpenAI from "openai";
 import { Readable } from "stream";
-import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSetting } from "utils/userUtils";
-import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
+import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSetting } from "../utils/userUtils";
+import { pingOllamaAPI, listOllamaModels } from "../utils/ollamaUtils";
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -50,6 +50,7 @@ const CONTENT = {
   USAGE: 1,
   SUBSCRIPTION: 2,
   PRIVACY: 3,
+  SETTINGS: 4,
 };
 
 // Mutation observer

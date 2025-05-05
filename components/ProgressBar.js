@@ -1,5 +1,5 @@
 import React from "react";
-import { npre } from "utils/numberUtils";
+import { npre } from "../utils/numberUtils.js";
 
 const ProgressBar = ({ label, progress, progressMax }) => {
   const percentage = npre(Math.min(Math.round((progress / progressMax) * 100), 100)) + "%";

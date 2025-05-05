@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { fetchUserInfo } from "utils/userUtils";
+import { fetchUserInfo } from "../utils/userUtils.js";
 import { useTranslation } from "react-i18next";
-import { setRtl } from "utils/rtlUtils.js";
+import { setRtl } from "../utils/rtlUtils.js";
 
 function Settings() {
   const [loading, setLoading] = useState(true);
