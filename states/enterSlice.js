@@ -1,5 +1,4 @@
-import pkg from '@reduxjs/toolkit';
-const { createSlice } = pkg;
+import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = "enter";
 
