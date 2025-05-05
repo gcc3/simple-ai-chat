@@ -2493,17 +2493,13 @@ export default function Home() {
           <div id="wrapper" ref={elWrapperRef} className={styles.wrapper}>
             {outputImages.map((image, index) => (
               <div key={index} className="mb-5 image-preview">
-                <Image
+                <img
                   src={image.src}
-                  alt={image.alt}
-                  placeholder="blur"
-                  blurDataURL={image.blurDataURL}
+                  alt={""}
                   width={image.width}
                   height={image.height}
-                  quality={100}
                   style={{ width: '100%', height: '100%' }}
-                  unoptimized
-                />
+                 />
               </div>
             ))}
             <div 
