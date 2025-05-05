@@ -18,8 +18,6 @@ import Settings from "components/Settings";
 import hljs from 'highlight.js';
 import { generateFileURl } from "utils/awsUtils";
 import { initializeSessionMemory, setSession, setTime } from "utils/sessionUtils";
-import Image from 'next/image';
-import { getQueryParameterValue } from "utils/urlUtils";
 import 'katex/dist/katex.min.css';
 import { asciiframe } from "utils/donutUtils";
 import { checkUserAgent } from "utils/userAgentUtils";
@@ -144,17 +142,10 @@ export default function Home() {
   };
 
   // Print image output
-  const printImage = async (image_url, ar = 1.7) => {
+  const printImage = async (image_url) => {
     console.log("Print Image: " + image_url);
-    
-    // Get aspect ratio from URL
-    const arParam = getQueryParameterValue(image_url, "ar")
-    if (arParam) ar = parseFloat(arParam);
-
-    const width = 1000;
-    const height = width / ar;
     setOutputImages(currentImages => {
-      return [...currentImages, { src: image_url, alt: image_url, width, height, blurDataURL: image_url }];
+      return [...currentImages, { src: image_url, alt: "", width: 0, height: 0, blurDataURL: image_url }];
     });
   };
 
@@ -2495,7 +2486,7 @@ export default function Home() {
               <div key={index} className="mb-5 image-preview">
                 <img
                   src={image.src}
-                  alt={""}
+                  alt={image.alt}
                   width={image.width}
                   height={image.height}
                   style={{ width: '100%', height: '100%' }}
