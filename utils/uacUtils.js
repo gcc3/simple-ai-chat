@@ -16,7 +16,7 @@ export async function getUacResult(user, ip) {
     if (chatCount >= 5) {
       return {
         success: false,
-        error: "Please login, or register with command `:user add [username] [email] [password?]` to continue."
+        error: "Please login with command `:user login [username] [password]`, or register with command `:user add [username] [email] [password?]` to continue."
       };
     }
   }

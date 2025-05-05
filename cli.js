@@ -12,6 +12,8 @@ import { loadConfig } from "./utils/configUtils.js";
 import { setTime } from "./utils/sessionUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
+import { readFileSync } from "fs";
+import { join } from "path";
 
 
 // Disable process warnings (node)
@@ -343,12 +345,22 @@ function printOutput(output, append=false) {
   }
 }
 
+// Get version from package.json
+function getVersion() {
+  try {
+    const packageJsonPath = join(process.cwd(), "package.json");
+    const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
+    return packageJson.version || "";
+  } catch (error) {
+    console.error("Error reading package.json:", error.message);
+    return "";
+  }
+}
+
 program
   .name("simple-ai-chat")
-  .description("Simple AI Chat CLI")
-  .version("0.1.0")
-  .argument("[prompt...]", "prompt text")
-  .option("-m, --model <name>", "model name")
+  .description("simple-ai-chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
+  .version(getVersion())
   .option("-v, --verbose", "enable verbose logging")
   .option("-b, --base-url <url>", "base URL for the server")
   .action(async (promptArr, opts) => {
@@ -378,24 +390,11 @@ program
     const ask = async (question) =>
       new Promise((r) => rl.question(question, r));
 
-    if (promptArr.length) {
-      try {
-        // Stream output directly without extra console.log to avoid 'undefined'
-        await generate_sse(promptArr.join(" "), opts.model);
-      } catch (e) {
-        console.error("Error:", e.message);
-        process.exit(1);
-      }
-      return;
-    }
-
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
     });
 
-    printOutput("simple-ai-chat (cli) v0.1.0\n");
-    
     try {
       // Ping the server
       const pingResponse = await fetch('/api/ping');
@@ -479,6 +478,11 @@ program
       if (!input) continue;
 
       if (input.toLowerCase() === ":exit") break;
+      if (input.toLowerCase() === ":clear") {
+        process.stdout.write('\x1Bc');
+        continue;
+      }
+
       if (input.startsWith(":")) {
         const commandResult = await command(input, []);
         if (commandResult) {
@@ -493,12 +497,12 @@ program
          || globalThis.baseUrl.includes("127.0.0.1")) {
           // Local model
           console.log("Start. (Local)");
-          await generate_msg(input);
+          await generate_msg(input, [], []);
         } else {
           // Server model
           if (localStorage.getItem('useStream') == "true") {
             console.log("Start. (SSE)");
-            await generate_sse(input);
+            await generate_sse(input, [], []);
           } else {
             // TODO
             printOutput("Not support yet for non-stream mode.");
