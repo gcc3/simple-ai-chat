@@ -15,8 +15,8 @@ export const UIProvider = ({ children }) => {
     emitter.on("ui:set_enter", handleEnter);
 
     return () => {
-      emitter.off("ui:set_fullscreen", handleFullscreen);
-      emitter.off("ui:set_enter", handleEnter);
+      emitter.removeListener("ui:set_fullscreen", handleFullscreen);
+      emitter.removeListener("ui:set_enter", handleEnter);
     };
   }, []);
 
