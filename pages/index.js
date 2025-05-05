@@ -33,6 +33,8 @@ import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSettin
 import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 import { useUI } from '../contexts/UIContext';
 import { initializeStorage } from "utils/storageUtils";
+import Image from "../components/ui/Image";
+
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -2484,13 +2486,7 @@ export default function Home() {
           <div id="wrapper" ref={elWrapperRef} className={styles.wrapper}>
             {outputImages.map((image, index) => (
               <div key={index} className="mb-5 image-preview">
-                <img
-                  src={image.src}
-                  alt={image.alt}
-                  width={image.width}
-                  height={image.height}
-                  style={{ width: '100%', height: '100%' }}
-                 />
+                <Image image={image} />
               </div>
             ))}
             <div 
