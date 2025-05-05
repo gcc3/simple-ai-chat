@@ -43,9 +43,9 @@ export async function evaluate(user, input, raw_prompt, output) {
   const eval_message = [];
 
   let eval_prompt = "";
-  eval_prompt = "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using additional infromation for AI reference." + "\n\n" +
+  eval_prompt = "Hi, I'm creating an AI chat application, to enhance the AI's responses I'm using additional information for AI reference." + "\n\n" +
                 "Now, the user asks: " + input + "\n\n" +
-                "After request additonal information, I got additional infromation in Json format: " + JSON.stringify(raw_prompt) + "\n\n" +
+                "After request additional information, I got additional information in Json format: " + JSON.stringify(raw_prompt) + "\n\n" +
                 "After a while, the AI responds with: " + output + "\n\n" +
                 "Please evaluate the AI's response for correctness and credibility, 1 being the worst or contains any fake information, 10 being the best, and correct. " +
                 "Please only evaluate/consider the correctness, not the information comprehensiveness. " +
