@@ -20,7 +20,7 @@ Quick Start
 1. Command-line interface (CLI) use  
     Install: `npm i simple-ai-chat -g`  
     Start: `spchat`  
-    NPM package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)  
+    npm package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)  
 
 2. Web use  
     [`https://simple-ai.io`](https://simple-ai.io)  
