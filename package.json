@@ -1,8 +1,14 @@
 {
   "name": "simple-ai-chat",
   "description": "AI chat application based on large language models (LLMs), supports web and command-line interfaces. Available at `simple-ai.io`.",
-  "keywords": ["simple", "ai", "chat", "llm", "cli"],
-  "version": "0.1.3",
+  "keywords": [
+    "simple",
+    "ai",
+    "chat",
+    "llm",
+    "cli"
+  ],
+  "version": "0.1.5",
   "author": "Heyang Liu",
   "license": "Simple AI License",
   "type": "module",
@@ -17,7 +23,7 @@
   "dependencies": {
     "@paypal/checkout-server-sdk": "^1.0.3",
     "@paypal/react-paypal-js": "^8.1.3",
-    "aws-sdk": "^2.1492.0",
+    "aws-sdk": "^2.1692.0",
     "axios": "^1.6.7",
     "chalk": "^5.2.0",
     "csv": "^6.3.0",
@@ -48,7 +54,7 @@
     "react-i18next": "^14.0.1",
     "react-youtube": "^10.1.0",
     "sharp": "^0.33.1",
-    "sqlite3": "^5.1.6",
+    "sqlite3": "^5.1.7",
     "tiktoken": "^1.0.21",
     "tough-cookie": "^5.1.2",
     "universal-cookie": "^8.0.1",
