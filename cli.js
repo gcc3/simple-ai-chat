@@ -13,7 +13,8 @@ import { setTime } from "./utils/sessionUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
 import { readFileSync } from "fs";
-import { join } from "path";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
 
 // Disable process warnings (node)
@@ -346,9 +347,12 @@ function printOutput(output, append=false) {
 }
 
 // Get version from package.json
-function getVersion() {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export function getVersion() {
   try {
-    const packageJsonPath = join(process.cwd(), "package.json");
+    const packageJsonPath = join(__dirname, "package.json");
     const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
     return packageJson.version || "";
   } catch (error) {
