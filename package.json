@@ -27,6 +27,7 @@
     "aws-sdk": "^2.1692.0",
     "axios": "^1.6.7",
     "chalk": "^5.2.0",
+    "cors": "^2.8.5",
     "csv": "^6.3.0",
     "csv-writer": "^1.6.0",
     "eslint-config-next": "^14.0.4",

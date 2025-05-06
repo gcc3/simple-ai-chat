@@ -11,6 +11,7 @@ import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js"
 import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import fs from 'fs';
+import cors from 'cors';
 
 
 async function loadMcpConfig(configPath = "./mcpconfig.json") {
@@ -113,6 +114,7 @@ const port = 11318;
 
 // Configure middleware
 app.use(express.json());
+app.use(cors());
 
 // Add the logging middleware
 app.use((req, res, next) => {

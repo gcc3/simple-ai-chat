@@ -193,7 +193,7 @@ export async function getFunctions(functions_ = null) {
         functions.push({
           name: f.name,
           description: f.description,
-          parameters: f.input_schema,
+          parameters: f.input_schema,  // TODO fix schema
         });
       }
     }

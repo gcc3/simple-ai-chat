@@ -2,13 +2,23 @@ let mcpProcess = null;
 
 
 // Pings the MCP server to check if it's running
-export async function pingMcpServer() {
+export async function pingMcpServer(baseUrl = 'http://localhost:11318') {
   try {
-    const response = await fetch('http://localhost:11318/');
+    // set up timeout for 100ms
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 100);
+    const response = await fetch(`${baseUrl}`, {
+      signal: controller.signal,
+      method: 'GET',
+      headers: { 'Accept': 'text/plain' }
+    });
+    clearTimeout(timeoutId);
+    if (!response.ok) {
+      return false;
+    }
     const text = await response.text();
     return text === 'Simple MCP is alive.';
-  } catch (error) {
-    console.error('Failed to ping MCP server:', error.message);
+  } catch {
     return false;
   }
 }
