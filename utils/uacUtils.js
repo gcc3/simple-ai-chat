@@ -63,8 +63,9 @@ export async function getUacResult(user, ip) {
     if (isUsageExceeded) {
       return {
         success: false,
-        error: "You have reached your usage limit. Please add credit to your balance in `Usage` page.",
-      }
+        error: "You have reached your usage limit. Please add credit to your balance in `Usage` page.\n" + 
+               "您的使用额度已达到上限，请前往【用量】页面进行充值。"
+      };
     }
   }
 
