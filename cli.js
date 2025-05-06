@@ -44,10 +44,7 @@ globalThis.fetch = async (url, options) => {
   return fetch_c(url, options);
 };
 
-// Monkey-patch the console.log to stop print out in the command line
-console.log = function() {};
-console.error = function() {};
-console.warn = function() {};
+// Note: Console logging functions will be configured based on verbose flag later
 
 
 // M1. Generate SSE
@@ -363,28 +360,36 @@ export function getVersion() {
   }
 }
 
+// In commander.js, the option are converted to camelCase automatically
+// Example: --base-url <url> => opts.baseUrl
 program
   .name("simple-ai-chat")
   .description("simple-ai-chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
   .version(getVersion())
-  .option("-v, --verbose", "enable verbose logging")
+  .option("-v, --verbose", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
-  .action(async (promptArr, opts) => {
-    // Options
-    // Enable verbose logging if requested
+  .action(async (opts) => {
+    // Verbose
     if (opts.verbose) {
+      // Enable verbose logging with labeled messages
       console.log = (...args) => {
         printOutput("DEBUG: " + args.join(' ')); 
       };
 
       console.error = (...args) => {
         printOutput("ERROR: " + args.join(' '));
-      }
+      };
 
       console.warn = (...args) => {
         printOutput("WARNING: " + args.join(' '));
-      }
-    } 
+      };
+    } else {
+      // Disable console output when not in verbose mode
+      // Monkey-patch console methods to disable output
+      console.log = function() {};
+      console.error = function() {};
+      console.warn = function() {};
+    }
 
     // Set the base URL
     if (opts.baseUrl) {
@@ -407,7 +412,11 @@ program
     // Test connection to the server
     const serverConnectionSuccessful = await testSimpleAIServerConnection();
     if (!serverConnectionSuccessful) {
-      printOutput("The Simple AI server (`" + globalThis.serverBaseUrl + "`) is currently unavailable. You can still connect to your local server using the `--base-url` option.");
+      if (opts.baseUrl !== "https://simple-ai.io") {
+        printOutput("Please check the server (" + globalThis.serverBaseUrl + ") connection.");
+      } else {
+        printOutput("The Simple AI server (`" + globalThis.serverBaseUrl + "`) is currently unavailable. You can still connect to your local server using the `--base-url` option.");
+      }
       process.exit(1);
     }
 
