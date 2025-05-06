@@ -531,9 +531,14 @@ program
 function exitProgram() {
   // Something to do before exit
   localStorage.clear();
+  console.log("Local storage cleared.");
   
   // Stop the MCP server if it's running
-  mcpProcess && mcpProcess.kill();
+  if (mcpProcess) {
+    mcpProcess.kill('SIGINT');
+    mcpProcess = null;
+  }
+  console.log("MCP server stopped.");
 }
 process.on('exit', exitProgram);
 process.on('SIGINT', () => {
