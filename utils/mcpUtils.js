@@ -43,7 +43,7 @@ export function startMcpServer() {
     // Start the MCP server using child_process.spawn
     mcpProcess = spawn('node', ['./mcp.js'], {
       detached: true,
-      stdio: 'ignore'
+      stdio: 'ignore',
     });
 
     // Detach the child process from the parent process

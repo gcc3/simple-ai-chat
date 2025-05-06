@@ -536,7 +536,6 @@ function exitProgram() {
   // Stop the MCP server if it's running
   if (mcpProcess) {
     mcpProcess.kill('SIGINT');
-    mcpProcess = null;
   }
   console.log("MCP server stopped.");
 }
