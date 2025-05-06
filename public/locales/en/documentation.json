@@ -69,7 +69,7 @@
   "User": "User",
   "Information": "Information",
   "Introduction": "Introduction",
-  "introduction": "Hi, welcome to Simple AI (simple-ai.io)! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.",
+  "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.",
   "What I can do with Simple AI?": "What I can do with Simple AI?",
   "1. Basic Use": "1. Basic Use",
   "* Chat. Ask complex questions. Problem Solving.": "* Chat. Ask complex questions. Problem Solving.",
@@ -130,5 +130,6 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.",
   "Models": "Models",
   "* Link with your own data. Support link to relational database.": "* Link with your own data. Support link to relational database.",
-  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously."
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.",
+  "CLI (Command-line Interface)": "CLI (Command-line Interface)"
 }

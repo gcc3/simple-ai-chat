@@ -125,7 +125,7 @@ const Documentation = () => {
       </div>
       <div id="introduction" className="mt-5">{ t("Introduction") }</div>
       <div className="mt-2">
-        { t("introduction") }
+        { t("Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.") }
       </div>
       <div className="mt-2">
         - { t("What I can do with Simple AI?") }<br/>
