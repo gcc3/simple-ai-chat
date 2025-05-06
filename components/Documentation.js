@@ -17,7 +17,6 @@ const Documentation = () => {
     fetchFunctions();
   }, []);
 
-
   const quick_starts = [
     { id: "quick_start_0", content: tt("quick_start_0") },
     { id: "quick_start_1", content: tt("quick_start_1") },
