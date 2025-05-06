@@ -47,7 +47,7 @@ export default async function function_(args) {
       }
 
       return "Callable functions:\n" + callables + "\n\n"
-        + "System functions:\n" + availables;
+           + "System functions:\n" + availables;
     }
   }
 
