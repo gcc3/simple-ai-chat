@@ -10,7 +10,25 @@ import express from 'express';
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
-import { loadMcpConfig } from './utils/mcpUtils.js';
+import fs from 'fs';
+
+
+async function loadMcpConfig(configPath = "./mcpconfig.json") {
+  try {
+    const config = JSON.parse(
+      await fs.promises.readFile(configPath, "utf-8"),
+    );
+    const mcpServerConfigs = config.mcpServers;
+    if (!mcpServerConfigs || mcpServerConfigs.length === 0) {
+      throw new Error("No MCP servers found.");
+    }
+    
+    return mcpServerConfigs;
+  } catch (e) {
+    console.error(`Failed to load MCP config: ${e.message}`);
+    throw e;
+  }
+}
 
 
 export class MCPClient {
@@ -96,13 +114,22 @@ const port = 11318;
 // Configure middleware
 app.use(express.json());
 
+// Add the logging middleware
+app.use((req, res, next) => {
+  console.log(`[${new Date().toISOString()}] ${req.method} ${req.originalUrl} from ${req.ip}`);
+  next();
+});
+
 // Define root endpoint
 app.get('/', (req, res) => {
   res.send('Simple MCP is alive.');
 });
 
 // Add shutdown endpoint
-app.post('/shutdown', (req, res) => {
+app.post('/shutdown', async (req, res) => {
+  // Disconnect from all servers
+  await mcpClient.disconnect();
+
   res.send('Shutting down MCP server');
   console.log('MCP server shutting down by request');
   
@@ -163,5 +190,5 @@ app.listen(port, async () => {
 
   console.log("\n--- avaliable tools ---" + "\n" +
     mcpClient.tools.map((t) => t.name).join("\n")
-  );
+    + "\n");
 });

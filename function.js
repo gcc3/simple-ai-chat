@@ -2,6 +2,7 @@ import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import redirectToUrl from "./functions/redirect_to_url.js";
 import askWolframalpha from "./functions/ask_wolframalpha.js";
+import { pingMcpServer, listMcpFunctions } from "utils/mcpUtils.js";
 
 // `tools` is a generated json from OpenAI API
 export function toolsToFunctions(tools) {
@@ -99,8 +100,8 @@ export function executeFunction(functionName, argsString) {
 
 // Get functions
 // `functions_` is a list of function callable, in browser storage
-// If `functions_` is null, return all functions
-export function getFunctions(functions_ = null) {
+// If `functions_` is null, return all functions, this is used for listing functions
+export async function getFunctions(functions_ = null) {
   let functions = []
   let callables = functions_ ? functions_.split(",") : [];
 
@@ -182,6 +183,20 @@ export function getFunctions(functions_ = null) {
         required: ["url"],
       }
     });
+  }
+
+  // MCP functions
+  if (await pingMcpServer()) {
+    const mcpFunctions = await listMcpFunctions();
+    for (const f of mcpFunctions) {
+      if (!functions_ || callables.includes(f.name)) {
+        functions.push({
+          name: f.name,
+          description: f.description,
+          parameters: f.input_schema,
+        });
+      }
+    }
   }
 
   return functions;

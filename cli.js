@@ -11,7 +11,6 @@ import { pingOllamaAPI, listOllamaModels } from "./utils/ollamaUtils.js";
 import { loadConfig } from "./utils/configUtils.js";
 import { setTime } from "./utils/sessionUtils.js";
 import { testSimpleAIServerConnection } from "./utils/cliUtils.js";
-import { startMcpServer, stopMcpServer } from "./utils/mcpUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
 import { readFileSync } from "fs";
@@ -46,8 +45,15 @@ globalThis.fetch = async (url, options) => {
 
 
 // MCP server
-// Start a local MCP server
-const mcpProcess = startMcpServer();
+// Start a local MCP server using child_process.spawn
+const mcpProcess = spawn('node', ['./mcp.js'], {
+  // detached: true,  // Important: must comment this to avoid black window popup
+  stdio: 'ignore',
+  windowsHide: true,  // *** This prevents black window ***
+});
+
+// Detach the child process from the parent process
+mcpProcess.unref();
 
 
 // M1. Generate SSE

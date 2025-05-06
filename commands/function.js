@@ -9,7 +9,7 @@ export default async function function_(args) {
   const command = args[0];
 
   if (command === "ls" || command === "list") {
-    let functions = getFunctions();
+    let functions = await getFunctions();
 
     if (functions.length === 0) {
       return "No functions.";
