@@ -189,7 +189,8 @@ const Documentation = () => {
         { t("The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.") }
       </div>
       <div>
-        {commands.map((item, index) => (<div key={index}>
+        {commands.map((item, index) => (
+          <div key={index}>
             {item.id && <div id={item.id} className="mt-3">
               - { t(item.title) }
               {item.annotation && <div className="mt-2">{item.annotation}</div>}
