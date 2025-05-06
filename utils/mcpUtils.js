@@ -1,5 +1,6 @@
 // Import child_process module at the top level using ESM syntax
 import { spawn } from 'child_process';
+import fs from 'fs';
 
 
 let mcpProcess = null;
@@ -53,5 +54,24 @@ export function startMcpServer() {
   } catch (error) {
     console.error("Failed to start local MCP server:", error.message);
     return null;
+  }
+}
+
+
+export async function loadMcpConfig(configPath = "./mcpconfig.json") {
+  try {
+    const config = JSON.parse(
+      await fs.promises.readFile(configPath, "utf-8"),
+    );
+    const mcpServerConfigs = config.mcpServers;
+    
+    if (!mcpServerConfigs || mcpServerConfigs.length === 0) {
+      throw new Error("No MCP servers found.");
+    }
+    
+    return mcpServerConfigs;
+  } catch (e) {
+    console.error(`Failed to load MCP config: ${e.message}`);
+    throw e;
   }
 }
