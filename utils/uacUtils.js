@@ -63,7 +63,7 @@ export async function getUacResult(user, ip) {
     if (isUsageExceeded) {
       return {
         success: false,
-        error: "You have exceeded your usage limit. While Simple AI offers free features, the OpenAI API and associated tokens incur costs. Please add funds to your balance to continue.",
+        error: "You have reached your usage limit. Please add credit to your balance in `Usage` page.",
       }
     }
   }
