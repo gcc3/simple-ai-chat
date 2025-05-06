@@ -3,8 +3,8 @@ import { updateUserSetting } from '../utils/userUtils.js';
 
 export default async function function_(args) {
   const usage = "Usage: :function [ls|list]\n"
-              + "       :function use [name]\n"
-              + "       :function unuse [name]\n";
+    + "       :function use [name]\n"
+    + "       :function unuse [name]\n";
 
   const command = args[0];
 
@@ -20,7 +20,7 @@ export default async function function_(args) {
       const callables = functions
         .filter((f) => enabledFunctions.includes(f.name))
         .map((f) => {
-          const args =(() => Object.keys(f.parameters.properties).map((p) => {
+          const args = (() => Object.keys(f.parameters.properties).map((p) => {
             const type = f.parameters.properties[p].type;
             if (type === "string") {
               return `\"${p}\": \"___\"`;
@@ -47,7 +47,7 @@ export default async function function_(args) {
       }
 
       return "Callable functions:\n" + callables + "\n\n"
-           + "Available functions:\n" + availables;
+        + "System functions:\n" + availables;
     }
   }
 
