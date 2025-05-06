@@ -3,13 +3,13 @@ import { updateUserSetting } from '../utils/userUtils.js';
 
 export default async function function_(args) {
   const usage = "Usage: :function [ls|list]\n"
-              + "       :function use [name]\n"
-              + "       :function unuse [name]\n";
+    + "       :function use [name]\n"
+    + "       :function unuse [name]\n";
 
   const command = args[0];
 
   if (command === "ls" || command === "list") {
-    let functions = getFunctions();
+    let functions = await getFunctions();
 
     if (functions.length === 0) {
       return "No functions.";
@@ -20,7 +20,7 @@ export default async function function_(args) {
       const callables = functions
         .filter((f) => enabledFunctions.includes(f.name))
         .map((f) => {
-          const args =(() => Object.keys(f.parameters.properties).map((p) => {
+          const args = (() => Object.keys(f.parameters.properties).map((p) => {
             const type = f.parameters.properties[p].type;
             if (type === "string") {
               return `\"${p}\": \"___\"`;
@@ -47,7 +47,7 @@ export default async function function_(args) {
       }
 
       return "Callable functions:\n" + callables + "\n\n"
-           + "Available functions:\n" + availables;
+           + "System functions:\n" + availables;
     }
   }
 
@@ -67,7 +67,7 @@ export default async function function_(args) {
     }
 
     // Check if the function exists
-    const functions = getFunctions();
+    const functions = await getFunctions();
     const function_ = functions.find((f) => f.name === functionName);
     if (!function_) {
       return "Function not found.";

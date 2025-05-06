@@ -54,7 +54,7 @@ export async function getUacResult(user, ip) {
     if (isFrequenciesExceeded) {
       return {
         success: false,
-        error: "Your usage frequency has exceeded the limit. You can upgrade your subscription to increase the limit.",
+        error: "Your usage frequency has reached the limit. You can upgrade your subscription to increase the limit.",
       }
     }
 
@@ -63,8 +63,9 @@ export async function getUacResult(user, ip) {
     if (isUsageExceeded) {
       return {
         success: false,
-        error: "You have exceeded your usage limit. While Simple AI offers free features, the OpenAI API and associated tokens incur costs. Please add funds to your balance to continue.",
-      }
+        error: "You have reached your usage limit. Please add credit to your balance in `Usage` page.\n" + 
+               "您的使用额度已达到上限，请前往【用量】页面进行充值。"
+      };
     }
   }
 

@@ -10,10 +10,12 @@ import { initializeSessionMemory } from "./utils/sessionUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "./utils/ollamaUtils.js";
 import { loadConfig } from "./utils/configUtils.js";
 import { setTime } from "./utils/sessionUtils.js";
+import { testSimpleAIServerConnection } from "./utils/cliUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
 import { readFileSync } from "fs";
-import { join } from "path";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 
 
 // Disable process warnings (node)
@@ -41,10 +43,17 @@ globalThis.fetch = async (url, options) => {
   return fetch_c(url, options);
 };
 
-// Monkey-patch the console.log to stop print out in the command line
-console.log = function() {};
-console.error = function() {};
-console.warn = function() {};
+
+// MCP server
+// Start a local MCP server using child_process.spawn
+const mcpProcess = spawn('node', ['./mcp.js'], {
+  // detached: true,  // Important: must comment this to avoid black window popup
+  stdio: 'ignore',
+  windowsHide: true,  // *** This prevents black window ***
+});
+
+// Detach the child process from the parent process
+mcpProcess.unref();
 
 
 // M1. Generate SSE
@@ -346,9 +355,12 @@ function printOutput(output, append=false) {
 }
 
 // Get version from package.json
-function getVersion() {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+export function getVersion() {
   try {
-    const packageJsonPath = join(process.cwd(), "package.json");
+    const packageJsonPath = join(__dirname, "package.json");
     const packageJson = JSON.parse(readFileSync(packageJsonPath, "utf-8"));
     return packageJson.version || "";
   } catch (error) {
@@ -357,28 +369,36 @@ function getVersion() {
   }
 }
 
+// In commander.js, the option are converted to camelCase automatically
+// Example: --base-url <url> => opts.baseUrl
 program
   .name("simple-ai-chat")
   .description("simple-ai-chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
   .version(getVersion())
-  .option("-v, --verbose", "enable verbose logging")
+  .option("-v, --verbose", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
-  .action(async (promptArr, opts) => {
-    // Options
-    // Enable verbose logging if requested
+  .action(async (opts) => {
+    // Verbose
     if (opts.verbose) {
+      // Enable verbose logging with labeled messages
       console.log = (...args) => {
         printOutput("DEBUG: " + args.join(' ')); 
       };
 
       console.error = (...args) => {
         printOutput("ERROR: " + args.join(' '));
-      }
+      };
 
       console.warn = (...args) => {
         printOutput("WARNING: " + args.join(' '));
-      }
-    } 
+      };
+    } else {
+      // Disable console output when not in verbose mode
+      // Monkey-patch console methods to disable output
+      console.log = function() {};
+      console.error = function() {};
+      console.warn = function() {};
+    }
 
     // Set the base URL
     if (opts.baseUrl) {
@@ -395,17 +415,14 @@ program
       output: process.stdout,
     });
 
-    try {
-      // Ping the server
-      const pingResponse = await fetch('/api/ping');
-      const responseText = await pingResponse.text();
-      if (responseText !== "Simple AI is alive.") {
-      console.log("Ping response: " + responseText);
-      printOutput("The Simple AI server (\`" + globalThis.serverBaseUrl + "`) is currently unavailable. You can still connect to your local server using the `--base-url` option.");
-      process.exit(1);
+    // Test connection to the server
+    const serverConnectionSuccessful = await testSimpleAIServerConnection();
+    if (!serverConnectionSuccessful) {
+      if (opts.baseUrl !== "https://simple-ai.io") {
+        printOutput("Please check the server (" + globalThis.serverBaseUrl + ") connection.");
+      } else {
+        printOutput("The Simple AI server (`" + globalThis.serverBaseUrl + "`) is currently unavailable. You can still connect to your local server using the `--base-url` option.");
       }
-    } catch (error) {
-      console.error("Error during server ping:", error.message);
       process.exit(1);
     }
 
@@ -473,6 +490,7 @@ program
     await getSystemInfo();
 
     // Command line start
+    printOutput(":help for help.");
     while (true) {
       const input = (await ask(globalThis.model + "> ")).trim();
       if (!input) continue;
@@ -519,6 +537,13 @@ program
 function exitProgram() {
   // Something to do before exit
   localStorage.clear();
+  console.log("Local storage cleared.");
+  
+  // Stop the MCP server if it's running
+  if (mcpProcess) {
+    mcpProcess.kill('SIGINT');
+  }
+  console.log("MCP server stopped.");
 }
 process.on('exit', exitProgram);
 process.on('SIGINT', () => {

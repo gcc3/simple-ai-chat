@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState   } from 'react';
 import { getCommands } from '../command.js';
 import { getFunctions } from '../function.js';
 import { useTranslation, Trans } from 'react-i18next';
@@ -6,6 +6,16 @@ import { useTranslation, Trans } from 'react-i18next';
 const Documentation = () => {
   const { t, ready } = useTranslation("documentation");
   const { t: tt, ready: transReady } = useTranslation("translation");
+
+  const [functions, setFunctions] = useState([]);
+
+  useEffect(() => {
+    const fetchFunctions = async () => {
+      const fetchedFunctions = await getFunctions();
+      setFunctions(fetchedFunctions);
+    };
+    fetchFunctions();
+  }, []);
 
   const quick_starts = [
     { id: "quick_start_0", content: tt("quick_start_0") },
@@ -44,9 +54,6 @@ const Documentation = () => {
   ];
 
   const commands = getCommands();
-
-  const functions = getFunctions();
-
   const shortcuts = [
     { action: t("Stop generating. (`:stop`)"), shortcut: "⌃C", condition: t("Generating.") },
     { action: t("Clear output. (`:clear`)"), shortcut: "⌃R", condition: t("Has output.") },
@@ -125,7 +132,7 @@ const Documentation = () => {
       </div>
       <div id="introduction" className="mt-5">{ t("Introduction") }</div>
       <div className="mt-2">
-        { t("introduction") }
+        { t("Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.") }
       </div>
       <div className="mt-2">
         - { t("What I can do with Simple AI?") }<br/>
@@ -137,7 +144,7 @@ const Documentation = () => {
           { t("* Upload an image and inquire about it.") }<br/>
           { t("* Upload a text, Word or PDF file and ask about the content.") }<br/>
           { t("* Access a wide range of knowledge.") }<br/>
-          { t("* Generate source code from nature language.") }<br/>
+          { t("* Generate source code from natural language.") }<br/>
           { t("* Give GPT a preset instruction, or role play.") }<br/>
         </div>
         <div className="mt-1">
@@ -182,7 +189,8 @@ const Documentation = () => {
         { t("The Commands is designed to mimic a Unix shell. You can use `Tab` key to autocomplete. Use ↑ and ↓ key to navigate between command history. Use Control + C to stop.") }
       </div>
       <div>
-        {commands.map((item, index) => (<div key={index}>
+        {commands.map((item, index) => (
+          <div key={index}>
             {item.id && <div id={item.id} className="mt-3">
               - { t(item.title) }
               {item.annotation && <div className="mt-2">{item.annotation}</div>}

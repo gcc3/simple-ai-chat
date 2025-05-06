@@ -73,7 +73,7 @@
   "* Upload an image and inquire about it.": "Upload een afbeelding en vraag erover.",
   "* Upload a text, Word or PDF file and ask about the content.": "Upload een tekst-, Word- of PDF-bestand en vraag naar de inhoud.",
   "* Access a wide range of knowledge.": "Toegang tot een breed scala aan kennis.",
-  "* Generate source code from nature language.": "Genereer broncode vanuit natuurlijke taal.",
+  "* Generate source code from natural language.": "Genereer broncode vanuit natuurlijke taal.",
   "* Give GPT a preset instruction, or role play.": "Geef GPT een vooraf ingestelde instructie of doe een rollenspel.",
   "2. Advanced Use": "2. Gevorderd Gebruik",
   "* Solve complex mathematical problems. (with WolframAlpha)": "Los complexe wiskundige problemen op. (met WolframAlpha)",
@@ -124,11 +124,12 @@
   "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "De cursor is gefocust op het invoerveld. De huidige invoer begint met ':'. Er is een vorige opdracht in de opdrachthistorie.",
   "Internationalization and localization": "Internationalisatie en lokalisatie",
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI ondersteunt 18 talen: Arabisch, Bengaals, Chinees, Nederlands, Engels, Frans, Duits, Hindi, Indonesisch, Italiaans, Japans, Koreaans, Pools, Portugees, Russisch, Spaans, Zweeds, Turks. Laat het ons weten als u ondersteuning voor uw taal nodig heeft.",
-  "introduction": "Hallo, welkom bij Simple AI (simple-ai.io)! 🚀 Ik werk eraan om een professionelere en programmeur-vriendelijke gebruikersinterface te bieden voor interactie met de AI.",
   "Command options": "Commando opties",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "We bieden verschillende ingebouwde functies die zowel gebruikers als de AI in staat stellen om informatie op te halen uit de API of bepaalde taken uit te voeren. Om een lijst van beschikbare functies te bekijken, gebruik je het `:function ls` commando.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "U kunt de Control-toets indrukken (voor macOS drukt u op de command-toets) en op de modelnaam klikken, een `:session attach` commando met de sessie-ID wordt automatisch naar uw klembord gekopieerd.",
   "Models": "Modellen",
   "* Link with your own data. Support link to relational database.": "* Koppel met je eigen data. Ondersteunt koppelingen met relationele databases.",
-  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Ondersteuning voor bestanden en relationele databasequery's. Als een store wordt gebruikt, worden de queryresultaten ingevoegd als prompts om deskundige antwoorden te geven. Meerdere data stores kunnen tegelijkertijd worden gebruikt."
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Ondersteuning voor bestanden en relationele databasequery's. Als een store wordt gebruikt, worden de queryresultaten ingevoegd als prompts om deskundige antwoorden te geven. Meerdere data stores kunnen tegelijkertijd worden gebruikt.",
+  "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Hoi, welkom bij Simple AI! 🚀 Ik werk eraan om een professionelere en programmeurvriendelijke gebruikersinterface te bieden voor interactie met de AI.",
+  "CLI (Command-line Interface)": "CLI (opdrachtregelinterface)"
 }

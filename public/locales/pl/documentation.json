@@ -73,7 +73,7 @@
   "* Upload an image and inquire about it.": "Załaduj obraz i zapytaj o niego.",
   "* Upload a text, Word or PDF file and ask about the content.": "Załaduj plik tekstowy, Word lub PDF i zapytaj o zawartość.",
   "* Access a wide range of knowledge.": "Uzyskaj dostęp do szerokiej gamy wiedzy.",
-  "* Generate source code from nature language.": "Generuj kod źródłowy z języka naturalnego.",
+  "* Generate source code from natural language.": "Generuj kod źródłowy z języka naturalnego.",
   "* Give GPT a preset instruction, or role play.": "Podaj GPT wstępnie ustawioną instrukcję lub zagraj w role play.",
   "2. Advanced Use": "Zaawansowane użytkowanie",
   "* Solve complex mathematical problems. (with WolframAlpha)": "Rozwiązywanie skomplikowanych problemów matematycznych. (z użyciem WolframAlpha)",
@@ -124,11 +124,12 @@
   "Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.": "Kursor jest ustawiony na obszarze wprowadzania. Aktualne wejście zaczyna się od `:`. W historii poleceń znajduje się poprzednie polecenie.",
   "Internationalization and localization": "Internacjonalizacja i lokalizacja",
   "Simple AI supports 18 languages: Arabic, Bengali, Chinese, Dutch, English, French, German, Hindi, Indonesian, Italian, Japanese, Korean, Polish, Portuguese, Russian, Spanish, Swedish, Turkish. Please let us know if you need support for your language.": "Simple AI obsługuje 18 języków: arabski, bengalski, chiński, holenderski, angielski, francuski, niemiecki, hindi, indonezyjski, włoski, japoński, koreański, polski, portugalski, rosyjski, hiszpański, szwedzki, turecki. Prosimy dać nam znać, jeśli potrzebujesz wsparcia dla swojego języka.",
-  "introduction": "Cześć, witaj w Simple AI (simple-ai.io)! 🚀 Pracuję nad zapewnieniem bardziej profesjonalnego i przyjaznego dla programistów interfejsu użytkownika do interakcji z AI.",
   "Command options": "Opcje komend",
   "We offer several built-in functions that allow both users and the AI to retrieve information from the API or perform certain tasks. To view a list of available functions, use the `:function ls` command.": "Oferujemy kilka wbudowanych funkcji, które pozwalają zarówno użytkownikom, jak i AI na pobieranie informacji z API lub wykonywanie określonych zadań. Aby wyświetlić listę dostępnych funkcji, użyj polecenia `:function ls`.",
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Możesz nacisnąć klawisz Control (na macOS naciśnij klawisz command) i kliknąć nazwę modelu, komenda `:session attach` wraz z ID sesji zostanie automatycznie skopiowana do twojego schowka.",
   "Models": "Modele",
   "* Link with your own data. Support link to relational database.": "* Połącz z własnymi danymi. Obsługuje połączenia z relacyjną bazą danych.",
-  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Wsparcie dla plików i zapytań do relacyjnych baz danych. Jeśli zostanie użyty magazyn danych, wyniki zapytań zostaną wstawione jako podpowiedzi, aby zapewnić kompetentne odpowiedzi. Wiele magazynów danych może być używanych jednocześnie."
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Wsparcie dla plików i zapytań do relacyjnych baz danych. Jeśli zostanie użyty magazyn danych, wyniki zapytań zostaną wstawione jako podpowiedzi, aby zapewnić kompetentne odpowiedzi. Wiele magazynów danych może być używanych jednocześnie.",
+  "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Cześć, witamy w Simple AI! 🚀 Pracuję nad zapewnieniem bardziej profesjonalnego i przyjaznego programistom interfejsu użytkownika do interakcji z AI.",
+  "CLI (Command-line Interface)": "CLI (Interfejs wiersza poleceń)"
 }
