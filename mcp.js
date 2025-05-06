@@ -178,6 +178,22 @@ app.post('/tool/refresh', async (req, res) => {
   }
 });
 
+// Call tool
+app.post('/tool/call', async (req, res) => {
+  const { tool, args } = req.body;
+  if (!tool || !args) {
+    return res.status(400).send("Missing tool name or arguments");
+  }
+
+  try {
+    const result = await mcpClient.callTool(tool, args);
+    res.json(result);
+  } catch (e) {
+    console.error("Error calling tool: ", e);
+    res.status(500).send("Error calling tool");
+  }
+});
+
 // Start the server
 app.listen(port, async () => {
   console.log(`Simple MCP server is running on http://localhost:${port}`);
@@ -186,8 +202,9 @@ app.listen(port, async () => {
   const mcpConfig = await loadMcpConfig();
 
   console.log("\n--- available endpoints ---" + "\n" +
-    "GET  /" + "\n" +
+    "GET  /" + "\n" +  
     "GET  /tool/list" + "\n" +
+    "POST /tool/call" + "\n" +
     "POST /tool/refresh" + "\n" +
     "GET  /servers" + "\n" +
     "POST /shutdown"
