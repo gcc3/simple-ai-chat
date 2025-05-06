@@ -30,8 +30,6 @@ export async function stopMcpServer() {
       mcpProcess.kill('SIGINT'); // Send SIGINT signal to the process
       mcpProcess = null; // Clear the reference to the process
     }
-
-    console.log('MCP server shutdown requested');
   } catch (error) {
     console.error('Failed to stop MCP server:', error.message);
   }
@@ -42,14 +40,13 @@ export function startMcpServer() {
   try {
     // Start the MCP server using child_process.spawn
     mcpProcess = spawn('node', ['./mcp.js'], {
-      detached: true,
+      // detached: true,  // Important: must comment this to avoid black window popup
       stdio: 'ignore',
+      windowsHide: true,  // *** This prevents black window ***
     });
 
     // Detach the child process from the parent process
     mcpProcess.unref();
-
-    console.log("Started local MCP server on port 11318");
     return mcpProcess;
   } catch (error) {
     console.error("Failed to start local MCP server:", error.message);
@@ -64,7 +61,6 @@ export async function loadMcpConfig(configPath = "./mcpconfig.json") {
       await fs.promises.readFile(configPath, "utf-8"),
     );
     const mcpServerConfigs = config.mcpServers;
-    
     if (!mcpServerConfigs || mcpServerConfigs.length === 0) {
       throw new Error("No MCP servers found.");
     }
