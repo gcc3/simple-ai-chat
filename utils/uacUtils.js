@@ -54,7 +54,7 @@ export async function getUacResult(user, ip) {
     if (isFrequenciesExceeded) {
       return {
         success: false,
-        error: "Your usage frequency has exceeded the limit. You can upgrade your subscription to increase the limit.",
+        error: "Your usage frequency has reached the limit. You can upgrade your subscription to increase the limit.",
       }
     }
 
