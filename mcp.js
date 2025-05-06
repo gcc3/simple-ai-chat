@@ -16,6 +16,14 @@ import cors from 'cors';
 
 async function loadMcpConfig(configPath = "./mcpconfig.json") {
   try {
+    // Check if the config file exists
+    if (!fs.existsSync(configPath)) {
+      // Copy from ./mcpconfig.json.example
+      const exampleConfigPath = "./mcpconfig.json.example";
+      await fs.promises.copyFile(exampleConfigPath, configPath);
+      console.warn(`Config file not found. Copied from ${exampleConfigPath}.`);
+    }
+
     const config = JSON.parse(
       await fs.promises.readFile(configPath, "utf-8"),
     );
@@ -23,7 +31,7 @@ async function loadMcpConfig(configPath = "./mcpconfig.json") {
     if (!mcpServerConfigs || mcpServerConfigs.length === 0) {
       throw new Error("No MCP servers found.");
     }
-    
+
     return mcpServerConfigs;
   } catch (e) {
     console.error(`Failed to load MCP config: ${e.message}`);
@@ -87,7 +95,7 @@ export class MCPClient {
     if (!callServer) {
       throw new Error(`Server not found for tool: ${toolName}`);
     }
-    
+
     const result = await callServer.client.callTool({
       name: toolName,
       arguments: toolArgs,
@@ -134,7 +142,7 @@ app.post('/shutdown', async (req, res) => {
 
   res.send('Shutting down MCP server');
   console.log('MCP server shutting down by request');
-  
+
   // Give time for the response to be sent before shutting down
   setTimeout(() => {
     process.exit(0);
@@ -174,6 +182,9 @@ app.post('/refresh', async (req, res) => {
 app.listen(port, async () => {
   console.log(`Simple MCP server is running on http://localhost:${port}`);
 
+  // Load MCP server configuration
+  const mcpConfig = await loadMcpConfig();
+
   console.log("\n--- avaliable endpoints ---" + "\n" +
     "GET  /" + "\n" +
     "GET  /tools" + "\n" +
@@ -182,15 +193,15 @@ app.listen(port, async () => {
     "POST /shutdown"
   );
 
-  // Load MCP server configuration
-  const mcpConfig = await loadMcpConfig();
-
   // Connect to each MCP server
   for (let s in mcpConfig) {
     await mcpClient.connect(s, mcpConfig[s]);
   }
 
-  console.log("\n--- avaliable tools ---" + "\n" +
-    mcpClient.tools.map((t) => t.name).join("\n")
-    + "\n");
+  console.log("\n--- avaliable tools ---");
+  if (mcpClient && mcpClient.tools.length > 0) {
+    console.log(mcpClient.tools.map((t) => t.name).join("\n") + "\n");
+  } else {
+    console.log("No available tools.\n");
+  }
 });
