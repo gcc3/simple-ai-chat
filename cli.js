@@ -10,6 +10,8 @@ import { initializeSessionMemory } from "./utils/sessionUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "./utils/ollamaUtils.js";
 import { loadConfig } from "./utils/configUtils.js";
 import { setTime } from "./utils/sessionUtils.js";
+import { testSimpleAIServerConnection } from "./utils/cliUtils.js";
+import { startMcpServer, stopMcpServer } from "./utils/mcpUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
 import { readFileSync } from "fs";
@@ -399,17 +401,13 @@ program
       output: process.stdout,
     });
 
-    try {
-      // Ping the server
-      const pingResponse = await fetch('/api/ping');
-      const responseText = await pingResponse.text();
-      if (responseText !== "Simple AI is alive.") {
-      console.log("Ping response: " + responseText);
-      printOutput("The Simple AI server (\`" + globalThis.serverBaseUrl + "`) is currently unavailable. You can still connect to your local server using the `--base-url` option.");
-      process.exit(1);
-      }
-    } catch (error) {
-      console.error("Error during server ping:", error.message);
+    // Start a local MCP server
+    startMcpServer();
+
+    // Test connection to the server
+    const serverConnectionSuccessful = await testSimpleAIServerConnection();
+    if (!serverConnectionSuccessful) {
+      printOutput("The Simple AI server (`" + globalThis.serverBaseUrl + "`) is currently unavailable. You can still connect to your local server using the `--base-url` option.");
       process.exit(1);
     }
 
@@ -526,6 +524,9 @@ program
 function exitProgram() {
   // Something to do before exit
   localStorage.clear();
+  
+  // Stop the MCP server if it's running
+  stopMcpServer();
 }
 process.on('exit', exitProgram);
 process.on('SIGINT', () => {
