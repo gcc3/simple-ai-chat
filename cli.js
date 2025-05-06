@@ -420,9 +420,6 @@ program
       process.exit(1);
     }
 
-    // Show a help message
-    printOutput(":help for help.");
-
     // Initialization
     initializeStorage();
     initializeSessionMemory();
@@ -487,6 +484,7 @@ program
     await getSystemInfo();
 
     // Command line start
+    printOutput(":help for help.");
     while (true) {
       const input = (await ask(globalThis.model + "> ")).trim();
       if (!input) continue;
