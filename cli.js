@@ -44,7 +44,10 @@ globalThis.fetch = async (url, options) => {
   return fetch_c(url, options);
 };
 
-// Note: Console logging functions will be configured based on verbose flag later
+
+// MCP server
+// Start a local MCP server
+const mcpProcess = startMcpServer();
 
 
 // M1. Generate SSE
@@ -406,9 +409,6 @@ program
       output: process.stdout,
     });
 
-    // Start a local MCP server
-    startMcpServer();
-
     // Test connection to the server
     const serverConnectionSuccessful = await testSimpleAIServerConnection();
     if (!serverConnectionSuccessful) {
@@ -533,7 +533,7 @@ function exitProgram() {
   localStorage.clear();
   
   // Stop the MCP server if it's running
-  stopMcpServer();
+  mcpProcess && mcpProcess.kill();
 }
 process.on('exit', exitProgram);
 process.on('SIGINT', () => {
