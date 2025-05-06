@@ -21,7 +21,7 @@ export default async function unuse(args) {
   }
 
   // Find function
-  const functions = getFunctions();
+  const functions = await getFunctions();
   const function_ = functions.find((f) => f.name === name);
   if (function_) {
     // Remove from localhostStorage and remote

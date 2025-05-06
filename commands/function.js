@@ -67,7 +67,7 @@ export default async function function_(args) {
     }
 
     // Check if the function exists
-    const functions = getFunctions();
+    const functions = await getFunctions();
     const function_ = functions.find((f) => f.name === functionName);
     if (!function_) {
       return "Function not found.";

@@ -36,7 +36,7 @@ export default async function use(args) {
   }
 
   // Find function
-  const functions = getFunctions();
+  const functions = await getFunctions();
   const function_ = functions.find((f) => f.name === name);
   if (function_) {
     // Add to localhostStorage and remote

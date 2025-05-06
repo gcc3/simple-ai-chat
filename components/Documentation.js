@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, useState   } from 'react';
 import { getCommands } from '../command.js';
 import { getFunctions } from '../function.js';
 import { useTranslation, Trans } from 'react-i18next';
@@ -6,6 +6,17 @@ import { useTranslation, Trans } from 'react-i18next';
 const Documentation = () => {
   const { t, ready } = useTranslation("documentation");
   const { t: tt, ready: transReady } = useTranslation("translation");
+
+  const [functions, setFunctions] = useState([]);
+
+  useEffect(() => {
+    const fetchFunctions = async () => {
+      const fetchedFunctions = await getFunctions();
+      setFunctions(fetchedFunctions);
+    };
+    fetchFunctions();
+  }, []);
+
 
   const quick_starts = [
     { id: "quick_start_0", content: tt("quick_start_0") },
@@ -44,9 +55,6 @@ const Documentation = () => {
   ];
 
   const commands = getCommands();
-
-  const functions = getFunctions();
-
   const shortcuts = [
     { action: t("Stop generating. (`:stop`)"), shortcut: "⌃C", condition: t("Generating.") },
     { action: t("Clear output. (`:clear`)"), shortcut: "⌃R", condition: t("Has output.") },
