@@ -413,6 +413,9 @@ program
       process.exit(1);
     }
 
+    // Show a help message
+    printOutput(":help for help.");
+
     // Initialization
     initializeStorage();
     initializeSessionMemory();
