@@ -117,6 +117,30 @@ app.get('/tools', (req, res) => {
   res.json(mcpClient.tools);
 });
 
+// Servers
+app.get('/servers', (req, res) => {
+  res.json(Object.fromEntries(mcpClient.servers));
+});
+
+// Refresh server list
+app.post('/refresh', async (req, res) => {
+  try {
+    // Disconnect from all servers
+    await mcpClient.disconnect();
+
+    // Reload MCP server configuration
+    const mcpConfig = await loadMcpConfig();
+    for (let s in mcpConfig) {
+      await mcpClient.connect(s, mcpConfig[s]);
+    }
+
+    res.json(mcpClient.tools);
+  } catch (e) {
+    console.error("Error refreshing MCP servers: ", e);
+    res.status(500).send("Error refreshing MCP servers");
+  }
+});
+
 // Start the server
 app.listen(port, async () => {
   console.log(`Simple MCP server is running on http://localhost:${port}`);
