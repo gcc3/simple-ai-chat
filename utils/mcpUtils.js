@@ -26,7 +26,7 @@ export async function pingMcpServer(baseUrl = 'http://localhost:11318') {
 // List functions
 export async function listMcpFunctions() {
   try {
-    const response = await fetch('http://localhost:11318/tools');
+    const response = await fetch('http://localhost:11318/tool/list');
     const data = await response.json();
     return data;
   } catch (error) {

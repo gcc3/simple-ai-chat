@@ -185,7 +185,7 @@ export function getCommands() {
     { id: "", title: "", annotation: "", command: ":logout", options: "", short_description: "Logout user.", description: "" },
     { id: "commands-config", title: "Information", annotation: "", command: ":info", options: "", short_description: "Show local config.", description: "Show local configurations and session configurations that saved in browser session storage or local storage." },
     { id: "", title: "", annotation: "", command: ":system", options: "", short_description: "Show system config.", description: "System configuration in server." },
-    { id: "commands-cli", title: "CLI (Command-line Interface)", annotation: "", command: ":exit", options: "", short_description: "Exit the program.", description: "This command only avalibale in command-line interface." },
+    { id: "commands-cli", title: "CLI (Command-line Interface)", annotation: "", command: ":exit", options: "", short_description: "Exit the program.", description: "This command only available in command-line interface." },
   ];
   return commands;
 }
