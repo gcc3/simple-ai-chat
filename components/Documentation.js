@@ -137,7 +137,7 @@ const Documentation = () => {
           { t("* Upload an image and inquire about it.") }<br/>
           { t("* Upload a text, Word or PDF file and ask about the content.") }<br/>
           { t("* Access a wide range of knowledge.") }<br/>
-          { t("* Generate source code from nature language.") }<br/>
+          { t("* Generate source code from natural language.") }<br/>
           { t("* Give GPT a preset instruction, or role play.") }<br/>
         </div>
         <div className="mt-1">

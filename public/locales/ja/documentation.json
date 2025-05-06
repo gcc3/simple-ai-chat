@@ -73,7 +73,7 @@
   "* Upload an image and inquire about it.": "* 画像をアップロードして問い合わせる。",
   "* Upload a text, Word or PDF file and ask about the content.": "* テキスト、Word、PDFファイルをアップロードして内容について尋ねる。",
   "* Access a wide range of knowledge.": "* 広範な知識にアクセスする。",
-  "* Generate source code from nature language.": "* 自然言語からソースコードを生成する。",
+  "* Generate source code from natural language.": "* 自然言語からソースコードを生成する。",
   "* Give GPT a preset instruction, or role play.": "* GPTにプリセットの指示を与える、またはロールプレイをする。",
   "2. Advanced Use": "2. 上級者向けの使用",
   "* Solve complex mathematical problems. (with WolframAlpha)": "* 複雑な数学の問題を解決する。（WolframAlphaを使用）",
