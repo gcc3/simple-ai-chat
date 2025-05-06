@@ -145,6 +145,14 @@ app.post('/refresh', async (req, res) => {
 app.listen(port, async () => {
   console.log(`Simple MCP server is running on http://localhost:${port}`);
 
+  console.log("\n--- avaliable endpoints ---" + "\n" +
+    "GET  /" + "\n" +
+    "GET  /tools" + "\n" +
+    "GET  /servers" + "\n" +
+    "POST /refresh" + "\n" +
+    "POST /shutdown"
+  );
+
   // Load MCP server configuration
   const mcpConfig = await loadMcpConfig();
 
@@ -152,4 +160,8 @@ app.listen(port, async () => {
   for (let s in mcpConfig) {
     await mcpClient.connect(s, mcpConfig[s]);
   }
+
+  console.log("\n--- avaliable tools ---" + "\n" +
+    mcpClient.tools.map((t) => t.name).join("\n")
+  );
 });
