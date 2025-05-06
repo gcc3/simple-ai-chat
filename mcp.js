@@ -132,7 +132,7 @@ app.use((req, res, next) => {
 
 // Define root endpoint
 app.get('/', (req, res) => {
-  res.send('Simple MCP is alive.');
+  res.send('Simple MCP is running.');
 });
 
 // Add shutdown endpoint

@@ -17,7 +17,7 @@ export async function pingMcpServer(baseUrl = 'http://localhost:11318') {
       return false;
     }
     const text = await response.text();
-    return text === 'Simple MCP is alive.';
+    return text === 'Simple MCP is running.';
   } catch {
     return false;
   }
