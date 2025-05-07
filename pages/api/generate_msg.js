@@ -6,7 +6,7 @@ import { getUacResult } from "utils/uacUtils";
 import { getSystemConfigurations } from "utils/systemUtils";
 import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
-import { executeFunctions, getTools } from "function.js";
+import { executeFunctions } from "function.js";
 
 // Input output type
 const TYPE = {
@@ -25,10 +25,8 @@ export default async function(req, res) {
   const files = req.body.files || null;
 
   // Output
-  let output = "";
-  let outputType = TYPE.NORMAL;
+  // This is only for generating messages, so no need output here.
   let eval_ = "";
-  let toolCalls = [];
   let events = [];
 
   // Config (input)
@@ -49,10 +47,8 @@ export default async function(req, res) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
 
-  // Time
-  let time = Number(time_);
-
   // Authentication
+  // TODO, add authentication, only allow authenticated users to access this API
   const authResult = authenticate(req);
   let user = null;
   let authUser = null;
@@ -131,15 +127,15 @@ export default async function(req, res) {
 
   // Type II. Tool calls (function calling) input
   // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
-  // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
+  // Example: !func1(param1),!func2(param2),!func3(param3) T=[{"index:0..."}] R=3:18 PM Q=Hello
   let functionNames = [];    // functionc called
   let functionCalls = [];    // function calls in input
-  let functionResults = [];  // function call results
+  let functionCallingResults = [];  // function call results
   if (input.startsWith("!")) {
     inputType = TYPE.TOOL_CALL;
     console.log(chalk.cyanBright("\nInput Tool Calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
-
+ 
     // OpenAI support function calling in tool calls.
     console.log("\n--- function calling ---");
 
@@ -148,32 +144,49 @@ export default async function(req, res) {
     console.log("Functions: " + JSON.stringify(functions));
 
     // Tool calls
-    functionCalls = JSON.parse(input.split("T=")[1].trim().split("Q=")[0].trim());
+    functionCalls = JSON.parse(input.split("T=")[1].trim().split("R=")[0].trim());
 
-    // Replace input with original
-    input = input.split("Q=")[1];
+    // Tool calls result (frontend)
+    functionCallingResults = JSON.parse(input.split("T=")[1].split("Q=")[0].trim().split("R=")[1].trim());
+    if (functionCallingResults && functionCallingResults.length > 0) {
+      console.log("Frontend function calling results: " + JSON.stringify(functionCallingResults));
+    }
 
-    // Execute function
-    functionResults = await executeFunctions(functions);
-    console.log("-> result:" + JSON.stringify(functionResults) + "\n");
-    if (functionResults.length > 0) {
-      for (let i = 0; i < functionResults.length; i++) {
-        const f = functionResults[i];
-        const c = functionCalls[i];  // not using here.
+    // Backend function calling
+    if (functionCallingResults.length == 0) {
+      // Result format:
+      // {
+      //   success: true,
+      //   function: f,
+      //   message: result.message,
+      //   event: result.event,
+      // }
+      functionCallingResults = await executeFunctions(functions);
+      console.log("Backend function calling result:" + JSON.stringify(functionCallingResults));
 
-        // Add function name
-        const functionName = f.function.split("(")[0].trim();
-        if (functionNames.indexOf(functionName) === -1) {
-          functionNames.push(functionName);
-        }
+      // Some results process
+      if (functionCallingResults.length > 0) {
+        for (let i = 0; i < functionCallingResults.length; i++) {
+          const f = functionCallingResults[i];
+          const c = functionCalls[i];  // not using here.
 
-        // Trigger event
-        // Function trigger event
-        if (f.event) {
-          events.push(f.event);
+          // Add function name
+          const functionName = f.function.split("(")[0].trim();
+          if (functionNames.indexOf(functionName) === -1) {
+            functionNames.push(functionName);
+          }
+
+          // Trigger frontend event
+          if (f.event) {
+            const event = JSON.stringify(f.event);
+            res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
+          }
         }
       }
     }
+
+    // Replace input with original user input
+    input = input.split("Q=")[1].trim();
   }
 
   try {
@@ -195,11 +208,6 @@ export default async function(req, res) {
                                        // Callbacks
                                        null, null);
     
-    // Tools
-    console.log("\n--- tools ---");
-    let tools = await getTools(functions_);
-    console.log(JSON.stringify(tools));
-
     console.log("\n--- messages ---");
     console.log(JSON.stringify(msg.messages));
 
