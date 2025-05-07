@@ -2245,7 +2245,10 @@ export default function Home() {
         const autocomplete = async (prefix, useQuates = false) => {
           if (elInput.value.startsWith(prefix)) {
             const nameToBeComleted = elInput.value.replace(prefix, "").replace(/^\"+/, '').replace(/\"$/, '');
+
+            // Get auto complete options
             const options = await getAutoCompleteOptions(prefix, nameToBeComleted);
+            
             if (options.includes(nameToBeComleted)) {
               // Set the input to next option
               const nextOption = options[(options.indexOf(nameToBeComleted) + 1) % options.length];
@@ -2286,6 +2289,7 @@ export default function Home() {
         autocomplete(":lang use ");
         autocomplete(":user set ");
         autocomplete(":set ");
+        autocomplete(":function ", true);
         autocomplete(":function use ", true);
         autocomplete(":function unuse ", true);
         autocomplete(":use ", true);

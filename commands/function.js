@@ -3,8 +3,9 @@ import { updateUserSetting } from '../utils/userUtils.js';
 
 export default async function function_(args) {
   const usage = "Usage: :function [ls|list]\n"
-    + "       :function use [name]\n"
-    + "       :function unuse [name]\n";
+              + "       :function [name]\n"
+              + "       :function use [name]\n"
+              + "       :function unuse [name]\n";
 
   const command = args[0];
 
@@ -121,6 +122,28 @@ export default async function function_(args) {
     }
 
     return "Function \`" + functionName + "\` is disabled for calling.";
+  }
+
+  // Function info
+  // :function [name]
+  if (args.length == 1) {
+    let functionName = args[0];
+    if (functionName.startsWith("\"") && functionName.endsWith("\"")) {
+      functionName = functionName.slice(1, -1);
+    }
+
+    if (!functionName) {
+      return "Invalid function name.";
+    }
+
+    // Check if the function exists
+    const functions = await getFunctions();
+    const function_ = functions.find((f) => f.name === functionName);
+    if (!function_) {
+      return "Function not found.";
+    }
+
+    return JSON.stringify(function_, null, 2);
   }
 
   return usage;
