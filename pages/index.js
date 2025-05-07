@@ -2008,8 +2008,12 @@ export default function Home() {
       });
     }
 
-    // Print raw output
-    console.log("Output: \n" + output);
+    // Print output result
+    if (output) {
+      console.log(output);
+    } else {
+      console.log("(No output)");
+    }
   }
 
   // M0. Generate (without SSE)
