@@ -20,7 +20,6 @@ export default async function function_(args) {
 
       // Callable functions
       let callables = functions
-        .concat(mcpFunctionList)
         .map((f) => {
           const args = (() => Object.keys(f.parameters.properties).map((p) => {
             const type = f.parameters.properties[p].type;
