@@ -210,7 +210,7 @@ export default async function(req, res) {
     
     console.log("\n--- messages ---");
     console.log(JSON.stringify(msg.messages));
-    consoleg.log("\nMessage completed.\n");
+    console.log("\nMessage completed.\n");
 
     // Result
     res.status(200).json({
