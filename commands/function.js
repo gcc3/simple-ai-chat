@@ -18,7 +18,7 @@ export default async function function_(args) {
       const enabledFunctions = (localStorage.getItem("functions")).split(",");
 
       // Callable functions
-      const callables = functions
+      let callables = functions
         .filter((f) => enabledFunctions.includes(f.name))
         .map((f) => {
           const args = (() => Object.keys(f.parameters.properties).map((p) => {
@@ -35,6 +35,10 @@ export default async function function_(args) {
           return `!${f.name}({ ${args} })`;
         }).join("\n");
 
+      if (callables.length === 0) {
+        callables = "No callable functions.";
+      }
+
       // Available functions
       let availables = "\\" + functions.map((f) => {
         return f.name;
@@ -45,6 +49,10 @@ export default async function function_(args) {
         if (enabledFunctions.includes(f.name)) {
           availables = availables.replaceAll("\\" + f.name, "*\\" + f.name);
         }
+      }
+
+      if (availables.length === 0) {
+        availables = "No available functions.";
       }
 
       return "Callable functions:\n" + callables + "\n\n"

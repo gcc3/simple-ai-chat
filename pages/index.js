@@ -1892,7 +1892,7 @@ export default function Home() {
       throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
     }
     const msg = msgData.result.msg;
-    console.log("Messages: " + JSON.stringify(msg));
+    console.log("Messages: " + JSON.stringify(msg.messages));
 
     const openai = new OpenAI({
       baseURL: config.base_url,
