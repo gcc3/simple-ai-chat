@@ -12,6 +12,7 @@ import { getUser, addUserUsage } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
 import { getModels } from "utils/sqliteUtils.js";
+import { printRequest } from "utils/printUtils";
 
 // Input output type
 const TYPE = {
@@ -52,7 +53,7 @@ export default async function(req, res) {
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
   const lang = req.body.lang || "en-US";
-  const use_system_role = req.body.use_system_role || false;
+  const use_system_role = req.body.use_system_role || true;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
@@ -125,12 +126,13 @@ export default async function(req, res) {
     + "model: " + model + "\n"
     + "temperature: " + sysconf.temperature + "\n"
     + "top_p: " + sysconf.top_p + "\n"
+    + "use_system_role: " + use_system_role + "\n"
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + sysconf.use_function_calling + "\n"
     + "use_node_ai: " + sysconf.use_node_ai + "\n"
-    + "use_lcation: " + use_location + "\n"
+    + "use_location: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
     + "functions: " + (functions_ || "___") + "\n"
     + "role: " + (role || "___") + "\n"
@@ -202,9 +204,19 @@ export default async function(req, res) {
                                        user, model,
                                        input, inputType, files, images,
                                        session, mem_length,
+
+                                       // Role, Stores, Node
                                        role, stores, node,
-                                       use_location, location, 
-                                       sysconf.use_function_calling, functionCalls, functionResults);
+
+                                       // Location info
+                                       use_location, location,
+
+                                       // Function calling
+                                       sysconf.use_function_calling,
+                                       functionCalls, functionResults,
+                                      
+                                       // Callbacks
+                                       null, null);
     
     input_images = msg.input_images;
 

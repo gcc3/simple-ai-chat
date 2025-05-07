@@ -13,6 +13,7 @@ import { getSystemConfigurations } from "utils/systemUtils";
 import { findNode } from "utils/nodeUtils.js";
 import { ensureSession } from "utils/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";
+import { printRequest } from "utils/printUtils";
 
 // Input output type
 const TYPE = {
@@ -74,7 +75,7 @@ export default async function (req, res) {
   const use_location = req.query.use_location === "true" ? true : false;
   const location = req.query.location || "";
   const lang = req.query.lang || "en-US";
-  const use_system_role = req.query.use_system_role === "true" ? true : false;
+  const use_system_role = req.query.use_system_role || true;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
@@ -169,12 +170,13 @@ export default async function (req, res) {
     + "model: " + model + "\n"
     + "temperature: " + sysconf.temperature + "\n"
     + "top_p: " + sysconf.top_p + "\n"
+    + "use_system_role: " + use_system_role + "\n"
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + sysconf.use_function_calling + "\n"
     + "use_node_ai: " + sysconf.use_node_ai + "\n"
-    + "use_lcation: " + use_location + "\n"
+    + "use_location: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
     + "functions: " + (functions_ || "___") + "\n"
     + "role: " + (role || "___") + "\n"
@@ -250,11 +252,18 @@ export default async function (req, res) {
                                        user, model,
                                        input, inputType, files, images, 
                                        session, mem_length,
-                                       role, stores, node, 
-                                       use_location, location,
-                                       sysconf.use_function_calling, functionCalls, functionResults,
 
-                                       // these 2 are callbacks
+                                       // Role, Stores, Node
+                                       role, stores, node,
+
+                                       // Location info
+                                       use_location, location,
+                                       
+                                       // Function calling
+                                       sysconf.use_function_calling, 
+                                       functionCalls, functionResults,
+
+                                       // Callbacks
                                        updateStatus, streamOutput);
 
     updateStatus("Pre-generating finished.");

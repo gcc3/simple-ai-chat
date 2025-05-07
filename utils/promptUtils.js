@@ -38,9 +38,18 @@ const sysconf = getSystemConfigurations();
 export async function generateMessages(use_system_role, lang,
                                        user, model, input, inputType, files, images,
                                        session, mem_limit = 7,
+
+                                       // Role, Stores, Node
                                        role, stores, node,
+                                       
+                                       // Location info
                                        use_location, location,
-                                       use_function_calling, functionCalls, functionResults,
+
+                                       // Function calling
+                                       use_function_calling,
+                                       functionCalls, functionResults,
+
+                                       // Callbacks
                                        updateStatus = null, streamOutput = null) {
   let messages = [];
   let mem = 0;
@@ -113,7 +122,7 @@ export async function generateMessages(use_system_role, lang,
     // User language, lang is the language code, e.g. "en-US"
     // Only when user language is not English, emphasize the language
     if (lang !== "en-US") {
-      system_prompt += "\n" + "User's language: " + getLanguageName(lang) + "\n";
+      system_prompt += "\n\n" + "Reply with user's language: " + getLanguageName(lang) + "\n\n";
     }
 
     messages.push({ 
