@@ -17,19 +17,25 @@ You can fork this code and deploy it on your machine for non-commercial use. (Fo
 Quick Start
 -----------
 
-1. Command-line interface (CLI) use  
+1. Web use  
+    [`https://simple-ai.io`](https://simple-ai.io)  
+
+2. Command-line interface (CLI) use  
     Install: `npm i simple-ai-chat -g`  
-    Start: `spchat`  
+    Start: `schat`  
     npm package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)  
 
-2. Web use  
-    [`https://simple-ai.io`](https://simple-ai.io)  
+3. MCP server  
+    Use `smcp` (or just `schat`) to start the server.  
+    The `mcpconfig.json` file is located in the `~/.simple`.  
 
 
 Documentation
 -------------
 
-The documentation is available at [`simple-ai.io`](https://simple-ai.io).  In the webpage, there is a littile dot on the bottom right corner, click it to open the back page. Alternatively, you can use the command `:store use "Simple AI Documentation"` to enable the data to AI, and ask it.  
+The documentation is available at [`simple-ai.io`](https://simple-ai.io). 
+In the webpage, there is a little dot on the bottom right corner, click it to open the back page. 
+Alternatively, you can use the command `:store use "Simple AI Documentation"` to enable the data to AI, and ask it.  
 
 
 Local Installation
