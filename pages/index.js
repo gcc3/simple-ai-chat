@@ -35,7 +35,7 @@ import { useUI } from '../contexts/UIContext';
 import { initializeStorage } from "utils/storageUtils";
 import Image from "../components/ui/Image";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
-import { getTools } from "../function";
+import { getTools, getMcpTools } from "../function";
 
 
 // Status control
@@ -1470,6 +1470,11 @@ export default function Home() {
     if (images.length > 0) console.log("Images: " + images.join(", "));
     if (files.length > 0)  console.log("Files: " + files.join(", "));
 
+    // MCP functions
+    const mcpTools = await getMcpTools(config.functions);
+    const mcpToolsString = JSON.stringify(mcpTools);
+    console.log("MCP tools string: " + mcpToolsString);
+
     // Send SSE request!
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
@@ -1479,6 +1484,7 @@ export default function Home() {
                                                            + "&model=" + config.model
                                                            + "&mem_length=" + config.mem_length
                                                            + "&functions=" + config.functions
+                                                           + "&mcp_tools=" + encodeURIComponent(mcpToolsString)
                                                            + "&role=" + config.role
                                                            + "&stores=" + config.stores
                                                            + "&node=" + config.node
@@ -1858,9 +1864,15 @@ export default function Home() {
 
     // Tools
     // Tool calls only supported in non-stream mode
-    let avaliableTools = !useStream ? await getTools(config.functions) : [];
-    if (avaliableTools.length > 0) {
-      console.log("Tools: " + JSON.stringify(avaliableTools));
+    let tools = [];
+    if (!useStream) {
+      tools = tools.concat(getTools(config.functions));
+
+      // This is local, can access directly
+      tools = tools.concat(await getMcpTools(config.functions));
+    }
+    if (tools.length > 0) {
+      console.log("Tools: " + JSON.stringify(tools));
     }
 
     // Generate messages
@@ -1918,8 +1930,8 @@ export default function Home() {
       stream_options: null,
       temperature: 1,
       top_p: 1,
-      tools: useStream ? null : avaliableTools,  // function calling only available in non-stream mode
-      tool_choice: !useStream && avaliableTools.length > 0 ? "auto" : null,
+      tools: useStream ? null : tools,  // function calling only available in non-stream mode
+      tool_choice: !useStream && tools.length > 0 ? "auto" : null,
       user: user ? user.username : null,
     });
 

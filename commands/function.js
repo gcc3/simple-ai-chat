@@ -20,6 +20,7 @@ export default async function function_(args) {
 
       // Callable functions
       let callables = functions
+        .concat(mcpFunctionList)
         .filter((f) => enabledFunctions.includes(f.name))
         .map((f) => {
           const args = (() => Object.keys(f.parameters.properties).map((p) => {

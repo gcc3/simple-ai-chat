@@ -205,12 +205,25 @@ export async function getMcpFunctions(functions_ = null) {
   return functions;
 }
 
-
 // A tools wrapper for functions
 // `functions_` is a string of function names, e.g. "get_time,get_weather"
-export async function getTools(functions_) {
+export function getTools(functions_) {
   let functions = getFunctions(functions_);
-  functions = functions.concat(await getMcpFunctions(functions_));
+
+  let tools = []
+  for (let i = 0; i < functions.length; i++) {
+    tools.push({
+      type: "function",
+      function: functions[i]
+    });
+  }
+
+  return tools;
+}
+
+// Get MCP tools
+export async function getMcpTools(functions_) {
+  let functions = await getMcpFunctions(functions_);
 
   let tools = []
   for (let i = 0; i < functions.length; i++) {

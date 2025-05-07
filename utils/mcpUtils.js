@@ -6,7 +6,7 @@ export async function pingMcpServer(baseUrl = 'http://localhost:11318') {
   try {
     // set up timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 100);
+    const timeoutId = setTimeout(() => controller.abort(), 300);
     const response = await fetch(`${baseUrl}`, {
       signal: controller.signal,
       method: 'GET',
@@ -28,7 +28,7 @@ export async function listMcpFunctions(baseUrl = 'http://localhost:11318') {
   try {
     // set up timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 100);
+    const timeoutId = setTimeout(() => controller.abort(), 300);
     const response = await fetch(`${baseUrl}/tool/list`, {
       signal: controller.signal,
       method: 'GET',
@@ -72,7 +72,7 @@ export async function stopMcpServer(baseUrl = 'http://localhost:11318') {
   try {
     // set up timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 100);
+    const timeoutId = setTimeout(() => controller.abort(), 300);
 
     await fetch(`${baseUrl}/shutdown`, {
       signal: controller.signal,

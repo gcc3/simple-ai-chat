@@ -79,6 +79,9 @@ export default async function (req, res) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
 
+  // MCP tools string
+  const mcp_tools = req.query.mcp_tools || "";
+
   // Time
   let time = Number(time_);
 
@@ -300,7 +303,11 @@ export default async function (req, res) {
 
     // Tools
     console.log("\n--- tools ---");
-    let tools = await getTools(functions_);
+    let tools = getTools(functions_);
+    let mcpTools = JSON.parse(mcp_tools);
+    if (mcpTools && mcpTools.length > 0) {
+      tools = tools.concat(mcpTools);  // Concat MCP functions
+    }
     console.log(JSON.stringify(tools));
 
     console.log("\n--- messages ---");
