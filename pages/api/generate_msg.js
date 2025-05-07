@@ -154,8 +154,11 @@ export default async function(req, res) {
 
     inputType = TYPE.TOOL_CALL;
     console.log(chalk.cyanBright("\nInput Tool Calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(input);
 
-    // Curerently OpenAI only support function calling in tool calls.
+    // OpenAI support function calling in tool calls.
+    console.log("\n--- function calling ---");
+
     // Function name and arguments
     const functions = input.split("T=")[0].trim().substring(1).split(",!");
     console.log("Functions: " + JSON.stringify(functions));
@@ -168,7 +171,7 @@ export default async function(req, res) {
 
     // Execute function
     functionResults = await executeFunctions(functions);
-    console.log("Result:" + JSON.stringify(functionResults) + "\n");
+    console.log("-> result:" + JSON.stringify(functionResults) + "\n");
     if (functionResults.length > 0) {
       for (let i = 0; i < functionResults.length; i++) {
         const f = functionResults[i];
