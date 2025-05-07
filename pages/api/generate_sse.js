@@ -212,13 +212,25 @@ export default async function (req, res) {
     // Tool calls
     functionCalls = JSON.parse(input.split("T=")[1].trim().split("R=")[0].trim());
 
-    // Tool calls result
+    // Tool calls result (frontend)
     functionCallingResults = JSON.parse(input.split("T=")[1].split("Q=")[0].trim().split("R=")[1].trim());
+    if (functionCallingResults && functionCallingResults.length > 0) {
+      console.log("Frontend function calling results: " + JSON.stringify(functionCallingResults));
+    }
+
+    // Backend function calling
     if (functionCallingResults.length == 0) {
-      // Trigger backend function calls
-      // Execute function
+      // Result format:
+      // {
+      //   success: true,
+      //   function: f,
+      //   message: result.message,
+      //   event: result.event,
+      // }
       functionCallingResults = await executeFunctions(functions);
-      console.log("Result:" + JSON.stringify(functionCallingResults) + "\n");
+      console.log("Backend function calling result:" + JSON.stringify(functionCallingResults) + "\n");
+
+      // Some results process
       if (functionCallingResults.length > 0) {
         for (let i = 0; i < functionCallingResults.length; i++) {
           const f = functionCallingResults[i];
@@ -297,7 +309,7 @@ export default async function (req, res) {
     }
 
     // Tools
-    console.log("--- tools ---");
+    console.log("\n--- tools ---");
     let tools = await getTools(functions_);
     console.log(JSON.stringify(tools) + "\n");
 

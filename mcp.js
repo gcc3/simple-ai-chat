@@ -180,13 +180,18 @@ app.post('/tool/refresh', async (req, res) => {
 
 // Call tool
 app.post('/tool/call', async (req, res) => {
+  const timestamp = Date.now();
+
   const { tool, args } = req.body;
+  console.log(`REQ (${timestamp}): ${JSON.stringify(req.body)}`);
   if (!tool || !args) {
     return res.status(400).send("Missing tool name or arguments");
   }
 
   try {
     const result = await mcpClient.callTool(tool, args);
+    console.log(`RES (${timestamp}): ${JSON.stringify(result)}`);
+
     res.json(result);
   } catch (e) {
     console.error("Error calling tool: ", e);

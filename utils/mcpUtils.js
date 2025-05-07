@@ -4,7 +4,7 @@ let mcpProcess = null;
 // Pings the MCP server to check if it's running
 export async function pingMcpServer(baseUrl = 'http://localhost:11318') {
   try {
-    // set up timeout for 100ms
+    // set up timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 100);
     const response = await fetch(`${baseUrl}`, {
@@ -26,7 +26,7 @@ export async function pingMcpServer(baseUrl = 'http://localhost:11318') {
 // List functions
 export async function listMcpFunctions(baseUrl = 'http://localhost:11318') {
   try {
-    // set up timeout for 100ms
+    // set up timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 100);
     const response = await fetch(`${baseUrl}/tool/list`, {
@@ -46,9 +46,9 @@ export async function listMcpFunctions(baseUrl = 'http://localhost:11318') {
 // Call MCP tool
 export async function callMcpTool(tool, args, baseUrl = 'http://localhost:11318') {
   try {
-    // set up timeout for 100ms
+    // set up timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 100);
+    const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 seconds timeout
     const response = await fetch(`${baseUrl}/tool/call`, {
       signal: controller.signal,
       method: 'POST',
@@ -70,7 +70,7 @@ export async function callMcpTool(tool, args, baseUrl = 'http://localhost:11318'
 // Stops the running MCP server by sending a shutdown request
 export async function stopMcpServer(baseUrl = 'http://localhost:11318') {
   try {
-    // set up timeout for 100ms
+    // set up timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 100);
 

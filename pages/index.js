@@ -34,6 +34,7 @@ import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 import { useUI } from '../contexts/UIContext';
 import { initializeStorage } from "utils/storageUtils";
 import Image from "../components/ui/Image";
+import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 
 
 // Status control
@@ -1489,7 +1490,7 @@ export default function Home() {
       console.log("Session start.");
     }
 
-    openaiEssSrouce.onmessage = function(event) {
+    openaiEssSrouce.onmessage = async function(event) {
       if (globalThis.STATE == STATES.IDLE) {
         openaiEssSrouce.close();
         console.log("Session closed by state control.")
@@ -1664,6 +1665,35 @@ export default function Home() {
 
           // Front end function calling
           const functionCallingResult = [];
+          if (await pingMcpServer()) {
+            const mcpFunctions = await listMcpFunctions();
+            const mcpFunctionNames = mcpFunctions.map((f) => f.name);
+
+            // Loop through all tool calls and call them with callMcpTool
+            for (const call of toolCalls) {
+              if (mcpFunctionNames.includes(call.function.name)) {
+                // Call the function with callMcpTool
+                console.log("Calling MCP function: " + JSON.stringify(call, null, 2));
+                const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
+                console.log("MCP function result: " + JSON.stringify(result, null, 2));
+                if (result) {
+                  // Result format:
+                  // {
+                  //   success: true,
+                  //   function: f,
+                  //   message: result.message,
+                  //   event: result.event,
+                  // }
+                  functionCallingResult.push({
+                    success: true,
+                    function: call.function.name,
+                    message: result.content[0].text,
+                    // event: ...
+                  });
+                }
+              }
+            }
+          }
 
           // Set time
           const timeNow = Date.now();
