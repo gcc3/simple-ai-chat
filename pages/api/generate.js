@@ -12,7 +12,6 @@ import { getUser, addUserUsage } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
 import { getModels } from "utils/sqliteUtils.js";
-import { printRequest } from "utils/printUtils";
 
 // Input output type
 const TYPE = {
@@ -108,20 +107,19 @@ export default async function(req, res) {
   if (!input.startsWith("!")) {
     inputType = TYPE.NORMAL;
     console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log(input + "\n");
 
     // Images & files
     if (images && images.length > 0) {
-      console.log("--- images ---");
-      console.log(images.join("\n") + "\n");
+      console.log("\n--- images ---");
+      console.log(images.join("\n"));
     }
     if (files && files.length > 0) {
-      console.log("--- files ---");
-      console.log(files.join("\n") + "\n");
+      console.log("\n--- files ---");
+      console.log(files.join("\n"));
     }
 
     // Configuration info
-    console.log("--- configuration info ---\n"
+    console.log("\n--- configuration info ---\n"
     + "lang: " + lang + "\n"
     + "model: " + model + "\n"
     + "temperature: " + sysconf.temperature + "\n"
@@ -137,7 +135,7 @@ export default async function(req, res) {
     + "functions: " + (functions_ || "___") + "\n"
     + "role: " + (role || "___") + "\n"
     + "stores: " + (stores || "___") + "\n"
-    + "node: " + (node || "___") + "\n");
+    + "node: " + (node || "___"));
   }
 
   // Type II. Tool calls (function calling) input
@@ -221,11 +219,11 @@ export default async function(req, res) {
     input_images = msg.input_images;
 
     // Tools
-    console.log("--- tools ---");
+    console.log("\n--- tools ---");
     let tools = await getTools(functions_);
-    console.log(JSON.stringify(tools) + "\n");
+    console.log(JSON.stringify(tools));
 
-    console.log("--- messages ---");
+    console.log("\n--- messages ---");
     console.log(JSON.stringify(msg.messages) + "\n");
 
     // Model setup
@@ -377,11 +375,11 @@ export default async function(req, res) {
     }
 
     // Token
-    console.log("--- token_ct ---");
-    console.log("response_token_ct: " + JSON.stringify(chatCompletion.usage) + "\n");
+    console.log("\n--- token_ct ---");
+    console.log("response_token_ct: " + JSON.stringify(chatCompletion.usage));
 
     // Fee
-    console.log("--- fee_calc ---");
+    console.log("\n--- fee_calc ---");
     const input_fee = chatCompletion.usage.prompt_tokens * modelInfo.price_input;
     const output_fee = chatCompletion.usage.completion_tokens * modelInfo.price_output;
     const total_fee = input_fee + output_fee;

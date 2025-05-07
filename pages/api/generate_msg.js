@@ -11,7 +11,6 @@ import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
-import { printRequest } from "utils/requestUtils";
 
 // Input output type
 const TYPE = {
@@ -106,20 +105,20 @@ export default async function(req, res) {
   if (!input.startsWith("!")) {
     inputType = TYPE.NORMAL;
     console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log(input + "\n");
+    console.log(input);
 
     // Images & files
     if (images && images.length > 0) {
-      console.log("--- images ---");
-      console.log(images.join("\n") + "\n");
+      console.log("\n--- images ---");
+      console.log(images.join("\n"));
     }
     if (files && files.length > 0) {
-      console.log("--- files ---");
-      console.log(files.join("\n") + "\n");
+      console.log("\n--- files ---");
+      console.log(files.join("\n"));
     }
 
     // Configuration info
-    console.log("--- configuration info ---\n"
+    console.log("\n--- configuration info ---\n"
     + "lang: " + lang + "\n"
     + "model: " + model + "\n"
     + "temperature: " + sysconf.temperature + "\n"
@@ -135,7 +134,7 @@ export default async function(req, res) {
     + "functions: " + (functions_ || "___") + "\n"
     + "role: " + (role || "___") + "\n"
     + "stores: " + (stores || "___") + "\n"
-    + "node: " + (node || "___") + "\n");
+    + "node: " + (node || "___"));
   }
 
   // Type II. Tool calls (function calling) input
@@ -215,12 +214,12 @@ export default async function(req, res) {
                                        null, null);
     
     // Tools
-    console.log("--- tools ---");
+    console.log("\n--- tools ---");
     let tools = await getTools(functions_);
-    console.log(JSON.stringify(tools) + "\n");
+    console.log(JSON.stringify(tools));
 
-    console.log("--- messages ---");
-    console.log(JSON.stringify(msg.messages) + "\n");
+    console.log("\n--- messages ---");
+    console.log(JSON.stringify(msg.messages));
 
     // Result
     res.status(200).json({

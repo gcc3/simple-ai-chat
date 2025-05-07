@@ -13,7 +13,6 @@ import { getSystemConfigurations } from "utils/systemUtils";
 import { findNode } from "utils/nodeUtils.js";
 import { ensureSession } from "utils/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";
-import { printRequest } from "utils/printUtils";
 
 // Input output type
 const TYPE = {
@@ -152,20 +151,20 @@ export default async function (req, res) {
   if (!input.startsWith("!")) {
     inputType = TYPE.NORMAL;
     console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log(input + "\n");
+    console.log(input);
 
     // Images & files
     if (images && images.length > 0) {
-      console.log("--- images ---");
-      console.log(images.join("\n") + "\n");
+      console.log("\n--- images ---");
+      console.log(images.join("\n"));
     }
     if (files && files.length > 0) {
-      console.log("--- files ---");
-      console.log(files.join("\n") + "\n");
+      console.log("\n--- files ---");
+      console.log(files.join("\n"));
     }
 
     // Configuration info
-    console.log("--- configuration info ---\n"
+    console.log("\n--- configuration info ---\n"
     + "lang: " + lang + "\n"
     + "model: " + model + "\n"
     + "temperature: " + sysconf.temperature + "\n"
@@ -181,7 +180,7 @@ export default async function (req, res) {
     + "functions: " + (functions_ || "___") + "\n"
     + "role: " + (role || "___") + "\n"
     + "stores: " + (stores || "___") + "\n"
-    + "node: " + (node || "___") + "\n");
+    + "node: " + (node || "___"));
   }
 
   // Type II. Tool calls (function calling) input
@@ -311,10 +310,10 @@ export default async function (req, res) {
     // Tools
     console.log("\n--- tools ---");
     let tools = await getTools(functions_);
-    console.log(JSON.stringify(tools) + "\n");
+    console.log(JSON.stringify(tools));
 
-    console.log("--- messages ---");
-    console.log(JSON.stringify(msg.messages) + "\n");
+    console.log("\n--- messages ---");
+    console.log(JSON.stringify(msg.messages));
 
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");
@@ -455,12 +454,12 @@ export default async function (req, res) {
 
     // Output
     console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log((output || "(null)") + "\n");
+    console.log((output || "(null)"));
 
     // Tool calls output
     const output_tool_calls = JSON.stringify(toolCalls);
     if (output_tool_calls && toolCalls.length > 0) {
-      console.log("--- tool calls ---");
+      console.log("\n--- tool calls ---");
       console.log(output_tool_calls + "\n");
     }
 
@@ -497,11 +496,11 @@ export default async function (req, res) {
     }
 
     // Token
-    console.log("--- token_ct ---");
-    console.log("response_token_ct: " + JSON.stringify(chatCompletionUsage) + "\n");
+    console.log("\n--- token_ct ---");
+    console.log("response_token_ct: " + JSON.stringify(chatCompletionUsage));
 
     // Fee
-    console.log("--- fee_calc ---");
+    console.log("\n--- fee_calc ---");
     const input_fee = chatCompletionUsage.prompt_tokens * modelInfo.price_input;
     const output_fee = chatCompletionUsage.completion_tokens * modelInfo.price_output;
     const total_fee = input_fee + output_fee;
@@ -510,7 +509,7 @@ export default async function (req, res) {
     console.log("total_fee: " + total_fee.toFixed(5));
     if (user && user.username) {
       await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
-      console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
+      console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5));
     }
 
     // Log
