@@ -153,6 +153,7 @@ const initializeDatabase = (db) => {
                                     api_key TEXT NOT NULL,
                                     price_input REAL,
                                     price_output REAL,
+                                    is_tool_calls_supported TEXT NOT NULL,
                                     is_vision TEXT NOT NULL,
                                     is_audio TEXT NOT NULL,
                                     is_reasoning TEXT NOT NULL,
