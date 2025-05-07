@@ -25,8 +25,8 @@ Quick Start
     Start: `schat`  
     npm package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)  
 
-3. MCP server  
-    Use `smcp` (or just `schat`) to start the server.  
+3. MCP client  
+    Use `smcp` (or just `schat`) to start the client service.  
     The `mcpconfig.json` file is located in the `~/.simple`.  
 
 
