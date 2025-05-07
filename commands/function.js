@@ -84,11 +84,11 @@ export default async function function_(args) {
       return "Usage: :function use [name]\n"
     }
 
-    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
-      return "Function name must be quoted with double quotes.";
+    let functionName = args[1];
+    if (args[1].startsWith("\"") && args[1].endsWith("\"")) {
+      functionName = args[1].slice(1, -1);
     }
-
-    const functionName = args[1].slice(1, -1);
+    
     if (!functionName) {
       return "Invalid function name.";
     }
@@ -125,11 +125,11 @@ export default async function function_(args) {
       return "Usage: :function unuse [name]\n"
     }
 
-    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
-      return "Function name must be quoted with double quotes.";
+    let functionName = args[1];
+    if (args[1].startsWith("\"") && args[1].endsWith("\"")) {
+      functionName = args[1].slice(1, -1);
     }
 
-    const functionName = args[1].slice(1, -1);
     if (!functionName) {
       return "Invalid function name.";
     }
