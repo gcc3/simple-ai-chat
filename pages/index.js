@@ -35,11 +35,18 @@ import { useUI } from '../contexts/UIContext';
 import { initializeStorage } from "utils/storageUtils";
 import Image from "../components/ui/Image";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
+import { getTools } from "../function";
 
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
 globalThis.STATE = STATES.IDLE;  // a global state
+
+// Input output type
+const TYPE = {
+  NORMAL: 0,
+  TOOL_CALL: 1
+};
 
 // Front or back display
 const DISPLAY = { FRONT: 0, BACK: 1 };
@@ -1344,19 +1351,19 @@ export default function Home() {
           return;
         }
 
-        const functionResults = data.function_results;
-        console.log("Function Results: " + JSON.stringify(functionResults));
+        const functionCliResults = data.function_results;
+        console.log("Function Results: " + JSON.stringify(functionCliResults));
 
-        if (functionResults.length === 1) {
-          const functionResult = functionResults[0];
+        if (functionCliResults.length === 1) {
+          const functionResult = functionCliResults[0];
           if (functionResult.success) {
             printOutput(functionResult.message);
           } else {
             printOutput(functionResult.error);
           }
         } else {
-          for (let i = 0; i < functionResults.length; i++) {
-            const functionResult = functionResults[i];
+          for (let i = 0; i < functionCliResults.length; i++) {
+            const functionResult = functionCliResults[i];
   
             // Print the output
             let resultText = "!" + functionResult.function + "\n";
@@ -1454,14 +1461,14 @@ export default function Home() {
     // prepare speech
     var textSpoken = "";
 
-    // Input
-    console.log("Input: " + input);
-    if (images.length > 0) console.log("Images: " + images.join(", "));
-    if (files.length > 0)  console.log("Files: " + files.join(", "));
-    
     // Config (input)
     const config = loadConfig();
     console.log("Config: " + JSON.stringify(config));
+
+    // Input
+    console.log("Input (" + config.session + "): " + input);
+    if (images.length > 0) console.log("Images: " + images.join(", "));
+    if (files.length > 0)  console.log("Files: " + files.join(", "));
 
     // Send SSE request!
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
@@ -1663,20 +1670,20 @@ export default function Home() {
             input = input.split("Q=")[1];
           }
 
-          // Front end function calling
+          // Frontend function calling
           const functionCallingResult = [];
           if (await pingMcpServer()) {
             const mcpFunctions = await listMcpFunctions();
-            const mcpFunctionNames = mcpFunctions.map((f) => f.name);
+            if (mcpFunctions && mcpFunctions.length > 0) {
+              const mcpFunctionNames = mcpFunctions.map((f) => f.name);
 
-            // Loop through all tool calls and call them with callMcpTool
-            for (const call of toolCalls) {
-              if (mcpFunctionNames.includes(call.function.name)) {
-                // Call the function with callMcpTool
-                console.log("Calling MCP function: " + JSON.stringify(call, null, 2));
-                const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
-                console.log("MCP function result: " + JSON.stringify(result, null, 2));
-                if (result) {
+              // Loop through all tool calls and call them with callMcpTool
+              for (const call of toolCalls) {
+                if (mcpFunctionNames.includes(call.function.name)) {
+                  // Call the function with callMcpTool
+                  console.log("Calling MCP function: " + JSON.stringify(call));
+                  const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
+                  console.log("MCP function result: " + JSON.stringify(result));
                   // Result format:
                   // {
                   //   success: true,
@@ -1687,7 +1694,7 @@ export default function Home() {
                   functionCallingResult.push({
                     success: true,
                     function: call.function.name,
-                    message: result.content[0].text,
+                    message: result ? result.content[0].text : "No result.",
                     // event: ...
                   });
                 }
@@ -1707,7 +1714,7 @@ export default function Home() {
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
             "Q=" + input                                   // original user input
           ];
-          generate_sse(inputParts.join(" "), [], []);
+          await generate_sse(inputParts.join(" "), [], []);
           return;
         }
 
@@ -1807,20 +1814,54 @@ export default function Home() {
     if (getOutput() !== querying) printOutput(waiting);
 
     // Input
-    console.log("Input: " + input);
-    if (images.length > 0) console.log("Images: " + images.join(", "));
-    if (files.length > 0)  console.log("Files: " + files.join(", "));
+    let inputType = TYPE.NORMAL;
 
     // Output
-    let output = "";
-    
+    let outputType = TYPE.NORMAL;
+
+    // Use stream
+    const useStream = localStorage.getItem('useStream') === "true";
+
+    // User
+    const user = {
+      username: localStorage.getItem("user")
+    };
+
     // Config (input)
     const config = loadConfig();
     console.log("Config: " + JSON.stringify(config));
 
+    // Type I. Normal input
+    if (!input.startsWith("!")) {
+      inputType = TYPE.NORMAL;
+      console.log("Input (" + config.session + "): " + input);
+      if (images.length > 0) console.log("Images: " + images.join(", "));
+      if (files.length > 0)  console.log("Files: " + files.join(", "));
+    }
+
+    // Type II. Tool calls (function calling) input
+    if (input.startsWith("!")) {
+      inputType = TYPE.TOOL_CALL;
+      console.log("Input Tool Calls (" + config.session + "): " + input);
+    }
+
     // Model switch
     const use_vision = images && images.length > 0;
     const model = config.model;
+
+    // Set model
+    !minimalist && setInfo((
+      <div>
+        model: {model}<br></br>
+      </div>
+    ));
+
+    // Tools
+    // Tool calls only supported in non-stream mode
+    let avaliableTools = !useStream ? await getTools(config.functions) : [];
+    if (avaliableTools.length > 0) {
+      console.log("Tools: " + JSON.stringify(avaliableTools));
+    }
 
     // Generate messages
     const msgResponse = await fetch("/api/generate_msg", {
@@ -1829,10 +1870,10 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+         time: config.time,
          user_input: input,
          images: images,
          files: files,
-         time: config.time,
          session: config.session,
          model: config.model,
          mem_length: config.mem_length,
@@ -1854,14 +1895,7 @@ export default function Home() {
       throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
     }
     const msg = msgData.result.msg;
-
-    // Use stream
-    const useStream = localStorage.getItem('useStream') === "true";
-
-    // User
-    const user = {
-      username: localStorage.getItem("user")
-    }
+    console.log("Messages: " + JSON.stringify(msg.messages));
 
     const openai = new OpenAI({
       baseURL: config.base_url,
@@ -1884,8 +1918,8 @@ export default function Home() {
       stream_options: null,
       temperature: 1,
       top_p: 1,
-      tools: null,  // TODO
-      tool_choice: null,  // TODO
+      tools: useStream ? null : avaliableTools,  // function calling only available in non-stream mode
+      tool_choice: !useStream && avaliableTools.length > 0 ? "auto" : null,
       user: user ? user.username : null,
     });
 
@@ -1914,6 +1948,10 @@ export default function Home() {
 
     // Non-stream mode
     if (!useStream) {
+      // Non-stream mode support tool calls
+      // Reset state
+      globalThis.STATE = STATES.IDLE;
+
       // Get result
       const choices = chatCompletion.choices;
       if (!choices || choices.length === 0 || choices[0].message === null) {
@@ -1921,54 +1959,126 @@ export default function Home() {
         printOutput("Silent...");
         return;
       } else {
-        // 1. handle message output
-        const content = choices[0].message.content;
-        if (content) {
-          output += choices[0].message.content;
+        // 1. handle general message response
+        if (choices[0].message.content && choices[0].message.content.length > 0) {
+          outputType = TYPE.NORMAL;
+          const output = choices[0].message.content;
+
+          // Add log
+          if (inputType === TYPE.TOOL_CALL) {
+            input = "Q=" + input.split("Q=")[1].trim();
+          }
+          await logadd(input, output);
+
+          // Print output result
+          if (output) {
+            printOutput(output);
+            console.log("Output:\n" + output);
+          } else {
+            console.log("No output.");
+          }
+
+          // Formatter
+          markdownFormatter(elOutputRef.current);
+
+          // Trigger highlight.js
+          hljs.highlightAll();
         }
 
-        // 2. handle tool calls
-        // Not support yet.
+        // 2. handle tool calls response
+        if (choices[0].message.tool_calls && choices[0].message.tool_calls.length > 0) {
+          outputType = TYPE.TOOL_CALL;
+          const toolCalls = choices[0].message.tool_calls;
+
+          // Add log
+          await logadd(input, "T=" + JSON.stringify(toolCalls));
+
+          let functions = [];
+          toolCalls.map((t) => {
+            functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
+          });
+          const functionCallingString = functions.join(",");
+
+          // Generate with tool calls (function calling)
+          if (input.startsWith("!")) {
+            input = input.split("Q=")[1];
+          }
+
+          // Frontend function calling
+          const functionCallingResult = [];
+          if (await pingMcpServer()) {
+            const mcpFunctions = await listMcpFunctions();
+            if (mcpFunctions && mcpFunctions.length > 0) {
+              const mcpFunctionNames = mcpFunctions.map((f) => f.name);
+
+              // Loop through all tool calls and call them with callMcpTool
+              for (const call of toolCalls) {
+                if (mcpFunctionNames.includes(call.function.name)) {
+                  // Call the function with callMcpTool
+                  console.log("Calling MCP function: " + JSON.stringify(call));
+                  const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
+                  console.log("MCP function result: " + JSON.stringify(result));
+                  // Result format:
+                  // {
+                  //   success: true,
+                  //   function: f,
+                  //   message: result.message,
+                  //   event: result.event,
+                  // }
+                  functionCallingResult.push({
+                    success: true,
+                    function: call.function.name,
+                    message: result ? result.content[0].text : "No result.",
+                    // event: ...
+                  });
+                }
+              }
+            }
+          }
+
+          if (toolCalls.length > 0) {
+            // The final output shouldn't be a tool call
+            console.log("Output Tool Calls:\n" + JSON.stringify(toolCalls));
+          }
+
+          // Set time
+          const timeNow = Date.now();
+          setTime(timeNow);
+          sessionStorage.setItem("head", timeNow);
+
+          // Re-call generate with tool calls!
+          const inputParts = [
+            functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
+            "T=" + JSON.stringify(toolCalls),              // tool calls generated
+            "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
+            "Q=" + input                                   // original user input
+          ];
+          await generate_msg(inputParts.join(" "), [], []);
+        }
       }
-
-      // Reset state
-      globalThis.STATE = STATES.IDLE;
-      printOutput(output);
-
-      // Set model
-      !minimalist && setInfo((
-        <div>
-          model: {model}<br></br>
-        </div>
-      ));
-
-      // Formatter
-      markdownFormatter(elOutputRef.current);
-
-      // Trigger highlight.js
-      hljs.highlightAll();
-
-      // Add log
-      logadd(input, output);
     }
 
     // Stream mode
     if (useStream) {
+      let output = "";
+
       // Convert the response stream into a readable stream
       const stream = Readable.from(chatCompletion);
 
       await new Promise((resolve, reject) => {
         // Handle the data event to process each JSON line
-        stream.on('data', (chunk) => {
+        stream.on('data', (part) => {
           try {
             // 1. handle message output
-            const content = chunk.choices[0].delta.content;
+            const content = part.choices[0].delta.content;
             if (content) {
               output += content;
+              console.log(content);
               printOutput(content, false, true);
             }
+
             // Set model
-            const model = chunk.model;
+            const model = part.model;
             !minimalist && setInfo((
               <div>
                 model: {model}<br></br>
@@ -1976,7 +2086,7 @@ export default function Home() {
             ));
 
             // 2. handle tool calls
-            // Not support yet.
+            // Streaming mode not support tool calls yet. (Ollama)
           } catch (error) {
             console.error('Error parsing JSON line:', error);
             stream.destroy(error); // Destroy the stream on error
@@ -1986,6 +2096,13 @@ export default function Home() {
     
         // Resolve the Promise when the stream ends
         stream.on('end', async () => {
+          // Print output result
+          if (output) {
+            console.log("Output:\n" + output);
+          } else {
+            console.log("No output.");
+          }
+
           // Formatter
           markdownFormatter(elOutputRef.current);
 
@@ -1993,7 +2110,7 @@ export default function Home() {
           hljs.highlightAll();
 
           // Add log
-          logadd(input, output);
+          await logadd(input, output);
 
           // Reset state
           globalThis.STATE = STATES.IDLE;
@@ -2006,13 +2123,6 @@ export default function Home() {
           reject(error);
         });
       });
-    }
-
-    // Print output result
-    if (output) {
-      console.log(output);
-    } else {
-      console.log("(No output)");
     }
   }
 
@@ -2245,7 +2355,10 @@ export default function Home() {
         const autocomplete = async (prefix, useQuates = false) => {
           if (elInput.value.startsWith(prefix)) {
             const nameToBeComleted = elInput.value.replace(prefix, "").replace(/^\"+/, '').replace(/\"$/, '');
+
+            // Get auto complete options
             const options = await getAutoCompleteOptions(prefix, nameToBeComleted);
+            
             if (options.includes(nameToBeComleted)) {
               // Set the input to next option
               const nextOption = options[(options.indexOf(nameToBeComleted) + 1) % options.length];
@@ -2286,6 +2399,7 @@ export default function Home() {
         autocomplete(":lang use ");
         autocomplete(":user set ");
         autocomplete(":set ");
+        autocomplete(":function ", true);
         autocomplete(":function use ", true);
         autocomplete(":function unuse ", true);
         autocomplete(":use ", true);

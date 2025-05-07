@@ -1,16 +1,15 @@
-import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
-import { logadd } from "utils/logUtils.js";
 import { authenticate } from "utils/authUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { getUacResult } from "utils/uacUtils";
-import { countToken } from "utils/tokenUtils";
 import { getSystemConfigurations } from "utils/systemUtils";
 import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
-import { executeFunctions, getTools } from "function.js";
-import { evaluate } from './evaluate';
+import { executeFunctions } from "function.js";
+import { countToken } from "utils/tokenUtils.js";
+import { logadd } from "utils/logUtils.js";
+
 
 // Input output type
 const TYPE = {
@@ -29,10 +28,8 @@ export default async function(req, res) {
   const files = req.body.files || null;
 
   // Output
-  let output = "";
-  let outputType = TYPE.NORMAL;
+  // This is only for generating messages, so no need output here.
   let eval_ = "";
-  let toolCalls = [];
   let events = [];
 
   // Config (input)
@@ -57,6 +54,7 @@ export default async function(req, res) {
   let time = Number(time_);
 
   // Authentication
+  // TODO, add authentication, only allow authenticated users to access this API
   const authResult = authenticate(req);
   let user = null;
   let authUser = null;
@@ -80,12 +78,9 @@ export default async function(req, res) {
   }
 
   // Model switch
+  let model = req.body.model || sysconf.model;
   const use_vision = images && images.length > 0;
-  const model = sysconf.model;
   const use_eval = use_eval_ && use_stats && !use_vision;
-
-  // Use function calling
-  let use_function_calling = sysconf.use_function_calling;
 
   // User access control
   if (sysconf.use_access_control) {
@@ -104,7 +99,7 @@ export default async function(req, res) {
   // Type I. Normal input
   if (!input.startsWith("!")) {
     inputType = TYPE.NORMAL;
-    console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.yellowBright("\nInput (msg, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
 
     // Images & files
@@ -127,7 +122,6 @@ export default async function(req, res) {
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
-    + "use_function_calling: " + sysconf.use_function_calling + "\n"
     + "use_node_ai: " + sysconf.use_node_ai + "\n"
     + "use_location: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
@@ -139,24 +133,15 @@ export default async function(req, res) {
 
   // Type II. Tool calls (function calling) input
   // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
-  // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
+  // Example: !func1(param1),!func2(param2),!func3(param3) T=[{"index:0..."}] R=3:18 PM Q=Hello
   let functionNames = [];    // functionc called
   let functionCalls = [];    // function calls in input
-  let functionResults = [];  // function call results
+  let functionCallingResults = [];  // function call results
   if (input.startsWith("!")) {
-    if (!use_function_calling) {
-      console.log(chalk.redBright("Error: function calling is disabled."));
-      res.status(500).json({
-        success: false,
-        error: "Function calling is disabled.",
-      });
-      return;
-    }
-
     inputType = TYPE.TOOL_CALL;
-    console.log(chalk.cyanBright("\nInput Tool Calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.cyanBright("\nInput Tool Calls (msg, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
-
+ 
     // OpenAI support function calling in tool calls.
     console.log("\n--- function calling ---");
 
@@ -165,32 +150,49 @@ export default async function(req, res) {
     console.log("Functions: " + JSON.stringify(functions));
 
     // Tool calls
-    functionCalls = JSON.parse(input.split("T=")[1].trim().split("Q=")[0].trim());
+    functionCalls = JSON.parse(input.split("T=")[1].trim().split("R=")[0].trim());
 
-    // Replace input with original
-    input = input.split("Q=")[1];
+    // Tool calls result (frontend)
+    functionCallingResults = JSON.parse(input.split("T=")[1].split("Q=")[0].trim().split("R=")[1].trim());
+    if (functionCallingResults && functionCallingResults.length > 0) {
+      console.log("Frontend function calling results: " + JSON.stringify(functionCallingResults));
+    }
 
-    // Execute function
-    functionResults = await executeFunctions(functions);
-    console.log("-> result:" + JSON.stringify(functionResults) + "\n");
-    if (functionResults.length > 0) {
-      for (let i = 0; i < functionResults.length; i++) {
-        const f = functionResults[i];
-        const c = functionCalls[i];  // not using here.
+    // Backend function calling
+    if (functionCallingResults.length == 0) {
+      // Result format:
+      // {
+      //   success: true,
+      //   function: f,
+      //   message: result.message,
+      //   event: result.event,
+      // }
+      functionCallingResults = await executeFunctions(functions);
+      console.log("Backend function calling result:" + JSON.stringify(functionCallingResults));
 
-        // Add function name
-        const functionName = f.function.split("(")[0].trim();
-        if (functionNames.indexOf(functionName) === -1) {
-          functionNames.push(functionName);
-        }
+      // Some results process
+      if (functionCallingResults.length > 0) {
+        for (let i = 0; i < functionCallingResults.length; i++) {
+          const f = functionCallingResults[i];
+          const c = functionCalls[i];  // not using here.
 
-        // Trigger event
-        // Function trigger event
-        if (f.event) {
-          events.push(f.event);
+          // Add function name
+          const functionName = f.function.split("(")[0].trim();
+          if (functionNames.indexOf(functionName) === -1) {
+            functionNames.push(functionName);
+          }
+
+          // Trigger frontend event
+          if (f.event) {
+            const event = JSON.stringify(f.event);
+            res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
+          }
         }
       }
     }
+
+    // Replace input with original user input
+    input = input.split("Q=")[1].trim();
   }
 
   try {
@@ -207,19 +209,33 @@ export default async function(req, res) {
                                        use_location, location,
 
                                        // Function calling
-                                       sysconf.use_function_calling, 
-                                       functionCalls, functionResults,
+                                       functionCalls, functionCallingResults,
                                       
                                        // Callbacks
                                        null, null);
     
-    // Tools
-    console.log("\n--- tools ---");
-    let tools = await getTools(functions_);
-    console.log(JSON.stringify(tools));
-
     console.log("\n--- messages ---");
     console.log(JSON.stringify(msg.messages));
+    console.log("\nMessage completed.\n");
+
+    // Log (chat history)
+    // Must add tool calls log first, then add the general input output log
+    // 1. tool calls log
+    if (functionCalls && functionCalls.length > 0 && functionCallingResults && functionCallingResults.length > 0) {
+      for (let i = 0; i < functionCallingResults.length; i++) {
+        const f = functionCallingResults[i];
+        const c = functionCalls[i];
+
+        // Add log
+        if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
+          const input_f = "F=" + JSON.stringify(c);
+          let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
+          const input_token_ct_f = countToken(model, input_f);
+          const output_token_ct_f = countToken(model, output_f);
+          await logadd(user, session, time++, model, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
+        }
+      }
+    }
 
     // Result
     res.status(200).json({

@@ -97,7 +97,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     return getSettings("keys_string_array_local");
   }
 
-  if (prefix === ":function use " || prefix === ":function unuse ") {
+  if (prefix === ":function " || prefix === ":function use " || prefix === ":function unuse ") {
     const functions = await getFunctions();
     return functions.map((f) => f.name);
   }

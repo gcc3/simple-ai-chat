@@ -46,7 +46,6 @@ export async function generateMessages(use_system_role, lang,
                                        use_location, location,
 
                                        // Function calling
-                                       use_function_calling,
                                        functionCalls, functionCallingResults,
 
                                        // Callbacks
@@ -407,7 +406,7 @@ export async function generateMessages(use_system_role, lang,
         // Add tool call query
         // only if the tool call id is found in messages
         // If it is version model, function calling will be disabled as it is not supported
-        if (isFound && use_function_calling) {
+        if (isFound) {
           const message = log.output.slice(2);
           messages.push({ 
             role: "tool",
@@ -418,36 +417,39 @@ export async function generateMessages(use_system_role, lang,
       } else {
         // Normal log
         // 1. Input
-        // Text input
-        // To record the original user input after the function calling
-        // the input will add "Q=" as prefix
-        let content = [];
-        if (log.input && !log.input.startsWith("Q=")) {
-          content.push({
-            type: "text",
-            text: log.input
-          })
-        }
+        // Note: to record the original user input after the function calling the input will add "Q=" as prefix
+        // For this log input just ignore and don't add as a message
+        if (!log.input.startsWith("Q=")) {
+          let content = [];
 
-        // Image input
-        if (log.images) {
-          const images = JSON.parse(log.images);
-          if (images.length > 0) {
-            images.map(image => {
-              content.push({
-                type: "image_url",
-                image_url: {
-                  url: image
-                }
-              })
-            });
+          // Text input
+          if (log.input) {
+            content.push({
+              type: "text",
+              text: log.input
+            })
           }
-        }
 
-        messages.push({ 
-          role: "user",
-          content: content
-        });
+          // Image input
+          if (log.images) {
+            const images = JSON.parse(log.images);
+            if (images.length > 0) {
+              images.map(image => {
+                content.push({
+                  type: "image_url",
+                  image_url: {
+                    url: image
+                  }
+                })
+              });
+            }
+          }
+
+          messages.push({ 
+            role: "user",
+            content: content
+          });
+        }
         
         // 2. Output
         if (log.output) {
@@ -456,12 +458,10 @@ export async function generateMessages(use_system_role, lang,
             // The output will add "T=" as prefix
             // AI generated the tool call
             // If it is version model, function calling will be disabled as it is not supported
-            if (use_function_calling) {
-              messages.push({ 
-                role: "assistant",
-                tool_calls: JSON.parse(log.output.slice(2)),
-              });
-            }
+            messages.push({ 
+              role: "assistant",
+              tool_calls: JSON.parse(log.output.slice(2)),
+            });
           } else {
             // Normal output log
             messages.push({ 
@@ -534,7 +534,7 @@ export async function generateMessages(use_system_role, lang,
   // 1. Function calling result
   // The latest function calling result, not the history
   let function_prompt = "";
-  if (use_function_calling && inputType === TYPE.TOOL_CALL && functionCallingResults && functionCallingResults.length > 0) {
+  if (inputType === TYPE.TOOL_CALL && functionCallingResults && functionCallingResults.length > 0) {
     for (let i = 0; i < functionCallingResults.length; i++) {
       const f = functionCallingResults[i];
       const c = functionCalls[i];

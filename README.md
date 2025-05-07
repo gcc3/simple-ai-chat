@@ -103,9 +103,6 @@ Control the custom welcome message, placeholder text and enter key text.
 WAITING, QUERYING, GENERATING, SEARCHING  
 Indicating the message that will show when waiting and querying.  
 
-USE_FUNCTION_CALLING  
-Use function calling feature, value should be `true` or `false`.  
-
 WOLFRAM_ALPHA_APPID  
 For API calls for wolfram alpha API.  
 Get from https://products.wolframalpha.com/api

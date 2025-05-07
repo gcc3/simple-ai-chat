@@ -171,17 +171,17 @@ async function generate_sse(input, images=[], files=[]) {
 
 // M2. Generate message from server, and then call local model engine
 async function generate_msg(input, images=[], files=[]) {
+  // Config (input)
+  const config = loadConfig();
+  console.log("Config: " + JSON.stringify(config));
+
   // Input
-  console.log("Input: " + input);
+  console.log("Input (" + config.session + "): " + input);
   if (images.length > 0) console.log("Images: " + images.join(", "));
   if (files.length > 0)  console.log("Files: " + files.join(", "));
 
   // Output
   let output = "";
-  
-  // Config (input)
-  const config = loadConfig();
-  console.log("Config: " + JSON.stringify(config));
 
   // Model switch
   const use_vision = images && images.length > 0;
