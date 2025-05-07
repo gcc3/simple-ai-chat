@@ -1896,8 +1896,8 @@ export default function Home() {
       stream_options: null,
       temperature: 1,
       top_p: 1,
-      tools: avaliableTools,
-      tool_choice: avaliableTools.length > 0 ? "auto" : null,
+      tools: useStream ? avaliableTools : null,  // function calling only available in stream mode
+      tool_choice: useStream && avaliableTools.length > 0 ? "auto" : null,
       user: user ? user.username : null,
     });
 
@@ -2030,7 +2030,7 @@ export default function Home() {
             });
             const functionCallingString = functions.join(",");
 
-            // Frontend and backend mixed function calling
+            // Frontend function calling
             const functionCallingResult = [];
             const mcpServerPingable = await pingMcpServer();
             let mcpFunctionNames = [];
@@ -2058,27 +2058,6 @@ export default function Home() {
                     success: true,
                     function: call.function.name,
                     message: result.content[0].text,
-                    // event: ...
-                  });
-                }
-              } else {
-                // Try backend function calling
-                console.log("Calling backend function: " + JSON.stringify(call, null, 2));
-                const result = await fetch("/api/function/exec", {
-                  method: "POST",
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                  body: JSON.stringify({
-                    functions: [call.function.name + "(" + call.function.arguments + ")"]
-                  }),
-                });
-                const data = await result.json();
-                if (data.success) {
-                  functionCallingResult.push({
-                    success: true,
-                    function: call.function.name,
-                    message: data.function_results[0].message,
                     // event: ...
                   });
                 }
