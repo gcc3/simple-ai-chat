@@ -418,36 +418,39 @@ export async function generateMessages(use_system_role, lang,
       } else {
         // Normal log
         // 1. Input
-        // Text input
-        // To record the original user input after the function calling
-        // the input will add "Q=" as prefix
-        let content = [];
-        if (log.input && !log.input.startsWith("Q=")) {
-          content.push({
-            type: "text",
-            text: log.input
-          })
-        }
+        // Note: to record the original user input after the function calling the input will add "Q=" as prefix
+        // For this log input just ignore and don't add as a message
+        if (!log.input.startsWith("Q=")) {
+          let content = [];
 
-        // Image input
-        if (log.images) {
-          const images = JSON.parse(log.images);
-          if (images.length > 0) {
-            images.map(image => {
-              content.push({
-                type: "image_url",
-                image_url: {
-                  url: image
-                }
-              })
-            });
+          // Text input
+          if (log.input) {
+            content.push({
+              type: "text",
+              text: log.input
+            })
           }
-        }
 
-        messages.push({ 
-          role: "user",
-          content: content
-        });
+          // Image input
+          if (log.images) {
+            const images = JSON.parse(log.images);
+            if (images.length > 0) {
+              images.map(image => {
+                content.push({
+                  type: "image_url",
+                  image_url: {
+                    url: image
+                  }
+                })
+              });
+            }
+          }
+
+          messages.push({ 
+            role: "user",
+            content: content
+          });
+        }
         
         // 2. Output
         if (log.output) {
