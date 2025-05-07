@@ -203,7 +203,7 @@ export default async function(req, res) {
                                        use_location, location,
 
                                        // Function calling
-                                       functionCalls, functionResults,
+                                       functionCalls, functionCallingResults,
                                       
                                        // Callbacks
                                        null, null);

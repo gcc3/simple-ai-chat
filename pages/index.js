@@ -1351,19 +1351,19 @@ export default function Home() {
           return;
         }
 
-        const functionResults = data.function_results;
-        console.log("Function Results: " + JSON.stringify(functionResults));
+        const functionCliResults = data.function_results;
+        console.log("Function Results: " + JSON.stringify(functionCliResults));
 
-        if (functionResults.length === 1) {
-          const functionResult = functionResults[0];
+        if (functionCliResults.length === 1) {
+          const functionResult = functionCliResults[0];
           if (functionResult.success) {
             printOutput(functionResult.message);
           } else {
             printOutput(functionResult.error);
           }
         } else {
-          for (let i = 0; i < functionResults.length; i++) {
-            const functionResult = functionResults[i];
+          for (let i = 0; i < functionCliResults.length; i++) {
+            const functionResult = functionCliResults[i];
   
             // Print the output
             let resultText = "!" + functionResult.function + "\n";
@@ -1680,9 +1680,9 @@ export default function Home() {
             for (const call of toolCalls) {
               if (mcpFunctionNames.includes(call.function.name)) {
                 // Call the function with callMcpTool
-                console.log("Calling MCP function: " + JSON.stringify(call, null, 2));
+                console.log("Calling MCP function: " + JSON.stringify(call));
                 const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
-                console.log("MCP function result: " + JSON.stringify(result, null, 2));
+                console.log("MCP function result: " + JSON.stringify(result));
                 if (result) {
                   // Result format:
                   // {
@@ -2030,36 +2030,39 @@ export default function Home() {
             });
             const functionCallingString = functions.join(",");
 
-            // Frontend function calling
-            const functionCallingResult = [];
-            const mcpServerPingable = await pingMcpServer();
-            let mcpFunctionNames = [];
-            if (mcpServerPingable) {
-              const mcpFunctions = await listMcpFunctions();
-              mcpFunctionNames = mcpFunctions.map((f) => f.name);
+            // Generate with tool calls (function calling)
+            if (input.startsWith("!")) {
+              input = input.split("Q=")[1];
             }
 
-            // Loop through all tool calls and call them with callMcpTool
-            for (const call of toolCalls) {
-              if (mcpFunctionNames.includes(call.function.name)) {
-                // Call the function with callMcpTool
-                console.log("Calling MCP function: " + JSON.stringify(call, null, 2));
-                const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
-                console.log("MCP function result: " + JSON.stringify(result, null, 2));
-                if (result) {
-                  // Result format:
-                  // {
-                  //   success: true,
-                  //   function: f,
-                  //   message: result.message,
-                  //   event: result.event,
-                  // }
-                  functionCallingResult.push({
-                    success: true,
-                    function: call.function.name,
-                    message: result.content[0].text,
-                    // event: ...
-                  });
+            // Frontend function calling
+            const functionCallingResult = [];
+            if (await pingMcpServer()) {
+              const mcpFunctions = await listMcpFunctions();
+              const mcpFunctionNames = mcpFunctions.map((f) => f.name);
+
+              // Loop through all tool calls and call them with callMcpTool
+              for (const call of toolCalls) {
+                if (mcpFunctionNames.includes(call.function.name)) {
+                  // Call the function with callMcpTool
+                  console.log("Calling MCP function: " + JSON.stringify(call));
+                  const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
+                  console.log("MCP function result: " + JSON.stringify(result));
+                  if (result) {
+                    // Result format:
+                    // {
+                    //   success: true,
+                    //   function: f,
+                    //   message: result.message,
+                    //   event: result.event,
+                    // }
+                    functionCallingResult.push({
+                      success: true,
+                      function: call.function.name,
+                      message: result.content[0].text,
+                      // event: ...
+                    });
+                  }
                 }
               }
             }
