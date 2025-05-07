@@ -16,6 +16,7 @@ import { OpenAI } from "openai";
 import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
+import { spawn } from "child_process";
 
 
 // Disable process warnings (node)

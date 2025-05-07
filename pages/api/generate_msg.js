@@ -48,7 +48,7 @@ export default async function(req, res) {
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
   const lang = req.body.lang || "en-US";
-  const use_system_role = req.body.use_system_role || false;
+  const use_system_role = req.body.use_system_role || true;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
@@ -105,35 +105,36 @@ export default async function(req, res) {
   if (!input.startsWith("!")) {
     inputType = TYPE.NORMAL;
     console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log(input + "\n");
+    console.log(input);
 
     // Images & files
     if (images && images.length > 0) {
-      console.log("--- images ---");
-      console.log(images.join("\n") + "\n");
+      console.log("\n--- images ---");
+      console.log(images.join("\n"));
     }
     if (files && files.length > 0) {
-      console.log("--- files ---");
-      console.log(files.join("\n") + "\n");
+      console.log("\n--- files ---");
+      console.log(files.join("\n"));
     }
 
     // Configuration info
-    console.log("--- configuration info ---\n"
+    console.log("\n--- configuration info ---\n"
     + "lang: " + lang + "\n"
     + "model: " + model + "\n"
     + "temperature: " + sysconf.temperature + "\n"
     + "top_p: " + sysconf.top_p + "\n"
+    + "use_system_role: " + use_system_role + "\n"
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + sysconf.use_function_calling + "\n"
     + "use_node_ai: " + sysconf.use_node_ai + "\n"
-    + "use_lcation: " + use_location + "\n"
+    + "use_location: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
     + "functions: " + (functions_ || "___") + "\n"
     + "role: " + (role || "___") + "\n"
     + "stores: " + (stores || "___") + "\n"
-    + "node: " + (node || "___") + "\n");
+    + "node: " + (node || "___"));
   }
 
   // Type II. Tool calls (function calling) input
@@ -153,9 +154,12 @@ export default async function(req, res) {
     }
 
     inputType = TYPE.TOOL_CALL;
-    console.log(chalk.cyanBright("Tool calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.cyanBright("\nInput Tool Calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(input);
 
-    // Curerently OpenAI only support function calling in tool calls.
+    // OpenAI support function calling in tool calls.
+    console.log("\n--- function calling ---");
+
     // Function name and arguments
     const functions = input.split("T=")[0].trim().substring(1).split(",!");
     console.log("Functions: " + JSON.stringify(functions));
@@ -168,7 +172,7 @@ export default async function(req, res) {
 
     // Execute function
     functionResults = await executeFunctions(functions);
-    console.log("Result:" + JSON.stringify(functionResults) + "\n");
+    console.log("-> result:" + JSON.stringify(functionResults) + "\n");
     if (functionResults.length > 0) {
       for (let i = 0; i < functionResults.length; i++) {
         const f = functionResults[i];
@@ -195,17 +199,27 @@ export default async function(req, res) {
                                        user, model,
                                        input, inputType, files, images,
                                        session, mem_length,
+
+                                       // Role, Stores, Node
                                        role, stores, node,
-                                       use_location, location, 
-                                       sysconf.use_function_calling, functionCalls, functionResults);
+
+                                       // Location info
+                                       use_location, location,
+
+                                       // Function calling
+                                       sysconf.use_function_calling, 
+                                       functionCalls, functionResults,
+                                      
+                                       // Callbacks
+                                       null, null);
     
     // Tools
-    console.log("--- tools ---");
+    console.log("\n--- tools ---");
     let tools = await getTools(functions_);
-    console.log(JSON.stringify(tools) + "\n");
+    console.log(JSON.stringify(tools));
 
-    console.log("--- messages ---");
-    console.log(JSON.stringify(msg.messages) + "\n");
+    console.log("\n--- messages ---");
+    console.log(JSON.stringify(msg.messages));
 
     // Result
     res.status(200).json({

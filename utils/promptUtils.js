@@ -38,9 +38,18 @@ const sysconf = getSystemConfigurations();
 export async function generateMessages(use_system_role, lang,
                                        user, model, input, inputType, files, images,
                                        session, mem_limit = 7,
+
+                                       // Role, Stores, Node
                                        role, stores, node,
+                                       
+                                       // Location info
                                        use_location, location,
-                                       use_function_calling, functionCalls, functionResults,
+
+                                       // Function calling
+                                       use_function_calling,
+                                       functionCalls, functionCallingResults,
+
+                                       // Callbacks
                                        updateStatus = null, streamOutput = null) {
   let messages = [];
   let mem = 0;
@@ -113,7 +122,7 @@ export async function generateMessages(use_system_role, lang,
     // User language, lang is the language code, e.g. "en-US"
     // Only when user language is not English, emphasize the language
     if (lang !== "en-US") {
-      system_prompt += "\n" + "User's language: " + getLanguageName(lang) + "\n";
+      system_prompt += "\n\n" + "Reply with user's language: " + getLanguageName(lang) + "\n\n";
     }
 
     messages.push({ 
@@ -525,11 +534,17 @@ export async function generateMessages(use_system_role, lang,
   // 1. Function calling result
   // The latest function calling result, not the history
   let function_prompt = "";
-  if (use_function_calling && inputType === TYPE.TOOL_CALL && functionResults && functionResults.length > 0) {
-    for (let i = 0; i < functionResults.length; i++) {
-      const f = functionResults[i];
+  if (use_function_calling && inputType === TYPE.TOOL_CALL && functionCallingResults && functionCallingResults.length > 0) {
+    for (let i = 0; i < functionCallingResults.length; i++) {
+      const f = functionCallingResults[i];
       const c = functionCalls[i];
       
+      // Structure with OpenAI function calling format
+      // {
+      //    role: "tool",
+      //    content: "The time is 3:18 PM",
+      //    tool_call_id: "call_Ky031WX9JPGVvZn9euHNqdun",
+      // }
       if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
         // Find tool call id in messages
         let isFound = false;

@@ -2,7 +2,7 @@ import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import redirectToUrl from "./functions/redirect_to_url.js";
 import askWolframalpha from "./functions/ask_wolframalpha.js";
-import { pingMcpServer, listMcpFunctions } from "utils/mcpUtils.js";
+import { pingMcpServer, listMcpFunctions } from "./utils/mcpUtils.js";
 
 // `tools` is a generated json from OpenAI API
 export function toolsToFunctions(tools) {
@@ -205,7 +205,7 @@ export async function getFunctions(functions_ = null) {
 // A tools wrapper for functions
 // `functions_` is a list of function callable
 export async function getTools(functions_) {
-  let functions = getFunctions(functions_);
+  let functions = await getFunctions(functions_);
 
   let tools = []
   for (let i = 0; i < functions.length; i++) {

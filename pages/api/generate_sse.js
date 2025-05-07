@@ -74,7 +74,7 @@ export default async function (req, res) {
   const use_location = req.query.use_location === "true" ? true : false;
   const location = req.query.location || "";
   const lang = req.query.lang || "en-US";
-  const use_system_role = req.query.use_system_role === "true" ? true : false;
+  const use_system_role = req.query.use_system_role || true;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
@@ -151,43 +151,44 @@ export default async function (req, res) {
   if (!input.startsWith("!")) {
     inputType = TYPE.NORMAL;
     console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log(input + "\n");
+    console.log(input);
 
     // Images & files
     if (images && images.length > 0) {
-      console.log("--- images ---");
-      console.log(images.join("\n") + "\n");
+      console.log("\n--- images ---");
+      console.log(images.join("\n"));
     }
     if (files && files.length > 0) {
-      console.log("--- files ---");
-      console.log(files.join("\n") + "\n");
+      console.log("\n--- files ---");
+      console.log(files.join("\n"));
     }
 
     // Configuration info
-    console.log("--- configuration info ---\n"
+    console.log("\n--- configuration info ---\n"
     + "lang: " + lang + "\n"
     + "model: " + model + "\n"
     + "temperature: " + sysconf.temperature + "\n"
     + "top_p: " + sysconf.top_p + "\n"
+    + "use_system_role: " + use_system_role + "\n"
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
     + "use_function_calling: " + sysconf.use_function_calling + "\n"
     + "use_node_ai: " + sysconf.use_node_ai + "\n"
-    + "use_lcation: " + use_location + "\n"
+    + "use_location: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
     + "functions: " + (functions_ || "___") + "\n"
     + "role: " + (role || "___") + "\n"
     + "stores: " + (stores || "___") + "\n"
-    + "node: " + (node || "___") + "\n");
+    + "node: " + (node || "___"));
   }
 
   // Type II. Tool calls (function calling) input
   // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
-  // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
+  // Example: !func1(param1),!func2(param2),!func3(param3) T=[{"index:0..."}] R=3:18 PM Q=Hello
   let functionNames = [];    // functionc called
   let functionCalls = [];    // function calls in input
-  let functionResults = [];  // function call results
+  let functionCallingResults = [];  // function call results
   if (input.startsWith("!")) {
     if (!sysconf.use_function_calling) {
       res.write(`data: Function calling is disabled.\n\n`); res.flush();
@@ -197,41 +198,60 @@ export default async function (req, res) {
     }
 
     inputType = TYPE.TOOL_CALL;
-    console.log(chalk.cyanBright("Tool calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.cyanBright("\nInput Tool Calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(input);
  
-    // Curerently OpenAI only support function calling in tool calls.
+    // OpenAI support function calling in tool calls.
+    console.log("\n--- function calling ---");
+
     // Function name and arguments
     const functions = input.split("T=")[0].trim().substring(1).split(",!");
     console.log("Functions: " + JSON.stringify(functions));
 
     // Tool calls
-    functionCalls = JSON.parse(input.split("T=")[1].trim().split("Q=")[0].trim());
+    functionCalls = JSON.parse(input.split("T=")[1].trim().split("R=")[0].trim());
 
-    // Replace input with original
-    input = input.split("Q=")[1];
+    // Tool calls result (frontend)
+    functionCallingResults = JSON.parse(input.split("T=")[1].split("Q=")[0].trim().split("R=")[1].trim());
+    if (functionCallingResults && functionCallingResults.length > 0) {
+      console.log("Frontend function calling results: " + JSON.stringify(functionCallingResults));
+    }
 
-    // Execute function
-    functionResults = await executeFunctions(functions);
-    console.log("Result:" + JSON.stringify(functionResults) + "\n");
-    if (functionResults.length > 0) {
-      for (let i = 0; i < functionResults.length; i++) {
-        const f = functionResults[i];
-        const c = functionCalls[i];  // not using here.
+    // Backend function calling
+    if (functionCallingResults.length == 0) {
+      // Result format:
+      // {
+      //   success: true,
+      //   function: f,
+      //   message: result.message,
+      //   event: result.event,
+      // }
+      functionCallingResults = await executeFunctions(functions);
+      console.log("Backend function calling result:" + JSON.stringify(functionCallingResults));
 
-        // Add function name
-        const functionName = f.function.split("(")[0].trim();
-        if (functionNames.indexOf(functionName) === -1) {
-          functionNames.push(functionName);
-        }
+      // Some results process
+      if (functionCallingResults.length > 0) {
+        for (let i = 0; i < functionCallingResults.length; i++) {
+          const f = functionCallingResults[i];
+          const c = functionCalls[i];  // not using here.
 
-        // Trigger event
-        // Function trigger event
-        if (f.event) {
-          const event = JSON.stringify(f.event);
-          res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
+          // Add function name
+          const functionName = f.function.split("(")[0].trim();
+          if (functionNames.indexOf(functionName) === -1) {
+            functionNames.push(functionName);
+          }
+
+          // Trigger frontend event
+          if (f.event) {
+            const event = JSON.stringify(f.event);
+            res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
+          }
         }
       }
     }
+
+    // Replace input with original user input
+    input = input.split("Q=")[1].trim();
   }
 
   try {
@@ -247,11 +267,18 @@ export default async function (req, res) {
                                        user, model,
                                        input, inputType, files, images, 
                                        session, mem_length,
-                                       role, stores, node, 
-                                       use_location, location,
-                                       sysconf.use_function_calling, functionCalls, functionResults,
 
-                                       // these 2 are callbacks
+                                       // Role, Stores, Node
+                                       role, stores, node,
+
+                                       // Location info
+                                       use_location, location,
+                                       
+                                       // Function calling
+                                       sysconf.use_function_calling, 
+                                       functionCalls, functionCallingResults,
+
+                                       // Callbacks
                                        updateStatus, streamOutput);
 
     updateStatus("Pre-generating finished.");
@@ -281,12 +308,12 @@ export default async function (req, res) {
     }
 
     // Tools
-    console.log("--- tools ---");
+    console.log("\n--- tools ---");
     let tools = await getTools(functions_);
-    console.log(JSON.stringify(tools) + "\n");
+    console.log(JSON.stringify(tools));
 
-    console.log("--- messages ---");
-    console.log(JSON.stringify(msg.messages) + "\n");
+    console.log("\n--- messages ---");
+    console.log(JSON.stringify(msg.messages));
 
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");
@@ -427,21 +454,21 @@ export default async function (req, res) {
 
     // Output
     console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log((output || "(null)") + "\n");
+    console.log((output || "(null)"));
 
     // Tool calls output
     const output_tool_calls = JSON.stringify(toolCalls);
     if (output_tool_calls && toolCalls.length > 0) {
-      console.log("--- tool calls ---");
+      console.log("\n--- tool calls ---");
       console.log(output_tool_calls + "\n");
     }
 
     // Log (chat history)
     // Must add tool calls log first, then add the general input output log
     // 1. tool calls log
-    if (functionCalls && functionCalls.length > 0 && functionResults && functionResults.length > 0) {
-      for (let i = 0; i < functionResults.length; i++) {
-        const f = functionResults[i];
+    if (functionCalls && functionCalls.length > 0 && functionCallingResults && functionCallingResults.length > 0) {
+      for (let i = 0; i < functionCallingResults.length; i++) {
+        const f = functionCallingResults[i];
         const c = functionCalls[i];
 
         // Add log
@@ -469,11 +496,11 @@ export default async function (req, res) {
     }
 
     // Token
-    console.log("--- token_ct ---");
-    console.log("response_token_ct: " + JSON.stringify(chatCompletionUsage) + "\n");
+    console.log("\n--- token_ct ---");
+    console.log("response_token_ct: " + JSON.stringify(chatCompletionUsage));
 
     // Fee
-    console.log("--- fee_calc ---");
+    console.log("\n--- fee_calc ---");
     const input_fee = chatCompletionUsage.prompt_tokens * modelInfo.price_input;
     const output_fee = chatCompletionUsage.completion_tokens * modelInfo.price_output;
     const total_fee = input_fee + output_fee;
@@ -482,7 +509,7 @@ export default async function (req, res) {
     console.log("total_fee: " + total_fee.toFixed(5));
     if (user && user.username) {
       await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
-      console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
+      console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5));
     }
 
     // Log

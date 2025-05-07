@@ -34,6 +34,7 @@ import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 import { useUI } from '../contexts/UIContext';
 import { initializeStorage } from "utils/storageUtils";
 import Image from "../components/ui/Image";
+import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 
 
 // Status control
@@ -1489,7 +1490,7 @@ export default function Home() {
       console.log("Session start.");
     }
 
-    openaiEssSrouce.onmessage = function(event) {
+    openaiEssSrouce.onmessage = async function(event) {
       if (globalThis.STATE == STATES.IDLE) {
         openaiEssSrouce.close();
         console.log("Session closed by state control.")
@@ -1655,20 +1656,58 @@ export default function Home() {
           toolCalls.map((t) => {
             functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
           });
-          const functionInput = functions.join(",");
+          const functionCallingString = functions.join(",");
 
           // Generate with tool calls (function calling)
           if (input.startsWith("!")) {
             input = input.split("Q=")[1];
           }
 
-          // Reset time
+          // Front end function calling
+          const functionCallingResult = [];
+          if (await pingMcpServer()) {
+            const mcpFunctions = await listMcpFunctions();
+            const mcpFunctionNames = mcpFunctions.map((f) => f.name);
+
+            // Loop through all tool calls and call them with callMcpTool
+            for (const call of toolCalls) {
+              if (mcpFunctionNames.includes(call.function.name)) {
+                // Call the function with callMcpTool
+                console.log("Calling MCP function: " + JSON.stringify(call, null, 2));
+                const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
+                console.log("MCP function result: " + JSON.stringify(result, null, 2));
+                if (result) {
+                  // Result format:
+                  // {
+                  //   success: true,
+                  //   function: f,
+                  //   message: result.message,
+                  //   event: result.event,
+                  // }
+                  functionCallingResult.push({
+                    success: true,
+                    function: call.function.name,
+                    message: result.content[0].text,
+                    // event: ...
+                  });
+                }
+              }
+            }
+          }
+
+          // Set time
           const timeNow = Date.now();
           setTime(timeNow);
           sessionStorage.setItem("head", timeNow);
 
-          // Call generate with function
-          generate_sse(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
+          // Re-call generate with tool calls!
+          const inputParts = [
+            functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
+            "T=" + JSON.stringify(toolCalls),              // tool calls generated
+            "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
+            "Q=" + input                                   // original user input
+          ];
+          generate_sse(inputParts.join(" "), [], []);
           return;
         }
 
@@ -1967,6 +2006,13 @@ export default function Home() {
           reject(error);
         });
       });
+    }
+
+    // Print output result
+    if (output) {
+      console.log(output);
+    } else {
+      console.log("(No output)");
     }
   }
 

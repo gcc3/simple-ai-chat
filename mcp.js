@@ -132,7 +132,7 @@ app.use((req, res, next) => {
 
 // Define root endpoint
 app.get('/', (req, res) => {
-  res.send('Simple MCP is alive.');
+  res.send('Simple MCP is running.');
 });
 
 // Add shutdown endpoint
@@ -150,7 +150,7 @@ app.post('/shutdown', async (req, res) => {
 });
 
 // List tools
-app.get('/tools', (req, res) => {
+app.get('/tool/list', (req, res) => {
   res.json(mcpClient.tools);
 });
 
@@ -160,7 +160,7 @@ app.get('/servers', (req, res) => {
 });
 
 // Refresh server list
-app.post('/refresh', async (req, res) => {
+app.post('/tool/refresh', async (req, res) => {
   try {
     // Disconnect from all servers
     await mcpClient.disconnect();
@@ -178,6 +178,27 @@ app.post('/refresh', async (req, res) => {
   }
 });
 
+// Call tool
+app.post('/tool/call', async (req, res) => {
+  const timestamp = Date.now();
+
+  const { tool, args } = req.body;
+  console.log(`REQ (${timestamp}): ${JSON.stringify(req.body)}`);
+  if (!tool || !args) {
+    return res.status(400).send("Missing tool name or arguments");
+  }
+
+  try {
+    const result = await mcpClient.callTool(tool, args);
+    console.log(`RES (${timestamp}): ${JSON.stringify(result)}`);
+
+    res.json(result);
+  } catch (e) {
+    console.error("Error calling tool: ", e);
+    res.status(500).send("Error calling tool");
+  }
+});
+
 // Start the server
 app.listen(port, async () => {
   console.log(`Simple MCP server is running on http://localhost:${port}`);
@@ -185,11 +206,12 @@ app.listen(port, async () => {
   // Load MCP server configuration
   const mcpConfig = await loadMcpConfig();
 
-  console.log("\n--- avaliable endpoints ---" + "\n" +
-    "GET  /" + "\n" +
-    "GET  /tools" + "\n" +
+  console.log("\n--- available endpoints ---" + "\n" +
+    "GET  /" + "\n" +  
+    "GET  /tool/list" + "\n" +
+    "POST /tool/call" + "\n" +
+    "POST /tool/refresh" + "\n" +
     "GET  /servers" + "\n" +
-    "POST /refresh" + "\n" +
     "POST /shutdown"
   );
 
@@ -198,7 +220,7 @@ app.listen(port, async () => {
     await mcpClient.connect(s, mcpConfig[s]);
   }
 
-  console.log("\n--- avaliable tools ---");
+  console.log("\n--- available tools ---");
   if (mcpClient && mcpClient.tools.length > 0) {
     console.log(mcpClient.tools.map((t) => t.name).join("\n") + "\n");
   } else {
