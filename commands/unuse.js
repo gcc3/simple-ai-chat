@@ -1,6 +1,6 @@
 import { initializeMemory } from "../utils/sessionUtils.js";
 import { isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
-import { getFunctions } from "../function.js";
+import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from '../utils/userUtils.js';
 
 export default async function unuse(args) {
@@ -21,10 +21,12 @@ export default async function unuse(args) {
   }
 
   // Find function
-  const functions = await getFunctions();
+  let functions = getFunctions();
+  functions = functions.concat(await getMcpFunctions());
+  
   const function_ = functions.find((f) => f.name === name);
   if (function_) {
-    // Remove from localhostStorage and remote
+    // Remove from localStorage and remote
     const currentFunctions = (localStorage.getItem("functions")).split(",");
     if (!currentFunctions.includes(name)) {
       return "Function not in use.";

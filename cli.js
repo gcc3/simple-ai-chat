@@ -45,9 +45,13 @@ globalThis.fetch = async (url, options) => {
 };
 
 
+// Get file paths
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
 // MCP server
 // Start a local MCP server using child_process.spawn
-const mcpProcess = spawn('node', ['./mcp.js'], {
+const mcpProcess = spawn('node', [join(__dirname, 'mcp.js')], {
   // detached: true,  // Important: must comment this to avoid black window popup
   stdio: 'ignore',
   windowsHide: true,  // *** This prevents black window ***
@@ -356,9 +360,6 @@ function printOutput(output, append=false) {
 }
 
 // Get version from package.json
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
 export function getVersion() {
   try {
     const packageJsonPath = join(__dirname, "package.json");

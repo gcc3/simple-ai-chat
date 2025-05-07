@@ -94,7 +94,7 @@ export function executeFunction(functionName, argsString) {
 // Get functions
 // `functions_` is a list of function callable, in browser storage
 // If `functions_` is null, return all functions, this is used for listing functions
-export async function getFunctions(functions_ = null) {
+export function getFunctions(functions_ = null) {
   let functions = []
   let callables = functions_ ? functions_.split(",") : [];
 
@@ -178,6 +178,14 @@ export async function getFunctions(functions_ = null) {
     });
   }
 
+  return functions;
+}
+
+// Get MCP functions
+export async function getMcpFunctions(functions_ = null) {
+  let functions = [];
+  let callables = functions_ ? functions_.split(",") : [];
+
   // MCP functions
   if (await pingMcpServer()) {
     const mcpFunctions = await listMcpFunctions();
@@ -197,10 +205,12 @@ export async function getFunctions(functions_ = null) {
   return functions;
 }
 
+
 // A tools wrapper for functions
 // `functions_` is a string of function names, e.g. "get_time,get_weather"
 export async function getTools(functions_) {
-  let functions = await getFunctions(functions_);
+  let functions = getFunctions(functions_);
+  functions = functions.concat(await getMcpFunctions(functions_));
 
   let tools = []
   for (let i = 0; i < functions.length; i++) {

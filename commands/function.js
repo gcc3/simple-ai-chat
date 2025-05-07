@@ -1,4 +1,4 @@
-import { getFunctions } from "../function.js";
+import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from '../utils/userUtils.js';
 
 export default async function function_(args) {
@@ -10,7 +10,8 @@ export default async function function_(args) {
   const command = args[0];
 
   if (command === "ls" || command === "list") {
-    let functions = await getFunctions();
+    let functions = getFunctions();
+    let mcpFunctionList = await getMcpFunctions();
 
     if (functions.length === 0) {
       return "No functions.";
@@ -39,24 +40,40 @@ export default async function function_(args) {
         callables = "No callable functions.";
       }
 
-      // Available functions
-      let availables = "\\" + functions.map((f) => {
+      // System functions
+      let systemFunctions = "\\" + functions.map((f) => {
         return f.name;
       }).join(" \\");
 
-      // Add * to available functions
+      // Add * to system functions
       for (const f of functions) {
         if (enabledFunctions.includes(f.name)) {
-          availables = availables.replaceAll("\\" + f.name, "*\\" + f.name);
+          systemFunctions = systemFunctions.replaceAll("\\" + f.name, "*\\" + f.name);
         }
       }
 
-      if (availables.length === 0) {
-        availables = "No available functions.";
+      if (systemFunctions.length === 0) {
+        systemFunctions = "No system functions.";
+      }
+
+      // MCP functions
+      let mcpFunctions = "";
+      if (mcpFunctionList.length > 0) {
+        mcpFunctions = "\\" + mcpFunctionList.map((f) => {
+          return f.name;
+        }).join(" \\");
+
+        // Add * to system functions
+        for (const mf of mcpFunctionList) {
+          if (enabledFunctions.includes(mf.name)) {
+            mcpFunctions = mcpFunctions.replaceAll("\\" + mf.name, "*\\" + mf.name);
+          }
+        }
       }
 
       return "Callable functions:\n" + callables + "\n\n"
-           + "System functions:\n" + availables;
+           + "System functions:\n" + systemFunctions + "\n\n"
+           + (mcpFunctionList.length > 0 ? "MCP functions:\n" + mcpFunctions : "");
     }
   }
 
@@ -76,13 +93,15 @@ export default async function function_(args) {
     }
 
     // Check if the function exists
-    const functions = await getFunctions();
+    let functions = getFunctions();
+    functions = functions.concat(await getMcpFunctions());
+
     const function_ = functions.find((f) => f.name === functionName);
     if (!function_) {
       return "Function not found.";
     }
 
-    // Add to localhostStorage and remote
+    // Add to localStorage and remote
     const currentFunctions = (localStorage.getItem("functions")).split(",");
     if (currentFunctions.includes(functionName)) {
       return "Function already in use.";
@@ -145,7 +164,9 @@ export default async function function_(args) {
     }
 
     // Check if the function exists
-    const functions = await getFunctions();
+    let functions = getFunctions();
+    functions = functions.concat(await getMcpFunctions());
+    
     const function_ = functions.find((f) => f.name === functionName);
     if (!function_) {
       return "Function not found.";

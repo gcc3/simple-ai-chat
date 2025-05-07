@@ -1,6 +1,6 @@
 import { initializeMemory } from "../utils/sessionUtils.js";
 import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } from "../utils/storageUtils.js";
-import { getFunctions } from "../function.js";
+import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from "../utils/userUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "../utils/ollamaUtils.js";
 
@@ -36,7 +36,9 @@ export default async function use(args) {
   }
 
   // Find function
-  const functions = await getFunctions();
+  let functions = getFunctions();
+  functions = functions.concat(await getMcpFunctions());
+
   const function_ = functions.find((f) => f.name === name);
   if (function_) {
     // Add to localhostStorage and remote

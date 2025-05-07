@@ -1,4 +1,4 @@
-import { getFunctions } from "function";
+import { getFunctions, getMcpFunctions } from "function";
 import { getLangCodes } from "./langUtils";
 import { getSettings } from "./settingsUtils";
 import { getThemes } from "./themeUtils";
@@ -98,13 +98,17 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   }
 
   if (prefix === ":function " || prefix === ":function use " || prefix === ":function unuse ") {
-    const functions = await getFunctions();
+    let functions = getFunctions();
+    functions = functions.concat(await getMcpFunctions());
+
     return functions.map((f) => f.name);
   }
 
   if (prefix === ":use " || prefix === ":unuse ") {
     // 1. functions
-    let functionsFound = await getFunctions();
+    let functionsFound = getFunctions();
+    functionsFound = functionsFound.concat(await getMcpFunctions());
+
     functionsFound = functionsFound.filter((f) => f.name.startsWith(nameToBeComleted));
     if (functionsFound.length > 0) {
       return functionsFound.map((f) => f.name);
