@@ -1461,14 +1461,14 @@ export default function Home() {
     // prepare speech
     var textSpoken = "";
 
-    // Input
-    console.log("Input: " + input);
-    if (images.length > 0) console.log("Images: " + images.join(", "));
-    if (files.length > 0)  console.log("Files: " + files.join(", "));
-    
     // Config (input)
     const config = loadConfig();
     console.log("Config: " + JSON.stringify(config));
+
+    // Input
+    console.log("Input (" + config.session + "): " + input);
+    if (images.length > 0) console.log("Images: " + images.join(", "));
+    if (files.length > 0)  console.log("Files: " + files.join(", "));
 
     // Send SSE request!
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
@@ -1815,11 +1815,23 @@ export default function Home() {
 
     // Input
     let inputType = TYPE.NORMAL;
-    
+
+    // Use stream
+    const useStream = localStorage.getItem('useStream') === "true";
+
+    // User
+    const user = {
+      username: localStorage.getItem("user")
+    };
+
+    // Config (input)
+    const config = loadConfig();
+    console.log("Config: " + JSON.stringify(config));
+
     // Type I. Normal input
     if (!input.startsWith("!")) {
       inputType = TYPE.NORMAL;
-      console.log("Input: " + input);
+      console.log("Input (" + config.session + "): " + input);
       if (images.length > 0) console.log("Images: " + images.join(", "));
       if (files.length > 0)  console.log("Files: " + files.join(", "));
     }
@@ -1827,24 +1839,26 @@ export default function Home() {
     // Type II. Tool calls (function calling) input
     if (input.startsWith("!")) {
       inputType = TYPE.TOOL_CALL;
-      console.log("Input Tool Call: " + input);
+      console.log("Input Tool Calls (" + config.session + "): " + input);
     }
-
-    // Output
-    let output = "";
-    let toolCalls = [];
-    
-    // Config (input)
-    const config = loadConfig();
-    console.log("Config: " + JSON.stringify(config));
 
     // Model switch
     const use_vision = images && images.length > 0;
     const model = config.model;
 
+    // Set model
+    !minimalist && setInfo((
+      <div>
+        model: {model}<br></br>
+      </div>
+    ));
+
     // Tools
-    let avaliableTools = await getTools(config.functions);
-    console.log("Tools: " + JSON.stringify(avaliableTools));
+    // Tool calls only supported in non-stream mode
+    let avaliableTools = !useStream ? await getTools(config.functions) : [];
+    if (avaliableTools.length > 0) {
+      console.log("Tools: " + JSON.stringify(avaliableTools));
+    }
 
     // Generate messages
     const msgResponse = await fetch("/api/generate_msg", {
@@ -1853,10 +1867,10 @@ export default function Home() {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
+         time: config.time,
          user_input: input,
          images: images,
          files: files,
-         time: config.time,
          session: config.session,
          model: config.model,
          mem_length: config.mem_length,
@@ -1878,14 +1892,7 @@ export default function Home() {
       throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
     }
     const msg = msgData.result.msg;
-
-    // Use stream
-    const useStream = localStorage.getItem('useStream') === "true";
-
-    // User
-    const user = {
-      username: localStorage.getItem("user")
-    }
+    console.log("Messages: " + JSON.stringify(msg));
 
     const openai = new OpenAI({
       baseURL: config.base_url,
@@ -1908,8 +1915,8 @@ export default function Home() {
       stream_options: null,
       temperature: 1,
       top_p: 1,
-      tools: useStream ? avaliableTools : null,  // function calling only available in stream mode
-      tool_choice: useStream && avaliableTools.length > 0 ? "auto" : null,
+      tools: useStream ? null : avaliableTools,  // function calling only available in non-stream mode
+      tool_choice: !useStream && avaliableTools.length > 0 ? "auto" : null,
       user: user ? user.username : null,
     });
 
@@ -1938,6 +1945,11 @@ export default function Home() {
 
     // Non-stream mode
     if (!useStream) {
+      // Non-stream mode support tool calls
+
+      // Reset state
+      globalThis.STATE = STATES.IDLE;
+
       // Get result
       const choices = chatCompletion.choices;
       if (!choices || choices.length === 0 || choices[0].message === null) {
@@ -1946,100 +1958,31 @@ export default function Home() {
         return;
       } else {
         // 1. handle message output
-        const content = choices[0].message.content;
-        if (content) {
-          output += choices[0].message.content;
-        }
+        if (choices[0].message.content) {
+          output = choices[0].message.content;
 
-        // 2. handle tool calls
-        // Not support yet.
-      }
+          // Add log
+          await logadd(input, output);
 
-      // Reset state
-      globalThis.STATE = STATES.IDLE;
-      printOutput(output);
-
-      // Set model
-      !minimalist && setInfo((
-        <div>
-          model: {model}<br></br>
-        </div>
-      ));
-
-      // Formatter
-      markdownFormatter(elOutputRef.current);
-
-      // Trigger highlight.js
-      hljs.highlightAll();
-
-      // Add log
-      await logadd(input, output);
-    }
-
-    // Stream mode
-    if (useStream) {
-      // Convert the response stream into a readable stream
-      const stream = Readable.from(chatCompletion);
-
-      let outputType = TYPE.NORMAL;
-      await new Promise((resolve, reject) => {
-        // Handle the data event to process each JSON line
-        stream.on('data', (part) => {
-          try {
-            // 1. handle message output
-            const content = part.choices[0].delta.content;
-            if (content) {
-              output += content;
-              console.log(content);
-              printOutput(content, false, true);
-            }
-
-            // Set model
-            const model = part.model;
-            !minimalist && setInfo((
-              <div>
-                model: {model}<br></br>
-              </div>
-            ));
-
-            // 2. handle tool calls
-            const tool_calls = part.choices[0].delta.tool_calls;
-            if (tool_calls) {
-              console.log(tool_calls);
-              outputType = TYPE.TOOL_CALL;
-
-              const toolCall = tool_calls[0];
-              const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
-              if (toolCallSameIndex) {
-                // Found same index tool
-                toolCallSameIndex.function.arguments += toolCall.function.arguments;
-              } else {
-                // If not found, add the tool
-                toolCalls.push(toolCall);
-              }
-            }
-          } catch (error) {
-            console.error('Error parsing JSON line:', error);
-            stream.destroy(error); // Destroy the stream on error
-            reject(error);
+          // Print output result
+          if (output) {
+            printOutput(output);
+            console.log("Output:\n" + output);
+          } else {
+            console.log("No output.");
           }
-        });
-    
-        // Resolve the Promise when the stream ends
-        stream.on('end', async () => {
+
           // Formatter
           markdownFormatter(elOutputRef.current);
 
           // Trigger highlight.js
           hljs.highlightAll();
+        }
 
-          // Add log
-          await logadd(input, output);
-
-          // Reset state
-          globalThis.STATE = STATES.IDLE;
-
-          // Handle tool calls
+        // 2. handle tool calls
+        let toolCalls = [];
+        if (choices[0].message.tool_calls) {
+          toolCalls = choices[0].message.tool_calls;
           if (toolCalls.length > 0) {
             let functions = [];
             toolCalls.map((t) => {
@@ -2084,6 +2027,11 @@ export default function Home() {
               }
             }
 
+            if (toolCalls.length > 0) {
+              // The final output shouldn't be a tool call
+              console.log("Output Tool Calls:\n" + JSON.stringify(toolCalls));
+            }
+
             // Set time
             const timeNow = Date.now();
             setTime(timeNow);
@@ -2098,6 +2046,63 @@ export default function Home() {
             ];
             await generate_msg(inputParts.join(" "), [], []);
           }
+        }
+      }
+    }
+
+    // Stream mode
+    if (useStream) {
+      let output = "";
+
+      // Convert the response stream into a readable stream
+      const stream = Readable.from(chatCompletion);
+
+      await new Promise((resolve, reject) => {
+        // Handle the data event to process each JSON line
+        stream.on('data', (part) => {
+          try {
+            // 1. handle message output
+            const content = part.choices[0].delta.content;
+            if (content) {
+              output += content;
+              console.log(content);
+              printOutput(content, false, true);
+            }
+
+            // Set model
+            const model = part.model;
+            !minimalist && setInfo((
+              <div>
+                model: {model}<br></br>
+              </div>
+            ));
+
+            // 2. handle tool calls
+            // Streaming mode not support tool calls yet. (Ollama)
+          } catch (error) {
+            console.error('Error parsing JSON line:', error);
+            stream.destroy(error); // Destroy the stream on error
+            reject(error);
+          }
+        });
+    
+        // Resolve the Promise when the stream ends
+        stream.on('end', async () => {
+          // Print output result
+          if (output) {
+            console.log("Output:\n" + output);
+          } else {
+            console.log("No output.");
+          }
+
+          // Formatter
+          markdownFormatter(elOutputRef.current);
+
+          // Trigger highlight.js
+          hljs.highlightAll();
+
+          // Add log
+          await logadd(input, output);
 
           // Reset state
           globalThis.STATE = STATES.IDLE;
@@ -2110,18 +2115,6 @@ export default function Home() {
           reject(error);
         });
       });
-    }
-
-    // Print output result
-    if (output) {
-      console.log("Output:\n" + output);
-    }
-    if (toolCalls.length > 0) {
-      // The final output shouldn't be a tool call
-      console.log("Output Tool Calls:\n" + JSON.stringify(toolCalls));
-    }
-    if (!output && toolCalls.length === 0) {
-      console.log("No output.");
     }
   }
 
