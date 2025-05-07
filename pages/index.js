@@ -1814,9 +1814,21 @@ export default function Home() {
     if (getOutput() !== querying) printOutput(waiting);
 
     // Input
-    console.log("Input: " + input);
-    if (images.length > 0) console.log("Images: " + images.join(", "));
-    if (files.length > 0)  console.log("Files: " + files.join(", "));
+    let inputType = TYPE.NORMAL;
+    
+    // Type I. Normal input
+    if (!input.startsWith("!")) {
+      inputType = TYPE.NORMAL;
+      console.log("Input: " + input);
+      if (images.length > 0) console.log("Images: " + images.join(", "));
+      if (files.length > 0)  console.log("Files: " + files.join(", "));
+    }
+
+    // Type II. Tool calls (function calling) input
+    if (input.startsWith("!")) {
+      inputType = TYPE.TOOL_CALL;
+      console.log("Input Tool Call: " + input);
+    }
 
     // Output
     let output = "";
@@ -2020,7 +2032,10 @@ export default function Home() {
           hljs.highlightAll();
 
           // Add log
-          logadd(input, output);
+          await logadd(input, output);
+
+          // Reset state
+          globalThis.STATE = STATES.IDLE;
 
           // Handle tool calls
           if (toolCalls.length > 0) {
