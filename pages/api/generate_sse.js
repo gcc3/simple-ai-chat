@@ -453,14 +453,14 @@ export default async function (req, res) {
     }
 
     // Output
-    console.log(chalk.blueBright("Output (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log((output || "(null)"));
+    console.log(chalk.blueBright("\nOutput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log((output.trim() || "(null)"));
 
     // Tool calls output
     const output_tool_calls = JSON.stringify(toolCalls);
     if (output_tool_calls && toolCalls.length > 0) {
       console.log("\n--- tool calls ---");
-      console.log(output_tool_calls + "\n");
+      console.log(output_tool_calls);
     }
 
     // Log (chat history)
