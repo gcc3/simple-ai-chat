@@ -27,7 +27,7 @@ Quick Start
 
 3. MCP server  
     Use `smcp` (or just `schat`) to start the server.  
-    `mcpconfig.json` is located in the `~/.simple`.  
+    The `mcpconfig.json` file is located in the `~/.simple`.  
 
 
 Documentation
