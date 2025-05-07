@@ -186,10 +186,10 @@ export default async function (req, res) {
 
   // Type II. Tool calls (function calling) input
   // Tool call input starts with "!" with fucntions, following with a user input starts with "Q="
-  // Example: !func1(param1),!func2(param2),!func3(param3) Q=Hello
+  // Example: !func1(param1),!func2(param2),!func3(param3) T=[{"index:0..."}] R=3:18 PM Q=Hello
   let functionNames = [];    // functionc called
   let functionCalls = [];    // function calls in input
-  let functionResults = [];  // function call results
+  let functionCallingResults = [];  // function call results
   if (input.startsWith("!")) {
     if (!sysconf.use_function_calling) {
       res.write(`data: Function calling is disabled.\n\n`); res.flush();
@@ -210,33 +210,37 @@ export default async function (req, res) {
     console.log("Functions: " + JSON.stringify(functions));
 
     // Tool calls
-    functionCalls = JSON.parse(input.split("T=")[1].trim().split("Q=")[0].trim());
+    functionCalls = JSON.parse(input.split("T=")[1].trim().split("R=")[0].trim());
 
-    // Replace input with original
-    input = input.split("Q=")[1];
+    // Tool calls result
+    functionCallingResults = JSON.parse(input.split("T=")[1].split("Q=")[0].trim().split("R=")[1].trim());
+    if (functionCallingResults.length == 0) {
+      // Trigger backend function calls
+      // Execute function
+      functionCallingResults = await executeFunctions(functions);
+      console.log("Result:" + JSON.stringify(functionCallingResults) + "\n");
+      if (functionCallingResults.length > 0) {
+        for (let i = 0; i < functionCallingResults.length; i++) {
+          const f = functionCallingResults[i];
+          const c = functionCalls[i];  // not using here.
 
-    // Execute function
-    functionResults = await executeFunctions(functions);
-    console.log("Result:" + JSON.stringify(functionResults) + "\n");
-    if (functionResults.length > 0) {
-      for (let i = 0; i < functionResults.length; i++) {
-        const f = functionResults[i];
-        const c = functionCalls[i];  // not using here.
+          // Add function name
+          const functionName = f.function.split("(")[0].trim();
+          if (functionNames.indexOf(functionName) === -1) {
+            functionNames.push(functionName);
+          }
 
-        // Add function name
-        const functionName = f.function.split("(")[0].trim();
-        if (functionNames.indexOf(functionName) === -1) {
-          functionNames.push(functionName);
-        }
-
-        // Trigger event
-        // Function trigger event
-        if (f.event) {
-          const event = JSON.stringify(f.event);
-          res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
+          // Trigger frontend event
+          if (f.event) {
+            const event = JSON.stringify(f.event);
+            res.write(`data: ###EVENT###${event}\n\n`);  // send event to frontend
+          }
         }
       }
     }
+
+    // Replace input with original user input
+    input = input.split("Q=")[1].trim();
   }
 
   try {
@@ -261,7 +265,7 @@ export default async function (req, res) {
                                        
                                        // Function calling
                                        sysconf.use_function_calling, 
-                                       functionCalls, functionResults,
+                                       functionCalls, functionCallingResults,
 
                                        // Callbacks
                                        updateStatus, streamOutput);
@@ -451,9 +455,9 @@ export default async function (req, res) {
     // Log (chat history)
     // Must add tool calls log first, then add the general input output log
     // 1. tool calls log
-    if (functionCalls && functionCalls.length > 0 && functionResults && functionResults.length > 0) {
-      for (let i = 0; i < functionResults.length; i++) {
-        const f = functionResults[i];
+    if (functionCalls && functionCalls.length > 0 && functionCallingResults && functionCallingResults.length > 0) {
+      for (let i = 0; i < functionCallingResults.length; i++) {
+        const f = functionCallingResults[i];
         const c = functionCalls[i];
 
         // Add log

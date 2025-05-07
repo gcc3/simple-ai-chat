@@ -1655,20 +1655,29 @@ export default function Home() {
           toolCalls.map((t) => {
             functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
           });
-          const functionInput = functions.join(",");
+          const functionCallingString = functions.join(",");
 
           // Generate with tool calls (function calling)
           if (input.startsWith("!")) {
             input = input.split("Q=")[1];
           }
 
-          // Reset time
+          // Front end function calling
+          const functionCallingResult = "[]";
+
+          // Set time
           const timeNow = Date.now();
           setTime(timeNow);
           sessionStorage.setItem("head", timeNow);
 
-          // Call generate with function
-          generate_sse(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
+          // Re-call generate with tool calls!
+          const inputParts = [
+            functionCallingString,             // function calling string, use `!` to trigger backend function calling method
+            "T=" + JSON.stringify(toolCalls),  // tool calls generated
+            "R=" + functionCallingResult,      // frontend function calling result
+            "Q=" + input                       // original user input
+          ];
+          generate_sse(inputParts.join(" "), [], []);
           return;
         }
 
