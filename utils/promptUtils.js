@@ -46,7 +46,6 @@ export async function generateMessages(use_system_role, lang,
                                        use_location, location,
 
                                        // Function calling
-                                       use_function_calling,
                                        functionCalls, functionCallingResults,
 
                                        // Callbacks
@@ -407,7 +406,7 @@ export async function generateMessages(use_system_role, lang,
         // Add tool call query
         // only if the tool call id is found in messages
         // If it is version model, function calling will be disabled as it is not supported
-        if (isFound && use_function_calling) {
+        if (isFound) {
           const message = log.output.slice(2);
           messages.push({ 
             role: "tool",
@@ -459,12 +458,10 @@ export async function generateMessages(use_system_role, lang,
             // The output will add "T=" as prefix
             // AI generated the tool call
             // If it is version model, function calling will be disabled as it is not supported
-            if (use_function_calling) {
-              messages.push({ 
-                role: "assistant",
-                tool_calls: JSON.parse(log.output.slice(2)),
-              });
-            }
+            messages.push({ 
+              role: "assistant",
+              tool_calls: JSON.parse(log.output.slice(2)),
+            });
           } else {
             // Normal output log
             messages.push({ 
@@ -537,7 +534,7 @@ export async function generateMessages(use_system_role, lang,
   // 1. Function calling result
   // The latest function calling result, not the history
   let function_prompt = "";
-  if (use_function_calling && inputType === TYPE.TOOL_CALL && functionCallingResults && functionCallingResults.length > 0) {
+  if (inputType === TYPE.TOOL_CALL && functionCallingResults && functionCallingResults.length > 0) {
     for (let i = 0; i < functionCallingResults.length; i++) {
       const f = functionCallingResults[i];
       const c = functionCalls[i];

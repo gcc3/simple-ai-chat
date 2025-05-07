@@ -173,7 +173,6 @@ export default async function (req, res) {
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
-    + "use_function_calling: " + sysconf.use_function_calling + "\n"
     + "use_node_ai: " + sysconf.use_node_ai + "\n"
     + "use_location: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
@@ -190,13 +189,6 @@ export default async function (req, res) {
   let functionCalls = [];    // function calls in input
   let functionCallingResults = [];  // function call results
   if (input.startsWith("!")) {
-    if (!sysconf.use_function_calling) {
-      res.write(`data: Function calling is disabled.\n\n`); res.flush();
-      res.write(`data: [DONE]\n\n`); res.flush();
-      res.end();
-      return;
-    }
-
     inputType = TYPE.TOOL_CALL;
     console.log(chalk.cyanBright("\nInput Tool Calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
@@ -275,7 +267,6 @@ export default async function (req, res) {
                                        use_location, location,
                                        
                                        // Function calling
-                                       sysconf.use_function_calling, 
                                        functionCalls, functionCallingResults,
 
                                        // Callbacks
@@ -385,8 +376,8 @@ export default async function (req, res) {
       },
       temperature: sysconf.temperature,
       top_p: sysconf.top_p,
-      tools: (sysconf.use_function_calling && tools && tools.length > 0) ? tools : null,
-      tool_choice: (sysconf.use_function_calling && tools && tools.length > 0) ? "auto" : null,
+      tools: (tools && tools.length > 0) ? tools : null,
+      tool_choice: (tools && tools.length > 0) ? "auto" : null,
       user: user ? user.username : null,
     });
 

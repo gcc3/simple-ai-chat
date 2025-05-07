@@ -62,13 +62,6 @@ export function executeFunctions(functions) {
 }
 
 export function executeFunction(functionName, argsString) {
-  if (process.env.USE_FUNCTION_CALLING !== "true") {
-    return {
-      success: false,
-      error: "function calling is not enabled.\n"
-    }
-  }
-  
   // functionArgs is a json string
   let paramObject = null;
   try {

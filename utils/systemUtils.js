@@ -16,7 +16,6 @@ export function getSystemConfigurations() {
   const enter = process.env.ENTER ? process.env.ENTER : "";
   const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 1;
   const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;
-  const use_function_calling = process.env.USE_FUNCTION_CALLING == "true" ? true : false;
   const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
   const use_user_accounts = process.env.USE_USER_ACCOUNTS == "true" ? true : false;
   const use_payment = process.env.USE_PAYMENT == "true" ? true : false;
@@ -41,7 +40,6 @@ export function getSystemConfigurations() {
     enter: enter,
     temperature: temperature,
     top_p: top_p,
-    use_function_calling: use_function_calling,
     use_node_ai: use_node_ai,
     use_user_accounts: use_user_accounts,
     use_payment: use_payment,

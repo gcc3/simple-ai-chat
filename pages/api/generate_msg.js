@@ -1,16 +1,12 @@
-import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
-import { logadd } from "utils/logUtils.js";
 import { authenticate } from "utils/authUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { getUacResult } from "utils/uacUtils";
-import { countToken } from "utils/tokenUtils";
 import { getSystemConfigurations } from "utils/systemUtils";
 import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
-import { evaluate } from './evaluate';
 
 // Input output type
 const TYPE = {
@@ -84,9 +80,6 @@ export default async function(req, res) {
   const model = sysconf.model;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
-  // Use function calling
-  let use_function_calling = sysconf.use_function_calling;
-
   // User access control
   if (sysconf.use_access_control) {
     const uacResult = await getUacResult(user, ip);
@@ -127,7 +120,6 @@ export default async function(req, res) {
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
     + "use_eval: " + use_eval + "\n"
-    + "use_function_calling: " + sysconf.use_function_calling + "\n"
     + "use_node_ai: " + sysconf.use_node_ai + "\n"
     + "use_location: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
@@ -144,15 +136,6 @@ export default async function(req, res) {
   let functionCalls = [];    // function calls in input
   let functionResults = [];  // function call results
   if (input.startsWith("!")) {
-    if (!use_function_calling) {
-      console.log(chalk.redBright("Error: function calling is disabled."));
-      res.status(500).json({
-        success: false,
-        error: "Function calling is disabled.",
-      });
-      return;
-    }
-
     inputType = TYPE.TOOL_CALL;
     console.log(chalk.cyanBright("\nInput Tool Calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
@@ -207,7 +190,6 @@ export default async function(req, res) {
                                        use_location, location,
 
                                        // Function calling
-                                       sysconf.use_function_calling, 
                                        functionCalls, functionResults,
                                       
                                        // Callbacks
