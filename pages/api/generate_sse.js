@@ -197,7 +197,7 @@ export default async function (req, res) {
     }
 
     inputType = TYPE.TOOL_CALL;
-    console.log(chalk.cyanBright("Tool calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.cyanBright("\nInput Tool Calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
  
     // Curerently OpenAI only support function calling in tool calls.
     // Function name and arguments
