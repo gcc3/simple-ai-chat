@@ -1470,6 +1470,11 @@ export default function Home() {
     if (images.length > 0) console.log("Images: " + images.join(", "));
     if (files.length > 0)  console.log("Files: " + files.join(", "));
 
+    // MCP functions
+    const mcpTools = await getMcpTools(config.functions);
+    const mcpToolsString = JSON.stringify(mcpTools);
+    console.log("MCP tools string: " + mcpToolsString);
+
     // Send SSE request!
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
                                                            + "&images=" + images.join(encodeURIComponent("###"))  
@@ -1479,6 +1484,7 @@ export default function Home() {
                                                            + "&model=" + config.model
                                                            + "&mem_length=" + config.mem_length
                                                            + "&functions=" + config.functions
+                                                           + "&mcp_tools=" + encodeURIComponent(mcpToolsString)
                                                            + "&role=" + config.role
                                                            + "&stores=" + config.stores
                                                            + "&node=" + config.node
