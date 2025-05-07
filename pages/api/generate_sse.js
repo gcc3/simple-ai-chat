@@ -228,7 +228,7 @@ export default async function (req, res) {
       //   event: result.event,
       // }
       functionCallingResults = await executeFunctions(functions);
-      console.log("Backend function calling result:" + JSON.stringify(functionCallingResults) + "\n");
+      console.log("Backend function calling result:" + JSON.stringify(functionCallingResults));
 
       // Some results process
       if (functionCallingResults.length > 0) {
