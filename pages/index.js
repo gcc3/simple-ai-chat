@@ -1674,16 +1674,16 @@ export default function Home() {
           const functionCallingResult = [];
           if (await pingMcpServer()) {
             const mcpFunctions = await listMcpFunctions();
-            const mcpFunctionNames = mcpFunctions.map((f) => f.name);
+            if (mcpFunctions && mcpFunctions.length > 0) {
+              const mcpFunctionNames = mcpFunctions.map((f) => f.name);
 
-            // Loop through all tool calls and call them with callMcpTool
-            for (const call of toolCalls) {
-              if (mcpFunctionNames.includes(call.function.name)) {
-                // Call the function with callMcpTool
-                console.log("Calling MCP function: " + JSON.stringify(call));
-                const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
-                console.log("MCP function result: " + JSON.stringify(result));
-                if (result) {
+              // Loop through all tool calls and call them with callMcpTool
+              for (const call of toolCalls) {
+                if (mcpFunctionNames.includes(call.function.name)) {
+                  // Call the function with callMcpTool
+                  console.log("Calling MCP function: " + JSON.stringify(call));
+                  const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
+                  console.log("MCP function result: " + JSON.stringify(result));
                   // Result format:
                   // {
                   //   success: true,
@@ -1694,7 +1694,7 @@ export default function Home() {
                   functionCallingResult.push({
                     success: true,
                     function: call.function.name,
-                    message: result.content[0].text,
+                    message: result ? result.content[0].text : "No result.",
                     // event: ...
                   });
                 }
@@ -1840,6 +1840,9 @@ export default function Home() {
     if (input.startsWith("!")) {
       inputType = TYPE.TOOL_CALL;
       console.log("Input Tool Calls (" + config.session + "): " + input);
+
+      // Trim the input
+      input = "Q=" + input.split("Q=")[1].trim();
     }
 
     // Model switch
@@ -1957,9 +1960,10 @@ export default function Home() {
         printOutput("Silent...");
         return;
       } else {
-        // 1. handle message output
-        if (choices[0].message.content) {
-          output = choices[0].message.content;
+        // 1. handle general message response
+        if (choices[0].message.content && choices[0].message.content.length > 0) {
+          inputType = TYPE.NORMAL;
+          const output = choices[0].message.content;
 
           // Add log
           await logadd(input, output);
@@ -1979,26 +1983,30 @@ export default function Home() {
           hljs.highlightAll();
         }
 
-        // 2. handle tool calls
-        let toolCalls = [];
-        if (choices[0].message.tool_calls) {
-          toolCalls = choices[0].message.tool_calls;
-          if (toolCalls.length > 0) {
-            let functions = [];
-            toolCalls.map((t) => {
-              functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
-            });
-            const functionCallingString = functions.join(",");
+        // 2. handle tool calls response
+        if (choices[0].message.tool_calls && choices[0].message.tool_calls.length > 0) {
+          inputType = TYPE.TOOL_CALL;
+          const toolCalls = choices[0].message.tool_calls;
 
-            // Generate with tool calls (function calling)
-            if (input.startsWith("!")) {
-              input = input.split("Q=")[1];
-            }
+          // Add log
+          await logadd(input, "T=" + JSON.stringify(toolCalls));
 
-            // Frontend function calling
-            const functionCallingResult = [];
-            if (await pingMcpServer()) {
-              const mcpFunctions = await listMcpFunctions();
+          let functions = [];
+          toolCalls.map((t) => {
+            functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
+          });
+          const functionCallingString = functions.join(",");
+
+          // Generate with tool calls (function calling)
+          if (input.startsWith("!")) {
+            input = input.split("Q=")[1];
+          }
+
+          // Frontend function calling
+          const functionCallingResult = [];
+          if (await pingMcpServer()) {
+            const mcpFunctions = await listMcpFunctions();
+            if (mcpFunctions && mcpFunctions.length > 0) {
               const mcpFunctionNames = mcpFunctions.map((f) => f.name);
 
               // Loop through all tool calls and call them with callMcpTool
@@ -2008,44 +2016,42 @@ export default function Home() {
                   console.log("Calling MCP function: " + JSON.stringify(call));
                   const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
                   console.log("MCP function result: " + JSON.stringify(result));
-                  if (result) {
-                    // Result format:
-                    // {
-                    //   success: true,
-                    //   function: f,
-                    //   message: result.message,
-                    //   event: result.event,
-                    // }
-                    functionCallingResult.push({
-                      success: true,
-                      function: call.function.name,
-                      message: result.content[0].text,
-                      // event: ...
-                    });
-                  }
+                  // Result format:
+                  // {
+                  //   success: true,
+                  //   function: f,
+                  //   message: result.message,
+                  //   event: result.event,
+                  // }
+                  functionCallingResult.push({
+                    success: true,
+                    function: call.function.name,
+                    message: result ? result.content[0].text : "No result.",
+                    // event: ...
+                  });
                 }
               }
             }
-
-            if (toolCalls.length > 0) {
-              // The final output shouldn't be a tool call
-              console.log("Output Tool Calls:\n" + JSON.stringify(toolCalls));
-            }
-
-            // Set time
-            const timeNow = Date.now();
-            setTime(timeNow);
-            sessionStorage.setItem("head", timeNow);
-
-            // Re-call generate with tool calls!
-            const inputParts = [
-              functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
-              "T=" + JSON.stringify(toolCalls),              // tool calls generated
-              "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
-              "Q=" + input                                   // original user input
-            ];
-            await generate_msg(inputParts.join(" "), [], []);
           }
+
+          if (toolCalls.length > 0) {
+            // The final output shouldn't be a tool call
+            console.log("Output Tool Calls:\n" + JSON.stringify(toolCalls));
+          }
+
+          // Set time
+          const timeNow = Date.now();
+          setTime(timeNow);
+          sessionStorage.setItem("head", timeNow);
+
+          // Re-call generate with tool calls!
+          const inputParts = [
+            functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
+            "T=" + JSON.stringify(toolCalls),              // tool calls generated
+            "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
+            "Q=" + input                                   // original user input
+          ];
+          await generate_msg(inputParts.join(" "), [], []);
         }
       }
     }

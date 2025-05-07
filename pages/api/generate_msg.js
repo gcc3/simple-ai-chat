@@ -7,6 +7,9 @@ import { getSystemConfigurations } from "utils/systemUtils";
 import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
 import { executeFunctions } from "function.js";
+import { countToken } from "utils/tokenUtils.js";
+import { logadd } from "utils/logUtils.js";
+
 
 // Input output type
 const TYPE = {
@@ -47,6 +50,9 @@ export default async function(req, res) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
 
+  // Time
+  let time = Number(time_);
+
   // Authentication
   // TODO, add authentication, only allow authenticated users to access this API
   const authResult = authenticate(req);
@@ -72,8 +78,8 @@ export default async function(req, res) {
   }
 
   // Model switch
+  let model = req.body.model || sysconf.model;
   const use_vision = images && images.length > 0;
-  const model = sysconf.model;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
   // User access control
@@ -211,6 +217,25 @@ export default async function(req, res) {
     console.log("\n--- messages ---");
     console.log(JSON.stringify(msg.messages));
     console.log("\nMessage completed.\n");
+
+    // Log (chat history)
+    // Must add tool calls log first, then add the general input output log
+    // 1. tool calls log
+    if (functionCalls && functionCalls.length > 0 && functionCallingResults && functionCallingResults.length > 0) {
+      for (let i = 0; i < functionCallingResults.length; i++) {
+        const f = functionCallingResults[i];
+        const c = functionCalls[i];
+
+        // Add log
+        if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
+          const input_f = "F=" + JSON.stringify(c);
+          let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
+          const input_token_ct_f = countToken(model, input_f);
+          const output_token_ct_f = countToken(model, output_f);
+          await logadd(user, session, time++, model, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
+        }
+      }
+    }
 
     // Result
     res.status(200).json({
