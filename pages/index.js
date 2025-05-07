@@ -2007,6 +2007,9 @@ export default function Home() {
         });
       });
     }
+
+    // Print raw output
+    console.log("Output: \n" + output);
   }
 
   // M0. Generate (without SSE)

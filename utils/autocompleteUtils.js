@@ -104,8 +104,8 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
 
   if (prefix === ":use " || prefix === ":unuse ") {
     // 1. functions
-    let functionsFound = [];
-    functionsFound = await getFunctions().filter((f) => f.name.startsWith(nameToBeComleted));
+    let functionsFound = await getFunctions();
+    functionsFound = functionsFound.filter((f) => f.name.startsWith(nameToBeComleted));
     if (functionsFound.length > 0) {
       return functionsFound.map((f) => f.name);
     }
