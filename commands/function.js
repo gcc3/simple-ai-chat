@@ -39,24 +39,24 @@ export default async function function_(args) {
         callables = "No callable functions.";
       }
 
-      // Available functions
-      let availables = "\\" + functions.map((f) => {
+      // System functions
+      let systemFunctions = "\\" + functions.map((f) => {
         return f.name;
       }).join(" \\");
 
-      // Add * to available functions
+      // Add * to system functions
       for (const f of functions) {
         if (enabledFunctions.includes(f.name)) {
-          availables = availables.replaceAll("\\" + f.name, "*\\" + f.name);
+          systemFunctions = systemFunctions.replaceAll("\\" + f.name, "*\\" + f.name);
         }
       }
 
-      if (availables.length === 0) {
-        availables = "No available functions.";
+      if (systemFunctions.length === 0) {
+        systemFunctions = "No system functions.";
       }
 
       return "Callable functions:\n" + callables + "\n\n"
-           + "System functions:\n" + availables;
+           + "System functions:\n" + systemFunctions;
     }
   }
 
