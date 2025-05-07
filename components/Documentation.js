@@ -11,8 +11,8 @@ const Documentation = () => {
 
   useEffect(() => {
     const fetchFunctions = async () => {
-      const fetchedFunctions = await getFunctions();
-      setFunctions(fetchedFunctions);
+      let functions = getFunctions();
+      setFunctions(functions);
     };
     fetchFunctions();
   }, []);
