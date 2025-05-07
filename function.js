@@ -205,7 +205,7 @@ export async function getFunctions(functions_ = null) {
 // A tools wrapper for functions
 // `functions_` is a list of function callable
 export async function getTools(functions_) {
-  let functions = getFunctions(functions_);
+  let functions = await getFunctions(functions_);
 
   let tools = []
   for (let i = 0; i < functions.length; i++) {

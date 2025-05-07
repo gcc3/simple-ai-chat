@@ -103,12 +103,11 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   }
 
   if (prefix === ":use " || prefix === ":unuse ") {
-    let founds = [];
-    
     // 1. functions
-    founds = getFunctions().filter((f) => f.name.startsWith(nameToBeComleted));
-    if (founds.length > 0) {
-      return founds.map((f) => f.name);
+    let functionsFound = [];
+    functionsFound = await getFunctions().filter((f) => f.name.startsWith(nameToBeComleted));
+    if (functionsFound.length > 0) {
+      return functionsFound.map((f) => f.name);
     }
 
     // 2. nodes
