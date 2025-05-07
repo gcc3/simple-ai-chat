@@ -1663,7 +1663,7 @@ export default function Home() {
           }
 
           // Front end function calling
-          const functionCallingResult = "[]";
+          const functionCallingResult = [];
 
           // Set time
           const timeNow = Date.now();
@@ -1672,10 +1672,10 @@ export default function Home() {
 
           // Re-call generate with tool calls!
           const inputParts = [
-            functionCallingString,             // function calling string, use `!` to trigger backend function calling method
-            "T=" + JSON.stringify(toolCalls),  // tool calls generated
-            "R=" + functionCallingResult,      // frontend function calling result
-            "Q=" + input                       // original user input
+            functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
+            "T=" + JSON.stringify(toolCalls),              // tool calls generated
+            "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
+            "Q=" + input                                   // original user input
           ];
           generate_sse(inputParts.join(" "), [], []);
           return;
