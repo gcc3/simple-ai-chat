@@ -1816,6 +1816,9 @@ export default function Home() {
     // Input
     let inputType = TYPE.NORMAL;
 
+    // Output
+    let outputType = TYPE.NORMAL;
+
     // Use stream
     const useStream = localStorage.getItem('useStream') === "true";
 
@@ -1840,9 +1843,6 @@ export default function Home() {
     if (input.startsWith("!")) {
       inputType = TYPE.TOOL_CALL;
       console.log("Input Tool Calls (" + config.session + "): " + input);
-
-      // Trim the input
-      input = "Q=" + input.split("Q=")[1].trim();
     }
 
     // Model switch
@@ -1949,7 +1949,6 @@ export default function Home() {
     // Non-stream mode
     if (!useStream) {
       // Non-stream mode support tool calls
-
       // Reset state
       globalThis.STATE = STATES.IDLE;
 
@@ -1962,10 +1961,13 @@ export default function Home() {
       } else {
         // 1. handle general message response
         if (choices[0].message.content && choices[0].message.content.length > 0) {
-          inputType = TYPE.NORMAL;
+          outputType = TYPE.NORMAL;
           const output = choices[0].message.content;
 
           // Add log
+          if (inputType === TYPE.TOOL_CALL) {
+            input = "Q=" + input.split("Q=")[1].trim();
+          }
           await logadd(input, output);
 
           // Print output result
@@ -1985,7 +1987,7 @@ export default function Home() {
 
         // 2. handle tool calls response
         if (choices[0].message.tool_calls && choices[0].message.tool_calls.length > 0) {
-          inputType = TYPE.TOOL_CALL;
+          outputType = TYPE.TOOL_CALL;
           const toolCalls = choices[0].message.tool_calls;
 
           // Add log
