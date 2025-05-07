@@ -12,24 +12,36 @@ import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import fs from 'fs';
 import cors from 'cors';
+import { mkdir } from 'fs/promises';
+import { homedir } from 'os';
+import { join } from 'path';
 
 
-async function loadMcpConfig(configPath = "./mcpconfig.json") {
+async function loadMcpConfig(configPath = join(homedir(), '.simple', "mcpconfig.json")) {
   try {
+    // Create the directory if it doesn't exist
+    if (!fs.existsSync(configPath)) {
+      const configDir = join(homedir(), '.simple');
+      await mkdir(configDir, { recursive: true });
+    }
+
     // Check if the config file exists
     if (!fs.existsSync(configPath)) {
-      // Copy from ./mcpconfig.json.example
-      const exampleConfigPath = "./mcpconfig.json.example";
-      await fs.promises.copyFile(exampleConfigPath, configPath);
-      console.warn(`Config file not found. Copied from ${exampleConfigPath}.`);
+      // Create a default config file if it doesn't exist
+      const defaultConfig = {
+        mcpServers: {}
+      };
+      await fs.promises.writeFile(configPath, JSON.stringify(defaultConfig, null, 2));
+      console.log(`Default MCP config created at ${configPath}`);
     }
 
     const config = JSON.parse(
       await fs.promises.readFile(configPath, "utf-8"),
     );
-    const mcpServerConfigs = config.mcpServers;
+    const mcpServerConfigs = Object.values(config.mcpServers);
     if (!mcpServerConfigs || mcpServerConfigs.length === 0) {
-      throw new Error("No MCP servers found.");
+      console.log("No MCP servers found in the config file.");
+      return [];
     }
 
     return mcpServerConfigs;
