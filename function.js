@@ -181,13 +181,15 @@ export async function getFunctions(functions_ = null) {
   // MCP functions
   if (await pingMcpServer()) {
     const mcpFunctions = await listMcpFunctions();
-    for (const f of mcpFunctions) {
-      if (!functions_ || callables.includes(f.name)) {
-        functions.push({
-          name: f.name,
-          description: f.description,
-          parameters: f.input_schema,  // TODO fix schema
-        });
+    if (mcpFunctions) {
+      for (const f of mcpFunctions) {
+        if (!functions_ || callables.includes(f.name)) {
+          functions.push({
+            name: f.name,
+            description: f.description,
+            parameters: f.input_schema,  // TODO fix schema
+          });
+        }
       }
     }
   }
