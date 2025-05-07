@@ -150,7 +150,7 @@ export default async function (req, res) {
   // Type I. Normal input
   if (!input.startsWith("!")) {
     inputType = TYPE.NORMAL;
-    console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.yellowBright("\nInput (sse, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
 
     // Images & files
@@ -190,7 +190,7 @@ export default async function (req, res) {
   let functionCallingResults = [];  // function call results
   if (input.startsWith("!")) {
     inputType = TYPE.TOOL_CALL;
-    console.log(chalk.cyanBright("\nInput Tool Calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.cyanBright("\nInput Tool Calls (sse, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
  
     // OpenAI support function calling in tool calls.
@@ -444,7 +444,7 @@ export default async function (req, res) {
     }
 
     // Output
-    console.log(chalk.blueBright("\nOutput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.blueBright("\nOutput (sse, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log((output.trim() || "(null)"));
 
     // Tool calls output

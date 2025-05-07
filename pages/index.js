@@ -1973,7 +1973,7 @@ export default function Home() {
       hljs.highlightAll();
 
       // Add log
-      logadd(input, output);
+      await logadd(input, output);
     }
 
     // Stream mode
@@ -1990,6 +1990,7 @@ export default function Home() {
             const content = part.choices[0].delta.content;
             if (content) {
               output += content;
+              console.log(content);
               printOutput(content, false, true);
             }
 
@@ -2004,6 +2005,7 @@ export default function Home() {
             // 2. handle tool calls
             const tool_calls = part.choices[0].delta.tool_calls;
             if (tool_calls) {
+              console.log(tool_calls);
               outputType = TYPE.TOOL_CALL;
 
               const toolCall = tool_calls[0];
@@ -2112,11 +2114,11 @@ export default function Home() {
 
     // Print output result
     if (output) {
-      console.log(output);
+      console.log("Output:\n" + output);
     }
     if (toolCalls.length > 0) {
       // The final output shouldn't be a tool call
-      console.log("Output Tool Calls: " + JSON.stringify(toolCalls));
+      console.log("Output Tool Calls:\n" + JSON.stringify(toolCalls));
     }
     if (!output && toolCalls.length === 0) {
       console.log("No output.");
