@@ -12,15 +12,8 @@ import { getUser, addUserUsage } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
 import { getModels } from "utils/sqliteUtils.js";
+import { TYPE } from '../../constants.js';
 
-
-// Input output type
-const TYPE = {
-  NORMAL: 0,
-  TOOL_CALL: 1,
-  IMAGE_GEN: 2,
-  IMAGE_EDIT: 3,
-};
 
 // System configurations
 const sysconf = getSystemConfigurations();

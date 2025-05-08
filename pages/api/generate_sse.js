@@ -13,15 +13,8 @@ import { getSystemConfigurations } from "utils/systemUtils";
 import { findNode } from "utils/nodeUtils.js";
 import { ensureSession } from "utils/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";
+import { TYPE } from '../constants.js';
 
-
-// Input output type
-const TYPE = {
-  NORMAL: 0,
-  TOOL_CALL: 1,
-  IMAGE_GEN: 2,
-  IMAGE_EDIT: 3,
-};
 
 // System configurations
 const sysconf = getSystemConfigurations();

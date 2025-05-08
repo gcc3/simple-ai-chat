@@ -37,19 +37,12 @@ import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
+import { TYPE } from '../constants.js';
 
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
 globalThis.STATE = STATES.IDLE;  // a global state
-
-// Input output type
-const TYPE = {
-  NORMAL: 0,
-  TOOL_CALL: 1,
-  IMAGE_GEN: 2,
-  IMAGE_EDIT: 3,
-};
 
 // Front or back display
 const DISPLAY = { FRONT: 0, BACK: 1 };

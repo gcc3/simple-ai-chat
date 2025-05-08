@@ -2,21 +2,14 @@ import { loglist } from './logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
 import { getRole } from './sqliteUtils.js';
 import { getAddress } from "utils/googleMapsUtils";
-import { countToken } from "utils/tokenUtils";
 import { fetchImageSize } from "utils/imageUtils";
 import { getSystemConfigurations } from "utils/systemUtils.js";
 import { findNode, queryNode, checkIsNodeConfigured } from "utils/nodeUtils";
 import { findStore, isInitialized, searchMysqlStore } from "utils/storeUtils";
 import fetch from 'node-fetch';
 import { getLanguageName } from './langUtils.js';
+import { TYPE } from '../constants.js';
 
-// Input output type
-const TYPE = {
-  NORMAL: 0,
-  TOOL_CALL: 1,
-  IMAGE_GEN: 2,
-  IMAGE_EDIT: 3,
-};
 
 // System configurations
 const sysconf = getSystemConfigurations();
