@@ -14,10 +14,12 @@ import { findNode } from "utils/nodeUtils.js";
 import { ensureSession } from "utils/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";
 
+
 // Input output type
 const TYPE = {
   NORMAL: 0,
-  TOOL_CALL: 1
+  TOOL_CALL: 1,
+  IMAGE_GEN: 2,
 };
 
 // System configurations
@@ -128,6 +130,32 @@ export default async function (req, res) {
   let model = req.query.model || sysconf.model;
   const use_vision = images && images.length > 0;
   const use_eval = use_eval_ && use_stats && !use_vision;
+  let modelInfo = models.find(m => m.name === model);
+  if (!modelInfo) {
+    // Try update models
+    models = await getModels();
+
+    if (models.length === 0) {
+      // Developer didn't setup models table
+      modelInfo = {
+        name: process.env.MODEL,
+        api_key: process.env.OPENAI_API_KEY,
+        base_url: process.env.OPENAI_BASE_URL,
+        price_input: 0,
+        price_output: 0,
+      }
+    } else {
+      // Already setup models but not found
+      modelInfo = models.find(m => m.name === model);
+      if (!modelInfo) {
+        updateStatus("Model not exists.");
+        res.write(`data: ###ERR###Model not exists.\n\n`);
+        res.write(`data: [DONE]\n\n`);
+        res.end();
+        return;
+      }
+    }
+  }
 
   // Stream output
   const streamOutput = (message, model = null) => {
@@ -313,37 +341,6 @@ export default async function (req, res) {
     console.log("\n--- messages ---");
     console.log(JSON.stringify(msg.messages));
 
-    // endpoint: /v1/chat/completions
-    updateStatus("Create chat completion.");
-
-    // Model setup
-    let modelInfo = models.find(m => m.name === model);
-    if (!modelInfo) {
-      // Try update models
-      models = await getModels();
-
-      if (models.length === 0) {
-        // Developer didn't setup models table
-        modelInfo = {
-          name: process.env.MODEL,
-          api_key: process.env.OPENAI_API_KEY,
-          base_url: process.env.OPENAI_BASE_URL,
-          price_input: 0,
-          price_output: 0,
-        }
-      } else {
-        // Already setup models but not found
-        modelInfo = models.find(m => m.name === model);
-        if (!modelInfo) {
-          updateStatus("Model not exists.");
-          res.write(`data: ###ERR###Model not exists.\n\n`);
-          res.write(`data: [DONE]\n\n`);
-          res.end();
-          return;
-        }
-      }
-    }
-
     const apiKey = modelInfo.api_key;
     if (!apiKey) {
       updateStatus("Model's API key is not set.");
@@ -368,6 +365,9 @@ export default async function (req, res) {
       apiKey: apiKey,
       baseURL: baseUrl,
     });
+
+    // endpoint: /v1/chat/completions
+    updateStatus("Create chat completion.");
 
     // OpenAI chat completion!
     let chatCompletionUsage = { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 };

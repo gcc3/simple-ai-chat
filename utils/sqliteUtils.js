@@ -157,6 +157,7 @@ const initializeDatabase = (db) => {
                                     is_vision TEXT NOT NULL,
                                     is_audio TEXT NOT NULL,
                                     is_reasoning TEXT NOT NULL,
+                                    is_image TEXT NOT NULL,
                                     context_window INTEGER,
                                     max_output INTEGER,
                                     created_by TEXT NOT NULL,

@@ -45,7 +45,8 @@ globalThis.STATE = STATES.IDLE;  // a global state
 // Input output type
 const TYPE = {
   NORMAL: 0,
-  TOOL_CALL: 1
+  TOOL_CALL: 1,
+  IMAGE_GEN: 2,
 };
 
 // Front or back display

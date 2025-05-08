@@ -14,7 +14,8 @@ import { logadd } from "utils/logUtils.js";
 // Input output type
 const TYPE = {
   NORMAL: 0,
-  TOOL_CALL: 1
+  TOOL_CALL: 1,
+  IMAGE_GEN: 2,
 };
 
 // System configurations
