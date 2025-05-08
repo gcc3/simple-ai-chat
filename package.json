@@ -2,11 +2,12 @@
   "name": "simple-ai-chat",
   "description": "AI chat application based on large language models (LLMs), supports web and command-line interfaces. Available at `simple-ai.io`.",
   "keywords": [
-    "simple",
-    "ai",
-    "chat",
+    "openai",
+    "chatgpt",
+    "ollama",
     "llm",
-    "cli"
+    "cli",
+    "mcp"
   ],
   "version": "0.1.14",
   "author": "Heyang Liu",
