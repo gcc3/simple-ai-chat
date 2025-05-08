@@ -15,6 +15,7 @@ import { getModels } from "utils/sqliteUtils.js";
 import { TYPE } from '../../constants.js';
 import { getSessionLog } from "utils/branchUtils";
 import { isUrl } from "utils/urlUtils";
+import { getS3PresignedPutUrl } from "utils/awsUtils";
 
 
 // System configurations
@@ -158,17 +159,18 @@ export default async function(req, res) {
       outputType = TYPE.IMAGE_EDIT;
       console.log("\n--- images (user input) ---");
       console.log(images.join("\n"));
-    } else {
-      // Try the previous log
-      const prevLog = await getSessionLog("prev", session, time);
-      if (prevLog && prevLog.images && prevLog.images.length > 0) {
-        images = JSON.parse(prevLog.images);
+    } 
 
-        if (images && images.length > 0) {
-          outputType = TYPE.IMAGE_EDIT;
-          console.log("\n--- images (previous log) ---");
-          console.log(JSON.stringify(images.map(i => i.slice(0, 50) + "...")));
-        }
+    // Try the previous log
+    const prevLog = await getSessionLog("prev", session, time);
+    if (prevLog && prevLog.images && prevLog.images.length > 0) {
+      const prevLogImages = JSON.parse(prevLog.images);
+      images = images.concat(prevLogImages);
+
+      if (images && images.length > 0) {
+        outputType = TYPE.IMAGE_EDIT;
+        console.log("\n--- images (previous log) ---");
+        console.log(JSON.stringify(prevLogImages.map(i => i.slice(0, 200))));
       }
     }
 
@@ -232,7 +234,7 @@ export default async function(req, res) {
 
       console.log("\n--- image generation result ---");
       const image = imageGenerate.data[0].b64_json;
-      console.log(image.slice(0, 50) + "...");
+      console.log("Base64 image: " + image.slice(0, 200) + "...");
 
       console.log("\n--- token_ct ---");
       console.log("response_token_ct: " + JSON.stringify(imageGenerate.usage));
@@ -266,8 +268,37 @@ export default async function(req, res) {
         },
       });
 
+      // Upoad iamge to S3
+      // Generate pre-signed URL
+      const fileId = session + "_" + Date.now();
+      const key = fileId + "_" + model + ".png";
+      const bucket = process.env.AWS_S3_BUCKET_NAME;
+      const presignedUrl = await getS3PresignedPutUrl({
+        bucket,
+        key,
+        contentType: "image/png"
+      });
+      const objectUrl = `https://${bucket}.s3.amazonaws.com/${key}`;
+      console.log('Pre-signed URL: ' + presignedUrl);
+      console.log('Object URL: ' + objectUrl);
+
+      // Upload the image to S3
+      let buffer = Buffer.from(image, 'base64');
+      const blob = new Blob([buffer], { type: "image/png" });
+      const uploadResult = await fetch(presignedUrl, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': "image/png",
+        },
+        body: blob,
+      });
+      if (!uploadResult.ok) {
+        throw new Error('Failed to upload image to S3');
+      }
+      console.log("Image uploaded to S3: " + objectUrl);
+
       // Log
-      await logadd(user, session, time++, model, imageGenerate.usage.input_tokens, input, imageGenerate.usage.output_tokens, "", JSON.stringify([image]), ip, browser);
+      await logadd(user, session, time++, model, imageGenerate.usage.input_tokens, input, imageGenerate.usage.output_tokens, "", JSON.stringify([objectUrl]), ip, browser);
       return;
     } catch (error) {
       console.error("Error (image generation):");

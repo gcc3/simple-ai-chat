@@ -1,3 +1,6 @@
+import AWS from 'aws-sdk';
+
+
 export async function generateFileUrl(blob, fileId) {
   // Image type
   let contentType = "";
@@ -71,4 +74,30 @@ export async function generateFileUrl(blob, fileId) {
       error: "Pre-signed URL invalid."
     };
   }
+}
+
+// Get presigned URL
+export async function getS3PresignedPutUrl({ bucket, key, expires = 60, contentType }) {
+  // Initialize AWS SDK (this could be done globally if appropriate for your app)
+  AWS.config.update({
+    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    region: 'us-east-1'
+  });
+
+  const s3 = new AWS.S3();
+  const params = {
+    Bucket: bucket,
+    Key: key,
+    Expires: expires,
+    ContentType: decodeURIComponent(contentType),
+  };
+
+  // Wrap getSignedUrl in a Promise for async/await
+  return new Promise((resolve, reject) => {
+    s3.getSignedUrl('putObject', params, (err, url) => {
+      if (err) return reject(err);
+      resolve(url);
+    });
+  });
 }
