@@ -39,6 +39,7 @@ import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
 import { TYPE } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
+import { toDataUri } from "utils/base64Utils";
 
 
 // Status control
@@ -147,10 +148,6 @@ export default function Home() {
       }
     }
   };
-
-  const isDataUri = (str) => /^data:image\/[a-z0-9.+-]+;base64,/i.test(str);
-  const toDataUri = (b64) =>
-    isDataUri(b64) ? b64 : `data:image/png;base64,${b64}`;
 
   const buildImageDescriptor = (src) =>
     new Promise((resolve) => {

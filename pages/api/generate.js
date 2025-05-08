@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils.js";
 import { authenticate } from "utils/authUtils";
-import { getSessionLog, verifySessionId } from "utils/sessionUtils";
+import { verifySessionId } from "utils/sessionUtils";
 import { getUacResult } from "utils/uacUtils";
 import { countToken } from "utils/tokenUtils";
 import { getSystemConfigurations } from "utils/systemUtils";
@@ -13,6 +13,9 @@ import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
 import { getModels } from "utils/sqliteUtils.js";
 import { TYPE } from '../../constants.js';
+import { getSessionLog } from "utils/branchUtils";
+import { isUrl } from "utils/urlUtils";
+import { isDataUri } from "utils/base64Utils";
 
 
 // System configurations
@@ -25,7 +28,7 @@ export default async function(req, res) {
   // Input
   let input = req.body.user_input.trim() || "";
   let inputType = TYPE.NORMAL;
-  const images = req.body.images || null;
+  let images = req.body.images || null;
   const files = req.body.files || null;
 
   // Output
@@ -154,11 +157,20 @@ export default async function(req, res) {
     // Images
     if (images && images.length > 0) {
       outputType = TYPE.IMAGE_EDIT;
-      console.log("\n--- images ---");
+      console.log("\n--- images (user input) ---");
       console.log(images.join("\n"));
     } else {
       // Try the previous log
-      // TODO
+      const prevLog = await getSessionLog("prev", session, time);
+      if (prevLog && prevLog.images && prevLog.images.length > 0) {
+        images = JSON.parse(prevLog.images);
+
+        if (images && images.length > 0) {
+          outputType = TYPE.IMAGE_EDIT;
+          console.log("\n--- images (previous log) ---");
+          console.log(JSON.stringify(images.map(i => i.slice(0, 50) + "...")));
+        }
+      }
     }
 
     const size = "auto";
@@ -192,11 +204,17 @@ export default async function(req, res) {
 
       if (outputType === TYPE.IMAGE_EDIT) {
         // From URLs to File objects
-        const imageFilesArray = await Promise.all(images.map(async (imageUrl, index) => {
-          const response = await fetch(imageUrl)
-          const arrayBuffer = await response.arrayBuffer()
-          const fileName = imageUrl.split('/').pop() || `image${index}.webp`
-          return toFile(Buffer.from(arrayBuffer), fileName, { type: "image/png" })
+        const imageFilesArray = await Promise.all(images.map(async (image, index) => {
+          if (isUrl(image)) {
+            const response = await fetch(image)
+            const arrayBuffer = await response.arrayBuffer()
+            const fileName = image.split('/').pop() || `image${index}.webp`
+            return toFile(Buffer.from(arrayBuffer), fileName, { type: "image/png" })
+          } else {
+            const buffer = Buffer.from(image, "base64")
+            const fileName = `image${index}.webp`
+            return toFile(buffer, fileName, { type: "image/png" })
+          }
         }));
 
         // Use all files in the edit request
