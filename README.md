@@ -31,6 +31,7 @@ Quick Start
     npm package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)  
 
 3. MCP client  
+    Install: `npm i simple-ai-chat -g`  
     Use `smcp` (or just `schat`) to start the client service.  
     The `mcpconfig.json` file is located in the `~/.simple`.  
 
