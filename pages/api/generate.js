@@ -13,10 +13,12 @@ import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';
 import { getModels } from "utils/sqliteUtils.js";
 
+
 // Input output type
 const TYPE = {
   NORMAL: 0,
-  TOOL_CALL: 1
+  TOOL_CALL: 1,
+  IMAGE_GEN: 2,
 };
 
 // System configurations
@@ -87,6 +89,56 @@ export default async function(req, res) {
   let model = req.body.model || sysconf.model;
   const use_vision = images && images.length > 0;
   const use_eval = use_eval_ && use_stats && !use_vision;
+  let modelInfo = models.find(m => m.name === model);
+  if (!modelInfo) {
+    // Try update models
+    models = await getModels();
+
+    if (models.length === 0) {
+      // Developer didn't setup models table
+      modelInfo = {
+        name: process.env.MODEL,
+        api_key: process.env.OPENAI_API_KEY,
+        base_url: process.env.OPENAI_BASE_URL,
+        price_input: 0,
+        price_output: 0,
+      }
+    } else {
+      // Already setup models but not found
+      modelInfo = models.find(m => m.name === model);
+      if (!modelInfo) {
+        res.status(500).json({
+          success: false,
+          error: "Model not exists.",
+        });
+        return;
+      }
+    }
+  }
+  // Model API key check
+  const apiKey = modelInfo.api_key;
+  if (!apiKey) {
+    res.status(500).json({
+      success: false,
+      error: "Model's API key is not set.",
+    });
+    return;
+  }
+  // Model API base URL check
+  const baseUrl = modelInfo.base_url;
+  if (!baseUrl) {
+    res.status(500).json({
+      success: false,
+      error: "Model's base URL is not set.",
+    });
+    return;
+  }
+
+  // OpenAI
+  const openai = new OpenAI({
+    apiKey: apiKey,
+    baseURL: baseUrl,
+  });
 
   // User access control
   if (sysconf.use_access_control) {
@@ -95,6 +147,87 @@ export default async function(req, res) {
       res.status(400).json({
         success: false,
         error: uacResult.error,
+      });
+      return;
+    }
+  }
+
+  // Type 0. Image generation
+  if (modelInfo.is_image === "1") {
+    outputType = TYPE.IMAGE_GEN;
+    console.log(chalk.blue("\nInput (img_gen, session = " + session + (user ? ", user = " + user.username : "") + "):"));
+
+    const size = "auto";
+    const quality = "low";
+    const output_format = "jpeg";
+
+    // Configuration info
+    console.log("\n--- configuration info ---\n"
+      + "model: " + model + "\n"
+      + "n: " + 1 + "\n"
+      + "moderation: " + "low" + "\n"
+      + "output_format: " + output_format + "\n"
+      + "quality: " + quality + "\n"
+      + "size: " + size);
+
+    try {
+      // OpenAI image generation
+      const imageGenerate = await openai.images.generate({
+        model: "gpt-image-1",
+        prompt: input,
+        n: 1,
+        moderation: "low",
+        quality: quality,
+        output_format: output_format,
+        size: size,
+        user: user ? user.username : null,
+      });
+
+      console.log("\n--- image generation result ---");
+      const image = imageGenerate.data[0].b64_json;
+      console.log(image.slice(0, 50) + "...");
+
+      console.log("\n--- token_ct ---");
+      console.log("response_token_ct: " + JSON.stringify(imageGenerate.usage));
+      
+      // Fee
+      console.log("\n--- fee_calc ---");
+      const input_fee = imageGenerate.usage.input_tokens * modelInfo.price_input;
+      const output_fee = imageGenerate.usage.output_tokens * modelInfo.price_output;
+      const total_fee = input_fee + output_fee;
+      console.log("input_fee = " + imageGenerate.usage.input_tokens + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
+      console.log("output_fee = " + imageGenerate.usage.output_tokens + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
+      console.log("total_fee: " + total_fee.toFixed(5));
+      if (user && user.username) {
+        await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
+        console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5));
+      }
+
+      res.status(200).json({
+        result: {
+          text : "",
+          tool_calls: [],
+          images: [image],
+          events: [],
+          stats: {
+            token_ct: imageGenerate.usage.total_tokens,
+            mem: 1,
+          },
+          info: {
+            model: model,
+          }
+        },
+      });
+
+      // Log
+      await logadd(user, session, time++, model, imageGenerate.usage.input_tokens, input, imageGenerate.usage.output_tokens, "", JSON.stringify([image]), ip, browser);
+      return;
+    } catch (error) {
+      console.error("Error (image generation):");
+      console.error(`${error.message}`);
+      res.status(500).json({
+        success: false,
+        error: "An error occurred during your request.",
       });
       return;
     }
@@ -142,7 +275,7 @@ export default async function(req, res) {
   let functionResults = [];  // function call results
   if (input.startsWith("!")) {
     inputType = TYPE.TOOL_CALL;
-    console.log(chalk.cyanBright("\nInput Tool Calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.cyanBright("\nInput (toolcalls, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
 
     // OpenAI support function calling in tool calls.
@@ -206,64 +339,11 @@ export default async function(req, res) {
 
     // Tools
     console.log("\n--- tools ---");
-    let tools = await getTools(functions_);
+    let tools = getTools(functions_);
     console.log(JSON.stringify(tools));
 
     console.log("\n--- messages ---");
     console.log(JSON.stringify(msg.messages) + "\n");
-
-    // Model setup
-    let modelInfo = models.find(m => m.name === model);
-    if (!modelInfo) {
-      // Try update models
-      models = await getModels();
-
-      if (models.length === 0) {
-        // Developer didn't setup models table
-        modelInfo = {
-          name: process.env.MODEL,
-          api_key: process.env.OPENAI_API_KEY,
-          base_url: process.env.OPENAI_BASE_URL,
-          price_input: 0,
-          price_output: 0,
-        }
-      } else {
-        // Already setup models but not found
-        modelInfo = models.find(m => m.name === model);
-        if (!modelInfo) {
-          updateStatus("Model not exists.");
-          res.write(`data: ###ERR###Model not exists.\n\n`);
-          res.write(`data: [DONE]\n\n`);
-          res.end();
-          return;
-        }
-      }
-    }
-
-    const apiKey = modelInfo.api_key;
-    if (!apiKey) {
-      updateStatus("Model's API key is not set.");
-      res.write(`data: ###ERR###Model's API key is not set.\n\n`);
-      res.write(`data: [DONE]\n\n`);
-      res.end();
-      return;
-    }
-
-    // OpenAI API base URL check
-    const baseUrl = modelInfo.base_url;
-    if (!baseUrl) {
-      updateStatus("Model's base URL is not set.");
-      res.write(`data: ###ERR###Model's base URL is not set.\n\n`);
-      res.write(`data: [DONE]\n\n`);
-      res.end();
-      return;
-    }
-
-    // OpenAI
-    const openai = new OpenAI({
-      apiKey: apiKey,
-      baseURL: baseUrl,
-    });
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({

@@ -36,6 +36,7 @@ export default async function (req, res) {
         is_vision:               model.is_vision,
         is_audio:                model.is_audio,
         is_reasoning:            model.is_reasoning,
+        is_image:                model.is_image,
         context_window:          model.context_window,
         max_output:              model.max_output,
         created_by:              model.created_by,

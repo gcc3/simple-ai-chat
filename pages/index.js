@@ -16,7 +16,7 @@ import Documentation from "components/Documentation";
 import Copyrights from "components/Copyrights";
 import Settings from "components/Settings";
 import hljs from 'highlight.js';
-import { generateFileURl } from "utils/awsUtils";
+import { generateFileUrl } from "utils/awsUtils";
 import { initializeSessionMemory, setSession, setTime } from "utils/sessionUtils";
 import 'katex/dist/katex.min.css';
 import { asciiframe } from "utils/donutUtils";
@@ -33,9 +33,10 @@ import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSettin
 import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 import { useUI } from '../contexts/UIContext';
 import { initializeStorage } from "utils/storageUtils";
-import Image from "../components/ui/Image";
+import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
+import { isUrl } from "utils/urlUtils";
 
 
 // Status control
@@ -45,7 +46,8 @@ globalThis.STATE = STATES.IDLE;  // a global state
 // Input output type
 const TYPE = {
   NORMAL: 0,
-  TOOL_CALL: 1
+  TOOL_CALL: 1,
+  IMAGE_GEN: 2,
 };
 
 // Front or back display
@@ -151,12 +153,39 @@ export default function Home() {
     }
   };
 
-  // Print image output
-  const printImage = async (image_url) => {
-    console.log("Print Image: " + image_url);
-    setOutputImages(currentImages => {
-      return [...currentImages, { src: image_url, alt: "", width: 0, height: 0, blurDataURL: image_url }];
+  const isDataUri = (str) => /^data:image\/[a-z0-9.+-]+;base64,/i.test(str);
+  const toDataUri = (b64) =>
+    isDataUri(b64) ? b64 : `data:image/png;base64,${b64}`;
+
+  const buildImageDescriptor = (src) =>
+    new Promise((resolve) => {
+      const img = new window.Image();
+      img.onload = () =>
+        resolve({
+          src,
+          alt: "",
+          width: img.naturalWidth,
+          height: img.naturalHeight,
+          blurDataURL: src,
+        });
+      img.onerror = () =>
+        // Fallback to “0 × 0” if loading fails
+        resolve({ src, alt: "", width: 0, height: 0, blurDataURL: src });
+      img.src = src;
     });
+
+  // Print image output
+  const printImage = async (image) => {
+    try {
+      const src = isUrl(image) ? image : toDataUri(image);
+      const descriptor = await buildImageDescriptor(src);
+      setOutputImages((current) => [...current, descriptor]);
+      console.log(
+        `Print ${isUrl(image) ? "URL" : "Base64"} image: ${src.slice(0, 50)}…`
+      );
+    } catch (e) {
+      console.error("printImage failed:", e);
+    }
   };
 
   // Print video output (support: YouTube)
@@ -241,7 +270,7 @@ export default function Home() {
   // Print session log
   const printSessionLog = async function(log) {
     setTime(log["time"]);
-    console.log("Session log:", JSON.stringify(log));
+    console.log("Session log:", JSON.stringify(log).slice(0, 500) + " ...");
 
     // Print the log
     clearPreviewImages();
@@ -1431,21 +1460,29 @@ export default function Home() {
     resetInfo();
 
     // Generation mode switch
+    // Local mode
     if (sessionStorage.getItem("baseUrl").includes("localhost") 
      || sessionStorage.getItem("baseUrl").includes("127.0.0.1")) {
-      // Local model
       console.log("Start. (Local)");
       generate_msg(input, image_urls, file_urls);
-    } else {
-      // Server model
-      if (localStorage.getItem('useStream') == "true") {
-        console.log("Start. (SSE)");
-        generate_sse(input, image_urls_encoded, file_urls_encoded);
-      } else {
-        console.log("Start. (non-stream)");
-        printOutput(waiting === "" ? "Generating..." : waiting);
-        generate(input, image_urls, file_urls);
-      }
+      return;
+    }
+
+    // Non-stream
+    // Just quick setup, now only support "gpt-image-1" model for image generation
+    if (localStorage.getItem('useStream') == "false" || sessionStorage.getItem('model') === "gpt-image-1") {
+      console.log("Start. (non-stream)");
+      printOutput(waiting === "" ? "Generating..." : waiting);
+      generate(input, image_urls, file_urls);
+      return;
+    }
+
+    // Server mode
+    // Stream
+    if (localStorage.getItem('useStream') == "true") {
+      console.log("Start. (SSE)");
+      generate_sse(input, image_urls_encoded, file_urls_encoded);
+      return;
     }
   }
 
@@ -1510,7 +1547,7 @@ export default function Home() {
         return;
       }
 
-      // I. Handle the llm's model name (lower case)
+      // I. Handle the LLM's model name (lower case)
       if (event.data.startsWith("###MODEL###")) {
         const _env_ = event.data.replace("###MODEL###", "").split(',');
         const model = _env_[0];
@@ -1848,7 +1885,7 @@ export default function Home() {
     // Type II. Tool calls (function calling) input
     if (input.startsWith("!")) {
       inputType = TYPE.TOOL_CALL;
-      console.log("Input Tool Calls (" + config.session + "): " + input);
+      console.log("Input (toolcalls, session = " + config.session + "): " + input);
     }
 
     // Model switch
@@ -2190,10 +2227,6 @@ export default function Home() {
       // Reset state
       globalThis.STATE = STATES.IDLE;
 
-      // Render output
-      const output = data.result.text
-      console.log("Output: \n" + output);
-
       // Events
       const events = data.result.events;
       if (events.length > 0) {
@@ -2250,6 +2283,21 @@ export default function Home() {
         return;
       }
 
+      // Print image output
+      if (sessionStorage.getItem("model") === "gpt-image-1") {
+        const images = data.result.images;
+        for (const image of images) {
+          printImage(image);
+
+          // Print image output
+          console.log("Output image: " + image.slice(0, 50) + "...");
+        }
+      }
+
+      // Render output
+      const output = data.result.text
+      console.log("Output: \n" + output);
+
       // Print output
       printOutput(output);
 
@@ -2259,21 +2307,28 @@ export default function Home() {
       // Trigger highlight.js
       hljs.highlightAll();
 
-      if (data.result.stats && config.use_stats) {
+      if (data.result.stats && config.use_stats === "true") {
+        let stats = "";
+        if (data.result.stats.func) stats += "func: " + data.result.stats.func.replaceAll('|', ", ") + "\n";
+        if (data.result.stats.temperature) stats += "temperature: " + data.result.stats.temperature + "\n";
+        if (data.result.stats.top_p) stats += "top_p: " + data.result.stats.top_p + "\n";
+        if (data.result.stats.token_ct) stats += "token_ct: " + data.result.stats.token_ct + "\n";
+        if (data.result.stats.mem) stats += "mem: " + data.result.stats.mem + "/" + sessionStorage.getItem("memLength") + "\n";
+        if (data.result.stats.role) stats += "role: " + data.result.stats.role + "\n";
+        if (data.result.stats.stores) stats += "stores: " + data.result.stats.stores.replaceAll('|', ", ") + "\n";
+        if (data.result.stats.node) stats += "node: " + data.result.stats.node + "\n";
+
         !minimalist && setStats((
           <div>
-            func: {data.result.stats.func.replaceAll('|', ", ") || "none"}<br></br>
-            temperature: {data.result.stats.temperature}<br></br>
-            top_p: {data.result.stats.top_p}<br></br>
-            token_ct: {data.result.stats.token_ct}<br></br>
-            mem: {data.result.stats.mem}/{sessionStorage.getItem("memLength")}<br></br>
-            {data.result.stats.role ? "role: " + data.result.stats.role + "<br></br>" : ""}
-            {data.result.stats.stores ? "stores: " + data.result.stats.stores + "<br></br>" : ""}
-            {data.result.stats.node ? "node: " + data.result.stats.node + "<br></br>" : ""}
+            {stats.split("\n").map((line, index) => (
+              <div key={index}>
+                {line}
+              </div>
+            ))}
           </div>
         ));
 
-        if (config.use_eval) {
+        if (config.use_eval === "true") {
           const _eval_ = data.result.stats.eval;
           const val = parseInt(_eval_);
   
@@ -2296,8 +2351,8 @@ export default function Home() {
         </div>
       ));
     } catch (error) {
+      printOutput("Error occurred.");
       console.error(error);
-      printOutput(error);
     }
   }
   
@@ -2560,7 +2615,7 @@ export default function Home() {
       // 2. Check file type
       if (supportedTypes.includes(type)) {
         // Upload the image to S3
-        const uploadResult = await generateFileURl(blob, file_id, type);
+        const uploadResult = await generateFileUrl(blob, file_id, type);
         if (!uploadResult.success) {
           // Print error message 
           console.error(uploadResult.message);
@@ -2658,7 +2713,7 @@ export default function Home() {
           <div id="wrapper" ref={elWrapperRef} className={styles.wrapper}>
             {outputImages.map((image, index) => (
               <div key={index} className="mb-5 image-preview">
-                <Image image={image} />
+                <PreviewImage image={image} />
               </div>
             ))}
             <div 

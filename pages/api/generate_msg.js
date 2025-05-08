@@ -14,7 +14,8 @@ import { logadd } from "utils/logUtils.js";
 // Input output type
 const TYPE = {
   NORMAL: 0,
-  TOOL_CALL: 1
+  TOOL_CALL: 1,
+  IMAGE_GEN: 2,
 };
 
 // System configurations
@@ -139,7 +140,7 @@ export default async function(req, res) {
   let functionCallingResults = [];  // function call results
   if (input.startsWith("!")) {
     inputType = TYPE.TOOL_CALL;
-    console.log(chalk.cyanBright("\nInput Tool Calls (msg, session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.cyanBright("\nInput (msg, toolcalls, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
  
     // OpenAI support function calling in tool calls.

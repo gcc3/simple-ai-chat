@@ -14,10 +14,12 @@ import { findNode } from "utils/nodeUtils.js";
 import { ensureSession } from "utils/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";
 
+
 // Input output type
 const TYPE = {
   NORMAL: 0,
-  TOOL_CALL: 1
+  TOOL_CALL: 1,
+  IMAGE_GEN: 2,
 };
 
 // System configurations
@@ -128,6 +130,56 @@ export default async function (req, res) {
   let model = req.query.model || sysconf.model;
   const use_vision = images && images.length > 0;
   const use_eval = use_eval_ && use_stats && !use_vision;
+  let modelInfo = models.find(m => m.name === model);
+  if (!modelInfo) {
+    // Try update models
+    models = await getModels();
+
+    if (models.length === 0) {
+      // Developer didn't setup models table
+      modelInfo = {
+        name: process.env.MODEL,
+        api_key: process.env.OPENAI_API_KEY,
+        base_url: process.env.OPENAI_BASE_URL,
+        price_input: 0,
+        price_output: 0,
+      }
+    } else {
+      // Already setup models but not found
+      modelInfo = models.find(m => m.name === model);
+      if (!modelInfo) {
+        updateStatus("Model not exists.");
+        res.write(`data: ###ERR###Model not exists.\n\n`);
+        res.write(`data: [DONE]\n\n`);
+        res.end();
+        return;
+      }
+    }
+  }
+  // Model API key check
+  const apiKey = modelInfo.api_key;
+  if (!apiKey) {
+    updateStatus("Model's API key is not set.");
+    res.write(`data: ###ERR###Model's API key is not set.\n\n`);
+    res.write(`data: [DONE]\n\n`);
+    res.end();
+    return;
+  }
+  // Model API base URL check
+  const baseUrl = modelInfo.base_url;
+  if (!baseUrl) {
+    updateStatus("Model's base URL is not set.");
+    res.write(`data: ###ERR###Model's base URL is not set.\n\n`);
+    res.write(`data: [DONE]\n\n`);
+    res.end();
+    return;
+  }
+
+  // OpenAI
+  const openai = new OpenAI({
+    apiKey: apiKey,
+    baseURL: baseUrl,
+  });
 
   // Stream output
   const streamOutput = (message, model = null) => {
@@ -148,6 +200,11 @@ export default async function (req, res) {
       res.end();
       return;
     }
+  }
+
+  // Type 0. Image generation
+  if (modelInfo.is_image === 1) {
+    outputType = TYPE.IMAGE_GEN;
   }
 
   // Type I. Normal input
@@ -193,7 +250,7 @@ export default async function (req, res) {
   let functionCallingResults = [];  // function call results
   if (input.startsWith("!")) {
     inputType = TYPE.TOOL_CALL;
-    console.log(chalk.cyanBright("\nInput Tool Calls (sse, session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.cyanBright("\nInput (sse, toolcalls, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
  
     // OpenAI support function calling in tool calls.
@@ -315,59 +372,6 @@ export default async function (req, res) {
 
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");
-
-    // Model setup
-    let modelInfo = models.find(m => m.name === model);
-    if (!modelInfo) {
-      // Try update models
-      models = await getModels();
-
-      if (models.length === 0) {
-        // Developer didn't setup models table
-        modelInfo = {
-          name: process.env.MODEL,
-          api_key: process.env.OPENAI_API_KEY,
-          base_url: process.env.OPENAI_BASE_URL,
-          price_input: 0,
-          price_output: 0,
-        }
-      } else {
-        // Already setup models but not found
-        modelInfo = models.find(m => m.name === model);
-        if (!modelInfo) {
-          updateStatus("Model not exists.");
-          res.write(`data: ###ERR###Model not exists.\n\n`);
-          res.write(`data: [DONE]\n\n`);
-          res.end();
-          return;
-        }
-      }
-    }
-
-    const apiKey = modelInfo.api_key;
-    if (!apiKey) {
-      updateStatus("Model's API key is not set.");
-      res.write(`data: ###ERR###Model's API key is not set.\n\n`);
-      res.write(`data: [DONE]\n\n`);
-      res.end();
-      return;
-    }
-
-    // OpenAI API base URL check
-    const baseUrl = modelInfo.base_url;
-    if (!baseUrl) {
-      updateStatus("Model's base URL is not set.");
-      res.write(`data: ###ERR###Model's base URL is not set.\n\n`);
-      res.write(`data: [DONE]\n\n`);
-      res.end();
-      return;
-    }
-
-    // OpenAI
-    const openai = new OpenAI({
-      apiKey: apiKey,
-      baseURL: baseUrl,
-    });
 
     // OpenAI chat completion!
     let chatCompletionUsage = { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 };

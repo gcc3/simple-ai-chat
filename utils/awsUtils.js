@@ -1,4 +1,4 @@
-export async function generateFileURl(blob, file_id) {
+export async function generateFileUrl(blob, fileId) {
   // Image type
   let contentType = "";
   if (blob.name.endsWith('.jpeg') || blob.name.endsWith('.jpg')) {
@@ -26,7 +26,7 @@ export async function generateFileURl(blob, file_id) {
 
   // Upload the image/file to S3
   console.log('Getting pre-signed URL...');
-  const response = await fetch("/api/file/generate-presigned-url?fileId=" + file_id + "&fileName=" + blob.name + "&contentType=" + contentType.replaceAll("/", "%2F"), {
+  const response = await fetch("/api/file/generate-presigned-url?fileId=" + fileId + "&fileName=" + blob.name + "&contentType=" + contentType.replaceAll("/", "%2F"), {
     method: "GET",
     headers: {
       "Content-Type": "application/json",
