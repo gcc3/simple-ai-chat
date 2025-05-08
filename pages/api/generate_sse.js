@@ -13,7 +13,7 @@ import { getSystemConfigurations } from "utils/systemUtils";
 import { findNode } from "utils/nodeUtils.js";
 import { ensureSession } from "utils/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";
-import { TYPE } from '../constants.js';
+import { TYPE } from '../../constants.js';
 
 
 // System configurations
