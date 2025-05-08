@@ -157,7 +157,7 @@ export default async function(req, res) {
   // Type 0. Image generation
   if (modelInfo.is_image === "1") {
     outputType = TYPE.IMAGE_GEN;
-    console.log(chalk.blue("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.blue("\nInput (img_gen, session = " + session + (user ? ", user = " + user.username : "") + "):"));
 
     try {
       // OpenAI image generation
@@ -239,7 +239,7 @@ export default async function(req, res) {
   let functionResults = [];  // function call results
   if (input.startsWith("!")) {
     inputType = TYPE.TOOL_CALL;
-    console.log(chalk.cyanBright("\nInput Tool Calls (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.cyanBright("\nInput (toolcalls, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
 
     // OpenAI support function calling in tool calls.

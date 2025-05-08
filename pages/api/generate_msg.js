@@ -140,7 +140,7 @@ export default async function(req, res) {
   let functionCallingResults = [];  // function call results
   if (input.startsWith("!")) {
     inputType = TYPE.TOOL_CALL;
-    console.log(chalk.cyanBright("\nInput Tool Calls (msg, session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.cyanBright("\nInput (msg, toolcalls, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
  
     // OpenAI support function calling in tool calls.

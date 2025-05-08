@@ -1870,7 +1870,7 @@ export default function Home() {
     // Type II. Tool calls (function calling) input
     if (input.startsWith("!")) {
       inputType = TYPE.TOOL_CALL;
-      console.log("Input Tool Calls (" + config.session + "): " + input);
+      console.log("Input (toolcalls, session = " + config.session + "): " + input);
     }
 
     // Model switch
@@ -2290,16 +2290,23 @@ export default function Home() {
       }
 
       if (data.result.stats && config.use_stats) {
+        let stats = "";
+        if (data.result.stats.func) stats += "func: " + data.result.stats.func.replaceAll('|', ", ") + "\n";
+        if (data.result.stats.temperature) stats += "temperature: " + data.result.stats.temperature + "\n";
+        if (data.result.stats.top_p) stats += "top_p: " + data.result.stats.top_p + "\n";
+        if (data.result.stats.token_ct) stats += "token_ct: " + data.result.stats.token_ct + "\n";
+        if (data.result.stats.mem) stats += "mem: " + data.result.stats.mem + "/" + sessionStorage.getItem("memLength") + "\n";
+        if (data.result.stats.role) stats += "role: " + data.result.stats.role + "\n";
+        if (data.result.stats.stores) stats += "stores: " + data.result.stats.stores.replaceAll('|', ", ") + "\n";
+        if (data.result.stats.node) stats += "node: " + data.result.stats.node + "\n";
+
         !minimalist && setStats((
           <div>
-            func: {data.result.stats.func.replaceAll('|', ", ") || "none"}<br></br>
-            temperature: {data.result.stats.temperature}<br></br>
-            top_p: {data.result.stats.top_p}<br></br>
-            token_ct: {data.result.stats.token_ct}<br></br>
-            mem: {data.result.stats.mem}/{sessionStorage.getItem("memLength")}<br></br>
-            {data.result.stats.role ? "role: " + data.result.stats.role + "<br></br>" : ""}
-            {data.result.stats.stores ? "stores: " + data.result.stats.stores + "<br></br>" : ""}
-            {data.result.stats.node ? "node: " + data.result.stats.node + "<br></br>" : ""}
+            {stats.split("\n").map((line, index) => (
+              <div key={index}>
+                {line}
+              </div>
+            ))}
           </div>
         ));
 
