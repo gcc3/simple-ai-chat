@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils.js";
 import { authenticate } from "utils/authUtils";
-import { verifySessionId } from "utils/sessionUtils";
+import { getSessionLog, verifySessionId } from "utils/sessionUtils";
 import { getUacResult } from "utils/uacUtils";
 import { countToken } from "utils/tokenUtils";
 import { getSystemConfigurations } from "utils/systemUtils";
@@ -156,6 +156,9 @@ export default async function(req, res) {
       outputType = TYPE.IMAGE_EDIT;
       console.log("\n--- images ---");
       console.log(images.join("\n"));
+    } else {
+      // Try the previous log
+      // TODO
     }
 
     const size = "auto";

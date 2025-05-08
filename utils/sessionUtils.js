@@ -92,3 +92,40 @@ export function setSession(session) {
   sessionStorage.setItem("session", session);
   console.log("Session -> " + session);
 }
+
+// Get session log
+export const getSessionLog = async function(direction = "prev", session, time) {
+  let log = null;
+  const response = await fetch("/api/log/" + direction + "?session=" + session + "&time=" + time, {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }).catch(error => {
+    console.error('Error:', error);
+    return null;
+  });
+  log = await response.json()
+  return log;
+}
+
+// Get history session
+export const getHistorySession = async function(direction = "prev", currentSessionId) {
+  if (!localStorage.getItem("user")) {
+    console.log("User not logged in.");
+    return null;
+  }
+
+  let session = null;
+  console.log("Getting history session " + direction + " of " + currentSessionId + "...");
+  const response = await fetch("/api/session/" + direction + "?sessionId=" + currentSessionId + "&user=" + localStorage.getItem("user"), {
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json' },
+  }).catch(error => {
+    console.error('Error:', error);
+    return null;
+  });
+  const data = await response.json()
+  if (data.success) {
+    session = data.result.session;
+  }
+  return session;
+}

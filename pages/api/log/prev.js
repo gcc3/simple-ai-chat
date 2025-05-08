@@ -1,4 +1,4 @@
-import { getSessionLog, getLogs, getSession } from "utils/sqliteUtils";
+import { getLogs, getSession } from "utils/sqliteUtils";
 
 export default async function (req, res) {
   try {

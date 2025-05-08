@@ -38,6 +38,7 @@ import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
 import { TYPE } from '../constants.js';
+import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 
 
 // Status control
@@ -223,43 +224,6 @@ export default function Home() {
       console.error("Target ref is null.");
     }
   };
-
-  // Get session log
-  const getSessionLog = async function(direction = "prev", session, time) {
-    let log = null;
-    const response = await fetch("/api/log/" + direction + "?session=" + session + "&time=" + time, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }).catch(error => {
-      console.error('Error:', error);
-      return null;
-    });
-    log = await response.json()
-    return log;
-  }
-
-  // Get hostory session
-  const getHistorySession = async function(direction = "prev", currentSessionId) {
-    if (!localStorage.getItem("user")) {
-      console.log("User not logged in.");
-      return null;
-    }
-
-    let session = null;
-    console.log("Getting history session " + direction + " of " + currentSessionId + "...");
-    const response = await fetch("/api/session/" + direction + "?sessionId=" + currentSessionId + "&user=" + localStorage.getItem("user"), {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }).catch(error => {
-      console.error('Error:', error);
-      return null;
-    });
-    const data = await response.json()
-    if (data.success) {
-      session = data.result.session;
-    }
-    return session;
-  }
 
   // Print session log
   const printSessionLog = async function(log) {
