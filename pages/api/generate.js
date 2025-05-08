@@ -159,7 +159,7 @@ export default async function(req, res) {
 
     const size = "auto";
     const quality = "low";
-    const output_format = "jpeg";
+    const output_format = "webp";
 
     // Configuration info
     console.log("\n--- configuration info ---\n"
