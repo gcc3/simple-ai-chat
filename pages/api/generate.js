@@ -1,4 +1,4 @@
-import OpenAI from "openai";
+import OpenAI, { toFile } from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils.js";
@@ -19,6 +19,7 @@ const TYPE = {
   NORMAL: 0,
   TOOL_CALL: 1,
   IMAGE_GEN: 2,
+  IMAGE_EDIT: 3,
 };
 
 // System configurations
@@ -157,6 +158,13 @@ export default async function(req, res) {
     outputType = TYPE.IMAGE_GEN;
     console.log(chalk.blue("\nInput (img_gen, session = " + session + (user ? ", user = " + user.username : "") + "):"));
 
+    // Images
+    if (images && images.length > 0) {
+      outputType = TYPE.IMAGE_EDIT;
+      console.log("\n--- images ---");
+      console.log(images.join("\n"));
+    }
+
     const size = "auto";
     const quality = "low";
     const output_format = "webp";
@@ -172,16 +180,42 @@ export default async function(req, res) {
 
     try {
       // OpenAI image generation
-      const imageGenerate = await openai.images.generate({
-        model: "gpt-image-1",
-        prompt: input,
-        n: 1,
-        moderation: "low",
-        quality: quality,
-        output_format: output_format,
-        size: size,
-        user: user ? user.username : null,
-      });
+      let imageGenerate = null;
+      if (outputType === TYPE.IMAGE_GEN) {
+        imageGenerate = await openai.images.generate({
+          model: "gpt-image-1",
+          prompt: input,
+          n: 1,
+          moderation: "low",
+          quality: quality,
+          output_format: output_format,
+          size: size,
+          user: user ? user.username : null,
+        });
+      }
+
+      if (outputType === TYPE.IMAGE_EDIT) {
+        // From URLs to File objects
+        const imageFilesArray = await Promise.all(images.map(async (imageUrl, index) => {
+          const response = await fetch(imageUrl)
+          const arrayBuffer = await response.arrayBuffer()
+          const fileName = imageUrl.split('/').pop() || `image${index}.webp`
+          return toFile(Buffer.from(arrayBuffer), fileName, { type: "image/png" })
+        }))
+
+        // Use all files in the edit request
+        imageGenerate = await openai.images.edit({
+          model: "gpt-image-1",
+          prompt: input,
+          image: imageFilesArray,    // pass array of File objects
+          n: 1,
+          moderation: "low",
+          quality: quality,
+          output_format: output_format,
+          size: size,
+          user: user ? user.username : null,
+        })
+      }
 
       console.log("\n--- image generation result ---");
       const image = imageGenerate.data[0].b64_json;
