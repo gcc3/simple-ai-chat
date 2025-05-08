@@ -197,7 +197,7 @@ export default async function(req, res) {
           const arrayBuffer = await response.arrayBuffer()
           const fileName = imageUrl.split('/').pop() || `image${index}.webp`
           return toFile(Buffer.from(arrayBuffer), fileName, { type: "image/png" })
-        }))
+        }));
 
         // Use all files in the edit request
         imageGenerate = await openai.images.edit({
@@ -210,7 +210,7 @@ export default async function(req, res) {
           output_format: output_format,
           size: size,
           user: user ? user.username : null,
-        })
+        });
       }
 
       console.log("\n--- image generation result ---");
