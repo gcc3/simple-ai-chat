@@ -159,17 +159,18 @@ export default async function(req, res) {
       outputType = TYPE.IMAGE_EDIT;
       console.log("\n--- images (user input) ---");
       console.log(images.join("\n"));
-    } else {
-      // Try the previous log
-      const prevLog = await getSessionLog("prev", session, time);
-      if (prevLog && prevLog.images && prevLog.images.length > 0) {
-        images = JSON.parse(prevLog.images);
+    } 
 
-        if (images && images.length > 0) {
-          outputType = TYPE.IMAGE_EDIT;
-          console.log("\n--- images (previous log) ---");
-          console.log(JSON.stringify(images.map(i => i.slice(0, 200) + "...")));
-        }
+    // Try the previous log
+    const prevLog = await getSessionLog("prev", session, time);
+    if (prevLog && prevLog.images && prevLog.images.length > 0) {
+      const prevLogImages = JSON.parse(prevLog.images);
+      images = images.concat(prevLogImages);
+
+      if (images && images.length > 0) {
+        outputType = TYPE.IMAGE_EDIT;
+        console.log("\n--- images (previous log) ---");
+        console.log(JSON.stringify(prevLogImages.map(i => i.slice(0, 200))));
       }
     }
 
@@ -233,7 +234,7 @@ export default async function(req, res) {
 
       console.log("\n--- image generation result ---");
       const image = imageGenerate.data[0].b64_json;
-      console.log(image.slice(0, 50) + "...");
+      console.log("Base64 image: " + image.slice(0, 200) + "...");
 
       console.log("\n--- token_ct ---");
       console.log("response_token_ct: " + JSON.stringify(imageGenerate.usage));
