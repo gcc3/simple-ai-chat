@@ -15,7 +15,6 @@ import { getModels } from "utils/sqliteUtils.js";
 import { TYPE } from '../../constants.js';
 import { getSessionLog } from "utils/branchUtils";
 import { isUrl } from "utils/urlUtils";
-import { isDataUri } from "utils/base64Utils";
 
 
 // System configurations
