@@ -128,12 +128,12 @@
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Wsparcie dla plików i zapytań do relacyjnych baz danych. Jeśli zostanie użyty magazyn danych, wyniki zapytań zostaną wstawione jako podpowiedzi, aby zapewnić kompetentne odpowiedzi. Wiele magazynów danych może być używanych jednocześnie.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Cześć, witamy w Simple AI! 🚀 Pracuję nad zapewnieniem bardziej profesjonalnego i przyjaznego programistom interfejsu użytkownika do interakcji z AI.",
   "CLI (Command-line Interface)": "CLI (Interfejs wiersza poleceń)",
-  "Generate beautiful images from your instructions.": "Generuj piękne obrazy na podstawie Twojej instrukcji.",
   "Model Context Protocol (MCP)": "Protokół kontekstu modelu (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Współdziałaj z potężnymi modelami wizji. Aby użyć modelu wizji, wklej obraz lub przeciągnij i upuść go do pola wejściowego.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI działa jako klient Model Context Protocol (MCP). Połącz się z serwerami MCP, aby uzyskać dostęp do bogactwa danych i aplikacji.",
   "Image Generation": "Generowanie obrazów",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "Porozmawiaj z najnowocześniejszym LLM napędzanym przez OpenAI, xAI, Google, Anthropic, Ollama i inne...",
   "Text Generation": "Generowanie tekstu",
-  "GPT Vision": "Wizja GPT"
+  "GPT Vision": "Wizja GPT",
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Generuj piękne obrazy przy użyciu promptów, edytuj wygenerowane lub przesłane obrazy albo łącz obrazy w jeden zgodnie z Twoimi instrukcjami."
 }

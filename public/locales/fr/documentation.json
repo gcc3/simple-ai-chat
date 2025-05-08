@@ -128,12 +128,12 @@
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Prise en charge des fichiers et des requêtes de base de données relationnelles. Si un magasin de données est utilisé, les résultats de la requête seront insérés comme invites pour fournir des réponses expertes. Plusieurs magasins de données peuvent être utilisés simultanément.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Bonjour, bienvenue sur Simple AI! 🚀 Je travaille à fournir une interface utilisateur plus professionnelle et conviviale pour les programmeurs afin d'interagir avec l’IA.",
   "CLI (Command-line Interface)": "CLI (Interface en ligne de commande)",
-  "Generate beautiful images from your instructions.": "Générez de magnifiques images à partir de vos instructions.",
   "Model Context Protocol (MCP)": "Protocole de contexte de modèle (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Interagissez avec de puissants modèles de vision. Pour utiliser le modèle Vision, collez ou glissez-déposez l’image dans la zone de saisie.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI fonctionne en tant que client du Protocole de Contexte de Modèle (MCP). Connectez-vous aux serveurs MCP pour accéder à une mine de données et d’applications.",
   "Image Generation": "Génération d’images",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "Discutez avec le LLM dernier cri propulsé par OpenAI, xAI, Google, Anthropic, Ollama et bien d'autres…",
   "Text Generation": "Génération de texte",
-  "GPT Vision": "Vision GPT"
+  "GPT Vision": "Vision GPT",
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Générez de magnifiques images à partir de prompts, modifiez les images générées ou téléchargées, ou fusionnez plusieurs images en une seule selon vos instructions."
 }
