@@ -156,6 +156,30 @@ export default async function (req, res) {
       }
     }
   }
+  // Model API key check
+  const apiKey = modelInfo.api_key;
+  if (!apiKey) {
+    updateStatus("Model's API key is not set.");
+    res.write(`data: ###ERR###Model's API key is not set.\n\n`);
+    res.write(`data: [DONE]\n\n`);
+    res.end();
+    return;
+  }
+  // Model API base URL check
+  const baseUrl = modelInfo.base_url;
+  if (!baseUrl) {
+    updateStatus("Model's base URL is not set.");
+    res.write(`data: ###ERR###Model's base URL is not set.\n\n`);
+    res.write(`data: [DONE]\n\n`);
+    res.end();
+    return;
+  }
+
+  // OpenAI
+  const openai = new OpenAI({
+    apiKey: apiKey,
+    baseURL: baseUrl,
+  });
 
   // Stream output
   const streamOutput = (message, model = null) => {
@@ -176,6 +200,11 @@ export default async function (req, res) {
       res.end();
       return;
     }
+  }
+
+  // Type 0. Image generation
+  if (modelInfo.is_image === 1) {
+    outputType = TYPE.IMAGE_GEN;
   }
 
   // Type I. Normal input
@@ -340,31 +369,6 @@ export default async function (req, res) {
 
     console.log("\n--- messages ---");
     console.log(JSON.stringify(msg.messages));
-
-    const apiKey = modelInfo.api_key;
-    if (!apiKey) {
-      updateStatus("Model's API key is not set.");
-      res.write(`data: ###ERR###Model's API key is not set.\n\n`);
-      res.write(`data: [DONE]\n\n`);
-      res.end();
-      return;
-    }
-
-    // OpenAI API base URL check
-    const baseUrl = modelInfo.base_url;
-    if (!baseUrl) {
-      updateStatus("Model's base URL is not set.");
-      res.write(`data: ###ERR###Model's base URL is not set.\n\n`);
-      res.write(`data: [DONE]\n\n`);
-      res.end();
-      return;
-    }
-
-    // OpenAI
-    const openai = new OpenAI({
-      apiKey: apiKey,
-      baseURL: baseUrl,
-    });
 
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");

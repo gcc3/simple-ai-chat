@@ -107,14 +107,40 @@ export default async function(req, res) {
       // Already setup models but not found
       modelInfo = models.find(m => m.name === model);
       if (!modelInfo) {
-        updateStatus("Model not exists.");
-        res.write(`data: ###ERR###Model not exists.\n\n`);
-        res.write(`data: [DONE]\n\n`);
-        res.end();
+        res.status(500).json({
+          success: false,
+          error: "Model not exists.",
+        });
         return;
       }
     }
   }
+  // Model API key check
+  const apiKey = modelInfo.api_key;
+  if (!apiKey) {
+    res.status(500).json({
+      success: false,
+      error: "Model's API key is not set.",
+    });
+    return;
+  }
+  // Model API base URL check
+  const baseUrl = modelInfo.base_url;
+  if (!baseUrl) {
+    res.status(500).json({
+      success: false,
+      error: "Model's base URL is not set.",
+    });
+    return;
+  }
+  console.log("\n--- model info ---");
+  console.log(JSON.stringify(modelInfo));
+
+  // OpenAI
+  const openai = new OpenAI({
+    apiKey: apiKey,
+    baseURL: baseUrl,
+  });
 
   // User access control
   if (sysconf.use_access_control) {
@@ -123,6 +149,49 @@ export default async function(req, res) {
       res.status(400).json({
         success: false,
         error: uacResult.error,
+      });
+      return;
+    }
+  }
+
+  // Type 0. Image generation
+  if (modelInfo.is_image === "1") {
+    outputType = TYPE.IMAGE_GEN;
+    console.log(chalk.blue("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+
+    try {
+      // OpenAI image generation
+      const imageGenerate = await openai.images.generate({
+        model: "gpt-image-1",
+        prompt: input,
+        n: 1,
+        moderation: "low",
+        output_format: "webp",
+      });
+
+      // Result
+      res.status(200).json({
+        result: {
+          text : "",
+          tool_calls: [],
+          images: [imageGenerate.data[0].b64_json],
+          events: [],
+          stats: {
+            token_ct: imageGenerate.usage.total_tokens,
+            mem: 1,
+          },
+          info: {
+            model: model,
+          }
+        },
+      });
+      return;
+    } catch (error) {
+      console.error("Error (image generation):");
+      console.error(`${error.message}`);
+      res.status(500).json({
+        success: false,
+        error: "An error occurred during your request.",
       });
       return;
     }
@@ -234,36 +303,11 @@ export default async function(req, res) {
 
     // Tools
     console.log("\n--- tools ---");
-    let tools = await getTools(functions_);
+    let tools = getTools(functions_);
     console.log(JSON.stringify(tools));
 
     console.log("\n--- messages ---");
     console.log(JSON.stringify(msg.messages) + "\n");
-
-    const apiKey = modelInfo.api_key;
-    if (!apiKey) {
-      updateStatus("Model's API key is not set.");
-      res.write(`data: ###ERR###Model's API key is not set.\n\n`);
-      res.write(`data: [DONE]\n\n`);
-      res.end();
-      return;
-    }
-
-    // OpenAI API base URL check
-    const baseUrl = modelInfo.base_url;
-    if (!baseUrl) {
-      updateStatus("Model's base URL is not set.");
-      res.write(`data: ###ERR###Model's base URL is not set.\n\n`);
-      res.write(`data: [DONE]\n\n`);
-      res.end();
-      return;
-    }
-
-    // OpenAI
-    const openai = new OpenAI({
-      apiKey: apiKey,
-      baseURL: baseUrl,
-    });
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({

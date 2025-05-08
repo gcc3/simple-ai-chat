@@ -153,11 +153,23 @@ export default function Home() {
   };
 
   // Print image output
-  const printImage = async (image_url) => {
-    console.log("Print Image: " + image_url);
-    setOutputImages(currentImages => {
-      return [...currentImages, { src: image_url, alt: "", width: 0, height: 0, blurDataURL: image_url }];
-    });
+  const printImage = async (image) => {
+    let imgObj = {
+      src: image,
+      alt: "",
+      width: 0,
+      height: 0,
+      blurDataURL: image
+    };
+  
+    setOutputImages(currentImages => [...currentImages, imgObj]);
+  
+    if (isUrl(image)) {
+      console.log("Print Image: " + image);
+    } else {
+      // Image is a base64 string
+      console.log("Print base64 Image.");
+    }
   };
 
   // Print video output (support: YouTube)
@@ -1432,21 +1444,29 @@ export default function Home() {
     resetInfo();
 
     // Generation mode switch
+    // Local mode
     if (sessionStorage.getItem("baseUrl").includes("localhost") 
      || sessionStorage.getItem("baseUrl").includes("127.0.0.1")) {
-      // Local model
       console.log("Start. (Local)");
       generate_msg(input, image_urls, file_urls);
-    } else {
-      // Server model
-      if (localStorage.getItem('useStream') == "true") {
-        console.log("Start. (SSE)");
-        generate_sse(input, image_urls_encoded, file_urls_encoded);
-      } else {
-        console.log("Start. (non-stream)");
-        printOutput(waiting === "" ? "Generating..." : waiting);
-        generate(input, image_urls, file_urls);
-      }
+      return;
+    }
+
+    // Non-stream
+    // Just quick setup, now only support "gpt-image-1" model for image generation
+    if (localStorage.getItem('useStream') == "false" || sessionStorage.getItem('model') === "gpt-image-1") {
+      console.log("Start. (non-stream)");
+      printOutput(waiting === "" ? "Generating..." : waiting);
+      generate(input, image_urls, file_urls);
+      return;
+    }
+
+    // Server mode
+    // Stream
+    if (localStorage.getItem('useStream') == "true") {
+      console.log("Start. (SSE)");
+      generate_sse(input, image_urls_encoded, file_urls_encoded);
+      return;
     }
   }
 
@@ -1511,7 +1531,7 @@ export default function Home() {
         return;
       }
 
-      // I. Handle the llm's model name (lower case)
+      // I. Handle the LLM's model name (lower case)
       if (event.data.startsWith("###MODEL###")) {
         const _env_ = event.data.replace("###MODEL###", "").split(',');
         const model = _env_[0];
@@ -2253,6 +2273,14 @@ export default function Home() {
 
       // Print output
       printOutput(output);
+
+      // Print image output
+      if (globalThis.model === "gpt-image-1") {
+        const images = data.result.images;
+        for (const image of images) {
+          printImage(image);
+        }
+      }
 
       // Formatter
       markdownFormatter(elOutputRef.current);
