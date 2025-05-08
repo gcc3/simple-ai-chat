@@ -7,9 +7,9 @@ export default async function (req, res) {
     // Check if role exists in user roles
     const session = await getPreviousSession(id, createdBy);
     if (!session) {
-      return res.status(404).json({ 
+      return res.status(200).json({ 
         success: false,
-        error: "Session is empty."
+        message: "No previous session found."
       });
     }
 

@@ -19,9 +19,9 @@ export default async function (req, res) {
         },
       });
     } else {
-      return res.status(404).json({
+      return res.status(200).json({
         success: false,
-        error: "Log not found.",
+        message: "No previous log found.",
       });
     }
   } catch (error) {
