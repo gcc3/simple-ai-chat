@@ -42,12 +42,12 @@ export default async function function_(args) {
       // System functions
       let systemFunctions = "\\" + functions.map((f) => {
         return f.name;
-      }).join(" \\");
+      }).join(" \\") + " ";
 
       // Add * to system functions
       for (const f of functions) {
         if (enabledFunctions.includes(f.name)) {
-          systemFunctions = systemFunctions.replaceAll("\\" + f.name, "*\\" + f.name);
+          systemFunctions = systemFunctions.replaceAll("\\" + f.name + " ", "*\\" + f.name + " ");
         }
       }
 
@@ -60,12 +60,12 @@ export default async function function_(args) {
       if (mcpFunctionList.length > 0) {
         mcpFunctions = "\\" + mcpFunctionList.map((f) => {
           return f.name;
-        }).join(" \\");
+        }).join(" \\") + " ";
 
         // Add * to system functions
         for (const mf of mcpFunctionList) {
           if (enabledFunctions.includes(mf.name)) {
-            mcpFunctions = mcpFunctions.replaceAll("\\" + mf.name, "*\\" + mf.name);
+            mcpFunctions = mcpFunctions.replaceAll("\\" + mf.name + " ", "*\\" + mf.name + " ");
           }
         }
       }

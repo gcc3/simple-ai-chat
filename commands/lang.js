@@ -17,10 +17,10 @@ export default async function lang(args) {
 
   if (command === "ls" || command === "list") {
     // Add star to current lang
-    let result = "\\" + langCodes.join(" \\");
+    let result = "\\" + langCodes.join(" \\") + " ";
     if (localStorage.getItem("lang")) {
       const currentLang = localStorage.getItem("lang").replace(" force", "");
-      result = result.replace("\\" + currentLang, "*\\" + currentLang);
+      result = result.replace("\\" + currentLang + " ", "*\\" + currentLang + " ");
     }
     return result;
   }
