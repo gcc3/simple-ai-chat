@@ -9,7 +9,7 @@ import { getUser } from "utils/sqliteUtils";
 import { executeFunctions } from "function.js";
 import { countToken } from "utils/tokenUtils.js";
 import { logadd } from "utils/logUtils.js";
-import { TYPE } from '../constants.js';
+import { TYPE } from '../../constants.js';
 
 
 // System configurations
