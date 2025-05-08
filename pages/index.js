@@ -37,18 +37,14 @@ import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
+import { TYPE } from '../constants.js';
+import { getHistorySession, getSessionLog } from "utils/sessionUtils";
+import { toDataUri } from "utils/base64Utils";
 
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
 globalThis.STATE = STATES.IDLE;  // a global state
-
-// Input output type
-const TYPE = {
-  NORMAL: 0,
-  TOOL_CALL: 1,
-  IMAGE_GEN: 2,
-};
 
 // Front or back display
 const DISPLAY = { FRONT: 0, BACK: 1 };
@@ -153,10 +149,6 @@ export default function Home() {
     }
   };
 
-  const isDataUri = (str) => /^data:image\/[a-z0-9.+-]+;base64,/i.test(str);
-  const toDataUri = (b64) =>
-    isDataUri(b64) ? b64 : `data:image/png;base64,${b64}`;
-
   const buildImageDescriptor = (src) =>
     new Promise((resolve) => {
       const img = new window.Image();
@@ -229,43 +221,6 @@ export default function Home() {
       console.error("Target ref is null.");
     }
   };
-
-  // Get session log
-  const getSessionLog = async function(direction = "prev", session, time) {
-    let log = null;
-    const response = await fetch("/api/log/" + direction + "?session=" + session + "&time=" + time, {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }).catch(error => {
-      console.error('Error:', error);
-      return null;
-    });
-    log = await response.json()
-    return log;
-  }
-
-  // Get hostory session
-  const getHistorySession = async function(direction = "prev", currentSessionId) {
-    if (!localStorage.getItem("user")) {
-      console.log("User not logged in.");
-      return null;
-    }
-
-    let session = null;
-    console.log("Getting history session " + direction + " of " + currentSessionId + "...");
-    const response = await fetch("/api/session/" + direction + "?sessionId=" + currentSessionId + "&user=" + localStorage.getItem("user"), {
-      method: 'GET',
-      headers: { 'Content-Type': 'application/json' },
-    }).catch(error => {
-      console.error('Error:', error);
-      return null;
-    });
-    const data = await response.json()
-    if (data.success) {
-      session = data.result.session;
-    }
-    return session;
-  }
 
   // Print session log
   const printSessionLog = async function(log) {

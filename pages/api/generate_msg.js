@@ -9,14 +9,8 @@ import { getUser } from "utils/sqliteUtils";
 import { executeFunctions } from "function.js";
 import { countToken } from "utils/tokenUtils.js";
 import { logadd } from "utils/logUtils.js";
+import { TYPE } from '../../constants.js';
 
-
-// Input output type
-const TYPE = {
-  NORMAL: 0,
-  TOOL_CALL: 1,
-  IMAGE_GEN: 2,
-};
 
 // System configurations
 const sysconf = getSystemConfigurations();
