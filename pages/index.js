@@ -168,8 +168,7 @@ export default function Home() {
     if (isUrl(image)) {
       console.log("Print Image: " + image);
     } else {
-      // Image is a base64 string
-      console.log("Print base64 Image: " + image);
+      console.log("Print base64 Image: " + image.slice(0, 50) + "...");
     }
   };
 
@@ -2212,10 +2211,6 @@ export default function Home() {
       // Reset state
       globalThis.STATE = STATES.IDLE;
 
-      // Render output
-      const output = data.result.text
-      console.log("Output: \n" + output);
-
       // Events
       const events = data.result.events;
       if (events.length > 0) {
@@ -2277,17 +2272,24 @@ export default function Home() {
         const images = data.result.images;
         for (const image of images) {
           printImage(image);
+
+          // Print image output
+          console.log("Output image: " + image.slice(0, 50) + "...");
         }
-      } else {
-        // Print output
-        printOutput(output);
-
-        // Formatter
-        markdownFormatter(elOutputRef.current);
-
-        // Trigger highlight.js
-        hljs.highlightAll();
       }
+
+      // Render output
+      const output = data.result.text
+      console.log("Output: \n" + output);
+
+      // Print output
+      printOutput(output);
+
+      // Formatter
+      markdownFormatter(elOutputRef.current);
+
+      // Trigger highlight.js
+      hljs.highlightAll();
 
       if (data.result.stats && config.use_stats) {
         let stats = "";

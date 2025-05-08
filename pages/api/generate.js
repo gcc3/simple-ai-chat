@@ -157,12 +157,18 @@ export default async function(req, res) {
     outputType = TYPE.IMAGE_GEN;
     console.log(chalk.blue("\nInput (img_gen, session = " + session + (user ? ", user = " + user.username : "") + "):"));
 
+    const size = "auto";
+    const quality = "low";
+    const output_format = "jpeg";
+
     // Configuration info
     console.log("\n--- configuration info ---\n"
       + "model: " + model + "\n"
       + "n: " + 1 + "\n"
       + "moderation: " + "low" + "\n"
-      + "output_format: " + "webp");
+      + "output_format: " + output_format + "\n"
+      + "quality: " + quality + "\n"
+      + "size: " + size);
 
     try {
       // OpenAI image generation
@@ -171,11 +177,14 @@ export default async function(req, res) {
         prompt: input,
         n: 1,
         moderation: "low",
-        output_format: "webp",
+        quality: quality,
+        output_format: output_format,
+        size: size,
+        user: user ? user.username : null,
       });
 
       console.log("\n--- image generation result ---");
-      console.log(JSON.stringify(imageGenerate.data[0].b64_json));
+      console.log(imageGenerate.data[0].b64_json.slice(0, 50) + "...");
 
       console.log("\n--- token_ct ---");
       console.log("response_token_ct: " + JSON.stringify(imageGenerate.usage));
