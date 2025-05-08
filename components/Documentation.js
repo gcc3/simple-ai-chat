@@ -30,8 +30,10 @@ const Documentation = () => {
   ];
 
   const features = [
-    { id: "features-gpt-textgeneration", name: t("GPT Text Generation"), description: t("Chat with the state-of-the-art GPT model powered by OpenAI.") },
-    { id: "features-gpt-vision", name: t("GPT Vision"), description: t("Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.") },
+    { id: "features-gpt-textgeneration", name: t("Text Generation"), description: t("Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...") },
+    { id: "features-gpt-vision", name: t("GPT Vision"), description: t("Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.") },
+    { id: "features-gpt-image-gen", name: t("Image Generation"), description: t("Generate beautiful images from your instructions.") },
+    { id: "features-mcp-client", name: t("Model Context Protocol (MCP)"), description: t("Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.") },
     { id: "features-fileinput", name: t("File Input"), description: t("Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.") },
     { id: "features-roles", name: t("Roles"), description: t("Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.") },
     { id: "features-stores", name: t("Data Stores"), description: t("Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.") },
@@ -98,13 +100,11 @@ const Documentation = () => {
         <div>
           <div className="mt-2"><a href="#features"><u>{ t("Features") }</u></a></div>
           <div className="ml-3">
-            <div><a href="#features-gpt-textgeneration">- <u>{ t("GPT Text Generation") }</u></a></div>
-            <div><a href="#features-gpt-vision">- <u>{ t("GPT Vision") }</u></a></div>
-            <div><a href="#features-fileinput">- <u>{ t("File Input") }</u></a></div>
-            <div><a href="#features-roles">- <u>{ t("Roles") }</u></a></div>
-            <div><a href="#features-stores">- <u>{ t("Data Stores") }</u></a></div>
-            <div><a href="#features-nodes">- <u>{ t("Nodes (Node AI)") }</u></a></div>
-            <div><a href="#features-mathematics-wolframalpha">- <u>{ t("Enhanced Knowledge & Mathematics (WolframAlpha)") }</u></a></div>
+            {features.map((feature, index) => (
+              <div key={index}>
+                <a href={`#${feature.id}`}>- <u>{feature.name}</u></a>
+              </div>
+            ))}
             <div><a href="#features-more">- <u>{ t("more...") }</u></a></div>
           </div>
         </div>

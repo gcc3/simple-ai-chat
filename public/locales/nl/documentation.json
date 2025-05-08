@@ -1,8 +1,4 @@
 {
-  "GPT Text Generation": "GPT Tekstgeneratie",
-  "Chat with the state-of-the-art GPT model powered by OpenAI.": "Chat met het ultramoderne GPT-model aangedreven door OpenAI.",
-  "GPT Vision": "GPT Visie",
-  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "Interacteer met krachtig GPT-visiemodel. Om het visiemodel te gebruiken, plak of sleep de afbeelding naar het invoervak.",
   "File Input": "Bestandsinvoer",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "Upload bestanden (ondersteuning van platte tekst, DOCX, PDF, JSON), en ze zullen als tekst verwerkt worden. De resultaten zullen in de prompt ingevoegd worden en zullen dienen als een GPT-referentie.",
   "Roles": "Rollen",
@@ -131,5 +127,13 @@
   "* Link with your own data. Support link to relational database.": "* Koppel met je eigen data. Ondersteunt koppelingen met relationele databases.",
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Ondersteuning voor bestanden en relationele databasequery's. Als een store wordt gebruikt, worden de queryresultaten ingevoegd als prompts om deskundige antwoorden te geven. Meerdere data stores kunnen tegelijkertijd worden gebruikt.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Hoi, welkom bij Simple AI! 🚀 Ik werk eraan om een professionelere en programmeurvriendelijke gebruikersinterface te bieden voor interactie met de AI.",
-  "CLI (Command-line Interface)": "CLI (opdrachtregelinterface)"
+  "CLI (Command-line Interface)": "CLI (opdrachtregelinterface)",
+  "Generate beautiful images from your instructions.": "Genereer prachtige afbeeldingen op basis van uw instructie.",
+  "Model Context Protocol (MCP)": "Modelcontextprotocol (MCP)",
+  "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Interacteer met krachtige Vision-modellen. Om het Vision-model te gebruiken, plak of sleep de afbeelding in het invoerveld.",
+  "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI fungeert als een Model Context Protocol (MCP)-client. Maak verbinding met MCP-servers om toegang te krijgen tot een schat aan gegevens en applicaties.",
+  "Image Generation": "Beeldgeneratie",
+  "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "Chat met het ultramoderne LLM aangedreven door OpenAI, xAI, Google, Anthropic, Ollama en meer...",
+  "Text Generation": "Tekstgeneratie",
+  "GPT Vision": "GPT Visie"
 }

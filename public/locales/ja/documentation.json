@@ -1,8 +1,4 @@
 {
-  "GPT Text Generation": "GPTテキスト生成",
-  "Chat with the state-of-the-art GPT model powered by OpenAI.": "OpenAIが提供する最先端のGPTモデルとチャット。",
-  "GPT Vision": "GPTビジョン",
-  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "強力なGPTビジョンモデルと対話しましょう。ビジョンモデルを使用するには、画像を入力ボックスに貼り付けるか、ドラッグ＆ドロップしてください。",
   "File Input": "ファイル入力",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "ファイルをアップロードする（プレーンテキスト、DOCX、PDF、JSONに対応）と、それらはテキストとして処理される。結果はプロンプトに挿入される",
   "Roles": "ロール",
@@ -131,5 +127,13 @@
   "* Link with your own data. Support link to relational database.": "* 自分のデータとリンク。リレーショナルデータベースへのリンクをサポート。",
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "ファイルおよびリレーショナルデータベースクエリをサポートします。ストアが使用されている場合、クエリ結果はプロンプトとして挿入され、知識豊富な回答を提供します。複数のデータストアを同時に使用できます。",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "こんにちは、Simple AIへようこそ！🚀 AIとの対話のために、より専門的かつプログラマーフレンドリーなユーザーインターフェースを提供できるよう取り組んでいます。",
-  "CLI (Command-line Interface)": "CLI（コマンドラインインターフェース）"
+  "CLI (Command-line Interface)": "CLI（コマンドラインインターフェース）",
+  "Generate beautiful images from your instructions.": "あなたの指示から美しい画像を生成します。",
+  "Model Context Protocol (MCP)": "モデルコンテキストプロトコル (MCP)",
+  "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "強力なビジョンモデルと対話してください。Visionモデルを使用するには、画像を入力ボックスに貼り付けるか、ドラッグ＆ドロップしてください。",
+  "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AIはModel Context Protocol（MCP）クライアントとして機能します。MCPサーバーに接続して、豊富なデータやアプリケーションにアクセスできます。",
+  "Image Generation": "画像生成",
+  "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "OpenAI、xAI、Google、Anthropic、Ollamaなどが提供する最先端のLLMとチャット...",
+  "Text Generation": "テキスト生成",
+  "GPT Vision": "GPTビジョン"
 }

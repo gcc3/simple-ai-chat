@@ -1,8 +1,4 @@
 {
-  "GPT Text Generation": "GPT-textgenerering",
-  "Chat with the state-of-the-art GPT model powered by OpenAI.": "Chatta med den toppmoderna GPT-modellen som drivs av OpenAI.",
-  "GPT Vision": "GPT Vision",
-  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "Interagera med den kraftfulla GPT-synmodellen. För att använda Vision-modellen, klistra in eller dra och släpp bilden i inmatningsfältet.",
   "File Input": "Filinmatning",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "Ladda upp filer (stödjer ren text, DOCX, PDF, JSON), och de kommer att behandlas som text. Resultaten kommer att infogas i uppmaningen och kommer att ge en GPT-referens.",
   "Roles": "Roller",
@@ -131,5 +127,13 @@
   "* Link with your own data. Support link to relational database.": "* Koppla till dina egna data. Stöder koppling till relationsdatabas.",
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Stöd för filer och relationsdatabasfrågor. Om ett datalager används kommer frågeresultaten att infogas som uppmaningar för att ge kunniga svar. Flera datalager kan användas samtidigt.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Hej, välkommen till Simple AI! 🚀 Jag arbetar på att erbjuda ett mer professionellt och programmerarvänligt användargränssnitt för att interagera med AI:n.",
-  "CLI (Command-line Interface)": "CLI (kommandoradsgränssnitt)"
+  "CLI (Command-line Interface)": "CLI (kommandoradsgränssnitt)",
+  "Generate beautiful images from your instructions.": "Generera vackra bilder utifrån din instruktion.",
+  "Model Context Protocol (MCP)": "Modellkontextprotokoll (MCP)",
+  "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Interagera med kraftfulla visionmodeller. För att använda visionmodellen, klistra in eller dra och släpp bilden i inmatningsrutan.",
+  "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI fungerar som en Model Context Protocol (MCP)-klient. Anslut till MCP-servrar för att få tillgång till en mängd data och applikationer.",
+  "Image Generation": "Bildgenerering",
+  "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "Chatta med en toppmodern LLM som drivs av OpenAI, xAI, Google, Anthropic, Ollama med flera...",
+  "Text Generation": "Textgenerering",
+  "GPT Vision": "GPT Vision"
 }

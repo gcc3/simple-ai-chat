@@ -1,8 +1,4 @@
 {
-  "GPT Text Generation": "توليد نص GPT",
-  "Chat with the state-of-the-art GPT model powered by OpenAI.": "تحدث مع نموذج GPT المتطور الذي تشغله OpenAI.",
-  "GPT Vision": "رؤية GPT",
-  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "تفاعل مع نموذج GPT البصري القوي. لاستخدام نموذج الرؤية، الصق أو اسحب وأفلت الصورة في مربع الإدخال.",
   "File Input": "مدخل الملف",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "قم بتحميل الملفات (تدعم النص العادي، DOCX، PDF، JSON)، وسيتم معالجتها كنص. سيتم إدراج النتائج في الطلب وستوفر مرجع GPT.",
   "Roles": "الأدوار",
@@ -131,5 +127,13 @@
   "* Link with your own data. Support link to relational database.": "* ربط بياناتك الخاصة. دعم الربط بقاعدة بيانات علائقية.",
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "دعم الملفات واستعلامات قواعد البيانات العلائقية. إذا تم استخدام مخزن بيانات، فسيتم إدراج نتائج الاستعلام كمدخلات لتقديم إجابات مدعمة بالمعرفة. يمكن استخدام عدة مخازن بيانات في وقت واحد.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "مرحبًا بك في Simple AI! 🚀 أعمل على توفير واجهة مستخدم أكثر احترافية ومناسبة للمبرمجين للتفاعل مع الذكاء الاصطناعي.",
-  "CLI (Command-line Interface)": "CLI (واجهة سطر الأوامر)"
+  "CLI (Command-line Interface)": "CLI (واجهة سطر الأوامر)",
+  "Generate beautiful images from your instructions.": "أنشئ صورًا جميلة بناءً على تعليماتك.",
+  "Model Context Protocol (MCP)": "بروتوكول سياق النموذج (MCP)",
+  "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "تفاعل مع نماذج الرؤية القوية. لاستخدام نموذج الرؤية، قم بلصق الصورة أو سحبها وإفلاتها في مربع الإدخال.",
+  "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "يعمل Simple AI كعميل لبروتوكول سياق النموذج (MCP). اتصل بخوادم MCP للوصول إلى ثروة من البيانات والتطبيقات.",
+  "Image Generation": "توليد الصور",
+  "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "تحدث مع نموذج لغوي ضخم ومتطور مدعوم من OpenAI وxAI وGoogle وAnthropic وOllama والمزيد...",
+  "Text Generation": "توليد النصوص",
+  "GPT Vision": "رؤية GPT"
 }

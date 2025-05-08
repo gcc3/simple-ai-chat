@@ -1,8 +1,4 @@
 {
-  "GPT Text Generation": "GPT Metin Üretimi",
-  "Chat with the state-of-the-art GPT model powered by OpenAI.": "OpenAI tarafından desteklenen son teknoloji GPT modeli ile sohbet edin.",
-  "GPT Vision": "GPT Vizyonu",
-  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "Güçlü GPT görüntü modeli ile etkileşim kurun. Vision modelini kullanmak için, resmi kopyalayıp yapıştırın veya sürükleyip bırakın.",
   "File Input": "Dosya Girişi",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "Dosyaları yükleyin (düz metin, DOCX, PDF, JSON desteklenir) ve bunlar metin olarak işlenecektir. Sonuçlar prompt'a eklenecek ve bir GPT referansı sağlayacaktır.",
   "Roles": "Roller",
@@ -131,5 +127,13 @@
   "* Link with your own data. Support link to relational database.": "* Kendi verilerinizle bağlantı kurun. İlişkisel veritabanına bağlantıyı destekler.",
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Dosyalar ve ilişkisel veritabanı sorgularına destek. Bir veri deposu kullanıldığında, sorgu sonuçları bilgiye dayalı yanıtlar sunmak üzere istemler olarak eklenir. Birden çok veri deposu aynı anda kullanılabilir.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Merhaba, Simple AI'ye hoş geldiniz! 🚀 Yapay zeka ile etkileşim kurmak için daha profesyonel ve programcı dostu bir kullanıcı arayüzü sunmak için çalışıyorum.",
-  "CLI (Command-line Interface)": "CLI (Komut Satırı Arayüzü)"
+  "CLI (Command-line Interface)": "CLI (Komut Satırı Arayüzü)",
+  "Generate beautiful images from your instructions.": "Talimatınıza göre güzel görüntüler oluşturun.",
+  "Model Context Protocol (MCP)": "Model Bağlam Protokolü (MCP)",
+  "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Güçlü Vision modelleriyle etkileşim kurun. Vision modelini kullanmak için resmi yapıştırın veya sürükleyip giriş kutusuna bırakın.",
+  "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI, Model Context Protocol (MCP) istemcisi olarak çalışır. Zengin bir veri ve uygulama çeşitliliğine erişmek için MCP sunucularına bağlanın.",
+  "Image Generation": "Görüntü Oluşturma",
+  "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "OpenAI, xAI, Google, Anthropic, Ollama ve daha fazlası tarafından desteklenen en gelişmiş LLM ile sohbet edin...",
+  "Text Generation": "Metin Oluşturma",
+  "GPT Vision": "GPT Vizyon"
 }

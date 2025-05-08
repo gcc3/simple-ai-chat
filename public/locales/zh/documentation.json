@@ -1,8 +1,4 @@
 {
-  "GPT Text Generation": "GPT文本生成",
-  "Chat with the state-of-the-art GPT model powered by OpenAI.": "与由OpenAI提供技术支持的最先进的GPT模型聊天。",
-  "GPT Vision": "GPT 视觉",
-  "Interact with powerful GPT vision model. To use Vision model, paste or drag and drop the image to the input box.": "与强大的GPT视觉模型互动。要使用视觉模型，请将图片粘贴或拖放到输入框中。",
   "File Input": "文件输入",
   "Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.": "上传文件（支持纯文本、DOCX、PDF、JSON），它们将被处理为文本。结果将被插入到提示中，并将提供 GPT 参考。",
   "Roles": "角色",
@@ -131,5 +127,13 @@
   "* Link with your own data. Support link to relational database.": "* 链接您自己的数据。支持与关系型数据库的连接。",
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "支持对文件和关系数据库的查询。如果使用数据存储，查询结果将被插入为提示，以提供有见地的回答。可同时使用多个数据存储。",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "嗨，欢迎来到简AI！🚀 我正在努力提供一个更专业且更适合程序员使用的用户界面，以便与AI进行交互。",
-  "CLI (Command-line Interface)": "CLI（命令行界面）"
+  "CLI (Command-line Interface)": "CLI（命令行界面）",
+  "Generate beautiful images from your instructions.": "根据您的指令生成美丽的图像。",
+  "Model Context Protocol (MCP)": "模型上下文协议 (MCP)",
+  "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "与强大的视觉模型交互。要使用视觉模型，请将图像粘贴或拖放到输入框中。",
+  "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "简AI 作为模型上下文协议 (MCP) 客户端运行。连接到 MCP 服务器以访问丰富的数据和应用。",
+  "Image Generation": "图像生成",
+  "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "与由 OpenAI、xAI、Google、Anthropic、Ollama 等驱动的最先进大语言模型(LLM)聊天...",
+  "Text Generation": "文本生成",
+  "GPT Vision": "GPT 视觉"
 }
