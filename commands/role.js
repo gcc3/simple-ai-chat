@@ -109,14 +109,14 @@ export default async function role(args) {
         Object.entries(data.result.system_roles).forEach(([key, value]) => {
           roles.push(value.role);
         });
-        const systemRoles = "System roles: \n" 
-                          + "\\" + roles.join(" \\") + "\n\n"; 
+        const systemRoles = "System roles: \n"
+                          + "\\" + roles.join(" \\") + " \n\n"; 
 
         // Add star to current role
         let result = userRoles + systemRoles;
         if (sessionStorage.getItem("role")) {
-          const currentStore = sessionStorage.getItem("role");
-          result = result.replace("\\" + currentStore, "*\\" + currentStore);
+          const currentRole = sessionStorage.getItem("role");
+          result = result.replace("\\" + currentRole + " ", "*\\" + currentRole + " ");
         }
         return result;
       }

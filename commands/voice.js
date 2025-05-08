@@ -18,10 +18,10 @@ export default async function voice(args) {
       return "No voices found for language `" + currentLang + "`.";
     } else {
       // Add star to current voice
-      let result = "\\" + langVoiceList.join(" \\");
+      let result = "\\" + langVoiceList.join(" \\") + " ";
       if (localStorage.getItem("voice")) {
         const currentStore = localStorage.getItem("voice");
-        result = result.replace("\\" + currentStore, "*\\" + currentStore);
+        result = result.replace("\\" + currentStore + " ", "*\\" + currentStore + " ");
       }
       return result;
     }
