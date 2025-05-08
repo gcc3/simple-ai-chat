@@ -8,10 +8,15 @@
 Simple AI
 =========
 
-Simple AI (`simple-ai-chat`) is a command-based AI chat application that supports both web and CLI, aimed at providing users with an easy and simple AI experience.  
-The application is deployed to [simple-ai.io](https://simple-ai.io).  
+Simple AI (`simple-ai-chat`) is a command-based AI chat application that supports both the web and CLI, aimed at providing users with an easy and simple AI experience.
+It can use advanced large language models (LLMs) from multiple companies: OpenAI, xAI, Google AI, Anthropic, and Ollama models.
 
-You can fork this code and deploy it on your machine for non-commercial use. (For details, please refer to the [LICENSE](https://github.com/gcc3/simple-ai-chat/blob/master/LICENSE) file.) For bugs or suggestions, please report to the repository's [GitHub Issues page](https://github.com/gcc3/simple-ai-chat/issues).  
+Text generation, image generation, and vision models are supported.
+Features like function calling and the Model Control Protocol (MCP) are also supported.
+
+The application is deployed at [simple-ai.io](https://simple-ai.io).  
+
+You can fork this code and deploy it on your own machine for non-commercial use. (For details, please refer to the [LICENSE](https://github.com/gcc3/simple-ai-chat/blob/master/LICENSE) file.) For bugs or suggestions, please report them to the repository's [GitHub Issues page](https://github.com/gcc3/simple-ai-chat/issues).  
 
 
 Quick Start
