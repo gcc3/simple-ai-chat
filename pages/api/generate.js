@@ -133,8 +133,6 @@ export default async function(req, res) {
     });
     return;
   }
-  console.log("\n--- model info ---");
-  console.log(JSON.stringify(modelInfo));
 
   // OpenAI
   const openai = new OpenAI({
@@ -159,6 +157,13 @@ export default async function(req, res) {
     outputType = TYPE.IMAGE_GEN;
     console.log(chalk.blue("\nInput (img_gen, session = " + session + (user ? ", user = " + user.username : "") + "):"));
 
+    // Configuration info
+    console.log("\n--- configuration info ---\n"
+      + "model: " + model + "\n"
+      + "n: " + 1 + "\n"
+      + "moderation: " + "low" + "\n"
+      + "output_format: " + "webp");
+
     try {
       // OpenAI image generation
       const imageGenerate = await openai.images.generate({
@@ -169,7 +174,25 @@ export default async function(req, res) {
         output_format: "webp",
       });
 
-      // Result
+      console.log("\n--- image generation result ---");
+      console.log(JSON.stringify(imageGenerate.data[0].b64_json));
+
+      console.log("\n--- token_ct ---");
+      console.log("response_token_ct: " + JSON.stringify(imageGenerate.usage));
+      
+      // Fee
+      console.log("\n--- fee_calc ---");
+      const input_fee = imageGenerate.usage.input_tokens * modelInfo.price_input;
+      const output_fee = imageGenerate.usage.output_tokens * modelInfo.price_output;
+      const total_fee = input_fee + output_fee;
+      console.log("input_fee = " + imageGenerate.usage.input_tokens + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
+      console.log("output_fee = " + imageGenerate.usage.output_tokens + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
+      console.log("total_fee: " + total_fee.toFixed(5));
+      if (user && user.username) {
+        await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
+        console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5));
+      }
+
       res.status(200).json({
         result: {
           text : "",
