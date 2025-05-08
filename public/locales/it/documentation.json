@@ -128,12 +128,12 @@
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Supporto per file e query su database relazionali. Se viene utilizzato un archivio di dati, i risultati delle query verranno inseriti come prompt per fornire risposte informate. È possibile utilizzare più archivi di dati contemporaneamente.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Ciao, benvenuto su Simple AI! 🚀 Sto lavorando per offrire un'interfaccia utente più professionale e orientata ai programmatori per interagire con l'intelligenza artificiale.",
   "CLI (Command-line Interface)": "CLI (Interfaccia a riga di comando)",
-  "Generate beautiful images from your instructions.": "Genera bellissime immagini dalle tue istruzioni.",
   "Model Context Protocol (MCP)": "Protocollo di contesto del modello (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Interagisci con potenti modelli di visione. Per usare il modello Vision, incolla o trascina e rilascia l’immagine nella casella di input.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI funge da client del Model Context Protocol (MCP). Connettiti ai server MCP per accedere a una ricchezza di dati e applicazioni.",
   "Image Generation": "Generazione di immagini",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "Chatta con l'LLM all'avanguardia alimentato da OpenAI, xAI, Google, Anthropic, Ollama e molto altro...",
   "Text Generation": "Generazione di testo",
-  "GPT Vision": "Visione GPT"
+  "GPT Vision": "Visione GPT",
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Genera immagini splendide utilizzando i prompt, modifica le immagini generate o caricate oppure combina più immagini in un'unica immagine in base alle tue istruzioni."
 }

@@ -128,12 +128,12 @@
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Dukungan untuk file dan kueri basis data relasional. Jika sebuah penyimpanan data digunakan, hasil kueri akan disisipkan sebagai prompt untuk memberikan jawaban yang informatif. Beberapa penyimpanan data dapat digunakan secara bersamaan.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Hai, selamat datang di Simple AI! 🚀 Saya sedang bekerja untuk menyediakan antarmuka pengguna yang lebih profesional dan ramah bagi programmer untuk berinteraksi dengan AI.",
   "CLI (Command-line Interface)": "CLI (Antarmuka Baris Perintah)",
-  "Generate beautiful images from your instructions.": "Hasilkan gambar indah sesuai instruksi Anda.",
   "Model Context Protocol (MCP)": "Protokol Konteks Model (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Berinteraksi dengan model visi yang kuat. Untuk menggunakan model visi, tempel atau seret dan jatuhkan gambar ke kotak input.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI berfungsi sebagai klien Model Context Protocol (MCP). Sambungkan ke server MCP untuk mengakses beragam data dan aplikasi.",
   "Image Generation": "Pembuatan Gambar",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "Ngobrol dengan LLM mutakhir yang didukung oleh OpenAI, xAI, Google, Anthropic, Ollama, dan lainnya...",
   "Text Generation": "Generasi Teks",
-  "GPT Vision": "GPT Vision"
+  "GPT Vision": "GPT Vision",
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Hasilkan gambar yang indah menggunakan prompt, dan edit gambar yang dihasilkan atau diunggah, atau gabungkan gambar menjadi satu sesuai instruksi Anda."
 }
