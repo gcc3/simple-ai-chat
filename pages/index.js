@@ -16,7 +16,7 @@ import Documentation from "components/Documentation";
 import Copyrights from "components/Copyrights";
 import Settings from "components/Settings";
 import hljs from 'highlight.js';
-import { generateFileURl } from "utils/awsUtils";
+import { generateFileUrl } from "utils/awsUtils";
 import { initializeSessionMemory, setSession, setTime } from "utils/sessionUtils";
 import 'katex/dist/katex.min.css';
 import { asciiframe } from "utils/donutUtils";
@@ -33,7 +33,7 @@ import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSettin
 import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 import { useUI } from '../contexts/UIContext';
 import { initializeStorage } from "utils/storageUtils";
-import Image from "../components/ui/Image";
+import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
@@ -153,22 +153,38 @@ export default function Home() {
     }
   };
 
+  const isDataUri = (str) => /^data:image\/[a-z0-9.+-]+;base64,/i.test(str);
+  const toDataUri = (b64) =>
+    isDataUri(b64) ? b64 : `data:image/png;base64,${b64}`;
+
+  const buildImageDescriptor = (src) =>
+    new Promise((resolve) => {
+      const img = new window.Image();
+      img.onload = () =>
+        resolve({
+          src,
+          alt: "",
+          width: img.naturalWidth,
+          height: img.naturalHeight,
+          blurDataURL: src,
+        });
+      img.onerror = () =>
+        // Fallback to “0 × 0” if loading fails
+        resolve({ src, alt: "", width: 0, height: 0, blurDataURL: src });
+      img.src = src;
+    });
+
   // Print image output
   const printImage = async (image) => {
-    let imgObj = {
-      src: image,
-      alt: "",
-      width: 0,
-      height: 0,
-      blurDataURL: image
-    };
-  
-    setOutputImages(currentImages => [...currentImages, imgObj]);
-  
-    if (isUrl(image)) {
-      console.log("Print Image: " + image);
-    } else {
-      console.log("Print base64 Image: " + image.slice(0, 50) + "...");
+    try {
+      const src = isUrl(image) ? image : toDataUri(image);
+      const descriptor = await buildImageDescriptor(src);
+      setOutputImages((current) => [...current, descriptor]);
+      console.log(
+        `Print ${isUrl(image) ? "URL" : "Base64"} image: ${src.slice(0, 50)}…`
+      );
+    } catch (e) {
+      console.error("printImage failed:", e);
     }
   };
 
@@ -254,7 +270,7 @@ export default function Home() {
   // Print session log
   const printSessionLog = async function(log) {
     setTime(log["time"]);
-    console.log("Session log:", JSON.stringify(log));
+    console.log("Session log:", JSON.stringify(log).slice(0, 500) + " ...");
 
     // Print the log
     clearPreviewImages();
@@ -2291,7 +2307,7 @@ export default function Home() {
       // Trigger highlight.js
       hljs.highlightAll();
 
-      if (data.result.stats && config.use_stats) {
+      if (data.result.stats && config.use_stats === "true") {
         let stats = "";
         if (data.result.stats.func) stats += "func: " + data.result.stats.func.replaceAll('|', ", ") + "\n";
         if (data.result.stats.temperature) stats += "temperature: " + data.result.stats.temperature + "\n";
@@ -2312,7 +2328,7 @@ export default function Home() {
           </div>
         ));
 
-        if (config.use_eval) {
+        if (config.use_eval === "true") {
           const _eval_ = data.result.stats.eval;
           const val = parseInt(_eval_);
   
@@ -2599,7 +2615,7 @@ export default function Home() {
       // 2. Check file type
       if (supportedTypes.includes(type)) {
         // Upload the image to S3
-        const uploadResult = await generateFileURl(blob, file_id, type);
+        const uploadResult = await generateFileUrl(blob, file_id, type);
         if (!uploadResult.success) {
           // Print error message 
           console.error(uploadResult.message);
@@ -2697,7 +2713,7 @@ export default function Home() {
           <div id="wrapper" ref={elWrapperRef} className={styles.wrapper}>
             {outputImages.map((image, index) => (
               <div key={index} className="mb-5 image-preview">
-                <Image image={image} />
+                <PreviewImage image={image} />
               </div>
             ))}
             <div 

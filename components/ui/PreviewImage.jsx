@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 
 
-function Image({ image }) {
+function PreviewImage({ image } = {}) {
   const [loaded, setLoaded] = useState(false);
+
+  if (!image) return null;
 
   return (
     <img
@@ -20,4 +22,4 @@ function Image({ image }) {
   );
 }
 
-export default Image;
+export default PreviewImage;

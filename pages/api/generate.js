@@ -184,7 +184,8 @@ export default async function(req, res) {
       });
 
       console.log("\n--- image generation result ---");
-      console.log(imageGenerate.data[0].b64_json.slice(0, 50) + "...");
+      const image = imageGenerate.data[0].b64_json;
+      console.log(image.slice(0, 50) + "...");
 
       console.log("\n--- token_ct ---");
       console.log("response_token_ct: " + JSON.stringify(imageGenerate.usage));
@@ -206,7 +207,7 @@ export default async function(req, res) {
         result: {
           text : "",
           tool_calls: [],
-          images: [imageGenerate.data[0].b64_json],
+          images: [image],
           events: [],
           stats: {
             token_ct: imageGenerate.usage.total_tokens,
@@ -217,6 +218,9 @@ export default async function(req, res) {
           }
         },
       });
+
+      // Log
+      await logadd(user, session, time++, model, imageGenerate.usage.input_tokens, input, imageGenerate.usage.output_tokens, "", JSON.stringify([image]), ip, browser);
       return;
     } catch (error) {
       console.error("Error (image generation):");
