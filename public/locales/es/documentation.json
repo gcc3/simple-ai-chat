@@ -128,12 +128,12 @@
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Compatibilidad con archivos y consultas a bases de datos relacionales. Si se utiliza un almacén, los resultados de la consulta se insertarán como indicaciones para proporcionar respuestas fundamentadas. Se pueden utilizar múltiples almacenes de datos simultáneamente.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "¡Hola, bienvenido a Simple AI! 🚀 Estoy trabajando para ofrecer una interfaz de usuario más profesional y amigable para programadores para interactuar con la IA.",
   "CLI (Command-line Interface)": "CLI (Interfaz de línea de comandos)",
-  "Generate beautiful images from your instructions.": "Genera imágenes hermosas a partir de tu instrucción.",
   "Model Context Protocol (MCP)": "Protocolo de Contexto de Modelo (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Interactúa con potentes modelos de visión. Para usar el modelo de visión, pega o arrastra y suelta la imagen en el cuadro de entrada.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI funciona como cliente del Protocolo de Contexto de Modelo (MCP). Conéctate a los servidores MCP para acceder a una gran cantidad de datos y aplicaciones.",
   "Image Generation": "Generación de imágenes",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "Chatea con el LLM de última generación impulsado por OpenAI, xAI, Google, Anthropic, Ollama y más…",
   "Text Generation": "Generación de texto",
-  "GPT Vision": "GPT Visión"
+  "GPT Vision": "GPT Visión",
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Genera hermosas imágenes mediante indicaciones, edita imágenes generadas o cargadas, o combina imágenes en una sola imagen según tus instrucciones."
 }

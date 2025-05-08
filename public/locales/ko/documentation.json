@@ -128,12 +128,12 @@
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "파일 및 관계형 데이터베이스 쿼리를 지원합니다. 저장소를 사용하는 경우 쿼리 결과가 프롬프트로 삽입되어 지식 기반의 응답을 제공합니다. 여러 데이터 저장소를 동시에 사용할 수 있습니다.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "안녕하세요, Simple AI에 오신 것을 환영합니다! 🚀 AI와 상호작용하기 위한 보다 전문적이고 프로그래머 친화적인 사용자 인터페이스를 제공하기 위해 노력하고 있습니다.",
   "CLI (Command-line Interface)": "CLI (명령줄 인터페이스)",
-  "Generate beautiful images from your instructions.": "지시에 따라 아름다운 이미지를 생성하세요.",
   "Model Context Protocol (MCP)": "모델 컨텍스트 프로토콜 (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "강력한 Vision 모델과 상호작용하세요. Vision 모델을 사용하려면 이미지를 붙여넣거나 입력 상자에 드래그 앤 드롭하세요.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI는 Model Context Protocol(MCP) 클라이언트로 작동합니다. MCP 서버에 연결하여 방대한 데이터와 애플리케이션에 액세스하세요.",
   "Image Generation": "이미지 생성",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "OpenAI, xAI, Google, Anthropic, Ollama 등으로 구동되는 최첨단 LLM과 채팅하세요...",
   "Text Generation": "텍스트 생성",
-  "GPT Vision": "GPT 비전"
+  "GPT Vision": "GPT 비전",
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "프롬프트를 사용하여 아름다운 이미지를 생성하고, 생성되거나 업로드된 이미지를 편집하거나 지시에 따라 여러 이미지를 하나의 이미지로 결합하세요."
 }
