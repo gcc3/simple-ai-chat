@@ -36,6 +36,7 @@ import { initializeStorage } from "utils/storageUtils";
 import Image from "../components/ui/Image";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
+import { isUrl } from "utils/urlUtils";
 
 
 // Status control
@@ -168,7 +169,7 @@ export default function Home() {
       console.log("Print Image: " + image);
     } else {
       // Image is a base64 string
-      console.log("Print base64 Image.");
+      console.log("Print base64 Image: " + image);
     }
   };
 
@@ -2271,22 +2272,22 @@ export default function Home() {
         return;
       }
 
-      // Print output
-      printOutput(output);
-
       // Print image output
-      if (globalThis.model === "gpt-image-1") {
+      if (sessionStorage.getItem("model") === "gpt-image-1") {
         const images = data.result.images;
         for (const image of images) {
           printImage(image);
         }
+      } else {
+        // Print output
+        printOutput(output);
+
+        // Formatter
+        markdownFormatter(elOutputRef.current);
+
+        // Trigger highlight.js
+        hljs.highlightAll();
       }
-
-      // Formatter
-      markdownFormatter(elOutputRef.current);
-
-      // Trigger highlight.js
-      hljs.highlightAll();
 
       if (data.result.stats && config.use_stats) {
         !minimalist && setStats((
@@ -2325,8 +2326,8 @@ export default function Home() {
         </div>
       ));
     } catch (error) {
+      printOutput("Error occurred.");
       console.error(error);
-      printOutput(error);
     }
   }
   
