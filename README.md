@@ -34,6 +34,10 @@ Quick Start
     Use `smcp` (or just `schat`) to start the client service.  
     The `mcpconfig.json` file is located in the `~/.simple`.  
 
+4. Ollama  
+    Set the environment variable `OLLAMA_ORIGINS` to `*` or your domain to allow CORS.  
+    Use `:model ls` to list the models, and `:model use <model>` to use the model.  
+
 
 Documentation
 -------------
