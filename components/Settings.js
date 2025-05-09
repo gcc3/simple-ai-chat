@@ -273,7 +273,7 @@ function Settings() {
     if (data.success) {
       localStorage.setItem(key, value);
       console.log("Settings updated." + " (" + getTime() + ")");
-      setMessage(t("Settings updated." + " (" + getTime() + ")"));
+      setMessage(t("Settings updated.") + " (" + getTime() + ")");
     }
   }
 
@@ -289,7 +289,7 @@ function Settings() {
     setCurrentRole(currentRole);
 
     console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated." + " (" + getTime() + ")"));
+    setMessage(t("Settings updated.") + " (" + getTime() + ")");
   }, []);
 
   const handleSetSystemFunctions = useCallback((name) => async () => {
@@ -318,7 +318,7 @@ function Settings() {
     setEnabledFunctions(enabledFunctions);
 
     console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated." + " (" + getTime() + ")"));
+    setMessage(t("Settings updated.") + " (" + getTime() + ")");
   }, []);
 
   const handleSetMcpFunctions = useCallback((name) => async () => {
@@ -347,7 +347,7 @@ function Settings() {
     setEnabledFunctions(enabledFunctions);
 
     console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated." + " (" + getTime() + ")"));
+    setMessage(t("Settings updated.") + " (" + getTime() + ")");
   }, []);
 
   const handleSetUserStores = useCallback((name) => async () => {
@@ -362,7 +362,7 @@ function Settings() {
     setActiveStores(activeStores);
 
     console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated." + " (" + getTime() + ")"));
+    setMessage(t("Settings updated.") + " (" + getTime() + ")");
   }, []);
 
   const handleSetGroupStores = useCallback((name) => async () => {
@@ -377,7 +377,7 @@ function Settings() {
     setActiveStores(activeStores);
 
     console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated." + " (" + getTime() + ")"));
+    setMessage(t("Settings updated.") + " (" + getTime() + ")");
   }, []);
 
   const handleSetSystemStores = useCallback((name) => async () => {
@@ -392,7 +392,7 @@ function Settings() {
     setActiveStores(activeStores);
 
     console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated." + " (" + getTime() + ")"));
+    setMessage(t("Settings updated.") + " (" + getTime() + ")");
   }, []);
 
   const handleSetUserNodes = useCallback((name) => async () => {
@@ -407,7 +407,7 @@ function Settings() {
     setActiveNode(currentNode);
 
     console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated." + " (" + getTime() + ")"));
+    setMessage(t("Settings updated.") + " (" + getTime() + ")");
   }, []);
 
   const handleSetGroupNodes = useCallback((name) => async () => {
@@ -422,7 +422,7 @@ function Settings() {
     setActiveNode(currentNode);
 
     console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated." + " (" + getTime() + ")"));
+    setMessage(t("Settings updated.") + " (" + getTime() + ")");
   }, []);
 
   const handleSetSystemNodes = useCallback((name) => async () => {
@@ -437,7 +437,7 @@ function Settings() {
     setActiveNode(currentNode);
 
     console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated." + " (" + getTime() + ")"));
+    setMessage(t("Settings updated.") + " (" + getTime() + ")");
   }, []);
 
   const handleSetLanguage = useCallback((newLang) => async () => {
@@ -457,7 +457,7 @@ function Settings() {
       }
 
       console.log("Settings updated." + " (" + getTime() + ")");
-      setMessage(t("Settings updated." + " (" + getTime() + ")"));
+      setMessage(t("Settings updated.") + " (" + getTime() + ")");
     });
   }, [i18n, t, user]);
 
