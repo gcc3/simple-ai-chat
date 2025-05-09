@@ -5,6 +5,14 @@
   "Email Subscription": "E-posta Aboneliği",
   "Loading...": "Yükleniyor...",
   "Language": "Dil",
-  "Settings updated.": "Ayarlar güncellendi.",
-  "Email subscription updated.": "E-posta aboneliği güncellendi."
+  "Email subscription updated.": "E-posta aboneliği güncellendi.",
+  "Group Stores": "Mağaza Grupları",
+  "MCP Functions": "MCP Fonksiyonları",
+  "System Stores": "Sistem Depoları",
+  "System Nodes": "Sistem Düğümleri",
+  "System Functions": "Sistem İşlevleri",
+  "Group Nodes": "Grup Düğümleri",
+  "User Stores": "Kullanıcı Depoları",
+  "User Nodes": "Kullanıcı Düğümleri",
+  "User Roles": "Kullanıcı Rolleri"
 }

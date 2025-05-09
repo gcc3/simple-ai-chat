@@ -5,6 +5,14 @@
   "Email Subscription": "Suscripción por correo electrónico",
   "Loading...": "Cargando...",
   "Language": "Idioma",
-  "Settings updated.": "Configuración actualizada.",
-  "Email subscription updated.": "Suscripción de correo electrónico actualizada."
+  "Email subscription updated.": "Suscripción de correo electrónico actualizada.",
+  "Group Stores": "Tiendas de grupo",
+  "MCP Functions": "Funciones MCP",
+  "System Stores": "Almacenes del sistema",
+  "System Nodes": "Nodos del sistema",
+  "System Functions": "Funciones del sistema",
+  "Group Nodes": "Agrupar nodos",
+  "User Stores": "Almacenamiento de usuarios",
+  "User Nodes": "Nodos de usuario",
+  "User Roles": "Roles de usuario"
 }

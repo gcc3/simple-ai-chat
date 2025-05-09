@@ -131,9 +131,11 @@
   "Model Context Protocol (MCP)": "بروتوكول سياق النموذج (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "تفاعل مع نماذج الرؤية القوية. لاستخدام نموذج الرؤية، قم بلصق الصورة أو سحبها وإفلاتها في مربع الإدخال.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "يعمل Simple AI كعميل لبروتوكول سياق النموذج (MCP). اتصل بخوادم MCP للوصول إلى ثروة من البيانات والتطبيقات.",
-  "Image Generation": "توليد الصور",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "تحدث مع نموذج لغوي ضخم ومتطور مدعوم من OpenAI وxAI وGoogle وAnthropic وOllama والمزيد...",
   "Text Generation": "توليد النصوص",
   "GPT Vision": "رؤية GPT",
-  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "أنشئ صورًا جميلة باستخدام المطالبات، وقم بتحرير الصور المولَّدَة أو المُحمَّلة، أو دمج الصور في صورة واحدة بناءً على تعليماتك."
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "أنشئ صورًا جميلة باستخدام المطالبات، وقم بتحرير الصور المولَّدَة أو المُحمَّلة، أو دمج الصور في صورة واحدة بناءً على تعليماتك.",
+  "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "يتم توفير برنامج واجهة سطر الأوامر عبر مدير حزم Node (npm) ويدعم نفس ميزات واجهة المستخدم على الويب.",
+  "Command-line Interface (CLI)": "واجهة سطر الأوامر (CLI)",
+  "Image Generation & Edit": "توليد وتحرير الصور"
 }

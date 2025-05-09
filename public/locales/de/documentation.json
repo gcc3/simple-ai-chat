@@ -131,9 +131,11 @@
   "Model Context Protocol (MCP)": "Modell-Kontext-Protokoll (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Interagieren Sie mit leistungsstarken Visionsmodellen. Um ein Visionsmodell zu verwenden, fügen Sie das Bild in das Eingabefeld ein oder ziehen Sie es per Drag & Drop hinein.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI fungiert als Model Context Protocol (MCP)-Client. Stellen Sie eine Verbindung zu MCP-Servern her, um auf eine Fülle von Daten und Anwendungen zuzugreifen.",
-  "Image Generation": "Bildgenerierung",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "Chatten Sie mit dem hochmodernen LLM, das von OpenAI, xAI, Google, Anthropic, Ollama und mehr angetrieben wird...",
   "Text Generation": "Textgenerierung",
   "GPT Vision": "GPT Vision",
-  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Erstelle wunderschöne Bilder mithilfe von Prompts, bearbeite generierte oder hochgeladene Bilder oder kombiniere mehrere Bilder zu einem einzigen Bild basierend auf deinen Anweisungen."
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Erstelle wunderschöne Bilder mithilfe von Prompts, bearbeite generierte oder hochgeladene Bilder oder kombiniere mehrere Bilder zu einem einzigen Bild basierend auf deinen Anweisungen.",
+  "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "Die Befehlszeilenschnittstellensoftware wird über den Node Package Manager (npm) bereitgestellt und bietet dieselben Funktionen wie die Web-UI.",
+  "Command-line Interface (CLI)": "Kommandozeilen-Schnittstelle (CLI)",
+  "Image Generation & Edit": "Bildgenerierung & Bearbeitung"
 }

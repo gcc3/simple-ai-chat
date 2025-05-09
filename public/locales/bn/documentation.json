@@ -131,9 +131,11 @@
   "Model Context Protocol (MCP)": "মডেল প্রসঙ্গ প্রোটোকল (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "শক্তিশালী ভিশন মডেলগুলোর সাথে ইন্টার‌্যাক্ট করুন। Vision মডেল ব্যবহার করতে, ছবিটি ইনপুট বক্সে পেস্ট বা ড্র্যাগ ও ড্রপ করুন।",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI একটি Model Context Protocol (MCP) ক্লায়েন্ট হিসেবে কাজ করে। MCP সার্ভারে সংযোগ করে প্রচুর তথ্য ও অ্যাপ্লিকেশন অ্যাক্সেস করুন।",
-  "Image Generation": "ছবি তৈরি",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "OpenAI, xAI, Google, Anthropic, Ollama এবং অন্যান্য দ্বারা চালিত অত্যাধুনিক LLM-এর সাথে চ্যাট করুন…",
   "Text Generation": "টেক্সট জেনারেশন",
   "GPT Vision": "GPT ভিশন",
-  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "প্রম্পট ব্যবহার করে সুন্দর ছবি তৈরি করুন, এবং তৈরি বা আপলোড করা ছবি সম্পাদনা করুন, অথবা আপনার নির্দেশনামতে একাধিক ছবিকে একত্রিত করে একটি ছবিতে পরিণত করুন।"
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "প্রম্পট ব্যবহার করে সুন্দর ছবি তৈরি করুন, এবং তৈরি বা আপলোড করা ছবি সম্পাদনা করুন, অথবা আপনার নির্দেশনামতে একাধিক ছবিকে একত্রিত করে একটি ছবিতে পরিণত করুন।",
+  "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "কমান্ড-লাইন ইন্টারফেস সফটওয়্যার Node Package Manager (npm) এর মাধ্যমে সরবরাহ করা হয় এবং এটি ওয়েব UI-এর একই বৈশিষ্ট্যগুলো সমর্থন করে।",
+  "Command-line Interface (CLI)": "কমান্ড-লাইন ইন্টারফেস (CLI)",
+  "Image Generation & Edit": "চিত্র তৈরি এবং সম্পাদনা"
 }

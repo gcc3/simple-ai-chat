@@ -34,8 +34,11 @@
   "Extend 1 month for": "Extend 1 month for",
   "month": "month",
   "Free": "Free",
-  "GPT Text Generation": "GPT Text Generation",
   "GPT Vision": "GPT Vision",
   "Loading...": "Loading...",
-  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: provides advanced features and support for professional uses."
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: provides advanced features and support for professional uses.",
+  "Command-line Interface (CLI)": "Command-line Interface (CLI)",
+  "Text Generationn": "Text Generationn",
+  "Model Context Protocol (MCP)": "Model Context Protocol (MCP)",
+  "Image Generation & Edit": "Image Generation & Edit"
 }

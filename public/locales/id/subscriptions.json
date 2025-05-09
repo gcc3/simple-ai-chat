@@ -35,7 +35,10 @@
   "month": "bulan",
   "Free": "Gratis",
   "GPT Vision": "Visi GPT",
-  "GPT Text Generation": "Generasi Teks GPT",
   "Loading...": "Memuat...",
-  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: menyediakan fitur lanjutan dan dukungan untuk penggunaan profesional."
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: menyediakan fitur lanjutan dan dukungan untuk penggunaan profesional.",
+  "Command-line Interface (CLI)": "Antarmuka Baris Perintah (CLI)",
+  "Text Generationn": "Generasi Teks",
+  "Model Context Protocol (MCP)": "Protokol Konteks Model (MCP)",
+  "Image Generation & Edit": "Pembuatan & Pengeditan Gambar"
 }

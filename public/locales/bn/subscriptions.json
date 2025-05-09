@@ -35,7 +35,10 @@
   "month": "মাস",
   "Free": "ফ্রি",
   "GPT Vision": "GPT দৃষ্টিভঙ্গি",
-  "GPT Text Generation": "GPT টেক্সট জেনারেশন",
   "Loading...": "লোড হচ্ছে...",
-  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: উন্নত বৈশিষ্ট্য এবং পেশাদার ব্যবহারের জন্য সহায়তা প্রদান করে।"
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: উন্নত বৈশিষ্ট্য এবং পেশাদার ব্যবহারের জন্য সহায়তা প্রদান করে।",
+  "Command-line Interface (CLI)": "কমান্ড-লাইন ইন্টারফেস (CLI)",
+  "Text Generationn": "টেক্সট জেনারেশন",
+  "Model Context Protocol (MCP)": "মডেল প্রসঙ্গ প্রোটোকল (MCP)",
+  "Image Generation & Edit": "ছবি তৈরি ও সম্পাদনা"
 }

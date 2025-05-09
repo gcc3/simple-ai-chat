@@ -131,9 +131,11 @@
   "Model Context Protocol (MCP)": "Model Context Protocol (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.",
-  "Image Generation": "Image Generation",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...",
   "Text Generation": "Text Generation",
   "GPT Vision": "GPT Vision",
-  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions."
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.",
+  "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.",
+  "Command-line Interface (CLI)": "Command-line Interface (CLI)",
+  "Image Generation & Edit": "Image Generation & Edit"
 }

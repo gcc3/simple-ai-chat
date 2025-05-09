@@ -131,9 +131,11 @@
   "Model Context Protocol (MCP)": "Model Bağlam Protokolü (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Güçlü Vision modelleriyle etkileşim kurun. Vision modelini kullanmak için resmi yapıştırın veya sürükleyip giriş kutusuna bırakın.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI, Model Context Protocol (MCP) istemcisi olarak çalışır. Zengin bir veri ve uygulama çeşitliliğine erişmek için MCP sunucularına bağlanın.",
-  "Image Generation": "Görüntü Oluşturma",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "OpenAI, xAI, Google, Anthropic, Ollama ve daha fazlası tarafından desteklenen en gelişmiş LLM ile sohbet edin...",
   "Text Generation": "Metin Oluşturma",
   "GPT Vision": "GPT Vizyon",
-  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Komutlar kullanarak güzel görseller oluşturun, oluşturulan veya yüklenen görselleri düzenleyin ya da talimatlarınıza göre görselleri tek bir görselde birleştirin."
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Komutlar kullanarak güzel görseller oluşturun, oluşturulan veya yüklenen görselleri düzenleyin ya da talimatlarınıza göre görselleri tek bir görselde birleştirin.",
+  "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "Komut satırı arayüzü yazılımı, Node Package Manager (npm) aracılığıyla sağlanır ve web kullanıcı arayüzü ile aynı özellikleri destekler.",
+  "Command-line Interface (CLI)": "Komut Satırı Arayüzü (CLI)",
+  "Image Generation & Edit": "Görüntü Oluşturma ve Düzenleme"
 }

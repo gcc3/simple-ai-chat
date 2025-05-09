@@ -131,9 +131,11 @@
   "Model Context Protocol (MCP)": "모델 컨텍스트 프로토콜 (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "강력한 Vision 모델과 상호작용하세요. Vision 모델을 사용하려면 이미지를 붙여넣거나 입력 상자에 드래그 앤 드롭하세요.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI는 Model Context Protocol(MCP) 클라이언트로 작동합니다. MCP 서버에 연결하여 방대한 데이터와 애플리케이션에 액세스하세요.",
-  "Image Generation": "이미지 생성",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "OpenAI, xAI, Google, Anthropic, Ollama 등으로 구동되는 최첨단 LLM과 채팅하세요...",
   "Text Generation": "텍스트 생성",
   "GPT Vision": "GPT 비전",
-  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "프롬프트를 사용하여 아름다운 이미지를 생성하고, 생성되거나 업로드된 이미지를 편집하거나 지시에 따라 여러 이미지를 하나의 이미지로 결합하세요."
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "프롬프트를 사용하여 아름다운 이미지를 생성하고, 생성되거나 업로드된 이미지를 편집하거나 지시에 따라 여러 이미지를 하나의 이미지로 결합하세요.",
+  "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "명령줄 인터페이스 소프트웨어는 Node Package Manager(npm)를 통해 제공되며 웹 UI와 동일한 기능을 지원합니다.",
+  "Command-line Interface (CLI)": "명령줄 인터페이스(CLI)",
+  "Image Generation & Edit": "이미지 생성 및 편집"
 }

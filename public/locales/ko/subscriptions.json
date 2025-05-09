@@ -35,7 +35,10 @@
   "month": "월",
   "Free": "무료",
   "GPT Vision": "GPT 비전",
-  "GPT Text Generation": "GPT 텍스트 생성",
   "Loading...": "로딩 중...",
-  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: 전문적인 용도를 위한 고급 기능 및 지원을 제공합니다."
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: 전문적인 용도를 위한 고급 기능 및 지원을 제공합니다.",
+  "Command-line Interface (CLI)": "명령줄 인터페이스 (CLI)",
+  "Text Generationn": "텍스트 생성n",
+  "Model Context Protocol (MCP)": "모델 컨텍스트 프로토콜(MCP)",
+  "Image Generation & Edit": "이미지 생성 및 편집"
 }

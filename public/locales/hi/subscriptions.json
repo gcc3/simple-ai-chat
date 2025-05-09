@@ -35,7 +35,10 @@
   "month": "महीना",
   "Free": "निःशुल्क",
   "GPT Vision": "GPT दृष्टि",
-  "GPT Text Generation": "GPT पाठ सृजन",
   "Loading...": "लोड हो रहा है...",
-  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: उन्नत सुविधाएँ और पेशेवर उपयोग के लिए समर्थन प्रदान करता है।"
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: उन्नत सुविधाएँ और पेशेवर उपयोग के लिए समर्थन प्रदान करता है।",
+  "Command-line Interface (CLI)": "कमांड-लाइन इंटरफ़ेस (CLI)",
+  "Text Generationn": "टेक्स्ट जनरेशन",
+  "Model Context Protocol (MCP)": "मॉडल संदर्भ प्रोटोकॉल (MCP)",
+  "Image Generation & Edit": "छवि निर्माण और संपादन"
 }

@@ -5,6 +5,14 @@
   "Email Subscription": "Langganan Email",
   "Loading...": "Memuat...",
   "Language": "Bahasa",
-  "Settings updated.": "Pengaturan diperbarui.",
-  "Email subscription updated.": "Berlangganan email telah diperbarui."
+  "Email subscription updated.": "Berlangganan email telah diperbarui.",
+  "Group Stores": "Grup Toko",
+  "MCP Functions": "Fungsi MCP",
+  "System Stores": "Penyimpanan Sistem",
+  "System Nodes": "Node Sistem",
+  "System Functions": "Fungsi Sistem",
+  "Group Nodes": "Kelompok Node",
+  "User Stores": "Penyimpanan Pengguna",
+  "User Nodes": "Node Pengguna",
+  "User Roles": "Peran Pengguna"
 }
