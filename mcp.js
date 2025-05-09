@@ -17,7 +17,7 @@ import { homedir } from 'os';
 import { join } from 'path';
 
 
-async function loadMcpConfig(configPath = join(homedir(), '.simple', "mcpconfig.json")) {
+async function loadMcpConfig(configPath) {
   try {
     // Create the directory if it doesn't exist
     if (!fs.existsSync(configPath)) {
@@ -225,9 +225,6 @@ app.post('/tool/call', async (req, res) => {
 app.listen(port, async () => {
   console.log(`Simple MCP server is running on http://localhost:${port}`);
 
-  // Load MCP server configuration
-  const mcpConfig = await loadMcpConfig();
-
   console.log("\n--- available endpoints ---" + "\n" +
     "GET  /" + "\n" +  
     "GET  /tool/list" + "\n" +
@@ -236,6 +233,10 @@ app.listen(port, async () => {
     "GET  /servers" + "\n" +
     "POST /shutdown"
   );
+
+  // Load MCP server configuration
+  const configPath = join(homedir(), '.simple', "mcpconfig.json");
+  const mcpConfig = await loadMcpConfig(configPath);
 
   // Connect to each MCP server
   for (let s in mcpConfig) {
