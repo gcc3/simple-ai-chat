@@ -258,8 +258,6 @@ app.listen(port, async () => {
       }, 300);
     }
   });
-  
-  console.log(`Watching for changes to CONFIG file at: ${CONFIG}`);
 });
 
 export async function connectMCP() {
