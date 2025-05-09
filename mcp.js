@@ -17,7 +17,9 @@ import { homedir } from 'os';
 import { join } from 'path';
 
 
-async function loadMcpConfig(configPath = join(homedir(), '.simple', "mcpconfig.json")) {
+const CONFIG = join(homedir(), '.simple', "mcpconfig.json");
+
+async function loadMcpConfig(configPath = CONFIG) {
   try {
     // Create the directory if it doesn't exist
     if (!fs.existsSync(configPath)) {
@@ -238,6 +240,26 @@ app.listen(port, async () => {
   );
 
   await connectMCP();
+  
+  // Set up a file watcher for the CONFIG file with debouncing
+  let reconnectTimeout = null;
+  fs.watch(CONFIG, { persistent: true }, async (eventType) => {
+    if (eventType === 'change') {
+      // Clear any existing timeout to debounce multiple events
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
+      }
+      
+      // Set a new timeout (300ms debounce time)
+      reconnectTimeout = setTimeout(async () => {
+        console.log(`CONFIG file changed. Reconnecting to MCP servers...`);
+        await connectMCP();
+        reconnectTimeout = null;
+      }, 300);
+    }
+  });
+  
+  console.log(`Watching for changes to CONFIG file at: ${CONFIG}`);
 });
 
 export async function connectMCP() {
@@ -246,7 +268,7 @@ export async function connectMCP() {
     await mcpClient.disconnect();
 
     // Load MCP server configuration
-    const mcpConfigServers = await loadMcpConfig();
+    const mcpConfigServers = await loadMcpConfig(CONFIG);
     const timeout = 10;
     if (mcpClient.status === STATUS.DISCONNECTED) {
 
