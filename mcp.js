@@ -288,6 +288,15 @@ app.listen(port, async () => {
       }, 300);
     }
   });
+
+  // Refresh tools every 5 seconds
+  setInterval(async () => {
+    try {
+      await mcpClient.refreshTools();
+    } catch (e) {
+      console.error("Error refreshing tools: ", e);
+    }
+  }, 5000);
 });
 
 export async function connectMCP() {
