@@ -6,7 +6,6 @@
   "Loading...": "Cargando...",
   "Language": "Idioma",
   "Email subscription updated.": "Suscripción de correo electrónico actualizada.",
-  "Group Stores": "Tiendas de grupo",
   "MCP Functions": "Funciones MCP",
   "System Stores": "Almacenes del sistema",
   "System Nodes": "Nodos del sistema",
@@ -14,5 +13,6 @@
   "Group Nodes": "Agrupar nodos",
   "User Stores": "Almacenamiento de usuarios",
   "User Nodes": "Nodos de usuario",
-  "User Roles": "Roles de usuario"
+  "User Roles": "Roles de usuario",
+  "User Group Stores": "Almacenamientos de grupos de usuarios"
 }

@@ -6,7 +6,6 @@
   "Loading...": "Loading...",
   "Language": "Language",
   "Email subscription updated.": "Email subscription updated.",
-  "Group Stores": "Group Stores",
   "MCP Functions": "MCP Functions",
   "System Stores": "System Stores",
   "System Nodes": "System Nodes",
@@ -14,5 +13,6 @@
   "Group Nodes": "Group Nodes",
   "User Stores": "User Stores",
   "User Nodes": "User Nodes",
-  "User Roles": "User Roles"
+  "User Roles": "User Roles",
+  "User Group Stores": "User Group Stores"
 }

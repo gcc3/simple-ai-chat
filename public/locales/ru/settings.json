@@ -6,7 +6,6 @@
   "Loading...": "Загрузка...",
   "Language": "Язык",
   "Email subscription updated.": "Подписка на рассылку обновлена.",
-  "Group Stores": "Групповые магазины",
   "MCP Functions": "Функции MCP",
   "System Stores": "Системные хранилища",
   "System Nodes": "Системные узлы",
@@ -14,5 +13,6 @@
   "Group Nodes": "Группировка узлов",
   "User Stores": "Хранилища пользователей",
   "User Nodes": "Узлы пользователя",
-  "User Roles": "Роли пользователей"
+  "User Roles": "Роли пользователей",
+  "User Group Stores": "Хранилища групп пользователей"
 }

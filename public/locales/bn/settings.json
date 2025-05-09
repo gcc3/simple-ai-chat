@@ -6,7 +6,6 @@
   "Loading...": "লোড হচ্ছে...",
   "Language": "ভাষা",
   "Email subscription updated.": "ইমেইল সাবস্ক্রিপশন আপডেট হয়েছে।",
-  "Group Stores": "দোকান গোষ্ঠী",
   "MCP Functions": "MCP ফাংশনসমূহ",
   "System Stores": "সিস্টেম স্টোরসমূহ",
   "System Nodes": "সিস্টেম নোডসমূহ",
@@ -14,5 +13,6 @@
   "Group Nodes": "নোড গোষ্ঠী",
   "User Stores": "ব্যবহারকারী স্টোরগুলি",
   "User Nodes": "ব্যবহারকারী নোড",
-  "User Roles": "ব্যবহারকারীর ভূমিকা"
+  "User Roles": "ব্যবহারকারীর ভূমিকা",
+  "User Group Stores": "ব্যবহারকারী গ্রুপের সংরক্ষণাগারসমূহ"
 }

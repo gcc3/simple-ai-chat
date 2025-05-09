@@ -6,7 +6,6 @@
   "Loading...": "로딩 중...",
   "Language": "언어",
   "Email subscription updated.": "이메일 구독이 업데이트되었습니다.",
-  "Group Stores": "그룹 매장",
   "MCP Functions": "MCP 기능",
   "System Stores": "시스템 저장소",
   "System Nodes": "시스템 노드",
@@ -14,5 +13,6 @@
   "Group Nodes": "그룹 노드",
   "User Stores": "사용자 저장소",
   "User Nodes": "사용자 노드",
-  "User Roles": "사용자 역할"
+  "User Roles": "사용자 역할",
+  "User Group Stores": "사용자 그룹 저장소"
 }
