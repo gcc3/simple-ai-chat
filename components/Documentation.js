@@ -39,6 +39,7 @@ const Documentation = () => {
     { id: "features-stores", name: t("Data Stores"), description: t("Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.") },
     { id: "features-nodes", name: t("Nodes (Node AI)"), description: t("Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.") },
     { id: "features-mathematics-wolframalpha", name: t("Enhanced Knowledge & Mathematics (WolframAlpha)"), description: t("As one of the AI callable function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided.") },
+    { id: "features-cli", name: t("Command-line Interface (CLI)"), description: t("Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.") },
   ];
 
   const sub_features = [

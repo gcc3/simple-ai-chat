@@ -23,7 +23,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
     { name: t("Data Stores"), user: t("Yes"), plus_user: t("Yes +support") },
     { name: t("Nodes (Node AI)"), user: t("Yes"), plus_user: t("Yes +support") },
     { name: t("Enhanced Knowledge & Mathematics (WolframAlpha)"), user: t("Yes"), plus_user: t("Yes") },
-    { name: "API", user: t("Yes"), plus_user: t("Yes +support") },
+    { name: t("Command-line Interface (CLI)"), user: t("Yes"), plus_user: t("Yes +support") },
     { name: t("Pricing"), user: getPriceString(subscriptions, "user", t), plus_user: getPriceString(subscriptions, "plus_user", t) },
   ];
 
