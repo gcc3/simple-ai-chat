@@ -32,7 +32,7 @@ const Documentation = () => {
   const features = [
     { id: "features-gpt-textgeneration", name: t("Text Generation"), description: t("Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...") },
     { id: "features-gpt-vision", name: t("GPT Vision"), description: t("Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.") },
-    { id: "features-gpt-image-gen", name: t("Image Generation"), description: t("Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.") },
+    { id: "features-gpt-image-gen", name: t("Image Generation & Edit"), description: t("Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.") },
     { id: "features-mcp-client", name: t("Model Context Protocol (MCP)"), description: t("Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.") },
     { id: "features-fileinput", name: t("File Input"), description: t("Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.") },
     { id: "features-roles", name: t("Roles"), description: t("Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.") },
