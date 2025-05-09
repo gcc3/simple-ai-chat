@@ -6,7 +6,6 @@
   "Loading...": "جارِ التحميل...",
   "Language": "اللغة",
   "Email subscription updated.": "تم تحديث اشتراك البريد الإلكتروني.",
-  "Group Stores": "متاجر المجموعة",
   "MCP Functions": "وظائف MCP",
   "System Stores": "مخازن النظام",
   "System Nodes": "عقد النظام",
@@ -14,5 +13,7 @@
   "Group Nodes": "تجميع العقد",
   "User Stores": "متاجر المستخدم",
   "User Nodes": "عقد المستخدم",
-  "User Roles": "أدوار المستخدم"
+  "User Roles": "أدوار المستخدم",
+  "User Group Stores": "مساحات تخزين مجموعة المستخدمين",
+  "Settings updated.": "تم تحديث الإعدادات."
 }

@@ -6,7 +6,6 @@
   "Loading...": "Memuat...",
   "Language": "Bahasa",
   "Email subscription updated.": "Berlangganan email telah diperbarui.",
-  "Group Stores": "Grup Toko",
   "MCP Functions": "Fungsi MCP",
   "System Stores": "Penyimpanan Sistem",
   "System Nodes": "Node Sistem",
@@ -14,5 +13,7 @@
   "Group Nodes": "Kelompok Node",
   "User Stores": "Penyimpanan Pengguna",
   "User Nodes": "Node Pengguna",
-  "User Roles": "Peran Pengguna"
+  "User Roles": "Peran Pengguna",
+  "User Group Stores": "Penyimpanan Grup Pengguna",
+  "Settings updated.": "Pengaturan diperbarui."
 }

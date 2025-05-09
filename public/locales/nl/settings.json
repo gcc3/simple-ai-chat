@@ -6,7 +6,6 @@
   "Loading...": "Laden...",
   "Language": "Taal",
   "Email subscription updated.": "E-mailabonnement bijgewerkt.",
-  "Group Stores": "Winkelgroepen",
   "MCP Functions": "MCP-functies",
   "System Stores": "Systeemopslag",
   "System Nodes": "Systeemknooppunten",
@@ -14,5 +13,7 @@
   "Group Nodes": "Groepsknooppunten",
   "User Stores": "Gebruikerswinkels",
   "User Nodes": "Gebruikersknooppunten",
-  "User Roles": "Gebruikersrollen"
+  "User Roles": "Gebruikersrollen",
+  "User Group Stores": "Opslagplaatsen voor gebruikersgroepen",
+  "Settings updated.": "Instellingen bijgewerkt."
 }

@@ -6,7 +6,6 @@
   "Loading...": "लोड हो रहा है...",
   "Language": "भाषा",
   "Email subscription updated.": "ईमेल सदस्यता अपडेट की गई।",
-  "Group Stores": "समूह स्टोर",
   "MCP Functions": "MCP कार्यक्षमताएँ",
   "System Stores": "सिस्टम स्टोर्स",
   "System Nodes": "सिस्टम नोड्स",
@@ -14,5 +13,7 @@
   "Group Nodes": "समूह नोड्स",
   "User Stores": "उपयोगकर्ता स्टोर",
   "User Nodes": "उपयोगकर्ता नोड्स",
-  "User Roles": "उपयोगकर्ता भूमिकाएँ"
+  "User Roles": "उपयोगकर्ता भूमिकाएँ",
+  "User Group Stores": "उपयोगकर्ता समूह भंडार",
+  "Settings updated.": "सेटिंग्स अपडेट हो गईं।"
 }

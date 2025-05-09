@@ -6,7 +6,6 @@
   "Loading...": "読み込み中...",
   "Language": "言語",
   "Email subscription updated.": "メール購読が更新されました。",
-  "Group Stores": "グループストア",
   "MCP Functions": "MCPの機能",
   "System Stores": "システムストア",
   "System Nodes": "システムノード",
@@ -14,5 +13,7 @@
   "Group Nodes": "ノードグループ",
   "User Stores": "ユーザーストア",
   "User Nodes": "ユーザーノード",
-  "User Roles": "ユーザーロール"
+  "User Roles": "ユーザーロール",
+  "User Group Stores": "ユーザーグループストレージ",
+  "Settings updated.": "設定が更新されました。"
 }

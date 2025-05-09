@@ -6,7 +6,6 @@
   "Loading...": "Caricamento in corso...",
   "Language": "Lingua",
   "Email subscription updated.": "Abbonamento email aggiornato.",
-  "Group Stores": "Gruppi di negozi",
   "MCP Functions": "Funzioni MCP",
   "System Stores": "Archivi di sistema",
   "System Nodes": "Nodi di sistema",
@@ -14,5 +13,7 @@
   "Group Nodes": "Nodi di gruppo",
   "User Stores": "Archivi utente",
   "User Nodes": "Nodi utente",
-  "User Roles": "Ruoli utente"
+  "User Roles": "Ruoli utente",
+  "User Group Stores": "Archivi del gruppo utente",
+  "Settings updated.": "Impostazioni aggiornate."
 }

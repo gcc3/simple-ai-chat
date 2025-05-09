@@ -6,7 +6,6 @@
   "Loading...": "Ładowanie...",
   "Language": "Język",
   "Email subscription updated.": "Subskrypcja e-mail zaktualizowana.",
-  "Group Stores": "Sklepy grupowe",
   "MCP Functions": "Funkcje MCP",
   "System Stores": "Magazyny systemowe",
   "System Nodes": "Węzły systemowe",
@@ -14,5 +13,7 @@
   "Group Nodes": "Grupowanie węzłów",
   "User Stores": "Magazyny użytkownika",
   "User Nodes": "Węzły użytkownika",
-  "User Roles": "Role użytkowników"
+  "User Roles": "Role użytkowników",
+  "User Group Stores": "Repozytoria grup użytkowników",
+  "Settings updated.": "Ustawienia zostały zaktualizowane."
 }

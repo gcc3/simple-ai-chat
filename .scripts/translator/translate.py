@@ -32,7 +32,8 @@ def translate(text, target_language_name):
                 + "4. Keep the escape charactors if it's in the text.\n"
                 + "5. Don't translate command, a command starts with `:`, example: `:login [username] [password]`.\n"
                 + "6. Don't translate the text inside {{ }}, example: banking fee {{bankingFee}} included\n"
-                + "7, When translating the word `usage`, it means `how much` user used, not means `how to use`, and the word transted should be short.\n",
+                + "7, When translating the word `usage`, it means `how much` user used, not means `how to use`, and the word transted should be short.\n"
+                + "8. When translating the workd `store` it means storage not a shop.\n"
             },
             {
                 "role": "user",
