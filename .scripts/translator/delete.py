@@ -1,6 +1,13 @@
 import os
 import json
 import csv
+import argparse
+
+# Define command line arguments
+parser = argparse.ArgumentParser(description='Delete translation keys from locale files')
+parser.add_argument('--keys', nargs='+', help='Keys to delete in format "filename:key"', required=False)
+parser.add_argument('--csv', help='Path to a CSV file containing filename,key pairs', required=False)
+args = parser.parse_args()
 
 # Define the base path to the 'locates' folder
 base_path = "../../public/locales"
@@ -12,16 +19,53 @@ with open("languages.csv", newline="", encoding="utf-8") as csvfile:
     for row in csv_reader:
         language_codes.append(row[0])
 
-# Read the target keys and associated file names from keys.csv
-# and map them to each file
+# Map keys to each file based on user input
 keys_per_file = {}
-with open("keys.csv", newline="", encoding="utf-8") as csvfile:
-    csv_reader = csv.reader(csvfile)
-    for row in csv_reader:
-        file_name, key = row
-        if file_name not in keys_per_file:
-            keys_per_file[file_name] = set()
-        keys_per_file[file_name].add(key)
+
+# Function to add keys to the keys_per_file dictionary
+def add_key_to_file(file_name, key):
+    if file_name not in keys_per_file:
+        keys_per_file[file_name] = set()
+    keys_per_file[file_name].add(key)
+
+# Process input from --keys argument
+if args.keys:
+    for item in args.keys:
+        # Split the input by colon (filename:key)
+        parts = item.split(':', 1)
+        if len(parts) == 2:
+            file_name, key = parts
+            add_key_to_file(file_name, key)
+        else:
+            print(f"Warning: Invalid format for '{item}'. Expected 'filename:key'")
+
+# Process input from --csv argument
+elif args.csv:
+    with open(args.csv, newline="", encoding="utf-8") as csvfile:
+        csv_reader = csv.reader(csvfile)
+        for row in csv_reader:
+            if len(row) >= 2:
+                file_name, key = row
+                add_key_to_file(file_name, key)
+
+# If no input method is provided, fall back to keys.csv for backward compatibility
+else:
+    try:
+        with open("keys.csv", newline="", encoding="utf-8") as csvfile:
+            csv_reader = csv.reader(csvfile)
+            for row in csv_reader:
+                if len(row) >= 2:
+                    file_name, key = row
+                    add_key_to_file(file_name, key)
+    except FileNotFoundError:
+        print("Error: No input method specified and keys.csv not found.")
+        print("Please provide keys using --keys or --csv option.")
+        exit(1)
+
+# Check if we have any keys to delete
+if not keys_per_file:
+    print("No keys specified for deletion. Exiting.")
+    exit(0)
 
 # For each language code and each target file, remove the specified target keys
 for lang_code in language_codes:

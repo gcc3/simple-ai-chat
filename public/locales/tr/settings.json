@@ -6,14 +6,14 @@
   "Loading...": "Yükleniyor...",
   "Language": "Dil",
   "Email subscription updated.": "E-posta aboneliği güncellendi.",
-  "MCP Functions": "MCP Fonksiyonları",
-  "System Stores": "Sistem Depoları",
   "System Nodes": "Sistem Düğümleri",
-  "System Functions": "Sistem İşlevleri",
-  "Group Nodes": "Grup Düğümleri",
-  "User Stores": "Kullanıcı Depoları",
   "User Nodes": "Kullanıcı Düğümleri",
   "User Roles": "Kullanıcı Rolleri",
   "User Group Stores": "Kullanıcı Grubu Depoları",
-  "Settings updated.": "Ayarlar güncellendi."
+  "Settings updated.": "Ayarlar güncellendi.",
+  "MCP Functions": "MCP Fonksiyonları",
+  "System Stores": "Sistem Depoları",
+  "User Stores": "Kullanıcı Depoları",
+  "User Group Nodes": "Kullanıcı Grubu Düğümleri",
+  "System Functions": "Sistem Fonksiyonları"
 }

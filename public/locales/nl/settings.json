@@ -6,14 +6,14 @@
   "Loading...": "Laden...",
   "Language": "Taal",
   "Email subscription updated.": "E-mailabonnement bijgewerkt.",
-  "MCP Functions": "MCP-functies",
-  "System Stores": "Systeemopslag",
   "System Nodes": "Systeemknooppunten",
-  "System Functions": "Systeemfuncties",
-  "Group Nodes": "Groepsknooppunten",
-  "User Stores": "Gebruikerswinkels",
   "User Nodes": "Gebruikersknooppunten",
   "User Roles": "Gebruikersrollen",
   "User Group Stores": "Opslagplaatsen voor gebruikersgroepen",
-  "Settings updated.": "Instellingen bijgewerkt."
+  "Settings updated.": "Instellingen bijgewerkt.",
+  "MCP Functions": "MCP-functies",
+  "System Stores": "Systeemopslag",
+  "User Stores": "Gebruikersopslag",
+  "User Group Nodes": "Gebruikersgroepsknooppunten",
+  "System Functions": "Systeemfuncties"
 }
