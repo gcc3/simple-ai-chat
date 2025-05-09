@@ -83,6 +83,8 @@ export class MCPClient {
         });
 
         await client.connect(transport);
+
+        // List tools
         const toolsResult = await client.listTools();
         const tools = toolsResult.tools.map((tool) => {
           // Tools listing result parameter mapping
@@ -102,6 +104,7 @@ export class MCPClient {
 
         // Store tool in global tools list
         this.tools = [...this.tools, ...tools];
+        
         process.stdout.write(" connected.\n");
       }
     } catch (e) {
@@ -112,6 +115,34 @@ export class MCPClient {
 
     this.status = STATUS.CONNECTED;
     console.log("MCP servers are connected.");
+  }
+
+  // Refresh tools
+  async refreshTools() {
+    console.log("Refreshing tools...");
+    let newTools = [];
+    for (let [, s] of this.servers) {
+      const toolsResult = await s.client.listTools();
+      const tools = toolsResult.tools.map((tool) => {
+        // Tools listing result parameter mapping
+        return {
+          name: tool.name,
+          description: tool.description,
+          input_schema: tool.inputSchema, // !important
+        };
+      });
+      newTools = [...newTools, ...tools];
+    }
+
+    // Compare tool names, if diff then refresh
+    const oldToolNames = this.tools.map((t) => t.name);
+    const newToolNames = newTools.map((t) => t.name);
+    if (oldToolNames.length !== newToolNames.length 
+    || !oldToolNames.every((name) => newToolNames.includes(name))
+    || !newToolNames.every((name) => oldToolNames.includes(name))) {
+      console.log("Tools changed, refreshing...");
+      this.tools = newTools;
+    }
   }
 
   // Call tool
@@ -197,7 +228,7 @@ app.get('/servers', (req, res) => {
 // Refresh server list
 app.post('/tool/refresh', async (req, res) => {
   try {
-    await connectMCP()
+    await mcpClient.refreshTools();
     res.json(mcpClient.tools);
   } catch (e) {
     console.error("Error refreshing MCP servers: ", e);
