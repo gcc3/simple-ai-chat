@@ -141,6 +141,14 @@ export class MCPClient {
     || !newToolNames.every((name) => oldToolNames.includes(name))) {
       console.log("Tools change detected, refreshing...");
       this.tools = newTools;
+
+      // Print available tools
+      console.log("\n--- available tools ---");
+      if (this.tools.length > 0) {
+        console.log(this.tools.map((t) => t.name).join("\n") + "\n");
+      } else {
+        console.log("No available tools.\n");
+      }
     }
   }
 
