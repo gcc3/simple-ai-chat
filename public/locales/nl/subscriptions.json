@@ -35,7 +35,10 @@
   "month": "maand",
   "Free": "Gratis",
   "GPT Vision": "GPT Visie",
-  "GPT Text Generation": "GPT Tekstgeneratie",
   "Loading...": "Laden...",
-  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: biedt geavanceerde functies en ondersteuning voor professioneel gebruik."
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: biedt geavanceerde functies en ondersteuning voor professioneel gebruik.",
+  "Command-line Interface (CLI)": "Opdrachtregelinterface (CLI)",
+  "Text Generationn": "Tekstgeneratie",
+  "Model Context Protocol (MCP)": "Modelcontextprotocol (MCP)",
+  "Image Generation & Edit": "Afbeeldingsgeneratie & Bewerking"
 }

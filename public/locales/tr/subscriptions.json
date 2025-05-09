@@ -35,7 +35,10 @@
   "month": "ay",
   "Free": "Ücretsiz",
   "GPT Vision": "GPT Vizyonu",
-  "GPT Text Generation": "GPT Metin Üretimi",
   "Loading...": "Yükleniyor...",
-  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: profesyonel kullanımlar için gelişmiş özellikler ve destek sunar."
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: profesyonel kullanımlar için gelişmiş özellikler ve destek sunar.",
+  "Command-line Interface (CLI)": "Komut Satırı Arayüzü (CLI)",
+  "Text Generationn": "Metin Oluşturma",
+  "Model Context Protocol (MCP)": "Model Bağlam Protokolü (MCP)",
+  "Image Generation & Edit": "Görüntü Oluşturma ve Düzenleme"
 }

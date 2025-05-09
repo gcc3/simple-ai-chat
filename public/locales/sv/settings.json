@@ -5,6 +5,14 @@
   "Email Subscription": "E-postprenumeration",
   "Loading...": "Laddar...",
   "Language": "Språk",
-  "Settings updated.": "Inställningar uppdaterade.",
-  "Email subscription updated.": "E-postprenumeration uppdaterad."
+  "Email subscription updated.": "E-postprenumeration uppdaterad.",
+  "Group Stores": "Gruppbutiker",
+  "MCP Functions": "MCP-funktioner",
+  "System Stores": "Systembutiker",
+  "System Nodes": "Systemnoder",
+  "System Functions": "Systemfunktioner",
+  "Group Nodes": "Gruppnoder",
+  "User Stores": "Användarbutiker",
+  "User Nodes": "Användarnoder",
+  "User Roles": "Användarroller"
 }

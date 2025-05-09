@@ -131,9 +131,11 @@
   "Model Context Protocol (MCP)": "Modellkontextprotokoll (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Interagera med kraftfulla visionmodeller. För att använda visionmodellen, klistra in eller dra och släpp bilden i inmatningsrutan.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI fungerar som en Model Context Protocol (MCP)-klient. Anslut till MCP-servrar för att få tillgång till en mängd data och applikationer.",
-  "Image Generation": "Bildgenerering",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "Chatta med en toppmodern LLM som drivs av OpenAI, xAI, Google, Anthropic, Ollama med flera...",
   "Text Generation": "Textgenerering",
   "GPT Vision": "GPT Vision",
-  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Generera vackra bilder utifrån prompts, redigera genererade eller uppladdade bilder, eller kombinera bilder till en bild enligt dina instruktioner."
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Generera vackra bilder utifrån prompts, redigera genererade eller uppladdade bilder, eller kombinera bilder till en bild enligt dina instruktioner.",
+  "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "Kommandoradsgränssnittsprogramvara tillhandahålls via Node Package Manager (npm) och stöder samma funktioner som webb-UI.",
+  "Command-line Interface (CLI)": "Kommandoradsgränssnitt (CLI)",
+  "Image Generation & Edit": "Bildgenerering och redigering"
 }

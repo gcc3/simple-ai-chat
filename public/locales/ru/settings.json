@@ -5,6 +5,14 @@
   "Email Subscription": "Подписка на рассылку",
   "Loading...": "Загрузка...",
   "Language": "Язык",
-  "Settings updated.": "Настройки обновлены.",
-  "Email subscription updated.": "Подписка на рассылку обновлена."
+  "Email subscription updated.": "Подписка на рассылку обновлена.",
+  "Group Stores": "Групповые магазины",
+  "MCP Functions": "Функции MCP",
+  "System Stores": "Системные хранилища",
+  "System Nodes": "Системные узлы",
+  "System Functions": "Системные функции",
+  "Group Nodes": "Группировка узлов",
+  "User Stores": "Хранилища пользователей",
+  "User Nodes": "Узлы пользователя",
+  "User Roles": "Роли пользователей"
 }

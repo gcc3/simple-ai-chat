@@ -5,6 +5,14 @@
   "Email Subscription": "الاشتراك في البريد الإلكتروني",
   "Loading...": "جارِ التحميل...",
   "Language": "اللغة",
-  "Settings updated.": "تم تحديث الإعدادات.",
-  "Email subscription updated.": "تم تحديث اشتراك البريد الإلكتروني."
+  "Email subscription updated.": "تم تحديث اشتراك البريد الإلكتروني.",
+  "Group Stores": "متاجر المجموعة",
+  "MCP Functions": "وظائف MCP",
+  "System Stores": "مخازن النظام",
+  "System Nodes": "عقد النظام",
+  "System Functions": "وظائف النظام",
+  "Group Nodes": "تجميع العقد",
+  "User Stores": "متاجر المستخدم",
+  "User Nodes": "عقد المستخدم",
+  "User Roles": "أدوار المستخدم"
 }

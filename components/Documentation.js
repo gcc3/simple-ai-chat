@@ -32,13 +32,14 @@ const Documentation = () => {
   const features = [
     { id: "features-gpt-textgeneration", name: t("Text Generation"), description: t("Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...") },
     { id: "features-gpt-vision", name: t("GPT Vision"), description: t("Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.") },
-    { id: "features-gpt-image-gen", name: t("Image Generation"), description: t("Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.") },
+    { id: "features-gpt-image-gen", name: t("Image Generation & Edit"), description: t("Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.") },
     { id: "features-mcp-client", name: t("Model Context Protocol (MCP)"), description: t("Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.") },
     { id: "features-fileinput", name: t("File Input"), description: t("Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.") },
     { id: "features-roles", name: t("Roles"), description: t("Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.") },
     { id: "features-stores", name: t("Data Stores"), description: t("Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.") },
     { id: "features-nodes", name: t("Nodes (Node AI)"), description: t("Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.") },
     { id: "features-mathematics-wolframalpha", name: t("Enhanced Knowledge & Mathematics (WolframAlpha)"), description: t("As one of the AI callable function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided.") },
+    { id: "features-cli", name: t("Command-line Interface (CLI)"), description: t("Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.") },
   ];
 
   const sub_features = [

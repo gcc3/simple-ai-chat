@@ -14,14 +14,16 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
   const { t } = useTranslation("subscriptions");
 
   const comparison = [
-    { name: t("GPT Text Generation"), user: t("Yes"), plus_user: t("Yes") },
+    { name: t("Text Generationn"), user: t("Yes"), plus_user: t("Yes") },
     { name: t("GPT Vision"), user: t("Yes"), plus_user: t("Yes") },
+    { name: t("Image Generation & Edit"), user: t("Yes"), plus_user: t("Yes") },
+    { name: t("Model Context Protocol (MCP)"), user: t("Yes"), plus_user: t("Yes +support") },
     { name: t("File Input"), user: t("Yes"), plus_user: t("Yes") },
     { name: t("Roles"), user: t("Yes"), plus_user: t("Yes +support") },
     { name: t("Data Stores"), user: t("Yes"), plus_user: t("Yes +support") },
     { name: t("Nodes (Node AI)"), user: t("Yes"), plus_user: t("Yes +support") },
     { name: t("Enhanced Knowledge & Mathematics (WolframAlpha)"), user: t("Yes"), plus_user: t("Yes") },
-    { name: "API", user: t("Yes"), plus_user: t("Yes") },
+    { name: t("Command-line Interface (CLI)"), user: t("Yes"), plus_user: t("Yes +support") },
     { name: t("Pricing"), user: getPriceString(subscriptions, "user", t), plus_user: getPriceString(subscriptions, "plus_user", t) },
   ];
 

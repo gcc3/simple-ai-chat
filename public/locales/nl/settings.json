@@ -5,6 +5,14 @@
   "Email Subscription": "E-mailabonnement",
   "Loading...": "Laden...",
   "Language": "Taal",
-  "Settings updated.": "Instellingen bijgewerkt.",
-  "Email subscription updated.": "E-mailabonnement bijgewerkt."
+  "Email subscription updated.": "E-mailabonnement bijgewerkt.",
+  "Group Stores": "Winkelgroepen",
+  "MCP Functions": "MCP-functies",
+  "System Stores": "Systeemopslag",
+  "System Nodes": "Systeemknooppunten",
+  "System Functions": "Systeemfuncties",
+  "Group Nodes": "Groepsknooppunten",
+  "User Stores": "Gebruikerswinkels",
+  "User Nodes": "Gebruikersknooppunten",
+  "User Roles": "Gebruikersrollen"
 }

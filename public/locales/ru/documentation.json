@@ -131,9 +131,11 @@
   "Model Context Protocol (MCP)": "Протокол контекста модели (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Взаимодействуйте с мощными моделями компьютерного зрения. Чтобы использовать модель Vision, вставьте или перетащите изображение в поле ввода.",
   "Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.": "Simple AI выступает в роли клиента протокола Model Context Protocol (MCP). Подключайтесь к серверам MCP, чтобы получить доступ к большому объёму данных и приложений.",
-  "Image Generation": "Генерация изображений",
   "Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...": "Побеседуйте с передовой LLM, работающей на технологиях OpenAI, xAI, Google, Anthropic, Ollama и других…",
   "Text Generation": "Генерация текста",
   "GPT Vision": "GPT Видение",
-  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Создавайте красивые изображения на основе подсказок, редактируйте сгенерированные или загруженные изображения и объединяйте несколько изображений в одно согласно вашим инструкциям."
+  "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Создавайте красивые изображения на основе подсказок, редактируйте сгенерированные или загруженные изображения и объединяйте несколько изображений в одно согласно вашим инструкциям.",
+  "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "Программное обеспечение интерфейса командной строки доступно через Node Package Manager (npm) и поддерживает те же функции, что и веб-интерфейс.",
+  "Command-line Interface (CLI)": "Интерфейс командной строки (CLI)",
+  "Image Generation & Edit": "Генерация и редактирование изображений"
 }

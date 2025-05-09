@@ -35,7 +35,10 @@
   "month": "شهر",
   "Free": "مجاني",
   "GPT Vision": "رؤية GPT",
-  "GPT Text Generation": "توليد نص GPT",
   "Loading...": "جار التحميل...",
-  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: يوفر ميزات متقدمة ودعمًا للاستخدامات المهنية."
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: يوفر ميزات متقدمة ودعمًا للاستخدامات المهنية.",
+  "Command-line Interface (CLI)": "واجهة سطر الأوامر (CLI)",
+  "Text Generationn": "توليد النص",
+  "Model Context Protocol (MCP)": "بروتوكول سياق النموذج (MCP)",
+  "Image Generation & Edit": "توليد الصور وتحريرها"
 }

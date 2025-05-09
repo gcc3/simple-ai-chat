@@ -5,6 +5,14 @@
   "Email Subscription": "电子邮件订阅",
   "Loading...": "加载中...",
   "Language": "语言",
-  "Settings updated.": "设置已更新。",
-  "Email subscription updated.": "电子邮件订阅已更新。"
+  "Email subscription updated.": "电子邮件订阅已更新。",
+  "Group Stores": "商店分组",
+  "MCP Functions": "MCP 功能",
+  "System Stores": "系统存储",
+  "System Nodes": "系统节点",
+  "System Functions": "系统功能",
+  "Group Nodes": "节点分组",
+  "User Stores": "用户存储",
+  "User Nodes": "用户节点",
+  "User Roles": "用户角色"
 }

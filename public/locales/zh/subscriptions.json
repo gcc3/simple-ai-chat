@@ -35,7 +35,10 @@
   "month": "月",
   "Free": "免费",
   "GPT Vision": "GPT 视觉",
-  "GPT Text Generation": "GPT 文本生成",
   "Loading...": "加载中...",
-  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: 为专业使用提供高级功能和支持。"
+  "`plus_user`: provides advanced features and support for professional uses.": "`plus_user`: 为专业使用提供高级功能和支持。",
+  "Command-line Interface (CLI)": "命令行界面 (CLI)",
+  "Text Generationn": "文本生成",
+  "Model Context Protocol (MCP)": "模型上下文协议 (MCP)",
+  "Image Generation & Edit": "图像生成与编辑"
 }

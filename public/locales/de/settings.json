@@ -5,6 +5,14 @@
   "Email Subscription": "E-Mail-Abonnement",
   "Loading...": "Laden...",
   "Language": "Sprache",
-  "Settings updated.": "Einstellungen aktualisiert.",
-  "Email subscription updated.": "E-Mail-Abonnement aktualisiert."
+  "Email subscription updated.": "E-Mail-Abonnement aktualisiert.",
+  "Group Stores": "Gruppenspeicher",
+  "MCP Functions": "MCP-Funktionen",
+  "System Stores": "Systemspeicherorte",
+  "System Nodes": "Systemknoten",
+  "System Functions": "Systemfunktionen",
+  "Group Nodes": "Gruppenknoten",
+  "User Stores": "Benutzerspeicher",
+  "User Nodes": "Benutzerknoten",
+  "User Roles": "Benutzerrollen"
 }
