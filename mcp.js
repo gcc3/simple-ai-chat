@@ -130,6 +130,7 @@ export class MCPClient {
           input_schema: tool.inputSchema, // !important
         };
       });
+      s.tools = tools;
       newTools = [...newTools, ...tools];
     }
 
