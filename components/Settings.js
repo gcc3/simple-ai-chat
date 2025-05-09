@@ -550,7 +550,7 @@ function Settings() {
         </div>
       </div>}
       {groupStores && groupStores.length > 0 && <div>
-        <div className="mt-3">- {t("Group Stores")}</div>
+        <div className="mt-3">- {t("User Group Stores")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {groupStores.map((i) => (
             <button 
