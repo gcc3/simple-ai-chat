@@ -123,6 +123,24 @@ export class MCPClient {
     this.servers.clear();
     this.tools = [];
   }
+  
+  // Refresh MCP server configurations
+  async refresh() {
+    try {
+      // Disconnect from all servers
+      await this.disconnect();
+
+      // Reload MCP server configuration
+      const mcpConfig = await loadMcpConfig();
+      for (let serverName in mcpConfig) {
+        await this.connect(serverName, mcpConfig[serverName]);
+      }
+      return this.tools;
+    } catch (e) {
+      console.error("Error refreshing MCP servers: ", e);
+      throw e;
+    }
+  }
 }
 
 // Initialize MCP client
@@ -174,15 +192,7 @@ app.get('/servers', (req, res) => {
 // Refresh server list
 app.post('/tool/refresh', async (req, res) => {
   try {
-    // Disconnect from all servers
-    await mcpClient.disconnect();
-
-    // Reload MCP server configuration
-    const mcpConfig = await loadMcpConfig();
-    for (let s in mcpConfig) {
-      await mcpClient.connect(s, mcpConfig[s]);
-    }
-
+    await mcpClient.refresh();
     res.json(mcpClient.tools);
   } catch (e) {
     console.error("Error refreshing MCP servers: ", e);
