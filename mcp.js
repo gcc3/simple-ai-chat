@@ -17,7 +17,7 @@ import { homedir } from 'os';
 import { join } from 'path';
 
 
-async function loadMcpConfig(configPath) {
+async function loadMcpConfig(configPath = join(homedir(), '.simple', "mcpconfig.json")) {
   try {
     // Create the directory if it doesn't exist
     if (!fs.existsSync(configPath)) {
@@ -235,8 +235,7 @@ app.listen(port, async () => {
   );
 
   // Load MCP server configuration
-  const configPath = join(homedir(), '.simple', "mcpconfig.json");
-  const mcpConfig = await loadMcpConfig(configPath);
+  const mcpConfig = await loadMcpConfig();
 
   // Connect to each MCP server
   for (let s in mcpConfig) {
