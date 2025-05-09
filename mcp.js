@@ -144,24 +144,6 @@ export class MCPClient {
     this.tools = [];
     this.status = STATUS.DISCONNECTED;
   }
-  
-  // Refresh MCP server configurations
-  async refresh() {
-    try {
-      // Disconnect from all servers
-      await this.disconnect();
-
-      // Reload MCP server configuration
-      const mcpConfig = await loadMcpConfig();
-      for (let serverName in mcpConfig) {
-        await this.connect(serverName, mcpConfig[serverName]);
-      }
-      return this.tools;
-    } catch (e) {
-      console.error("Error refreshing MCP servers: ", e);
-      throw e;
-    }
-  }
 }
 
 // Initialize MCP client
@@ -213,7 +195,7 @@ app.get('/servers', (req, res) => {
 // Refresh server list
 app.post('/tool/refresh', async (req, res) => {
   try {
-    await mcpClient.refresh();
+    await connectMCP()
     res.json(mcpClient.tools);
   } catch (e) {
     console.error("Error refreshing MCP servers: ", e);
@@ -255,30 +237,40 @@ app.listen(port, async () => {
     "POST /shutdown" + "\n"
   );
 
-  // Load MCP server configuration
-  const mcpConfigServers = await loadMcpConfig();
-  const timeout = 10;
-  if (mcpClient.status === STATUS.DISCONNECTED) {
+  await connectMCP();
+});
 
-    // Connect to all MCP servers
-    console.log("Connecting to MCP servers...");
-    await mcpClient.connect(mcpConfigServers);
+export async function connectMCP() {
+  try {
+    // Disconnect from all servers
+    await mcpClient.disconnect();
 
-    // Wait for connection to be established
-    while (mcpClient.status === STATUS.CONNECTING) {
-      await new Promise((resolve) => setTimeout(resolve, 1000));
-      timeout--;
-      if (timeout <= 0) {
-        console.log("Timeout connecting to MCP servers.");
-        break;
+    // Load MCP server configuration
+    const mcpConfigServers = await loadMcpConfig();
+    const timeout = 10;
+    if (mcpClient.status === STATUS.DISCONNECTED) {
+
+      // Connect to all MCP servers
+      await mcpClient.connect(mcpConfigServers);
+
+      // Wait for connection to be established
+      while (mcpClient.status === STATUS.CONNECTING) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        timeout--;
+        if (timeout <= 0) {
+          console.log("Timeout connecting to MCP servers.");
+          break;
+        }
       }
     }
-  }
 
-  console.log("\n--- available tools ---");
-  if (mcpClient && mcpClient.tools.length > 0) {
-    console.log(mcpClient.tools.map((t) => t.name).join("\n") + "\n");
-  } else {
-    console.log("No available tools.\n");
+    console.log("\n--- available tools ---");
+    if (mcpClient && mcpClient.tools.length > 0) {
+      console.log(mcpClient.tools.map((t) => t.name).join("\n") + "\n");
+    } else {
+      console.log("No available tools.\n");
+    }
+  } catch (e) {
+    console.error("Error connecting to MCP servers: ", e);
   }
-});
+}
