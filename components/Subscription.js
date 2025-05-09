@@ -103,9 +103,10 @@ function Subscription() {
 
       // Banking fee
       const paypalFee = newAmount > 0 ? npre(0.044 * newAmount + 0.3, 2) : 0;
+      const totalAmount = npre(newAmount + paypalFee);
 
       // Set amount
-      setAmount(newAmount + paypalFee);
+      setAmount(totalAmount);
       setBankingFee(paypalFee);
     };
   }

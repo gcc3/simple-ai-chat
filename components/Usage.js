@@ -85,8 +85,9 @@ export default function Usage() {
     return () => {
       // Banking fee
       const paypalFee = newAmount > 0 ? npre(0.044 * newAmount + 0.3, 2) : 0;
+      const totalAmount = npre(newAmount + paypalFee);
 
-      setAmount(newAmount + paypalFee);
+      setAmount(totalAmount);
       setBankingFee(paypalFee);
       console.log("Targe amount is set to:", newAmount);
     };
