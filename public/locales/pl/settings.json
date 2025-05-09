@@ -6,14 +6,14 @@
   "Loading...": "Ładowanie...",
   "Language": "Język",
   "Email subscription updated.": "Subskrypcja e-mail zaktualizowana.",
-  "MCP Functions": "Funkcje MCP",
-  "System Stores": "Magazyny systemowe",
   "System Nodes": "Węzły systemowe",
-  "System Functions": "Funkcje systemu",
-  "Group Nodes": "Grupowanie węzłów",
-  "User Stores": "Magazyny użytkownika",
   "User Nodes": "Węzły użytkownika",
   "User Roles": "Role użytkowników",
   "User Group Stores": "Repozytoria grup użytkowników",
-  "Settings updated.": "Ustawienia zostały zaktualizowane."
+  "Settings updated.": "Ustawienia zostały zaktualizowane.",
+  "MCP Functions": "Funkcje MCP",
+  "System Stores": "Magazyny systemowe",
+  "User Stores": "Repozytoria użytkownika",
+  "User Group Nodes": "Węzły grup użytkowników",
+  "System Functions": "Funkcje systemowe"
 }

@@ -6,14 +6,14 @@
   "Loading...": "Laddar...",
   "Language": "Språk",
   "Email subscription updated.": "E-postprenumeration uppdaterad.",
-  "MCP Functions": "MCP-funktioner",
-  "System Stores": "Systembutiker",
   "System Nodes": "Systemnoder",
-  "System Functions": "Systemfunktioner",
-  "Group Nodes": "Gruppnoder",
-  "User Stores": "Användarbutiker",
   "User Nodes": "Användarnoder",
   "User Roles": "Användarroller",
   "User Group Stores": "Användargruppers lagringsutrymmen",
-  "Settings updated.": "Inställningar uppdaterade."
+  "Settings updated.": "Inställningar uppdaterade.",
+  "MCP Functions": "MCP-funktioner",
+  "System Stores": "Systemlagringsplatser",
+  "User Stores": "Användarlager",
+  "User Group Nodes": "Användargruppsnoder",
+  "System Functions": "Systemfunktioner"
 }

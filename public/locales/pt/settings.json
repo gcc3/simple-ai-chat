@@ -6,14 +6,14 @@
   "Loading...": "Carregando...",
   "Language": "Idioma",
   "Email subscription updated.": "Assinatura de e-mail atualizada.",
-  "MCP Functions": "Funções MCP",
-  "System Stores": "Lojas do Sistema",
   "System Nodes": "Nós do Sistema",
-  "System Functions": "Funções do Sistema",
-  "Group Nodes": "Nós de grupo",
-  "User Stores": "Armazenamentos do Usuário",
   "User Nodes": "Nós do Usuário",
   "User Roles": "Funções do Usuário",
   "User Group Stores": "Armazenamentos de Grupos de Usuários",
-  "Settings updated.": "Configurações atualizadas."
+  "Settings updated.": "Configurações atualizadas.",
+  "MCP Functions": "Funções MCP",
+  "System Stores": "Armazenamentos do Sistema",
+  "User Stores": "Armazenamentos do Usuário",
+  "User Group Nodes": "Nós de Grupo de Usuários",
+  "System Functions": "Funções do Sistema"
 }

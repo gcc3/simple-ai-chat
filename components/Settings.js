@@ -595,7 +595,7 @@ function Settings() {
         </div>
       </div>}
       {groupNodes && groupNodes.length > 0 && <div>
-        <div className="mt-3">- {t("Group Nodes")}</div>
+        <div className="mt-3">- {t("User Group Nodes")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {groupNodes.map((i) => (
             <button 

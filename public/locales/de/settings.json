@@ -6,14 +6,14 @@
   "Loading...": "Laden...",
   "Language": "Sprache",
   "Email subscription updated.": "E-Mail-Abonnement aktualisiert.",
-  "MCP Functions": "MCP-Funktionen",
-  "System Stores": "Systemspeicherorte",
   "System Nodes": "Systemknoten",
-  "System Functions": "Systemfunktionen",
-  "Group Nodes": "Gruppenknoten",
-  "User Stores": "Benutzerspeicher",
   "User Nodes": "Benutzerknoten",
   "User Roles": "Benutzerrollen",
   "User Group Stores": "Benutzergruppen-Speicher",
-  "Settings updated.": "Einstellungen aktualisiert."
+  "Settings updated.": "Einstellungen aktualisiert.",
+  "MCP Functions": "MCP-Funktionen",
+  "System Stores": "Systemspeicher",
+  "User Stores": "Benutzerspeicher",
+  "User Group Nodes": "Benutzergruppen-Knoten",
+  "System Functions": "Systemfunktionen"
 }

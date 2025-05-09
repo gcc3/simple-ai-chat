@@ -6,14 +6,14 @@
   "Loading...": "Loading...",
   "Language": "Language",
   "Email subscription updated.": "Email subscription updated.",
-  "MCP Functions": "MCP Functions",
-  "System Stores": "System Stores",
   "System Nodes": "System Nodes",
-  "System Functions": "System Functions",
-  "Group Nodes": "Group Nodes",
-  "User Stores": "User Stores",
   "User Nodes": "User Nodes",
   "User Roles": "User Roles",
   "User Group Stores": "User Group Stores",
-  "Settings updated.": "Settings updated."
+  "Settings updated.": "Settings updated.",
+  "MCP Functions": "MCP Functions",
+  "System Stores": "System Stores",
+  "User Stores": "User Stores",
+  "User Group Nodes": "User Group Nodes",
+  "System Functions": "System Functions"
 }

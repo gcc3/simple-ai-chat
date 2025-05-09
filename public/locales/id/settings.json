@@ -6,14 +6,14 @@
   "Loading...": "Memuat...",
   "Language": "Bahasa",
   "Email subscription updated.": "Berlangganan email telah diperbarui.",
-  "MCP Functions": "Fungsi MCP",
-  "System Stores": "Penyimpanan Sistem",
   "System Nodes": "Node Sistem",
-  "System Functions": "Fungsi Sistem",
-  "Group Nodes": "Kelompok Node",
-  "User Stores": "Penyimpanan Pengguna",
   "User Nodes": "Node Pengguna",
   "User Roles": "Peran Pengguna",
   "User Group Stores": "Penyimpanan Grup Pengguna",
-  "Settings updated.": "Pengaturan diperbarui."
+  "Settings updated.": "Pengaturan diperbarui.",
+  "MCP Functions": "Fungsi MCP",
+  "System Stores": "Penyimpanan Sistem",
+  "User Stores": "Penyimpanan Pengguna",
+  "User Group Nodes": "Node Grup Pengguna",
+  "System Functions": "Fungsi Sistem"
 }
