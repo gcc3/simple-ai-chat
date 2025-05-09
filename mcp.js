@@ -119,7 +119,6 @@ export class MCPClient {
 
   // Refresh tools
   async refreshTools() {
-    console.log("Refreshing tools...");
     let newTools = [];
     for (let [, s] of this.servers) {
       const toolsResult = await s.client.listTools();
@@ -140,7 +139,7 @@ export class MCPClient {
     if (oldToolNames.length !== newToolNames.length 
     || !oldToolNames.every((name) => newToolNames.includes(name))
     || !newToolNames.every((name) => oldToolNames.includes(name))) {
-      console.log("Tools changed, refreshing...");
+      console.log("Tools change detected, refreshing...");
       this.tools = newTools;
     }
   }
