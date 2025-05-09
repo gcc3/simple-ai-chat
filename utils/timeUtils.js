@@ -15,3 +15,8 @@ export function formatUnixTimestamp(unixTime) {
 export function getTimestamp() {
   return (new Date().getTime()).toString();
 }
+
+// Get human-readable time
+export function getTime() {
+  return moment().format('HH:mm:ss MM/DD/YYYY');
+}

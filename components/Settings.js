@@ -5,6 +5,7 @@ import { setRtl } from "utils/rtlUtils.js";
 import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from '../utils/userUtils.js';
 import { addStoreToSessionStorage, countStoresInSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
+import { getTime } from "utils/timeUtils.js";
 
 
 function Settings() {
@@ -271,8 +272,8 @@ function Settings() {
 
     if (data.success) {
       localStorage.setItem(key, value);
-      console.log("Settings updated.");
-      setMessage(t("Settings updated."));
+      console.log("Settings updated." + " (" + getTime() + ")");
+      setMessage(t("Settings updated." + " (" + getTime() + ")"));
     }
   }
 
@@ -286,6 +287,9 @@ function Settings() {
     // Update state
     const currentRole = sessionStorage.getItem("role");
     setCurrentRole(currentRole);
+
+    console.log("Settings updated." + " (" + getTime() + ")");
+    setMessage(t("Settings updated." + " (" + getTime() + ")"));
   }, []);
 
   const handleSetSystemFunctions = useCallback((name) => async () => {
@@ -312,6 +316,9 @@ function Settings() {
     // Update state
     const enabledFunctions = (localStorage.getItem("functions")).split(",");
     setEnabledFunctions(enabledFunctions);
+
+    console.log("Settings updated." + " (" + getTime() + ")");
+    setMessage(t("Settings updated." + " (" + getTime() + ")"));
   }, []);
 
   const handleSetMcpFunctions = useCallback((name) => async () => {
@@ -338,6 +345,9 @@ function Settings() {
     // Update state
     const enabledFunctions = (localStorage.getItem("functions")).split(",");
     setEnabledFunctions(enabledFunctions);
+
+    console.log("Settings updated." + " (" + getTime() + ")");
+    setMessage(t("Settings updated." + " (" + getTime() + ")"));
   }, []);
 
   const handleSetUserStores = useCallback((name) => async () => {
@@ -350,6 +360,9 @@ function Settings() {
     // Update state
     const activeStores = getActiveStores();
     setActiveStores(activeStores);
+
+    console.log("Settings updated." + " (" + getTime() + ")");
+    setMessage(t("Settings updated." + " (" + getTime() + ")"));
   }, []);
 
   const handleSetGroupStores = useCallback((name) => async () => {
@@ -362,6 +375,9 @@ function Settings() {
     // Update state
     const activeStores = getActiveStores();
     setActiveStores(activeStores);
+
+    console.log("Settings updated." + " (" + getTime() + ")");
+    setMessage(t("Settings updated." + " (" + getTime() + ")"));
   }, []);
 
   const handleSetSystemStores = useCallback((name) => async () => {
@@ -374,6 +390,9 @@ function Settings() {
     // Update state
     const activeStores = getActiveStores();
     setActiveStores(activeStores);
+
+    console.log("Settings updated." + " (" + getTime() + ")");
+    setMessage(t("Settings updated." + " (" + getTime() + ")"));
   }, []);
 
   const handleSetUserNodes = useCallback((name) => async () => {
@@ -386,6 +405,9 @@ function Settings() {
     // Update state
     const currentNode = sessionStorage.getItem("node");
     setActiveNode(currentNode);
+
+    console.log("Settings updated." + " (" + getTime() + ")");
+    setMessage(t("Settings updated." + " (" + getTime() + ")"));
   }, []);
 
   const handleSetGroupNodes = useCallback((name) => async () => {
@@ -398,6 +420,9 @@ function Settings() {
     // Update state
     const currentNode = sessionStorage.getItem("node");
     setActiveNode(currentNode);
+
+    console.log("Settings updated." + " (" + getTime() + ")");
+    setMessage(t("Settings updated." + " (" + getTime() + ")"));
   }, []);
 
   const handleSetSystemNodes = useCallback((name) => async () => {
@@ -410,6 +435,9 @@ function Settings() {
     // Update state
     const currentNode = sessionStorage.getItem("node");
     setActiveNode(currentNode);
+
+    console.log("Settings updated." + " (" + getTime() + ")");
+    setMessage(t("Settings updated." + " (" + getTime() + ")"));
   }, []);
 
   const handleSetLanguage = useCallback((newLang) => async () => {
@@ -427,6 +455,9 @@ function Settings() {
       if (user) {
         await updateUserSettings("lang", newLang);
       }
+
+      console.log("Settings updated." + " (" + getTime() + ")");
+      setMessage(t("Settings updated." + " (" + getTime() + ")"));
     });
   }, [i18n, t, user]);
 
