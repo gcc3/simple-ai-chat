@@ -2,12 +2,28 @@ import React, { useEffect, useState, useCallback } from "react";
 import { fetchUserInfo } from "utils/userUtils";
 import { useTranslation } from "react-i18next";
 import { setRtl } from "utils/rtlUtils.js";
+import { getFunctions, getMcpFunctions } from "../function.js";
+import { getActiveStores } from "../utils/storageUtils.js";
+
 
 function Settings() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
+
   const [languages, setLanguages] = useState([]);
   const [lang, setLang] = useState(null);
+
+  const [systemFunctions, setSystemFunctions] = useState([]);
+  const [mcpFunctions, setMcpFunctions] = useState([]);
+
+  const [userNodes, setUserNodes] = useState([]);
+  const [groupNodes, setGroupNodes] = useState([]);
+  const [systemNodes, setSystemNodes] = useState([]);
+
+  const [userStores, setUserStores] = useState([]);
+  const [groupStores, setGroupStores] = useState([]);
+  const [systemStores, setSystemStores] = useState([]);
+
   const [message, setMessage] = useState(null);
 
   const { t, i18n, ready } = useTranslation("settings");
@@ -15,16 +31,158 @@ function Settings() {
 
   useEffect(() => {
     const loadBasicSettings = async () => {
-      const response = await fetch("/api/system/languages");
-      
-      const data = await response.json();
-      if (response.status !== 200) {
-        console.log(data.error);
-        throw data.error || new Error(`Request failed with status ${response.status}`);
+      // Load languages
+      try {
+        const response = await fetch("/api/system/languages");
+        const data = await response.json();
+        if (response.status !== 200) {
+          console.log(data.error);
+          throw data.error || new Error(`Request failed with status ${response.status}`);
+        }
+
+        if (data.success) {
+          setLanguages(data.languages);
+        }
+      } catch (error) {
+        console.error("Error loading languages:", error);
       }
 
-      if (data.success) {
-        setLanguages(data.languages);
+      // Load data sources settings
+      await Promise.all([
+        listFunctions(),
+        listStores(),
+        listNodes()
+      ]);
+    }
+    loadBasicSettings();
+
+    // 1. List roles
+    // Not supported yet.
+
+    // 2. List functions
+    const listFunctions = async () => {
+      let functions = getFunctions();
+      let mcpFunctionList = await getMcpFunctions();
+      const enabledFunctions = (localStorage.getItem("functions")).split(",");
+
+      // System functions
+      setSystemFunctions(functions.map((f) => {
+        return f.name;
+      }));
+
+      // mcpFunctions
+      setMcpFunctions(mcpFunctionList.map((f) => {
+        return f.name;
+      }));
+    }
+
+    // 3. List stores
+    const listStores = async () => {
+      try {
+        const response = await fetch("/api/store/list", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.error || new Error(`Request failed with status ${response.status}`);
+        }
+  
+        if (Object.entries(data.result.user_stores).length === 0
+          && Object.entries(data.result.group_stores).length === 0
+          && Object.entries(data.result.system_stores).length === 0) {
+          return "No available store found.";
+        } else {
+          // For adding star to current store
+          const activeStores = getActiveStores();
+  
+          // User stores
+          if (data.result.user_stores && Object.entries(data.result.user_stores).length > 0) {
+            let stores = [];
+            Object.entries(data.result.user_stores).forEach(([key, value]) => {
+              stores.push(value.name);
+            });
+            setUserStores(stores);
+          }
+  
+          // Group stores
+          if (data.result.group_stores && Object.entries(data.result.group_stores).length > 0) {
+            let stores = [];
+            Object.entries(data.result.group_stores).forEach(([key, value]) => {
+              stores.push(value.name);
+            });
+            setGroupStores(stores);
+          }
+  
+          // System stores
+          if (data.result.system_stores && Object.entries(data.result.system_stores).length > 0) {
+            let stores = [];
+            Object.entries(data.result.system_stores).forEach(([key, value]) => {
+              stores.push(value.name);
+            });
+            setSystemStores(stores);
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    // 4. List nodes
+    const listNodes = async () => {
+      try {
+        const response = await fetch("/api/node/list", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
+  
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.error || new Error(`Request failed with status ${response.status}`);
+        }
+  
+        if (Object.entries(data.result.user_nodes).length === 0 
+         && Object.entries(data.result.group_nodes).length === 0 
+         && Object.entries(data.result.system_nodes).length === 0) {
+          return "No available node found.";
+        } else {
+          // For adding star to current store
+          const currentNode = sessionStorage.getItem("node");
+  
+          // User nodes
+          if (data.result.user_nodes && Object.entries(data.result.user_nodes).length > 0) {
+            let nodes = [];
+            Object.entries(data.result.user_nodes).forEach(([key, value]) => {
+              nodes.push(value.name);
+            });
+            setUserNodes(nodes);            
+          }
+  
+          // Group nodes
+          if (data.result.group_nodes && Object.entries(data.result.group_nodes).length > 0) {
+            let nodes = [];
+            Object.entries(data.result.group_nodes).forEach(([key, value]) => {
+              nodes.push(value.name);
+            });
+            setGroupNodes(nodes);
+          }
+  
+          // System nodes
+          if (data.result.system_nodes && Object.entries(data.result.system_nodes).length > 0) {
+            let nodes = [];
+            Object.entries(data.result.system_nodes).forEach(([key, value]) => {
+              nodes.push(value.name);
+            });
+            setSystemNodes(nodes);
+          }
+        }
+      } catch (error) {
+        console.error(error);
       }
     }
 
@@ -35,7 +193,6 @@ function Settings() {
       setLoading(false);
     }
 
-    loadBasicSettings();
     if (localStorage.getItem("user")) {
       loadUserSettings();
     } else {

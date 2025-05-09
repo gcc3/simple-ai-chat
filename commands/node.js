@@ -155,7 +155,6 @@ export default async function node(args) {
       }
     } catch (error) {
       console.error(error);
-      alert(error.message);
     }
     return "";
   }

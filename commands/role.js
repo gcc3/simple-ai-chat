@@ -27,7 +27,6 @@ export default async function role(args) {
          + "\nPrompt: " + data.result.prompt;
     } catch (error) {
       console.error(error);
-      alert(error.message);
     }
   }
 
@@ -55,7 +54,6 @@ export default async function role(args) {
          + "\nPrompt: " + data.result.prompt;
     } catch (error) {
       console.error(error);
-      alert(error.message);
     }
   }
 
@@ -122,7 +120,6 @@ export default async function role(args) {
       }
     } catch (error) {
       console.error(error);
-      alert(error.message);
     }
     return "";
   }
@@ -159,7 +156,6 @@ export default async function role(args) {
       }
     } catch (error) {
       console.error(error);
-      alert(error.message);
     }
 
     if (roleName != null) {
