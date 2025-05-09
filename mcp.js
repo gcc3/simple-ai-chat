@@ -17,7 +17,9 @@ import { homedir } from 'os';
 import { join } from 'path';
 
 
-async function loadMcpConfig(configPath = join(homedir(), '.simple', "mcpconfig.json")) {
+const CONFIG = join(homedir(), '.simple', "mcpconfig.json");
+
+async function loadMcpConfig(configPath = CONFIG) {
   try {
     // Create the directory if it doesn't exist
     if (!fs.existsSync(configPath)) {
@@ -44,7 +46,7 @@ async function loadMcpConfig(configPath = join(homedir(), '.simple', "mcpconfig.
       return [];
     }
 
-    return mcpServerConfigs;
+    return config.mcpServers;
   } catch (e) {
     console.error(`Failed to load MCP config: ${e.message}`);
     throw e;
@@ -52,23 +54,74 @@ async function loadMcpConfig(configPath = join(homedir(), '.simple', "mcpconfig.
 }
 
 
+const STATUS = {
+  DISCONNECTING: -2,
+  DISCONNECTED: 0,
+  CONNECTING: 1,
+  CONNECTED: 2,
+}
+
 export class MCPClient {
   constructor() {
     this.servers = new Map();
     this.tools = [];  // global tools list
+    this.status = STATUS.DISCONNECTED;
   }
 
-  // Connect to MCP server
-  async connect(serverName, mcpServerConfig) {
+  // Connect to all MCP servers
+  async connect(mcpConfigServers) {
+    this.status = STATUS.CONNECTING;
+    console.log("Connecting to MCP servers...");
     try {
-      const client = new Client({ name: serverName, version: "0.0.1" });
-      const transport = new StdioClientTransport({
-        command: mcpServerConfig.command,
-        args: mcpServerConfig.args,
-      });
+      for (const [serverName, serverConfig] of Object.entries(mcpConfigServers)) {
+        process.stdout.write(`Connecting to MCP server: ${serverName}...`);
 
-      await client.connect(transport);
-      const toolsResult = await client.listTools();
+        const client = new Client({ name: serverName, version: "0.0.1" });
+        const transport = new StdioClientTransport({
+          command: serverConfig.command,
+          args: serverConfig.args,
+        });
+
+        await client.connect(transport);
+
+        // List tools
+        const toolsResult = await client.listTools();
+        const tools = toolsResult.tools.map((tool) => {
+          // Tools listing result parameter mapping
+          return {
+            name: tool.name,
+            description: tool.description,
+            input_schema: tool.inputSchema, // !important
+          };
+        });
+
+        // Store server
+        this.servers.set(serverName, {
+          client: client,
+          transport: transport,
+          tools: tools,
+        });
+
+        // Store tool in global tools list
+        this.tools = [...this.tools, ...tools];
+        
+        process.stdout.write(" connected.\n");
+      }
+    } catch (e) {
+      console.log("Failed to connect to MCP server: ", e);
+      this.disconnect();
+      throw e;
+    }
+
+    this.status = STATUS.CONNECTED;
+    console.log("MCP servers are connected.");
+  }
+
+  // Refresh tools
+  async refreshTools() {
+    let newTools = [];
+    for (let [, s] of this.servers) {
+      const toolsResult = await s.client.listTools();
       const tools = toolsResult.tools.map((tool) => {
         // Tools listing result parameter mapping
         return {
@@ -77,19 +130,25 @@ export class MCPClient {
           input_schema: tool.inputSchema, // !important
         };
       });
+      newTools = [...newTools, ...tools];
+    }
 
-      // Store server
-      this.servers.set(serverName, {
-        client: client,
-        transport: transport,
-        tools: tools,
-      });
+    // Compare tool names, if diff then refresh
+    const oldToolNames = this.tools.map((t) => t.name);
+    const newToolNames = newTools.map((t) => t.name);
+    if (oldToolNames.length !== newToolNames.length 
+    || !oldToolNames.every((name) => newToolNames.includes(name))
+    || !newToolNames.every((name) => oldToolNames.includes(name))) {
+      console.log("Tools change detected, refreshing...");
+      this.tools = newTools;
 
-      // Store tool in global tools list
-      this.tools = [...this.tools, ...tools];
-    } catch (e) {
-      console.log("Failed to connect to MCP server: ", e);
-      throw e;
+      // Print available tools
+      console.log("\n--- available tools ---");
+      if (this.tools.length > 0) {
+        console.log(this.tools.map((t) => t.name).join("\n") + "\n");
+      } else {
+        console.log("No available tools.\n");
+      }
     }
   }
 
@@ -116,12 +175,14 @@ export class MCPClient {
   }
 
   async disconnect() {
+    this.status = STATUS.DISCONNECTING;
     for (let [, s] of this.servers) {
       await s.client.close();
       await s.transport.close();
     }
     this.servers.clear();
     this.tools = [];
+    this.status = STATUS.DISCONNECTED;
   }
 }
 
@@ -174,15 +235,7 @@ app.get('/servers', (req, res) => {
 // Refresh server list
 app.post('/tool/refresh', async (req, res) => {
   try {
-    // Disconnect from all servers
-    await mcpClient.disconnect();
-
-    // Reload MCP server configuration
-    const mcpConfig = await loadMcpConfig();
-    for (let s in mcpConfig) {
-      await mcpClient.connect(s, mcpConfig[s]);
-    }
-
+    await mcpClient.refreshTools();
     res.json(mcpClient.tools);
   } catch (e) {
     console.error("Error refreshing MCP servers: ", e);
@@ -215,27 +268,76 @@ app.post('/tool/call', async (req, res) => {
 app.listen(port, async () => {
   console.log(`Simple MCP server is running on http://localhost:${port}`);
 
-  // Load MCP server configuration
-  const mcpConfig = await loadMcpConfig();
-
   console.log("\n--- available endpoints ---" + "\n" +
     "GET  /" + "\n" +  
     "GET  /tool/list" + "\n" +
     "POST /tool/call" + "\n" +
     "POST /tool/refresh" + "\n" +
     "GET  /servers" + "\n" +
-    "POST /shutdown"
+    "POST /shutdown" + "\n"
   );
 
-  // Connect to each MCP server
-  for (let s in mcpConfig) {
-    await mcpClient.connect(s, mcpConfig[s]);
-  }
+  await connectMCP();
+  
+  // Set up a file watcher for the CONFIG file with debouncing
+  let reconnectTimeout = null;
+  fs.watch(CONFIG, { persistent: true }, async (eventType) => {
+    if (eventType === 'change') {
+      // Clear any existing timeout to debounce multiple events
+      if (reconnectTimeout) {
+        clearTimeout(reconnectTimeout);
+      }
+      
+      // Set a new timeout (300ms debounce time)
+      reconnectTimeout = setTimeout(async () => {
+        console.log(`CONFIG file changed. Reconnecting to MCP servers...`);
+        await connectMCP();
+        reconnectTimeout = null;
+      }, 300);
+    }
+  });
 
-  console.log("\n--- available tools ---");
-  if (mcpClient && mcpClient.tools.length > 0) {
-    console.log(mcpClient.tools.map((t) => t.name).join("\n") + "\n");
-  } else {
-    console.log("No available tools.\n");
-  }
+  // Refresh tools every 5 seconds
+  setInterval(async () => {
+    try {
+      await mcpClient.refreshTools();
+    } catch (e) {
+      console.error("Error refreshing tools: ", e);
+    }
+  }, 5000);
 });
+
+export async function connectMCP() {
+  try {
+    // Disconnect from all servers
+    await mcpClient.disconnect();
+
+    // Load MCP server configuration
+    const mcpConfigServers = await loadMcpConfig(CONFIG);
+    const timeout = 10;
+    if (mcpClient.status === STATUS.DISCONNECTED) {
+
+      // Connect to all MCP servers
+      await mcpClient.connect(mcpConfigServers);
+
+      // Wait for connection to be established
+      while (mcpClient.status === STATUS.CONNECTING) {
+        await new Promise((resolve) => setTimeout(resolve, 1000));
+        timeout--;
+        if (timeout <= 0) {
+          console.log("Timeout connecting to MCP servers.");
+          break;
+        }
+      }
+    }
+
+    console.log("\n--- available tools ---");
+    if (mcpClient && mcpClient.tools.length > 0) {
+      console.log(mcpClient.tools.map((t) => t.name).join("\n") + "\n");
+    } else {
+      console.log("No available tools.\n");
+    }
+  } catch (e) {
+    console.error("Error connecting to MCP servers: ", e);
+  }
+}

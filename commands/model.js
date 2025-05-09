@@ -185,7 +185,6 @@ export default async function model(args) {
       }
     } catch (error) {
       console.error(error);
-      alert(error.message);
     }
     return "";
   }
