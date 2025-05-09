@@ -17,7 +17,7 @@ const SubscriptionComparisonTable = ({ subscriptions }) => {
     { name: t("Text Generationn"), user: t("Yes"), plus_user: t("Yes") },
     { name: t("GPT Vision"), user: t("Yes"), plus_user: t("Yes") },
     { name: t("Image Generation & Edit"), user: t("Yes"), plus_user: t("Yes") },
-    { name: t("Model Context Protocol (MCP)"), user: t("Yes"), plus_user: t("Yes") },
+    { name: t("Model Context Protocol (MCP)"), user: t("Yes"), plus_user: t("Yes +support") },
     { name: t("File Input"), user: t("Yes"), plus_user: t("Yes") },
     { name: t("Roles"), user: t("Yes"), plus_user: t("Yes +support") },
     { name: t("Data Stores"), user: t("Yes"), plus_user: t("Yes +support") },
