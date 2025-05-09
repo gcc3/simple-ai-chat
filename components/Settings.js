@@ -342,7 +342,7 @@ function Settings() {
 
   const handleSetUserStores = useCallback((name) => async () => {
     if (isStoreActive(name)) {
-      removeStoreFromSessionStorage(storeName);
+      removeStoreFromSessionStorage(name);
     } else {
       addStoreToSessionStorage(name);
     }
@@ -354,7 +354,7 @@ function Settings() {
 
   const handleSetGroupStores = useCallback((name) => async () => {
     if (isStoreActive(name)) {
-      removeStoreFromSessionStorage(storeName);
+      removeStoreFromSessionStorage(name);
     } else {
       addStoreToSessionStorage(name);
     }
@@ -366,7 +366,7 @@ function Settings() {
 
   const handleSetSystemStores = useCallback((name) => async () => {
     if (isStoreActive(name)) {
-      removeStoreFromSessionStorage(storeName);
+      removeStoreFromSessionStorage(name);
     } else {
       addStoreToSessionStorage(name);
     }
