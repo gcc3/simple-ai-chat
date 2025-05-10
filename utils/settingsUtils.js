@@ -1,4 +1,4 @@
-import { generatePassword } from "./userUtils.js";
+import { generatePassword, updateUserSetting } from "./userUtils.js";
 
 
 // Set setting in correct storage
