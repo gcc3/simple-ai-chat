@@ -1693,7 +1693,7 @@ export default function Home() {
                   functionCallingResult.push({
                     success: true,
                     function: call.function.name,
-                    message: result ? result.content[0].text : "No result.",
+                    message: result ? JSON.stringify(result) : "No result.",
                     // event: ...
                   });
                 }

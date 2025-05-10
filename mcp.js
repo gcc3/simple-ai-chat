@@ -178,6 +178,27 @@ export class MCPClient {
     return result;
   }
 
+  // List resources
+  async listServers() {
+    const servers = [];
+    for (let [sn, s] of this.servers) {
+      const serverVersion = s.client.getServerVersion();
+      const resourcesResponse = await s.client.listResources();
+      const promptsResponse = await s.client.listPrompts();
+      const toolsResponse = await s.client.listTools();
+      const capabilitiesResponse = await s.client.getServerCapabilities();
+      servers.push({
+        server: sn,
+        version: serverVersion,
+        capabilities: capabilitiesResponse,
+        prompts: promptsResponse.prompts,
+        resources: resourcesResponse.resources,
+        tools: toolsResponse.tools,
+      });
+    }
+    return servers;
+  }
+
   async disconnect() {
     this.status = STATUS.DISCONNECTING;
     for (let [, s] of this.servers) {
@@ -226,25 +247,26 @@ app.post('/shutdown', async (req, res) => {
   }, 100);
 });
 
-// List tools
-app.get('/tool/list', (req, res) => {
-  res.json(mcpClient.tools);
+// List servers
+app.get('/server/list', (req, res) => {
+  mcpClient.listServers()
+    .then((servers) => {
+      res.json(servers);
+    })
+    .catch((e) => {
+      console.error("Error listing servers: ", e);
+      res.status(500).send("Error listing servers");
+    });
 });
 
-// Servers
-app.get('/servers', (req, res) => {
+// List servers details
+app.get('/server/list-details', async (req, res) => {
   res.json(Object.fromEntries(mcpClient.servers));
 });
 
-// Refresh server list
-app.post('/tool/refresh', async (req, res) => {
-  try {
-    await mcpClient.refreshTools();
-    res.json(mcpClient.tools);
-  } catch (e) {
-    console.error("Error refreshing MCP servers: ", e);
-    res.status(500).send("Error refreshing MCP servers");
-  }
+// List tools
+app.get('/tool/list', (req, res) => {
+  res.json(mcpClient.tools);
 });
 
 // Call tool
@@ -268,16 +290,28 @@ app.post('/tool/call', async (req, res) => {
   }
 });
 
+// Refresh server list
+app.post('/tool/refresh', async (req, res) => {
+  try {
+    await mcpClient.refreshTools();
+    res.json(mcpClient.tools);
+  } catch (e) {
+    console.error("Error refreshing MCP servers: ", e);
+    res.status(500).send("Error refreshing MCP servers");
+  }
+});
+
 // Start the server
 app.listen(port, async () => {
   console.log(`Simple MCP server is running on http://localhost:${port}`);
 
   console.log("\n--- available endpoints ---" + "\n" +
     "GET  /" + "\n" +  
+    "GET  /server/list" + "\n" +
+    "GET  /server/list-details" + "\n" +
     "GET  /tool/list" + "\n" +
     "POST /tool/call" + "\n" +
     "POST /tool/refresh" + "\n" +
-    "GET  /servers" + "\n" +
     "POST /shutdown" + "\n"
   );
 
