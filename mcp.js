@@ -130,6 +130,7 @@ export class MCPClient {
           input_schema: tool.inputSchema, // !important
         };
       });
+      s.tools = tools;
       newTools = [...newTools, ...tools];
     }
 
@@ -164,7 +165,10 @@ export class MCPClient {
     }
 
     if (!callServer) {
-      throw new Error(`Server not found for tool: ${toolName}`);
+      return {
+        success: false,
+        error: "Server not found for tool: " + toolName,
+      };
     }
 
     const result = await callServer.client.callTool({

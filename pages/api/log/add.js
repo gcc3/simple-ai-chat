@@ -1,5 +1,7 @@
 import { authenticate } from "utils/authUtils";
 import { logadd } from "utils/logUtils";
+import { getUser } from "utils/sqliteUtils";
+
 
 export default async function (req, res) {
    // Check method
@@ -7,8 +9,17 @@ export default async function (req, res) {
     return res.status(405).end();
   }
 
+  // Authentication
+  const authResult = authenticate(req);
+  let user = null;
+  let authUser = null;
+  if (authResult.success) {
+    authUser = authResult.user;
+    user = await getUser(authResult.user.username);
+  }
+
   try {
-    const { user, time: time_, session, model, input, output, images } = req.body;
+    const { time: time_, session, model, input, output, images } = req.body;
     const ip = req.headers["x-forwarded-for"] || req.connection.remoteAddress;
     const browser = req.headers['user-agent'];
 
