@@ -1,5 +1,5 @@
 import { addStoreToSessionStorage, countStoresInSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function store(args, files) {
@@ -241,7 +241,7 @@ export default async function store(args, files) {
       return "Store is already empty.";
     }
 
-    sessionStorage.setItem("stores", "");  // reset store
+    setSetting("stores", "");  // reset store
     return "Store reset.";
   }
 

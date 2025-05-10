@@ -2,7 +2,7 @@ import { initializeMemory } from "../utils/sessionUtils.js";
 import { isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
 import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from '../utils/userUtils.js';
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function unuse(args) {
@@ -35,7 +35,7 @@ export default async function unuse(args) {
     } else {
       const index = currentFunctions.indexOf(name);
       currentFunctions.splice(index, 1);
-      localStorage.setItem("functions", currentFunctions.join(","));
+      setSetting("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
       if (getSetting("user")) {
@@ -49,8 +49,8 @@ export default async function unuse(args) {
   const modelInfo = await findModel(name);
   if (modelInfo) {
     // Set model
-    sessionStorage.setItem("model", globalThis.model);  // reset model
-    sessionStorage.setItem("baseUrl", globalThis.baseUrl);  // reset base url
+    setSetting("model", globalThis.model);  // reset model
+    setSetting("baseUrl", globalThis.baseUrl);  // reset base url
 
     return "Model unused, and reset to default model.";
   }
@@ -59,7 +59,7 @@ export default async function unuse(args) {
   const nodeInfo = await findNode(name);
   if (nodeInfo) {
     // clear node
-    sessionStorage.setItem("node", "");
+    setSetting("node", "");
 
     // Reset session to forget previous memory
     initializeMemory();
@@ -85,7 +85,7 @@ export default async function unuse(args) {
       return "Role is already empty.";
     }
 
-    sessionStorage.setItem("role", "");  // reset role
+    setSetting("role", "");  // reset role
 
     // Reset session to forget previous memory
     initializeMemory();

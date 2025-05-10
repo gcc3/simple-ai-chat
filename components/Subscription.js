@@ -5,7 +5,7 @@ import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
 import { npre } from "utils/numberUtils";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 // Get amount

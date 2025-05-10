@@ -1,4 +1,4 @@
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function eval_(args) {
@@ -11,7 +11,7 @@ export default async function eval_(args) {
   const value = eval_ == "on" ? "true" : "false";
 
   // Update local setting
-  localStorage.setItem('useEval', value);
+  setSetting('useEval', value);
 
   // There is user logged in
   // Update remote setting

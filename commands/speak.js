@@ -1,4 +1,4 @@
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function speak(args) {
@@ -11,7 +11,7 @@ export default async function speak(args) {
   const value = speak == "on" ? "true" : "false";
 
   // Update local setting
-  localStorage.setItem('useSpeak', value);
+  setSetting('useSpeak', value);
 
   // There is user logged in
   // Update remote setting

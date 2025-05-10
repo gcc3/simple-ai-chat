@@ -1,3 +1,6 @@
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
+
 export default async function location(args) {
   const onoff = args[0];
   
@@ -7,19 +10,19 @@ export default async function location(args) {
       await new Promise((resolve, reject) => {
         navigator.geolocation.getCurrentPosition((position) => {
           console.log("Location: (" + position.coords.latitude + "," + position.coords.longitude + ")");
-          localStorage.setItem("location", "(" + position.coords.latitude + "," + position.coords.longitude + ")");
+          setSetting("location", "(" + position.coords.latitude + "," + position.coords.longitude + ")");
           resolve();
         }, reject);
       });
     } catch (e) {
-      localStorage.setItem("useLocation", false);
+      setSetting("useLocation", false);
       return "Location service failed.";
     }
 
     return "Location service enabled.";
   } else if (onoff === "off") {
-    localStorage.setItem("location", "");
-    localStorage.setItem("useLocation", false);
+    setSetting("location", "");
+    setSetting("useLocation", false);
     return "Location service disabled.";
   } else {
     return "Usage: :location [on|off]";

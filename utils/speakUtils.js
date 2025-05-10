@@ -1,5 +1,5 @@
 import { getVoice } from "../utils/voiceUtils.js"
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export async function speak(text) {

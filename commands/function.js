@@ -1,6 +1,6 @@
 import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from '../utils/userUtils.js';
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function function_(args) {
@@ -108,7 +108,7 @@ export default async function function_(args) {
       return "Function already in use.";
     } else {
       currentFunctions.push(functionName)
-      localStorage.setItem("functions", currentFunctions.join(","));
+      setSetting("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
       if (getSetting("user")) {
@@ -141,7 +141,7 @@ export default async function function_(args) {
     } else {
       const index = currentFunctions.indexOf(functionName);
       currentFunctions.splice(index, 1);
-      localStorage.setItem("functions", currentFunctions.join(","));
+      setSetting("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
       if (getSetting("user")) {

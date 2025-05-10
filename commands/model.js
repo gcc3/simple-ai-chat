@@ -1,6 +1,6 @@
 import { listOllamaModels, pingOllamaAPI } from "../utils/ollamaUtils.js";
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function model(args) {
@@ -212,8 +212,8 @@ export default async function model(args) {
           // Set model to session storage
           globalThis.model = name;
           globalThis.baseUrl = ollamModelInfo.base_url;
-          sessionStorage.setItem("model", name);
-          sessionStorage.setItem("baseUrl", ollamModelInfo.base_url);
+          setSetting("model", name);
+          setSetting("baseUrl", ollamModelInfo.base_url);
 
           return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
         }
@@ -243,8 +243,8 @@ export default async function model(args) {
         // Set model
         globalThis.model = modelInfo.model;
         globalThis.baseUrl = modelInfo.base_url;
-        sessionStorage.setItem("model", modelInfo.model);
-        sessionStorage.setItem("baseUrl", modelInfo.base_url);
+        setSetting("model", modelInfo.model);
+        setSetting("baseUrl", modelInfo.base_url);
       } catch (error) {
         console.error(error);
         return error;
@@ -258,8 +258,8 @@ export default async function model(args) {
         return "Model `" + name + "` is not being used.";
       }
 
-      sessionStorage.setItem("model", globalThis.model);  // reset model
-      sessionStorage.setItem("baseUrl", globalThis.baseUrl);  // reset base url
+      setSetting("model", globalThis.model);  // reset model
+      setSetting("baseUrl", globalThis.baseUrl);  // reset base url
 
       return "Model unused, and reset to default model.";
     }
@@ -272,8 +272,8 @@ export default async function model(args) {
       return "Model is already empty.";
     }
 
-    sessionStorage.setItem("model", globalThis.model);  // reset model
-    sessionStorage.setItem("baseUrl", globalThis.baseUrl);  // reset base url
+    setSetting("model", globalThis.model);  // reset model
+    setSetting("baseUrl", globalThis.baseUrl);  // reset base url
 
     // Reset session to forget previous memory
     initializeSessionMemory();

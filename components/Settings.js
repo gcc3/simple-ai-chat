@@ -8,7 +8,7 @@ import { addStoreToSessionStorage, getActiveStores, isStoreActive, removeStoreFr
 import { getTime } from "utils/timeUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "../utils/ollamaUtils.js";
 import { setTheme } from "utils/themeUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 function Settings() {
@@ -351,7 +351,7 @@ function Settings() {
     }
 
     if (data.success) {
-      localStorage.setItem(key, value);
+      setSetting(key, value);
       console.log("Settings updated." + " (" + getTime() + ")");
       setMessage(t("Settings updated.") + " (" + getTime() + ")");
     }
@@ -359,9 +359,9 @@ function Settings() {
 
   const handleSetUserRoles = useCallback((name) => async () => {
     if (getSetting("role") === name) {
-      sessionStorage.setItem("role", "");
+      setSetting("role", "");
     } else {
-      sessionStorage.setItem("role", name);
+      setSetting("role", name);
     }
 
     // Update state
@@ -377,7 +377,7 @@ function Settings() {
     if (currentFunctions.includes(name)) {
       const index = currentFunctions.indexOf(name);
       currentFunctions.splice(index, 1);
-      localStorage.setItem("functions", currentFunctions.join(","));
+      setSetting("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
       if (getSetting("user")) {
@@ -385,7 +385,7 @@ function Settings() {
       }
     } else {
       currentFunctions.push(name)
-      localStorage.setItem("functions", currentFunctions.join(","));
+      setSetting("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
       if (getSetting("user")) {
@@ -406,7 +406,7 @@ function Settings() {
     if (currentFunctions.includes(name)) {
       const index = currentFunctions.indexOf(name);
       currentFunctions.splice(index, 1);
-      localStorage.setItem("functions", currentFunctions.join(","));
+      setSetting("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
       if (getSetting("user")) {
@@ -414,7 +414,7 @@ function Settings() {
       }
     } else {
       currentFunctions.push(name)
-      localStorage.setItem("functions", currentFunctions.join(","));
+      setSetting("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
       if (getSetting("user")) {
@@ -431,7 +431,7 @@ function Settings() {
   }, []);
 
   const handleSetUserModels = useCallback((name) => async () => {
-    sessionStorage.setItem("model", name);
+    setSetting("model", name);
 
     // Update state
     const currentModel = getSetting("model");
@@ -442,7 +442,7 @@ function Settings() {
   }, []);
 
   const handleSetGroupModels = useCallback((name) => async () => {
-    sessionStorage.setItem("model", name);
+    setSetting("model", name);
 
     // Update state
     const currentModel = getSetting("model");
@@ -453,7 +453,7 @@ function Settings() {
   }, []);
 
   const handleSetSystemModels = useCallback((name) => async () => {
-    sessionStorage.setItem("model", name);
+    setSetting("model", name);
 
     // Update state
     const currentModel = getSetting("model");
@@ -464,7 +464,7 @@ function Settings() {
   }, []);
 
   const handleSetOllamaModels = useCallback((name) => async () => {
-    sessionStorage.setItem("model", name);
+    setSetting("model", name);
 
     // Update state
     const currentModel = getSetting("model");
@@ -521,9 +521,9 @@ function Settings() {
 
   const handleSetUserNodes = useCallback((name) => async () => {
     if (getSetting("node") === name) {
-      sessionStorage.setItem("node", "");
+      setSetting("node", "");
     } else {
-      sessionStorage.setItem("node", name);
+      setSetting("node", name);
     }
 
     // Update state
@@ -536,9 +536,9 @@ function Settings() {
 
   const handleSetGroupNodes = useCallback((name) => async () => {
     if (getSetting("node") === name) {
-      sessionStorage.setItem("node", "");
+      setSetting("node", "");
     } else {
-      sessionStorage.setItem("node", name);
+      setSetting("node", name);
     }
 
     // Update state
@@ -551,9 +551,9 @@ function Settings() {
 
   const handleSetSystemNodes = useCallback((name) => async () => {
     if (getSetting("node") === name) {
-      sessionStorage.setItem("node", "");
+      setSetting("node", "");
     } else {
-      sessionStorage.setItem("node", name);
+      setSetting("node", name);
     }
 
     // Update state
@@ -567,7 +567,7 @@ function Settings() {
   const handleSetTheme = useCallback((theme) => async () => {
     // Set theme
     setTheme(theme);
-    localStorage.setItem("theme", theme);
+    setSetting("theme", theme);
 
     // Update user settings
     if (user) {

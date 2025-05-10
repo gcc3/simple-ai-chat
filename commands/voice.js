@@ -1,5 +1,5 @@
 import { getVoice, getVoices } from "../utils/voiceUtils.js"
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function voice(args) {
@@ -43,7 +43,7 @@ export default async function voice(args) {
     // find voice and set
     const voice = await getVoice(voiceName);
     if (voice) {
-      localStorage.setItem("voice", voiceName);
+      setSetting("voice", voiceName);
       return "Voice is set to \"" + voiceName + "\".";
     } else {
       return "Voice not found."

@@ -1,5 +1,5 @@
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function node(args) {
@@ -198,7 +198,7 @@ export default async function node(args) {
         }
         
         // Set node
-        sessionStorage.setItem("node", nodeName);
+        setSetting("node", nodeName);
 
         if (!nodeInfo) {
           return "Node not found.";
@@ -217,7 +217,7 @@ export default async function node(args) {
       }
 
       // Clear node
-      sessionStorage.setItem("node", "");
+      setSetting("node", "");
 
       return "Node unset.";
     }
@@ -229,7 +229,7 @@ export default async function node(args) {
       return "Node is already empty.";
     }
 
-    sessionStorage.setItem("node", "");  // reset node
+    setSetting("node", "");  // reset node
 
     // Reset session to forget previous memory
     initializeSessionMemory();
@@ -269,7 +269,7 @@ export default async function node(args) {
       }
 
       if (data.success) {
-        sessionStorage.setItem("node", name);  // set active
+        setSetting("node", name);  // set active
         return data.message;
       }
     } catch (error) {
@@ -315,7 +315,7 @@ export default async function node(args) {
 
       if (data.success) {
         if (getSetting("node") === name) {
-          sessionStorage.setItem("node", "");
+          setSetting("node", "");
         }
         return data.message;
       }

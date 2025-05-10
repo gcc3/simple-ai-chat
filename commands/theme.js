@@ -1,4 +1,4 @@
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function theme(args) {
@@ -9,7 +9,7 @@ export default async function theme(args) {
   }
 
   // Update local setting
-  localStorage.setItem('theme', value);
+  setSetting('theme', value);
 
   // There is user logged in
   // Update remote setting

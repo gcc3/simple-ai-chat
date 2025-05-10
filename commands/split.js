@@ -1,6 +1,6 @@
 import { updateUserSetting } from '../utils/userUtils.js';
 import emitter from '../utils/eventsUtils.js';
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default function fullscreen(args) {
@@ -15,7 +15,7 @@ export default function fullscreen(args) {
     // Triggle enter key text change
     emitter.emit("ui:set_enter", "⌃enter");
 
-    localStorage.setItem('fullscreen', "split");
+    setSetting('fullscreen', "split");
     emitter.emit("ui:set_fullscreen", "split");
 
     if (getSetting("user")) {

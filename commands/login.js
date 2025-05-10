@@ -1,6 +1,6 @@
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
 import { setUserWebStorage } from "../utils/userUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function login(args) {

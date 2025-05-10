@@ -1,7 +1,6 @@
 import { verifiyEmailAddress } from "../utils/emailUtils.js";
-import { getSettings } from "../utils/settingsUtils.js";
+import { getSettings, setSetting } from "../utils/settingsUtils.js";
 import { refreshLocalUserInfo, clearUserWebStorage, setUserWebStorage } from "../utils/userUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
 
 
 export default async function entry(args) {
@@ -355,7 +354,7 @@ export default async function entry(args) {
       }
 
       if (data.success) {
-        sessionStorage.setItem("role", roleName);  // set active
+        setSetting("role", roleName);  // set active
         return data.message;
       } else {
         return data.error;

@@ -4,7 +4,7 @@ import { getSettings } from "./settingsUtils";
 import { getThemes } from "./themeUtils";
 import { getVoices } from "./voiceUtils";
 import { listOllamaModels, pingOllamaAPI } from "./ollamaUtils";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export async function getAutoCompleteOptions(prefix, nameToBeComleted) {

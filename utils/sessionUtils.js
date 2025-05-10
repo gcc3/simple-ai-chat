@@ -1,4 +1,4 @@
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export function initializeMemory() {
@@ -12,8 +12,8 @@ export function initializeMemory() {
 export function initializeSessionMemory() {
   console.log("Session initializing...");
   initializeMemory();
-  sessionStorage.setItem("head", "");
-  sessionStorage.setItem("historyIndex", -1);
+  setSetting("head", "");
+  setSetting("historyIndex", -1);
 }
 
 // Session ID is a string of number.
@@ -81,7 +81,7 @@ export function setTime(time) {
   }
 
   // Set time
-  sessionStorage.setItem("time", time);
+  setSetting("time", time);
   console.log("Time -> " + time);
 }
 
@@ -92,7 +92,7 @@ export function setSession(session) {
   }
 
   // Set session
-  sessionStorage.setItem("session", session);
+  setSetting("session", session);
   console.log("Session -> " + session);
 }
 

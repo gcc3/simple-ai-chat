@@ -40,7 +40,7 @@ import { isUrl } from "utils/urlUtils";
 import { TYPE } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 // Status control
@@ -395,18 +395,18 @@ export default function Home() {
       }
 
       // Set defaults
-      if (!getSetting("functions")) localStorage.setItem("functions", systemInfo.default_functions);  // default functions
-      if (!getSetting("role")) sessionStorage.setItem("role", systemInfo.default_role);    // default role
-      if (!getSetting("stores")) sessionStorage.setItem("stores", systemInfo.default_stores);  // default stores
-      if (!getSetting("node")) sessionStorage.setItem("node", systemInfo.default_node);    // default node
+      if (!getSetting("functions")) setSetting("functions", systemInfo.default_functions);  // default functions
+      if (!getSetting("role")) setSetting("role", systemInfo.default_role);    // default role
+      if (!getSetting("stores")) setSetting("stores", systemInfo.default_stores);  // default stores
+      if (!getSetting("node")) setSetting("node", systemInfo.default_node);    // default node
 
       // Set model
       // Auto setup the base URL too
       globalThis.model = systemInfo.model;
       globalThis.baseUrl = systemInfo.base_url;
       if (!getSetting("model")) {
-        sessionStorage.setItem("model", systemInfo.model);  // default model
-        sessionStorage.setItem("baseUrl", systemInfo.base_url);  // default base url
+        setSetting("model", systemInfo.model);  // default model
+        setSetting("baseUrl", systemInfo.base_url);  // default base url
       } else {
         const modelName = getSetting("model");
         const modelInfoResponse = await fetch('/api/model/' + modelName);
@@ -414,7 +414,7 @@ export default function Home() {
         if (modelInfo) {
           // Found remote model
           console.log("Set baseUrl: " + modelInfo.base_url);
-          sessionStorage.setItem("baseUrl", modelInfo.base_url);
+          setSetting("baseUrl", modelInfo.base_url);
         } else {
           if (await pingOllamaAPI()) {
             const ollamaModels = await listOllamaModels();
@@ -422,11 +422,11 @@ export default function Home() {
             if (ollamaModel) {
               // Found ollama model
               console.log("Set baseUrl: " + ollamaModel.base_url);
-              sessionStorage.setItem("baseUrl", ollamaModel.base_url);
+              setSetting("baseUrl", ollamaModel.base_url);
             } else {
               // Both remote and local model not found, set baseUrl to empty
               console.warn("Model `" + modelName + "` not found, set baseUrl to empty.");
-              sessionStorage.setItem("baseUrl", "");
+              setSetting("baseUrl", "");
             }
           }
         }
@@ -442,7 +442,7 @@ export default function Home() {
         return;
       }
 
-      localStorage.setItem('fullscreen', mode + (force ? " force" : ""));
+      setSetting('fullscreen', mode + (force ? " force" : ""));
       setFullscreen(mode);
 
       if (mode === "split") {
@@ -489,7 +489,7 @@ export default function Home() {
       const browserLang = navigator.language || navigator.userLanguage;
       if (getLangCodes().includes(browserLang)) {
         lang = browserLang;
-        localStorage.setItem("lang", lang);  // Not `force`
+        setSetting("lang", lang);  // Not `force`
       } else {
         lang = getSetting("lang");
       }
@@ -680,7 +680,7 @@ export default function Home() {
             const command = getHistoryCommand(historyIndex + 1);
             if (command) {
               setInput(command);
-              sessionStorage.setItem("historyIndex", historyIndex + 1);
+              setSetting("historyIndex", historyIndex + 1);
               reAdjustInputHeight(getSetting("fullscreen"));
             }
           }
@@ -761,12 +761,12 @@ export default function Home() {
             const command = getHistoryCommand(historyIndex - 1);
             if (command) {
               setInput(command);
-              sessionStorage.setItem("historyIndex", historyIndex - 1);
+              setSetting("historyIndex", historyIndex - 1);
               reAdjustInputHeight(getSetting("fullscreen"));
             } else {
               // Clear input
               setInput(":");
-              sessionStorage.setItem("historyIndex", -1);
+              setSetting("historyIndex", -1);
               reAdjustInputHeight(getSetting("fullscreen"));
             }
           }
@@ -1409,8 +1409,8 @@ export default function Home() {
 
     const timeNow = Date.now();
     setTime(timeNow);
-    sessionStorage.setItem("head", timeNow);
-    sessionStorage.setItem("historyIndex", -1);
+    setSetting("head", timeNow);
+    setSetting("historyIndex", -1);
 
     // Clear info and start generating
     resetInfo();
@@ -1704,7 +1704,7 @@ export default function Home() {
           // Set time
           const timeNow = Date.now();
           setTime(timeNow);
-          sessionStorage.setItem("head", timeNow);
+          setSetting("head", timeNow);
 
           // Re-call generate with tool calls!
           const inputParts = [
@@ -2048,7 +2048,7 @@ export default function Home() {
           // Set time
           const timeNow = Date.now();
           setTime(timeNow);
-          sessionStorage.setItem("head", timeNow);
+          setSetting("head", timeNow);
 
           // Re-call generate with tool calls!
           const inputParts = [
@@ -2230,7 +2230,7 @@ export default function Home() {
         // Reset time
         const timeNow = Date.now();
         setTime(timeNow);
-        sessionStorage.setItem("head", timeNow);
+        setSetting("head", timeNow);
 
         // Call generate with function
         printOutput(querying);

@@ -1,5 +1,5 @@
 import { getLangCodes, getLanguageName } from "../utils/langUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function lang(args) {
@@ -48,7 +48,7 @@ export default async function lang(args) {
     }
 
     if (langCodes.includes(newLangCode)) {
-      localStorage.setItem("lang", newLangCode + " force");
+      setSetting("lang", newLangCode + " force");
       return "Language set to `" + getLanguageName(newLangCode) + "`, country-language code: " + newLangCode + ". Please refresh to see changes.";
     } else {
       return "Language code not found.";

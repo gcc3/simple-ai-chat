@@ -1,6 +1,6 @@
 import { updateUserSetting } from '../utils/userUtils.js';
 import emitter from '../utils/eventsUtils.js';
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default function fullscreen(args) {
@@ -9,7 +9,7 @@ export default function fullscreen(args) {
 
   // If no argument is provided
   if (args.length === 0) {
-    localStorage.setItem('fullscreen', "default");
+    setSetting('fullscreen', "default");
     emitter.emit("ui:set_fullscreen", "default");
     
     if (getSetting("user")) {
@@ -31,7 +31,7 @@ export default function fullscreen(args) {
     }
 
     if (config === "split") {
-      localStorage.setItem('fullscreen', "split");
+      setSetting('fullscreen', "split");
       emitter.emit("ui:set_fullscreen", "split");
       
       if (getSetting("user")) {
@@ -41,7 +41,7 @@ export default function fullscreen(args) {
     }
 
     if (config === "off") {
-      localStorage.setItem('fullscreen', "off");
+      setSetting('fullscreen', "off");
       emitter.emit("ui:set_fullscreen", "off");
 
       if (getSetting("user")) {

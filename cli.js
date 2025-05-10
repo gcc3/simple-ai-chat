@@ -17,7 +17,7 @@ import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { spawn } from "child_process";
-import { getSetting } from "./utils/settingsUtils.js";
+import { getSetting, setSetting } from "./utils/settingsUtils.js";
 
 
 // Disable process warnings (node)
@@ -155,7 +155,7 @@ async function generate_sse(input, images=[], files=[]) {
           // Reset time
           const timeNow = Date.now();
           setTime(timeNow);
-          sessionStorage.setItem("head", timeNow);
+          setSetting("head", timeNow);
 
           // Call generate with function
           await generate_sse(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
@@ -453,18 +453,18 @@ program
       }
 
       // Set defaults
-      if (!getSetting("functions")) localStorage.setItem("functions", systemInfo.default_functions);  // default functions
-      if (!getSetting("role")) sessionStorage.setItem("role", systemInfo.default_role);    // default role
-      if (!getSetting("stores")) sessionStorage.setItem("stores", systemInfo.default_stores);  // default stores
-      if (!getSetting("node")) sessionStorage.setItem("node", systemInfo.default_node);    // default node
+      if (!getSetting("functions")) setSetting("functions", systemInfo.default_functions);  // default functions
+      if (!getSetting("role")) setSetting("role", systemInfo.default_role);    // default role
+      if (!getSetting("stores")) setSetting("stores", systemInfo.default_stores);  // default stores
+      if (!getSetting("node")) setSetting("node", systemInfo.default_node);    // default node
 
       // Set model
       // Auto setup the base URL too
       globalThis.model = systemInfo.model;
       globalThis.baseUrl = systemInfo.base_url;
       if (!getSetting("model")) {
-        sessionStorage.setItem("model", systemInfo.model);  // default model
-        sessionStorage.setItem("baseUrl", systemInfo.base_url);  // default base url
+        setSetting("model", systemInfo.model);  // default model
+        setSetting("baseUrl", systemInfo.base_url);  // default base url
       } else {
         const modelName = getSetting("model");
         const modelInfoResponse = await fetch('/api/model/' + modelName);
@@ -472,7 +472,7 @@ program
         if (modelInfo) {
           // Found remote model
           console.log("Set baseUrl: " + modelInfo.base_url);
-          sessionStorage.setItem("baseUrl", modelInfo.base_url);
+          setSetting("baseUrl", modelInfo.base_url);
         } else {
           if (await pingOllamaAPI()) {
             const ollamaModels = await listOllamaModels();
@@ -480,11 +480,11 @@ program
             if (ollamaModel) {
               // Found ollama model
               console.log("Set baseUrl: " + ollamaModel.base_url);
-              sessionStorage.setItem("baseUrl", ollamaModel.base_url);
+              setSetting("baseUrl", ollamaModel.base_url);
             } else {
               // Both remote and local model not found, set baseUrl to empty
               console.warn("Model `" + modelName + "` not found, set baseUrl to empty.");
-              sessionStorage.setItem("baseUrl", "");
+              setSetting("baseUrl", "");
             }
           }
         }

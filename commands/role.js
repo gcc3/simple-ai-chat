@@ -1,5 +1,5 @@
 import { initializeMemory } from "../utils/sessionUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 export default async function role(args) {
@@ -65,7 +65,7 @@ export default async function role(args) {
       return "Role is already empty.";
     }
 
-    sessionStorage.setItem("role", "");  // reset role
+    setSetting("role", "");  // reset role
 
     // Reset session to forget previous memory
     initializeMemory();
@@ -161,7 +161,7 @@ export default async function role(args) {
     }
 
     if (roleName != null) {
-      sessionStorage.setItem("role", roleName);
+      setSetting("role", roleName);
 
       // Reset session to forget previous memory
       initializeMemory();

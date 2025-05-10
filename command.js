@@ -1,5 +1,5 @@
 import { isCommandMusked } from "./utils/passwordUtils.js";
-import { getSetting } from "./utils/settingsUtils.js";
+import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import help from "./commands/help.js";
 import stats from "./commands/stats.js";
 import eval_ from "./commands/eval.js";
@@ -208,12 +208,12 @@ export function pushCommandHistory(command) {
   commandHistories = commandHistories.slice(0, 100);
 
   // Save the updated history
-  localStorage.setItem("history", JSON.stringify(commandHistories));
+  setSetting("history", JSON.stringify(commandHistories));
 }
 
 export function getHistoryCommand(index) {
   if (getSetting("history") === null) {
-    localStorage.setItem("history", JSON.stringify([]));
+    setSetting("history", JSON.stringify([]));
   }
 
   let commandHistory = JSON.parse(getSetting("history"));
@@ -222,7 +222,7 @@ export function getHistoryCommand(index) {
 
 export function getHistoryCommandIndex() {
   if (getSetting("historyIndex") === null) {
-    sessionStorage.setItem("historyIndex", -1);
+    setSetting("historyIndex", -1);
   }
 
   return parseInt(getSetting("historyIndex"));
