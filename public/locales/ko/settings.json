@@ -15,5 +15,9 @@
   "System Stores": "시스템 저장소",
   "User Stores": "사용자 저장소",
   "User Group Nodes": "사용자 그룹 노드",
-  "System Functions": "시스템 함수"
+  "System Functions": "시스템 함수",
+  "Ollama Models": "Ollama 모델",
+  "System Models": "시스템 모델",
+  "User Group Models": "사용자 그룹 모델",
+  "User Models": "사용자 모델"
 }

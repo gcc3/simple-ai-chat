@@ -15,5 +15,9 @@
   "System Stores": "Systemlagringsplatser",
   "User Stores": "Användarlager",
   "User Group Nodes": "Användargruppsnoder",
-  "System Functions": "Systemfunktioner"
+  "System Functions": "Systemfunktioner",
+  "Ollama Models": "Ollama-modeller",
+  "System Models": "Systemmodeller",
+  "User Group Models": "Användargruppsmodeller",
+  "User Models": "Användarmodeller"
 }

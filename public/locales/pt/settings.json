@@ -15,5 +15,9 @@
   "System Stores": "Armazenamentos do Sistema",
   "User Stores": "Armazenamentos do Usuário",
   "User Group Nodes": "Nós de Grupo de Usuários",
-  "System Functions": "Funções do Sistema"
+  "System Functions": "Funções do Sistema",
+  "Ollama Models": "Modelos Ollama",
+  "System Models": "Modelos de Sistema",
+  "User Group Models": "Modelos de Grupos de Usuários",
+  "User Models": "Modelos de Usuário"
 }

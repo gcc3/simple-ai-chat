@@ -15,5 +15,9 @@
   "System Stores": "Systeemopslag",
   "User Stores": "Gebruikersopslag",
   "User Group Nodes": "Gebruikersgroepsknooppunten",
-  "System Functions": "Systeemfuncties"
+  "System Functions": "Systeemfuncties",
+  "Ollama Models": "Ollama-modellen",
+  "System Models": "Systeemmodellen",
+  "User Group Models": "Modellen voor gebruikersgroepen",
+  "User Models": "Gebruikersmodellen"
 }

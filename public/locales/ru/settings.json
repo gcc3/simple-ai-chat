@@ -15,5 +15,9 @@
   "System Stores": "Системные хранилища",
   "User Stores": "Хранилища пользователей",
   "User Group Nodes": "Узлы групп пользователей",
-  "System Functions": "Системные функции"
+  "System Functions": "Системные функции",
+  "Ollama Models": "Модели Ollama",
+  "System Models": "Системные модели",
+  "User Group Models": "Модели групп пользователей",
+  "User Models": "Модели пользователей"
 }

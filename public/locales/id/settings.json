@@ -15,5 +15,9 @@
   "System Stores": "Penyimpanan Sistem",
   "User Stores": "Penyimpanan Pengguna",
   "User Group Nodes": "Node Grup Pengguna",
-  "System Functions": "Fungsi Sistem"
+  "System Functions": "Fungsi Sistem",
+  "Ollama Models": "Model Ollama",
+  "System Models": "Model Sistem",
+  "User Group Models": "Model Grup Pengguna",
+  "User Models": "Model Pengguna"
 }
