@@ -15,5 +15,9 @@
   "System Stores": "सिस्टम भंडारण",
   "User Stores": "उपयोगकर्ता भंडारण",
   "User Group Nodes": "उपयोगकर्ता समूह नोड्स",
-  "System Functions": "सिस्टम फ़ंक्शंस"
+  "System Functions": "सिस्टम फ़ंक्शंस",
+  "Ollama Models": "Ollama मॉडल्स",
+  "System Models": "सिस्टम मॉडल्स",
+  "User Group Models": "उपयोगकर्ता समूह मॉडल",
+  "User Models": "उपयोगकर्ता मॉडल"
 }

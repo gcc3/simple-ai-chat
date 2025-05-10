@@ -15,5 +15,9 @@
   "System Stores": "Sistem Depoları",
   "User Stores": "Kullanıcı Depoları",
   "User Group Nodes": "Kullanıcı Grubu Düğümleri",
-  "System Functions": "Sistem Fonksiyonları"
+  "System Functions": "Sistem Fonksiyonları",
+  "Ollama Models": "Ollama Modeller",
+  "System Models": "Sistem Modelleri",
+  "User Group Models": "Kullanıcı Grubu Modelleri",
+  "User Models": "Kullanıcı Modelleri"
 }

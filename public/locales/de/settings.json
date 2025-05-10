@@ -15,5 +15,9 @@
   "System Stores": "Systemspeicher",
   "User Stores": "Benutzerspeicher",
   "User Group Nodes": "Benutzergruppen-Knoten",
-  "System Functions": "Systemfunktionen"
+  "System Functions": "Systemfunktionen",
+  "Ollama Models": "Ollama-Modelle",
+  "System Models": "Systemmodelle",
+  "User Group Models": "Benutzergruppenmodelle",
+  "User Models": "Benutzermodelle"
 }

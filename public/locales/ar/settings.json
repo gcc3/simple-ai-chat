@@ -15,5 +15,9 @@
   "System Stores": "مخازن النظام",
   "User Stores": "مخازن المستخدم",
   "User Group Nodes": "عقد مجموعة المستخدمين",
-  "System Functions": "دوال النظام"
+  "System Functions": "دوال النظام",
+  "Ollama Models": "نماذج أولاما",
+  "System Models": "نماذج النظام",
+  "User Group Models": "نماذج مجموعات المستخدمين",
+  "User Models": "نماذج المستخدمين"
 }

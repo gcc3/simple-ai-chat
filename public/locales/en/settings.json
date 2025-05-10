@@ -15,5 +15,9 @@
   "System Stores": "System Stores",
   "User Stores": "User Stores",
   "User Group Nodes": "User Group Nodes",
-  "System Functions": "System Functions"
+  "System Functions": "System Functions",
+  "Ollama Models": "Ollama Models",
+  "System Models": "System Models",
+  "User Group Models": "User Group Models",
+  "User Models": "User Models"
 }

@@ -15,5 +15,9 @@
   "System Stores": "সিস্টেম সঞ্চয়স্থানসমূহ",
   "User Stores": "ব্যবহারকারীর সংরক্ষণাগারসমূহ",
   "User Group Nodes": "ব্যবহারকারী গোষ্ঠীর নোডগুলি",
-  "System Functions": "সিস্টেম ফাংশনসমূহ"
+  "System Functions": "সিস্টেম ফাংশনসমূহ",
+  "Ollama Models": "ওল্লামা মডেলগুলি",
+  "System Models": "সিস্টেম মডেলসমূহ",
+  "User Group Models": "ব্যবহারকারী গোষ্ঠী মডেলসমূহ",
+  "User Models": "ব্যবহারকারী মডেলগুলি"
 }

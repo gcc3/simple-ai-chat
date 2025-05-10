@@ -15,5 +15,9 @@
   "System Stores": "システムストア",
   "User Stores": "ユーザーストレージ",
   "User Group Nodes": "ユーザーグループノード",
-  "System Functions": "システム関数"
+  "System Functions": "システム関数",
+  "Ollama Models": "Ollamaモデル",
+  "System Models": "システムモデル",
+  "User Group Models": "ユーザーグループモデル",
+  "User Models": "ユーザーモデル"
 }
