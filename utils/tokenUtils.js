@@ -12,7 +12,7 @@ function countWords(str) {
 export function countToken(model, input) {
   if (!isTiktokenModel(model)) {
     const wordsCount = countWords(input);
-    return wordsCount * 1.3; // 1.3 is a rough estimate for the average token count per word
+    return Math.round(wordsCount * 1.3); // 1.3 is a rough estimate for the average token count per word
   }
 
   try {
