@@ -182,12 +182,14 @@ export class MCPClient {
   async listServers() {
     const servers = [];
     for (let [sn, s] of this.servers) {
+      const serverVersion = s.client.getServerVersion();
       const resourcesResponse = await s.client.listResources();
       const promptsResponse = await s.client.listPrompts();
       const toolsResponse = await s.client.listTools();
       const capabilitiesResponse = await s.client.getServerCapabilities();
       servers.push({
         server: sn,
+        version: serverVersion,
         capabilities: capabilitiesResponse,
         prompts: promptsResponse.prompts,
         resources: resourcesResponse.resources,
