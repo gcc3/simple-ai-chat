@@ -5,7 +5,7 @@ import readline from "node:readline";
 import command from "./command.js";
 import tough from 'tough-cookie';
 import fetchCookie from 'fetch-cookie';
-import { initializeStorage } from "./utils/storageUtils.js";
+import { initializeSettings } from "./utils/settingsUtils.js";
 import { initializeSessionMemory } from "./utils/sessionUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "./utils/ollamaUtils.js";
 import { loadConfig } from "./utils/configUtils.js";
@@ -429,7 +429,7 @@ program
     }
 
     // Initialization
-    initializeStorage();
+    initializeSettings();
     initializeSessionMemory();
 
     // System and user configurations

@@ -32,7 +32,7 @@ import { Readable } from "stream";
 import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSetting } from "utils/userUtils";
 import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 import { useUI } from '../contexts/UIContext';
-import { initializeStorage } from "utils/storageUtils";
+import { initializeSettings } from "utils/settingsUtils";
 import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
@@ -332,7 +332,7 @@ export default function Home() {
 
   // Initializing
   useEffect(() => { 
-    initializeStorage();
+    initializeSettings();
     initializeSessionMemory();
 
     // System and user configurations
