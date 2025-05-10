@@ -616,10 +616,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {userModels.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserModels(i)}
-              style={{ backgroundColor: currentModel === i ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -631,10 +630,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {groupModels.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetGroupModels(i)}
-              style={{ backgroundColor: currentModel === i ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -646,10 +644,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {systemModels.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemModels(i)}
-              style={{ backgroundColor: currentModel === i ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -661,10 +658,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {ollamaModels.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetOllamaModels(i)}
-              style={{ backgroundColor: currentModel === i ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -676,10 +672,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {userRoles.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${currentRole === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserRoles(i)}
-              style={{ backgroundColor: currentRole === i ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -691,10 +686,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {systemFunctions.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${enabledFunctions.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemFunctions(i)}
-              style={{ backgroundColor: enabledFunctions.includes(i) ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -706,10 +700,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {mcpFunctions.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${enabledFunctions.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetMcpFunctions(i)}
-              style={{ backgroundColor: enabledFunctions.includes(i) ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -721,10 +714,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {userStores.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserStores(i)}
-              style={{ backgroundColor: activeStores.includes(i) ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -736,10 +728,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {groupStores.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetGroupStores(i)}
-              style={{ backgroundColor: activeStores.includes(i) ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -751,10 +742,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {systemStores.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemStores(i)}
-              style={{ backgroundColor: activeStores.includes(i) ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -766,10 +756,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {userNodes.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${activeNode === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserNodes(i)}
-              style={{ backgroundColor: activeNode === i ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -781,10 +770,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {groupNodes.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${activeNode === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetGroupNodes(i)}
-              style={{ backgroundColor: activeNode === i ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -796,10 +784,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {systemNodes.map((i) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${currentRole === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemNodes(i)}
-              style={{ backgroundColor: currentRole === i ? '#EAEAEA' : '' }}
             >
               {i}
             </button>
@@ -811,10 +798,9 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {languages.map((l) => (
             <button 
-              className="ml-2 mb-1" 
+              className={`ml-2 mb-1 ${l.language_code == lang ? 'selected' : ''}`}
               key={l.language_code} 
               onClick={handleSetLanguage(l.language_code + " force")} 
-              style={{ backgroundColor: l.language_code == lang ? '#EAEAEA' : '' }}
             >
               {l.native_name}
             </button>
