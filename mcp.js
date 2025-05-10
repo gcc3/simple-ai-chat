@@ -182,12 +182,12 @@ export class MCPClient {
   async listServers() {
     const servers = [];
     for (let [sn, s] of this.servers) {
-      const resources = await s.client.listResources();
-      const prompts = await s.client.listPrompts();
+      const resourcesResponse = await s.client.listResources();
+      const promptsResponse = await s.client.listPrompts();
       servers.push({
         server: sn,
-        resources: resources,
-        prompts: prompts,
+        resources: resourcesResponse.resources,
+        prompts: promptsResponse.prompts,
       });
     }
     return servers;
