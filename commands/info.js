@@ -1,25 +1,28 @@
+import { getSetting } from "../utils/settingsUtils.js";
+
+
 export default function info(args) {
-  const info = "Up Time (key: `_up`): " + localStorage.getItem("_up") + " (" 
-                                        + new Date(parseInt(localStorage.getItem("_up"))).toLocaleString() + ")\n" +
-               "Session ID (key: `session`): " + sessionStorage.getItem("session") + "\n" +
-               "Model (key: `model`): " + sessionStorage.getItem("model") + "\n" +
-               "Model Base URL (key: `baseUrl`): " + (sessionStorage.getItem("baseUrl") || "___") + "\n" +
-               "Timeline (key: `time`): " + sessionStorage.getItem("time") + "\n" +
-               "Language (key: `lang`): " + (localStorage.getItem("lang") || "___") + "\n" +
-               "Functions (key: `functions`): " + (localStorage.getItem("functions") || "___") + "\n" +
-               "Memory length (key: `memLength`, default: 7): " + sessionStorage.getItem("memLength") + "\n" +
-               "Role (key: `role`): " + (sessionStorage.getItem("role") || "___") + "\n" +
-               "Stores (key: `stores`): " + (sessionStorage.getItem("stores") || "___") + "\n" +
-               "Node (key: `node`): " + (sessionStorage.getItem("node") || "___") + "\n" +
-               "Show stats (key: `useStats`): " + localStorage.getItem("useStats") + "\n" +
-               "Use Self Evaluation (key: `useEval`): " + localStorage.getItem("useEval") + "\n" +
-               "Stream (key: `useStream`): " + localStorage.getItem("useStream") + "\n" +
-               "Speak (key: `useSpeak`): " + localStorage.getItem("useSpeak") + "\n" +
-               "Voice (key: `voice`): " + (localStorage.getItem("voice") || "default") + "\n" +
-               "Location service (key: `useLocation`): " + localStorage.getItem("useLocation") + "\n" +
-               "Location (key: `location`): " + (localStorage.getItem("location") || "___") + "\n" +
-               "Password Masking (key: `passMask`): " + localStorage.getItem("passMask") + "\n" +
-               "Use System Role (key: `useSystemRole`): " + localStorage.getItem("useSystemRole") + "\n";
+  const info = "Up Time (key: `_up`): " + getSetting("_up") + " (" 
+                                        + new Date(parseInt(getSetting("_up"))).toLocaleString() + ")\n" +
+               "Session ID (key: `session`): " + getSetting("session") + "\n" +
+               "Model (key: `model`): " + getSetting("model") + "\n" +
+               "Model Base URL (key: `baseUrl`): " + (getSetting("baseUrl") || "___") + "\n" +
+               "Timeline (key: `time`): " + getSetting("time") + "\n" +
+               "Language (key: `lang`): " + (getSetting("lang") || "___") + "\n" +
+               "Functions (key: `functions`): " + (getSetting("functions") || "___") + "\n" +
+               "Memory length (key: `memLength`, default: 7): " + getSetting("memLength") + "\n" +
+               "Role (key: `role`): " + (getSetting("role") || "___") + "\n" +
+               "Stores (key: `stores`): " + (getSetting("stores") || "___") + "\n" +
+               "Node (key: `node`): " + (getSetting("node") || "___") + "\n" +
+               "Show stats (key: `useStats`): " + getSetting("useStats") + "\n" +
+               "Use Self Evaluation (key: `useEval`): " + getSetting("useEval") + "\n" +
+               "Stream (key: `useStream`): " + getSetting("useStream") + "\n" +
+               "Speak (key: `useSpeak`): " + getSetting("useSpeak") + "\n" +
+               "Voice (key: `voice`): " + (getSetting("voice") || "default") + "\n" +
+               "Location service (key: `useLocation`): " + getSetting("useLocation") + "\n" +
+               "Location (key: `location`): " + (getSetting("location") || "___") + "\n" +
+               "Password Masking (key: `passMask`): " + getSetting("passMask") + "\n" +
+               "Use System Role (key: `useSystemRole`): " + getSetting("useSystemRole") + "\n";
 
   return info;
 }

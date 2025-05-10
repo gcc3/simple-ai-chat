@@ -3,6 +3,8 @@ import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } 
 import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from "../utils/userUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "../utils/ollamaUtils.js";
+import { getSetting } from "../utils/settingsUtils.js";
+
 
 export default async function use(args) {
   const usage = "Usage: :use [function|node|store|role]\n";
@@ -24,7 +26,7 @@ export default async function use(args) {
   // Find model
   const modelInfo = await findModel(name);
   if (modelInfo) {
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -42,7 +44,7 @@ export default async function use(args) {
   const function_ = functions.find((f) => f.name === name);
   if (function_) {
     // Add to localhostStorage and remote
-    const currentFunctions = (localStorage.getItem("functions")).split(",");
+    const currentFunctions = (getSetting("functions")).split(",");
     if (currentFunctions.includes(name)) {
       return "Function already in use.";
     } else {
@@ -50,7 +52,7 @@ export default async function use(args) {
       localStorage.setItem("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
-      if (localStorage.getItem("user")) {
+      if (getSetting("user")) {
         updateUserSetting("functions", currentFunctions.join(","));
       }
     }
@@ -60,7 +62,7 @@ export default async function use(args) {
   // Find node
   const nodeInfo = await findNode(name);
   if (nodeInfo) {
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -73,7 +75,7 @@ export default async function use(args) {
   // Find store
   const storeInfo = await findStore(name);
   if (storeInfo) {
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 

@@ -1,6 +1,7 @@
 import { generatePassword } from "./userUtils.js";
 
 
+// Set setting in correct storage
 export async function setSetting(key, value) {
   const settings = getSettings("list");
   const setting = settings.find((setting) => setting.key === key);
@@ -22,6 +23,7 @@ export async function setSetting(key, value) {
   }
 }
 
+// Get setting from correct storage
 export function getSetting(key) {
   const settings = getSettings("list");
   const setting = settings.find((setting) => setting.key === key);

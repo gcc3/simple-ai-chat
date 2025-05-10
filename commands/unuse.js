@@ -2,6 +2,8 @@ import { initializeMemory } from "../utils/sessionUtils.js";
 import { isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
 import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from '../utils/userUtils.js';
+import { getSetting } from "../utils/settingsUtils.js";
+
 
 export default async function unuse(args) {
   const usage = "Usage: :unuse [name]\n";
@@ -27,7 +29,7 @@ export default async function unuse(args) {
   const function_ = functions.find((f) => f.name === name);
   if (function_) {
     // Remove from localStorage and remote
-    const currentFunctions = (localStorage.getItem("functions")).split(",");
+    const currentFunctions = (getSetting("functions")).split(",");
     if (!currentFunctions.includes(name)) {
       return "Function not in use.";
     } else {
@@ -36,7 +38,7 @@ export default async function unuse(args) {
       localStorage.setItem("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
-      if (localStorage.getItem("user")) {
+      if (getSetting("user")) {
         updateUserSetting("functions", currentFunctions.join(","));
       }
     }
@@ -79,7 +81,7 @@ export default async function unuse(args) {
 
   // Find role
   if (await findRole(name)) {
-    if (sessionStorage.getItem("role") === "") {
+    if (getSetting("role") === "") {
       return "Role is already empty.";
     }
 

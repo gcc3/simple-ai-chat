@@ -1,3 +1,6 @@
+import { getSetting } from "../utils/settingsUtils.js";
+
+
 export default async function generate(args) {
   if (args.length != 1) {
     return "Usage: :generate [input]";
@@ -7,7 +10,7 @@ export default async function generate(args) {
     return "Word must be quoted with double quotes.";
   }
 
-  const node = sessionStorage.getItem("node");
+  const node = getSetting("node");
   if (!node) {
     return "No node selected.";
   }

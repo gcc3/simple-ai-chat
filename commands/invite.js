@@ -1,9 +1,12 @@
+import { getSetting } from "../utils/settingsUtils.js";
+
+
 export default async function invite(args) {
   if (args.length != 1) {
     return "Usage: :invite [email]";
   }
 
-  if (!localStorage.getItem("user")) {
+  if (!getSetting("user")) {
     return "Please login.";
   }
 

@@ -1,13 +1,15 @@
 import { setTheme } from "./themeUtils.js";
 import { initializeSessionMemory } from "./sessionUtils.js";
 import emitter from "./eventsUtils.js";
+import { getSetting } from "../utils/settingsUtils.js";
+
 
 export function setUserWebStorage(user) {
   if (!user.username || !user.settings) {
     console.warn("User data is incomplete, clearing local user data...");
 
     // Clear local user data
-    if (localStorage.getItem("user")) {
+    if (getSetting("user")) {
       clearUserWebStorage();
 
       // Clear auth cookie
@@ -31,12 +33,12 @@ export function setUserWebStorage(user) {
   // theme
   if ("theme" in settings) {
     localStorage.setItem("theme", settings.theme);
-    setTheme(localStorage.getItem("theme"));
+    setTheme(getSetting("theme"));
   }
 
   // fullscreen
   if ("fullscreen" in settings) {
-    if (localStorage.getItem("fullscreen") && settings.fullscreen != localStorage.getItem("fullscreen") && !localStorage.getItem("fullscreen").includes("force")) {
+    if (getSetting("fullscreen") && settings.fullscreen != getSetting("fullscreen") && !getSetting("fullscreen").includes("force")) {
       localStorage.setItem("fullscreen", settings.fullscreen);
       emitter.emit("ui:set_fullscreen", settings.fullscreen);
     }
@@ -108,17 +110,17 @@ export function clearUserWebStorage() {
   initializeSessionMemory();
 
   // Reset role
-  if (sessionStorage.getItem("role")) {
+  if (getSetting("role")) {
     sessionStorage.setItem("role", "");
   }
 
   // Reset store
-  if (sessionStorage.getItem("stores")) {
+  if (getSetting("stores")) {
     sessionStorage.setItem("stores", "");
   }
 
   // Reset node
-  if (sessionStorage.getItem("node")) {
+  if (getSetting("node")) {
     sessionStorage.setItem("node", "");
   }
 }
@@ -174,7 +176,7 @@ export async function refreshLocalUserInfo() {
     console.warn("User not found or authentication failed, clearing local user data...");
 
     // Clear local user data
-    if (localStorage.getItem("user")) {
+    if (getSetting("user")) {
       clearUserWebStorage();
 
       // Clear auth cookie
@@ -190,7 +192,7 @@ export async function updateUserSetting(key, value) {
 
   // There is user logged in
   // Update remote setting
-  if (localStorage.getItem("user")) {
+  if (getSetting("user")) {
     try {
       const response = await fetch("/api/user/update/settings", {
         method: "POST",

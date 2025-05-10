@@ -4,6 +4,8 @@ import { getSettings } from "./settingsUtils";
 import { getThemes } from "./themeUtils";
 import { getVoices } from "./voiceUtils";
 import { listOllamaModels, pingOllamaAPI } from "./ollamaUtils";
+import { getSetting } from "../utils/settingsUtils.js";
+
 
 export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   if (prefix === ":role " || prefix === ":role use " || prefix === ":role unuse ") {
@@ -29,7 +31,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   }
 
   if (prefix === ":store set ") {
-    const name = sessionStorage.getItem("stores");
+    const name = getSetting("stores");
     if (name.indexOf(",") > -1) {
       // Multiple stores, not supported
       return [];
@@ -55,7 +57,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   }
 
   if (prefix === ":node set ") {
-    const name = sessionStorage.getItem("node");
+    const name = getSetting("node");
     const response = await getNode(name);
     if (response.success) {
       const nodeInfo = response.result;
@@ -166,7 +168,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   if (prefix === ":voice use ") {
     const voices = await getVoices();
     let langVoiceList = [];
-    const currentLang = localStorage.getItem("lang").replace(" force", "");
+    const currentLang = getSetting("lang").replace(" force", "");
     for (let i = 0; i < voices.length ; i++) {
       if (voices[i].lang === currentLang) {
         console.log(`Voice ${i+1}: ${voices[i].name}, ${voices[i].lang}`);

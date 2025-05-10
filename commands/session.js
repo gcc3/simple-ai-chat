@@ -1,4 +1,6 @@
 import { attachSession } from "../utils/sessionUtils.js";
+import { getSetting } from "../utils/settingsUtils.js";
+
 
 export default async function session(args) {
   const usage = "Usage: :session [list|ls]\n" +
@@ -7,12 +9,12 @@ export default async function session(args) {
   const command = args[0];
 
   if (args.length === 0) {
-    if (sessionStorage.getItem("session") === "" || sessionStorage.getItem("session") === null) {
+    if (getSetting("session") === "" || getSetting("session") === null) {
       return "No session attached.";
     }
 
     // Get session
-    const response = await fetch("/api/session/" + sessionStorage.getItem("session"), {
+    const response = await fetch("/api/session/" + getSetting("session"), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -39,15 +41,15 @@ export default async function session(args) {
     }
 
     let response;
-    if (localStorage.getItem("user") === "root") {
+    if (getSetting("user") === "root") {
       response = await fetch("/api/session/list", {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
         },
       });
-    } else if (localStorage.getItem("user")) {
-      response = await fetch("/api/session/list/" + localStorage.getItem("user"), {
+    } else if (getSetting("user")) {
+      response = await fetch("/api/session/list/" + getSetting("user"), {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

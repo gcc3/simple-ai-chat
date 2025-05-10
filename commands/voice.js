@@ -1,4 +1,6 @@
 import { getVoice, getVoices } from "../utils/voiceUtils.js"
+import { getSetting } from "../utils/settingsUtils.js";
+
 
 export default async function voice(args) {
   const command = args[0];
@@ -6,7 +8,7 @@ export default async function voice(args) {
   if (command === "ls" || command === "list") {
     const voices = await getVoices();
     let langVoiceList = [];
-    const currentLang = localStorage.getItem("lang").replace(" force", "");
+    const currentLang = getSetting("lang").replace(" force", "");
     for (let i = 0; i < voices.length ; i++) {
       if (voices[i].lang === currentLang) {
         console.log(`Voice ${i+1}: ${voices[i].name}, ${voices[i].lang}`);
@@ -19,8 +21,8 @@ export default async function voice(args) {
     } else {
       // Add star to current voice
       let result = "\\" + langVoiceList.join(" \\") + " ";
-      if (localStorage.getItem("voice")) {
-        const currentStore = localStorage.getItem("voice");
+      if (getSetting("voice")) {
+        const currentStore = getSetting("voice");
         result = result.replace("\\" + currentStore + " ", "*\\" + currentStore + " ");
       }
       return result;

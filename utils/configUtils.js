@@ -1,19 +1,22 @@
+import { getSetting } from "../utils/settingsUtils.js";
+
+
 export function loadConfig() {
   return {
-    time: sessionStorage.getItem("time"),
-    session: sessionStorage.getItem("session"), 
-    model: sessionStorage.getItem("model"),
-    base_url: sessionStorage.getItem("baseUrl"),
-    mem_length: sessionStorage.getItem("memLength"),
-    functions: localStorage.getItem("functions"),
-    role: sessionStorage.getItem("role"),
-    stores: sessionStorage.getItem("stores"),           
-    node: sessionStorage.getItem("node"),
-    use_stats: localStorage.getItem("useStats"),
-    use_eval: localStorage.getItem("useEval"),
-    use_location: localStorage.getItem("useLocation"),    
-    location: localStorage.getItem("location"),
-    lang: localStorage.getItem("lang").replace("force", "").trim(),            
-    use_system_role: localStorage.getItem("useSystemRole"), 
+    time: getSetting("time"),
+    session: getSetting("session"), 
+    model: getSetting("model"),
+    base_url: getSetting("baseUrl"),
+    mem_length: getSetting("memLength"),
+    functions: getSetting("functions"),
+    role: getSetting("role"),
+    stores: getSetting("stores"),           
+    node: getSetting("node"),
+    use_stats: getSetting("useStats"),
+    use_eval: getSetting("useEval"),
+    use_location: getSetting("useLocation"),    
+    location: getSetting("location"),
+    lang: getSetting("lang").replace("force", "").trim(),            
+    use_system_role: getSetting("useSystemRole"), 
   }
 }

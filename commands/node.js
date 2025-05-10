@@ -1,4 +1,6 @@
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
+import { getSetting } from "../utils/settingsUtils.js";
+
 
 export default async function node(args) {
   const command = args[0];
@@ -14,11 +16,11 @@ export default async function node(args) {
   // Get node info
   // :node [name?]
   if (!command) {
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
-    const nodeName = sessionStorage.getItem("node");
+    const nodeName = getSetting("node");
     if (!nodeName) {
       return "No node is set, please use command \`:node use [name]\` to set a node.";
     }
@@ -89,7 +91,7 @@ export default async function node(args) {
       return "Usage: :node [ls|list]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -112,7 +114,7 @@ export default async function node(args) {
         return "No available node found.";
       } else {
         // For adding star to current store
-        const currentNode = sessionStorage.getItem("node");
+        const currentNode = getSetting("node");
 
         // User nodes
         let userNodes = "";
@@ -210,7 +212,7 @@ export default async function node(args) {
     }
 
     if (args[0] === "unuse") {
-      if (sessionStorage.getItem("node") !== nodeName) {
+      if (getSetting("node") !== nodeName) {
         return "Node `" + nodeName + "` is not being used.";
       }
 
@@ -223,7 +225,7 @@ export default async function node(args) {
 
   // Reset node
   if (command === "reset") {
-    if (sessionStorage.getItem("node") === "") {
+    if (getSetting("node") === "") {
       return "Node is already empty.";
     }
 
@@ -240,7 +242,7 @@ export default async function node(args) {
       return "Usage: :node add [name]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -282,7 +284,7 @@ export default async function node(args) {
       return "Usage: :node [del|delete] [name]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -312,7 +314,7 @@ export default async function node(args) {
       }
 
       if (data.success) {
-        if (sessionStorage.getItem("node") === name) {
+        if (getSetting("node") === name) {
           sessionStorage.setItem("node", "");
         }
         return data.message;
@@ -329,11 +331,11 @@ export default async function node(args) {
       return "Usage: :node set owner [owner]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
-    const nodeName = sessionStorage.getItem("node");
+    const nodeName = getSetting("node");
     if (!nodeName) {
       return "No node is set, please use command \`:node use [name]\` to set a node.";
     }
@@ -374,11 +376,11 @@ export default async function node(args) {
       return "Usage: :user set [key] [value]";
     }
     
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
-    const nodeName = sessionStorage.getItem("node");
+    const nodeName = getSetting("node");
     if (!nodeName) {
       return "No node is set, please use command \`:node use [name]\` to set a node.";
     }

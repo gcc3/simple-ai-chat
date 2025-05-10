@@ -1,5 +1,7 @@
 import { updateUserSetting } from '../utils/userUtils.js';
 import emitter from '../utils/eventsUtils.js';
+import { getSetting } from "../utils/settingsUtils.js";
+
 
 export default function fullscreen(args) {
   const usage = "Usage: :split" + "\n";
@@ -16,7 +18,7 @@ export default function fullscreen(args) {
     localStorage.setItem('fullscreen', "split");
     emitter.emit("ui:set_fullscreen", "split");
 
-    if (localStorage.getItem("user")) {
+    if (getSetting("user")) {
       updateUserSetting("fullscreen", "split");
     }
     return "Fullscreen split vertically.";

@@ -1,3 +1,6 @@
+import { getSetting } from "../utils/settingsUtils.js";
+
+
 export function initializeMemory() {
   console.log("Memory initializing...");
   const time = Date.now()
@@ -73,7 +76,7 @@ export function verifySessionId(session) {
 
 export function setTime(time) {
   if (time == 1 || time == -1) {
-    const current = sessionStorage.getItem("time");
+    const current = getSetting("time");
     time = Number(current) + time;
   }
 
@@ -84,7 +87,7 @@ export function setTime(time) {
 
 export function setSession(session) {
   if (session == 1 || session == -1) {
-    const current = sessionStorage.getItem("session");
+    const current = getSetting("session");
     session = Number(current) + session;
   }
 
@@ -109,14 +112,14 @@ export const getSessionLog = async function(direction = "prev", session, time) {
 
 // Get history session
 export const getHistorySession = async function(direction = "prev", currentSessionId) {
-  if (!localStorage.getItem("user")) {
+  if (!getSetting("user")) {
     console.log("User not logged in.");
     return null;
   }
 
   let session = null;
   console.log("Getting history session " + direction + " of " + currentSessionId + "...");
-  const response = await fetch("/api/session/" + direction + "?sessionId=" + currentSessionId + "&user=" + localStorage.getItem("user"), {
+  const response = await fetch("/api/session/" + direction + "?sessionId=" + currentSessionId + "&user=" + getSetting("user"), {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   }).catch(error => {

@@ -1,3 +1,6 @@
+import { getSetting } from "../utils/settingsUtils.js";
+
+
 export default async function speak(args) {
   const speak = args[0];
 
@@ -12,7 +15,7 @@ export default async function speak(args) {
 
   // There is user logged in
   // Update remote setting
-  if (localStorage.getItem("user")) {
+  if (getSetting("user")) {
     try {
       const response = await fetch("/api/user/update/settings", {
         method: "POST",

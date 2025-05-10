@@ -8,6 +8,7 @@ import { addStoreToSessionStorage, getActiveStores, isStoreActive, removeStoreFr
 import { getTime } from "utils/timeUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "../utils/ollamaUtils.js";
 import { setTheme } from "utils/themeUtils.js";
+import { getSetting } from "../utils/settingsUtils.js";
 
 
 function Settings() {
@@ -101,7 +102,7 @@ function Settings() {
           return "No available model found.";
         } else {
           // For adding star to current store
-          const currentModel = sessionStorage.getItem("model");
+          const currentModel = getSetting("model");
           setCurrentModel(currentModel);
   
           // User models
@@ -167,7 +168,7 @@ function Settings() {
         if (data.result.system_roles.length === 0 && (!data.result.user_roles || Object.entries(data.result.user_roles).length === 0)) {
           return "No role found.";
         } else {
-          if (localStorage.getItem("user")) {
+          if (getSetting("user")) {
             if (data.result.user_roles && Object.entries(data.result.user_roles).length > 0) {
               let roles = [];
               Object.entries(data.result.user_roles).forEach(([key, value]) => {
@@ -177,8 +178,8 @@ function Settings() {
             }
           }
   
-          if (sessionStorage.getItem("role")) {
-            const currentRole = sessionStorage.getItem("role");
+          if (getSetting("role")) {
+            const currentRole = getSetting("role");
             setCurrentRole(currentRole);
           }
         }
@@ -191,7 +192,7 @@ function Settings() {
     const listFunctions = async () => {
       let functions = getFunctions();
       let mcpFunctionList = await getMcpFunctions();
-      const enabledFunctions = (localStorage.getItem("functions")).split(",");
+      const enabledFunctions = (getSetting("functions")).split(",");
       setEnabledFunctions(enabledFunctions);
 
       // System functions
@@ -282,7 +283,7 @@ function Settings() {
           return "No available node found.";
         } else {
           // For adding star to current store
-          const currentNode = sessionStorage.getItem("node");
+          const currentNode = getSetting("node");
           setActiveNode(currentNode);
   
           // User nodes
@@ -324,14 +325,14 @@ function Settings() {
       setLoading(false);
     }
 
-    if (localStorage.getItem("user")) {
+    if (getSetting("user")) {
       loadUserSettings();
     } else {
       setLoading(false);
     }
 
     // Set initial language
-    setLang(localStorage.getItem("lang").replace("force", "").trim());
+    setLang(getSetting("lang").replace("force", "").trim());
   }, []);
 
   const updateUserSettings = async (key, value) => {
@@ -357,14 +358,14 @@ function Settings() {
   }
 
   const handleSetUserRoles = useCallback((name) => async () => {
-    if (sessionStorage.getItem("role") === name) {
+    if (getSetting("role") === name) {
       sessionStorage.setItem("role", "");
     } else {
       sessionStorage.setItem("role", name);
     }
 
     // Update state
-    const currentRole = sessionStorage.getItem("role");
+    const currentRole = getSetting("role");
     setCurrentRole(currentRole);
 
     console.log("Settings updated." + " (" + getTime() + ")");
@@ -372,14 +373,14 @@ function Settings() {
   }, []);
 
   const handleSetSystemFunctions = useCallback((name) => async () => {
-    const currentFunctions = (localStorage.getItem("functions")).split(",");
+    const currentFunctions = (getSetting("functions")).split(",");
     if (currentFunctions.includes(name)) {
       const index = currentFunctions.indexOf(name);
       currentFunctions.splice(index, 1);
       localStorage.setItem("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
-      if (localStorage.getItem("user")) {
+      if (getSetting("user")) {
         updateUserSetting("functions", currentFunctions.join(","));
       }
     } else {
@@ -387,13 +388,13 @@ function Settings() {
       localStorage.setItem("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
-      if (localStorage.getItem("user")) {
+      if (getSetting("user")) {
         updateUserSetting("functions", currentFunctions.join(","));
       }
     }
 
     // Update state
-    const enabledFunctions = (localStorage.getItem("functions")).split(",");
+    const enabledFunctions = (getSetting("functions")).split(",");
     setEnabledFunctions(enabledFunctions);
 
     console.log("Settings updated." + " (" + getTime() + ")");
@@ -401,14 +402,14 @@ function Settings() {
   }, []);
 
   const handleSetMcpFunctions = useCallback((name) => async () => {
-    const currentFunctions = (localStorage.getItem("functions")).split(",");
+    const currentFunctions = (getSetting("functions")).split(",");
     if (currentFunctions.includes(name)) {
       const index = currentFunctions.indexOf(name);
       currentFunctions.splice(index, 1);
       localStorage.setItem("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
-      if (localStorage.getItem("user")) {
+      if (getSetting("user")) {
         updateUserSetting("functions", currentFunctions.join(","));
       }
     } else {
@@ -416,13 +417,13 @@ function Settings() {
       localStorage.setItem("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
-      if (localStorage.getItem("user")) {
+      if (getSetting("user")) {
         updateUserSetting("functions", currentFunctions.join(","));
       }
     }
 
     // Update state
-    const enabledFunctions = (localStorage.getItem("functions")).split(",");
+    const enabledFunctions = (getSetting("functions")).split(",");
     setEnabledFunctions(enabledFunctions);
 
     console.log("Settings updated." + " (" + getTime() + ")");
@@ -433,7 +434,7 @@ function Settings() {
     sessionStorage.setItem("model", name);
 
     // Update state
-    const currentModel = sessionStorage.getItem("model");
+    const currentModel = getSetting("model");
     setCurrentModel(currentModel);
 
     console.log("Settings updated." + " (" + getTime() + ")");
@@ -444,7 +445,7 @@ function Settings() {
     sessionStorage.setItem("model", name);
 
     // Update state
-    const currentModel = sessionStorage.getItem("model");
+    const currentModel = getSetting("model");
     setCurrentModel(currentModel);
 
     console.log("Settings updated." + " (" + getTime() + ")");
@@ -455,7 +456,7 @@ function Settings() {
     sessionStorage.setItem("model", name);
 
     // Update state
-    const currentModel = sessionStorage.getItem("model");
+    const currentModel = getSetting("model");
     setCurrentModel(currentModel);
 
     console.log("Settings updated." + " (" + getTime() + ")");
@@ -466,7 +467,7 @@ function Settings() {
     sessionStorage.setItem("model", name);
 
     // Update state
-    const currentModel = sessionStorage.getItem("model");
+    const currentModel = getSetting("model");
     setCurrentModel(currentModel);
 
     console.log("Settings updated." + " (" + getTime() + ")");
@@ -519,14 +520,14 @@ function Settings() {
   }, []);
 
   const handleSetUserNodes = useCallback((name) => async () => {
-    if (sessionStorage.getItem("node") === name) {
+    if (getSetting("node") === name) {
       sessionStorage.setItem("node", "");
     } else {
       sessionStorage.setItem("node", name);
     }
 
     // Update state
-    const currentNode = sessionStorage.getItem("node");
+    const currentNode = getSetting("node");
     setActiveNode(currentNode);
 
     console.log("Settings updated." + " (" + getTime() + ")");
@@ -534,14 +535,14 @@ function Settings() {
   }, []);
 
   const handleSetGroupNodes = useCallback((name) => async () => {
-    if (sessionStorage.getItem("node") === name) {
+    if (getSetting("node") === name) {
       sessionStorage.setItem("node", "");
     } else {
       sessionStorage.setItem("node", name);
     }
 
     // Update state
-    const currentNode = sessionStorage.getItem("node");
+    const currentNode = getSetting("node");
     setActiveNode(currentNode);
 
     console.log("Settings updated." + " (" + getTime() + ")");
@@ -549,14 +550,14 @@ function Settings() {
   }, []);
 
   const handleSetSystemNodes = useCallback((name) => async () => {
-    if (sessionStorage.getItem("node") === name) {
+    if (getSetting("node") === name) {
       sessionStorage.setItem("node", "");
     } else {
       sessionStorage.setItem("node", name);
     }
 
     // Update state
-    const currentNode = sessionStorage.getItem("node");
+    const currentNode = getSetting("node");
     setActiveNode(currentNode);
 
     console.log("Settings updated." + " (" + getTime() + ")");
@@ -812,19 +813,19 @@ function Settings() {
         <div className="mt-3">- {t("Theme")}</div>
         <div className="flex flex-wrap items-center mt-2">
           <button 
-            className={`ml-2 mb-1 ${"light" == localStorage.getItem("theme") ? 'selected' : ''}`}
+            className={`ml-2 mb-1 ${"light" == getSetting("theme") ? 'selected' : ''}`}
             onClick={handleSetTheme("light")} 
           >
             light
           </button>
           <button 
-            className={`ml-2 mb-1 ${"dark" == localStorage.getItem("theme") ? 'selected' : ''}`}
+            className={`ml-2 mb-1 ${"dark" == getSetting("theme") ? 'selected' : ''}`}
             onClick={handleSetTheme("dark")} 
           >
             dark
           </button>
           <button 
-            className={`ml-2 mb-1 ${"terminal" == localStorage.getItem("theme") ? 'selected' : ''}`}
+            className={`ml-2 mb-1 ${"terminal" == getSetting("theme") ? 'selected' : ''}`}
             onClick={handleSetTheme("terminal")} 
           >
             terminal

@@ -1,4 +1,6 @@
 import { getVoice } from "../utils/voiceUtils.js"
+import { getSetting } from "../utils/settingsUtils.js";
+
 
 export async function speak(text) {
   try {
@@ -7,8 +9,8 @@ export async function speak(text) {
     utterance.volume = 0.7;  // 0 to 1
     utterance.rate = 1;      // 0.1 to 10
     utterance.pitch = 1.1;   // 0 to 2
-    utterance.lang = localStorage.getItem("lang").replace(" force", "");
-    const voice = await getVoice(localStorage.getItem("voice"));
+    utterance.lang = getSetting("lang").replace(" force", "");
+    const voice = await getVoice(getSetting("voice"));
     if (voice) utterance.voice = voice;
     window.speechSynthesis.speak(utterance);
   } catch (error) {

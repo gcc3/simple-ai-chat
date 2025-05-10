@@ -1,11 +1,13 @@
 import { initializeMemory } from "../utils/sessionUtils.js";
+import { getSetting } from "../utils/settingsUtils.js";
+
 
 export default async function role(args) {
   const command = args[0];
 
   // Get role prompt
   if (!command) {
-    const role = sessionStorage.getItem("role");
+    const role = getSetting("role");
     if (role === "") {
       return "No role is set. Use command \`:role use [role_name]\` to set a role.";
     }
@@ -59,7 +61,7 @@ export default async function role(args) {
 
   // Reset role
   if (command === "reset") {
-    if (sessionStorage.getItem("role") === "") {
+    if (getSetting("role") === "") {
       return "Role is already empty.";
     }
 
@@ -89,7 +91,7 @@ export default async function role(args) {
         return "No role found.";
       } else {
         let userRoles = "";
-        if (localStorage.getItem("user")) {
+        if (getSetting("user")) {
           if (data.result.user_roles && Object.entries(data.result.user_roles).length > 0) {
             let roles = [];
             Object.entries(data.result.user_roles).forEach(([key, value]) => {
@@ -112,8 +114,8 @@ export default async function role(args) {
 
         // Add star to current role
         let result = userRoles + systemRoles;
-        if (sessionStorage.getItem("role")) {
-          const currentRole = sessionStorage.getItem("role");
+        if (getSetting("role")) {
+          const currentRole = getSetting("role");
           result = result.replace("\\" + currentRole + " ", "*\\" + currentRole + " ");
         }
         return result;
