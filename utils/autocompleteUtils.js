@@ -92,11 +92,11 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   }
 
   if (prefix === ":user set ") {
-    return getSettings("keys_string_array_user")
+    return getSettings("user")
   }
 
   if (prefix === ":set ") {
-    return getSettings("keys_string_array_local");
+    return getSettings("local_keys");
   }
 
   if (prefix === ":function " || prefix === ":function use " || prefix === ":function unuse ") {

@@ -202,10 +202,11 @@ const getDatabaseConnection = async () => {
       const db = await createDatabaseFile();
       await initializeDatabase(db);
 
-      // Create root user with defatut settings
-      const settings = getSettings("json_string", "light", "off");
+      // Create root user with default settings
+      let rootUserSettings = getSettings("user_default");
+      rootUserSettings.groupPassword = generatePassword();
 
-      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, settings);
+      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, JSON.stringify(rootUserSettings));
       await updateUserEmailVerifiedAt("root");
       return db;
     } else {

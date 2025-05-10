@@ -1,6 +1,6 @@
 import { verifiyEmailAddress } from "../utils/emailUtils.js";
-import { getSettings, setSetting } from "../utils/settingsUtils.js";
-import { refreshLocalUserInfo, clearUserWebStorage, setUserWebStorage } from "../utils/userUtils.js";
+import { getSettings, getSetting, setSetting } from "../utils/settingsUtils.js";
+import { refreshLocalUserInfo, clearUserWebStorage, setUserWebStorage, generatePassword } from "../utils/userUtils.js";
 
 
 export default async function entry(args) {
@@ -71,7 +71,12 @@ export default async function entry(args) {
       // Apply the user current UI setting when creating a user
       const theme = getSetting("theme") || "light";
       const fullscreen = getSetting("fullscreen") || "off";
-      const settings = getSettings("json_string", theme, fullscreen);
+      
+      // User initial settings with some settings overwritten
+      let userSettings = getSettings("user_default");
+      userSettings.theme = theme;
+      userSettings.fullscreen = fullscreen;
+      userSettings.groupPassword = generatePassword();
 
       const response = await fetch("/api/user/add", {
         method: "POST",
@@ -82,7 +87,7 @@ export default async function entry(args) {
           username,
           email,
           password,
-          settings,
+          settings: JSON.stringify(userSettings),
         }),
       });
 
