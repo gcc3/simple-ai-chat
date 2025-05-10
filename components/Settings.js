@@ -7,6 +7,7 @@ import { updateUserSetting } from '../utils/userUtils.js';
 import { addStoreToSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
 import { getTime } from "utils/timeUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "../utils/ollamaUtils.js";
+import { setTheme } from "utils/themeUtils.js";
 
 
 function Settings() {
@@ -562,6 +563,20 @@ function Settings() {
     setMessage(t("Settings updated.") + " (" + getTime() + ")");
   }, []);
 
+  const handleSetTheme = useCallback((theme) => async () => {
+    // Set theme
+    setTheme(theme);
+    localStorage.setItem("theme", theme);
+
+    // Update user settings
+    if (user) {
+      await updateUserSettings("theme", theme);
+    }
+
+    console.log("Settings updated." + " (" + getTime() + ")");
+    setMessage(t("Settings updated.") + " (" + getTime() + ")");
+  }, [user, t]);
+
   const handleSetLanguage = useCallback((newLang) => async () => {
     // Set language
     const lang_ = newLang.replace("force", "").trim()
@@ -791,6 +806,29 @@ function Settings() {
               {i}
             </button>
           ))}
+        </div>
+      </div>}
+      {<div>
+        <div className="mt-3">- {t("Theme")}</div>
+        <div className="flex flex-wrap items-center mt-2">
+          <button 
+            className={`ml-2 mb-1 ${"light" == localStorage.getItem("theme") ? 'selected' : ''}`}
+            onClick={handleSetTheme("light")} 
+          >
+            light
+          </button>
+          <button 
+            className={`ml-2 mb-1 ${"dark" == localStorage.getItem("theme") ? 'selected' : ''}`}
+            onClick={handleSetTheme("dark")} 
+          >
+            dark
+          </button>
+          <button 
+            className={`ml-2 mb-1 ${"terminal" == localStorage.getItem("theme") ? 'selected' : ''}`}
+            onClick={handleSetTheme("terminal")} 
+          >
+            terminal
+          </button>
         </div>
       </div>}
       {languages && <div>
