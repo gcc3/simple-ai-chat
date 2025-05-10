@@ -431,47 +431,146 @@ function Settings() {
   }, []);
 
   const handleSetUserModels = useCallback((name) => async () => {
-    setSetting("model", name);
+    try {
+      const response = await fetch("/api/model/" + name, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    // Update state
-    const currentModel = getSetting("model");
-    setCurrentModel(currentModel);
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
 
-    console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated.") + " (" + getTime() + ")");
+      // Model info
+      const modelInfo = data.result;
+      if (!modelInfo) {
+        console.error("Model not found");
+        return;
+      }
+      
+      // Set model
+      globalThis.model = modelInfo.model;
+      globalThis.baseUrl = modelInfo.base_url;
+      setSetting("model", modelInfo.model);
+      setSetting("baseUrl", modelInfo.base_url);
+
+      // Update state
+      const currentModel = getSetting("model");
+      setCurrentModel(currentModel);
+
+      console.log("Settings updated." + " (" + getTime() + ")");
+      setMessage(t("Settings updated.") + " (" + getTime() + ")");
+    } catch (error) {
+      console.error(error);
+      return;
+    }
   }, []);
 
   const handleSetGroupModels = useCallback((name) => async () => {
-    setSetting("model", name);
+    try {
+      const response = await fetch("/api/model/" + name, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    // Update state
-    const currentModel = getSetting("model");
-    setCurrentModel(currentModel);
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
 
-    console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated.") + " (" + getTime() + ")");
+      // Model info
+      const modelInfo = data.result;
+      if (!modelInfo) {
+        console.error("Model not found");
+        return;
+      }
+      
+      // Set model
+      globalThis.model = modelInfo.model;
+      globalThis.baseUrl = modelInfo.base_url;
+      setSetting("model", modelInfo.model);
+      setSetting("baseUrl", modelInfo.base_url);
+
+      // Update state
+      const currentModel = getSetting("model");
+      setCurrentModel(currentModel);
+
+      console.log("Settings updated." + " (" + getTime() + ")");
+      setMessage(t("Settings updated.") + " (" + getTime() + ")");
+    } catch (error) {
+      console.error(error);
+      return;
+    }
   }, []);
 
   const handleSetSystemModels = useCallback((name) => async () => {
-    setSetting("model", name);
+    try {
+      const response = await fetch("/api/model/" + name, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    // Update state
-    const currentModel = getSetting("model");
-    setCurrentModel(currentModel);
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
 
-    console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated.") + " (" + getTime() + ")");
+      // Model info
+      const modelInfo = data.result;
+      if (!modelInfo) {
+        console.error("Model not found");
+        return;
+      }
+      
+      // Set model
+      globalThis.model = modelInfo.model;
+      globalThis.baseUrl = modelInfo.base_url;
+      setSetting("model", modelInfo.model);
+      setSetting("baseUrl", modelInfo.base_url);
+
+      // Update state
+      const currentModel = getSetting("model");
+      setCurrentModel(currentModel);
+
+      console.log("Settings updated." + " (" + getTime() + ")");
+      setMessage(t("Settings updated.") + " (" + getTime() + ")");
+    } catch (error) {
+      console.error(error);
+      return;
+    }
   }, []);
 
   const handleSetOllamaModels = useCallback((name) => async () => {
-    setSetting("model", name);
+    // Check local Ollama models
+    if (await pingOllamaAPI()) {
+      const ollamModels = await listOllamaModels();
+      const ollamModelInfo = ollamModels.find((m) => m.name === name);
+      if (ollamModelInfo) {
+        // Set model to session storage
+        globalThis.model = name;
+        globalThis.baseUrl = ollamModelInfo.base_url;
+        setSetting("model", name);
+        setSetting("baseUrl", ollamModelInfo.base_url);
 
-    // Update state
-    const currentModel = getSetting("model");
-    setCurrentModel(currentModel);
+        // Update state
+        const currentModel = getSetting("model");
+        setCurrentModel(currentModel);
 
-    console.log("Settings updated." + " (" + getTime() + ")");
-    setMessage(t("Settings updated.") + " (" + getTime() + ")");
+        console.log("Settings updated." + " (" + getTime() + ")");
+        setMessage(t("Settings updated.") + " (" + getTime() + ")");
+      } else {
+        console.error("Ollama model not found.");
+      }
+    } else {
+      console.error("Cannot connect to Ollama server.");
+    }
   }, []);
 
   const handleSetUserStores = useCallback((name) => async () => {
