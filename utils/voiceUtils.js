@@ -1,6 +1,9 @@
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
+
 export async function getVoice(voiceName) {
   const voices = await getVoices();
-  const currentLang = localStorage.getItem("lang").replace(" force", "");
+  const currentLang = getSetting("lang").replace(" force", "");
   
   for (let i = 0; i < voices.length ; i++) {
     if (voices[i].lang === currentLang && voices[i].name === voiceName) {

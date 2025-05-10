@@ -2,6 +2,8 @@ import { initializeMemory } from "../utils/sessionUtils.js";
 import { isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
 import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from '../utils/userUtils.js';
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
 
 export default async function unuse(args) {
   const usage = "Usage: :unuse [name]\n";
@@ -27,16 +29,16 @@ export default async function unuse(args) {
   const function_ = functions.find((f) => f.name === name);
   if (function_) {
     // Remove from localStorage and remote
-    const currentFunctions = (localStorage.getItem("functions")).split(",");
+    const currentFunctions = (getSetting("functions")).split(",");
     if (!currentFunctions.includes(name)) {
       return "Function not in use.";
     } else {
       const index = currentFunctions.indexOf(name);
       currentFunctions.splice(index, 1);
-      localStorage.setItem("functions", currentFunctions.join(","));
+      setSetting("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
-      if (localStorage.getItem("user")) {
+      if (getSetting("user")) {
         updateUserSetting("functions", currentFunctions.join(","));
       }
     }
@@ -47,8 +49,8 @@ export default async function unuse(args) {
   const modelInfo = await findModel(name);
   if (modelInfo) {
     // Set model
-    sessionStorage.setItem("model", globalThis.model);  // reset model
-    sessionStorage.setItem("baseUrl", globalThis.baseUrl);  // reset base url
+    setSetting("model", globalThis.model);  // reset model
+    setSetting("baseUrl", globalThis.baseUrl);  // reset base url
 
     return "Model unused, and reset to default model.";
   }
@@ -57,7 +59,7 @@ export default async function unuse(args) {
   const nodeInfo = await findNode(name);
   if (nodeInfo) {
     // clear node
-    sessionStorage.setItem("node", "");
+    setSetting("node", "");
 
     // Reset session to forget previous memory
     initializeMemory();
@@ -79,11 +81,11 @@ export default async function unuse(args) {
 
   // Find role
   if (await findRole(name)) {
-    if (sessionStorage.getItem("role") === "") {
+    if (getSetting("role") === "") {
       return "Role is already empty.";
     }
 
-    sessionStorage.setItem("role", "");  // reset role
+    setSetting("role", "");  // reset role
 
     // Reset session to forget previous memory
     initializeMemory();

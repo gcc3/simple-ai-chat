@@ -1,6 +1,9 @@
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
+
 export default async function log(args) {
   try {
-    const response = await fetch("/api/log/list?session=" + sessionStorage.getItem("session"), {
+    const response = await fetch("/api/log/list?session=" + getSetting("session"), {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

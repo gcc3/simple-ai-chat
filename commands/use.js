@@ -3,6 +3,8 @@ import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } 
 import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from "../utils/userUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "../utils/ollamaUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
 
 export default async function use(args) {
   const usage = "Usage: :use [function|node|store|role]\n";
@@ -24,13 +26,13 @@ export default async function use(args) {
   // Find model
   const modelInfo = await findModel(name);
   if (modelInfo) {
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
     // Set model
-    sessionStorage.setItem("model", name);
-    sessionStorage.setItem("baseUrl", modelInfo.base_url);
+    setSetting("model", name);
+    setSetting("baseUrl", modelInfo.base_url);
 
     return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
   }
@@ -42,15 +44,15 @@ export default async function use(args) {
   const function_ = functions.find((f) => f.name === name);
   if (function_) {
     // Add to localhostStorage and remote
-    const currentFunctions = (localStorage.getItem("functions")).split(",");
+    const currentFunctions = (getSetting("functions")).split(",");
     if (currentFunctions.includes(name)) {
       return "Function already in use.";
     } else {
       currentFunctions.push(name)
-      localStorage.setItem("functions", currentFunctions.join(","));
+      setSetting("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
-      if (localStorage.getItem("user")) {
+      if (getSetting("user")) {
         updateUserSetting("functions", currentFunctions.join(","));
       }
     }
@@ -60,12 +62,12 @@ export default async function use(args) {
   // Find node
   const nodeInfo = await findNode(name);
   if (nodeInfo) {
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
     // Set node
-    sessionStorage.setItem("node", name);
+    setSetting("node", name);
 
     return "Node is set to \`" + name + "\`, you can directly talk to it, or use command \`:generate [input]\` to generate from it. Command \`:node\` shows current node information.";
   }
@@ -73,7 +75,7 @@ export default async function use(args) {
   // Find store
   const storeInfo = await findStore(name);
   if (storeInfo) {
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -89,7 +91,7 @@ export default async function use(args) {
 
   // Find role
   if (await findRole(name)) {
-    sessionStorage.setItem("role", name);
+    setSetting("role", name);
 
     // Reset session to forget previous memory
     initializeMemory();
@@ -107,8 +109,8 @@ async function findModel(name) {
     const ollamModelInfo = ollamModels.find((m) => m.name === name);
     if (ollamModelInfo) {
       // Set model to session storage
-      sessionStorage.setItem("model", name);
-      sessionStorage.setItem("baseUrl", ollamModelInfo.base_url);
+      setSetting("model", name);
+      setSetting("baseUrl", ollamModelInfo.base_url);
       return ollamModelInfo;
     }
   }

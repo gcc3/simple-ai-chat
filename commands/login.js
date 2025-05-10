@@ -1,5 +1,7 @@
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
 import { setUserWebStorage } from "../utils/userUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
 
 export default async function login(args) {
   if (args.length < 2 && args.length > 4) {
@@ -7,7 +9,7 @@ export default async function login(args) {
   }
 
   let userLoginPreviously = false;
-  if (localStorage.getItem("user")) {
+  if (getSetting("user")) {
     userLoginPreviously = true;
   }
 
@@ -55,7 +57,7 @@ export default async function login(args) {
       }
 
       setUserWebStorage(user);
-      console.log("User is set to \"" + localStorage.getItem("user") + "\".");
+      console.log("User is set to \"" + getSetting("user") + "\".");
 
       if (userLoginPreviously) {
         initializeSessionMemory();

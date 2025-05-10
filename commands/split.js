@@ -1,5 +1,7 @@
 import { updateUserSetting } from '../utils/userUtils.js';
 import emitter from '../utils/eventsUtils.js';
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
 
 export default function fullscreen(args) {
   const usage = "Usage: :split" + "\n";
@@ -13,10 +15,10 @@ export default function fullscreen(args) {
     // Triggle enter key text change
     emitter.emit("ui:set_enter", "⌃enter");
 
-    localStorage.setItem('fullscreen', "split");
+    setSetting('fullscreen', "split");
     emitter.emit("ui:set_fullscreen", "split");
 
-    if (localStorage.getItem("user")) {
+    if (getSetting("user")) {
       updateUserSetting("fullscreen", "split");
     }
     return "Fullscreen split vertically.";

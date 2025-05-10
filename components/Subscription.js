@@ -5,6 +5,7 @@ import SubscriptionComparisonTable from "./SubscriptionComparisonTable";
 import { npre } from "utils/numberUtils";
 import { useTranslation } from "react-i18next";
 import moment from "moment";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 // Get amount
@@ -72,7 +73,7 @@ function Subscription() {
       setLoading(false);
     }
 
-    if (localStorage.getItem("user")) {
+    if (getSetting("user")) {
       loadUserInfo();
     } else {
       setLoading(false);

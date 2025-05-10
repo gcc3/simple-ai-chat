@@ -1,7 +1,9 @@
 import { clearUserWebStorage } from "../utils/userUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
 
 export default async function logout(args) {
-  const username = localStorage.getItem("user");
+  const username = getSetting("user");
   if (!username) {
     return "Not logged in.";
   }

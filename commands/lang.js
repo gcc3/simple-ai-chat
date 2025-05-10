@@ -1,4 +1,6 @@
 import { getLangCodes, getLanguageName } from "../utils/langUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
 
 export default async function lang(args) {
   const command = args[0];
@@ -7,8 +9,8 @@ export default async function lang(args) {
   // Get lang info
   // :lang
   if (!command) {
-    if (localStorage.getItem("lang")) {
-      const currentLang = localStorage.getItem("lang").replace(" force", "");
+    if (getSetting("lang")) {
+      const currentLang = getSetting("lang").replace(" force", "");
       return "Current language: `" + getLanguageName(currentLang) + "`, country-language code: " + currentLang;
     } else {
       return "No language set.";
@@ -18,8 +20,8 @@ export default async function lang(args) {
   if (command === "ls" || command === "list") {
     // Add star to current lang
     let result = "\\" + langCodes.join(" \\") + " ";
-    if (localStorage.getItem("lang")) {
-      const currentLang = localStorage.getItem("lang").replace(" force", "");
+    if (getSetting("lang")) {
+      const currentLang = getSetting("lang").replace(" force", "");
       result = result.replace("\\" + currentLang + " ", "*\\" + currentLang + " ");
     }
     return result;
@@ -46,7 +48,7 @@ export default async function lang(args) {
     }
 
     if (langCodes.includes(newLangCode)) {
-      localStorage.setItem("lang", newLangCode + " force");
+      setSetting("lang", newLangCode + " force");
       return "Language set to `" + getLanguageName(newLangCode) + "`, country-language code: " + newLangCode + ". Please refresh to see changes.";
     } else {
       return "Language code not found.";

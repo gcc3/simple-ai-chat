@@ -1,5 +1,7 @@
 import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from '../utils/userUtils.js';
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
 
 export default async function function_(args) {
   const usage = "Usage: :function [ls|list]\n"
@@ -16,7 +18,7 @@ export default async function function_(args) {
     if (functions.length === 0) {
       return "No functions.";
     } else {
-      const enabledFunctions = (localStorage.getItem("functions")).split(",");
+      const enabledFunctions = (getSetting("functions")).split(",");
 
       // Callable functions
       let callables = functions
@@ -101,15 +103,15 @@ export default async function function_(args) {
     }
 
     // Add to localStorage and remote
-    const currentFunctions = (localStorage.getItem("functions")).split(",");
+    const currentFunctions = (getSetting("functions")).split(",");
     if (currentFunctions.includes(functionName)) {
       return "Function already in use.";
     } else {
       currentFunctions.push(functionName)
-      localStorage.setItem("functions", currentFunctions.join(","));
+      setSetting("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
-      if (localStorage.getItem("user")) {
+      if (getSetting("user")) {
         updateUserSetting("functions", currentFunctions.join(","));
       }
     }
@@ -133,16 +135,16 @@ export default async function function_(args) {
     }
 
     // Remove from localhostStorage and remote
-    const currentFunctions = (localStorage.getItem("functions")).split(",");
+    const currentFunctions = (getSetting("functions")).split(",");
     if (!currentFunctions.includes(functionName)) {
       return "Function not in use.";
     } else {
       const index = currentFunctions.indexOf(functionName);
       currentFunctions.splice(index, 1);
-      localStorage.setItem("functions", currentFunctions.join(","));
+      setSetting("functions", currentFunctions.join(","));
 
       // Update user setting (remote)
-      if (localStorage.getItem("user")) {
+      if (getSetting("user")) {
         updateUserSetting("functions", currentFunctions.join(","));
       }
     }

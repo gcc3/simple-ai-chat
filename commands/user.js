@@ -1,6 +1,7 @@
 import { verifiyEmailAddress } from "../utils/emailUtils.js";
-import { getSettings } from "../utils/settingsUtils.js";
-import { refreshLocalUserInfo, clearUserWebStorage, setUserWebStorage } from "../utils/userUtils.js";
+import { getSettings, getSetting, setSetting } from "../utils/settingsUtils.js";
+import { refreshLocalUserInfo, clearUserWebStorage, setUserWebStorage, generatePassword } from "../utils/userUtils.js";
+
 
 export default async function entry(args) {
   const command = args[0];
@@ -19,7 +20,7 @@ export default async function entry(args) {
 
   // Get user info, configurations
   if (!command || command === "info") {
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -68,9 +69,14 @@ export default async function entry(args) {
 
     try {
       // Apply the user current UI setting when creating a user
-      const theme = localStorage.getItem("theme") || "light";
-      const fullscreen = localStorage.getItem("fullscreen") || "off";
-      const settings = getSettings("json_string", theme, fullscreen);
+      const theme = getSetting("theme") || "light";
+      const fullscreen = getSetting("fullscreen") || "off";
+      
+      // User initial settings with some settings overwritten
+      let userSettings = getSettings("user_default");
+      userSettings.theme = theme;
+      userSettings.fullscreen = fullscreen;
+      userSettings.groupPassword = generatePassword();
 
       const response = await fetch("/api/user/add", {
         method: "POST",
@@ -81,7 +87,7 @@ export default async function entry(args) {
           username,
           email,
           password,
-          settings,
+          settings: JSON.stringify(userSettings),
         }),
       });
 
@@ -107,7 +113,7 @@ export default async function entry(args) {
       return "Usage: :user [del|delete] [username]";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -144,7 +150,7 @@ export default async function entry(args) {
       return "Usage: :user set pass [password]";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -178,7 +184,7 @@ export default async function entry(args) {
       return "Usage: :user set email [email]";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -213,7 +219,7 @@ export default async function entry(args) {
       return "Usage: :user set [key] [value]";
     }
     
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -319,7 +325,7 @@ export default async function entry(args) {
       return "Usage: :user role add [role_name] [prompt]";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -353,7 +359,7 @@ export default async function entry(args) {
       }
 
       if (data.success) {
-        sessionStorage.setItem("role", roleName);  // set active
+        setSetting("role", roleName);  // set active
         return data.message;
       } else {
         return data.error;
@@ -370,7 +376,7 @@ export default async function entry(args) {
       return "Usage: :user role [del|delete] [role_name]";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -410,7 +416,7 @@ export default async function entry(args) {
       return "Usage: :user role set [role_name] [prompt]";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -456,7 +462,7 @@ export default async function entry(args) {
       return "Usage: :user join [group] [password]";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -496,7 +502,7 @@ export default async function entry(args) {
       return "Usage: :user leave [group]";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 

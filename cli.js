@@ -5,7 +5,7 @@ import readline from "node:readline";
 import command from "./command.js";
 import tough from 'tough-cookie';
 import fetchCookie from 'fetch-cookie';
-import { initializeStorage } from "./utils/storageUtils.js";
+import { initializeSettings } from "./utils/settingsUtils.js";
 import { initializeSessionMemory } from "./utils/sessionUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "./utils/ollamaUtils.js";
 import { loadConfig } from "./utils/configUtils.js";
@@ -17,6 +17,7 @@ import { readFileSync } from "fs";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { spawn } from "child_process";
+import { getSetting, setSetting } from "./utils/settingsUtils.js";
 
 
 // Disable process warnings (node)
@@ -73,13 +74,13 @@ async function generate_sse(input, images=[], files=[]) {
     images: "",
     files: "",
     time: Date.now().toString(),
-    session: sessionStorage.getItem("session"),
+    session: getSetting("session"),
     model: globalThis.model,
     mem_length: "7",
-    functions: localStorage.getItem("functions"),
-    role: sessionStorage.getItem("role"),
-    stores: sessionStorage.getItem("stores"),
-    node: sessionStorage.getItem("node"),
+    functions: getSetting("functions"),
+    role: getSetting("role"),
+    stores: getSetting("stores"),
+    node: getSetting("node"),
     use_stats: "false",
     use_eval: "false",
     use_location: "false",
@@ -154,7 +155,7 @@ async function generate_sse(input, images=[], files=[]) {
           // Reset time
           const timeNow = Date.now();
           setTime(timeNow);
-          sessionStorage.setItem("head", timeNow);
+          setSetting("head", timeNow);
 
           // Call generate with function
           await generate_sse(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
@@ -225,11 +226,11 @@ async function generate_msg(input, images=[], files=[]) {
   const msg = msgData.result.msg;
 
   // Use stream
-  const useStream = localStorage.getItem('useStream') === "true";
+  const useStream = getSetting('useStream') === "true";
 
   // User
   const user = {
-    username: localStorage.getItem("user")
+    username: getSetting("user")
   }
 
   const openai = new OpenAI({
@@ -266,11 +267,11 @@ async function generate_msg(input, images=[], files=[]) {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        user: localStorage.getItem("user") || "",
+        user: getSetting("user") || "",
         input,
         output,
         model: model,
-        session: sessionStorage.getItem("session"),
+        session: getSetting("session"),
         images: [],
         time: Date.now(),
       }),
@@ -429,7 +430,7 @@ program
     }
 
     // Initialization
-    initializeStorage();
+    initializeSettings();
     initializeSessionMemory();
 
     // System and user configurations
@@ -447,31 +448,31 @@ program
       }
 
       // Set welcome message
-      if (systemInfo.welcome_message && !localStorage.getItem("user")) {
+      if (systemInfo.welcome_message && !getSetting("user")) {
         printOutput(systemInfo.welcome_message);
       }
 
       // Set defaults
-      if (!localStorage.getItem("functions")) localStorage.setItem("functions", systemInfo.default_functions);  // default functions
-      if (!sessionStorage.getItem("role")) sessionStorage.setItem("role", systemInfo.default_role);    // default role
-      if (!sessionStorage.getItem("stores")) sessionStorage.setItem("stores", systemInfo.default_stores);  // default stores
-      if (!sessionStorage.getItem("node")) sessionStorage.setItem("node", systemInfo.default_node);    // default node
+      if (!getSetting("functions")) setSetting("functions", systemInfo.default_functions);  // default functions
+      if (!getSetting("role")) setSetting("role", systemInfo.default_role);    // default role
+      if (!getSetting("stores")) setSetting("stores", systemInfo.default_stores);  // default stores
+      if (!getSetting("node")) setSetting("node", systemInfo.default_node);    // default node
 
       // Set model
       // Auto setup the base URL too
       globalThis.model = systemInfo.model;
       globalThis.baseUrl = systemInfo.base_url;
-      if (!sessionStorage.getItem("model")) {
-        sessionStorage.setItem("model", systemInfo.model);  // default model
-        sessionStorage.setItem("baseUrl", systemInfo.base_url);  // default base url
+      if (!getSetting("model")) {
+        setSetting("model", systemInfo.model);  // default model
+        setSetting("baseUrl", systemInfo.base_url);  // default base url
       } else {
-        const modelName = sessionStorage.getItem("model");
+        const modelName = getSetting("model");
         const modelInfoResponse = await fetch('/api/model/' + modelName);
         const modelInfo = (await modelInfoResponse.json()).result;
         if (modelInfo) {
           // Found remote model
           console.log("Set baseUrl: " + modelInfo.base_url);
-          sessionStorage.setItem("baseUrl", modelInfo.base_url);
+          setSetting("baseUrl", modelInfo.base_url);
         } else {
           if (await pingOllamaAPI()) {
             const ollamaModels = await listOllamaModels();
@@ -479,11 +480,11 @@ program
             if (ollamaModel) {
               // Found ollama model
               console.log("Set baseUrl: " + ollamaModel.base_url);
-              sessionStorage.setItem("baseUrl", ollamaModel.base_url);
+              setSetting("baseUrl", ollamaModel.base_url);
             } else {
               // Both remote and local model not found, set baseUrl to empty
               console.warn("Model `" + modelName + "` not found, set baseUrl to empty.");
-              sessionStorage.setItem("baseUrl", "");
+              setSetting("baseUrl", "");
             }
           }
         }
@@ -520,7 +521,7 @@ program
           await generate_msg(input, [], []);
         } else {
           // Server model
-          if (localStorage.getItem('useStream') == "true") {
+          if (getSetting('useStream') == "true") {
             console.log("Start. (SSE)");
             await generate_sse(input, [], []);
           } else {

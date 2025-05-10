@@ -1,4 +1,6 @@
 import { addStoreToSessionStorage, countStoresInSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
 
 export default async function store(args, files) {
   const command = args[0];
@@ -17,11 +19,11 @@ export default async function store(args, files) {
   // Get store info
   // :store [name?], no name
   if (!command) {
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
-    const stores = sessionStorage.getItem("stores");
+    const stores = getSetting("stores");
     if (!stores) {
       return "No data store is set, please use command \`:store use [name]\` to set a store.";
     }
@@ -86,7 +88,7 @@ export default async function store(args, files) {
       return "Usage: :store [ls|list]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -235,11 +237,11 @@ export default async function store(args, files) {
 
   // Reset store
   if (command === "reset") {
-    if (sessionStorage.getItem("stores") === "") {
+    if (getSetting("stores") === "") {
       return "Store is already empty.";
     }
 
-    sessionStorage.setItem("stores", "");  // reset store
+    setSetting("stores", "");  // reset store
     return "Store reset.";
   }
 
@@ -249,7 +251,7 @@ export default async function store(args, files) {
       return "Usage: :store add [engine] [name]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -309,7 +311,7 @@ export default async function store(args, files) {
       return "Usage: :store init [name?]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -326,7 +328,7 @@ export default async function store(args, files) {
       }
     } else {
       // Use current store
-      storeName = sessionStorage.getItem("stores");
+      storeName = getSetting("stores");
     }
 
     if (!storeName) {
@@ -364,7 +366,7 @@ export default async function store(args, files) {
       return "Usage: :store data upload [file]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
     
@@ -375,7 +377,7 @@ export default async function store(args, files) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          name: sessionStorage.getItem("stores"),
+          name: getSetting("stores"),
           files,  // array of file URLs
         }),
       });
@@ -400,7 +402,7 @@ export default async function store(args, files) {
       return "Usage: :store data reset [name?]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -410,7 +412,7 @@ export default async function store(args, files) {
 
     let storeName = "";
     if (args.length === 2) {
-      storeName = sessionStorage.getItem("stores");
+      storeName = getSetting("stores");
       if (!storeName) {
         return "No data store is set, please use command \`:store use [name]\` to set a store.";
       }
@@ -456,7 +458,7 @@ export default async function store(args, files) {
       return "Usage: :store [del|delete] [name]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -501,11 +503,11 @@ export default async function store(args, files) {
       return "Usage: :store set owner [owner]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
-    const storeName = sessionStorage.getItem("stores");
+    const storeName = getSetting("stores");
     if (!storeName) {
       return "No data store is set, please use command \`:store use [name]\` to set a store.";
     }
@@ -550,11 +552,11 @@ export default async function store(args, files) {
       return "Usage: :user set [key] [value]";
     }
     
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
-    const storeName = sessionStorage.getItem("stores");
+    const storeName = getSetting("stores");
     if (!storeName) {
       return "No data store is set, please use command \`:store use [name]\` to set a store.";
     }

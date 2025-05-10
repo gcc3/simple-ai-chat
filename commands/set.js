@@ -1,5 +1,5 @@
 import { setSession, setTime } from "../utils/sessionUtils.js";
-import { getSettings } from "../utils/settingsUtils.js";
+import { getSettings, setSetting } from "../utils/settingsUtils.js";
 
 export default function set(args) {
   if (args.length != 2) {
@@ -46,7 +46,7 @@ export default function set(args) {
       setSession(value);
       break;
     case "model":
-      sessionStorage.setItem("model", value);
+      setSetting("model", value);
       break;
     case "time":
       if (isNaN(value)) {
@@ -58,82 +58,82 @@ export default function set(args) {
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
-      localStorage.setItem("useStream", value);
+      setSetting("useStream", value);
       break;
     case "voice":
-      localStorage.setItem("voice", value);
+      setSetting("voice", value);
       break;
     case "uselocation":
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
-      localStorage.setItem("useLocation", value);
+      setSetting("useLocation", value);
       break;
     case "location":
-      localStorage.setItem("location", value);
+      setSetting("location", value);
       break;
     case "lang":
-      localStorage.setItem("lang", value);
+      setSetting("lang", value);
       break;
     case "theme":
       if (value != "light" && value != "dark" && value != "terminal") {
         return "Invalid value. Value must be light, dark, or terminal.";
       }
-      localStorage.setItem("theme", value);
+      setSetting("theme", value);
       break;
     case "fullscreen":
       if (value != "off" && value != "default" && value != "split") {
         return "Invalid value. Value must be on, off, default, or split.";
       }
-      localStorage.setItem("fullscreen", value);
+      setSetting("fullscreen", value);
       break;
     case "usespeak":
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
-      localStorage.setItem("useSpeak", value);
+      setSetting("useSpeak", value);
       break;
     case "usestats":
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
-      localStorage.setItem("useStats", value);
+      setSetting("useStats", value);
       break;
     case "useeval":
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
-      localStorage.setItem("useEval", value);
+      setSetting("useEval", value);
       break;
     case "usesystemrole":
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
-      localStorage.setItem("useSystemRole", value);
+      setSetting("useSystemRole", value);
       break;
     case "functions":
-      localStorage.setItem("functions", value);
+      setSetting("functions", value);
       break;
     case "role":
-      sessionStorage.setItem("role", value);
+      setSetting("role", value);
       break;
     case "stores":
-      sessionStorage.setItem("stores", value);
+      setSetting("stores", value);
       break;
     case "node":
-      sessionStorage.setItem("node", value);
+      setSetting("node", value);
       break;
     case "memlength":
       if (isNaN(value)) {
         return "Invalid value. Value must be a number.";
       }
-      sessionStorage.setItem("memLength", value);
+      setSetting("memLength", value);
       break;
     case "passmask":
       if (value != "true" && value != "false") {
         return "Invalid value. Value must be true or false.";
       }
-      localStorage.setItem("passMask", value);
+      setSetting("passMask", value);
       break;
   }
 

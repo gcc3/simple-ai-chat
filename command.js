@@ -1,4 +1,5 @@
 import { isCommandMusked } from "./utils/passwordUtils.js";
+import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import help from "./commands/help.js";
 import stats from "./commands/stats.js";
 import eval_ from "./commands/eval.js";
@@ -198,7 +199,7 @@ export function pushCommandHistory(command) {
   }
 
   // Get the existing history or initialize a new array
-  let commandHistories = JSON.parse(localStorage.getItem("history")) || [];
+  let commandHistories = JSON.parse(getSetting("history")) || [];
 
   // Add new command to the front of the array
   commandHistories.unshift(command);
@@ -207,22 +208,22 @@ export function pushCommandHistory(command) {
   commandHistories = commandHistories.slice(0, 100);
 
   // Save the updated history
-  localStorage.setItem("history", JSON.stringify(commandHistories));
+  setSetting("history", JSON.stringify(commandHistories));
 }
 
 export function getHistoryCommand(index) {
-  if (localStorage.getItem("history") === null) {
-    localStorage.setItem("history", JSON.stringify([]));
+  if (getSetting("history") === null) {
+    setSetting("history", JSON.stringify([]));
   }
 
-  let commandHistory = JSON.parse(localStorage.getItem("history"));
+  let commandHistory = JSON.parse(getSetting("history"));
   return commandHistory[index];
 }
 
 export function getHistoryCommandIndex() {
-  if (sessionStorage.getItem("historyIndex") === null) {
-    sessionStorage.setItem("historyIndex", -1);
+  if (getSetting("historyIndex") === null) {
+    setSetting("historyIndex", -1);
   }
 
-  return parseInt(sessionStorage.getItem("historyIndex"));
+  return parseInt(getSetting("historyIndex"));
 }

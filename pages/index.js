@@ -32,7 +32,7 @@ import { Readable } from "stream";
 import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSetting } from "utils/userUtils";
 import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 import { useUI } from '../contexts/UIContext';
-import { initializeStorage } from "utils/storageUtils";
+import { initializeSettings } from "utils/settingsUtils";
 import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
@@ -40,6 +40,7 @@ import { isUrl } from "utils/urlUtils";
 import { TYPE } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
 // Status control
@@ -332,13 +333,13 @@ export default function Home() {
 
   // Initializing
   useEffect(() => { 
-    initializeStorage();
+    initializeSettings();
     initializeSessionMemory();
 
     // System and user configurations
     const getSystemInfo = async () => {
       // User info
-      if (localStorage.getItem("user") !== null) {
+      if (getSetting("user") !== null) {
         console.log("Fetching user info...");
         const user = await fetchUserInfo();
         if (user) {
@@ -350,7 +351,7 @@ export default function Home() {
           console.warn("User not found or authentication failed, clearing local user data...");
       
           // Clear local user data
-          if (localStorage.getItem("user")) {
+          if (getSetting("user")) {
             clearUserWebStorage();
       
             // Clear auth cookie
@@ -388,32 +389,32 @@ export default function Home() {
       if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
 
       // Set welcome message
-      if (systemInfo.welcome_message && !localStorage.getItem("user")) {
+      if (systemInfo.welcome_message && !getSetting("user")) {
         printOutput(systemInfo.welcome_message);
         markdownFormatter(elOutputRef.current);
       }
 
       // Set defaults
-      if (!localStorage.getItem("functions")) localStorage.setItem("functions", systemInfo.default_functions);  // default functions
-      if (!sessionStorage.getItem("role")) sessionStorage.setItem("role", systemInfo.default_role);    // default role
-      if (!sessionStorage.getItem("stores")) sessionStorage.setItem("stores", systemInfo.default_stores);  // default stores
-      if (!sessionStorage.getItem("node")) sessionStorage.setItem("node", systemInfo.default_node);    // default node
+      if (!getSetting("functions")) setSetting("functions", systemInfo.default_functions);  // default functions
+      if (!getSetting("role")) setSetting("role", systemInfo.default_role);    // default role
+      if (!getSetting("stores")) setSetting("stores", systemInfo.default_stores);  // default stores
+      if (!getSetting("node")) setSetting("node", systemInfo.default_node);    // default node
 
       // Set model
       // Auto setup the base URL too
       globalThis.model = systemInfo.model;
       globalThis.baseUrl = systemInfo.base_url;
-      if (!sessionStorage.getItem("model")) {
-        sessionStorage.setItem("model", systemInfo.model);  // default model
-        sessionStorage.setItem("baseUrl", systemInfo.base_url);  // default base url
+      if (!getSetting("model")) {
+        setSetting("model", systemInfo.model);  // default model
+        setSetting("baseUrl", systemInfo.base_url);  // default base url
       } else {
-        const modelName = sessionStorage.getItem("model");
+        const modelName = getSetting("model");
         const modelInfoResponse = await fetch('/api/model/' + modelName);
         const modelInfo = (await modelInfoResponse.json()).result;
         if (modelInfo) {
           // Found remote model
           console.log("Set baseUrl: " + modelInfo.base_url);
-          sessionStorage.setItem("baseUrl", modelInfo.base_url);
+          setSetting("baseUrl", modelInfo.base_url);
         } else {
           if (await pingOllamaAPI()) {
             const ollamaModels = await listOllamaModels();
@@ -421,11 +422,11 @@ export default function Home() {
             if (ollamaModel) {
               // Found ollama model
               console.log("Set baseUrl: " + ollamaModel.base_url);
-              sessionStorage.setItem("baseUrl", ollamaModel.base_url);
+              setSetting("baseUrl", ollamaModel.base_url);
             } else {
               // Both remote and local model not found, set baseUrl to empty
               console.warn("Model `" + modelName + "` not found, set baseUrl to empty.");
-              sessionStorage.setItem("baseUrl", "");
+              setSetting("baseUrl", "");
             }
           }
         }
@@ -435,13 +436,13 @@ export default function Home() {
 
     // Set styles and themes
     const dispatchFullscreen = (mode, force = false) => {
-      const currentMode = localStorage.getItem('fullscreen');
+      const currentMode = getSetting('fullscreen');
       if (currentMode.includes("force") && !force) {
         // If current mode is forced, do not change it
         return;
       }
 
-      localStorage.setItem('fullscreen', mode + (force ? " force" : ""));
+      setSetting('fullscreen', mode + (force ? " force" : ""));
       setFullscreen(mode);
 
       if (mode === "split") {
@@ -454,7 +455,7 @@ export default function Home() {
       
       // User logged in
       // If mode is forced, do not update user setting
-      if (localStorage.getItem("user") && !force) {
+      if (getSetting("user") && !force) {
         updateUserSetting("fullscreen", mode);
       }
       reAdjustInputHeight(mode); // Adjust input height
@@ -474,23 +475,23 @@ export default function Home() {
         console.log("Force fullscreen off: mobile device width < 768.");
       }
     } else {
-      dispatchFullscreen(localStorage.getItem("fullscreen"));
+      dispatchFullscreen(getSetting("fullscreen"));
     }
 
     // Lanuage
     let lang = "en-US";
-    if (localStorage.getItem("lang").includes("force")) {
+    if (getSetting("lang").includes("force")) {
       // Use forced language
       // If user set language, it will be forced
-      lang = localStorage.getItem("lang").replace("force", "").trim();
+      lang = getSetting("lang").replace("force", "").trim();
     } else {
       // Use browser language
       const browserLang = navigator.language || navigator.userLanguage;
       if (getLangCodes().includes(browserLang)) {
         lang = browserLang;
-        localStorage.setItem("lang", lang);  // Not `force`
+        setSetting("lang", lang);  // Not `force`
       } else {
-        lang = localStorage.getItem("lang");
+        lang = getSetting("lang");
       }
     }
 
@@ -507,14 +508,14 @@ export default function Home() {
     }
     
     // Theme
-    setTheme(localStorage.getItem("theme"))
+    setTheme(getSetting("theme"))
     hljs.highlightAll();  // highlight.js
 
     // Handle window resize
     const handleResize = () => {
       // Readjust UI
-      reAdjustInputHeight(localStorage.getItem("fullscreen"));
-      reAdjustPlaceholder(localStorage.getItem("fullscreen"));
+      reAdjustInputHeight(getSetting("fullscreen"));
+      reAdjustPlaceholder(getSetting("fullscreen"));
     };
     window.addEventListener('resize', handleResize);
     handleResize();
@@ -642,7 +643,7 @@ export default function Home() {
           event.preventDefault();
 
           // Triggle fullscreen split
-          if (!localStorage.getItem("fullscreen").startsWith("default")) {
+          if (!getSetting("fullscreen").startsWith("default")) {
             dispatchFullscreen("default");
           } else {
             dispatchFullscreen("off");
@@ -658,7 +659,7 @@ export default function Home() {
             event.preventDefault();
 
             // Triggle fullscreen split
-            if (!localStorage.getItem("fullscreen").startsWith("split")) {
+            if (!getSetting("fullscreen").startsWith("split")) {
               dispatchFullscreen("split");
             } else {
               dispatchFullscreen("off");
@@ -679,8 +680,8 @@ export default function Home() {
             const command = getHistoryCommand(historyIndex + 1);
             if (command) {
               setInput(command);
-              sessionStorage.setItem("historyIndex", historyIndex + 1);
-              reAdjustInputHeight(localStorage.getItem("fullscreen"));
+              setSetting("historyIndex", historyIndex + 1);
+              reAdjustInputHeight(getSetting("fullscreen"));
             }
           }
 
@@ -690,13 +691,13 @@ export default function Home() {
             event.preventDefault();
 
             if (globalThis.STATE === STATES.IDLE) {
-              if (!localStorage.getItem("user")) {
+              if (!getSetting("user")) {
                 console.error("User not logged in.");
                 printOutput("Please log in to view session history.");
                 return;
               }
 
-              getHistorySession("prev", sessionStorage.getItem("session"))
+              getHistorySession("prev", getSetting("session"))
                 .then((session) => {
                   clearOutput(true);
 
@@ -723,13 +724,13 @@ export default function Home() {
             console.log("Shortcut: h");
 
             if (globalThis.STATE === STATES.IDLE) {
-              if (!localStorage.getItem("user")) {
+              if (!getSetting("user")) {
                 console.error("User not logged in.");
                 printOutput("Please log in to view session history.");
                 return;
               }
 
-              getHistorySession("prev", sessionStorage.getItem("session"))
+              getHistorySession("prev", getSetting("session"))
                 .then((session) => {
                   clearOutput(true);
 
@@ -760,13 +761,13 @@ export default function Home() {
             const command = getHistoryCommand(historyIndex - 1);
             if (command) {
               setInput(command);
-              sessionStorage.setItem("historyIndex", historyIndex - 1);
-              reAdjustInputHeight(localStorage.getItem("fullscreen"));
+              setSetting("historyIndex", historyIndex - 1);
+              reAdjustInputHeight(getSetting("fullscreen"));
             } else {
               // Clear input
               setInput(":");
-              sessionStorage.setItem("historyIndex", -1);
-              reAdjustInputHeight(localStorage.getItem("fullscreen"));
+              setSetting("historyIndex", -1);
+              reAdjustInputHeight(getSetting("fullscreen"));
             }
           }
 
@@ -776,13 +777,13 @@ export default function Home() {
             event.preventDefault();
 
             if (globalThis.STATE === STATES.IDLE) {
-              if (!localStorage.getItem("user")) {
+              if (!getSetting("user")) {
                 console.error("User not logged in.");
                 printOutput("Please log in to view session history.");
                 return;
               }
 
-              getHistorySession("next", sessionStorage.getItem("session"))
+              getHistorySession("next", getSetting("session"))
                 .then((session) => {
                   clearOutput(true);
 
@@ -809,13 +810,13 @@ export default function Home() {
             event.preventDefault();
 
             if (globalThis.STATE === STATES.IDLE) {
-              if (!localStorage.getItem("user")) {
+              if (!getSetting("user")) {
                 console.error("User not logged in.");
                 printOutput("Please log in to view session history.");
                 return;
               }
 
-              getHistorySession("next", sessionStorage.getItem("session"))
+              getHistorySession("next", getSetting("session"))
                 .then((session) => {
                   clearOutput(true);
 
@@ -842,7 +843,7 @@ export default function Home() {
 
             // Print session log (previous)
             if (globalThis.STATE === STATES.IDLE) {
-              getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
+              getSessionLog("prev", getSetting("session"), getSetting("time"))
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
@@ -865,7 +866,7 @@ export default function Home() {
 
             // Print session log (previous)
             if (globalThis.STATE === STATES.IDLE) {
-              getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
+              getSessionLog("prev", getSetting("session"), getSetting("time"))
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No previous log.");
@@ -888,7 +889,7 @@ export default function Home() {
 
             // Print session log (next)
             if (globalThis.STATE === STATES.IDLE) {
-              getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
+              getSessionLog("next", getSetting("session"), getSetting("time"))
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
@@ -911,7 +912,7 @@ export default function Home() {
 
             // Print session log (next)
             if (globalThis.STATE === STATES.IDLE) {
-              getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
+              getSessionLog("next", getSetting("session"), getSetting("time"))
                 .then((r) => {
                   if (!r.result || Object.entries(r.result).length === 0) {
                     console.log("No next log.");
@@ -952,8 +953,8 @@ export default function Home() {
     window.addEventListener('hashchange', removeHashTag, false);
 
     // Readjust UI
-    reAdjustInputHeight(localStorage.getItem("fullscreen"));
-    reAdjustPlaceholder(localStorage.getItem("fullscreen"));
+    reAdjustInputHeight(getSetting("fullscreen"));
+    reAdjustPlaceholder(getSetting("fullscreen"));
 
     // Load additional scripts
     // KaTeX copy module
@@ -1011,7 +1012,7 @@ export default function Home() {
 
           // Left swipe show next log
           if (globalThis.STATE === STATES.IDLE) {
-            getSessionLog("next", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
+            getSessionLog("next", getSetting("session"), getSetting("time"))
               .then((r) => {
                 if (!r.result || Object.entries(r.result).length === 0) {
                   console.log("No next log.");
@@ -1033,7 +1034,7 @@ export default function Home() {
 
           // Right swipe show previous log
           if (globalThis.STATE === STATES.IDLE) {
-            getSessionLog("prev", sessionStorage.getItem("session"), sessionStorage.getItem("time"))
+            getSessionLog("prev", getSetting("session"), getSetting("time"))
               .then((r) => {
                 if (!r.result || Object.entries(r.result).length === 0) {
                   console.log("No previous log.");
@@ -1269,11 +1270,11 @@ export default function Home() {
       }
 
       // For some command apply immediately
-      if (commandString.startsWith("theme")) setTheme(localStorage.getItem("theme"));
+      if (commandString.startsWith("theme")) setTheme(getSetting("theme"));
 
       // Readjust UI
-      reAdjustInputHeight(localStorage.getItem("fullscreen"));
-      reAdjustPlaceholder(localStorage.getItem("fullscreen"));
+      reAdjustInputHeight(getSetting("fullscreen"));
+      reAdjustPlaceholder(getSetting("fullscreen"));
       return;
     } else {
       // Clear donut
@@ -1305,7 +1306,7 @@ export default function Home() {
         return;
       }
 
-      if (!localStorage.getItem("user")) {
+      if (!getSetting("user")) {
         printOutput("Please login.");
         return;
       }
@@ -1391,10 +1392,10 @@ export default function Home() {
 
     // Finally, general input
     // Detect subsession
-    if (sessionStorage.getItem("head") !== null && sessionStorage.getItem("head") !== "") {
-      const head = Number(sessionStorage.getItem("head"));
-      const timelineTime = Number(sessionStorage.getItem("time"));  // time in the timeline
-      const session = Number(sessionStorage.getItem("session"));  // session ID
+    if (getSetting("head") !== null && getSetting("head") !== "") {
+      const head = Number(getSetting("head"));
+      const timelineTime = Number(getSetting("time"));  // time in the timeline
+      const session = Number(getSetting("session"));  // session ID
       if (timelineTime < head) {
         // Subsession detected
         // The session ID is one of the log time (not head log of session)
@@ -1408,16 +1409,16 @@ export default function Home() {
 
     const timeNow = Date.now();
     setTime(timeNow);
-    sessionStorage.setItem("head", timeNow);
-    sessionStorage.setItem("historyIndex", -1);
+    setSetting("head", timeNow);
+    setSetting("historyIndex", -1);
 
     // Clear info and start generating
     resetInfo();
 
     // Generation mode switch
     // Local mode
-    if (sessionStorage.getItem("baseUrl").includes("localhost") 
-     || sessionStorage.getItem("baseUrl").includes("127.0.0.1")) {
+    if (getSetting("baseUrl").includes("localhost") 
+     || getSetting("baseUrl").includes("127.0.0.1")) {
       console.log("Start. (Local)");
       generate_msg(input, image_urls, file_urls);
       return;
@@ -1425,7 +1426,7 @@ export default function Home() {
 
     // Non-stream
     // Just quick setup, now only support "gpt-image-1" model for image generation
-    if (localStorage.getItem('useStream') == "false" || sessionStorage.getItem('model') === "gpt-image-1") {
+    if (getSetting('useStream') == "false" || getSetting('model') === "gpt-image-1") {
       console.log("Start. (non-stream)");
       printOutput(waiting === "" ? "Generating..." : waiting);
       generate(input, image_urls, file_urls);
@@ -1434,7 +1435,7 @@ export default function Home() {
 
     // Server mode
     // Stream
-    if (localStorage.getItem('useStream') == "true") {
+    if (getSetting('useStream') == "true") {
       console.log("Start. (SSE)");
       generate_sse(input, image_urls_encoded, file_urls_encoded);
       return;
@@ -1553,7 +1554,7 @@ export default function Home() {
 
       // IV. Stats
       if (event.data.startsWith("###STATS###")) {
-        if (localStorage.getItem('useStats') === "true") {
+        if (getSetting('useStats') === "true") {
           const _stats_ = event.data.replace("###STATS###", "").split(',');
           const temperature = _stats_[0];
           const top_p = _stats_[1];
@@ -1579,7 +1580,7 @@ export default function Home() {
               temperature: {temperature}<br></br>
               top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
-              mem: {mem}/{sessionStorage.getItem("memLength")}<br></br>
+              mem: {mem}/{getSetting("memLength")}<br></br>
               {role && <div>role: {role}<br></br></div>}
               {stores && <div>stores: {stores}<br></br></div>}
               {node && <div>node: {node}<br></br></div>}
@@ -1703,7 +1704,7 @@ export default function Home() {
           // Set time
           const timeNow = Date.now();
           setTime(timeNow);
-          sessionStorage.setItem("head", timeNow);
+          setSetting("head", timeNow);
 
           // Re-call generate with tool calls!
           const inputParts = [
@@ -1720,7 +1721,7 @@ export default function Home() {
         hljs.highlightAll();
 
         // Try speak some rest text
-        if (localStorage.getItem("useSpeak") === "true") {
+        if (getSetting("useSpeak") === "true") {
           let restText = globalThis.rawOutput.replace(textSpoken, "");
           restText = restText.replaceAll("<br>", " ");
           if (restText.length > 0)
@@ -1784,7 +1785,7 @@ export default function Home() {
         console.log(event.data);
 
         // Try speak
-        if (localStorage.getItem("useSpeak") === "true") {
+        if (getSetting("useSpeak") === "true") {
           textSpoken = trySpeak(globalThis.rawOutput, textSpoken);
         }
       } else {
@@ -1818,11 +1819,11 @@ export default function Home() {
     let outputType = TYPE.NORMAL;
 
     // Use stream
-    const useStream = localStorage.getItem('useStream') === "true";
+    const useStream = getSetting('useStream') === "true";
 
     // User
     const user = {
-      username: localStorage.getItem("user")
+      username: getSetting("user")
     };
 
     // Config (input)
@@ -1938,7 +1939,7 @@ export default function Home() {
           input,
           output,
           model: model,
-          session: sessionStorage.getItem("session"),
+          session: getSetting("session"),
           images: [],
           time: Date.now(),
         }),
@@ -2047,7 +2048,7 @@ export default function Home() {
           // Set time
           const timeNow = Date.now();
           setTime(timeNow);
-          sessionStorage.setItem("head", timeNow);
+          setSetting("head", timeNow);
 
           // Re-call generate with tool calls!
           const inputParts = [
@@ -2229,7 +2230,7 @@ export default function Home() {
         // Reset time
         const timeNow = Date.now();
         setTime(timeNow);
-        sessionStorage.setItem("head", timeNow);
+        setSetting("head", timeNow);
 
         // Call generate with function
         printOutput(querying);
@@ -2238,7 +2239,7 @@ export default function Home() {
       }
 
       // Print image output
-      if (sessionStorage.getItem("model") === "gpt-image-1") {
+      if (getSetting("model") === "gpt-image-1") {
         const images = data.result.images;
         for (const image of images) {
           printImage(image);
@@ -2267,7 +2268,7 @@ export default function Home() {
         if (data.result.stats.temperature) stats += "temperature: " + data.result.stats.temperature + "\n";
         if (data.result.stats.top_p) stats += "top_p: " + data.result.stats.top_p + "\n";
         if (data.result.stats.token_ct) stats += "token_ct: " + data.result.stats.token_ct + "\n";
-        if (data.result.stats.mem) stats += "mem: " + data.result.stats.mem + "/" + sessionStorage.getItem("memLength") + "\n";
+        if (data.result.stats.mem) stats += "mem: " + data.result.stats.mem + "/" + getSetting("memLength") + "\n";
         if (data.result.stats.role) stats += "role: " + data.result.stats.role + "\n";
         if (data.result.stats.stores) stats += "stores: " + data.result.stats.stores.replaceAll('|', ", ") + "\n";
         if (data.result.stats.node) stats += "node: " + data.result.stats.node + "\n";
@@ -2439,7 +2440,7 @@ export default function Home() {
     const elInput = elInputRef.current;
     if (elInput.value.startsWith(':login') || elInput.value.startsWith(':user set pass') || elInput.value.startsWith(":user add") || elInput.value.startsWith(":user join")) {
       // Password input
-      if (localStorage.getItem("passMask") === "true") {
+      if (getSetting("passMask") === "true") {
         globalThis.rawInput = elInput.value.replace(/\*/g, (match, index) => globalThis.rawInput[index] || '');  // store real password
         passwordFormatter(elInputRef.current);
       } else {
@@ -2457,7 +2458,7 @@ export default function Home() {
   // The placeholder should be shorten if fullscreen off or default
   // For fullscreen split, the placeholder shouldn't be shorten
   const reAdjustPlaceholder = (fullscreen_ = null) => {
-    if (!fullscreen_) fullscreen_ = localStorage.getItem("fullscreen");
+    if (!fullscreen_) fullscreen_ = getSetting("fullscreen");
     fullscreen_ = fullscreen_.replace("force", "").trim();
     
     const placeholder = globalThis.rawPlaceholder;
@@ -2472,7 +2473,7 @@ export default function Home() {
     const elInput = elInputRef.current;
     if (elInput) {
       if (!fullscreen_) {
-        fullscreen_ = localStorage.getItem("fullscreen");
+        fullscreen_ = getSetting("fullscreen");
       }
 
       // Non-fullscreen
@@ -2681,7 +2682,7 @@ export default function Home() {
               let copyText = "";
               if (event.ctrlKey || event.metaKey) {
                 // Copy attach session command to share
-                copyText = ":session attach " + sessionStorage.getItem("session");
+                copyText = ":session attach " + getSetting("session");
               } else {
                 copyText = globalThis.rawOutput;
               }

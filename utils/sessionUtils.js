@@ -1,3 +1,6 @@
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
+
 export function initializeMemory() {
   console.log("Memory initializing...");
   const time = Date.now()
@@ -9,8 +12,8 @@ export function initializeMemory() {
 export function initializeSessionMemory() {
   console.log("Session initializing...");
   initializeMemory();
-  sessionStorage.setItem("head", "");
-  sessionStorage.setItem("historyIndex", -1);
+  setSetting("head", "");
+  setSetting("historyIndex", -1);
 }
 
 // Session ID is a string of number.
@@ -73,23 +76,23 @@ export function verifySessionId(session) {
 
 export function setTime(time) {
   if (time == 1 || time == -1) {
-    const current = sessionStorage.getItem("time");
+    const current = getSetting("time");
     time = Number(current) + time;
   }
 
   // Set time
-  sessionStorage.setItem("time", time);
+  setSetting("time", time);
   console.log("Time -> " + time);
 }
 
 export function setSession(session) {
   if (session == 1 || session == -1) {
-    const current = sessionStorage.getItem("session");
+    const current = getSetting("session");
     session = Number(current) + session;
   }
 
   // Set session
-  sessionStorage.setItem("session", session);
+  setSetting("session", session);
   console.log("Session -> " + session);
 }
 
@@ -109,14 +112,14 @@ export const getSessionLog = async function(direction = "prev", session, time) {
 
 // Get history session
 export const getHistorySession = async function(direction = "prev", currentSessionId) {
-  if (!localStorage.getItem("user")) {
+  if (!getSetting("user")) {
     console.log("User not logged in.");
     return null;
   }
 
   let session = null;
   console.log("Getting history session " + direction + " of " + currentSessionId + "...");
-  const response = await fetch("/api/session/" + direction + "?sessionId=" + currentSessionId + "&user=" + localStorage.getItem("user"), {
+  const response = await fetch("/api/session/" + direction + "?sessionId=" + currentSessionId + "&user=" + getSetting("user"), {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   }).catch(error => {

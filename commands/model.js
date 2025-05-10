@@ -1,5 +1,7 @@
 import { listOllamaModels, pingOllamaAPI } from "../utils/ollamaUtils.js";
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
 
 export default async function model(args) {
   const command = args[0];
@@ -11,11 +13,11 @@ export default async function model(args) {
   // Get model info without name (will use current model as name)
   // :model [name?]
   if (!command) {
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
-    const modelName = sessionStorage.getItem("model");
+    const modelName = getSetting("model");
     if (!modelName) {
       return "No model is set, please use command \`:model use [name]\` to set a model.";
     }
@@ -105,7 +107,7 @@ export default async function model(args) {
       return "Usage: :model [ls|list]\n";
     }
 
-    if (!localStorage.getItem("user")) {
+    if (!getSetting("user")) {
       return "Please login.";
     }
 
@@ -128,7 +130,7 @@ export default async function model(args) {
         return "No available model found.";
       } else {
         // For adding star to current store
-        const currentModel = sessionStorage.getItem("model");
+        const currentModel = getSetting("model");
 
         // User models
         let userModels = "";
@@ -210,8 +212,8 @@ export default async function model(args) {
           // Set model to session storage
           globalThis.model = name;
           globalThis.baseUrl = ollamModelInfo.base_url;
-          sessionStorage.setItem("model", name);
-          sessionStorage.setItem("baseUrl", ollamModelInfo.base_url);
+          setSetting("model", name);
+          setSetting("baseUrl", ollamModelInfo.base_url);
 
           return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
         }
@@ -241,8 +243,8 @@ export default async function model(args) {
         // Set model
         globalThis.model = modelInfo.model;
         globalThis.baseUrl = modelInfo.base_url;
-        sessionStorage.setItem("model", modelInfo.model);
-        sessionStorage.setItem("baseUrl", modelInfo.base_url);
+        setSetting("model", modelInfo.model);
+        setSetting("baseUrl", modelInfo.base_url);
       } catch (error) {
         console.error(error);
         return error;
@@ -252,12 +254,12 @@ export default async function model(args) {
     }
 
     if (args[0] === "unuse") {
-      if (sessionStorage.getItem("model") !== name) {
+      if (getSetting("model") !== name) {
         return "Model `" + name + "` is not being used.";
       }
 
-      sessionStorage.setItem("model", globalThis.model);  // reset model
-      sessionStorage.setItem("baseUrl", globalThis.baseUrl);  // reset base url
+      setSetting("model", globalThis.model);  // reset model
+      setSetting("baseUrl", globalThis.baseUrl);  // reset base url
 
       return "Model unused, and reset to default model.";
     }
@@ -266,12 +268,12 @@ export default async function model(args) {
   // Reset model
   // :model reset
   if (command === "reset") {
-    if (sessionStorage.getItem("model") === "") {
+    if (getSetting("model") === "") {
       return "Model is already empty.";
     }
 
-    sessionStorage.setItem("model", globalThis.model);  // reset model
-    sessionStorage.setItem("baseUrl", globalThis.baseUrl);  // reset base url
+    setSetting("model", globalThis.model);  // reset model
+    setSetting("baseUrl", globalThis.baseUrl);  // reset base url
 
     // Reset session to forget previous memory
     initializeSessionMemory();
