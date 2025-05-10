@@ -122,6 +122,9 @@ button {
 button:hover {
   background-color: var(--button-hover-background-color);
 }
+button.selected {
+  background-color: var(--button-selected-background-color);
+}
 
 input {
   background-color: transparent !important;
