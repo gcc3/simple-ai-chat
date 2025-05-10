@@ -1,4 +1,4 @@
-import { generatePassword, updateUserSetting } from "./userUtils.js";
+import { generatePassword } from "./userUtils.js";
 
 
 // Set setting in correct storage
@@ -16,10 +16,6 @@ export async function setSetting(key, value) {
   
   if (setting.inSessionStorage) {
     sessionStorage.setItem(key, value);
-  }
-  
-  if (!isSettingEmpty("user") && setting.inUserSettings) {
-    await updateUserSetting(key, value);
   }
 }
 
