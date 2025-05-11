@@ -434,41 +434,8 @@ export default function Home() {
     }
     getSystemInfo();
 
-    // Set styles and themes
-    const dispatchFullscreen = (mode) => {
-      setSetting('fullscreen', mode);
-      setFullscreen(mode);
-
-      if (mode === "split") {
-        // fullscreen split mode  use ⌃enter
-        setEnter("⌃enter");
-      } else {
-        // fullscreen default mode use enter
-        setEnter("enter");
-      }
-
-      reAdjustInputHeight(mode); // Adjust input height
-      reAdjustPlaceholder(mode);  // Adjust placeholder
-    }
-
     // Fullscreen control
-    let fullscreenMode = getSetting("fullscreen");
-    
-    // Mobile device check
-    const userAgentInfo = checkUserAgent();
-    console.log("User agent:", userAgentInfo.userAgent);
-    if (userAgentInfo.isIPhone || userAgentInfo.isAndroid) {
-      console.log("Mobile device (iPhone/Android) detected.");
-
-      // Mobile device
-      if (window.innerWidth < 768) {
-        // Don't use fullscreen mode if the screen is small
-        fullscreenMode = "off";
-        console.log("Fullscreen off: mobile device narrow.");
-      }
-    }
-
-    dispatchFullscreen(fullscreenMode);
+    dispatchFullscreen(getSetting("fullscreen"));
 
     // Lanuage
     let lang = "en-US";
@@ -2517,6 +2484,34 @@ export default function Home() {
         elInput.style.height = "100%";
       }
     }
+  }
+
+  // Fullscreen control
+  const dispatchFullscreen = (mode) => {
+    setSetting('fullscreen', mode);
+
+    // Fullscreen control
+    const userAgentInfo = checkUserAgent();
+    if (userAgentInfo.isIPhone || userAgentInfo.isAndroid) {
+      // Mobile device
+      if (window.innerWidth < 768) {
+        // Don't use fullscreen mode if the screen is small
+        mode = "off";
+        console.log("Fullscreen off: mobile device narrow.");
+      }
+    }
+
+    if (mode === "split") {
+      // fullscreen split mode  use ⌃enter
+      setEnter("⌃enter");
+    } else {
+      // fullscreen default mode use enter
+      setEnter("enter");
+    }
+
+    setFullscreen(mode);
+    reAdjustInputHeight(mode); // Adjust input height
+    reAdjustPlaceholder(mode);  // Adjust placeholder
   }
 
   // +img[], +image[], +file[]
