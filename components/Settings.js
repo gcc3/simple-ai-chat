@@ -335,28 +335,6 @@ function Settings() {
     setLang(getSetting("lang").trim());
   }, []);
 
-  const updateUserSettings = async (key, value) => {
-    const response = await fetch("/api/user/update/settings", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ key, value }),
-    });
-
-    const data = await response.json();
-    if (response.status !== 200) {
-      console.log(data.error);
-      throw data.error || new Error(`Request failed with status ${response.status}`);
-    }
-
-    if (data.success) {
-      setSetting(key, value);
-      console.log("Settings updated." + " (" + getTime() + ")");
-      setMessage(t("Settings updated.") + " (" + getTime() + ")");
-    }
-  }
-
   const handleSetUserRoles = useCallback((name) => async () => {
     if (getSetting("role") === name) {
       setSetting("role", "");
@@ -670,7 +648,7 @@ function Settings() {
 
     // Update user settings
     if (user) {
-      await updateUserSettings("theme", theme);
+      await updateUserSetting("theme", theme);
     }
 
     console.log("Settings updated." + " (" + getTime() + ")");
@@ -681,6 +659,8 @@ function Settings() {
     // Set language
     const lang_ = newLang.trim()
     setLang(lang_);
+    setSetting("lang", lang_);
+
     const i18nLang = lang_.split("-")[0];
     i18n.changeLanguage(i18nLang)
     .then(async () => {
@@ -690,7 +670,7 @@ function Settings() {
 
       // Update user settings
       if (user) {
-        await updateUserSettings("lang", newLang);
+        await updateUserSetting("lang", newLang);
       }
 
       console.log("Settings updated." + " (" + getTime() + ")");

@@ -194,7 +194,6 @@ export default async function (req, res) {
 
     // Update user settings
     const wasSuccessful = await updateUserSetting(username, key, value);
-
     if (wasSuccessful) {
       return res.status(200).json({
         success: true,

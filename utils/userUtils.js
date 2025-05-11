@@ -1,6 +1,5 @@
 import { setTheme } from "./themeUtils.js";
 import { initializeSessionMemory } from "./sessionUtils.js";
-import emitter from "./eventsUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
@@ -191,7 +190,7 @@ export async function updateUserSetting(key, value) {
   // Update remote setting
   if (getSetting("user")) {
     try {
-      const response = await fetch("/api/user/update/settings", {
+      const response = await fetch("/api/user/update/setting", {
         method: "POST",
         credentials: 'include',
         headers: {

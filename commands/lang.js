@@ -11,6 +11,14 @@ export default async function lang(args) {
   if (!command) {
     if (getSetting("lang")) {
       const currentLang = getSetting("lang");
+      const langName = getLanguageName(currentLang);
+      if (langName === "Unknown") {
+        console.warn("Unknown language code: " + currentLang + ". Resetting to default.");
+
+        setSetting("lang", "");
+        return "No language set.";
+      }
+
       return "Current language: `" + getLanguageName(currentLang) + "`, country-language code: " + currentLang;
     } else {
       return "No language set.";
