@@ -923,12 +923,14 @@ const updateUserSetting = async (username, key, value) => {
   }
 
   // Set the key and value
-  user.settings[key] = value;
+  // Find key in user.settings
+  const userSettings = JSON.parse(user.settings);
+  userSettings[key] = value;
 
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET settings = ?, updated_at = ? WHERE username = ?");
-      stmt.run([JSON.stringify(user.settings), getTimestamp(), username], function (err) {
+      stmt.run([JSON.stringify(userSettings), getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }
