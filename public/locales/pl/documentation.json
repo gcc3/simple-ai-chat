@@ -17,9 +17,7 @@
   "Themes": "Motywy",
   "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode.": "Obsługuje 3 motywy: Jasny tryb, Ciemny tryb oraz tryb Terminala w stylu Matrix.",
   "Function calls": "Wywoływanie funkcji",
-  "GPT will choise function to use to get information he need. Such as weather and time queries. Functions can be called by user directlly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPT wybierze funkcję, której użyje, aby uzyskać potrzebne informacje, takie jak zapytania o pogodę i czas. Funkcje mogą być również wywoływane bezpośrednio przez użytkownika z poziomu wejścia. Aby wyświetlić listę wszystkich dostępnych funkcji, użyj `:function ls`. Zobacz również: Funkcje",
   "Page redirection": "Przekierowanie strony",
-  "As one of the `functions calls`, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Jako jedna z `funkcji wywołań`, `redirect_to_url()` może przekierować lub otworzyć URL w nowej karcie. GPT zrobi to automatycznie, na przykład: Otwórz oficjalną stronę internetową OpenAI. Możesz użyć tego, aby otworzyć wiele URL-ów jednocześnie.",
   "Location-based query": "Zapytanie oparte na lokalizacji",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "Pytania oparte na informacji o geograficznej lokalizacji użytkownika. Na przykład, odpowiedź na pytanie 'Jaka jest dzisiaj pogoda?' poprzez automatyczne pozyskanie lokalizacji. Aby użyć funkcji lokalizacji, użyj komendy ':location on'.",
   "Code highlighting": "Podświetlanie kodu",
@@ -125,7 +123,6 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Możesz nacisnąć klawisz Control (na macOS naciśnij klawisz command) i kliknąć nazwę modelu, komenda `:session attach` wraz z ID sesji zostanie automatycznie skopiowana do twojego schowka.",
   "Models": "Modele",
   "* Link with your own data. Support link to relational database.": "* Połącz z własnymi danymi. Obsługuje połączenia z relacyjną bazą danych.",
-  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Wsparcie dla plików i zapytań do relacyjnych baz danych. Jeśli zostanie użyty magazyn danych, wyniki zapytań zostaną wstawione jako podpowiedzi, aby zapewnić kompetentne odpowiedzi. Wiele magazynów danych może być używanych jednocześnie.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Cześć, witamy w Simple AI! 🚀 Pracuję nad zapewnieniem bardziej profesjonalnego i przyjaznego programistom interfejsu użytkownika do interakcji z AI.",
   "CLI (Command-line Interface)": "CLI (Interfejs wiersza poleceń)",
   "Model Context Protocol (MCP)": "Protokół kontekstu modelu (MCP)",
@@ -137,5 +134,8 @@
   "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Generuj piękne obrazy przy użyciu promptów, edytuj wygenerowane lub przesłane obrazy albo łącz obrazy w jeden zgodnie z Twoimi instrukcjami.",
   "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "Oprogramowanie interfejsu wiersza poleceń jest udostępniane za pośrednictwem Node Package Manager (npm) i oferuje te same funkcje co interfejs webowy.",
   "Command-line Interface (CLI)": "Interfejs wiersza poleceń (CLI)",
-  "Image Generation & Edit": "Generowanie obrazów & Edycja"
+  "Image Generation & Edit": "Generowanie obrazów & Edycja",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data stores can be used simultaneously.": "Obsługa plików i zapytań do relacyjnych baz danych. Jeśli używany jest magazyn danych, wyniki zapytań zostaną wstawione jako podpowiedzi, aby zapewnić merytoryczne odpowiedzi. Można używać wielu magazynów danych jednocześnie.",
+  "GPT will choose function to use to get information it needs. Such as weather and time queries. Functions can be called by user directly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPT wybierze funkcję, którą użyje do uzyskania potrzebnych informacji. Na przykład zapytania o pogodę i czas. Funkcje mogą być również wywoływane bezpośrednio przez użytkownika za pomocą wejścia. Aby wyświetlić listę wszystkich dostępnych funkcji, użyj `:function ls`. Zobacz także: Funkcje",
+  "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Jako jedno z `wywołań funkcji`, `redirect_to_url()` może przekierować lub otworzyć URL w nowej karcie. GPT zrobi to automatycznie, na przykład: Otwórz oficjalną stronę OpenAI. Możesz użyć go do jednoczesnego otwierania wielu adresów URL."
 }
