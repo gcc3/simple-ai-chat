@@ -451,7 +451,10 @@ export default function Home() {
       reAdjustPlaceholder(mode);  // Adjust placeholder
     }
 
-    // Dispatch fullscreen
+    // Fullscreen control
+    let fullscreenMode = getSetting("fullscreen");
+    
+    // Mobile device check
     const userAgentInfo = checkUserAgent();
     console.log("User agent:", userAgentInfo.userAgent);
     if (userAgentInfo.isIPhone || userAgentInfo.isAndroid) {
@@ -460,12 +463,12 @@ export default function Home() {
       // Mobile device
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode if the screen is small
-        dispatchFullscreen("off", true);
+        fullscreenMode = "off";
         console.log("Fullscreen off: mobile device narrow.");
       }
-    } else {
-      dispatchFullscreen(getSetting("fullscreen"));
     }
+
+    dispatchFullscreen(fullscreenMode);
 
     // Lanuage
     let lang = "en-US";
