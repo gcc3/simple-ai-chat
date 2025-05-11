@@ -1,6 +1,7 @@
 import { setTheme } from "./themeUtils.js";
 import { initializeSessionMemory } from "./sessionUtils.js";
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "./settingsUtils.js";
+import emitter from './eventsUtils.js';
 
 
 export function setUserWebStorage(user) {
@@ -32,12 +33,17 @@ export function setUserWebStorage(user) {
   // theme
   if ("theme" in settings) {
     setSetting("theme", settings.theme);
+
+    // Trigger the theme change
     setTheme(getSetting("theme"));
   }
 
   // fullscreen
   if ("fullscreen" in settings) {
     setSetting("fullscreen", settings.fullscreen);
+
+    // Trigger the fullscreen event
+    emitter.emit("ui:set_fullscreen", settings.fullscreen);
   }
 
   // useSpeak
