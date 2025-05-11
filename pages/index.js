@@ -623,8 +623,18 @@ export default function Home() {
           // Triggle fullscreen split
           if (!getSetting("fullscreen").startsWith("default")) {
             dispatchFullscreen("default");
+
+            // Update user setting
+            if (getSetting("user")) {
+              updateUserSetting("fullscreen", "default");
+            }
           } else {
             dispatchFullscreen("off");
+
+            // Update user setting
+            if (getSetting("user")) {
+              updateUserSetting("fullscreen", "off");
+            }
           }
 
           console.log("Shortcut: F11");
@@ -639,8 +649,18 @@ export default function Home() {
             // Triggle fullscreen split
             if (!getSetting("fullscreen").startsWith("split")) {
               dispatchFullscreen("split");
+
+              // Update user setting
+              if (getSetting("user")) {
+                updateUserSetting("fullscreen", "split");
+              }
             } else {
               dispatchFullscreen("off");
+
+              // Update user setting
+              if (getSetting("user")) {
+                updateUserSetting("fullscreen", "off");
+              }
             }
 
             console.log("Shortcut: ⌃|");
