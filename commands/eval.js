@@ -1,4 +1,4 @@
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting, isSettingEmpty } from "../utils/settingsUtils.js";
 import { updateUserSetting } from "../utils/userUtils.js";
 
 
@@ -16,7 +16,7 @@ export default async function eval_(args) {
 
   // There is user logged in
   // Update remote setting
-  if (getSetting("user")) {
+  if (!isSettingEmpty("user")) {
     await updateUserSetting("useEval", value);
   }
 
