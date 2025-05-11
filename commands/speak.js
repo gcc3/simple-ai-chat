@@ -13,12 +13,6 @@ export default async function speak(args) {
 
   // Update local setting
   setSetting('useSpeak', value);
-
-  // There is user logged in
-  // Update remote setting
-  if (getSetting("user")) {
-    await updateUserSetting("useSpeak", value);
-  }
-
+  
   return speak == "on" ? "Switched on auto speak." : "Switched off auto speak.";
 }

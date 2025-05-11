@@ -436,8 +436,6 @@ export default function Home() {
 
     // Set styles and themes
     const dispatchFullscreen = (mode) => {
-      const currentMode = getSetting('fullscreen');
-
       setSetting('fullscreen', mode);
       setFullscreen(mode);
 
@@ -449,10 +447,6 @@ export default function Home() {
         setEnter("enter");
       }
 
-      // User logged in
-      if (getSetting("user")) {
-        updateUserSetting("fullscreen", mode);
-      }
       reAdjustInputHeight(mode); // Adjust input height
       reAdjustPlaceholder(mode);  // Adjust placeholder
     }

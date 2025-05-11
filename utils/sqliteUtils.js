@@ -922,32 +922,13 @@ const updateUserSetting = async (username, key, value) => {
     return;
   }
 
-  let newSettings = {};
-  if (user.settings) {
-    newSettings = JSON.parse(user.settings);
-
-    // Trim user settings
-    // Check if user settings are all available
-    // If not available, remove it
-    const availableSettings = getSettings();
-    for (const [key, value] of Object.entries(newSettings)) {
-      if (!(key in availableSettings)) {
-        delete newSettings[key];
-      }
-    }
-    for (const [key, value] of Object.entries(availableSettings)) {
-      if (!newSettings[key]) {
-        newSettings[key] = value;
-      }
-    }
-  }
-  newSettings[key] = value;
-  const settings = JSON.stringify(newSettings);
+  // Set the key and value
+  user.settings[key] = value;
 
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET settings = ?, updated_at = ? WHERE username = ?");
-      stmt.run([settings, getTimestamp(), username], function (err) {
+      stmt.run([JSON.stringify(user.settings), getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }

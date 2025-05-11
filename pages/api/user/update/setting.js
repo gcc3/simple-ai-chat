@@ -43,11 +43,11 @@ export default async function (req, res) {
 
   try {
     // I. Check if key is valid
-    const availableUserSettings = getSettings("user");
+    const availableUserSettings = getSettings("user_keys");
     if (!availableUserSettings.includes(key)) {
       return res.status(400).json({
         success: false,
-        error: 'Invalid key, key must be one of:' + availableUserSettings.join(', ')
+        error: 'Invalid key, key must be one of: ' + availableUserSettings.join(', ')
       });
     }
 

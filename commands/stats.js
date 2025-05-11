@@ -1,5 +1,4 @@
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
-import { updateUserSetting } from "../utils/userUtils.js";
 
 
 export default async function stats(args) {
@@ -13,12 +12,6 @@ export default async function stats(args) {
 
   // Update local setting
   setSetting('useStats', value);
-
-  // There is user logged in
-  // Update remote setting
-  if (getSetting("user")) {
-    await updateUserSetting("useStats", value);
-  }
 
   return stats == "on" ? "Show stats." : "Hide stats.";
 }

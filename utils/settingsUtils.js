@@ -123,7 +123,7 @@ export function getSettings(format = "list") {
     return localSettings;
   }
 
-  if (format === "user") {
+  if (format === "user_keys") {
     let userSettings = [];
     for (const setting of settings) {
       if (setting.inUserSettings) {
