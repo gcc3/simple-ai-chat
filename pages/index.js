@@ -461,8 +461,8 @@ export default function Home() {
     // Handle window resize
     const handleResize = () => {
       // Readjust UI
-      reAdjustInputHeight();
-      reAdjustPlaceholder();
+      reAdjustInputHeight(false);
+      reAdjustPlaceholder(false);
     };
     window.addEventListener('resize', handleResize);
     handleResize();
