@@ -2,6 +2,7 @@ import { evalEmailAddress } from "utils/emailUtils";
 import { insertUser, getUser, getUserByEmail, updateUsername, countUserByIP } from "utils/sqliteUtils.js";
 import { generatePassword } from "utils/userUtils.js";
 import AWS from "aws-sdk";
+import { SES } from "@aws-sdk/client-ses";
 import { encode } from "utils/authUtils";
 import { passwordCheck } from "utils/passwordUtils"
 import { generateInviteCode } from "utils/invitesUtils";
@@ -119,13 +120,23 @@ export default async function (req, res) {
 
   // Email validation
   if (use_email) {
+    // JS SDK v3 does not support global configuration.
+    // Codemod has attempted to pass values to each service client in this file.
+    // You may need to update clients outside of this file, if they use global config.
     AWS.config.update({
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
       region: process.env.AWS_REGION,
     });
 
-    const ses = new AWS.SES();
+    const ses = new SES({
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
+
+      region: process.env.AWS_REGION,
+    });
     const from = "support@simple-ai.io";
     const to = email;
     const subject = "Welcome to simple-ai.io";
@@ -167,7 +178,6 @@ export default async function (req, res) {
     let passwordGuide = !password ? " Initial password is sent to your email." : "";
     ses
       .sendEmail(emailParams)
-      .promise()
       .then((data) => {
         let message = "";
         if (userResume) {
