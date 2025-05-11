@@ -2480,6 +2480,9 @@ export default function Home() {
 
       // Fullscreen split
       if (fullscreen_ === "split") {
+        // This sleep magically fixed the hight issue
+        await sleep(1)
+
         // Do nothing because the input height alwasy 100%
         elInput.style.height = "100%";
       }
