@@ -461,8 +461,8 @@ export default function Home() {
     // Handle window resize
     const handleResize = () => {
       // Readjust UI
-      reAdjustInputHeight(false);
-      reAdjustPlaceholder(false);
+      reAdjustInputHeight();
+      reAdjustPlaceholder();
     };
     window.addEventListener('resize', handleResize);
     handleResize();
@@ -729,13 +729,12 @@ export default function Home() {
             if (command) {
               setInput(command);
               setSetting("historyIndex", historyIndex - 1);
-              reAdjustInputHeight();
             } else {
               // Clear input
               setInput(":");
               setSetting("historyIndex", -1);
-              reAdjustInputHeight();
             }
+            reAdjustInputHeight();
           }
 
           // Navigate to next session
@@ -2419,7 +2418,7 @@ export default function Home() {
     }
 
     // Re-adjust input height
-    reAdjustInputHeight(false);
+    reAdjustInputHeight();
   };
 
   // The placeholder should be shorten if fullscreen off or default
@@ -2436,7 +2435,7 @@ export default function Home() {
 
   // The sleep 1 will magically fix the auto -> height issue
   // But when input change, the height will jumping, so add doSleepToFixAuto param to control
-  const reAdjustInputHeight = async (doSleepToFixAuto = true) => {
+  const reAdjustInputHeight = async (doSleepToFixAuto = false) => {
     const elInput = elInputRef.current;
     if (!elInput) {
       return;
@@ -2515,7 +2514,7 @@ export default function Home() {
     setFullscreen(mode);
 
     // This is necessary
-    reAdjustInputHeight(); // Adjust input height
+    reAdjustInputHeight(true); // Adjust input height
     reAdjustPlaceholder();  // Adjust placeholder
   }
 
