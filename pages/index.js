@@ -2513,8 +2513,6 @@ export default function Home() {
     }
 
     setFullscreen(mode);
-    reAdjustInputHeight(mode); // Adjust input height
-    reAdjustPlaceholder(mode);  // Adjust placeholder
   }
 
   // +img[], +image[], +file[]
