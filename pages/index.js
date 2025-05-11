@@ -920,7 +920,7 @@ export default function Home() {
 
     // Readjust UI
     reAdjustInputHeight();
-    reAdjustPlaceholder(getSetting("fullscreen"));
+    reAdjustPlaceholder();
 
     // Load additional scripts
     // KaTeX copy module
@@ -1240,7 +1240,7 @@ export default function Home() {
 
       // Readjust UI
       reAdjustInputHeight();
-      reAdjustPlaceholder(getSetting("fullscreen"));
+      reAdjustPlaceholder();
       return;
     } else {
       // Clear donut
@@ -2423,10 +2423,8 @@ export default function Home() {
 
   // The placeholder should be shorten if fullscreen off or default
   // For fullscreen split, the placeholder shouldn't be shorten
-  const reAdjustPlaceholder = (fullscreen_ = null) => {
-    if (!fullscreen_) fullscreen_ = getSetting("fullscreen");
-    fullscreen_ = fullscreen_.trim();
-
+  const reAdjustPlaceholder = () => {
+    const fullscreen_ = getSetting("fullscreen").trim();
     const placeholder = globalThis.rawPlaceholder;
     const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ?
                                  placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
@@ -2514,8 +2512,8 @@ export default function Home() {
     setFullscreen(mode);
 
     // This is necessary
-    reAdjustInputHeight(true); // Adjust input height
-    reAdjustPlaceholder();  // Adjust placeholder
+    reAdjustInputHeight(true);  // !important: use doSleepToFixAuto, the magic
+    reAdjustPlaceholder();
   }
 
   // +img[], +image[], +file[]
