@@ -184,7 +184,7 @@ export async function refreshLocalUserInfo() {
 }
 
 export async function updateUserSetting(key, value) {
-  console.log("Updating user setting... (key: `" + key + "`, value: `" + value + "`)");
+  console.log("Updating user setting, key: `" + key + "`, value: `" + value);
 
   // There is user logged in
   // Update remote setting
