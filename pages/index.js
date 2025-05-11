@@ -2514,8 +2514,6 @@ export default function Home() {
     setFullscreen(mode);
 
     // This is necessary
-    console.log("111");
-
     reAdjustInputHeight(true);  // !important: use doSleepToFixAuto, the magic
     reAdjustPlaceholder();
   }
