@@ -74,7 +74,6 @@ OpenAI https://platform.openai.com/docs/api-reference
 React https://reactjs.org/  
 Next.js https://nextjs.org/  
 tailwind https://tailwindcss.com/docs/  
-OpenAI https://platform.openai.com/docs/models  
 Anthropic https://www.anthropic.com/  
 Google AI https://ai.google.dev/gemini-api/docs  
 xAI https://x.ai/  
