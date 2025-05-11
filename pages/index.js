@@ -433,9 +433,6 @@ export default function Home() {
     }
     getSystemInfo();
 
-    // Fullscreen control
-    dispatchFullscreen(getSetting("fullscreen"));
-
     // Lanuage
     let lang = "en-US";
     if (getSetting("lang")) {
@@ -1049,6 +1046,11 @@ export default function Home() {
       window.removeEventListener('touchend', handleTouchEnd, false);
     }
   }, []);
+
+  useEffect(() => {
+    // Fullscreen control
+    dispatchFullscreen(getSetting("fullscreen"));
+  }, [fullscreen]);
 
   // On submit input
   async function onSubmit(event) {
@@ -2512,6 +2514,8 @@ export default function Home() {
     setFullscreen(mode);
 
     // This is necessary
+    console.log("111");
+
     reAdjustInputHeight(true);  // !important: use doSleepToFixAuto, the magic
     reAdjustPlaceholder();
   }
