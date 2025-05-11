@@ -1,4 +1,4 @@
-import { clearUserWebStorage } from "../utils/userUtils.js";
+import { clearLocalUser } from "../utils/userUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
@@ -26,7 +26,7 @@ export default async function logout(args) {
     }
 
     // Clear user data
-    clearUserWebStorage();
+    clearLocalUser();
 
     return "Logged out.";
   } catch (error) {

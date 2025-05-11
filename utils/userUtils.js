@@ -4,13 +4,17 @@ import { getSetting, setSetting } from "./settingsUtils.js";
 import emitter from './eventsUtils.js';
 
 
-export function setUserWebStorage(user) {
+export async function refreshLocalUser(user = null) {
+  if (!user) {
+    user = await fetchUserInfo();
+  }
+
   if (!user.username || !user.settings) {
     console.warn("User data is incomplete, clearing local user data...");
 
     // Clear local user data
     if (getSetting("user")) {
-      clearUserWebStorage();
+      clearLocalUser();
 
       // Clear auth cookie
       document.cookie = "auth=; Path=/;";
@@ -105,7 +109,7 @@ export function setUserWebStorage(user) {
   }
 }
 
-export function clearUserWebStorage() {
+export function clearLocalUser() {
   localStorage.removeItem("user");
 
   // Reset session to forget previous memory
@@ -163,30 +167,6 @@ export async function fetchUserUsage() {
   const data = await response.json();
   usage = data.usage;
   return usage;
-}
-
-// User get user info to check user credential
-export async function refreshLocalUserInfo() {
-  const user = await fetchUserInfo();
-
-  if (user) {
-    console.log("User info - settings: ", JSON.stringify(user.settings, null, 2));
-
-    // Refresh local user data
-    setUserWebStorage(user);
-  } else {
-    console.warn("User not found or authentication failed, clearing local user data...");
-
-    // Clear local user data
-    if (getSetting("user")) {
-      clearUserWebStorage();
-
-      // Clear auth cookie
-      document.cookie = "auth=; Path=/;";
-      console.log("User authentication failed, local user data cleared.");
-    }
-  }
-  return user;
 }
 
 export async function updateUserSetting(key, value) {
