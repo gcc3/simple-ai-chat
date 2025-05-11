@@ -1,5 +1,5 @@
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
-import { setUserWebStorage } from "../utils/userUtils.js";
+import { refreshLocalUser } from "../utils/userUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
@@ -56,7 +56,8 @@ export default async function login(args) {
         throw new Error("User not found.");
       }
 
-      setUserWebStorage(user);
+      // Refresh local user as user login and response is the user
+      refreshLocalUser(user);
       console.log("User is set to \"" + getSetting("user") + "\".");
 
       if (userLoginPreviously) {

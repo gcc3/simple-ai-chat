@@ -1,6 +1,6 @@
 import { verifiyEmailAddress } from "../utils/emailUtils.js";
 import { getSettings, getSetting, setSetting } from "../utils/settingsUtils.js";
-import { refreshLocalUserInfo, clearUserWebStorage, setUserWebStorage, generatePassword, updateUserSetting } from "../utils/userUtils.js";
+import { refreshLocalUserInfo, clearLocalUser, refreshLocalUser, generatePassword, updateUserSetting } from "../utils/userUtils.js";
 
 
 export default async function entry(args) {
@@ -43,8 +43,8 @@ export default async function entry(args) {
     }
 
     if (user) {
-      // Settings is a part of user info, so update it.
-      setUserWebStorage(user);
+      // Refresh local user as latest user info is fetched
+      refreshLocalUser(user);
 
       return JSON.stringify(user, null, 2)
     } else {
@@ -135,7 +135,7 @@ export default async function entry(args) {
       }
 
       if (data.success) {
-        clearUserWebStorage();
+        clearLocalUser();
       }
       return data.message;
     } catch (error) {
@@ -231,7 +231,9 @@ export default async function entry(args) {
     const value = args[2].slice(1, -1);
 
     await updateUserSetting(key, value);
-    refreshLocalUserInfo();
+
+    // Refresh local user as the user.settings is updated
+    refreshLocalUser();
   }
 
   // Reset password

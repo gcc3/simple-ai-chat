@@ -29,7 +29,7 @@ import { sleep } from "utils/sleepUtils";
 import { loadConfig } from "utils/configUtils";
 import OpenAI from "openai";
 import { Readable } from "stream";
-import { fetchUserInfo, clearUserWebStorage, setUserWebStorage, updateUserSetting } from "utils/userUtils";
+import { fetchUserInfo, clearLocalUser, refreshLocalUser, updateUserSetting } from "utils/userUtils";
 import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 import { useUI } from '../contexts/UIContext';
 import { initializeSettings } from "utils/settingsUtils";
@@ -340,24 +340,8 @@ export default function Home() {
     const getSystemInfo = async () => {
       // User info
       if (getSetting("user") !== null) {
-        const user = await fetchUserInfo();
-        if (user) {
-          console.log("User info - settings: ", JSON.stringify(user.settings, null, 2));
-
-          // Refresh local user data
-          setUserWebStorage(user);
-        } else {
-          console.warn("User not found or authentication failed, clearing local user data...");
-
-          // Clear local user data
-          if (getSetting("user")) {
-            clearUserWebStorage();
-
-            // Clear auth cookie
-            document.cookie = "auth=; Path=/;";
-            console.log("User authentication failed, local user data cleared.");
-          }
-        }
+        // Refresh local user, will fetch the latest user info and set to local
+        refreshLocalUser();
       } else {
         console.log("User not logged in.");
       }
@@ -2514,8 +2498,6 @@ export default function Home() {
     setFullscreen(mode);
 
     // This is necessary
-    console.log("111");
-
     reAdjustInputHeight(true);  // !important: use doSleepToFixAuto, the magic
     reAdjustPlaceholder();
   }
