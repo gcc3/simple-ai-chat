@@ -1,4 +1,5 @@
-import AWS from 'aws-sdk';
+import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 
 
 export async function generateFileUrl(blob, fileId) {
@@ -35,7 +36,7 @@ export async function generateFileUrl(blob, fileId) {
       "Content-Type": "application/json",
     },
   });
-  
+
   const data = await response.json();
   const presignedUrl = data.url;
   const objectUrl = data.object_url;
@@ -61,7 +62,7 @@ export async function generateFileUrl(blob, fileId) {
         objectUrl: objectUrl
       };
     } else {
-      console.error('Upload failed: ' + await uploadResult.text());
+      console.error('Upload failed: ' + (await uploadResult.text()));
       return {
         success: false,
         error: "Upload failed"
@@ -78,26 +79,27 @@ export async function generateFileUrl(blob, fileId) {
 
 // Get presigned URL
 export async function getS3PresignedPutUrl({ bucket, key, expires = 60, contentType }) {
-  // Initialize AWS SDK (this could be done globally if appropriate for your app)
-  AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: 'us-east-1'
+  // Initialize AWS SDK client
+  const s3Client = new S3Client({
+    region: process.env.AWS_REGION,
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    }
   });
 
-  const s3 = new AWS.S3();
-  const params = {
+  const command = new PutObjectCommand({
     Bucket: bucket,
     Key: key,
-    Expires: expires,
     ContentType: decodeURIComponent(contentType),
-  };
-
-  // Wrap getSignedUrl in a Promise for async/await
-  return new Promise((resolve, reject) => {
-    s3.getSignedUrl('putObject', params, (err, url) => {
-      if (err) return reject(err);
-      resolve(url);
-    });
   });
+
+  // Generate presigned URL using the request presigner
+  try {
+    const url = await getSignedUrl(s3Client, command, { expiresIn: expires });
+    return url;
+  } catch (err) {
+    console.error('Error generating presigned URL:', err);
+    throw err;
+  }
 }

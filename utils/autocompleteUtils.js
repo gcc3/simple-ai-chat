@@ -92,7 +92,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   }
 
   if (prefix === ":user set ") {
-    return getSettings("user")
+    return getSettings("user_keys")
   }
 
   if (prefix === ":set ") {
@@ -168,7 +168,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   if (prefix === ":voice use ") {
     const voices = await getVoices();
     let langVoiceList = [];
-    const currentLang = getSetting("lang").replace(" force", "");
+    const currentLang = getSetting("lang");
     for (let i = 0; i < voices.length ; i++) {
       if (voices[i].lang === currentLang) {
         console.log(`Voice ${i+1}: ${voices[i].name}, ${voices[i].lang}`);

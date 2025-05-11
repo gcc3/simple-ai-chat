@@ -1,6 +1,6 @@
 import { updateUserRole, extendUserRole, getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
-import AWS from 'aws-sdk';
+import { SES } from '@aws-sdk/client-ses';
 import moment from 'moment';
 
 
@@ -27,7 +27,7 @@ export default async function (req, res) {
     // Check if the user exists
     const user = await getUser(username);
     if (!user) {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
         error: 'User not found.',
       });
@@ -48,23 +48,23 @@ export default async function (req, res) {
       const extendTo = moment().add(1, 'M').valueOf();
       wasSuccessful = await extendUserRole(username, extendTo);
     }
-    
+
     if (wasSuccessful) {
       if (process.env.USE_EMAIL === "false" || user.email === "") {
-        return res.status(200).json({ 
-          success: true, 
-          message: 'Subscription updated.', 
+        return res.status(200).json({
+          success: true,
+          message: 'Subscription updated.',
         });
       }
 
       // Send email to user
-      AWS.config.update({
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      const ses = new SES({
         region: process.env.AWS_REGION,
+        credentials: {
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        },
       });
-
-      const ses = new AWS.SES();
       const from = 'support@simple-ai.io';
       const to = user.email;
       const subject = "Super User Subscription";
@@ -84,30 +84,30 @@ export default async function (req, res) {
           },
         },
       };
-    
-      ses.sendEmail(emailParams).promise()
+
+      ses.sendEmail(emailParams)
         .then((data) => {
-          return res.status(200).json({ 
-            success: true, 
-            message: 'Subscription updated, an email is sent to user.', 
-            data 
+          return res.status(200).json({
+            success: true,
+            message: 'Subscription updated, an email is sent to user.',
+            data
           });
         }).catch((error) => {
           console.error(error, error.stack);
-          return res.status(500).json({ 
-            success: false, 
-            error: "Subscription updated, failed to send email to user.", 
+          return res.status(500).json({
+            success: false,
+            error: "Subscription updated, failed to send email to user.",
           });
         });
     } else {
-      return res.status(400).json({ 
-        success: false, 
+      return res.status(400).json({
+        success: false,
         error: 'Failed to update subscription, please contact support.',
        });
     }
   } catch (error) {
     console.error('Error:', error);
-    return res.status(500).json({ 
+    return res.status(500).json({
       success: false,
       error: 'Error occurred while updating the user subscription, please contact support.'
     });

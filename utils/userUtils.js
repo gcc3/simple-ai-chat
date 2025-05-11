@@ -1,6 +1,5 @@
 import { setTheme } from "./themeUtils.js";
 import { initializeSessionMemory } from "./sessionUtils.js";
-import emitter from "./eventsUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
@@ -38,10 +37,7 @@ export function setUserWebStorage(user) {
 
   // fullscreen
   if ("fullscreen" in settings) {
-    if (getSetting("fullscreen") && settings.fullscreen != getSetting("fullscreen") && !getSetting("fullscreen").includes("force")) {
-      setSetting("fullscreen", settings.fullscreen);
-      emitter.emit("ui:set_fullscreen", settings.fullscreen);
-    }
+    setSetting("fullscreen", settings.fullscreen);
   }
 
   // useSpeak
@@ -105,7 +101,7 @@ export function setUserWebStorage(user) {
 
 export function clearUserWebStorage() {
   localStorage.removeItem("user");
-  
+
   // Reset session to forget previous memory
   initializeSessionMemory();
 
@@ -188,13 +184,13 @@ export async function refreshLocalUserInfo() {
 }
 
 export async function updateUserSetting(key, value) {
-  console.log("Updating user setting... (key: `" + key + "`, value: `" + value + "`)");
+  console.log("Updating user setting, key: `" + key + "`, value: `" + value);
 
   // There is user logged in
   // Update remote setting
   if (getSetting("user")) {
     try {
-      const response = await fetch("/api/user/update/settings", {
+      const response = await fetch("/api/user/update/setting", {
         method: "POST",
         credentials: 'include',
         headers: {

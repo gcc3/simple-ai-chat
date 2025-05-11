@@ -1,6 +1,6 @@
 import { verifiyEmailAddress } from "../utils/emailUtils.js";
 import { getSettings, getSetting, setSetting } from "../utils/settingsUtils.js";
-import { refreshLocalUserInfo, clearUserWebStorage, setUserWebStorage, generatePassword } from "../utils/userUtils.js";
+import { refreshLocalUserInfo, clearUserWebStorage, setUserWebStorage, generatePassword, updateUserSetting } from "../utils/userUtils.js";
 
 
 export default async function entry(args) {
@@ -73,10 +73,10 @@ export default async function entry(args) {
       const fullscreen = getSetting("fullscreen") || "off";
       
       // User initial settings with some settings overwritten
-      let userSettings = getSettings("user_default");
-      userSettings.theme = theme;
-      userSettings.fullscreen = fullscreen;
-      userSettings.groupPassword = generatePassword();
+      let userDefaultSettings = getSettings("user_default");
+      userDefaultSettings.theme = theme;
+      userDefaultSettings.fullscreen = fullscreen;
+      userDefaultSettings.groupPassword = generatePassword();
 
       const response = await fetch("/api/user/add", {
         method: "POST",
@@ -87,7 +87,7 @@ export default async function entry(args) {
           username,
           email,
           password,
-          settings: JSON.stringify(userSettings),
+          settings: JSON.stringify(userDefaultSettings),
         }),
       });
 
@@ -230,34 +230,8 @@ export default async function entry(args) {
     const key = args[1];
     const value = args[2].slice(1, -1);
 
-    try {
-      const response = await fetch("/api/user/update/settings", {
-        method: "POST",
-        credentials: 'include',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          key,
-          value,
-        }),
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      if (data.success) {
-        refreshLocalUserInfo();
-        return data.message;
-      } else {
-        return data.error;
-      }
-    } catch (error) {
-      console.error(error);
-      return error;
-    }
+    await updateUserSetting(key, value);
+    refreshLocalUserInfo();
   }
 
   // Reset password

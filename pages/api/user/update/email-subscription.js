@@ -1,6 +1,5 @@
 import { getUserByEmail, updateUserEmailSubscription } from 'utils/sqliteUtils.js';
-import { authenticate } from 'utils/authUtils.js';
-import AWS from 'aws-sdk';
+import { SES } from '@aws-sdk/client-ses';
 
 export default async function (req, res) {
   // Check method
@@ -12,15 +11,15 @@ export default async function (req, res) {
 
   // Input and validation
   if (!email) {
-    return res.status(400).json({ 
-      success: false, 
+    return res.status(400).json({
+      success: false,
       error: '`email` is required.'
     });
   }
 
   if (!email_subscription) {
-    return res.status(400).json({ 
-      success: false, 
+    return res.status(400).json({
+      success: false,
       error: '`email_subscription` is required.'
     });
   }
@@ -48,13 +47,13 @@ export default async function (req, res) {
   if (email_subscription == "1") {
     if (process.env.USE_EMAIL == "true") {
       // Send update email
-      AWS.config.update({
-        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      const ses = new SES({
         region: process.env.AWS_REGION,
+        credentials: {
+          accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+          secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+        },
       });
-
-      const ses = new AWS.SES();
       const from = 'support@simple-ai.io';
       const to = email;
       const subject = 'Email Notification';
@@ -76,9 +75,9 @@ export default async function (req, res) {
         },
       };
 
-      ses.sendEmail(emailParams).promise()
+      ses.sendEmail(emailParams)
         .then((data) => {
-          res.status(200).json({ 
+          res.status(200).json({
             success: true,
             message: 'You\'re subscribed, email sent.',
             data
@@ -91,13 +90,13 @@ export default async function (req, res) {
           });
         });
     } else {
-      res.status(200).json({ 
+      res.status(200).json({
         success: true,
         message: 'You\'re subscribed.'
       });
     }
   } else {
-    res.status(200).json({ 
+    res.status(200).json({
       success: true,
       message: 'You\'re unsubscribed.'
     });

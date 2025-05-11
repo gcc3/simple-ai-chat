@@ -3,8 +3,8 @@ import emitter from '../utils/eventsUtils.js';
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 
-export default function fullscreen(args) {
-  const usage = "Usage: :split" + "\n";
+export default async function fullscreen(args) {
+  const usage = "Usage: :split";
 
   if (args.length > 0) {
     return usage;
@@ -18,8 +18,9 @@ export default function fullscreen(args) {
     setSetting('fullscreen', "split");
     emitter.emit("ui:set_fullscreen", "split");
 
+    // Update remote setting
     if (getSetting("user")) {
-      updateUserSetting("fullscreen", "split");
+      await updateUserSetting("fullscreen", "split");
     }
     return "Fullscreen split vertically.";
   }

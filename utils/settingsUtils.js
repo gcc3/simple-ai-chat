@@ -123,6 +123,16 @@ export function getSettings(format = "list") {
     return localSettings;
   }
 
+  if (format === "user_keys") {
+    let userSettings = [];
+    for (const setting of settings) {
+      if (setting.inUserSettings) {
+        userSettings.push(setting.key);
+      }
+    }
+    return userSettings;
+  }
+
   if (format === "user_default") {
     let userSettings = {};
     for (const setting of settings) {

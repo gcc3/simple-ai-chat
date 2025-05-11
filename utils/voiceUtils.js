@@ -3,13 +3,15 @@ import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 export async function getVoice(voiceName) {
   const voices = await getVoices();
-  const currentLang = getSetting("lang").replace(" force", "");
-  
-  for (let i = 0; i < voices.length ; i++) {
-    if (voices[i].lang === currentLang && voices[i].name === voiceName) {
-      return voices[i]
+  const currentLang = getSetting("lang");
+
+  for (const voice of voices) {
+    if (voice.lang === currentLang && voice.name === voiceName) {
+      return voice;
     }
   }
+
+  console.warn("Voice `" + voiceName + "` not found for lang `" + currentLang + "`");
   return null;
 }
 

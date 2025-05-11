@@ -203,10 +203,10 @@ const getDatabaseConnection = async () => {
       await initializeDatabase(db);
 
       // Create root user with default settings
-      let rootUserSettings = getSettings("user_default");
-      rootUserSettings.groupPassword = generatePassword();
+      let userDefaultSettings = getSettings("user_default");
+      userDefaultSettings.groupPassword = generatePassword();
 
-      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, JSON.stringify(rootUserSettings));
+      await insertUser("root", "root_user", null, process.env.ROOT_PASS, "root@localhost", 318, JSON.stringify(userDefaultSettings));
       await updateUserEmailVerifiedAt("root");
       return db;
     } else {
@@ -922,32 +922,15 @@ const updateUserSetting = async (username, key, value) => {
     return;
   }
 
-  let newSettings = {};
-  if (user.settings) {
-    newSettings = JSON.parse(user.settings);
-
-    // Trim user settings
-    // Check if user settings are all available
-    // If not available, remove it
-    const availableSettings = getSettings();
-    for (const [key, value] of Object.entries(newSettings)) {
-      if (!(key in availableSettings)) {
-        delete newSettings[key];
-      }
-    }
-    for (const [key, value] of Object.entries(availableSettings)) {
-      if (!newSettings[key]) {
-        newSettings[key] = value;
-      }
-    }
-  }
-  newSettings[key] = value;
-  const settings = JSON.stringify(newSettings);
+  // Set the key and value
+  // Find key in user.settings
+  const userSettings = JSON.parse(user.settings);
+  userSettings[key] = value;
 
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare("UPDATE users SET settings = ?, updated_at = ? WHERE username = ?");
-      stmt.run([settings, getTimestamp(), username], function (err) {
+      stmt.run([JSON.stringify(userSettings), getTimestamp(), username], function (err) {
         if (err) {
           reject(err);
         }

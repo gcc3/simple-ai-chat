@@ -74,7 +74,6 @@ OpenAI https://platform.openai.com/docs/api-reference
 React https://reactjs.org/  
 Next.js https://nextjs.org/  
 tailwind https://tailwindcss.com/docs/  
-OpenAI https://platform.openai.com/docs/models  
 Anthropic https://www.anthropic.com/  
 Google AI https://ai.google.dev/gemini-api/docs  
 xAI https://x.ai/  
@@ -99,7 +98,7 @@ System root password, will be set when database initialized.
 
 OPENAI_BASE_URL and OPENAI_API_KEY  
 Key can get from https://platform.openai.com/account/api-keys  
-Base URL is the API endpont, `https://api.openai.com/v1`, etc...
+Base URL is the API endpoint, `https://api.openai.com/v1`, etc...
 
 MODEL  
 Large language model, `gpt-4o`, etc...  
@@ -126,7 +125,7 @@ Get from https://products.wolframalpha.com/api
 
 USE_NODE_AI  
 [Simple AI Node](https://github.com/gcc3/simple-ai-node) is available to help the chat answer with data.
-To use multiple node, consider use [Simple AI Hub](https://github.com/gcc3/simple-ai-hub).  
+To use multiple nodes, consider using [Simple AI Hub](https://github.com/gcc3/simple-ai-hub).  
 
 DB  
 Database engline, example `DB=sqlite`.  
@@ -144,7 +143,7 @@ When it enabled, will count user usage and limit access for normal `user`.
 The value should be `true` or `false`.
 
 USE_PAYMENT  
-Enabel payment for upgrading user account.  
+Enable payment for upgrading user account.  
 The value should be `true` or `false`.  
 
 PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET  
@@ -158,7 +157,7 @@ Use email to reset password or notifications.
 The value should be `true` or `false`.  
 
 NEXT_PUBLIC_ROLE_USAGE_LIMIT and NEXT_PUBLIC_ROLE_AMOUNT  
-Useage limit is for seting limit for different roles.  
+Usage limit is for setting limit for different roles.  
 Format: `role:daily_limit,weekly_limit,monthly_limit`.  
 Role amount is for setting price.  
 Format `role:amount`.  

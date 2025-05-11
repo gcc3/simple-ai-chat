@@ -1,6 +1,7 @@
 import { updateUserSettings, getUser } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 import { getSettings } from 'utils/settingsUtils.js';
+import { generatePassword } from 'utils/userUtils';
 
 export default async function (req, res) {
   // Check method
@@ -29,9 +30,10 @@ export default async function (req, res) {
 
   try {
     // Update user settings
-    const settings = getSettings();
-    const wasSuccessful = await updateUserSettings(username, JSON.stringify(settings));
+    let userDefaultSettings = getSettings("user_default");
+    userDefaultSettings.groupPassword = generatePassword();
 
+    const wasSuccessful = await updateUserSettings(username, JSON.stringify(userDefaultSettings));
     if (wasSuccessful) {
       return res.status(200).json({ 
         success: true, 

@@ -1,7 +1,7 @@
 import { getUserByEmail } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
 import { verifiyEmailAddress, evalEmailAddress } from 'utils/emailUtils.js';
-import AWS from 'aws-sdk';
+import { SES } from '@aws-sdk/client-ses';
 import { encode } from 'utils/authUtils.js';
 
 export default async function (req, res) {
@@ -15,7 +15,7 @@ export default async function (req, res) {
   // Authentication
   const authResult = authenticate(req);
   if (!authResult.success) {
-    return res.status(401).json({ 
+    return res.status(401).json({
       success: false,
       error: authResult.error
     });
@@ -25,8 +25,8 @@ export default async function (req, res) {
 
   // Input and validation
   if (!email) {
-    return res.status(400).json({ 
-      success: false, 
+    return res.status(400).json({
+      success: false,
       error: '`email` is required.'
     });
   }
@@ -43,7 +43,7 @@ export default async function (req, res) {
   const emailUser = await getUserByEmail(email);
   if (emailUser && emailUser.username !== username) {
     console.log("Email address conflict, already used by `" + emailUser.username + "`.");
-    return res.status(400).json({ 
+    return res.status(400).json({
       success: false,
       error: 'Email already used by another user.',
     });
@@ -63,13 +63,13 @@ export default async function (req, res) {
 
   // Email is valid, verify the email.
   // Send verification email
-  AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+  const ses = new SES({
     region: process.env.AWS_REGION,
+    credentials: {
+      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    },
   });
-
-  const ses = new AWS.SES();
   const from = 'support@simple-ai.io';
   const to = email;
   const subject = 'Email verification';
@@ -91,9 +91,9 @@ export default async function (req, res) {
     },
   };
 
-  ses.sendEmail(emailParams).promise()
+  ses.sendEmail(emailParams)
     .then((data) => {
-      res.status(200).json({ 
+      res.status(200).json({
         success: true,
         message: 'Verification email sent, please check your inbox.',
         data

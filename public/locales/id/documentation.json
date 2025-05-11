@@ -17,9 +17,7 @@
   "Themes": "Tema",
   "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode.": "Mendukung 3 tema: Mode Terang, Mode Gelap, dan Mode Terminal ala Matrix.",
   "Function calls": "Pemanggilan fungsi",
-  "GPT will choise function to use to get information he need. Such as weather and time queries. Functions can be called by user directlly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPT akan memilih fungsi yang akan digunakan untuk mendapatkan informasi yang dibutuhkan, seperti pertanyaan tentang cuaca dan waktu. Fungsi-fungsi tersebut dapat juga dipanggil langsung oleh pengguna melalui input. Untuk melihat semua fungsi yang tersedia, gunakan `:function ls`. Lihat juga: Fungsi",
   "Page redirection": "Pengalihan halaman",
-  "As one of the `functions calls`, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Sebagai salah satu `pemanggilan fungsi`, `redirect_to_url()` dapat mengarahkan ulang atau membuka URL di tab baru. GPT akan melakukannya secara otomatis, misalnya: Buka situs web resmi OpenAI. Anda dapat menggunakannya untuk membuka beberapa URL secara bersamaan.",
   "Location-based query": "Kueri berbasis lokasi",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "Pertanyaan berdasarkan informasi lokasi geografis pengguna. Misalnya, menjawab 'Bagaimana cuaca hari ini?' dengan secara otomatis mendapatkan lokasi. Untuk menggunakan fitur lokasi, gunakan perintah ':location on'.",
   "Code highlighting": "Penyorotan kode",
@@ -125,7 +123,6 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Anda dapat menekan tombol Control (untuk macOS tekan tombol command) dan klik nama model, perintah `:session attach` dengan ID sesi akan secara otomatis disalin ke papan klip Anda.",
   "Models": "Model",
   "* Link with your own data. Support link to relational database.": "* Hubungkan data Anda sendiri. Mendukung tautan ke basis data relasional.",
-  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Dukungan untuk file dan kueri basis data relasional. Jika sebuah penyimpanan data digunakan, hasil kueri akan disisipkan sebagai prompt untuk memberikan jawaban yang informatif. Beberapa penyimpanan data dapat digunakan secara bersamaan.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Hai, selamat datang di Simple AI! 🚀 Saya sedang bekerja untuk menyediakan antarmuka pengguna yang lebih profesional dan ramah bagi programmer untuk berinteraksi dengan AI.",
   "CLI (Command-line Interface)": "CLI (Antarmuka Baris Perintah)",
   "Model Context Protocol (MCP)": "Protokol Konteks Model (MCP)",
@@ -137,5 +134,8 @@
   "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Hasilkan gambar yang indah menggunakan prompt, dan edit gambar yang dihasilkan atau diunggah, atau gabungkan gambar menjadi satu sesuai instruksi Anda.",
   "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "Perangkat lunak antarmuka baris perintah disediakan melalui Node Package Manager (npm) dan mendukung fitur yang sama seperti antarmuka web.",
   "Command-line Interface (CLI)": "Antarmuka Baris Perintah (CLI)",
-  "Image Generation & Edit": "Pembuatan & Pengeditan Gambar"
+  "Image Generation & Edit": "Pembuatan & Pengeditan Gambar",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data stores can be used simultaneously.": "Dukungan untuk berkas dan kueri basis data relasional. Jika penyimpanan digunakan, hasil kueri akan disisipkan sebagai prompt untuk memberikan jawaban yang berbasis pengetahuan. Beberapa penyimpanan data dapat digunakan secara bersamaan.",
+  "GPT will choose function to use to get information it needs. Such as weather and time queries. Functions can be called by user directly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPT akan memilih fungsi yang akan digunakan untuk memperoleh informasi yang dibutuhkannya, seperti kueri cuaca dan waktu. Fungsi juga dapat dipanggil langsung oleh pengguna melalui input. Untuk menampilkan semua fungsi yang tersedia gunakan `:function ls`. Lihat juga: Fungsi",
+  "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Sebagai salah satu `panggilan fungsi`, `redirect_to_url()` dapat mengarahkan atau membuka URL di tab baru. GPT akan melakukannya secara otomatis, misalnya: Buka situs resmi OpenAI. Anda dapat menggunakannya untuk membuka beberapa URL secara bersamaan."
 }
