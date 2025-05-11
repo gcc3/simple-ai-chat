@@ -1,4 +1,3 @@
-import AWS from "aws-sdk";
 import { SES } from "@aws-sdk/client-ses";
 import { getUser, updateUserPassword } from "utils/sqliteUtils";
 import { generatePassword } from "utils/userUtils";
@@ -33,22 +32,12 @@ export default async function handler(req, res) {
   await updateUserPassword(username, newPassword);
 
   // Send reset password to email
-  // JS SDK v3 does not support global configuration.
-  // Codemod has attempted to pass values to each service client in this file.
-  // You may need to update clients outside of this file, if they use global config.
-  AWS.config.update({
-    accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-    secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
-    region: process.env.AWS_REGION,
-  });
-
   const ses = new SES({
+    region: process.env.AWS_REGION,
     credentials: {
       accessKeyId: process.env.AWS_ACCESS_KEY_ID,
       secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
     },
-
-    region: process.env.AWS_REGION,
   });
   const from = "support@simple-ai.io";
   const to = email;
