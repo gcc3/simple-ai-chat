@@ -450,7 +450,6 @@ export default function Home() {
       }
 
       // User logged in
-      // If mode is forced, do not update user setting
       if (getSetting("user")) {
         updateUserSetting("fullscreen", mode);
       }
