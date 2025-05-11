@@ -461,8 +461,8 @@ export default function Home() {
     // Handle window resize
     const handleResize = () => {
       // Readjust UI
-      reAdjustInputHeight(getSetting("fullscreen"));
-      reAdjustPlaceholder(getSetting("fullscreen"));
+      reAdjustInputHeight();
+      reAdjustPlaceholder();
     };
     window.addEventListener('resize', handleResize);
     handleResize();
@@ -648,7 +648,7 @@ export default function Home() {
             if (command) {
               setInput(command);
               setSetting("historyIndex", historyIndex + 1);
-              reAdjustInputHeight(getSetting("fullscreen"));
+              reAdjustInputHeight();
             }
           }
 
@@ -729,13 +729,12 @@ export default function Home() {
             if (command) {
               setInput(command);
               setSetting("historyIndex", historyIndex - 1);
-              reAdjustInputHeight(getSetting("fullscreen"));
             } else {
               // Clear input
               setInput(":");
               setSetting("historyIndex", -1);
-              reAdjustInputHeight(getSetting("fullscreen"));
             }
+            reAdjustInputHeight();
           }
 
           // Navigate to next session
@@ -920,8 +919,8 @@ export default function Home() {
     window.addEventListener('hashchange', removeHashTag, false);
 
     // Readjust UI
-    reAdjustInputHeight(getSetting("fullscreen"));
-    reAdjustPlaceholder(getSetting("fullscreen"));
+    reAdjustInputHeight();
+    reAdjustPlaceholder();
 
     // Load additional scripts
     // KaTeX copy module
@@ -1240,8 +1239,8 @@ export default function Home() {
       if (commandString.startsWith("theme")) setTheme(getSetting("theme"));
 
       // Readjust UI
-      reAdjustInputHeight(getSetting("fullscreen"));
-      reAdjustPlaceholder(getSetting("fullscreen"));
+      reAdjustInputHeight();
+      reAdjustPlaceholder();
       return;
     } else {
       // Clear donut
@@ -2419,15 +2418,13 @@ export default function Home() {
     }
 
     // Re-adjust input height
-    reAdjustInputHeight(null, false);
+    reAdjustInputHeight();
   };
 
   // The placeholder should be shorten if fullscreen off or default
   // For fullscreen split, the placeholder shouldn't be shorten
-  const reAdjustPlaceholder = (fullscreen_ = null) => {
-    if (!fullscreen_) fullscreen_ = getSetting("fullscreen");
-    fullscreen_ = fullscreen_.trim();
-
+  const reAdjustPlaceholder = () => {
+    const fullscreen_ = getSetting("fullscreen").trim();
     const placeholder = globalThis.rawPlaceholder;
     const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ?
                                  placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
@@ -2436,55 +2433,55 @@ export default function Home() {
 
   // The sleep 1 will magically fix the auto -> height issue
   // But when input change, the height will jumping, so add doSleepToFixAuto param to control
-  const reAdjustInputHeight = async (fullscreen_ = null, doSleepToFixAuto = true) => {
+  const reAdjustInputHeight = async (doSleepToFixAuto = false) => {
     const elInput = elInputRef.current;
-    if (elInput) {
-      if (!fullscreen_) {
-        fullscreen_ = getSetting("fullscreen");
-      }
+    if (!elInput) {
+      return;
+    }
 
-      // Non-fullscreen
-      if (fullscreen_ === "off") {
-        elInput.style.height = "auto";
-        if (doSleepToFixAuto) {
-          // This sleep magically fixed the hight issue
-          await sleep(1)
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
-        } else {
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
-        }
-      }
+    const fullscreenMode = getSetting("fullscreen");
 
-      // Fullscreen
-      if (fullscreen_ === "default") {
-        elInput.style.height = "auto";
-        if (doSleepToFixAuto) {
-          // This sleep magically fixed the hight issue
-          await sleep(1)
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
-        } else {
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
-        }
-
-        // If input height is larger than the window height
-        // then set it to window height
-        if (elInput.scrollHeight > window.innerHeight / 2) {
-          elInput.style.height = `${window.innerHeight / 2}px`;
-        }
-
-        // Store input height in fullscreen mode
-        // To calculate the height of output wrapper
-        document.documentElement.style.setProperty("--input-height", elInput.style.height);
-      }
-
-      // Fullscreen split
-      if (fullscreen_ === "split") {
+    // Non-fullscreen
+    if (fullscreenMode === "off") {
+      elInput.style.height = "auto";
+      if (doSleepToFixAuto) {
         // This sleep magically fixed the hight issue
         await sleep(1)
-
-        // Do nothing because the input height alwasy 100%
-        elInput.style.height = "100%";
+        elInput.style.height = `${elInput.scrollHeight}px`;
+      } else {
+        elInput.style.height = `${elInput.scrollHeight}px`;
       }
+    }
+
+    // Fullscreen
+    if (fullscreenMode === "default") {
+      elInput.style.height = "auto";
+      if (doSleepToFixAuto) {
+        // This sleep magically fixed the height issue
+        await sleep(1)
+        elInput.style.height = `${elInput.scrollHeight}px`;
+      } else {
+        elInput.style.height = `${elInput.scrollHeight}px`;
+      }
+
+      // If input height is larger than the window height
+      // then set it to window height
+      if (elInput.scrollHeight > window.innerHeight / 2) {
+        elInput.style.height = `${window.innerHeight / 2}px`;
+      }
+
+      // Store input height in fullscreen mode
+      // To calculate the height of output wrapper
+      document.documentElement.style.setProperty("--input-height", elInput.style.height);
+    }
+
+    // Fullscreen split
+    if (fullscreenMode === "split") {
+      // This sleep magically fixed the hight issue
+      await sleep(1)
+
+      // Do nothing because the input height alwasy 100%
+      elInput.style.height = "100%";
     }
   }
 
@@ -2515,8 +2512,8 @@ export default function Home() {
     setFullscreen(mode);
 
     // This is necessary
-    reAdjustInputHeight(mode); // Adjust input height
-    reAdjustPlaceholder(mode);  // Adjust placeholder
+    reAdjustInputHeight(true);  // !important: use doSleepToFixAuto, the magic
+    reAdjustPlaceholder();
   }
 
   // +img[], +image[], +file[]
