@@ -38,10 +38,7 @@ export function setUserWebStorage(user) {
 
   // fullscreen
   if ("fullscreen" in settings) {
-    if (getSetting("fullscreen") && settings.fullscreen != getSetting("fullscreen") && !getSetting("fullscreen").includes("force")) {
-      setSetting("fullscreen", settings.fullscreen);
-      emitter.emit("ui:set_fullscreen", settings.fullscreen);
-    }
+    setSetting("fullscreen", settings.fullscreen);
   }
 
   // useSpeak
@@ -105,7 +102,7 @@ export function setUserWebStorage(user) {
 
 export function clearUserWebStorage() {
   localStorage.removeItem("user");
-  
+
   // Reset session to forget previous memory
   initializeSessionMemory();
 
