@@ -2511,7 +2511,12 @@ export default function Home() {
       setEnter("enter");
     }
 
+    // This is necessary
     setFullscreen(mode);
+
+    // This is necessary
+    reAdjustInputHeight(mode); // Adjust input height
+    reAdjustPlaceholder(mode);  // Adjust placeholder
   }
 
   // +img[], +image[], +file[]
