@@ -2449,9 +2449,9 @@ export default function Home() {
         if (doSleepToFixAuto) {
           // This sleep magically fixed the hight issue
           await sleep(1)
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
+          elInput.style.height = `${elInput.scrollHeight}px`;
         } else {
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
+          elInput.style.height = `${elInput.scrollHeight}px`;
         }
       }
 
@@ -2459,11 +2459,11 @@ export default function Home() {
       if (fullscreen_ === "default") {
         elInput.style.height = "auto";
         if (doSleepToFixAuto) {
-          // This sleep magically fixed the hight issue
+          // This sleep magically fixed the height issue
           await sleep(1)
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
+          elInput.style.height = `${elInput.scrollHeight}px`;
         } else {
-          elInput.style.height = `${elInput.scrollHeight + 1}px`;
+          elInput.style.height = `${elInput.scrollHeight}px`;
         }
 
         // If input height is larger than the window height
