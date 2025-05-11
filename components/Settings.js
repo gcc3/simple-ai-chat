@@ -40,13 +40,13 @@ function Settings() {
   const [groupStores, setGroupStores] = useState([]);
   const [systemStores, setSystemStores] = useState([]);
   const [activeStores, setActiveStores] = useState([]);
-  
+
   // 4. nodes
   const [userNodes, setUserNodes] = useState([]);
   const [groupNodes, setGroupNodes] = useState([]);
   const [systemNodes, setSystemNodes] = useState([]);
   const [activeNode, setActiveNode] = useState([]);
-  
+
   const [message, setMessage] = useState(null);
 
   const { t, i18n, ready } = useTranslation("settings");
@@ -90,21 +90,21 @@ function Settings() {
             "Content-Type": "application/json",
           },
         });
-  
+
         const data = await response.json();
         if (response.status !== 200) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
-  
-        if (Object.entries(data.result.user_models).length === 0 
-          && Object.entries(data.result.group_models).length === 0 
+
+        if (Object.entries(data.result.user_models).length === 0
+          && Object.entries(data.result.group_models).length === 0
           && Object.entries(data.result.system_models).length === 0) {
           return "No available model found.";
         } else {
           // For adding star to current store
           const currentModel = getSetting("model");
           setCurrentModel(currentModel);
-  
+
           // User models
           if (data.result.user_models && Object.entries(data.result.user_models).length > 0) {
             let models = [];
@@ -113,7 +113,7 @@ function Settings() {
             });
             setUserModels(models);
           }
-  
+
           // Group models
           if (data.result.group_models && Object.entries(data.result.group_models).length > 0) {
             let models = [];
@@ -122,7 +122,7 @@ function Settings() {
             });
             setGroupModels(models);
           }
-  
+
           // System models
           if (data.result.system_models && Object.entries(data.result.system_models).length > 0) {
             let models = [];
@@ -131,7 +131,7 @@ function Settings() {
             });
             setSystemModels(models);
           }
-  
+
           // Ollama models
           if (await pingOllamaAPI()) {
             const ollamaModelList = await listOllamaModels();
@@ -159,12 +159,12 @@ function Settings() {
             "Content-Type": "application/json",
           },
         });
-  
+
         const data = await response.json();
         if (response.status !== 200) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
-  
+
         if (data.result.system_roles.length === 0 && (!data.result.user_roles || Object.entries(data.result.user_roles).length === 0)) {
           return "No role found.";
         } else {
@@ -177,7 +177,7 @@ function Settings() {
               setUserRoles(roles);
             }
           }
-  
+
           if (getSetting("role")) {
             const currentRole = getSetting("role");
             setCurrentRole(currentRole);
@@ -215,12 +215,12 @@ function Settings() {
             "Content-Type": "application/json",
           },
         });
-  
+
         const data = await response.json();
         if (response.status !== 200) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
-  
+
         if (Object.entries(data.result.user_stores).length === 0
           && Object.entries(data.result.group_stores).length === 0
           && Object.entries(data.result.system_stores).length === 0) {
@@ -229,7 +229,7 @@ function Settings() {
           // For adding star to current store
           const activeStores = getActiveStores();
           setActiveStores(activeStores);
-  
+
           // User stores
           if (data.result.user_stores && Object.entries(data.result.user_stores).length > 0) {
             let stores = [];
@@ -238,7 +238,7 @@ function Settings() {
             });
             setUserStores(stores);
           }
-  
+
           // Group stores
           if (data.result.group_stores && Object.entries(data.result.group_stores).length > 0) {
             let stores = [];
@@ -247,7 +247,7 @@ function Settings() {
             });
             setGroupStores(stores);
           }
-  
+
           // System stores
           if (data.result.system_stores && Object.entries(data.result.system_stores).length > 0) {
             let stores = [];
@@ -271,30 +271,30 @@ function Settings() {
             "Content-Type": "application/json",
           },
         });
-  
+
         const data = await response.json();
         if (response.status !== 200) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
-  
-        if (Object.entries(data.result.user_nodes).length === 0 
-         && Object.entries(data.result.group_nodes).length === 0 
+
+        if (Object.entries(data.result.user_nodes).length === 0
+         && Object.entries(data.result.group_nodes).length === 0
          && Object.entries(data.result.system_nodes).length === 0) {
           return "No available node found.";
         } else {
           // For adding star to current store
           const currentNode = getSetting("node");
           setActiveNode(currentNode);
-  
+
           // User nodes
           if (data.result.user_nodes && Object.entries(data.result.user_nodes).length > 0) {
             let nodes = [];
             Object.entries(data.result.user_nodes).forEach(([key, value]) => {
               nodes.push(value.name);
             });
-            setUserNodes(nodes);            
+            setUserNodes(nodes);
           }
-  
+
           // Group nodes
           if (data.result.group_nodes && Object.entries(data.result.group_nodes).length > 0) {
             let nodes = [];
@@ -303,7 +303,7 @@ function Settings() {
             });
             setGroupNodes(nodes);
           }
-  
+
           // System nodes
           if (data.result.system_nodes && Object.entries(data.result.system_nodes).length > 0) {
             let nodes = [];
@@ -332,7 +332,7 @@ function Settings() {
     }
 
     // Set initial language
-    setLang(getSetting("lang").replace("force", "").trim());
+    setLang(getSetting("lang").trim());
   }, []);
 
   const updateUserSettings = async (key, value) => {
@@ -450,7 +450,7 @@ function Settings() {
         console.error("Model not found");
         return;
       }
-      
+
       // Set model
       globalThis.model = modelInfo.model;
       globalThis.baseUrl = modelInfo.base_url;
@@ -489,7 +489,7 @@ function Settings() {
         console.error("Model not found");
         return;
       }
-      
+
       // Set model
       globalThis.model = modelInfo.model;
       globalThis.baseUrl = modelInfo.base_url;
@@ -528,7 +528,7 @@ function Settings() {
         console.error("Model not found");
         return;
       }
-      
+
       // Set model
       globalThis.model = modelInfo.model;
       globalThis.baseUrl = modelInfo.base_url;
@@ -679,7 +679,7 @@ function Settings() {
 
   const handleSetLanguage = useCallback((newLang) => async () => {
     // Set language
-    const lang_ = newLang.replace("force", "").trim()
+    const lang_ = newLang.trim()
     setLang(lang_);
     const i18nLang = lang_.split("-")[0];
     i18n.changeLanguage(i18nLang)
@@ -730,7 +730,7 @@ function Settings() {
         <div className="mt-3">- {t("User Models")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {userModels.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserModels(i)}
@@ -744,7 +744,7 @@ function Settings() {
         <div className="mt-3">- {t("User Group Models")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {groupModels.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetGroupModels(i)}
@@ -758,7 +758,7 @@ function Settings() {
         <div className="mt-3">- {t("System Models")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {systemModels.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemModels(i)}
@@ -772,7 +772,7 @@ function Settings() {
         <div className="mt-3">- {t("Ollama Models")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {ollamaModels.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetOllamaModels(i)}
@@ -786,7 +786,7 @@ function Settings() {
         <div className="mt-3">- {t("User Roles")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {userRoles.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${currentRole === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserRoles(i)}
@@ -800,7 +800,7 @@ function Settings() {
         <div className="mt-3">- {t("System Functions")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {systemFunctions.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${enabledFunctions.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemFunctions(i)}
@@ -814,7 +814,7 @@ function Settings() {
         <div className="mt-3">- {t("MCP Functions")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {mcpFunctions.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${enabledFunctions.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetMcpFunctions(i)}
@@ -828,7 +828,7 @@ function Settings() {
         <div className="mt-3">- {t("User Stores")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {userStores.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserStores(i)}
@@ -842,7 +842,7 @@ function Settings() {
         <div className="mt-3">- {t("User Group Stores")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {groupStores.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetGroupStores(i)}
@@ -856,7 +856,7 @@ function Settings() {
         <div className="mt-3">- {t("System Stores")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {systemStores.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemStores(i)}
@@ -870,7 +870,7 @@ function Settings() {
         <div className="mt-3">- {t("User Nodes")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {userNodes.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${activeNode === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserNodes(i)}
@@ -884,7 +884,7 @@ function Settings() {
         <div className="mt-3">- {t("User Group Nodes")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {groupNodes.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${activeNode === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetGroupNodes(i)}
@@ -898,7 +898,7 @@ function Settings() {
         <div className="mt-3">- {t("System Nodes")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {systemNodes.map((i) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${currentRole === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemNodes(i)}
@@ -911,21 +911,21 @@ function Settings() {
       {<div>
         <div className="mt-3">- {t("Theme")}</div>
         <div className="flex flex-wrap items-center mt-2">
-          <button 
+          <button
             className={`ml-2 mb-1 ${"light" == getSetting("theme") ? 'selected' : ''}`}
-            onClick={handleSetTheme("light")} 
+            onClick={handleSetTheme("light")}
           >
             light
           </button>
-          <button 
+          <button
             className={`ml-2 mb-1 ${"dark" == getSetting("theme") ? 'selected' : ''}`}
-            onClick={handleSetTheme("dark")} 
+            onClick={handleSetTheme("dark")}
           >
             dark
           </button>
-          <button 
+          <button
             className={`ml-2 mb-1 ${"terminal" == getSetting("theme") ? 'selected' : ''}`}
-            onClick={handleSetTheme("terminal")} 
+            onClick={handleSetTheme("terminal")}
           >
             terminal
           </button>
@@ -935,10 +935,10 @@ function Settings() {
         <div className="mt-3">- {t("Language")}</div>
         <div className="flex flex-wrap items-center mt-2">
           {languages.map((l) => (
-            <button 
+            <button
               className={`ml-2 mb-1 ${l.language_code == lang ? 'selected' : ''}`}
-              key={l.language_code} 
-              onClick={handleSetLanguage(l.language_code + " force")} 
+              key={l.language_code}
+              onClick={handleSetLanguage(l.language_code)}
             >
               {l.native_name}
             </button>

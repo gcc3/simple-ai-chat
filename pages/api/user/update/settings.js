@@ -15,7 +15,7 @@ export default async function (req, res) {
   // Authentication
   const authResult = authenticate(req);
   if (!authResult.success) {
-    return res.status(401).json({ 
+    return res.status(401).json({
       success: false,
       error: authResult.error
     });
@@ -25,9 +25,9 @@ export default async function (req, res) {
   // Get user
   const user = await getUser(username);
   if (!user) {
-    return res.status(400).json({ 
-      success: false, 
-      error: 'User not found.' 
+    return res.status(400).json({
+      success: false,
+      error: 'User not found.'
     });
   }
 
@@ -35,9 +35,9 @@ export default async function (req, res) {
   // value is allowed to be empty string
   const { key, value } = req.body;
   if (!key || value == null) {
-    return res.status(400).json({ 
+    return res.status(400).json({
       success: false,
-      error: '`key` and `value` are required.' 
+      error: '`key` and `value` are required.'
     });
   }
 
@@ -50,8 +50,8 @@ export default async function (req, res) {
     }
 
     if (!validKeys.includes(key)) {
-      return res.status(400).json({ 
-        success: false, 
+      return res.status(400).json({
+        success: false,
         error: 'Invalid key, key must be one of:' + validKeys.join(', ')
       });
     }
@@ -60,8 +60,8 @@ export default async function (req, res) {
     if (key === 'theme') {
       const validValues = ['light', 'dark', 'terminal'];
       if (!validValues.includes(value)) {
-        return res.status(400).json({ 
-          success: false, 
+        return res.status(400).json({
+          success: false,
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
@@ -69,45 +69,45 @@ export default async function (req, res) {
 
     if (key === 'lang') {
       const validValues = getLangCodes();
-      const value_ = value.replace("force", "").trim();
+      const value_ = value.trim();
       if (!validValues.includes(value_)) {
-        return res.status(400).json({ 
-          success: false, 
+        return res.status(400).json({
+          success: false,
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
     }
-    
+
     if (key === 'useSpeak') {
       const validValues = ['true', 'false'];
       if (!validValues.includes(value)) {
-        return res.status(400).json({ 
-          success: false, 
+        return res.status(400).json({
+          success: false,
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
-    } 
-    
+    }
+
     if (key === 'useStats') {
       const validValues = ['true', 'false'];
       if (!validValues.includes(value)) {
-        return res.status(400).json({ 
-          success: false, 
+        return res.status(400).json({
+          success: false,
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
-    } 
-    
+    }
+
     if (key === 'fullscreen') {
       const validValues = ['default', 'split', 'off'];
       if (!validValues.includes(value)) {
-        return res.status(400).json({ 
-          success: false, 
+        return res.status(400).json({
+          success: false,
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
-    } 
-    
+    }
+
     if (key === 'role') {
       const userRoles = await getUserRoles(username);
       const systemRoles = await getSystemRoles();
@@ -134,17 +134,17 @@ export default async function (req, res) {
       validValues = validValues.concat(systemRoles.map(s => "\"" + s.role + "\""));
 
       if (!validValues.includes("\"" + value + "\"")) {
-        return res.status(400).json({ 
-          success: false, 
+        return res.status(400).json({
+          success: false,
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
-    } 
-    
+    }
+
     if (key === 'store') {
       const allStores = await getAvailableStoresForUser(user);
       if (Object.entries(allStores).length === 0) {
-        return res.status(400).json({ 
+        return res.status(400).json({
           success: false,
           error: 'No store found.'
         });
@@ -161,18 +161,18 @@ export default async function (req, res) {
       const values = value.split(',');
       for (let i = 0; i < values.length; i++) {
         if (!validValues.includes("\"" + values[i] + "\"")) {
-          return res.status(400).json({ 
-            success: false, 
+          return res.status(400).json({
+            success: false,
             error: 'Invalid value, value must be one of: ' + validValues.join(', ')
           });
         }
       }
-    } 
-    
+    }
+
     if (key === 'node') {
       const allNodes = await getAvailableNodesForUser(user);
       if (Object.entries(allNodes).length === 0) {
-        return res.status(400).json({ 
+        return res.status(400).json({
           success: false,
           error: 'No user node found.'
         });
@@ -185,8 +185,8 @@ export default async function (req, res) {
         validValues.push(value);
       });
       if (!validValues.includes("\"" + value + "\"")) {
-        return res.status(400).json({ 
-          success: false, 
+        return res.status(400).json({
+          success: false,
           error: 'Invalid value, value must be one of: ' + validValues.join(', ')
         });
       }
@@ -196,19 +196,19 @@ export default async function (req, res) {
     const wasSuccessful = await updateUserSetting(username, key, value);
 
     if (wasSuccessful) {
-      return res.status(200).json({ 
-        success: true, 
+      return res.status(200).json({
+        success: true,
         message: "Settings updated."
       });
     } else {
-      return res.status(400).json({ 
-        success: false, 
+      return res.status(400).json({
+        success: false,
         error: 'Failed to update settings or user not found.'
        });
     }
   } catch (error) {
     console.error('Error:', error);
-    return res.status(500).json({ 
+    return res.status(500).json({
       success: false,
       error: 'Error occurred while updating the user settings.'
     });

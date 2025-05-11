@@ -80,7 +80,7 @@ const clearDonutInterval = () => {
   }
 }
 
-export default function Home() { 
+export default function Home() {
   const { fullscreen, setFullscreen, enter, setEnter } = useUI();
 
   // States
@@ -140,9 +140,9 @@ export default function Home() {
 
       if (ignoreFormatter) {
         // Resume observing
-        globalThis.outputMutationObserver.observe((elOutput), { 
-          childList: true, 
-          attributes: false, 
+        globalThis.outputMutationObserver.observe((elOutput), {
+          childList: true,
+          attributes: false,
           subtree: true,
           characterData: true
         });
@@ -187,11 +187,11 @@ export default function Home() {
       // Create a wrapper div to hold the iframe and control its aspect ratio
       const videoDiv = document.createElement('div');
       videoDiv.className = "mb-5 video-preview";
-      
+
       // Here the padding-top is 56.25%, which is the result of (9 / 16 * 100).
       videoDiv.style.position = 'relative';
       videoDiv.style.paddingTop = '56.25%'; // Aspect ratio for 16:9
-      
+
       // Create the iframe
       const iframe = document.createElement('iframe');
       iframe.className = "";
@@ -201,16 +201,16 @@ export default function Home() {
       iframe.style.left = '0';
       iframe.style.top = '0';
       iframe.style.outline = 'none';
-      
+
       // Extract the YouTube video ID from the URL
       iframe.src = `https://www.youtube.com/embed/${videoId}`; // The URL for the YouTube video embed
       iframe.title = "YouTube video player";
       iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
       iframe.allowFullscreen = true;
-      
+
       // Append the iframe to the wrapper div
       videoDiv.appendChild(iframe);
-      
+
       // Append the videoWrapper to the div with the ref
       const elWrapperRef = targetRef.current.parentNode; // Assuming the parent node is where you want to insert the video
       if (beforeOrAfter === "after") {
@@ -332,7 +332,7 @@ export default function Home() {
   }
 
   // Initializing
-  useEffect(() => { 
+  useEffect(() => {
     initializeSettings();
     initializeSessionMemory();
 
@@ -344,16 +344,16 @@ export default function Home() {
         const user = await fetchUserInfo();
         if (user) {
           console.log("User info - settings: ", JSON.stringify(user.settings, null, 2));
-      
+
           // Refresh local user data
           setUserWebStorage(user);
         } else {
           console.warn("User not found or authentication failed, clearing local user data...");
-      
+
           // Clear local user data
           if (getSetting("user")) {
             clearUserWebStorage();
-      
+
             // Clear auth cookie
             document.cookie = "auth=; Path=/;";
             console.log("User authentication failed, local user data cleared.");
@@ -362,7 +362,7 @@ export default function Home() {
       } else {
         console.log("User not logged in.");
       }
-      
+
       // System info
       console.log("Fetching system info...");
       const systemInfoResponse = await fetch('/api/system/info');
@@ -435,14 +435,10 @@ export default function Home() {
     getSystemInfo();
 
     // Set styles and themes
-    const dispatchFullscreen = (mode, force = false) => {
+    const dispatchFullscreen = (mode) => {
       const currentMode = getSetting('fullscreen');
-      if (currentMode.includes("force") && !force) {
-        // If current mode is forced, do not change it
-        return;
-      }
 
-      setSetting('fullscreen', mode + (force ? " force" : ""));
+      setSetting('fullscreen', mode);
       setFullscreen(mode);
 
       if (mode === "split") {
@@ -452,10 +448,10 @@ export default function Home() {
         // fullscreen default mode use enter
         setEnter("enter");
       }
-      
+
       // User logged in
       // If mode is forced, do not update user setting
-      if (getSetting("user") && !force) {
+      if (getSetting("user")) {
         updateUserSetting("fullscreen", mode);
       }
       reAdjustInputHeight(mode); // Adjust input height
@@ -472,7 +468,7 @@ export default function Home() {
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode if the screen is small
         dispatchFullscreen("off", true);
-        console.log("Force fullscreen off: mobile device width < 768.");
+        console.log("Fullscreen off: mobile device narrow.");
       }
     } else {
       dispatchFullscreen(getSetting("fullscreen"));
@@ -480,21 +476,10 @@ export default function Home() {
 
     // Lanuage
     let lang = "en-US";
-    if (getSetting("lang").includes("force")) {
-      // Use forced language
-      // If user set language, it will be forced
-      lang = getSetting("lang").replace("force", "").trim();
-    } else {
-      // Use browser language
-      const browserLang = navigator.language || navigator.userLanguage;
-      if (getLangCodes().includes(browserLang)) {
-        lang = browserLang;
-        setSetting("lang", lang);  // Not `force`
-      } else {
-        lang = getSetting("lang");
-      }
+    if (getSetting("lang")) {
+      // If user set language, it will be used here.
+      lang = getSetting("lang").trim();
     }
-
     const i18nLang = lang.split("-")[0];  // i18n language, e.g. en for en-US
     if (i18n.language !== i18nLang) {
       i18n.changeLanguage(i18nLang)
@@ -506,7 +491,7 @@ export default function Home() {
     } else {
       setRtl(i18nLang === "ar");
     }
-    
+
     // Theme
     setTheme(getSetting("theme"))
     hljs.highlightAll();  // highlight.js
@@ -556,7 +541,7 @@ export default function Home() {
             }
           }
           break;
-    
+
         case "Tab":  // TAB to focus on input
           console.log("Shortcut: Tab");
 
@@ -568,7 +553,7 @@ export default function Home() {
             }
           }
           break;
-    
+
         case "/":  // Press / to focus on input
           console.log("Shortcut: /");
 
@@ -616,7 +601,7 @@ export default function Home() {
               setInfo();
               setStats();
               setEvaluation();
-              
+
               // Focus on input
               const elInput = elInputRef.current;
               elInput.focus();
@@ -651,7 +636,7 @@ export default function Home() {
 
           console.log("Shortcut: F11");
           break;
-        
+
         case "\\":
         case "|":  // fullscreen split mode
           if (event.ctrlKey) {
@@ -664,7 +649,7 @@ export default function Home() {
             } else {
               dispatchFullscreen("off");
             }
-            
+
             console.log("Shortcut: ⌃|");
           }
           break;
@@ -1171,7 +1156,7 @@ export default function Home() {
     });
 
     // Check if the input is empty
-    if (image_urls.length == 0 
+    if (image_urls.length == 0
      && file_urls.length == 0
      && input.trim().length == 0) {
       console.log("Input is empty.");
@@ -1185,7 +1170,7 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     globalThis.rawPlaceholder = placeholder;
-    
+
     // Clear input
     clearInput();
 
@@ -1349,7 +1334,7 @@ export default function Home() {
         } else {
           for (let i = 0; i < functionCliResults.length; i++) {
             const functionResult = functionCliResults[i];
-  
+
             // Print the output
             let resultText = "!" + functionResult.function + "\n";
             if (functionResult.success) {
@@ -1359,16 +1344,16 @@ export default function Home() {
             }
             if (elOutputRef.current.innerHTML !== "") resultText = "\n\n" + resultText;
             printOutput(resultText, true, true);
-  
+
             // Handle event
             if (functionResult.event) {
               const _event = functionResult.event;
               console.log("Function Event: " + JSON.stringify(_event));
-  
+
               // Handle redirect event
               if (_event.name === "redirect") {
                 console.log("Redirecting to \"" + _event.parameters.url + "\"...");
-  
+
                 // Redirect to URL
                 if (!_event.parameters.url.startsWith("http")) {
                   console.error("URL must start with http or https.");
@@ -1400,7 +1385,7 @@ export default function Home() {
         // Subsession detected
         // The session ID is one of the log time (not head log of session)
         console.log("Detected possible sub session " + timelineTime + ", parent session is " + session + ".");
-        
+
         // TODO, check subsession is valid in session
         // If valid, set session ID to subsession
         setSession(timelineTime);
@@ -1417,7 +1402,7 @@ export default function Home() {
 
     // Generation mode switch
     // Local mode
-    if (getSetting("baseUrl").includes("localhost") 
+    if (getSetting("baseUrl").includes("localhost")
      || getSetting("baseUrl").includes("127.0.0.1")) {
       console.log("Start. (Local)");
       generate_msg(input, image_urls, file_urls);
@@ -1470,7 +1455,7 @@ export default function Home() {
 
     // Send SSE request!
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
-                                                           + "&images=" + images.join(encodeURIComponent("###"))  
+                                                           + "&images=" + images.join(encodeURIComponent("###"))
                                                            + "&files=" + files.join(encodeURIComponent("###"))
                                                            + "&time=" + config.time
                                                            + "&session=" + config.session
@@ -1755,7 +1740,7 @@ export default function Home() {
             console.error("URL must start with http or https.");
           } else {
             // Redirect to URL
-            if (_event.parameters.blank == true) {    
+            if (_event.parameters.blank == true) {
               // Open with new tab
               window.open(_event.parameters.url, '_blank');
             } else {
@@ -2097,7 +2082,7 @@ export default function Home() {
             reject(error);
           }
         });
-    
+
         // Resolve the Promise when the stream ends
         stream.on('end', async () => {
           // Print output result
@@ -2120,7 +2105,7 @@ export default function Home() {
           globalThis.STATE = STATES.IDLE;
           resolve();
         });
-    
+
         // Reject the Promise on error
         stream.on('error', (error) => {
           printOutput(error);
@@ -2187,23 +2172,23 @@ export default function Home() {
       if (events.length > 0) {
         events.map(event => {
           console.log("Event: " + JSON.stringify(event));
-  
+
           if (event.name === "redirect") {
             console.log("Redirecting to " + event.parameters.url + "...");
-  
+
             // Redirect to URL
             if (!event.parameters.url.startsWith("http")) {
               console.error("URL must start with http or https.");
             } else {
               // Redirect to URL
-              if (event.parameters.blank == true) {    
+              if (event.parameters.blank == true) {
                 // Open with new tab
                 window.open(event.parameters.url, '_blank');
               } else {
                 // Stop generating as it will be redirected.
                 globalThis.STATE = STATES.IDLE;
                 window.speechSynthesis.cancel();
-  
+
                 // Redirect to URL
                 window.top.location.href = event.parameters.url;
                 return;
@@ -2286,7 +2271,7 @@ export default function Home() {
         if (config.use_eval === "true") {
           const _eval_ = data.result.stats.eval;
           const val = parseInt(_eval_);
-  
+
           let valColor = "#767676";                // default
           if (val >= 7)      valColor = "green";   // green
           else if (val >= 4) valColor = "#CC7722"; // orange
@@ -2310,7 +2295,7 @@ export default function Home() {
       console.error(error);
     }
   }
-  
+
   // Handle input key down
   const handleInputKeyDown = async (event) => {
     const elInput = elInputRef.current;
@@ -2380,7 +2365,7 @@ export default function Home() {
 
             // Get auto complete options
             const options = await getAutoCompleteOptions(prefix, nameToBeComleted);
-            
+
             if (options.includes(nameToBeComleted)) {
               // Set the input to next option
               const nextOption = options[(options.indexOf(nameToBeComleted) + 1) % options.length];
@@ -2450,7 +2435,7 @@ export default function Home() {
       // General input
       globalThis.rawInput = elInput.value;
     }
-    
+
     // Re-adjust input height
     reAdjustInputHeight(null, false);
   };
@@ -2459,10 +2444,10 @@ export default function Home() {
   // For fullscreen split, the placeholder shouldn't be shorten
   const reAdjustPlaceholder = (fullscreen_ = null) => {
     if (!fullscreen_) fullscreen_ = getSetting("fullscreen");
-    fullscreen_ = fullscreen_.replace("force", "").trim();
-    
+    fullscreen_ = fullscreen_.trim();
+
     const placeholder = globalThis.rawPlaceholder;
-    const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ? 
+    const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ?
                                  placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
     setPlaceholder({ text: placeholderShortern, height: null });
   }
@@ -2504,7 +2489,7 @@ export default function Home() {
         if (elInput.scrollHeight > window.innerHeight / 2) {
           elInput.style.height = `${window.innerHeight / 2}px`;
         }
-        
+
         // Store input height in fullscreen mode
         // To calculate the height of output wrapper
         document.documentElement.style.setProperty("--input-height", elInput.style.height);
@@ -2553,7 +2538,7 @@ export default function Home() {
     console.log('Image/file pasted/dropped: ' + fileName + ' (' + type + ')');
 
     let message = "null";
-    
+
     // 1. Check file size
     if (fileSize > 10485760) {
       // 10MB
@@ -2572,7 +2557,7 @@ export default function Home() {
         // Upload the image to S3
         const uploadResult = await generateFileUrl(blob, file_id, type);
         if (!uploadResult.success) {
-          // Print error message 
+          // Print error message
           console.error(uploadResult.message);
           message = "file_id:" + file_id + "(failed: " + uploadResult.message + ")";
         } else {
@@ -2631,7 +2616,7 @@ export default function Home() {
   let styles = defaultStyles;
   if (fullscreen === "default") styles = fullscreenStyles;
   if (fullscreen === "split") styles = fullscreenSplitStyles;
-  
+
   return (
     <div>
       <Head>
@@ -2660,8 +2645,8 @@ export default function Home() {
               spellCheck="false"
             />
             <input
-              className={styles.submit} 
-              type="submit" 
+              className={styles.submit}
+              type="submit"
               value={enter}
             />
           </form>
@@ -2671,8 +2656,8 @@ export default function Home() {
                 <PreviewImage image={image} />
               </div>
             ))}
-            <div 
-              id="output" 
+            <div
+              id="output"
               ref={elOutputRef}
               className={styles.output}>
             </div>
@@ -2691,7 +2676,7 @@ export default function Home() {
             }}>{info}</div>
           </div>
         </div>
-      
+
         {display === DISPLAY.BACK &&
           <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
             <div className={styles.container}>

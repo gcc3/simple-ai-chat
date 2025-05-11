@@ -8,14 +8,14 @@ export default async function voice(args) {
   if (command === "ls" || command === "list") {
     const voices = await getVoices();
     let langVoiceList = [];
-    const currentLang = getSetting("lang").replace(" force", "");
+    const currentLang = getSetting("lang");
     for (let i = 0; i < voices.length ; i++) {
       if (voices[i].lang === currentLang) {
         console.log(`Voice ${i+1}: ${voices[i].name}, ${voices[i].lang}`);
         langVoiceList.push(voices[i].name);
       }
     }
-    
+
     if (langVoiceList.length === 0) {
       return "No voices found for language `" + currentLang + "`.";
     } else {
@@ -28,7 +28,7 @@ export default async function voice(args) {
       return result;
     }
   }
-  
+
   if (command === "use") {
     if (args.length != 2) {
       return "Usage: :voice use [voice_name]\n"
