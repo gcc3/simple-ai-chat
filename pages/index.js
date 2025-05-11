@@ -340,7 +340,6 @@ export default function Home() {
     const getSystemInfo = async () => {
       // User info
       if (getSetting("user") !== null) {
-        console.log("Fetching user info...");
         const user = await fetchUserInfo();
         if (user) {
           console.log("User info - settings: ", JSON.stringify(user.settings, null, 2));
