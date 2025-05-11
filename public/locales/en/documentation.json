@@ -17,9 +17,7 @@
   "Themes": "Themes",
   "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode.": "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode.",
   "Function calls": "Function calls",
-  "GPT will choise function to use to get information he need. Such as weather and time queries. Functions can be called by user directlly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPT will choise function to use to get information he need. Such as weather and time queries. Functions can be called by user directlly from the input as well. To list all available functions use `:function ls`. Also refer: Functions",
   "Page redirection": "Page redirection",
-  "As one of the `functions calls`, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "As one of the `functions calls`, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.",
   "Location-based query": "Location-based query",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.",
   "Code highlighting": "Code highlighting",
@@ -126,7 +124,6 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.",
   "Models": "Models",
   "* Link with your own data. Support link to relational database.": "* Link with your own data. Support link to relational database.",
-  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.",
   "CLI (Command-line Interface)": "CLI (Command-line Interface)",
   "Model Context Protocol (MCP)": "Model Context Protocol (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.",
@@ -137,5 +134,8 @@
   "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.",
   "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.",
   "Command-line Interface (CLI)": "Command-line Interface (CLI)",
-  "Image Generation & Edit": "Image Generation & Edit"
+  "Image Generation & Edit": "Image Generation & Edit",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data stores can be used simultaneously.": "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data stores can be used simultaneously.",
+  "GPT will choose function to use to get information it needs. Such as weather and time queries. Functions can be called by user directly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPT will choose function to use to get information it needs. Such as weather and time queries. Functions can be called by user directly from the input as well. To list all available functions use `:function ls`. Also refer: Functions",
+  "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously."
 }

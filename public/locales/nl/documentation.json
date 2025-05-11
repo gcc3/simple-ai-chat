@@ -17,9 +17,7 @@
   "Themes": "Thema's",
   "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode.": "Ondersteunt 3 thema's: Lichtmodus, Donkermodus en Matrix-stijl Terminalmodus.",
   "Function calls": "Functieaanroepen",
-  "GPT will choise function to use to get information he need. Such as weather and time queries. Functions can be called by user directlly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPT zal een functie kiezen om de informatie te verkrijgen die hij nodig heeft. Zoals weer- en tijdvragen. Functies kunnen ook rechtstreeks door de gebruiker worden aangeroepen vanuit de invoer. Gebruik `:function ls` om een lijst van alle beschikbare functies te zien. Zie ook: Functies",
   "Page redirection": "Pagina doorverwijzing",
-  "As one of the `functions calls`, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Als een van de `functieaanroepen`, kan `redirect_to_url()` omleiden of een URL in een nieuw tabblad openen. GPT zal dit automatisch doen, bijvoorbeeld: Open de officiële website van OpenAI. Je kunt het gebruiken om meerdere URL's tegelijkertijd te openen.",
   "Location-based query": "Locatiegebaseerde zoekopdracht",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "Vragen stellen gebaseerd op de geografische locatie-informatie van de gebruiker. Bijvoorbeeld het beantwoorden van 'Hoe is het weer vandaag?' door automatisch de locatie op te halen. Om de locatiefunctie te gebruiken, gebruik je het commando ':location on'.",
   "Code highlighting": "Code markering",
@@ -125,7 +123,6 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "U kunt de Control-toets indrukken (voor macOS drukt u op de command-toets) en op de modelnaam klikken, een `:session attach` commando met de sessie-ID wordt automatisch naar uw klembord gekopieerd.",
   "Models": "Modellen",
   "* Link with your own data. Support link to relational database.": "* Koppel met je eigen data. Ondersteunt koppelingen met relationele databases.",
-  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "Ondersteuning voor bestanden en relationele databasequery's. Als een store wordt gebruikt, worden de queryresultaten ingevoegd als prompts om deskundige antwoorden te geven. Meerdere data stores kunnen tegelijkertijd worden gebruikt.",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Hoi, welkom bij Simple AI! 🚀 Ik werk eraan om een professionelere en programmeurvriendelijke gebruikersinterface te bieden voor interactie met de AI.",
   "CLI (Command-line Interface)": "CLI (opdrachtregelinterface)",
   "Model Context Protocol (MCP)": "Modelcontextprotocol (MCP)",
@@ -137,5 +134,8 @@
   "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "Genereer prachtige afbeeldingen met prompts, bewerk gegenereerde of geüploade afbeeldingen of combineer afbeeldingen tot één afbeelding op basis van je instructies.",
   "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "De command-line interface-software wordt geleverd via de Node Package Manager (npm) en ondersteunt dezelfde functies als de web-UI.",
   "Command-line Interface (CLI)": "Opdrachtregelinterface (CLI)",
-  "Image Generation & Edit": "Afbeelding genereren & bewerken"
+  "Image Generation & Edit": "Afbeelding genereren & bewerken",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data stores can be used simultaneously.": "Ondersteuning voor bestanden en relationele databasequery's. Als een gegevensopslag wordt gebruikt, worden de queryresultaten ingevoegd als prompts om deskundige antwoorden te geven. Meerdere gegevensopslagen kunnen gelijktijdig worden gebruikt.",
+  "GPT will choose function to use to get information it needs. Such as weather and time queries. Functions can be called by user directly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPT kiest een functie om de benodigde informatie op te halen. Bijvoorbeeld weer- en tijdvragen. Functies kunnen ook rechtstreeks door de gebruiker vanuit de invoer worden aangeroepen. Om alle beschikbare functies te tonen, gebruik `:function ls`. Zie ook: Functies",
+  "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Als een van de `functions calls` kan `redirect_to_url()` een URL omleiden of in een nieuw tabblad openen. GPT doet dit automatisch, bijvoorbeeld: Open de officiële website van OpenAI. Je kunt het gebruiken om meerdere URL's tegelijkertijd te openen."
 }

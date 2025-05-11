@@ -17,9 +17,7 @@
   "Themes": "テーマ",
   "Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode.": "3つのテーマをサポートしています：ライトモード、ダークモード、およびマトリックススタイルのターミナルモード。",
   "Function calls": "関数呼び出し",
-  "GPT will choise function to use to get information he need. Such as weather and time queries. Functions can be called by user directlly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPTは必要な情報を得るために使用する関数を選ぶ。例えば、天気など",
   "Page redirection": "ページリダイレクト",
-  "As one of the `functions calls`, `redirect_to_url()` can redirection or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "`関数呼び出し`の一つとして、`redirect_to_url()` はリダイレクションまたはURLを開くことができる",
   "Location-based query": "位置情報に基づくクエリ",
   "Questioning based on user's geographic location information. e.g., answering `How's the weather today?` by automatically obtaining the location. To use location feature, use command `:location on`.": "ユーザーの地理的位置情報に基づいた質問。例えば、`今日の天気はどうですか？` の答えなど",
   "Code highlighting": "コードハイライト",
@@ -125,7 +123,6 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Controlキーを押しながら（macOSの場合はcommandキー）モデル名をクリックすると、セッションIDを含む`:session attach`コマンドが自動的にクリップボードにコピーされます。",
   "Models": "モデル",
   "* Link with your own data. Support link to relational database.": "* 自分のデータとリンク。リレーショナルデータベースへのリンクをサポート。",
-  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data store can be used simultaneously.": "ファイルおよびリレーショナルデータベースクエリをサポートします。ストアが使用されている場合、クエリ結果はプロンプトとして挿入され、知識豊富な回答を提供します。複数のデータストアを同時に使用できます。",
   "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "こんにちは、Simple AIへようこそ！🚀 AIとの対話のために、より専門的かつプログラマーフレンドリーなユーザーインターフェースを提供できるよう取り組んでいます。",
   "CLI (Command-line Interface)": "CLI（コマンドラインインターフェース）",
   "Model Context Protocol (MCP)": "モデルコンテキストプロトコル (MCP)",
@@ -137,5 +134,8 @@
   "Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.": "プロンプトを使用して美しい画像を生成し、生成済みまたはアップロードした画像を編集したり、複数の画像を指示に基づいて1枚の画像に合成したりできます。",
   "Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.": "コマンドラインインターフェースソフトウェアはNode Package Manager（npm）を通じて提供され、Web UIと同じ機能をサポートします。",
   "Command-line Interface (CLI)": "コマンドラインインターフェース (CLI)",
-  "Image Generation & Edit": "画像生成＆編集"
+  "Image Generation & Edit": "画像生成＆編集",
+  "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data stores can be used simultaneously.": "ファイルとリレーショナルデータベースへのクエリをサポートします。データストアを使用すると、クエリ結果がプロンプトとして挿入され、知識に基づいた回答を提供します。複数のデータストアを同時に使用できます。",
+  "GPT will choose function to use to get information it needs. Such as weather and time queries. Functions can be called by user directly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPTは必要な情報を取得するために使用する関数を選択します。たとえば、天気や時刻の問い合わせなどです。関数はユーザーが入力から直接呼び出すこともできます。利用可能なすべての関数を一覧表示するには `:function ls` を使用してください。また、Functions を参照してください。",
+  "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "関数呼び出しの一つである`redirect_to_url()`は、URLをリダイレクトしたり新しいタブで開いたりできます。GPTはこれを自動で行います。例えば：OpenAIの公式ウェブサイトを開く。複数のURLを同時に開くことも可能です。"
 }

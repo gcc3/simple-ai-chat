@@ -1,4 +1,5 @@
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting, isSettingEmpty } from "../utils/settingsUtils.js";
+import { updateUserSetting } from "../utils/userUtils.js";
 
 
 export default async function eval_(args) {
@@ -15,28 +16,8 @@ export default async function eval_(args) {
 
   // There is user logged in
   // Update remote setting
-  if (getSetting("user")) {
-    try {
-      const response = await fetch("/api/user/update/settings", {
-        method: "POST",
-        credentials: 'include',
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          key: "useEval",
-          value: value,
-        }),
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-    } catch (error) {
-      console.error(error);
-      return error;
-    }
+  if (!isSettingEmpty("user")) {
+    await updateUserSetting("useEval", value);
   }
 
   const turnOnStats = " `self_eval_score` is in stats, use command `:stats on` to show stats.";

@@ -1,7 +1,7 @@
 import { evalEmailAddress } from "utils/emailUtils";
 import { insertUser, getUser, getUserByEmail, updateUsername, countUserByIP } from "utils/sqliteUtils.js";
 import { generatePassword } from "utils/userUtils.js";
-import AWS from "aws-sdk";
+import { SES } from "@aws-sdk/client-ses";
 import { encode } from "utils/authUtils";
 import { passwordCheck } from "utils/passwordUtils"
 import { generateInviteCode } from "utils/invitesUtils";
@@ -57,7 +57,7 @@ export default async function (req, res) {
       // Resume the deleted user
       userResume = true;
     } else {
-      return res.status(400).json({ 
+      return res.status(400).json({
         success: false,
         error: 'Email already used by another user.',
       });
@@ -119,13 +119,13 @@ export default async function (req, res) {
 
   // Email validation
   if (use_email) {
-    AWS.config.update({
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    const ses = new SES({
       region: process.env.AWS_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
     });
-
-    const ses = new AWS.SES();
     const from = "support@simple-ai.io";
     const to = email;
     const subject = "Welcome to simple-ai.io";
@@ -134,7 +134,7 @@ export default async function (req, res) {
     + "<br>"
     + "Welcome to Simple AI!" + " " + "Your account has been created successfully." + (!password ? " " + "Initial password is " + generatedPassword + ", you can change it after login." : "") + "<br>"
     + "<br>"
-    + `Use the following link to verify your email before using our services.` + "<br>" 
+    + `Use the following link to verify your email before using our services.` + "<br>"
     + `<a href="https://simple-ai.io/api/verify-email/${token}">https://simple-ai.io/api/verify-email/${token}</a>` + "<br>"
     + "<br>"
     + "Quick Start:" + "<br>"
@@ -146,7 +146,7 @@ export default async function (req, res) {
     + "<br>"
     + "- Simple AI"
     + "<br>";
-    
+
     const emailParams = {
       Source: "Simple AI <" + from + ">",
       Destination: {
@@ -167,7 +167,6 @@ export default async function (req, res) {
     let passwordGuide = !password ? " Initial password is sent to your email." : "";
     ses
       .sendEmail(emailParams)
-      .promise()
       .then((data) => {
         let message = "";
         if (userResume) {

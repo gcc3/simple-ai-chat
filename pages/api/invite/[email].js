@@ -1,4 +1,4 @@
-import AWS from "aws-sdk";
+import { SES } from "@aws-sdk/client-ses";
 import { getUser, getUserByEmail } from 'utils/sqliteUtils';
 import { authenticate } from 'utils/authUtils';
 import { generateInviteCode } from 'utils/invitesUtils';
@@ -32,13 +32,13 @@ export default async function (req, res) {
     }
 
     // Send invitation email
-    AWS.config.update({
-      accessKeyId: process.env.AWS_ACCESS_KEY_ID,
-      secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+    const ses = new SES({
       region: process.env.AWS_REGION,
+      credentials: {
+        accessKeyId: process.env.AWS_ACCESS_KEY_ID,
+        secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY,
+      },
     });
-
-    const ses = new AWS.SES();
     const from = "support@simple-ai.io";
     const to = email;
     const subject = "Simple AI: Invitation";
@@ -69,7 +69,6 @@ export default async function (req, res) {
 
     ses
       .sendEmail(emailParams)
-      .promise()
       .then((data) => {
         res.status(200).json({
           success: true,

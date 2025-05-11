@@ -51,3 +51,6 @@ __pycache__/
 
 # mcp
 mcpconfig.json
+
+# zed
+.zed/
