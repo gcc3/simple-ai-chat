@@ -9,7 +9,7 @@
     "cli",
     "mcp"
   ],
-  "version": "0.1.21",
+  "version": "0.1.22",
   "author": "Heyang Liu",
   "license": "Simple AI License",
   "type": "module",
