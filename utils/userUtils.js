@@ -9,7 +9,7 @@ export async function refreshLocalUser(user = null) {
     user = await fetchUserInfo();
   }
 
-  if (!user.username || !user.settings) {
+  if (!user || !user.username || !user.settings) {
     console.warn("User data is incomplete, clearing local user data...");
 
     // Clear local user data
