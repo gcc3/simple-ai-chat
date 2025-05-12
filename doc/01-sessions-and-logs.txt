@@ -23,7 +23,7 @@ So basically, you can start talking freely from any session or any log.
 
 For commands, you can use colon ls to list sessions.
 
-Or use colon log ls to list logs of current session.
+Or use colon log to list logs of current session.
 
 You may notice that every session has an ID.
 
