@@ -35,7 +35,7 @@ Click it, it will switch to the back page.
 
 In the back page, there is a longer documentation.
 
-But TLDR, you can use the command colon use followed by an uppercase S, then the tab key to auto-complete.
+But TLDR, you can use the command, colon `use`, followed by an uppercase S, then the tab key to auto-complete.
 
 Yes, the command is colon `use Simple AI Documentation`
 
