@@ -19,11 +19,11 @@ When you switch to a session or log, you can continue the conversation.
 
 The system will create a new session and use the old session as a parent session.
 
-So basically, you can talk freely from any session or any log.
+So basically, you can start talking freely from any session or any log.
 
 For commands, you can use colon ls to list sessions.
 
-Or use colon log ls to list logs.
+Or use colon log ls to list logs of current session.
 
 You may notice that every session has an ID.
 
