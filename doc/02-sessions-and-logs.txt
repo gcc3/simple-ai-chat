@@ -1,36 +1,36 @@
 
-In this section, I'll talk about sessions and logs, and how to swtich between them.
+In this section, I'll talk about sessions and logs, and how to switch between them.
 
-When you start the application, it will be in a session that initialized by the system.
+When you start the application, it will be in a session initialized by the system.
 
-You keep talking in this session, the AI will talk with you and know what you said before.
+You keep talking in this session; the AI will talk with you and remember what you said before.
 
-If you refresh the page, it will start another session and forget what you said.
+However, if you refresh the page, it will start another session and forget what you said.
 
-In a session, every round of the talk is called a `log`. You can think the session is a set of logs.
+In a session, every round of conversation is called a log. You can think of the session as a set of logs.
 
-You can use left and right key to switch between logs and up and down key to switch between sessions.
+You can use the left and right keys to switch between logs and the up and down keys to switch between sessions.
 
-Or if you're a vim user, you may want to use `j` and `k` to switch between logs, and use `h` and `l` to switch between sessions.
+Or, if you're a vim user, you may want to use j and k to switch between logs, and use h and l to switch between sessions.
 
 But don't forget to use the ESC key to unfocus from the input first.
 
-When you switched to a sessions and logs, and you can continue the talk.
+When you switch to a session or log, you can continue the conversation.
 
-System will create new session and use the old session as a parent session.
+The system will create a new session and use the old session as a parent session.
 
-So basically you can talk freely from any sesion any log and system will know where or when you are.
+So basically, you can talk freely from any session or any log.
 
-For the command, you can use colon `ls` to list sessions.
+For commands, you can use colon ls to list sessions.
 
-Or use colon `log ls` to list logs.
+Or use colon log ls to list logs.
 
-You may notice for every session there is a ID.
+You may notice that every session has an ID.
 
-You can use colon `session attach` continue with session ID to attach to a session.
+You can use colon session attach followed by a session ID to attach to a session.
 
-You can share the session ID to your friends and let them attach to your session.
+And you can share the session ID with your friends and let them attach to your session.
 
-Okay, that's all for the sessions and logs.
+Okay, that's all for sessions and logs.
 
 I hope you find it useful.
