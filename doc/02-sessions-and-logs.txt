@@ -1,0 +1,36 @@
+
+In this section, I'll talk about sessions and logs, and how to swtich between them.
+
+When you start the application, it will be in a session that initialized by the system.
+
+You keep talking in this session, the AI will talk with you and know what you said before.
+
+If you refresh the page, it will start another session and forget what you said.
+
+In a session, every round of the talk is called a `log`. You can think the session is a set of logs.
+
+You can use left and right key to switch between logs and up and down key to switch between sessions.
+
+Or if you're a vim user, you may want to use `j` and `k` to switch between logs, and use `h` and `l` to switch between sessions.
+
+But don't forget to use the ESC key to unfocus from the input first.
+
+When you switched to a sessions and logs, and you can continue the talk.
+
+System will create new session and use the old session as a parent session.
+
+So basically you can talk freely from any sesion any log and system will know where or when you are.
+
+For the command, you can use colon `ls` to list sessions.
+
+Or use colon `log ls` to list logs.
+
+You may notice for every session there is a ID.
+
+You can use colon `session attach` continue with session ID to attach to a session.
+
+You can share the session ID to your friends and let them attach to your session.
+
+Okay, that's all for the sessions and logs.
+
+I hope you find it useful.

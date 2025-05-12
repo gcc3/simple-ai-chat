@@ -41,4 +41,6 @@ colon fullscreen off to switch back to normal mode.
 
 Okay, that’s all for the screen modes.
 
+The normal mode for a philosopher, the split screen mode for a programmer, and the fullscreen mode for a writer.
+
 I hope you find it useful.
