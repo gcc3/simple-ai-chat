@@ -15,7 +15,7 @@ When you first start the application, it will be in normal mode.
 
 You can use Ctrl with the backslash key, also called the pipe key or vertical bar key, just above the Enter key on most keyboards.
 
-Press the Ctrl key with it. Then boom, you are in split screen mode.
+Press the Ctrl key with it. Then, you are in split screen mode.
 
 In split screen mode, you get a half screen input area on the left, and an output area on the right.
 
