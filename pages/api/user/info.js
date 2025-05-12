@@ -70,7 +70,7 @@ export default async function (req, res) {
     const sameSiteCookie = process.env.SAME_SITE_COOKIE;
     res.setHeader('Set-Cookie', `auth=${token}; HttpOnly; Path=/; Max-Age=86400; ${sameSiteCookie}`);
 
-    res.status(200).json({ 
+    res.status(200).json({
       user: {
         id: user.id,
         username: user.username,

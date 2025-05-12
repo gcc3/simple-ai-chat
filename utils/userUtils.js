@@ -6,10 +6,11 @@ import emitter from './eventsUtils.js';
 
 export async function refreshLocalUser(user = null) {
   if (!user) {
+    console.log("Fetching user info...");
     user = await fetchUserInfo();
   }
 
-  if (!user.username || !user.settings) {
+  if (!user || !user.username || !user.settings) {
     console.warn("User data is incomplete, clearing local user data...");
 
     // Clear local user data
@@ -142,8 +143,6 @@ export function generatePassword(length=8) {
 }
 
 export async function fetchUserInfo() {
-  console.log("Fetching user info...");
-
   let user = null;
   const response = await fetch(`/api/user/info`, {
     method: "GET",

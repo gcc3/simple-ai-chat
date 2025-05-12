@@ -7,23 +7,26 @@ export default async function (req, res) {
   try {
     const authResult = authenticate(req);
     if (!authResult.success) {
-      return res.status(401).json({ 
+      res.status(401).json({
         success: false,
         error: authResult.error
       });
+      return;
     }
     const authUser = authResult.user;
 
     // Check if role exists in user roles
     const model = await findModel(modelName, authUser.username);
     if (!model) {
-      return res.status(404).json({ 
+      res.status(404).json({
         success: false,
         error: "Model not exists."
       });
+      return;
     }
 
-    return res.status(200).json({ 
+    res.status(200).json({
+      success: true,
       result: {
         model:                   model.name,
         provider:                model.provider,
@@ -44,6 +47,7 @@ export default async function (req, res) {
         updated_at:              model.updated_at,
       },
     });
+    return;
   } catch (error) {
     console.error(error);
     res.status(500).json({
