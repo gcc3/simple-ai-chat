@@ -12,31 +12,31 @@ You can switch between these modes by using shortcuts or commands.
 
 When you first start the application, it will be in normal mode.
 
-You can use Ctrl with backslash key, or called, pipe key or vertical bar key, just above the Enter key on most keyboards.
+You can use Ctrl with the backslash key, also called the pipe key or vertical bar key, just above the Enter key on most keyboards.
 
-Press Ctrl key with it. Then boom, you are in split screen mode.
+Press the Ctrl key with it. Then boom, you are in split screen mode.
 
-In the split screen mode, you got a half screen input area on the left, and output area on the right.
+In split screen mode, you get a half screen input area on the left, and an output area on the right.
 
-I think most of the programmers will like this mode and this is also what I use most.
+I think most programmers will like this mode and this is also what I use most.
 
-If you want to switch back to normal mode, just press control with pipe key again.
+If you want to switch back to normal mode, just press Control with the pipe key again.
 
-Next, for the fullscreen mode if you need to put more focus on the output area.
+Next, for fullscreen mode if you need to put more focus on the output area.
 
-You can use F11 key to switch to it.
+You can use the F11 key to switch to it.
 
-on macOS, you maybe need to use control + F11 because F11 is used by the system.
+On macOS, you may need to use Control + F11 because F11 is used by the system.
 
 If you need to switch back, just press F11 again.
 
-Okay, that the shortcuts for the screen mode, but you can also use the command line to switch between the modes.
+Okay, those are the shortcuts for the screen modes, but you can also use the command line to switch between the modes.
 
-:split   to switch to split screen mode.
+colon split to switch to split screen mode.
 
-:fullscreen  to switch to fullscreen mode.
+colon fullscreen to switch to fullscreen mode.
 
-:fullscreen off   to switch back to normal mode.
+colon fullscreen off to switch back to normal mode.
 
 Okay, that’s all for the screen modes.
 
