@@ -6,6 +6,7 @@ import emitter from './eventsUtils.js';
 
 export async function refreshLocalUser(user = null) {
   if (!user) {
+    console.log("Fetching user info...");
     user = await fetchUserInfo();
   }
 
@@ -142,8 +143,6 @@ export function generatePassword(length=8) {
 }
 
 export async function fetchUserInfo() {
-  console.log("Fetching user info...");
-
   let user = null;
   const response = await fetch(`/api/user/info`, {
     method: "GET",

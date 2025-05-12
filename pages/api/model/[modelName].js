@@ -26,6 +26,7 @@ export default async function (req, res) {
     }
 
     res.status(200).json({
+      success: true,
       result: {
         model:                   model.name,
         provider:                model.provider,

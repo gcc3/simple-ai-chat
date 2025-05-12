@@ -21,7 +21,6 @@ import { initializeSessionMemory, setSession, setTime } from "utils/sessionUtils
 import 'katex/dist/katex.min.css';
 import { asciiframe } from "utils/donutUtils";
 import { checkUserAgent } from "utils/userAgentUtils";
-import { getLangCodes } from "utils/langUtils";
 import { useTranslation } from 'react-i18next';
 import { simulateKeyPress } from "utils/keyboardUtils";
 import { getAutoCompleteOptions } from "utils/autocompleteUtils";
@@ -29,7 +28,7 @@ import { sleep } from "utils/sleepUtils";
 import { loadConfig } from "utils/configUtils";
 import OpenAI from "openai";
 import { Readable } from "stream";
-import { fetchUserInfo, clearLocalUser, refreshLocalUser, updateUserSetting } from "utils/userUtils";
+import { refreshLocalUser, updateUserSetting } from "utils/userUtils";
 import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 import { useUI } from '../contexts/UIContext';
 import { initializeSettings } from "utils/settingsUtils";
@@ -406,7 +405,7 @@ export default function Home() {
 
         // Found remote model
         if (modelInfo) {
-          console.log("Found model: " + modelInfo.model);
+          console.log("Found model in remote: " + modelInfo.model);
           console.log("Set baseUrl: " + modelInfo.base_url);
           setSetting("baseUrl", modelInfo.base_url);
         } 
@@ -419,7 +418,7 @@ export default function Home() {
             const ollamaModel = ollamaModels.find(o => o.name === modelName);
             if (ollamaModel) {
               // Found ollama model
-              console.log("Found Ollama model: " + ollamaModel.name);
+              console.log("Found model in local: " + ollamaModel.name);
               console.log("Set baseUrl: " + ollamaModel.base_url);
               setSetting("baseUrl", ollamaModel.base_url);
             } else {
