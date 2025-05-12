@@ -19,9 +19,9 @@ Press the Ctrl key with it. Then, you are in split screen mode.
 
 In split screen mode, you get a half screen input area on the left, and an output area on the right.
 
-In split mode enter key will not trigger submission. Shift + Enter wil.
-
 I think most programmers will like this mode and this is also what I use most.
+
+Note that in split mode, the enter key will not trigger submission. Shift + Enter will.
 
 If you want to switch back to normal mode, just press Control with the pipe key again.
 
