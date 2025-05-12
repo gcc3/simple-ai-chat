@@ -339,11 +339,11 @@ export default function Home() {
     // System and user configurations
     const getSystemInfo = async () => {
       // User info
-      if (getSetting("user") !== null) {
+      if (getSetting("user")) {
         // Refresh local user, will fetch the latest user info and set to local
         refreshLocalUser();
       } else {
-        console.log("User not logged in.");
+        console.warn("User not logged in.");
       }
 
       // System info
@@ -387,28 +387,45 @@ export default function Home() {
       // Auto setup the base URL too
       globalThis.model = systemInfo.model;
       globalThis.baseUrl = systemInfo.base_url;
-      if (!getSetting("model")) {
+      if (!getSetting("user") || !getSetting("model")) {
         setSetting("model", systemInfo.model);  // default model
         setSetting("baseUrl", systemInfo.base_url);  // default base url
       } else {
         const modelName = getSetting("model");
-        const modelInfoResponse = await fetch('/api/model/' + modelName);
-        const modelInfo = (await modelInfoResponse.json()).result;
+
+        // Try remote models
+        console.log("Fetching model info: " + modelName);
+        const response = await fetch('/api/model/' + modelName);
+        const modelInfoResponse = await response.json();
+        let modelInfo = null;
+        if (modelInfoResponse.success) {
+          modelInfo = modelInfoResponse.result;
+        } else {
+          console.warn(modelInfoResponse.error);
+        }
+
+        // Found remote model
         if (modelInfo) {
-          // Found remote model
+          console.log("Found model: " + modelInfo.model);
           console.log("Set baseUrl: " + modelInfo.base_url);
           setSetting("baseUrl", modelInfo.base_url);
-        } else {
+        } 
+
+        // Try local models
+        if (!modelInfo) {
+          console.warn("Model `" + modelName + "` not accessible in remote.");
           if (await pingOllamaAPI()) {
             const ollamaModels = await listOllamaModels();
             const ollamaModel = ollamaModels.find(o => o.name === modelName);
             if (ollamaModel) {
               // Found ollama model
+              console.log("Found Ollama model: " + ollamaModel.name);
               console.log("Set baseUrl: " + ollamaModel.base_url);
               setSetting("baseUrl", ollamaModel.base_url);
             } else {
               // Both remote and local model not found, set baseUrl to empty
-              console.warn("Model `" + modelName + "` not found, set baseUrl to empty.");
+              console.warn("Model `" + modelName + "` not accessible in local.");
+              console.warn("Set baseUrl to empty.");
               setSetting("baseUrl", "");
             }
           }
