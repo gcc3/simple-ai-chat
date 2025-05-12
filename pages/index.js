@@ -629,8 +629,6 @@ export default function Home() {
                 updateUserSetting("fullscreen", "off");
               }
             }
-
-            console.log("Shortcut: ⌃|");
           }
           break;
 
