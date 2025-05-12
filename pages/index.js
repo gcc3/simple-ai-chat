@@ -602,13 +602,12 @@ export default function Home() {
               updateUserSetting("fullscreen", "off");
             }
           }
-
-          console.log("Shortcut: F11");
           break;
 
         case "\\":
         case "|":  // fullscreen split mode
-          if (event.ctrlKey) {
+          // alt key not usable for macOS, use command key instead
+          if (event.ctrlKey || event.metaKey) {
             console.log("Shortcut: ⌃|");
             event.preventDefault();
 
@@ -628,8 +627,6 @@ export default function Home() {
                 updateUserSetting("fullscreen", "off");
               }
             }
-
-            console.log("Shortcut: ⌃|");
           }
           break;
 

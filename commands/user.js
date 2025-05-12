@@ -1,6 +1,6 @@
 import { verifiyEmailAddress } from "../utils/emailUtils.js";
 import { getSettings, getSetting, setSetting } from "../utils/settingsUtils.js";
-import { refreshLocalUserInfo, clearLocalUser, refreshLocalUser, generatePassword, updateUserSetting } from "../utils/userUtils.js";
+import { clearLocalUser, refreshLocalUser, generatePassword, updateUserSetting } from "../utils/userUtils.js";
 
 
 export default async function entry(args) {
