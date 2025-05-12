@@ -608,7 +608,8 @@ export default function Home() {
 
         case "\\":
         case "|":  // fullscreen split mode
-          if (event.ctrlKey) {
+          // alt key not usable for macOS, use command key instead
+          if (event.ctrlKey || event.metaKey) {
             console.log("Shortcut: ⌃|");
             event.preventDefault();
 

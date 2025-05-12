@@ -56,7 +56,6 @@ export function isSettingEmpty(key) {
   return value === null || value === "";
 }
 
-
 export function initializeSettings() {
   const settings = getSettings();
 
@@ -68,7 +67,9 @@ export function initializeSettings() {
       }
     }
     if (setting.inSessionStorage) {
-      if (sessionStorage.getItem(setting.key) === null) {
+      // For CLI it using sessionStorage library will return undefined, so the undefined check is necessary
+      if (sessionStorage.getItem(setting.key) === null
+       || sessionStorage.getItem(setting.key) === undefined) {
         sessionStorage.setItem(setting.key, setting.defaultValueIfEmpty);
       }
     }
@@ -102,8 +103,8 @@ export function getSettings(format = "list") {
     { name: "Session ID",             key: "session",        inLocalStorage: false,   inSessionStorage: true,   inUserSettings: false,  defaultValueIfEmpty: "",         },
     { name: "Timeline Time",          key: "time",           inLocalStorage: false,   inSessionStorage: true,   inUserSettings: false,  defaultValueIfEmpty: "",         },
     { name: "Session Head",           key: "head",           inLocalStorage: false,   inSessionStorage: true,   inUserSettings: false,  defaultValueIfEmpty: "",         },
-    { name: "Command History Index",  key: "historyIndex",   inLocalStorage: false,   inSessionStorage: true,   inUserSettings: false,  defaultValueIfEmpty: "-1",       },
-    { name: "Memory Length",          key: "memLength",      inLocalStorage: false,   inSessionStorage: true,   inUserSettings: true,   defaultValueIfEmpty: "7",        },
+    { name: "Command History Index",  key: "historyIndex",   inLocalStorage: false,   inSessionStorage: true,   inUserSettings: false,  defaultValueIfEmpty: -1,         },
+    { name: "Memory Length",          key: "memLength",      inLocalStorage: false,   inSessionStorage: true,   inUserSettings: true,   defaultValueIfEmpty: 7,          },
     { name: "Group Password",         key: "groupPassword",  inLocalStorage: false,   inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "",         },
   ]
 
