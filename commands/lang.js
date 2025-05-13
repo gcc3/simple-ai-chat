@@ -4,6 +4,10 @@ import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 export default async function lang(args) {
   const command = args[0];
+  const usage = "Usage: :lang [ls|list]\n" +
+         "       :lang use [language code]\n" +
+         "       :lang reset\n"
+  
   const langCodes = getLangCodes();
 
   // Get lang info
@@ -62,7 +66,11 @@ export default async function lang(args) {
       return "Language code not found.";
     }
   }
+  
+  if (command === "reset") {
+    setSetting("lang", "");
+    return "Language reset.";
+  }
 
-  return "Usage: :lang [ls|list]\n" +
-         "       :lang use [language code]\n";
+  return usage;
 }

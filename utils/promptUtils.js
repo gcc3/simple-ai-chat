@@ -106,17 +106,15 @@ export async function generateMessages(use_system_role, lang,
   // -6. System master message, important
   let system_prompt = "";
   if (use_system_role && sysconf.role_content_system !== "") {
-    if (sysconf.use_user_accounts && !user) {
-      // It's not a free service, need to tell the user to register a user first
-      system_prompt += "Provide the user with a short answer, less than 80 words. If the answer needs to be longer than 90 words, inform them that login is required. In a new paragraph, add:\n\nYou haven't logged in, so the answer length is limited. If you're already a member, please log in to continue. Or, register as a member with the command `:user add username email password` (replace with your actual details).\n\n";
-    } else {
-      system_prompt += sysconf.role_content_system + "\n\n";
-    }
+    system_prompt += sysconf.role_content_system + "\n\n";
 
-    // User language, lang is the language code, e.g. "en-US"
-    // Only when user language is not English, emphasize the language
-    if (lang !== "en-US") {
-      system_prompt += "\n\n" + "Reply with user's language: " + getLanguageName(lang) + "\n\n";
+    // User language
+    // lang is the language code, e.g. "en-US"
+    if (lang) {
+      const langName = getLanguageName(lang);
+      if (langName !== "Unknown") {
+        system_prompt += "\n\n" + "Reply with " + langName;
+      }
     }
 
     messages.push({ 

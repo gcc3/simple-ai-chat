@@ -19,6 +19,17 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     }
   }
 
+  if (prefix === ":role del " || prefix === ":role delete " || prefix === ":role set ") {
+    const response = await fetch("/api/role/list");
+    const data = await response.json();
+    if (response.status === 200 && data.success) {
+      const role = [].concat(data.result.user_roles).flat();
+      return role.map((r) => r.role);
+    } else {
+      return [];
+    }
+  }
+
   if (prefix === ":store " || prefix === ":store use " || prefix === ":store unuse " || prefix === ":store init " || prefix === ":store data reset " || prefix === ":store delete " || prefix === ":store del ") {
     const response = await fetch("/api/store/list");
     const data = await response.json();
