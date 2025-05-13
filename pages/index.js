@@ -2442,29 +2442,42 @@ export default function Home() {
     }
 
     const fullscreenMode = getSetting("fullscreen");
-
+    
     // Non-fullscreen
     if (fullscreenMode === "off") {
+      
+      if (!globalThis.rawInput) {
+        elInput.style.height = `45px`;
+        return;
+      }
+      
       elInput.style.height = "auto";
+      
       if (doSleepToFixAuto) {
         // This sleep magically fixed the hight issue
         await sleep(1)
-        elInput.style.height = `${elInput.scrollHeight}px`;
-      } else {
-        elInput.style.height = `${elInput.scrollHeight}px`;
       }
+      
+      // Don't know why but scroll height not 45px, will be 44px
+      elInput.style.height = `${elInput.scrollHeight + 1}px`;
     }
 
     // Fullscreen
     if (fullscreenMode === "default") {
+      if (!globalThis.rawInput) {
+        elInput.style.height = `45px`;
+        return;
+      }
+      
       elInput.style.height = "auto";
+      
       if (doSleepToFixAuto) {
         // This sleep magically fixed the height issue
         await sleep(1)
-        elInput.style.height = `${elInput.scrollHeight}px`;
-      } else {
-        elInput.style.height = `${elInput.scrollHeight}px`;
       }
+      
+      // Don't know why but scroll height not 45px, will be 44px
+      elInput.style.height = `${elInput.scrollHeight + 1}px`;
 
       // If input height is larger than the window height
       // then set it to window height
@@ -2479,8 +2492,10 @@ export default function Home() {
 
     // Fullscreen split
     if (fullscreenMode === "split") {
-      // This sleep magically fixed the hight issue
-      await sleep(1)
+      if (doSleepToFixAuto) {
+        // This sleep magically fixed the height issue
+        await sleep(1)
+      }
 
       // Do nothing because the input height alwasy 100%
       elInput.style.height = "100%";
