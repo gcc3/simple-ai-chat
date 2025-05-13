@@ -84,7 +84,7 @@ export function getSettings(format = "list") {
     { name: "Language",               key: "lang",           inLocalStorage: true,    inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "",         },
     { name: "Theme",                  key: "theme",          inLocalStorage: true,    inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "light",    },
     { name: "Fullscreen",             key: "fullscreen",     inLocalStorage: true,    inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "off",      },
-    { name: "Use Voice Speak",        key: "useSpeak",       inLocalStorage: true,    inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "false",    },
+    { name: "Use Voice Speak",        key: "useSpeak",       inLocalStorage: true,    inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "",    },
     { name: "Voice",                  key: "voice",          inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: "default",  },
     { name: "Show stats",             key: "useStats",       inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: "false",    },
     { name: "Use Stream",             key: "useStream",      inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: "true",     },
