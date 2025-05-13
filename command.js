@@ -149,7 +149,7 @@ export function getCommands() {
     { id: "", title: "", annotation: "", command: ":role use [role_name]", options: "", short_description: "Use a role.", description: "" },
     { id: "", title: "", annotation: "", command: ":role [ls|list]", options: "", short_description: "List available roles.", description: "Roles include user custom roles and system roles." },
     { id: "", title: "", annotation: "", command: ":role reset", options: "", short_description: "Reset role to empty.", description: "Clear the current role." },
-    { id: "", title: "", annotation: "", command: ":role [add|set] [role_name] [prompt]", options: "", short_description: "Add a role or set a role's prompt.", description: "" },
+    { id: "", title: "", annotation: "", command: ":role [add|set] [role_name] [prompt]", options: "", short_description: "Add or set a role.", description: "" },
     { id: "", title: "", annotation: "", command: ":role [del|delete] [role_name]", options: "", short_description: "Delete a role.", description: "" },
     { id: "commands-store", title: "Data Store", annotation: "", command: ":search [text]", options: "", short_description: "Search from data store(s).", description: "Search to get inforamtion from the current data store with nature language." },
     { id: "", title: "", annotation: "", command: ":store [name?]", options: "", short_description: "Show data store detail.", description: "Show detail of a data store. The store name is optional. If no name is input, it will return the current data store details." },
