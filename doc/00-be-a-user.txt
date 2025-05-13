@@ -1,0 +1,48 @@
+
+Hi, I'm Heyang, the author of this system.
+
+In the next few sections, I'll show you how to use it with a quick introduction about this syste.
+
+As a fan of Unix and computer history, I designed this system to be Unix-like.
+
+So firstly, it is a command-based system.
+
+That means in this system, you can control everything with commands.
+
+Just remember: every command must begin with a colon; otherwise, it will be treated as prompt sent to the AI.
+
+First thing first, you need to be a user.
+
+Use the command colon user add, continue with your user name and email address, and the room number.
+
+Just kidding, no need for the room number.
+
+You'll receive an email with a password and a link for verification. After you click the link, you are a user.
+
+Then go back to the page and type colon, login, continue with your user name and password to login.
+
+The user credentials will expire in 24 hours.
+
+If you want to save the credentials for a shorter or longer period.
+
+use the command colon login with your user name and password, then dash s, then 1h for one hour, or 10d for ten days.
+
+Okay, congratulations to be a user! Now there is one more thing.
+
+There’s a small dot in the bottom right corner—you may not have noticed it.
+
+Click it, it will switch to the back page.
+
+In the back page, there is a longer documentation.
+
+But TLDR, you can use the command, colon use, followed by an uppercase S, then the tab key to auto-complete.
+
+Yes, the command is colon use Simple AI Documentation
+
+That's the command to enable the documentation file to AI.
+
+Now you can ask AI for help.
+
+Okay, that's it, I hope you enjoy.
+
+See you in the next section.

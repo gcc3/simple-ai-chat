@@ -4,7 +4,13 @@ import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
 export default async function role(args) {
   const command = args[0];
-
+  const usage = "Usage: :role\n" + 
+         "       :role [ls|list]\n" +
+         "       :role reset\n" +
+         "       :role use [role_name]\n" +
+         "       :role [add|set] [role_name] [prompt]" + "\n" +
+         "       :role [del|delete] [role_name]" + "\n"
+  
   // Get role prompt
   if (!command) {
     const role = getSetting("role");
@@ -171,9 +177,143 @@ export default async function role(args) {
       return "Invalid role name.";
     }
   }
+  
+  // Add a custom roleplay role
+  if (command === "add") {
+    if (args.length != 3) {
+      return "Usage: :role add [role_name] [prompt]";
+    }
 
-  return "Usage: :role\n" + 
-         "       :role [ls|list]\n" +
-         "       :role reset\n" +
-         "       :role use [role_name]\n";
+    if (!getSetting("user")) {
+      return "Please login.";
+    }
+
+    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
+      return "Role name must be quoted with double quotes.";
+    }
+
+    if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
+      return "Prompt must be quoted with double quotes.";
+    }
+
+    const roleName = args[1].slice(1, -1);
+    const prompt = args[2].slice(1, -1);
+
+    try {
+      const response = await fetch("/api/role/add", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          roleName,
+          prompt,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      if (data.success) {
+        setSetting("role", roleName);  // set active
+        return data.message;
+      } else {
+        return data.error;
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Delete a custom roleplay role
+  if (command === "delete" || command === "del") {
+    if (args.length != 2) {
+      return "Usage: :role [del|delete] [role_name]";
+    }
+
+    if (!getSetting("user")) {
+      return "Please login.";
+    }
+
+    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
+      return "Role name must be quoted with double quotes.";
+    }
+
+    const roleName = args[1].slice(1, -1);
+
+    try {
+      const response = await fetch("/api/role/delete", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          roleName,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Add a custom roleplay role
+  if (command === "set") {
+    if (args.length != 3) {
+      return "Usage: :role set [role_name] [prompt]";
+    }
+
+    if (!getSetting("user")) {
+      return "Please login.";
+    }
+
+    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
+      return "Role name must be quoted with double quotes.";
+    }
+
+    if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
+      return "Prompt must be quoted with double quotes.";
+    }
+    
+    const roleName = args[1].slice(1, -1);
+    const prompt = args[2].slice(1, -1);
+
+    try {
+      const response = await fetch("/api/role/update", {
+        method: "POST",
+        credentials: 'include',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          roleName,
+          prompt,
+        }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  return usage;
 }

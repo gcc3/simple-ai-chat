@@ -1,0 +1,48 @@
+
+In this section, I will talk about how to switch between the different screen modes.
+
+There are three screen modes:
+
+Normal mode.
+
+Split screen mode.
+
+Fullscreen mode.
+
+You can switch between these modes by using shortcuts or commands.
+
+When you first start the application, it will be in normal mode.
+
+You can use Ctrl with the backslash key, also called the pipe key or vertical bar key, just above the Enter key on most keyboards.
+
+Press the Ctrl key with it. Then, you are in split screen mode.
+
+In split screen mode, you get a half screen input area on the left, and an output area on the right.
+
+I think most programmers will like this mode and this is also what I use most.
+
+Note that in split mode, the enter key will not trigger submission. Shift + Enter will.
+
+If you want to switch back to normal mode, just press Control with the pipe key again.
+
+Next, for fullscreen mode if you need to put more focus on the output area.
+
+You can use the F11 key to switch to it.
+
+On macOS, you may need to use Control + F11 because F11 is used by the system.
+
+If you need to switch back, just press F11 again.
+
+Okay, those are the shortcuts for the screen modes, but you can also use the command line to switch between the modes.
+
+colon split to switch to split screen mode.
+
+colon fullscreen to switch to fullscreen mode.
+
+colon fullscreen off to switch back to normal mode.
+
+Okay, that’s all for the screen modes.
+
+The normal mode for a philosopher, the split screen mode for a programmer, and the fullscreen mode for a writer.
+
+I hope you find it useful.
