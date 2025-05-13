@@ -1,0 +1,18 @@
+
+In this section, I will introduce the how to switch large language models.
+
+There are 2 ways you can switch the model.
+
+First you can use colon model ls command to list available models.
+
+Then you can use the colon model use command, following with the model name to enable it.
+
+You can use colon model command to check the detail of current model.
+
+You can check the model price and capabilities here.
+
+Like for models has is_vision set to 1, image can be inputted.
+
+Or from the UI, goto the Settings page.
+
+There is a models section here, just click the model you want to use.

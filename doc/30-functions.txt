@@ -1,0 +1,22 @@
+
+Functions is a kind of tool that LLM can automatically use.
+
+Simple AI provide some basic functions like get_time, get_weather.
+
+You can use command colon function use to enable the function.
+
+Multiple functions can be enabled to LLM simultaneously.
+
+Alternatively, you can use the back page, Settings page to enable or disable functions.
+
+There is one function I need to mention, it is very powerful.
+
+The wolframalpha function.
+
+It has a lot of accurate knowledges about the world.
+
+And it can solve mathematical problems.
+
+If you need to solve a math problem or engineering problem, you may use the wolframalpha function.
+
+To enable it, use command colon function use ask_wolframalpha.

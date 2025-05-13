@@ -10,23 +10,14 @@ export default function set(args) {
   const key = args[0].toLowerCase();
 
   // Local keys
-  let validKeys = [
-    "session",
-    "time",
-    "usestream",
-    "voice",
-    "uselocation",
-    "location",
-  ];
+  let validKeys = [];
 
   // User settable keys
-  const availableSettings = getSettings();
-  for (const [k, v] of Object.entries(availableSettings)) {
-    validKeys.push(k.toLowerCase());
+  const localKeys = getSettings("local_keys");
+  for (const key of localKeys) {
+    validKeys.push(key.toLowerCase());
   }
 
-  console.log(key);
-  console.log(validKeys);
   if (!validKeys.includes(key)) {
     return "Unknown key. Key must be one of: " + validKeys.join(", ") + ".";
   }

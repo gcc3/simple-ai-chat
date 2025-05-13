@@ -399,6 +399,7 @@ export default function Home() {
         let modelInfo = null;
         if (modelInfoResponse.success) {
           modelInfo = modelInfoResponse.result;
+          console.log(JSON.stringify(modelInfo, null, 2));
         } else {
           console.warn(modelInfoResponse.error);
         }

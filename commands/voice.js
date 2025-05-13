@@ -17,7 +17,11 @@ export default async function voice(args) {
     }
 
     if (langVoiceList.length === 0) {
-      return "No voices found for language `" + currentLang + "`.";
+      if (currentLang) {
+        return "No voices found for language `" + currentLang + "`.";
+      } else {
+        return "Language not set."
+      }
     } else {
       // Add star to current voice
       let result = "\\" + langVoiceList.join(" \\") + " ";
