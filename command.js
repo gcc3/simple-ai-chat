@@ -122,6 +122,7 @@ export function getCommands() {
     { id: "", title: "", annotation: "", command: ":theme [light|dark|terminal]", options: "", short_description: "Change color theme.", description: "" },
     { id: "", title: "", annotation: "", command: ":lang [ls|list]", options: "", short_description: "List all languages.", description: "List all available language codes." },
     { id: "", title: "", annotation: "", command: ":lang use [language_code]", options: "", short_description: "Set language.", description: "Set language. This language settings is both for page UI, voice and the text generation. The language code should include country code too, example: `fr-FR`." },
+    { id: "", title: "", annotation: "", command: ":lang reset", options: "", short_description: "Reset language.", description: "Reset language to empty." },
     { id: "", title: "", annotation: "", command: ":function [ls|list]", options: "", short_description: "List all supported functions.", description: "To directly call a function, use `!function_name(parameters)`" },
     { id: "", title: "", annotation: "", command: ":function [name]", options: "", short_description: "Show function detail.", description: "" },
     { id: "", title: "", annotation: "", command: ":function [use|unuse] [name]", options: "", short_description: "Use or unuse a function.", description: "Use or unuse a function for function calling." },
