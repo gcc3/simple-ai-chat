@@ -1,0 +1,10 @@
+
+You can use command colon speak on to enable the speech.
+
+AI will read the response text for you.
+
+Before that you need to set a language, refer the languages section.
+
+Use the colon voice ls to list available languages.
+
+And use colon voice use following with voice name to enable a voice.
