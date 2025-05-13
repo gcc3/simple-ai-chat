@@ -2368,6 +2368,9 @@ export default function Home() {
         autocomplete(":role ", true);
         autocomplete(":role use ", true);
         autocomplete(":role unuse ", true);
+        autocomplete(":role set ", true);
+        autocomplete(":role del ", true);
+        autocomplete(":role delete ", true);
         autocomplete(":store ", true);
         autocomplete(":store use ", true);
         autocomplete(":store set ", false);
