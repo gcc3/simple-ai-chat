@@ -656,6 +656,13 @@ function Settings() {
   }, [user, t]);
 
   const handleSetLanguage = useCallback((newLang) => async () => {
+    // If new lang is current lang, unset
+    if (newLang === getSetting("lang")) {
+      setLang(null);
+      setSetting("lang", "");
+      return;
+    }
+    
     // Set language
     const lang_ = newLang.trim()
     setLang(lang_);
