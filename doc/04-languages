@@ -1,0 +1,22 @@
+
+Hi, in this section I will talk about language setting in this system.
+
+Initially, if you didn't set any language, the UI will use the browser's language.
+
+And AI will talk to with your question language.
+
+If you want to specify a language.
+
+Go to the Settings page.
+
+There is languages settings here. Click a language.
+
+Then AI will only response you only with that language.
+
+If you want to cancel the language selection. Just click the same language again.
+
+For command, you can use colon lang ls to list available languages.
+
+And use colon lang use, following with a language code, to set a language.
+
+The language settings is both for AI, application UI, and speech voice.
