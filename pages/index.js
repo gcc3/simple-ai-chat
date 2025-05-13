@@ -31,7 +31,7 @@ import { Readable } from "stream";
 import { refreshLocalUser, updateUserSetting } from "utils/userUtils";
 import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 import { useUI } from '../contexts/UIContext';
-import { initializeSettings } from "utils/settingsUtils";
+import { initializeSettings, isSettingEmpty } from "utils/settingsUtils";
 import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
@@ -433,17 +433,29 @@ export default function Home() {
     }
     getSystemInfo();
 
-    // Lanuage
-    let lang = "en-US";
-    if (getSetting("lang")) {
+    // Language
+    let i18nLang = "en";
+    if (!isSettingEmpty("lang")) {
       // If user set language, it will be used here.
-      lang = getSetting("lang").trim();
+      const lang = getSetting("lang").trim();
+      console.log("User setting's language for UI: " + lang);
+      
+      // Set i18n language
+      i18nLang = lang.split("-")[0];  // i18n language, e.g. en for en-US
+    } else {
+      // Use the browser language to set the i18nLang
+      const browserLang = navigator.language || navigator.userLanguage;
+      console.log("Use browser language for UI: " + browserLang);
+      
+      // Set i18n language
+      i18nLang = browserLang.split("-")[0];
     }
-    const i18nLang = lang.split("-")[0];  // i18n language, e.g. en for en-US
+    
+    // Set i18n language
     if (i18n.language !== i18nLang) {
       i18n.changeLanguage(i18nLang)
         .then(() => {
-          console.log("Language: " + lang + ", i18n: " + i18n.language);
+          console.log("i18n language: " + i18n.language);
           console.log('Language test:', tt("hello"));
           setRtl(i18nLang === "ar");
         });
