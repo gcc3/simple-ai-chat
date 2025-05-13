@@ -1,0 +1,40 @@
+
+Here we talk about Ollama, how to setup Ollama and make it works with the system.
+
+First, you need to download the Ollama from the official website.
+
+Search Ollama in your browser and download it.
+
+After installation, you can go to the Ollama website to check is there any models suite for your machine.
+
+Use command Ollama run, following with the model name, it will donwlaod model automatically.
+
+Okay, then the Ollama installation and model setup is done.
+
+Before use it in Simple AI, you need one more step.
+
+You need to setup a environment variable to make the Ollama allow CORS.
+
+What is CORS, we don't talk here but without setting it, Simple AI cannot get data from Ollama.
+
+On macOS, you can use the following command:
+
+launchctl setenv OLLAMA_ORIGINS "*"
+
+On Linux, you can use the following command:
+
+export OLLAMA_ORIGINS="*"
+
+On Windows, you can use the following command:
+
+setx OLLAMA_ORIGINS "*"
+
+THen done, you can use the colon model ls to check is the Ollama model availble to use.
+
+If it is successfully listed in the respone, you can use colon use, following with the model name to enable it.
+
+Okay, there is one more thing I need to mention.
+
+Ollama model support function calling, but not in stream model, so if you want to use function calling. 
+
+You may need to use command colon stream off to disable the strem model first.
