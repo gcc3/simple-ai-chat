@@ -1,5 +1,5 @@
 
-For the documentation.
+For the Documentation page.
 
 TLDR, you can use the command, colon use, followed by an uppercase S, then the tab key to auto-complete.
 
