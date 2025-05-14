@@ -1,0 +1,8 @@
+
+As a fan of Unix and computer history, I designed this system to be Unix-like.
+
+So firstly, it is a command-based system.
+
+That means in this system, you can control everything with commands.
+
+Just remember: every command must begin with a colon; otherwise, it will be treated as prompt sent to the AI.

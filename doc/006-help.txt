@@ -1,0 +1,16 @@
+
+You may have noticed, there is a input box in the middle, with a grayed color text, colon help.
+
+Yes, that is the help command.
+
+Press TAB key to focus on the input box.
+
+Then press TAB key again, to auto input colon help.
+
+Yes if you focused on the input box, then TAB key will auto input the grayed out text.
+
+Then press Enter key to submit, all the commands will be listed out.
+
+You can use colon help, following with the command name with double quation to check that command's help.
+
+That's the help command.

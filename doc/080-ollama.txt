@@ -1,11 +1,12 @@
 
-Here we talk about Ollama, how to setup Ollama and make it works with the system.
 
-First, you need to download the Ollama from the official website.
+Token is not free, unless you use local large language models, like use Ollama.
+
+To setup Ollama, you need to download the Ollama from the official website.
 
 Search Ollama in your browser and download it.
 
-After installation, you can go to the Ollama website to check is there any models suite for your machine.
+After a installation, you can go to the Ollama website to check is there any models suite for your machine.
 
 Use command Ollama run, following with the model name, it will donwlaod model automatically.
 

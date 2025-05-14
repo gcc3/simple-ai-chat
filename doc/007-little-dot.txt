@@ -1,0 +1,6 @@
+
+There’s a small dot in the bottom right corner—you may not have noticed it.
+
+Click it, it will switch to the back page.
+
+In the back page, there is a Documentation page, a Usage page, a Subscription page, a Settings page, and a Pravicy Policy page.

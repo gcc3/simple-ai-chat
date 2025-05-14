@@ -1,0 +1,22 @@
+
+As I mentioned, I want the system like Unix.
+
+So first thing first, you need to be a user.
+
+Use the command colon user add, continue with your user name and email address, and the room number.
+
+Haha, just kidding, no need for the room number.
+
+You'll receive an email with a password and a link for verification. After you click the link, you are a user.
+
+Then go back to the page and type colon, login, continue with your user name and password to login.
+
+The user credentials will expire in 24 hours.
+
+If you want to save the credentials for a shorter or longer period.
+
+use the command colon login with your user name and password, then dash s, then 1h for one hour, or 10d for ten days.
+
+Okay, congratulations to be a user!
+
+See you in the next section.
