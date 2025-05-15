@@ -18,6 +18,7 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { spawn } from "child_process";
 import { getSetting, setSetting } from "./utils/settingsUtils.js";
+import { getMcpTools } from "./function.js";
 
 
 // Disable process warnings (node)
@@ -68,6 +69,11 @@ async function generate_sse(input, images=[], files=[]) {
   const config = loadConfig();
   console.log("Config: " + JSON.stringify(config));
 
+  // MCP functions
+  const mcpTools = await getMcpTools(config.functions);
+  const mcpToolsString = JSON.stringify(mcpTools);
+  console.log("MCP tools string: " + mcpToolsString);
+
   // Build query parameters for SSE GET request
   const params = new URLSearchParams({
     user_input: input,
@@ -78,6 +84,7 @@ async function generate_sse(input, images=[], files=[]) {
     model: globalThis.model,
     mem_length: "7",
     functions: getSetting("functions"),
+    mcp_tools: mcpToolsString,
     role: getSetting("role"),
     stores: getSetting("stores"),
     node: getSetting("node"),

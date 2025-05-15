@@ -1,5 +1,7 @@
 
-The large language model, or LLM, is static, it means the AI don't have a memory itself.
+The large language model, or LLM, is static.
+
+It means the AI don't have a memory itself.
 
 It doesn't remeber anything!
 
@@ -14,3 +16,5 @@ It called memory length.
 You can use command colon set memLength along with a number to set it.
 
 Please note, a longer memory length will consume more tokens.
+
+Basically token is not free.
