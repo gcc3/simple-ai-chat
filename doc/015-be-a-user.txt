@@ -19,4 +19,6 @@ use the command colon login with your user name and password, then dash s, then 
 
 Okay, congratulations to be a user!
 
+You can use clone user command to check user information.
+
 See you in the next section.
