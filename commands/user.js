@@ -11,8 +11,9 @@ export default async function entry(args) {
                 "       :user set pass [value]" + "\n" +
                 "       :user set email [value]" + "\n" +
                 "       :user set [key] [value]" + "\n" +
-                "       :user reset pass [username] [email]" + "\n" +
+                "       :user reset [key]" + "\n" +
                 "       :user reset settings" + "\n" +
+                "       :user reset pass [username] [email]" + "\n" +
                 "       :user join [group] [password]" + "\n" +
                 "       :user leave [group]";
 
@@ -225,13 +226,56 @@ export default async function entry(args) {
     if (!args[2].startsWith("\"") || !args[2].endsWith("\"")) {
       return "Setting value must be quoted with double quotes.";
     }
+    
     const key = args[1];
     const value = args[2].slice(1, -1);
 
-    await updateUserSetting(key, value);
+    try {
+      const data = await updateUserSetting(key, value);
+      if (data) {
+        if (data.success) {
+          // Refresh local user as the user.settings is updated
+          refreshLocalUser();
+          
+          return "Setting updated.";
+        } else {
+          return data.error;
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+  
+  // Set settings
+  if (command === "reset" && args[1]) {
+    if (args.length != 2) {
+      return "Usage: :user reset [key]";
+    }
+    
+    if (!getSetting("user")) {
+      return "Please login.";
+    }
 
-    // Refresh local user as the user.settings is updated
-    refreshLocalUser();
+    const key = args[1];
+
+    try {
+      const data = await updateUserSetting(key);
+      if (data) {
+        if (data.success) {
+          // Refresh local user as the user.settings is updated
+          refreshLocalUser();
+          
+          return "Setting reset.";
+        } else {
+          return data.error;
+        }
+      }
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
   }
 
   // Reset password

@@ -2401,6 +2401,7 @@ export default function Home() {
         autocomplete(":theme ");
         autocomplete(":lang use ");
         autocomplete(":user set ");
+        autocomplete(":user reset ");
         autocomplete(":set ");
         autocomplete(":function ", true);
         autocomplete(":function use ", true);

@@ -169,7 +169,11 @@ export async function fetchUserUsage() {
 }
 
 export async function updateUserSetting(key, value) {
-  console.log("Updating user setting, key: `" + key + "`, value: `" + value);
+  if (value) {
+    console.log("Updating user setting, key: `" + key + "`, value: `" + value);
+  } else {
+    console.log("Reseting user setting `" + key + "` to default");
+  }
 
   // There is user logged in
   // Update remote setting
@@ -183,7 +187,7 @@ export async function updateUserSetting(key, value) {
         },
         body: JSON.stringify({
           key: key,
-          value: value,
+          value: value,  // value can be undefined, and will not be sent to server.
         }),
       });
 
@@ -191,9 +195,14 @@ export async function updateUserSetting(key, value) {
       if (response.status !== 200) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
+      
+      return data;
     } catch (error) {
       console.error(error);
-      return error;
+      return {
+        success: false,
+        error: error
+      }
     }
   }
 }

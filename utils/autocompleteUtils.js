@@ -102,7 +102,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     return getLangCodes();
   }
 
-  if (prefix === ":user set ") {
+  if (prefix === ":user set " || prefix === ":user reset ") {
     return getSettings("user_keys")
   }
 
