@@ -187,8 +187,9 @@ export default async function (req, res) {
 
   // User access control
   if (sysconf.use_access_control) {
-    const uacResult = await getUacResult(user, ip);
+    const uacResult = await getUacResult(user, ip, session);
     if (!uacResult.success) {
+      console.log("test" + uacResult.error);
       res.write(`data: ${uacResult.error}\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
       res.end();
