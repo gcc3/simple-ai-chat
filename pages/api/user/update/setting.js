@@ -3,7 +3,7 @@ import { authenticate } from 'utils/authUtils.js';
 import { getAvailableStoresForUser } from 'utils/storeUtils';
 import { getAvailableNodesForUser } from 'utils/nodeUtils';
 import { getSystemRoles } from 'utils/roleUtils';
-import { getSettings } from 'utils/settingsUtils';
+import { getSettings, getDefaultSetting } from 'utils/settingsUtils';
 import { getLangCodes } from 'utils/langUtils';
 
 export default async function (req, res) {
@@ -33,15 +33,19 @@ export default async function (req, res) {
 
   // Input and validation
   // value is allowed to be empty string
-  const { key, value } = req.body;
-  if (!key || value == null) {
+  const { key } = req.body;
+  if (!key) {
     return res.status(400).json({
       success: false,
-      error: '`key` and `value` are required.'
+      error: '`key` is required.'
     });
   }
-
-  try {
+  
+  let { value } = req.body;
+  if (!value) {
+    // Reset key's value to default
+    value = getDefaultSetting(key);
+  } else {
     // I. Check if key is valid
     const availableUserSettings = getSettings("user_keys");
     if (!availableUserSettings.includes(key)) {
@@ -186,7 +190,9 @@ export default async function (req, res) {
         });
       }
     }
+  }
 
+  try {
     // Update user settings
     const wasSuccessful = await updateUserSetting(username, key, value);
     if (wasSuccessful) {
