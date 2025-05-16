@@ -75,8 +75,8 @@ export default async function (req, res) {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
 
-  // MCP tools string
-  const mcp_tools = req.query.mcp_tools || "";
+  // MCP tools
+  const mcp_tools = req.query.mcp_tools || [];
 
   // Time
   let time = Number(time_);

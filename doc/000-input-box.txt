@@ -1,0 +1,12 @@
+
+Unlike other systems, this system is minimalistic.
+
+It doesn't even have a send button initially.
+
+So first, just in case someone doesn't know, type your text in the input box and press Enter can submit.
+
+If you're not focust on the input area, you can use TAB key to focus on it.
+
+If you want to clear the input box, press the ESC key.
+
+If you press the ESC key again, you will unfocus from the input box.

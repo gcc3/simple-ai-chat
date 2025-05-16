@@ -1,7 +1,5 @@
 
-In this section, I will introduce the how to switch large language models.
-
-There are 2 ways you can switch the model.
+To switch large language models.
 
 First you can use colon model ls command to list available models.
 

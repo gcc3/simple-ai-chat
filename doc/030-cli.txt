@@ -11,8 +11,12 @@ npm install dash g simple dash ai dash chat
 
 This will install the CLI globally on your machine.
 
+To unstaill it use npm uninstall dash g simple dash ai dash chat
+
+And to update use npm install dash g simple dash ai dash chat --upgrade
+
 Now, when you open a terminal, you can run the command s c h a t, schat to start the CLI.
 
 It is just the same as in the web app.
 
-That's it.
+Okay, that's the CLI.

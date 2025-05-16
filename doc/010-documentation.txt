@@ -1,0 +1,10 @@
+
+For the Documentation page.
+
+TLDR, you can use the command, colon use, followed by an uppercase S, then the tab key to auto-complete.
+
+Yes, if you don't want to type, try use TAB.
+
+The command colon use Simple AI Documentation will enable the documentation file as a knowledge to AI.
+
+Now you can ask AI for help directly.
