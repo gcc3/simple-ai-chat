@@ -1,10 +1,11 @@
 import { countChatsForIP, countChatsForUser } from './sqliteUtils';
 import { getRoleFequencyLimit } from './usageUtils';
 
+
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
 // User access control utilities
-export async function getUacResult(user, ip) {
+export async function getUacResult(user, ip, session) {
   const isLogin = (user !== null && user !== undefined);
 
   if (!isLogin) {
@@ -16,8 +17,8 @@ export async function getUacResult(user, ip) {
     if (chatCount > 7) {
       return {
         success: false,
-        error: "Register as a user to continue. Use the command `:user add [username] [email] [password?]`. Or log in if you are already a user.\n" 
-           + "\nAfter your registration, you can use command: `:session attach " + getSetting("session") + "` to resume current conversation."
+        error: "Register as a user to continue. Use the command `:user add [username] [email] [password (optional)]`. Or log in if you are already a user. " 
+             + "After registering, you can use command: `:session attach " + session + "` to resume your current conversation."
       };
     }
   }
