@@ -34,5 +34,6 @@
   "Rate Limits": "请求限制",
   "Input Tokens": "输入令牌",
   "Output Tokens": "输出令牌",
-  "Add Balance": "添加余额"
+  "Add Balance": "添加余额",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "$1 token 消耗大约相当于385,000个英文输入单词或96,000个英文输出单词。"
 }

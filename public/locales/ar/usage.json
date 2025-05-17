@@ -34,5 +34,6 @@
   "Rate Limits": "حدود المعدل",
   "Input Tokens": "رموز الإدخال",
   "Output Tokens": "رموز الإخراج",
-  "Add Balance": "إضافة رصيد"
+  "Add Balance": "إضافة رصيد",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "$1 من استهلاك token يعادل تقريبًا 385,000 كلمة إنجليزية في الإدخال أو 96,000 كلمة إنجليزية في الإخراج."
 }

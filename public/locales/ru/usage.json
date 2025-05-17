@@ -34,5 +34,6 @@
   "Rate Limits": "Лимиты запросов",
   "Input Tokens": "Входные Токены",
   "Output Tokens": "Выходные Токены",
-  "Add Balance": "Пополнить баланс"
+  "Add Balance": "Пополнить баланс",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "Потребление token на сумму $1 эквивалентно примерно 385 000 английским словам ввода или 96 000 английским словам вывода."
 }

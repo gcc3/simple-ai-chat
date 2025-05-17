@@ -34,5 +34,6 @@
   "Rate Limits": "রেট সীমা",
   "Input Tokens": "ইনপুট টোকেনস",
   "Output Tokens": "আউটপুট টোকেন",
-  "Add Balance": "ব্যালেন্স যোগ করুন"
+  "Add Balance": "ব্যালেন্স যোগ করুন",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "$1 token ব্যবহার প্রায় 385,000টি ইংরেজি শব্দ ইনপুট বা 96,000টি ইংরেজি শব্দ আউটপুটের সমান।"
 }

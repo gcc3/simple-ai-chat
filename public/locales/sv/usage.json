@@ -34,5 +34,6 @@
   "Rate Limits": "Begränsningar av förfrågningshastighet",
   "Input Tokens": "Inmatningstoken",
   "Output Tokens": "Utgående Token",
-  "Add Balance": "Lägg till saldo"
+  "Add Balance": "Lägg till saldo",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "$1 tokenanvändning motsvarar ungefär 385 000 engelska ord i indata eller 96 000 engelska ord i utdata."
 }

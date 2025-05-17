@@ -34,5 +34,6 @@
   "Rate Limits": "レート制限",
   "Input Tokens": "入力トークン",
   "Output Tokens": "出力トークン",
-  "Add Balance": "残高を追加"
+  "Add Balance": "残高を追加",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "1ドル分のtoken使用量は、英語の入力約385,000語または出力約96,000語に相当します。"
 }

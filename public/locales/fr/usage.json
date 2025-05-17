@@ -34,5 +34,6 @@
   "Rate Limits": "Limites de Taux",
   "Input Tokens": "Jetons d'entrée",
   "Output Tokens": "Jetons de sortie",
-  "Add Balance": "Ajouter du crédit"
+  "Add Balance": "Ajouter du crédit",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "L'utilisation d'un token équivaut à environ 385 000 mots anglais en entrée ou 96 000 mots anglais en sortie."
 }

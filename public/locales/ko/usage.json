@@ -34,5 +34,6 @@
   "Rate Limits": "요첼 한도",
   "Input Tokens": "입력 토큰",
   "Output Tokens": "출력 토큰",
-  "Add Balance": "잔액 추가"
+  "Add Balance": "잔액 추가",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "$1 토큰 사용량은 대략 385,000개의 영어 입력 단어 또는 96,000개의 영어 출력 단어에 해당합니다."
 }
