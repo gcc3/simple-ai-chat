@@ -2124,6 +2124,10 @@ export default function Home() {
     const config = loadConfig();
     console.log("Config: " + JSON.stringify(config));
 
+    // MCP functions
+    const mcpTools = await getMcpTools(config.functions);
+    console.log("MCP tools: " + mcpToolsString);
+
     try {
       // Send generate request!
       const response = await fetch("/api/generate", {
@@ -2139,7 +2143,8 @@ export default function Home() {
           session: config.session,
           model: config.model,
           mem_length: config.mem_length,
-          functions: config.functions,
+          functions: config.functions,  // enabled function names
+          mcp_tools: mcpTools, // local MCP tools (params, prompts, etc.)
           role: config.role,
           stores: config.stores,
           node: config.node,

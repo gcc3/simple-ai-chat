@@ -46,7 +46,6 @@ export default async function(req, res) {
   const time_ = req.body.time || "";
   const session = req.body.session || "";
   const mem_length = req.body.mem_length || 0;
-  const functions_ = req.body.functions || "";
   const role = req.body.role || "";
   const stores = req.body.stores || "";
   const node = req.body.node || "";
@@ -116,6 +115,15 @@ export default async function(req, res) {
       }
     }
   }
+
+  // Function calling (tool calls), MCP tools
+  let functions_ = req.query.functions || "";
+  let mcp_tools = req.query.mcp_tools || [];
+  if (modelInfo.is_tool_calls_supported === 0) {
+    functions_ = "";
+    mcp_tools = [];
+  }
+
   // Model API key check
   const apiKey = modelInfo.api_key;
   if (!apiKey) {
@@ -125,6 +133,7 @@ export default async function(req, res) {
     });
     return;
   }
+
   // Model API base URL check
   const baseUrl = modelInfo.base_url;
   if (!baseUrl) {
