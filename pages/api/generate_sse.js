@@ -153,7 +153,7 @@ export default async function(req, res) {
 
   // Function calling (tool calls), MCP tools
   let functions_ = req.query.functions || "";
-  const mcp_tools = req.query.mcp_tools || [];
+  let mcp_tools = req.query.mcp_tools || [];
   if (modelInfo.is_tool_calls_supported === 0) {
     functions_ = "";
     mcp_tools = [];
