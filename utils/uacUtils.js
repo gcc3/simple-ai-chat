@@ -14,7 +14,7 @@ export async function getUacResult(user, ip, session) {
 
     // Forbidden as noticed some users can use fake IP to bypass the limit
     // But if user cannot chat, it will be inconvenient... temporarily enabled.
-    if (chatCount > 7) {
+    if (chatCount >= 7) {
       return {
         success: false,
         error: "Register as a user to continue. Use the command `:user add [username] [email] [password (optional)]`. Or log in if you are already a user. " 
