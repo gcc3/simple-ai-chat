@@ -153,10 +153,10 @@ export default async function(req, res) {
 
   // Function calling (tool calls), MCP tools
   let functions_ = req.query.functions || "";
-  let mcp_tools = req.query.mcp_tools || [];
-  if (modelInfo.is_tool_calls_supported === 0) {
+  let mcp_tools = req.query.mcp_tools || "[]";
+  if (modelInfo.is_tool_calls_supported === "0") {
     functions_ = "";
-    mcp_tools = [];
+    mcp_tools = "[]";
   }
   
   // Model API key check
@@ -369,7 +369,11 @@ export default async function(req, res) {
     if (mcpTools && mcpTools.length > 0) {
       tools = tools.concat(mcpTools);  // Concat MCP functions
     }
-    console.log(JSON.stringify(tools));
+    if (modelInfo.is_tool_calls_supported === "1") {
+      console.log(JSON.stringify(tools));
+    } else {
+      console.log("Model doesn't support tool calls.");
+    }
 
     console.log("\n--- messages ---");
     console.log(JSON.stringify(msg.messages));
