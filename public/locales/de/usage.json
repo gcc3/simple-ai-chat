@@ -34,5 +34,6 @@
   "Rate Limits": "Ratenbegrenzungen",
   "Input Tokens": "Eingabe-Token",
   "Output Tokens": "Ausgegebene Token",
-  "Add Balance": "Guthaben hinzufügen"
+  "Add Balance": "Guthaben hinzufügen",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "Der Verbrauch von 1 $ token entspricht ungefähr 385.000 englischen Wörtern bei Eingaben oder 96.000 englischen Wörtern bei Ausgaben."
 }

@@ -34,5 +34,6 @@
   "Rate Limits": "Limity żużycia",
   "Input Tokens": "Tokeny Wejściowe",
   "Output Tokens": "Wygenerowane Tokeny",
-  "Add Balance": "Doładuj saldo"
+  "Add Balance": "Doładuj saldo",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "Zużycie 1 tokena odpowiada w przybliżeniu 385 000 angielskim słowom wejściowym lub 96 000 angielskim słowom wyjściowym."
 }

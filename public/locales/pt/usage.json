@@ -34,5 +34,6 @@
   "Rate Limits": "Limites de Taxa",
   "Input Tokens": "Tokens de Entrada",
   "Output Tokens": "Tokens de Saída",
-  "Add Balance": "Adicionar Saldo"
+  "Add Balance": "Adicionar Saldo",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "O uso de $1 token equivale a aproximadamente 385.000 palavras em inglês de entrada ou 96.000 palavras em inglês de saída."
 }

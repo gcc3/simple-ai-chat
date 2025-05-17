@@ -34,5 +34,6 @@
   "Rate Limits": "Tariefbeperkingen",
   "Input Tokens": "Invoer Tokens",
   "Output Tokens": "Uitgegeven Tokens",
-  "Add Balance": "Saldo Toevoegen"
+  "Add Balance": "Saldo Toevoegen",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "$1 tokengebruik komt overeen met ongeveer 385.000 Engelse woorden aan input of 96.000 Engelse woorden aan output."
 }

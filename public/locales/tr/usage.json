@@ -34,5 +34,6 @@
   "Rate Limits": "Hız Limitleri",
   "Input Tokens": "Giriş Tokenları",
   "Output Tokens": "Çıktı Tokenları",
-  "Add Balance": "Bakiye Ekle"
+  "Add Balance": "Bakiye Ekle",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "$1 token kullanımı, yaklaşık 385.000 İngilizce girdi kelimesine veya 96.000 İngilizce çıktı kelimesine eşittir."
 }

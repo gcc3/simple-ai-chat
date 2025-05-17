@@ -34,5 +34,6 @@
   "Rate Limits": "Limiti di Frequenza",
   "Input Tokens": "Token di Input",
   "Output Tokens": "Token di Output",
-  "Add Balance": "Aggiungi Credito"
+  "Add Balance": "Aggiungi Credito",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "L'uso di 1 token equivale a circa 385.000 parole inglesi in input o 96.000 parole inglesi in output."
 }

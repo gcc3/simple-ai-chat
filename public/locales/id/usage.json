@@ -34,5 +34,6 @@
   "Rate Limits": "Batasan Penggunaan",
   "Input Tokens": "Token Masukan",
   "Output Tokens": "Token Keluaran",
-  "Add Balance": "Tambah Saldo"
+  "Add Balance": "Tambah Saldo",
+  "$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.": "Pemakaian 1 token setara dengan sekitar 385.000 kata bahasa Inggris sebagai input atau 96.000 kata bahasa Inggris sebagai output."
 }

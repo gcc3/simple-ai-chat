@@ -215,6 +215,7 @@ export default function Usage() {
                 <button className="ml-2 w-11" onClick={handleSetAmount(50)}>$50</button>
                 {amount > 0 && <button className="ml-2 w-20" onClick={handleSetAmount(0)}>{ t("Cancel") }</button>}
               </div>
+              <div className="mt-2">* { t("$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.") }</div>
             </div>}
             {amount !== null && amount > 0 && <div className="mt-3">
               <div>{ t("Pay") }: {"$" + amount} ({ t("banking fee {{bankingFee}} included", { bankingFee }) })</div>
