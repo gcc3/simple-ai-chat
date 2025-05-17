@@ -27,7 +27,7 @@ let models = await getModels();
 
 export default async function(req, res) {
   // Access log
-  await log(req);
+  log(req);
   
   // Input
   let input = req.body.user_input.trim() || "";
