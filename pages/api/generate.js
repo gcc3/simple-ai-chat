@@ -16,6 +16,7 @@ import { TYPE } from '../../constants.js';
 import { getSessionLog } from "utils/branchUtils";
 import { isUrl } from "utils/urlUtils";
 import { getS3PresignedPutUrl } from "utils/awsUtils";
+import log from "../../log.js";
 
 
 // System configurations
@@ -25,6 +26,9 @@ const sysconf = getSystemConfigurations();
 let models = await getModels();
 
 export default async function(req, res) {
+  // Access log
+  await log(req);
+  
   // Input
   let input = req.body.user_input.trim() || "";
   let inputType = TYPE.NORMAL;

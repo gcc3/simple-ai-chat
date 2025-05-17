@@ -29,7 +29,7 @@ export const authenticate = (req) => {
   } catch (error) {
     return { 
       success: false, 
-      error: 'Authentication decoed failed.'
+      error: 'Authentication decode failed.'
      };
   }
 };

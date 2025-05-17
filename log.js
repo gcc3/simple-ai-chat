@@ -1,6 +1,7 @@
 import fs from 'fs';
 import path from 'path';
 
+
 // Read the log.config file and parse the CSV content into an array of IPs
 const readFilterList = async () => {
   try {
@@ -42,16 +43,40 @@ const log = async (req) => {
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const filteredIPs = await readFilterList();
 
-  // Check if the IP is in the filter list
   if (filteredIPs.includes(ip)) {
-    // Skip logging for this IP
-    return;
+    return; // Skip logging for filtered IPs
   }
 
-  const userAgent = req.headers['user-agent'] || '';
-  const data = `${new Date().toISOString()} - ${req.method} ${req.url} - IP: ${ip} - Agent: ${userAgent}\n`;
+  const method = req.method;
+  const url = req.url;
+  const headers = req.headers;
+  let body;
+
+  // Handle body extraction for common body types (e.g., JSON, urlencoded)
+  if (req.body) {
+    try {
+      body = JSON.stringify(req.body);
+    } catch (err) {
+      body = '[Unserializable Body]';
+    }
+  }
+
+  // Initialize the data array
+  const data = [
+    `${new Date().toISOString()}`,
+    `Method: ${method}`,
+    `URL: ${url}`,
+    `IP: ${ip}`,
+    `Headers: ${JSON.stringify(headers)}`
+  ];
+
+  // Only add Body if it exists and is not an empty object
+  if (body && body !== '{}' && body !== '[]') {
+    data.push(`Body: ${body}`);
+  }
+
   const logFilePath = path.join(process.cwd(), 'access.log');
-  await appendFileAsync(logFilePath, data);
+  await appendFileAsync(logFilePath, "\n" + data.join(' | '));
 };
 
 export default log;

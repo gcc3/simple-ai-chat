@@ -14,6 +14,7 @@ import { findNode } from "utils/nodeUtils.js";
 import { ensureSession } from "utils/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";
 import { TYPE } from '../../constants.js';
+import log from "../../log.js";
 
 
 // System configurations
@@ -22,7 +23,10 @@ const sysconf = getSystemConfigurations();
 // Models
 let models = await getModels();
 
-export default async function (req, res) {
+export default async function(req, res) {
+  // Access log
+  await log(req);
+  
   // Input
   let input = req.query.user_input.trim() || "";
   let inputType = TYPE.NORMAL;
@@ -150,6 +154,7 @@ export default async function (req, res) {
       }
     }
   }
+  
   // Model API key check
   const apiKey = modelInfo.api_key;
   if (!apiKey) {
@@ -159,6 +164,7 @@ export default async function (req, res) {
     res.end();
     return;
   }
+  
   // Model API base URL check
   const baseUrl = modelInfo.base_url;
   if (!baseUrl) {
@@ -189,7 +195,6 @@ export default async function (req, res) {
   if (sysconf.use_access_control) {
     const uacResult = await getUacResult(user, ip, session);
     if (!uacResult.success) {
-      console.log("test" + uacResult.error);
       res.write(`data: ${uacResult.error}\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
       res.end();
