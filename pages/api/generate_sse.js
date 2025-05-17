@@ -150,6 +150,7 @@ export default async function (req, res) {
       }
     }
   }
+  
   // Model API key check
   const apiKey = modelInfo.api_key;
   if (!apiKey) {
@@ -159,6 +160,7 @@ export default async function (req, res) {
     res.end();
     return;
   }
+  
   // Model API base URL check
   const baseUrl = modelInfo.base_url;
   if (!baseUrl) {
