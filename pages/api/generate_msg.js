@@ -10,12 +10,16 @@ import { executeFunctions } from "function.js";
 import { countToken } from "utils/tokenUtils.js";
 import { logadd } from "utils/logUtils.js";
 import { TYPE } from '../../constants.js';
+import log from "../../log.js";
 
 
 // System configurations
 const sysconf = getSystemConfigurations();
 
 export default async function(req, res) {
+  // Access log
+  await log(req);
+
   // Input
   let input = req.body.user_input.trim() || "";
   let inputType = TYPE.NORMAL;

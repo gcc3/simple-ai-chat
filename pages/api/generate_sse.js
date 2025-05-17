@@ -14,6 +14,7 @@ import { findNode } from "utils/nodeUtils.js";
 import { ensureSession } from "utils/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";
 import { TYPE } from '../../constants.js';
+import log from "../../log.js";
 
 
 // System configurations
@@ -22,7 +23,10 @@ const sysconf = getSystemConfigurations();
 // Models
 let models = await getModels();
 
-export default async function (req, res) {
+export default async function(req, res) {
+  // Access log
+  await log(req);
+  
   // Input
   let input = req.query.user_input.trim() || "";
   let inputType = TYPE.NORMAL;
