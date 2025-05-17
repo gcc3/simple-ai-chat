@@ -119,7 +119,7 @@ export default async function(req, res) {
   // Function calling (tool calls), MCP tools
   let functions_ = req.query.functions || "";
   let mcp_tools = req.query.mcp_tools || [];
-  if (modelInfo.is_tool_calls_supported === 0) {
+  if (modelInfo.is_tool_calls_supported === "0") {
     functions_ = "";
     mcp_tools = [];
   }
@@ -431,7 +431,14 @@ export default async function(req, res) {
     // Tools
     console.log("\n--- tools ---");
     let tools = getTools(functions_);
-    console.log(JSON.stringify(tools));
+    if (mcp_tools && mcp_tools.length > 0) {
+      tools = tools.concat(mcp_tools);  // Concat MCP functions
+    }
+    if (modelInfo.is_tool_calls_supported === "1") {
+      console.log(JSON.stringify(tools));
+    } else {
+      console.log("Model doesn't support tool calls.");
+    }
 
     console.log("\n--- messages ---");
     console.log(JSON.stringify(msg.messages) + "\n");
