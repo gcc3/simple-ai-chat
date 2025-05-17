@@ -65,7 +65,6 @@ export default async function(req, res) {
   const time_ = req.query.time || "";
   const session = req.query.session || "";
   const mem_length = req.query.mem_length || 0;
-  const functions_ = req.query.functions || "";
   const role = req.query.role || "";
   const stores = req.query.stores || "";
   const node = req.query.node || "";
@@ -78,9 +77,6 @@ export default async function(req, res) {
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
-
-  // MCP tools
-  const mcp_tools = req.query.mcp_tools || [];
 
   // Time
   let time = Number(time_);
@@ -153,6 +149,14 @@ export default async function(req, res) {
         return;
       }
     }
+  }
+
+  // Function calling (tool calls), MCP tools
+  let functions_ = req.query.functions || "";
+  const mcp_tools = req.query.mcp_tools || [];
+  if (modelInfo.is_tool_calls_supported === 0) {
+    functions_ = "";
+    mcp_tools = [];
   }
   
   // Model API key check
