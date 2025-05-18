@@ -1,5 +1,4 @@
 
-
 Token is not free, unless you use local large language models, like use Ollama.
 
 To setup Ollama, you need to download the Ollama from the official website.
@@ -16,21 +15,21 @@ Before use it in Simple AI, you need one more step.
 
 You need to setup a environment variable to make the Ollama allow CORS.
 
-What is CORS, we don't talk here but without setting it, Simple AI cannot get data from Ollama.
+Without setting CORS, Simple AI cannot recieve data from Ollama.
 
 On macOS, you can use the following command:
 
 launchctl setenv OLLAMA_ORIGINS "*"
 
-On Linux, you can use the following command:
-
-export OLLAMA_ORIGINS="*"
-
 On Windows, you can use the following command:
 
 setx OLLAMA_ORIGINS "*"
 
-THen done, you can use the colon model ls to check is the Ollama model availble to use.
+On Linux, you can use the following command:
+
+export OLLAMA_ORIGINS="*"
+
+Done, you can use the colon model ls to check is the Ollama model is availble.
 
 If it is successfully listed in the respone, you can use colon use, following with the model name to enable it.
 

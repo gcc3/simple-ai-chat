@@ -43,7 +43,7 @@ export default async function(req, res) {
   const use_eval_ = req.body.use_eval || false;
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
-  const lang = req.body.lang || "en-US";
+  const lang = req.body.lang || "";
   const use_system_role = req.body.use_system_role || true;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
