@@ -72,7 +72,7 @@ export default async function(req, res) {
   const use_eval_ = req.query.use_eval === "true" ? true : false;
   const use_location = req.query.use_location === "true" ? true : false;
   const location = req.query.location || "";
-  const lang = req.query.lang || "en-US";
+  const lang = req.query.lang || "";
   const use_system_role = req.query.use_system_role || true;
 
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;

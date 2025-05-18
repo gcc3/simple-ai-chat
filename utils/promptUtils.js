@@ -113,7 +113,7 @@ export async function generateMessages(use_system_role, lang,
     if (lang) {
       const langName = getLanguageName(lang);
       if (langName !== "Unknown") {
-        system_prompt += "\n\n" + "Reply with " + langName;
+        system_prompt += "\n\n" + "Must reply with " + langName;
       }
     }
 
