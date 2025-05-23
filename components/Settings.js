@@ -351,24 +351,22 @@ function Settings() {
   }, []);
 
   const handleSetSystemFunctions = useCallback((name) => async () => {
-    const currentFunctions = (getSetting("functions")).split(",");
+    const currentFunctions = (getSetting("functions")).split(",").filter(fn => fn);
+
     if (currentFunctions.includes(name)) {
+      // Remove function
       const index = currentFunctions.indexOf(name);
       currentFunctions.splice(index, 1);
       setSetting("functions", currentFunctions.join(","));
-
-      // Update user setting (remote)
-      if (getSetting("user")) {
-        updateUserSetting("functions", currentFunctions.join(","));
-      }
     } else {
+      // Add function
       currentFunctions.push(name)
       setSetting("functions", currentFunctions.join(","));
+    }
 
-      // Update user setting (remote)
-      if (getSetting("user")) {
-        updateUserSetting("functions", currentFunctions.join(","));
-      }
+    // Update user setting (remote)
+    if (getSetting("user")) {
+      updateUserSetting("functions", currentFunctions.join(","));
     }
 
     // Update state
@@ -380,24 +378,24 @@ function Settings() {
   }, []);
 
   const handleSetMcpFunctions = useCallback((name) => async () => {
-    const currentFunctions = (getSetting("functions")).split(",");
+    const currentFunctions = (getSetting("functions")).split(",").filter(fn => fn);
+
     if (currentFunctions.includes(name)) {
+      // Remove function
+      console.log("Removing function: ", name);
       const index = currentFunctions.indexOf(name);
       currentFunctions.splice(index, 1);
       setSetting("functions", currentFunctions.join(","));
-
-      // Update user setting (remote)
-      if (getSetting("user")) {
-        updateUserSetting("functions", currentFunctions.join(","));
-      }
     } else {
+      // Add function
+      console.log("Adding function: ", name);
       currentFunctions.push(name)
       setSetting("functions", currentFunctions.join(","));
+    }
 
-      // Update user setting (remote)
-      if (getSetting("user")) {
-        updateUserSetting("functions", currentFunctions.join(","));
-      }
+    // Update user setting (remote)
+    if (getSetting("user")) {
+      updateUserSetting("functions", currentFunctions.join(","));
     }
 
     // Update state
