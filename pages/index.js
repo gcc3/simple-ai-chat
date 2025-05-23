@@ -1444,7 +1444,7 @@ export default function Home() {
     // MCP functions
     const mcpTools = await getMcpTools(config.functions);
     const mcpToolsString = JSON.stringify(mcpTools);
-    console.log("MCP tools string: " + mcpToolsString);
+    console.log("MCP tools: " + mcpToolsString);
 
     // Send SSE request!
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
@@ -2126,6 +2126,7 @@ export default function Home() {
 
     // MCP functions
     const mcpTools = await getMcpTools(config.functions);
+    const mcpToolsString = JSON.stringify(mcpTools);
     console.log("MCP tools: " + mcpToolsString);
 
     try {
