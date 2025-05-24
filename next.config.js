@@ -23,6 +23,14 @@ const withPWA = nextPWA({
   buildExcludes: [/dynamic-css-manifest.json$/],  // fix a bad-precaching-response error
   runtimeCaching: [
     {
+      urlPattern: /^\/_next\/static\//,
+      handler: 'CacheFirst',
+      options: {
+        cacheName: 'next-static',
+        expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 },
+      }
+    },
+    {
       urlPattern: /^\/api\//,
       handler: 'NetworkOnly',
       options: {
