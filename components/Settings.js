@@ -655,24 +655,33 @@ function Settings() {
 
   const handleSetLanguage = useCallback((newLang) => async () => {
     // If new lang is current lang, unset
+    let i18nLang;
     if (newLang === getSetting("lang")) {
       setLang(null);
       setSetting("lang", "");
-      return;
-    }
-    
-    // Set language
-    const lang_ = newLang.trim()
-    setLang(lang_);
-    setSetting("lang", lang_);
 
-    const i18nLang = lang_.split("-")[0];
+      // Use the browser language to set the i18nLang
+      const browserLang = navigator.language || navigator.userLanguage;
+      console.log("Use browser language for UI: " + browserLang);
+
+      // Set i18n language
+      i18nLang = browserLang.split("-")[0];
+      console.log("Language reset.");
+    } else {
+      // Set language
+      const lang_ = newLang.trim()
+      setLang(lang_);
+      setSetting("lang", lang_);
+
+      // Set i18n language
+      i18nLang = lang_.split("-")[0];
+      console.log("Language: " + lang_ + ", i18n: " + i18n.language);
+    }
+
     i18n.changeLanguage(i18nLang)
     .then(async () => {
-      console.log("Language: " + lang_ + ", i18n: " + i18n.language);
       console.log('Language test:', tt("hello"));
       setRtl(i18nLang === "ar");
-
       // Update user settings
       if (user) {
         await updateUserSetting("lang", newLang);
