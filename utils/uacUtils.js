@@ -17,7 +17,7 @@ export async function getUacResult(user, ip, session) {
     if (chatCount >= 7) {
       return {
         success: false,
-        error: "Register as a user to continue. Use the command `:user add [username] [email] [password (optional)]`. Or log in if you are already a user. " 
+        error: "Login or register as a user to continue. Use command `:login [username] [password]` to login. Use command `:user add [username] [email] [password (optional)]` to register. " 
              + "After registering, you can use command: `:session attach " + session + "` to resume your current conversation."
       };
     }

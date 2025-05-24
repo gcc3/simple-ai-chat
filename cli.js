@@ -19,12 +19,17 @@ import { dirname, join } from "path";
 import { spawn } from "child_process";
 import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import { getMcpTools } from "./function.js";
+import { getLocalLogs, addLocalLog, resetLocalLogs } from "./utils/offlineUtils.js";
+import { isInternetAvailable } from "./utils/networkUtils.js";
 
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');
 process.on('warning', () => {});
 
+// Offline
+globalThis.isOffline = false;
+globalThis.isOnline = true;
 
 // Simulate a localStorage and sessionStorage in Node.js
 import { createRequire } from "module";
@@ -195,21 +200,33 @@ async function generate_msg(input, images=[], files=[]) {
   // Output
   let output = "";
 
+  // Use stream
+  const useStream = getSetting('useStream') === "true";
+
+  // User
+  const user = {
+    username: getSetting("user")
+  };
+
   // Model switch
   const use_vision = images && images.length > 0;
   const model = config.model;
 
   // Generate messages
-  const msgResponse = await fetch("/api/generate_msg", {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify({
+  let msg;
+
+  // Online: get remote messages
+  if (globalThis.isOnline) {
+    const msgResponse = await fetch("/api/generate_msg", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        time: config.time,
         user_input: input,
         images: images,
         files: files,
-        time: config.time,
         session: config.session,
         model: config.model,
         mem_length: config.mem_length,
@@ -223,22 +240,46 @@ async function generate_msg(input, images=[], files=[]) {
         location: config.location,
         lang: config.lang,
         use_system_role: config.use_system_role,
-    }),
-  });
+      }),
+    });
 
-  const msgData = await msgResponse.json();
-  if (msgResponse.status !== 200) {
-    throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
+    const msgData = await msgResponse.json();
+    if (msgResponse.status !== 200) {
+      throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
+    }
+    msg = msgData.result.msg;
   }
-  const msg = msgData.result.msg;
 
-  // Use stream
-  const useStream = getSetting('useStream') === "true";
+  // Offline: get local messages
+  if (globalThis.isOffline) {
+    // History logs
+    const localLogs = getLocalLogs();
+    let messages = [];
+    localLogs.forEach((log) => {
+      // Only add messages with the same model
+      if (log.model === model) {
+        messages.push({
+          role: "user",
+          content: log.input,
+        });
+        messages.push({
+          role: "assistant",
+          content: log.output,
+        });
+      }
+    });
 
-  // User
-  const user = {
-    username: getSetting("user")
+    // User input
+    messages.push({
+      role: "user",
+      content: input,
+    })
+    msg = {
+      messages,
+    }
   }
+
+  console.log("Messages: " + JSON.stringify(msg.messages));
 
   const openai = new OpenAI({
     baseURL: config.base_url,
@@ -268,24 +309,39 @@ async function generate_msg(input, images=[], files=[]) {
 
   // Record log (chat history)
   const logadd = async (input, output) => {
-    const response1 = await fetch("/api/log/add", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        user: getSetting("user") || "",
-        input,
-        output,
+    // Online: add log to server
+    if (globalThis.isOnline) {
+      const logaddResponse = await fetch("/api/log/add", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          input,
+          output,
+          model: model,
+          session: getSetting("session"),
+          images: [],
+          time: Date.now(),
+        }),
+      });
+
+      if (logaddResponse.status !== 200) {
+        throw logaddResponse.error || new Error(`Request failed with status ${logaddResponse.status}`);
+      }
+    }
+
+    // Offline: add log to local
+    if (globalThis.isOffline) {
+      // Add to local log
+      addLocalLog({
+        input: input,
+        output: output,
         model: model,
         session: getSetting("session"),
         images: [],
         time: Date.now(),
-      }),
-    });
-
-    if (response1.status !== 200) {
-      throw msgData.error || new Error(`Request failed with status ${response1.status}`);
+      });
     }
   }
 
@@ -442,10 +498,44 @@ program
 
     // System and user configurations
     const getSystemInfo = async () => {
+      // Check isOffline
+      if (!await isInternetAvailable()) {
+        globalThis.isOffline = true;
+        globalThis.isOnline = false;
+        console.warn("Offline mode enabled. Some features may not work.");
+
+        // Local online data
+        resetLocalLogs();
+      }
+
       // System info
-      console.log("Fetching system info...");
-      const systemInfoResponse = await fetch('/api/system/info');
-      const systemInfo = (await systemInfoResponse.json()).result;
+      let systemInfo = {
+        model: "",
+        base_url: "",
+        role_content_system: "***",
+        welcome_message: "",
+        querying: "Querying...",
+        generating: "Generating...",
+        searching: "Searching...",
+        waiting: "",
+        init_placeholder: ":help",
+        enter: "",
+        temperature: 1,
+        top_p: 1,
+        use_node_ai: false,
+        use_payment: false,
+        use_email: false,
+        minimalist: false,
+        default_functions: "",
+        default_role: "",
+        default_stores: "",
+        default_node: "",
+      };
+      if (globalThis.isOnline) {
+        console.log("Fetching system info...");
+        const systemInfoResponse = await fetch('/api/system/info');
+        systemInfo = (await systemInfoResponse.json()).result;
+      }
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
       if (systemInfo.init_placeholder) {
