@@ -322,8 +322,8 @@ export default function Home() {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = src;
-      script.integrity = integrity;
-      script.crossOrigin = crossorigin;
+      if (integrity) script.integrity = integrity;
+      if (crossorigin) script.crossOrigin = crossorigin;
       script.onload = () => resolve(script);
       script.onerror = () => reject(new Error(`Script load error for ${src}`));
       document.head.appendChild(script);
