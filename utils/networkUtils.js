@@ -6,7 +6,8 @@ export async function isInternetAvailable() {
     const response = await fetch('https://simple-ai.io/favicon.ico', {
       method: 'GET',
       mode: 'no-cors',
-      signal: controller.signal
+      signal: controller.signal,
+      cache: 'reload',
     });
     clearTimeout(timeoutId);
     return true;
