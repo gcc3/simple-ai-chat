@@ -55,7 +55,7 @@ export default function commands(input, files) {
   }
 
   // Offline command check
-  if (!navigator.onLine && isOffineCommand(command) === 0) {
+  if (globalThis.isOffline && isOffineCommand(command) === 0) {
     return "\`" + command + "\` command is not available offline.";
   }
   

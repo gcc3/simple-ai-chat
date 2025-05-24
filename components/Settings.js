@@ -324,7 +324,7 @@ function Settings() {
       setLoading(false);
     }
 
-    if (navigator.onLine) {
+    if (globalThis.isOnline) {
       loadSettings();
     }
   }, []);

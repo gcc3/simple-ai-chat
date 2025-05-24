@@ -115,7 +115,7 @@ export default async function model(args) {
     let systemModels = "";
     let ollamaModels = "";
 
-    if (navigator.onLine) {
+    if (globalThis.isOnline) {
       try {
         const response = await fetch("/api/model/list", {
           method: "GET",

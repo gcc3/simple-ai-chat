@@ -111,7 +111,7 @@ export async function refreshLocalUser(user = null) {
 }
 
 export function clearLocalUser() {
-  localStorage.removeItem("user");
+  localStorage.setItem("user", "");
 
   // Reset session to forget previous memory
   initializeSessionMemory();
