@@ -34,6 +34,7 @@ import use from "./commands/use.js";
 import split from "./commands/split.js";
 import unuse from "./commands/unuse.js";
 import model from "./commands/model.js";
+import { isOffineCommand } from "utils/offlineUtils.js";
 
 
 export default function commands(input, files) {
@@ -51,6 +52,11 @@ export default function commands(input, files) {
     if (args.length > 0) {
       console.log("Command Arguments: " + (!isCommandMusked(command) ? args : "(masked)"));
     }
+  }
+
+  // Offline command check
+  if (!navigator.onLine && isOffineCommand(command) === 0) {
+    return "\`" + command + "\` command is not available offline.";
   }
   
   // Use strict equality for command matching to avoid partial matches

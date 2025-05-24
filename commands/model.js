@@ -107,85 +107,86 @@ export default async function model(args) {
       return "Usage: :model [ls|list]\n";
     }
 
-    try {
-      const response = await fetch("/api/model/list", {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    // For adding star to current store
+    const currentModel = getSetting("model");
 
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
+    let userModels = "";
+    let groupModels = "";
+    let systemModels = "";
+    let ollamaModels = "";
 
-      let userModels = "";
-      let groupModels = "";
-      let systemModels = "";
-      let ollamaModels = "";
+    if (navigator.onLine) {
+      try {
+        const response = await fetch("/api/model/list", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        });
 
-      // For adding star to current store
-      const currentModel = getSetting("model");
-
-      if (Object.entries(data.result.user_models).length === 0 
-       && Object.entries(data.result.group_models).length === 0 
-       && Object.entries(data.result.system_models).length === 0) {
-        // Do nothing
-      } else {
-        // User models
-        if (data.result.user_models && Object.entries(data.result.user_models).length > 0) {
-          let models = [];
-          Object.entries(data.result.user_models).forEach(([key, value]) => {
-            models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
-          });
-          userModels = "User models:\n" 
-                     + models.join(" ") + "\n\n";
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        // Group models
-        if (data.result.group_models && Object.entries(data.result.group_models).length > 0) {
-          let models = [];
-          Object.entries(data.result.group_models).forEach(([key, value]) => {
-            models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
-          });
-          groupModels = "Group models:\n" 
-                    + models.join(" ") + "\n\n"; 
-        }
+        if (Object.entries(data.result.user_models).length === 0 
+        && Object.entries(data.result.group_models).length === 0 
+        && Object.entries(data.result.system_models).length === 0) {
+          // Do nothing
+        } else {
+          // User models
+          if (data.result.user_models && Object.entries(data.result.user_models).length > 0) {
+            let models = [];
+            Object.entries(data.result.user_models).forEach(([key, value]) => {
+              models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
+            });
+            userModels = "User models:\n" 
+                      + models.join(" ") + "\n\n";
+          }
 
-        // System models
-        if (data.result.system_models && Object.entries(data.result.system_models).length > 0) {
-          let models = [];
-          Object.entries(data.result.system_models).forEach(([key, value]) => {
-            models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
-          });
-          systemModels = "System models:\n" 
+          // Group models
+          if (data.result.group_models && Object.entries(data.result.group_models).length > 0) {
+            let models = [];
+            Object.entries(data.result.group_models).forEach(([key, value]) => {
+              models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
+            });
+            groupModels = "Group models:\n" 
                       + models.join(" ") + "\n\n"; 
+          }
+
+          // System models
+          if (data.result.system_models && Object.entries(data.result.system_models).length > 0) {
+            let models = [];
+            Object.entries(data.result.system_models).forEach(([key, value]) => {
+              models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
+            });
+            systemModels = "System models:\n" 
+                        + models.join(" ") + "\n\n"; 
+          }
         }
+      } catch (error) {
+        console.error(error);
       }
-
-      // Ollama models
-      if (await pingOllamaAPI()) {
-        const ollamaModelList = await listOllamaModels();
-        if (ollamaModelList && ollamaModelList.length > 0) {
-          let models = [];
-          ollamaModelList.forEach((model) => {
-            models.push((currentModel === model.name ? "*\\" : "\\") + model.name);
-          });
-          ollamaModels = "Ollama models:\n" 
-                      + models.join(" ") + "\n\n"; 
-        }
-      }
-
-      if (userModels === "" && groupModels === "" && systemModels === "" && ollamaModels === "") {
-        return "No available model found.";
-      }
-
-      return userModels + groupModels + systemModels + ollamaModels;
-    } catch (error) {
-      console.error(error);
     }
-    return "";
+
+    // Ollama models (local models)
+    if (await pingOllamaAPI()) {
+      const ollamaModelList = await listOllamaModels();
+      if (ollamaModelList && ollamaModelList.length > 0) {
+        let models = [];
+        ollamaModelList.forEach((model) => {
+          models.push((currentModel === model.name ? "*\\" : "\\") + model.name);
+        });
+        ollamaModels = "Ollama models:\n" 
+                    + models.join(" ") + "\n\n"; 
+      }
+    }
+
+    if (userModels === "" && groupModels === "" && systemModels === "" && ollamaModels === "") {
+      return "No available model found.";
+    }
+
+    return userModels + groupModels + systemModels + ollamaModels;
   }
 
   // Use model
