@@ -9,6 +9,7 @@ import { getTime } from "utils/timeUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "../utils/ollamaUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getLanguages } from "utils/langUtils.js";
 
 
 function Settings() {
@@ -53,36 +54,16 @@ function Settings() {
   const { t: tt } = useTranslation("translation");
 
   useEffect(() => {
-    const loadBasicSettings = async () => {
-      // Load languages
-      try {
-        const response = await fetch("/api/system/languages");
-        const data = await response.json();
-        if (response.status !== 200) {
-          console.log(data.error);
-          throw data.error || new Error(`Request failed with status ${response.status}`);
-        }
+    // I. Local settings
+    // Load languages
+    // Set initial language
+    setLang(getSetting("lang").trim());
+    const languages = getLanguages();
+    setLanguages(languages);
 
-        if (data.success) {
-          setLanguages(data.languages);
-        }
-      } catch (error) {
-        console.error("Error loading languages:", error);
-      }
-
-      // Load data sources settings
-      await Promise.all([
-        listModels(),
-        listRoles(),
-        listFunctions(),
-        listStores(),
-        listNodes()
-      ]);
-    }
-    loadBasicSettings();
-
-    // List models
-    const listModels = async () => {
+    // II. Remote settings
+    // Models
+    const loadModels = async () => {
       try {
         const response = await fetch("/api/model/list", {
           method: "GET",
@@ -150,8 +131,8 @@ function Settings() {
     }
 
     // Data resources
-    // 1. List roles
-    const listRoles = async () => {
+    // 1. Roles
+    const loadRoles = async () => {
       try {
         const response = await fetch("/api/role/list", {
           method: "GET",
@@ -188,8 +169,8 @@ function Settings() {
       }
     }
 
-    // 2. List functions
-    const listFunctions = async () => {
+    // 2. Functions
+    const loadFunctions = async () => {
       let functions = getFunctions();
       let mcpFunctionList = await getMcpFunctions();
       const enabledFunctions = (getSetting("functions")).split(",");
@@ -206,8 +187,8 @@ function Settings() {
       }));
     }
 
-    // 3. List stores
-    const listStores = async () => {
+    // 3. Stores
+    const loadStores = async () => {
       try {
         const response = await fetch("/api/store/list", {
           method: "GET",
@@ -262,8 +243,8 @@ function Settings() {
       }
     }
 
-    // 4. List nodes
-    const listNodes = async () => {
+    // 4. Nodes
+    const loadNodes = async () => {
       try {
         const response = await fetch("/api/node/list", {
           method: "GET",
@@ -318,21 +299,31 @@ function Settings() {
       }
     }
 
-    const loadUserSettings = async () => {
-      setLoading(true);
+    // User
+    const loadUser = async () => {
+      if (!getSetting("user")) {
+        return;
+      }
       const user = await fetchUserInfo()
       setUser(user);
-      setLoading(false);
     }
 
-    if (getSetting("user")) {
-      loadUserSettings();
-    } else {
+    const loadSettings = async () => {
+      setLoading(true);
+
+      // Load settings with remote data
+      await Promise.all([
+        loadModels(),
+        loadRoles(),
+        loadFunctions(),
+        loadStores(),
+        loadNodes(),
+        loadUser(),
+      ]);
+
       setLoading(false);
     }
-
-    // Set initial language
-    setLang(getSetting("lang").trim());
+    loadSettings();
   }, []);
 
   const handleSetUserRoles = useCallback((name) => async () => {
