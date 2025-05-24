@@ -30,6 +30,15 @@ const withPWA = nextPWA({
           fallbackURL: '/_offline',
         }
       }
+    },
+    {
+      urlPattern: /^\/ping\//,
+      handler: 'NetworkOnly',
+      options: {
+        precacheFallback: {
+          fallbackURL: '/_offline',
+        }
+      }
     }
   ],
 });
