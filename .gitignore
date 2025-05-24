@@ -54,3 +54,7 @@ mcpconfig.json
 
 # zed
 .zed/
+
+# pwa
+public/sw.js
+public/workbox-*.js
