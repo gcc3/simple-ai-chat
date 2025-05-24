@@ -17,7 +17,11 @@ export const nextConfig = {
 };
 
 // Setup PWA wrapper
-const withPWA = nextPWA({ dest: 'public', disable: isDev });
+const withPWA = nextPWA({ 
+  dest: 'public',
+  disable: isDev,
+  buildExcludes: [/dynamic-css-manifest.json$/]  // fix a bad-precaching-response error
+});
 
 // Export wrapped configuration
 export default withPWA(nextConfig);
