@@ -50,6 +50,7 @@
     "mysql2": "^3.9.1",
     "nearby-cities": "^1.1.0",
     "next": "^15.3.1",
+    "next-pwa": "^5.6.0",
     "node-fetch": "^3.3.2",
     "node-localstorage": "^3.0.5",
     "node-sessionstorage": "^1.0.0",
