@@ -28,7 +28,7 @@ import { sleep } from "utils/sleepUtils";
 import { loadConfig } from "utils/configUtils";
 import OpenAI from "openai";
 import { Readable } from "stream";
-import { refreshLocalUser, updateUserSetting } from "utils/userUtils";
+import { clearLocalUser, refreshLocalUser, updateUserSetting } from "utils/userUtils";
 import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
 import { useUI } from '../contexts/UIContext';
 import { initializeSettings, isSettingEmpty } from "utils/settingsUtils";
@@ -40,7 +40,8 @@ import { TYPE } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
-import { addLocalLog, getLocalLogs } from "utils/offlineUtils";
+import { addLocalLog, resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
+import { isInternetAvailable } from "utils/networkUtils";
 
 
 // Status control
@@ -57,6 +58,10 @@ const CONTENT = {
   SUBSCRIPTION: 2,
   PRIVACY: 3,
 };
+
+// Offline
+globalThis.isOffline = false;
+globalThis.isOnline = true;
 
 // Mutation observer
 // will setup in useEffect
@@ -338,6 +343,17 @@ export default function Home() {
 
     // System and user configurations
     const getSystemInfo = async () => {
+      // Check isOffline
+      if (!navigator.onLine || !await isInternetAvailable()) {
+        globalThis.isOffline = true;
+        globalThis.isOnline = false;
+        console.warn("Offline mode enabled. Some features may not work.");
+
+        // Local online data
+        resetLocalLogs();
+        clearLocalUser();
+      }
+
       // User info
       if (getSetting("user")) {
         // Refresh local user, will fetch the latest user info and set to local
@@ -347,9 +363,33 @@ export default function Home() {
       }
 
       // System info
-      console.log("Fetching system info...");
-      const systemInfoResponse = await fetch('/api/system/info');
-      const systemInfo = (await systemInfoResponse.json()).result;
+      let systemInfo = {
+        model: "",
+        base_url: "",
+        role_content_system: "***",
+        welcome_message: "",
+        querying: "Querying...",
+        generating: "Generating...",
+        searching: "Searching...",
+        waiting: "",
+        init_placeholder: ":help",
+        enter: "",
+        temperature: 1,
+        top_p: 1,
+        use_node_ai: false,
+        use_payment: false,
+        use_email: false,
+        minimalist: false,
+        default_functions: "",
+        default_role: "",
+        default_stores: "",
+        default_node: "",
+      };
+      if (globalThis.isOnline) {
+        console.log("Fetching system info...");
+        const systemInfoResponse = await fetch('/api/system/info');
+        systemInfo = (await systemInfoResponse.json()).result;
+      }
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
       if (systemInfo.init_placeholder) {
@@ -366,12 +406,12 @@ export default function Home() {
       if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
 
       // Subscription page (offline mode: disable if offline)
-      if (navigator.onLine && systemInfo.use_payment) {
+      if (globalThis.isOnline && systemInfo.use_payment) {
         setSubscriptionDisplay(true);
       }
 
       // Usage page (offline mode: disable if offline)
-      if (navigator.onLine && systemInfo.use_payment) {
+      if (globalThis.isOnline && systemInfo.use_payment) {
         setUsageDisplay(true);
       }
 
@@ -1409,7 +1449,7 @@ export default function Home() {
       return;
     }
 
-    if (navigator.onLine) {
+    if (globalThis.isOnline) {
       // Non-stream
       // Just quick setup, now only support "gpt-image-1" model for image generation
       if (getSetting('useStream') == "false" || getSetting('model') === "gpt-image-1") {
@@ -1863,7 +1903,7 @@ export default function Home() {
     let msg;
 
     // Online: get remote messages
-    if (navigator.onLine) {
+    if (globalThis.isOnline) {
       const msgResponse = await fetch("/api/generate_msg", {
         method: "POST",
         headers: {
@@ -1898,7 +1938,8 @@ export default function Home() {
     }
 
     // Offline: get local messages
-    if (!navigator.onLine) {
+    if (globalThis.isOffline) {
+      // History logs
       const localLogs = getLocalLogs();
       let messages = [];
       localLogs.forEach((log) => {
@@ -1914,6 +1955,12 @@ export default function Home() {
           });
         }
       });
+
+      // User input
+      messages.push({
+        role: "user",
+        content: input,
+      })
       msg = {
         messages,
       }
@@ -1950,7 +1997,7 @@ export default function Home() {
     // Record log (chat history)
     const logadd = async (input, output) => {
       // Online: add log to server
-      if (navigator.onLine) {
+      if (globalThis.isOnline) {
         const logaddResponse = await fetch("/api/log/add", {
           method: "POST",
           headers: {
@@ -1972,7 +2019,7 @@ export default function Home() {
       }
 
       // Offline: add log to local
-      if (!navigator.onLine) {
+      if (globalThis.isOffline) {
         // Add to local log
         addLocalLog({
           input: input,

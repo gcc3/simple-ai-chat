@@ -60,6 +60,6 @@ export function addLocalLog(log) {
   sessionStorage.setItem("logs", JSON.stringify(logs));
 }
 
-export function clearLocalLogs() {
+export function resetLocalLogs() {
   sessionStorage.setItem("logs", JSON.stringify([]));
 }
