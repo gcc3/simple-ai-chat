@@ -20,7 +20,7 @@ export function isOffineCommand(command) {
   if (command === ":function") return 1;
   if (command === ":location") return 1;
   if (command === ":voice") return 1;
-  if (command === ":system") return 1;
+  if (command === ":system") return 0;  // system info is not available offline
   if (command === ":fullscreen") return 1;
   if (command === ":theme") return 1;
   if (command === ":user") return 0;  // user command is not available offline
