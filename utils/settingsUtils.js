@@ -1,5 +1,3 @@
-import { generatePassword } from "./userUtils.js";
-
 
 const settings = [
   { name: "Up Time",                key: "_up",            inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: Date.now(), },

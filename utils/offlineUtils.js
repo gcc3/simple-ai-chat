@@ -1,4 +1,7 @@
 
+import { getSetting } from "./settingsUtils.js";
+
+
 // Determine command is available offline
 export function isOffineCommand(command) {
   if (command === ":help") return 1;
@@ -57,6 +60,13 @@ export function getLocalLogs() {
 export function addLocalLog(log) {
   const logs = getLocalLogs();
   logs.push(log);
+  
+  // Ensure the logs do not exceed the memory length
+  const memLength = getSetting("memLength");
+  if (logs.length > memLength) {
+    logs.splice(0, logs.length - memLength);
+  }
+
   sessionStorage.setItem("logs", JSON.stringify(logs));
 }
 
