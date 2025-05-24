@@ -20,7 +20,18 @@ export const nextConfig = {
 const withPWA = nextPWA({ 
   dest: 'public',
   disable: isDev,
-  buildExcludes: [/dynamic-css-manifest.json$/]  // fix a bad-precaching-response error
+  buildExcludes: [/dynamic-css-manifest.json$/],  // fix a bad-precaching-response error
+  runtimeCaching: [
+    {
+      urlPattern: /^\/api\//,
+      handler: 'NetworkOnly',
+      options: {
+        precacheFallback: {
+          fallbackURL: '/_offline',
+        }
+      }
+    }
+  ],
 });
 
 // Export wrapped configuration
