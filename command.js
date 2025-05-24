@@ -1,5 +1,6 @@
 import { isCommandMusked } from "./utils/passwordUtils.js";
 import { getSetting, setSetting } from "./utils/settingsUtils.js";
+import { isOffineCommand } from "./utils/offlineUtils.js";
 import help from "./commands/help.js";
 import stats from "./commands/stats.js";
 import eval_ from "./commands/eval.js";
@@ -34,7 +35,6 @@ import use from "./commands/use.js";
 import split from "./commands/split.js";
 import unuse from "./commands/unuse.js";
 import model from "./commands/model.js";
-import { isOffineCommand } from "utils/offlineUtils.js";
 
 
 export default function commands(input, files) {
