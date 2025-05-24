@@ -37,3 +37,29 @@ export function isOffineCommand(command) {
   if (command === ":model") return 1;
   return -1;  // unknown command
 }
+
+// Logs
+export function getLocalLogs() {
+  const logs = sessionStorage.getItem("logs");
+  if (logs) {
+    try {
+      return JSON.parse(logs);
+    } catch (e) {
+      console.error("Error parsing logs from sessionStorage:", e);
+      return [];
+    }
+  } else {
+    sessionStorage.setItem("logs", JSON.stringify([]));
+    return [];
+  }
+}
+
+export function addLocalLog(log) {
+  const logs = getLocalLogs();
+  logs.push(log);
+  sessionStorage.setItem("logs", JSON.stringify(logs));
+}
+
+export function clearLocalLogs() {
+  sessionStorage.setItem("logs", JSON.stringify([]));
+}

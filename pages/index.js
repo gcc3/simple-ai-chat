@@ -40,6 +40,7 @@ import { TYPE } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { addLocalLog, getLocalLogs } from "utils/offlineUtils";
 
 
 // Status control
@@ -1408,20 +1409,26 @@ export default function Home() {
       return;
     }
 
-    // Non-stream
-    // Just quick setup, now only support "gpt-image-1" model for image generation
-    if (getSetting('useStream') == "false" || getSetting('model') === "gpt-image-1") {
-      console.log("Start. (non-stream)");
-      printOutput(waiting === "" ? "Generating..." : waiting);
-      generate(input, image_urls, file_urls);
-      return;
-    }
+    if (navigator.onLine) {
+      // Non-stream
+      // Just quick setup, now only support "gpt-image-1" model for image generation
+      if (getSetting('useStream') == "false" || getSetting('model') === "gpt-image-1") {
+        console.log("Start. (non-stream)");
+        printOutput(waiting === "" ? "Generating..." : waiting);
+        generate(input, image_urls, file_urls);
+        return;
+      }
 
-    // Server mode
-    // Stream
-    if (getSetting('useStream') == "true") {
-      console.log("Start. (SSE)");
-      generate_sse(input, image_urls_encoded, file_urls_encoded);
+      // Server mode
+      // Stream
+      if (getSetting('useStream') == "true") {
+        console.log("Start. (SSE)");
+        generate_sse(input, image_urls_encoded, file_urls_encoded);
+        return;
+      }
+    } else {
+      console.warn("You are offline.");
+      printOutput("You are offline.");
       return;
     }
   }
@@ -1853,37 +1860,65 @@ export default function Home() {
     }
 
     // Generate messages
-    const msgResponse = await fetch("/api/generate_msg", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-         time: config.time,
-         user_input: input,
-         images: images,
-         files: files,
-         session: config.session,
-         model: config.model,
-         mem_length: config.mem_length,
-         functions: config.functions,
-         role: config.role,
-         stores: config.stores,
-         node: config.node,
-         use_stats: config.use_stats,
-         use_eval: config.use_eval,
-         use_location: config.use_location,
-         location: config.location,
-         lang: config.lang,
-         use_system_role: config.use_system_role,
-      }),
-    });
+    let msg;
 
-    const msgData = await msgResponse.json();
-    if (msgResponse.status !== 200) {
-      throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
+    // Online: get remote messages
+    if (navigator.onLine) {
+      const msgResponse = await fetch("/api/generate_msg", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          time: config.time,
+          user_input: input,
+          images: images,
+          files: files,
+          session: config.session,
+          model: config.model,
+          mem_length: config.mem_length,
+          functions: config.functions,
+          role: config.role,
+          stores: config.stores,
+          node: config.node,
+          use_stats: config.use_stats,
+          use_eval: config.use_eval,
+          use_location: config.use_location,
+          location: config.location,
+          lang: config.lang,
+          use_system_role: config.use_system_role,
+        }),
+      });
+
+      const msgData = await msgResponse.json();
+      if (msgResponse.status !== 200) {
+        throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
+      }
+      msg = msgData.result.msg;
     }
-    const msg = msgData.result.msg;
+
+    // Offline: get local messages
+    if (!navigator.onLine) {
+      const localLogs = getLocalLogs();
+      let messages = [];
+      localLogs.forEach((log) => {
+        // Only add messages with the same model
+        if (log.model === model) {
+          messages.push({
+            role: "user",
+            content: log.input,
+          });
+          messages.push({
+            role: "assistant",
+            content: log.output,
+          });
+        }
+      });
+      msg = {
+        messages,
+      }
+    }
+
     console.log("Messages: " + JSON.stringify(msg.messages));
 
     const openai = new OpenAI({
@@ -1914,23 +1949,39 @@ export default function Home() {
 
     // Record log (chat history)
     const logadd = async (input, output) => {
-      const response1 = await fetch("/api/log/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          input,
-          output,
+      // Online: add log to server
+      if (navigator.onLine) {
+        const logaddResponse = await fetch("/api/log/add", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            input,
+            output,
+            model: model,
+            session: getSetting("session"),
+            images: [],
+            time: Date.now(),
+          }),
+        });
+
+        if (logaddResponse.status !== 200) {
+          throw logaddResponse.error || new Error(`Request failed with status ${logaddResponse.status}`);
+        }
+      }
+
+      // Offline: add log to local
+      if (!navigator.onLine) {
+        // Add to local log
+        addLocalLog({
+          input: input,
+          output: output,
           model: model,
           session: getSetting("session"),
           images: [],
           time: Date.now(),
-        }),
-      });
-
-      if (response1.status !== 200) {
-        throw msgData.error || new Error(`Request failed with status ${response1.status}`);
+        });
       }
     }
 
