@@ -931,10 +931,7 @@ export default function Home() {
 
     // Load additional scripts
     // KaTeX copy module
-    const src = "https://cdn.jsdelivr.net/npm/katex@0.16.9/dist/contrib/copy-tex.min.js";
-    const integrity = "sha384-ww/583aHhxWkz5DEVn6OKtNiIaLi2iBRNZXfJRiY1Ai7tnJ9UXpEsyvOITVpTl4A";
-    const crossorigin = "anonymous";
-    loadScript(src, integrity, crossorigin);
+    loadScript("/js/katex/copy-tex.min.js");
 
     // Touch event handler
     let xDown = null;
