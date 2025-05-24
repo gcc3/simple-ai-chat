@@ -17,7 +17,10 @@ export const nextConfig = {
 };
 
 // Setup PWA wrapper
-const withPWA = nextPWA({ dest: 'public', disable: isDev });
+const withPWA = nextPWA({ 
+  dest: 'public',
+  disable: isDev,
+});
 
 // Export wrapped configuration
 export default withPWA(nextConfig);
