@@ -419,7 +419,7 @@ export default function Home() {
           console.log("Found model in remote: " + modelInfo.model);
           console.log("Set baseUrl: " + modelInfo.base_url);
           setSetting("baseUrl", modelInfo.base_url);
-        } 
+        }
 
         // Try local models
         if (!modelInfo) {
