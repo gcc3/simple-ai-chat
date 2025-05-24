@@ -13,7 +13,7 @@ import { getLanguages } from "utils/langUtils.js";
 
 
 function Settings() {
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);
 
   const [languages, setLanguages] = useState([]);
@@ -323,7 +323,10 @@ function Settings() {
 
       setLoading(false);
     }
-    loadSettings();
+
+    if (navigator.onLine) {
+      loadSettings();
+    }
   }, []);
 
   const handleSetUserRoles = useCallback((name) => async () => {
