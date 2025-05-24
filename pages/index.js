@@ -371,7 +371,7 @@ export default function Home() {
         querying: "Querying...",
         generating: "Generating...",
         searching: "Searching...",
-        waiting: "Waiting...",
+        waiting: "",
         init_placeholder: ":help",
         enter: "",
         temperature: 1,
@@ -1939,6 +1939,7 @@ export default function Home() {
 
     // Offline: get local messages
     if (globalThis.isOffline) {
+      // History logs
       const localLogs = getLocalLogs();
       let messages = [];
       localLogs.forEach((log) => {
@@ -1954,6 +1955,12 @@ export default function Home() {
           });
         }
       });
+
+      // User input
+      messages.push({
+        role: "user",
+        content: input,
+      })
       msg = {
         messages,
       }
