@@ -84,13 +84,19 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
       ollamaModels = await listOllamaModels();
     }
 
-    const response = await fetch("/api/model/list");
-    const data = await response.json();
-    if (response.status === 200 && data.success) {
-      const models = [].concat(data.result.user_models, data.result.group_models, data.result.system_models, ollamaModels).flat();
+    if (globalThis.isOnline) {
+      const response = await fetch("/api/model/list");
+      const data = await response.json();
+      if (response.status === 200 && data.success) {
+        const models = [].concat(data.result.user_models, data.result.group_models, data.result.system_models, ollamaModels).flat();
+        return models.map((m) => m.name);
+      } else {
+        return [];
+      }
+    }
+    if (globalThis.isOffline) {
+      const models = [].concat(ollamaModels).flat();
       return models.map((m) => m.name);
-    } else {
-      return [];
     }
   }
 
@@ -128,35 +134,41 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     }
 
     // 2. nodes
-    const responseNode = await fetch("/api/node/list");
-    const dataNode = await responseNode.json();
-    if (responseNode.status === 200 && dataNode.success) {
-      const node = [].concat(dataNode.result.user_nodes, dataNode.result.group_nodes, dataNode.result.system_nodes).flat()
-                     .find((n) => n.name.startsWith(nameToBeComleted));
-      if (node) {
-        return [node.name];
+    if (globalThis.isOnline) {
+      const responseNode = await fetch("/api/node/list");
+      const dataNode = await responseNode.json();
+      if (responseNode.status === 200 && dataNode.success) {
+        const node = [].concat(dataNode.result.user_nodes, dataNode.result.group_nodes, dataNode.result.system_nodes).flat()
+                      .find((n) => n.name.startsWith(nameToBeComleted));
+        if (node) {
+          return [node.name];
+        }
       }
     }
 
     // 3. stores
-    const responseStore = await fetch("/api/store/list");
-    const dataStore = await responseStore.json();
-    if (responseStore.status === 200 && dataStore.success) {
-      const store = [].concat(dataStore.result.user_stores, dataStore.result.group_stores, dataStore.result.system_stores).flat()
-                       .find((s) => s.name.startsWith(nameToBeComleted));
-      if (store) {
-        return [store.name];
+    if (globalThis.isOnline) {
+      const responseStore = await fetch("/api/store/list");
+      const dataStore = await responseStore.json();
+      if (responseStore.status === 200 && dataStore.success) {
+        const store = [].concat(dataStore.result.user_stores, dataStore.result.group_stores, dataStore.result.system_stores).flat()
+                        .find((s) => s.name.startsWith(nameToBeComleted));
+        if (store) {
+          return [store.name];
+        }
       }
     }
 
     // 4. roles
-    const responseRole = await fetch("/api/role/list");
-    const dataRole = await responseRole.json();
-    if (responseRole.status === 200 && dataRole.success) {
-      const role = [].concat(dataRole.result.user_roles, dataRole.result.system_roles).flat()
-                      .find((r) => r.role.startsWith(nameToBeComleted));
-      if (role) {
-        return [role.role];
+    if (globalThis.isOnline) {
+      const responseRole = await fetch("/api/role/list");
+      const dataRole = await responseRole.json();
+      if (responseRole.status === 200 && dataRole.success) {
+        const role = [].concat(dataRole.result.user_roles, dataRole.result.system_roles).flat()
+                        .find((r) => r.role.startsWith(nameToBeComleted));
+        if (role) {
+          return [role.role];
+        }
       }
     }
 
@@ -165,10 +177,20 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     if (await pingOllamaAPI()) {
       ollamaModels = await listOllamaModels();
     }
-    const responseModel = await fetch("/api/model/list");
-    const dataModel = await responseModel.json();
-    if (responseModel.status === 200 && dataModel.success) {
-      const model = [].concat(dataModel.result.user_models, dataModel.result.group_models, dataModel.result.system_models, ollamaModels).flat()
+
+    if (globalThis.isOnline) {
+      const responseModel = await fetch("/api/model/list");
+      const dataModel = await responseModel.json();
+      if (responseModel.status === 200 && dataModel.success) {
+        const model = [].concat(dataModel.result.user_models, dataModel.result.group_models, dataModel.result.system_models, ollamaModels).flat()
+                        .find((m) => m.name.startsWith(nameToBeComleted));
+        if (model) {
+          return [model.name];
+        }
+      }
+    }
+    if (globalThis.isOffline) {
+      const model = [].concat(ollamaModels).flat()
                       .find((m) => m.name.startsWith(nameToBeComleted));
       if (model) {
         return [model.name];
