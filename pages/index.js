@@ -318,7 +318,7 @@ export default function Home() {
   };
 
   // Load script
-  function loadScript(src, integrity, crossorigin) {
+  function loadScript(src, integrity = undefined, crossorigin = undefined) {
     return new Promise((resolve, reject) => {
       const script = document.createElement('script');
       script.src = src;
