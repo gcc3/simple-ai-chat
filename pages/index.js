@@ -363,12 +363,21 @@ export default function Home() {
       if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
       if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
       if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
-      if (systemInfo.use_payment) {
-        // Set use payment
+
+      // Subscription page (offline mode: disable if offline)
+      if (navigator.onLine && systemInfo.use_payment) {
         setSubscriptionDisplay(true);
+      }
+
+      // Usage page (offline mode: disable if offline)
+      if (navigator.onLine && systemInfo.use_payment) {
         setUsageDisplay(true);
       }
-      if (systemInfo.minimalist) setMinimalist(true);  // Set minimalist
+
+      // Minimalist
+      if (systemInfo.minimalist) {
+        setMinimalist(true);
+      }
 
       // Set welcome message
       if (systemInfo.welcome_message && !getSetting("user")) {
