@@ -64,124 +64,130 @@ function Settings() {
     // II. Remote settings
     // Models
     const loadModels = async () => {
-      try {
-        const response = await fetch("/api/model/list", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      if (globalThis.isOnline) {
+        try {
+          const response = await fetch("/api/model/list", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
 
-        const data = await response.json();
-        if (response.status !== 200) {
-          throw data.error || new Error(`Request failed with status ${response.status}`);
-        }
-
-        if (Object.entries(data.result.user_models).length === 0
-          && Object.entries(data.result.group_models).length === 0
-          && Object.entries(data.result.system_models).length === 0) {
-          return "No available model found.";
-        } else {
-          // For adding star to current store
-          const currentModel = getSetting("model");
-          setCurrentModel(currentModel);
-
-          // User models
-          if (data.result.user_models && Object.entries(data.result.user_models).length > 0) {
-            let models = [];
-            Object.entries(data.result.user_models).forEach(([key, value]) => {
-              models.push(value.name);
-            });
-            setUserModels(models);
+          const data = await response.json();
+          if (response.status !== 200) {
+            throw data.error || new Error(`Request failed with status ${response.status}`);
           }
 
-          // Group models
-          if (data.result.group_models && Object.entries(data.result.group_models).length > 0) {
-            let models = [];
-            Object.entries(data.result.group_models).forEach(([key, value]) => {
-              models.push(value.name);
-            });
-            setGroupModels(models);
-          }
+          if (Object.entries(data.result.user_models).length === 0
+            && Object.entries(data.result.group_models).length === 0
+            && Object.entries(data.result.system_models).length === 0) {
+            return "No available model found.";
+          } else {
+            // For adding star to current store
+            const currentModel = getSetting("model");
+            setCurrentModel(currentModel);
 
-          // System models
-          if (data.result.system_models && Object.entries(data.result.system_models).length > 0) {
-            let models = [];
-            Object.entries(data.result.system_models).forEach(([key, value]) => {
-              models.push(value.name);
-            });
-            setSystemModels(models);
-          }
-
-          // Ollama models
-          if (await pingOllamaAPI()) {
-            const ollamaModelList = await listOllamaModels();
-            if (ollamaModelList && ollamaModelList.length > 0) {
+            // User models
+            if (data.result.user_models && Object.entries(data.result.user_models).length > 0) {
               let models = [];
-              ollamaModelList.forEach((model) => {
-                models.push(model.name);
+              Object.entries(data.result.user_models).forEach(([key, value]) => {
+                models.push(value.name);
               });
-              setOllamaModels(models);
+              setUserModels(models);
+            }
+
+            // Group models
+            if (data.result.group_models && Object.entries(data.result.group_models).length > 0) {
+              let models = [];
+              Object.entries(data.result.group_models).forEach(([key, value]) => {
+                models.push(value.name);
+              });
+              setGroupModels(models);
+            }
+
+            // System models
+            if (data.result.system_models && Object.entries(data.result.system_models).length > 0) {
+              let models = [];
+              Object.entries(data.result.system_models).forEach(([key, value]) => {
+                models.push(value.name);
+              });
+              setSystemModels(models);
             }
           }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
+      }
+
+      // Ollama models
+      if (await pingOllamaAPI()) {
+        const ollamaModelList = await listOllamaModels();
+        if (ollamaModelList && ollamaModelList.length > 0) {
+          let models = [];
+          ollamaModelList.forEach((model) => {
+            models.push(model.name);
+          });
+          setOllamaModels(models);
+        }
       }
     }
 
     // Data resources
     // 1. Roles
     const loadRoles = async () => {
-      try {
-        const response = await fetch("/api/role/list", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      if (globalThis.isOnline) {
+        try {
+          const response = await fetch("/api/role/list", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
 
-        const data = await response.json();
-        if (response.status !== 200) {
-          throw data.error || new Error(`Request failed with status ${response.status}`);
-        }
+          const data = await response.json();
+          if (response.status !== 200) {
+            throw data.error || new Error(`Request failed with status ${response.status}`);
+          }
 
-        if (data.result.system_roles.length === 0 && (!data.result.user_roles || Object.entries(data.result.user_roles).length === 0)) {
-          return "No role found.";
-        } else {
-          if (getSetting("user")) {
-            if (data.result.user_roles && Object.entries(data.result.user_roles).length > 0) {
-              let roles = [];
-              Object.entries(data.result.user_roles).forEach(([key, value]) => {
-                roles.push(value.role);
-              });
-              setUserRoles(roles);
+          if (data.result.system_roles.length === 0 && (!data.result.user_roles || Object.entries(data.result.user_roles).length === 0)) {
+            return "No role found.";
+          } else {
+            if (getSetting("user")) {
+              if (data.result.user_roles && Object.entries(data.result.user_roles).length > 0) {
+                let roles = [];
+                Object.entries(data.result.user_roles).forEach(([key, value]) => {
+                  roles.push(value.role);
+                });
+                setUserRoles(roles);
+              }
+            }
+
+            if (getSetting("role")) {
+              const currentRole = getSetting("role");
+              setCurrentRole(currentRole);
             }
           }
-
-          if (getSetting("role")) {
-            const currentRole = getSetting("role");
-            setCurrentRole(currentRole);
-          }
+        } catch (error) {
+          console.error(error);
         }
-      } catch (error) {
-        console.error(error);
       }
     }
 
     // 2. Functions
     const loadFunctions = async () => {
-      let functions = getFunctions();
-      let mcpFunctionList = await getMcpFunctions();
       const enabledFunctions = (getSetting("functions")).split(",");
       setEnabledFunctions(enabledFunctions);
 
-      // System functions
-      setSystemFunctions(functions.map((f) => {
-        return f.name;
-      }));
+      if (globalThis.isOnline) {
+        // System functions
+        let functions = getFunctions();
+        setSystemFunctions(functions.map((f) => {
+          return f.name;
+        }));
+      }
 
       // mcpFunctions
+      let mcpFunctionList = await getMcpFunctions();
       setMcpFunctions(mcpFunctionList.map((f) => {
         return f.name;
       }));
@@ -189,113 +195,117 @@ function Settings() {
 
     // 3. Stores
     const loadStores = async () => {
-      try {
-        const response = await fetch("/api/store/list", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-
-        const data = await response.json();
-        if (response.status !== 200) {
-          throw data.error || new Error(`Request failed with status ${response.status}`);
-        }
-
-        if (Object.entries(data.result.user_stores).length === 0
-          && Object.entries(data.result.group_stores).length === 0
-          && Object.entries(data.result.system_stores).length === 0) {
-          return "No available store found.";
-        } else {
-          // For adding star to current store
-          const activeStores = getActiveStores();
-          setActiveStores(activeStores);
-
-          // User stores
-          if (data.result.user_stores && Object.entries(data.result.user_stores).length > 0) {
-            let stores = [];
-            Object.entries(data.result.user_stores).forEach(([key, value]) => {
-              stores.push(value.name);
+      if (globalThis.isOnline) {
+          try {
+            const response = await fetch("/api/store/list", {
+              method: "GET",
+              headers: {
+                "Content-Type": "application/json",
+              },
             });
-            setUserStores(stores);
+    
+            const data = await response.json();
+            if (response.status !== 200) {
+              throw data.error || new Error(`Request failed with status ${response.status}`);
+            }
+    
+            if (Object.entries(data.result.user_stores).length === 0
+              && Object.entries(data.result.group_stores).length === 0
+              && Object.entries(data.result.system_stores).length === 0) {
+              return "No available store found.";
+            } else {
+              // For adding star to current store
+              const activeStores = getActiveStores();
+              setActiveStores(activeStores);
+    
+              // User stores
+              if (data.result.user_stores && Object.entries(data.result.user_stores).length > 0) {
+                let stores = [];
+                Object.entries(data.result.user_stores).forEach(([key, value]) => {
+                  stores.push(value.name);
+                });
+                setUserStores(stores);
+              }
+    
+              // Group stores
+              if (data.result.group_stores && Object.entries(data.result.group_stores).length > 0) {
+                let stores = [];
+                Object.entries(data.result.group_stores).forEach(([key, value]) => {
+                  stores.push(value.name);
+                });
+                setGroupStores(stores);
+              }
+    
+              // System stores
+              if (data.result.system_stores && Object.entries(data.result.system_stores).length > 0) {
+                let stores = [];
+                Object.entries(data.result.system_stores).forEach(([key, value]) => {
+                  stores.push(value.name);
+                });
+                setSystemStores(stores);
+              }
+            }
+          } catch (error) {
+            console.error(error);
           }
-
-          // Group stores
-          if (data.result.group_stores && Object.entries(data.result.group_stores).length > 0) {
-            let stores = [];
-            Object.entries(data.result.group_stores).forEach(([key, value]) => {
-              stores.push(value.name);
-            });
-            setGroupStores(stores);
-          }
-
-          // System stores
-          if (data.result.system_stores && Object.entries(data.result.system_stores).length > 0) {
-            let stores = [];
-            Object.entries(data.result.system_stores).forEach(([key, value]) => {
-              stores.push(value.name);
-            });
-            setSystemStores(stores);
-          }
-        }
-      } catch (error) {
-        console.error(error);
       }
     }
 
     // 4. Nodes
     const loadNodes = async () => {
-      try {
-        const response = await fetch("/api/node/list", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      if (globalThis.isOnline) {
+        try {
+          const response = await fetch("/api/node/list", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
 
-        const data = await response.json();
-        if (response.status !== 200) {
-          throw data.error || new Error(`Request failed with status ${response.status}`);
+          const data = await response.json();
+          if (response.status !== 200) {
+            throw data.error || new Error(`Request failed with status ${response.status}`);
+          }
+
+          if (Object.entries(data.result.user_nodes).length === 0
+            && Object.entries(data.result.group_nodes).length === 0
+            && Object.entries(data.result.system_nodes).length === 0) {
+            return "No available node found.";
+          } else {
+            // For adding star to current store
+            const currentNode = getSetting("node");
+            setActiveNode(currentNode);
+
+            // User nodes
+            if (data.result.user_nodes && Object.entries(data.result.user_nodes).length > 0) {
+              let nodes = [];
+              Object.entries(data.result.user_nodes).forEach(([key, value]) => {
+                nodes.push(value.name);
+              });
+              setUserNodes(nodes);
+            }
+
+            // Group nodes
+            if (data.result.group_nodes && Object.entries(data.result.group_nodes).length > 0) {
+              let nodes = [];
+              Object.entries(data.result.group_nodes).forEach(([key, value]) => {
+                nodes.push(value.name);
+              });
+              setGroupNodes(nodes);
+            }
+
+            // System nodes
+            if (data.result.system_nodes && Object.entries(data.result.system_nodes).length > 0) {
+              let nodes = [];
+              Object.entries(data.result.system_nodes).forEach(([key, value]) => {
+                nodes.push(value.name);
+              });
+              setSystemNodes(nodes);
+            }
+          }
+        } catch (error) {
+          console.error(error);
         }
-
-        if (Object.entries(data.result.user_nodes).length === 0
-         && Object.entries(data.result.group_nodes).length === 0
-         && Object.entries(data.result.system_nodes).length === 0) {
-          return "No available node found.";
-        } else {
-          // For adding star to current store
-          const currentNode = getSetting("node");
-          setActiveNode(currentNode);
-
-          // User nodes
-          if (data.result.user_nodes && Object.entries(data.result.user_nodes).length > 0) {
-            let nodes = [];
-            Object.entries(data.result.user_nodes).forEach(([key, value]) => {
-              nodes.push(value.name);
-            });
-            setUserNodes(nodes);
-          }
-
-          // Group nodes
-          if (data.result.group_nodes && Object.entries(data.result.group_nodes).length > 0) {
-            let nodes = [];
-            Object.entries(data.result.group_nodes).forEach(([key, value]) => {
-              nodes.push(value.name);
-            });
-            setGroupNodes(nodes);
-          }
-
-          // System nodes
-          if (data.result.system_nodes && Object.entries(data.result.system_nodes).length > 0) {
-            let nodes = [];
-            Object.entries(data.result.system_nodes).forEach(([key, value]) => {
-              nodes.push(value.name);
-            });
-            setSystemNodes(nodes);
-          }
-        }
-      } catch (error) {
-        console.error(error);
       }
     }
 
@@ -324,9 +334,7 @@ function Settings() {
       setLoading(false);
     }
 
-    if (globalThis.isOnline) {
-      loadSettings();
-    }
+    loadSettings();
   }, []);
 
   const handleSetUserRoles = useCallback((name) => async () => {

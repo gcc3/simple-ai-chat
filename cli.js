@@ -481,25 +481,15 @@ program
       output: process.stdout,
     });
 
-    // Test connection to the server
-    const serverConnectionSuccessful = await testSimpleAIServerConnection();
-    if (!serverConnectionSuccessful) {
-      if (opts.baseUrl !== "https://simple-ai.io") {
-        printOutput("Please check the server (" + globalThis.serverBaseUrl + ") connection.");
-      } else {
-        printOutput("The Simple AI server (`" + globalThis.serverBaseUrl + "`) is currently unavailable. You can still connect to your local server using the `--base-url` option.");
-      }
-      process.exit(1);
-    }
-
     // Initialization
     initializeSettings();
     initializeSessionMemory();
 
     // System and user configurations
     const getSystemInfo = async () => {
-      // Check isOffline
-      if (!await isInternetAvailable()) {
+      // Check online status
+      // CLI support a local server so check local server too
+      if (!await isInternetAvailable() && !await testSimpleAIServerConnection()) {
         globalThis.isOffline = true;
         globalThis.isOnline = false;
         console.warn("Offline mode enabled. Some features may not work.");
