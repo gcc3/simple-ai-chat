@@ -57,6 +57,7 @@ const CONTENT = {
   USAGE: 1,
   SUBSCRIPTION: 2,
   PRIVACY: 3,
+  SETTINGS: 4,
 };
 
 // Offline
@@ -115,6 +116,7 @@ export default function Home() {
 
   // Toggle display
   const toggleDisplay = () => {
+    console.log("Display: " + (display === DISPLAY.FRONT ? "front" : "back") + " -> " + (display === DISPLAY.FRONT ? "back" : "front"));
     setDisplay(display === DISPLAY.FRONT ? DISPLAY.BACK : DISPLAY.FRONT);
   };
 
@@ -956,7 +958,7 @@ export default function Home() {
             event.preventDefault();
 
             // Go to Settings page
-            if (display === DISPLAY.FRONT) {
+            if (display === DISPLAY.FRONT || (display === DISPLAY.BACK && content !== CONTENT.SETTINGS)) {
               console.log("Shortcut: ⌃,");
 
               setDisplay(DISPLAY.BACK);
