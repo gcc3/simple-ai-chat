@@ -719,7 +719,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {userModels.map((i) => (
             <button
-              className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserModels(i)}
             >
@@ -733,7 +733,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {groupModels.map((i) => (
             <button
-              className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetGroupModels(i)}
             >
@@ -747,7 +747,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {systemModels.map((i) => (
             <button
-              className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemModels(i)}
             >
@@ -761,7 +761,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {ollamaModels.map((i) => (
             <button
-              className={`ml-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetOllamaModels(i)}
             >
@@ -775,7 +775,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {userRoles.map((i) => (
             <button
-              className={`ml-2 mb-1 ${currentRole === i ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${currentRole === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserRoles(i)}
             >
@@ -789,7 +789,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {systemFunctions.map((i) => (
             <button
-              className={`ml-2 mb-1 ${enabledFunctions.includes(i) ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${enabledFunctions.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemFunctions(i)}
             >
@@ -803,7 +803,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {mcpFunctions.map((i) => (
             <button
-              className={`ml-2 mb-1 ${enabledFunctions.includes(i) ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${enabledFunctions.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetMcpFunctions(i)}
             >
@@ -817,7 +817,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {userStores.map((i) => (
             <button
-              className={`ml-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserStores(i)}
             >
@@ -831,7 +831,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {groupStores.map((i) => (
             <button
-              className={`ml-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetGroupStores(i)}
             >
@@ -845,7 +845,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {systemStores.map((i) => (
             <button
-              className={`ml-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${activeStores.includes(i) ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemStores(i)}
             >
@@ -859,7 +859,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {userNodes.map((i) => (
             <button
-              className={`ml-2 mb-1 ${activeNode === i ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${activeNode === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetUserNodes(i)}
             >
@@ -873,7 +873,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {groupNodes.map((i) => (
             <button
-              className={`ml-2 mb-1 ${activeNode === i ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${activeNode === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetGroupNodes(i)}
             >
@@ -887,7 +887,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {systemNodes.map((i) => (
             <button
-              className={`ml-2 mb-1 ${currentRole === i ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${currentRole === i ? 'selected' : ''}`}
               key={i}
               onClick={handleSetSystemNodes(i)}
             >
@@ -900,19 +900,19 @@ function Settings() {
         <div className="mt-3">- {t("Theme")}</div>
         <div className="flex flex-wrap items-center mt-2">
           <button
-            className={`ml-2 mb-1 ${"light" == getSetting("theme") ? 'selected' : ''}`}
+            className={`mr-2 mb-1 ${"light" == getSetting("theme") ? 'selected' : ''}`}
             onClick={handleSetTheme("light")}
           >
             light
           </button>
           <button
-            className={`ml-2 mb-1 ${"dark" == getSetting("theme") ? 'selected' : ''}`}
+            className={`mr-2 mb-1 ${"dark" == getSetting("theme") ? 'selected' : ''}`}
             onClick={handleSetTheme("dark")}
           >
             dark
           </button>
           <button
-            className={`ml-2 mb-1 ${"terminal" == getSetting("theme") ? 'selected' : ''}`}
+            className={`mr-2 mb-1 ${"terminal" == getSetting("theme") ? 'selected' : ''}`}
             onClick={handleSetTheme("terminal")}
           >
             terminal
@@ -924,7 +924,7 @@ function Settings() {
         <div className="flex flex-wrap items-center mt-2">
           {languages.map((l) => (
             <button
-              className={`ml-2 mb-1 ${l.language_code == lang ? 'selected' : ''}`}
+              className={`mr-2 mb-1 ${l.language_code == lang ? 'selected' : ''}`}
               key={l.language_code}
               onClick={handleSetLanguage(l.language_code)}
             >
@@ -936,8 +936,8 @@ function Settings() {
       {user && <div>
         <div className="mt-2">- {t("Email Subscription")}</div>
         <div className="flex flex-wrap items-center mt-2">
-          <button className="ml-2" onClick={handleSubscribe("1")}>{t("Subscribe")}</button>
-          <button className="ml-2" onClick={handleSubscribe("0")}>{t("Unsubscribe")}</button>
+          <button className="mr-2 mb-1" onClick={handleSubscribe("1")}>{t("Subscribe")}</button>
+          <button className="mr-2 mb-1" onClick={handleSubscribe("0")}>{t("Unsubscribe")}</button>
         </div>
       </div>}
     </>
