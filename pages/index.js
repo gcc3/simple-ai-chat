@@ -564,6 +564,10 @@ export default function Home() {
               }
             }
           }
+
+          // If on back page, use ESC to toggle go to the front page
+          event.preventDefault();
+          setDisplay(DISPLAY.FRONT);
           break;
 
         case "Tab":  // TAB to focus on input
