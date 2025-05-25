@@ -119,6 +119,17 @@ export function setTheme(theme) {
     unsetHighlightjsTheme();
     disableCSSRulesBySelector('.hljs');
   }
+
+  // Fix for the FOUC issue
+  let bg = '#ffffff'; /* light as default */
+  if (theme === 'dark') bg = '#111111';
+  if (theme === 'terminal') bg = '#000000';
+  document.documentElement.style.backgroundColor = bg;
+  document.documentElement.setAttribute('data-theme', theme);
+
+  // Update theme-color meta for mobile/PWA
+  const metaTheme = document.querySelector('meta[name="theme-color"]');
+  if (metaTheme) metaTheme.setAttribute('content', bg);
 }
 
 export function getThemes() {
