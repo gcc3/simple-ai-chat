@@ -46,7 +46,7 @@
 
 /* output area */
 .main .wrapper {
-  padding: 10px;
+  padding: 10px 14px;
   padding-top: 30px;
   width: 100%;
   height: 100%;
@@ -110,7 +110,7 @@
 }
 .main .navitem {
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 10px 14px;
   border-radius: 6px;
   color: var(--text-color);
   background: var(--nav-background-color);
@@ -123,7 +123,7 @@
   color: var(--text-color);
 }
 .main .contentitem {
-  padding: 10px;
+  padding: 10px 14px;
   border-radius: 6px;
   background: var(--content-background-color);
 }
