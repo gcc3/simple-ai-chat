@@ -6,7 +6,7 @@ export function setTheme(theme) {
   if (isNode()) return;
 
   if (theme == "light") {
-    document.documentElement.style.setProperty("--background-color", "transparent");
+    document.documentElement.style.setProperty("--background-color", "#ffffff");
     document.documentElement.style.setProperty("--text-color", "#000000");
     document.documentElement.style.setProperty("--placeholder-color", "#8e8ea0");
     document.documentElement.style.setProperty("--submit-button-color", "#d3d3d3");

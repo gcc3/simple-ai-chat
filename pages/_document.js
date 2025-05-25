@@ -4,6 +4,31 @@ export default function Document() {
   return (
     <Html>
       <Head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var theme = localStorage.getItem('theme') || 'system';
+                  // fallback to system scheme if requested
+                  if (theme === 'system') {
+                    if (window.matchMedia('(prefers-color-scheme: dark)').matches) theme = 'dark';
+                    else theme = 'light';
+                  }
+                  var bg = '#ffffff'; /* light as default */
+                  if (theme === 'dark') bg = '#111111';
+                  if (theme === 'terminal') bg = '#000000';
+                  document.documentElement.style.backgroundColor = bg;
+                  document.documentElement.setAttribute('data-theme', theme);
+                  // OPTIONAL: Update theme-color meta for mobile/PWA
+                  var metaTheme = document.querySelector('meta[name="theme-color"]');
+                  if (metaTheme) metaTheme.setAttribute('content', bg);
+                } catch(e) {}
+              })();
+            `
+          }}
+        />
+
         {/* —-- Core PWA & theming —-- */}
         <meta name="application-name" content="Simple AI" />
         <meta name="apple-mobile-web-app-capable" content="yes" />
