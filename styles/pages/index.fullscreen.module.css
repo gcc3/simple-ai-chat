@@ -23,7 +23,7 @@
   left: 0;
   right: 0;
   width: 100%;
-  background-color: transparent;  /* input area background color */
+  background-color: #fff;  /* input area background color */
   padding: 10px 14px;
   z-index: 10;  /* ensure it's always on top */
   box-sizing: border-box;
