@@ -24,5 +24,5 @@ export default function info(args) {
                "Password Masking (key: `passMask`): " + getSetting("passMask") + "\n" +
                "Use System Role (key: `useSystemRole`): " + getSetting("useSystemRole") + "\n";
 
-  return info;
+  return info.trim();
 }

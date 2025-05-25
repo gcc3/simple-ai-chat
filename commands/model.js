@@ -186,7 +186,7 @@ export default async function model(args) {
       return "No available model found.";
     }
 
-    return userModels + groupModels + systemModels + ollamaModels;
+    return (userModels + groupModels + systemModels + ollamaModels).trim();
   }
 
   // Use model

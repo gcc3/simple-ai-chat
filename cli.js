@@ -598,7 +598,7 @@ program
     await getSystemInfo();
 
     // Command line start
-    printOutput(":help for help.");
+    process.stdout.write(":help for help.\n");
     while (true) {
       const input = (await ask(globalThis.model + "> ")).trim();
       if (!input) continue;
@@ -617,25 +617,30 @@ program
         continue;
       }
 
-      try {
-        // Generation mode switch
-        if (globalThis.baseUrl.includes("localhost")
-         || globalThis.baseUrl.includes("127.0.0.1")) {
-          // Local model
-          console.log("Start. (Local)");
-          await generate_msg(input, [], []);
+      // Generation mode switch
+      if (globalThis.baseUrl.includes("localhost")
+        || globalThis.baseUrl.includes("127.0.0.1")) {
+        // Local model
+        console.log("Start. (Local)");
+        await generate_msg(input, [], []);
+        continue;
+      }
+
+      if (globalThis.isOnline) {
+        // Server model
+        if (getSetting('useStream') == "true") {
+          console.log("Start. (SSE)");
+          await generate_sse(input, [], []);
+          continue;
         } else {
-          // Server model
-          if (getSetting('useStream') == "true") {
-            console.log("Start. (SSE)");
-            await generate_sse(input, [], []);
-          } else {
-            // TODO
-            printOutput("Not support yet for non-stream mode.");
-          }
+          // TODO
+          printOutput("Not support yet for non-stream mode.");
+          continue;
         }
-      } catch (e) {
-        console.error("Error:", e.message + "\n");
+      } else {
+        console.warn("You are offline.");
+        printOutput("You are offline.");
+        continue;
       }
     }
     rl.close();
