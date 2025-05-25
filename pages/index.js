@@ -343,7 +343,7 @@ export default function Home() {
 
     // System and user configurations
     const getSystemInfo = async () => {
-      // Check isOffline
+      // Check online status
       if (!navigator.onLine || !await isInternetAvailable()) {
         globalThis.isOffline = true;
         globalThis.isOnline = false;
