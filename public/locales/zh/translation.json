@@ -18,5 +18,7 @@
   "discord_server": "您可以加入我们的Discord服务器（<1><2>链接</2></1>）与其他用户进行讨论。",
   "email_support": "您可以通过电子邮件与我们联系 `<1><2>support@simple-ai.io</2></1>`。",
   "email_support_privacy_policy": "如果您对本隐私政策有任何疑问或担忧，请通过`<1><2>support@simple-ai.io</2></1>`与我们联系。",
-  "email_support_subscriptions": "如需企业使用，请通过 `<1><2>support@simple-ai.io</2></1>` 与我们联系。"
+  "email_support_subscriptions": "如需企业使用，请通过 `<1><2>support@simple-ai.io</2></1>` 与我们联系。",
+  "banking fee ${{bankingFee}} included": "银行费用 ${{bankingFee}} 已包含。",
+  "You already have an unlimited expiration date for `{{role}}`.": "您已经拥有`{{role}}`的无限有效期。"
 }

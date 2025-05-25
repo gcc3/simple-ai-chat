@@ -18,5 +18,7 @@
   "discord_server": "Вы можете присоединиться к нашему серверу Discord (<1><2>ссылка</2></1>), чтобы обсудить с другими пользователями.",
   "email_support": "Вы можете связаться с нами по электронной почте `<1><2>support@simple-ai.io</2></1>`.",
   "email_support_privacy_policy": "Если у вас есть вопросы или опасения по поводу этой политики конфиденциальности, пожалуйста, свяжитесь с нами по адресу `<1><2>support@simple-ai.io</2></1>`.",
-  "email_support_subscriptions": "* Для корпоративного использования, пожалуйста, свяжитесь с нами по адресу `<1><2>support@simple-ai.io</2></1>`."
+  "email_support_subscriptions": "* Для корпоративного использования, пожалуйста, свяжитесь с нами по адресу `<1><2>support@simple-ai.io</2></1>`.",
+  "banking fee ${{bankingFee}} included": "Банковская комиссия ${{bankingFee}} включена.",
+  "You already have an unlimited expiration date for `{{role}}`.": "У вас уже есть неограниченный срок действия для `{{role}}`."
 }

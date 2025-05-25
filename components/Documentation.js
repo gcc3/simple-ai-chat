@@ -5,7 +5,7 @@ import { useTranslation, Trans } from 'react-i18next';
 
 const Documentation = () => {
   const { t, ready } = useTranslation("documentation");
-  const { t: tt, ready: transReady } = useTranslation("translation");
+  const { t: tt, ready: tReady } = useTranslation("translation");
 
   const [functions, setFunctions] = useState([]);
 
@@ -349,7 +349,7 @@ const Documentation = () => {
     </>
   )
 
-  if (!ready || !transReady) return (<div><br></br></div>);
+  if (!ready || !tReady) return (<div><br></br></div>);
   return (
     <div className="Documentation">
       <div className="text-center mb-4">

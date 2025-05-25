@@ -25,6 +25,7 @@ function Subscription() {
   const [subscriptions, setSubscriptions] = useState(null);
 
   const { t, ready } = useTranslation("subscriptions");
+  const { t: tt, ready: tReady } = useTranslation("translation");
 
   const onSuccess = useCallback(async (details) => {
     console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
@@ -150,14 +151,14 @@ function Subscription() {
               </div>}
             {<div className="mt-1">
               {user.role_expires_at === null && getRoleLevel(user.role) >= getRoleLevel(targetRole) && <div>
-                  - { t("You already have an unlimited expiration date for `{{role}}`.", { role: user.role }) }
+                  - { tt("You already have an unlimited expiration date for `{{role}}`.", { role: user.role }) }
                 </div>}
               {((getRoleLevel(targetRole) > getRoleLevel(user.role))
                || (targetRole === user.role && user.role_expires_at !== null)
                || (getRoleLevel(targetRole) < getRoleLevel(user.role) && (user.role_expires_at !== null && user.role_expires_at < new Date())))
                 && <div>
                 <div>{user.role == targetRole ? t("Extend 1 month for") : (getRoleLevel(user.role) < getRoleLevel(targetRole) ? t("Upgrade to") : t("Downgrade to"))} `{targetRole}`</div>
-                <div>{ t("Pay") }: {"$" + amount} ({ t("banking fee ${{bankingFee}} included", {bankingFee}) })</div>
+                <div>{ t("Pay") }: {"$" + amount} ({ tt("banking fee ${{bankingFee}} included", {bankingFee}) })</div>
                 <div className="mt-3">{ t("Payment methods") }:</div>
                 <div className="mt-1">
                   <table>
@@ -184,7 +185,7 @@ function Subscription() {
     </>
   )
 
-  if (!ready) return (<div><br></br></div>);
+  if (!ready || !tReady) return (<div><br></br></div>);
   return (
     <div className="Subcription">
       <div className="text-center mb-4">

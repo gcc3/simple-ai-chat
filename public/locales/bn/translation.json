@@ -18,5 +18,7 @@
   "discord_server": "আপনি অন্যান্য ব্যবহারকারীদের সাথে আলোচনা করতে আমাদের Discord সার্ভারে (<1><2>লিঙ্ক</2></1>) যোগ দিতে পারেন।",
   "email_support": "আপনি `<1><2>support@simple-ai.io</2></1>` ইমেইলের মাধ্যমে আমাদের সাথে যোগাযোগ করতে পারেন।",
   "email_support_privacy_policy": "এই গোপনীয়তা নীতি সম্পর্কে আপনার যদি কোনো প্রশ্ন বা উদ্বেগ থাকে, তাহলে অনুগ্রহ করে `<1><2>support@simple-ai.io</2></1>` এ আমাদের যোগাযোগ করুন।",
-  "email_support_subscriptions": "এন্টারপ্রাইজ ব্যবহারের জন্য, দয়া করে `<1><2>support@simple-ai.io</2></1>` এ আমাদের সাথে যোগাযোগ করুন।"
+  "email_support_subscriptions": "এন্টারপ্রাইজ ব্যবহারের জন্য, দয়া করে `<1><2>support@simple-ai.io</2></1>` এ আমাদের সাথে যোগাযোগ করুন।",
+  "banking fee ${{bankingFee}} included": "ব্যাংকিং ফি ${{bankingFee}} অন্তর্ভুক্ত।",
+  "You already have an unlimited expiration date for `{{role}}`.": "আপনার কাছে ইতিমধ্যেই `{{role}}` এর জন্য একটি সীমাহীন মেয়াদ শেষের তারিখ আছে।"
 }

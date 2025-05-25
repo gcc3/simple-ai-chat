@@ -18,5 +18,7 @@
   "discord_server": "يمكنك الانضمام إلى سيرفر الديسكورد الخاص بنا (<1><2>الرابط</2></1>) للنقاش مع المستخدمين الآخرين.",
   "email_support": "يمكنك التواصل معنا عبر البريد الإلكتروني `<1><2>support@simple-ai.io</2></1>`.",
   "email_support_privacy_policy": "إذا كان لديك أي أسئلة أو مخاوف بخصوص سياسة الخصوصية هذه، يرجى التواصل معنا على `<1><2>support@simple-ai.io</2></1>`.",
-  "email_support_subscriptions": "للاستخدام المؤسسي، يرجى التواصل معنا على `<1><2>support@simple-ai.io</2></1>`."
+  "email_support_subscriptions": "للاستخدام المؤسسي، يرجى التواصل معنا على `<1><2>support@simple-ai.io</2></1>`.",
+  "banking fee ${{bankingFee}} included": "الرسوم المصرفية بقيمة ${{bankingFee}} مشمولة.",
+  "You already have an unlimited expiration date for `{{role}}`.": "لديك بالفعل تاريخ انتهاء غير محدود لـ `{{role}}`."
 }
