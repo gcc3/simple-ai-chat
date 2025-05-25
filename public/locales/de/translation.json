@@ -18,5 +18,7 @@
   "discord_server": "Sie können unserem Discord-Server (<1><2>Link</2></1>) beitreten, um mit anderen Benutzern zu diskutieren.",
   "email_support": "Sie können uns per E-Mail kontaktieren `<1><2>support@simple-ai.io</2></1>`.",
   "email_support_privacy_policy": "Wenn Sie Fragen oder Bedenken bezüglich dieser Datenschutzrichtlinie haben, kontaktieren Sie uns bitte unter `<1><2>support@simple-ai.io</2></1>`.",
-  "email_support_subscriptions": "Für den Unternehmenseinsatz kontaktieren Sie uns bitte unter `<1><2>support@simple-ai.io</2></1>`."
+  "email_support_subscriptions": "Für den Unternehmenseinsatz kontaktieren Sie uns bitte unter `<1><2>support@simple-ai.io</2></1>`.",
+  "banking fee ${{bankingFee}} included": "Bankgebühr ${{bankingFee}} inbegriffen.",
+  "You already have an unlimited expiration date for `{{role}}`.": "Sie haben bereits ein unbegrenztes Ablaufdatum für `{{role}}`."
 }

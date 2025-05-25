@@ -18,5 +18,7 @@
   "discord_server": "다른 사용자들과 토론할 수 있는 우리의 Discord 서버에 참여할 수 있습니다 (<1><2>링크</2></1>).",
   "email_support": "이메일 `<1><2>support@simple-ai.io</2></1>`을 통해 문의하실 수 있습니다.",
   "email_support_privacy_policy": "이 개인정보 보호정책에 대해 궁금한 점이나 우려사항이 있으시면 `<1><2>support@simple-ai.io</2></1>`로 문의해 주세요.",
-  "email_support_subscriptions": "* 기업 사용을 위해서는 `<1><2>support@simple-ai.io</2></1>`로 문의해 주세요."
+  "email_support_subscriptions": "* 기업 사용을 위해서는 `<1><2>support@simple-ai.io</2></1>`로 문의해 주세요.",
+  "banking fee ${{bankingFee}} included": "은행 수수료 ${{bankingFee}}가 포함됩니다.",
+  "You already have an unlimited expiration date for `{{role}}`.": "이미 `{{role}}`의 만료일이 무제한입니다."
 }

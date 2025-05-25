@@ -18,5 +18,7 @@
   "discord_server": "Anda dapat bergabung dengan server Discord kami (<1><2>link</2></1>) untuk berdiskusi dengan pengguna lain.",
   "email_support": "Anda dapat menghubungi kami melalui email `<1><2>support@simple-ai.io</2></1>`.",
   "email_support_privacy_policy": "Jika Anda memiliki pertanyaan atau kekhawatiran mengenai kebijakan privasi ini, silakan hubungi kami di `<1><2>support@simple-ai.io</2></1>`.",
-  "email_support_subscriptions": "* Untuk penggunaan enterprise, silakan hubungi kami di `<1><2>support@simple-ai.io</2></1>`."
+  "email_support_subscriptions": "* Untuk penggunaan enterprise, silakan hubungi kami di `<1><2>support@simple-ai.io</2></1>`.",
+  "banking fee ${{bankingFee}} included": "Biaya perbankan ${{bankingFee}} sudah termasuk.",
+  "You already have an unlimited expiration date for `{{role}}`.": "Anda sudah memiliki tanggal kedaluwarsa tanpa batas untuk `{{role}}`."
 }

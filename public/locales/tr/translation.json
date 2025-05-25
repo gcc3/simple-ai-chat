@@ -18,5 +18,7 @@
   "discord_server": "Diğer kullanıcılarla tartışmak için Discord sunucumuza (<1><2>bağlantı</2></1>) katılabilirsiniz.",
   "email_support": "Bize e-posta yoluyla `<1><2>support@simple-ai.io</2></1>` adresinden ulaşabilirsiniz.",
   "email_support_privacy_policy": "Bu gizlilik politikası hakkında herhangi bir sorunuz veya endişeniz varsa, lütfen `<1><2>support@simple-ai.io</2></1>` adresinden bizimle iletişime geçin.",
-  "email_support_subscriptions": "* Kurumsal kullanım için lütfen `<1><2>support@simple-ai.io</2></1>` adresinden bizimle iletişime geçin."
+  "email_support_subscriptions": "* Kurumsal kullanım için lütfen `<1><2>support@simple-ai.io</2></1>` adresinden bizimle iletişime geçin.",
+  "banking fee ${{bankingFee}} included": "Banka ücreti ${{bankingFee}} dahildir.",
+  "You already have an unlimited expiration date for `{{role}}`.": "Zaten `{{role}}` için süresiz bir son kullanma tarihiniz var."
 }

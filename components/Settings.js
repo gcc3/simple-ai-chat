@@ -720,7 +720,7 @@ function Settings() {
   const content = (
     <>
       {message && <div>
-        {<div className="ml-2">{message}</div>}
+        {<div>{message}</div>}
       </div>}
       {userModels && userModels.length > 0 && <div>
         <div className="mt-3">- {t("User Models")}</div>

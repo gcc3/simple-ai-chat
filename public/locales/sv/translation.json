@@ -18,5 +18,7 @@
   "discord_server": "Du kan gå med i vår Discord-server (<1><2>länk</2></1>) för att diskutera med andra användare.",
   "email_support": "Du kan kontakta oss via e-post `<1><2>support@simple-ai.io</2></1>`.",
   "email_support_privacy_policy": "Om du har några frågor eller funderingar om denna integritetspolicy, vänligen kontakta oss på `<1><2>support@simple-ai.io</2></1>`.",
-  "email_support_subscriptions": "För företagsanvändning, vänligen kontakta oss på `<1><2>support@simple-ai.io</2></1>`."
+  "email_support_subscriptions": "För företagsanvändning, vänligen kontakta oss på `<1><2>support@simple-ai.io</2></1>`.",
+  "banking fee ${{bankingFee}} included": "Bankavgift ${{bankingFee}} ingår.",
+  "You already have an unlimited expiration date for `{{role}}`.": "Du har redan ett obegränsat utgångsdatum för `{{role}}`."
 }

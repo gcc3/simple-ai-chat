@@ -19,6 +19,7 @@ export default function Usage() {
   const [bankingFee, setBankingFee] = useState(0);
 
   const { t, ready } = useTranslation("usage");
+  const { t: tt, ready: tReady } = useTranslation("translation");
 
   const onSuccess = useCallback(async (details) => {
     console.log("Transaction completed by Mr." + details.payer.name.given_name + ".");
@@ -218,7 +219,7 @@ export default function Usage() {
               <div className="mt-2">* { t("$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.") }</div>
             </div>}
             {amount !== null && amount > 0 && <div className="mt-3">
-              <div>{ t("Pay") }: {"$" + amount} ({ t("banking fee {{bankingFee}} included", { bankingFee }) })</div>
+              <div>{ t("Pay") }: {"$" + amount} ({ tt("banking fee ${{bankingFee}} included", { bankingFee }) })</div>
               <div className="mt-3">{ t("Payment methods") }:</div>
               <div className="mt-1">
                 <table>
@@ -244,7 +245,7 @@ export default function Usage() {
     </>
   )
 
-  if (!ready) return (<div><br></br></div>);
+  if (!ready || !tReady) return (<div><br></br></div>);
   return (
     <div className="Subcription">
       <div className="text-center mb-4">

@@ -18,5 +18,7 @@
   "discord_server": "Je kunt lid worden van onze Discord-server (<1><2>link</2></1>) om te discussiëren met andere gebruikers.",
   "email_support": "U kunt contact met ons opnemen via e-mail `<1><2>support@simple-ai.io</2></1>`.",
   "email_support_privacy_policy": "Als u vragen of zorgen heeft over dit privacybeleid, neem dan contact met ons op via `<1><2>support@simple-ai.io</2></1>`.",
-  "email_support_subscriptions": "* Voor zakelijk gebruik kunt u contact met ons opnemen via `<1><2>support@simple-ai.io</2></1>`."
+  "email_support_subscriptions": "* Voor zakelijk gebruik kunt u contact met ons opnemen via `<1><2>support@simple-ai.io</2></1>`.",
+  "banking fee ${{bankingFee}} included": "Bankkosten ${{bankingFee}} inbegrepen.",
+  "You already have an unlimited expiration date for `{{role}}`.": "Je hebt al een onbeperkte vervaldatum voor `{{role}}`."
 }
