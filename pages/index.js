@@ -57,6 +57,7 @@ const CONTENT = {
   USAGE: 1,
   SUBSCRIPTION: 2,
   PRIVACY: 3,
+  SETTINGS: 4,
 };
 
 // Offline
@@ -115,6 +116,7 @@ export default function Home() {
 
   // Toggle display
   const toggleDisplay = () => {
+    console.log("Display: " + (display === DISPLAY.FRONT ? "front" : "back") + " -> " + (display === DISPLAY.FRONT ? "back" : "front"));
     setDisplay(display === DISPLAY.FRONT ? DISPLAY.BACK : DISPLAY.FRONT);
   };
 
@@ -562,6 +564,10 @@ export default function Home() {
               }
             }
           }
+
+          // If on back page, use ESC to toggle go to the front page
+          event.preventDefault();
+          setDisplay(DISPLAY.FRONT);
           break;
 
         case "Tab":  // TAB to focus on input
@@ -947,6 +953,20 @@ export default function Home() {
               });
             } else {
               console.log("Aborted as generating.");
+            }
+          }
+          break;
+
+        case ',':
+          if (event.ctrlKey) {
+            event.preventDefault();
+
+            // Go to Settings page
+            if (display === DISPLAY.FRONT || (display === DISPLAY.BACK && content !== CONTENT.SETTINGS)) {
+              console.log("Shortcut: ⌃,");
+
+              setDisplay(DISPLAY.BACK);
+              setContent(CONTENT.SETTINGS);
             }
           }
           break;
