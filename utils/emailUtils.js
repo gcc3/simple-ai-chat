@@ -109,7 +109,7 @@ export function getRedirectableHtml(message) {
       <style>
         body { 
           font-size: 16px;
-          font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", Helvetica, sans-serif;
+          font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", "PingFang SC", "Microsoft Yahei", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
         }
       </style>
     </head>
