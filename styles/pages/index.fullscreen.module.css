@@ -24,7 +24,7 @@
   right: 0;
   width: 100%;
   background-color: transparent;  /* input area background color */
-  padding: 10px;
+  padding: 10px 14px;
   z-index: 10;  /* ensure it's always on top */
   box-sizing: border-box;
   display: flex;  /* use flexbox to align the input and button */
@@ -32,7 +32,7 @@
 }
 .main .input {
   height: 45px;
-  padding: 10px;
+  padding: 10px 14px;
   overflow-y: auto;
   width: 100%;
   font-size: 16px;
@@ -73,7 +73,7 @@
 .main .wrapper {
   width: 100%;
   height: calc(100vh - var(--input-height) - 15px);
-  padding: 10px;
+  padding: 10px 14px;
   padding-top: 12px;
   overflow-y: auto;
 }
@@ -129,7 +129,7 @@
 .main .container {
   width: 100%;
   height: 100vh;
-  padding: 10px;
+  padding: 10px 14px;
   overflow-y: auto;
   display: flex;
   align-items: flex-start;
@@ -142,7 +142,7 @@
 }
 .main .navitem {
   margin-bottom: 10px;
-  padding: 10px;
+  padding: 10px 14px;
   border-radius: 6px;
   color: var(--text-color);
   background: var(--nav-background-color);
@@ -158,7 +158,7 @@
   color: var(--text-color);
 }
 .main .contentitem {
-  padding: 10px;
+  padding: 10px 14px;
   border-radius: 6px;
   background: var(--content-background-color);
 }
