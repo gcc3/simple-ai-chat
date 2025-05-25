@@ -950,6 +950,20 @@ export default function Home() {
             }
           }
           break;
+
+        case ',':
+          if (event.ctrlKey) {
+            event.preventDefault();
+
+            // Go to Settings page
+            if (display === DISPLAY.FRONT) {
+              console.log("Shortcut: ⌃,");
+
+              setDisplay(DISPLAY.BACK);
+              setContent(CONTENT.SETTINGS);
+            }
+          }
+          break;
       }
     };
     window.addEventListener("keydown", handleKeyDown, true);

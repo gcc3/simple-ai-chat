@@ -74,6 +74,7 @@ const Documentation = () => {
     { action: t("Previous command."), shortcut: "↑", condition: t("Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.") },
     { action: t("Next command."), shortcut: "↓", condition: t("Cursor is focused on the input area. The current input is starts with `:`. Has a next command in command history.") },
     { action: t("Change focus to input area."), shortcut: "Tab or /", condition: t("Unfocused from the input area.") },
+    { action: t("Go to Settings page."), shortcut: "⌃,", condition: t("-") },
   ];
 
   const gestures = [
