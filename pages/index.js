@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
@@ -338,6 +338,448 @@ export default function Home() {
     });
   }
 
+  // Handle global shortcut keys
+  const handleKeyDown = useCallback((event) => {
+    switch (event.key) {
+      case "Escape":
+        console.log("Shortcut: ESC");
+
+        if (document.activeElement.id === "input") {
+          // If there is input, use ESC to clear input
+          const elInput = elInputRef.current;
+          if (elInput !== null) {
+            if (elInput.value && elInput.value.length > 0) {
+              event.preventDefault();
+              clearInput("");
+            } else {
+              // ESC to unfocus input
+              event.preventDefault();
+              elInput.blur();
+            }
+          }
+        }
+
+        // If on back page, use ESC to toggle go to the front page
+        if (display === DISPLAY.BACK) {
+          event.preventDefault();
+          setDisplay(DISPLAY.FRONT);
+        }
+        break;
+
+      case "Tab":  // TAB to focus on input
+        console.log("Shortcut: Tab");
+
+        if (document.activeElement.id !== "input") {
+          const elInput = elInputRef.current;
+          if (elInput !== null) {
+            event.preventDefault();
+            elInput.focus();
+          }
+        }
+        break;
+
+      case "/":  // Press / to focus on input
+        console.log("Shortcut: /");
+
+        if (document.activeElement.id !== "input") {
+          const elInput = elInputRef.current;
+          if (elInput !== null) {
+            event.preventDefault();
+            elInput.focus();
+          }
+        }
+        break;
+
+      case "c":  // stop generating
+        if (event.ctrlKey) {
+          console.log("Shortcut: ⌃c");
+
+          if (globalThis.STATE === STATES.DOING) {
+            event.preventDefault();
+            command(":stop");
+
+            // Send `stop` command no matter generating or not
+            console.log("Sending `stop` command...");
+          } else {
+            // Stop speaking
+            window.speechSynthesis.cancel();
+          }
+        }
+        break;
+
+      case "r":  // clear output and reset session
+        if (event.ctrlKey && !event.shiftKey) {
+          console.log("Shortcut: ⌃r");
+
+          if (globalThis.STATE === STATES.IDLE) {
+            event.preventDefault();
+
+            // Same as :clear
+            // Clear all input and output, pleaceholder, previews
+            clearInput();
+            clearOutput();
+            globalThis.rawPlaceholder = globalThis.initPlaceholder;
+            setPlaceholder({ text: globalThis.rawPlaceholder, height: null });
+            clearPreviewImages();
+            clearPreviewVideos();
+            setInfo();
+            setStats();
+            setEvaluation();
+
+            // Focus on input
+            const elInput = elInputRef.current;
+            elInput.focus();
+
+            console.log("Sending `clear` command...");
+            command(":clear");
+          }
+        }
+
+        if (event.ctrlKey && event.shiftKey) {
+          console.log("Shortcut: ⇧⌃r");
+
+          if (globalThis.STATE === STATES.IDLE) {
+            event.preventDefault();
+
+            console.log("Sending `reset` command...");
+            command(":reset");
+          }
+        }
+        break;
+
+      case "F11":  // fullscreen mode
+        console.log("Shortcut: F11");
+        event.preventDefault();
+
+        // Triggle fullscreen split
+        if (!getSetting("fullscreen").startsWith("default")) {
+          dispatchFullscreen("default");
+
+          // Update user setting
+          if (getSetting("user")) {
+            updateUserSetting("fullscreen", "default");
+          }
+        } else {
+          dispatchFullscreen("off");
+
+          // Update user setting
+          if (getSetting("user")) {
+            updateUserSetting("fullscreen", "off");
+          }
+        }
+        break;
+
+      case "\\":
+      case "|":  // fullscreen split mode
+        // alt key not usable for macOS, use command key instead
+        if (event.ctrlKey || event.metaKey) {
+          console.log("Shortcut: ⌃|");
+          event.preventDefault();
+
+          // Triggle fullscreen split
+          if (!getSetting("fullscreen").startsWith("split")) {
+            dispatchFullscreen("split");
+
+            // Update user setting
+            if (getSetting("user")) {
+              updateUserSetting("fullscreen", "split");
+            }
+          } else {
+            dispatchFullscreen("off");
+
+            // Update user setting
+            if (getSetting("user")) {
+              updateUserSetting("fullscreen", "off");
+            }
+          }
+        }
+        break;
+
+      case "ArrowUp":
+        // Command history (↑)
+        if (globalThis.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          console.log("Shortcut: ↑");
+          event.preventDefault();
+
+          // Set input to previous command history
+          const historyIndex = getHistoryCommandIndex();
+          const command = getHistoryCommand(historyIndex + 1);
+          if (command) {
+            setInput(command);
+            setSetting("historyIndex", historyIndex + 1);
+            reAdjustInputHeight();
+          }
+        }
+
+        // Navigation to previous session
+        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          console.log("Shortcut: ⌃↑");
+          event.preventDefault();
+
+          if (globalThis.STATE === STATES.IDLE) {
+            if (!getSetting("user")) {
+              console.error("User not logged in.");
+              printOutput("Please log in to view session history.");
+              return;
+            }
+
+            getHistorySession("prev", getSetting("session"))
+              .then((session) => {
+                clearOutput(true);
+
+                if (!session) {
+                  console.log("No previous session.");
+                  printOutput("No previous session.");
+                  setSession(-1);
+                  return;
+                } else {
+                  // Attach to it
+                  attachSession(session);
+                }
+              });
+          } else {
+            console.log("Aborted as generating.");
+          }
+        }
+        break;
+
+      case "h":
+        // Navigation to previous session
+        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          event.preventDefault();
+          console.log("Shortcut: h");
+
+          if (globalThis.STATE === STATES.IDLE) {
+            if (!getSetting("user")) {
+              console.error("User not logged in.");
+              printOutput("Please log in to view session history.");
+              return;
+            }
+
+            getHistorySession("prev", getSetting("session"))
+              .then((session) => {
+                clearOutput(true);
+
+                if (!session) {
+                  console.log("No previous session.");
+                  printOutput("No previous session.");
+                  setSession(-1);
+                  return;
+                } else {
+                  // Attach to it
+                  attachSession(session);
+                }
+              });
+          } else {
+            console.log("Aborted as generating.");
+          }
+        }
+        break;
+
+      case "ArrowDown":
+        // Command history (↓)
+        if (globalThis.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          console.log("Shortcut: ↓");
+          event.preventDefault();
+
+          // Set input to previous command history
+          const historyIndex = getHistoryCommandIndex();
+          const command = getHistoryCommand(historyIndex - 1);
+          if (command) {
+            setInput(command);
+            setSetting("historyIndex", historyIndex - 1);
+          } else {
+            // Clear input
+            setInput(":");
+            setSetting("historyIndex", -1);
+          }
+          reAdjustInputHeight();
+        }
+
+        // Navigate to next session
+        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          console.log("Shortcut: ⌃↓");
+          event.preventDefault();
+
+          if (globalThis.STATE === STATES.IDLE) {
+            if (!getSetting("user")) {
+              console.error("User not logged in.");
+              printOutput("Please log in to view session history.");
+              return;
+            }
+
+            getHistorySession("next", getSetting("session"))
+              .then((session) => {
+                clearOutput(true);
+
+                if (!session) {
+                  console.log("No next session.");
+                  printOutput("No next session.");
+                  setSession(1);
+                  return;
+                } else {
+                  // Attach to it
+                  attachSession(session);
+                }
+              });
+          } else {
+            console.log("Aborted as generating.");
+          }
+        }
+        break;
+
+      case "l":
+        // Navigate to next session
+        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          console.log("Shortcut: l");
+          event.preventDefault();
+
+          if (globalThis.STATE === STATES.IDLE) {
+            if (!getSetting("user")) {
+              console.error("User not logged in.");
+              printOutput("Please log in to view session history.");
+              return;
+            }
+
+            getHistorySession("next", getSetting("session"))
+              .then((session) => {
+                clearOutput(true);
+
+                if (!session) {
+                  console.log("No next session.");
+                  printOutput("No next session.");
+                  setSession(1);
+                  return;
+                } else {
+                  // Attach to it
+                  attachSession(session);
+                }
+              });
+          } else {
+            console.log("Aborted as generating.");
+          }
+        }
+        break;
+
+      case "ArrowLeft":
+        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          console.log("Shortcut: ←");
+          event.preventDefault();
+
+          // Print session log (previous)
+          if (globalThis.STATE === STATES.IDLE) {
+            getSessionLog("prev", getSetting("session"), getSetting("time"))
+              .then((r) => {
+                if (!r.result || Object.entries(r.result).length === 0) {
+                  console.log("No previous log.");
+                  return;
+                } else {
+                  const log = r.result["log"];
+                  printSessionLog(log);
+                }
+              });
+          } else {
+            console.log("Aborted as generating.");
+          }
+        }
+        break;
+
+      case "k":
+        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          console.log("Shortcut: k");
+          event.preventDefault();
+
+          // Print session log (previous)
+          if (globalThis.STATE === STATES.IDLE) {
+            getSessionLog("prev", getSetting("session"), getSetting("time"))
+              .then((r) => {
+                if (!r.result || Object.entries(r.result).length === 0) {
+                  console.log("No previous log.");
+                  return;
+                } else {
+                  const log = r.result["log"];
+                  printSessionLog(log);
+                }
+              });
+          } else {
+            console.log("Aborted as generating.");
+          }
+        }
+        break;
+
+      case "ArrowRight":
+        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          console.log("Shortcut: →");
+          event.preventDefault();
+
+          // Print session log (next)
+          if (globalThis.STATE === STATES.IDLE) {
+            getSessionLog("next", getSetting("session"), getSetting("time"))
+              .then((r) => {
+                if (!r.result || Object.entries(r.result).length === 0) {
+                  console.log("No next log.");
+                  return;
+                } else {
+                  const log = r.result["log"];
+                  printSessionLog(log);
+                }
+            });
+          } else {
+            console.log("Aborted as generating.");
+          }
+        }
+        break;
+
+      case "j":
+        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+          console.log("Shortcut: j");
+          event.preventDefault();
+
+          // Print session log (next)
+          if (globalThis.STATE === STATES.IDLE) {
+            getSessionLog("next", getSetting("session"), getSetting("time"))
+              .then((r) => {
+                if (!r.result || Object.entries(r.result).length === 0) {
+                  console.log("No next log.");
+                  return;
+                } else {
+                  const log = r.result["log"];
+                  printSessionLog(log);
+                }
+            });
+          } else {
+            console.log("Aborted as generating.");
+          }
+        }
+        break;
+
+      case ',':
+        if (event.ctrlKey) {
+          event.preventDefault();
+
+          // Go to Settings page
+          if (display === DISPLAY.FRONT || (display === DISPLAY.BACK && content !== CONTENT.SETTINGS)) {
+            console.log("Shortcut: ⌃,");
+
+            setDisplay(DISPLAY.BACK);
+            setContent(CONTENT.SETTINGS);
+          }
+        }
+        break;
+    }
+  }, [display, content]);
+
+  // Handle key down (useEffect)
+  useEffect(() => {
+    // Add event listener for keydown
+    window.addEventListener("keydown", handleKeyDown, true);
+
+    // Cleanup function to remove the event listener
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown, true);
+    };
+  }, [handleKeyDown]);
+
   // Initializing
   useEffect(() => {
     initializeSettings();
@@ -544,436 +986,6 @@ export default function Home() {
       printOutput(`Session (id:${session.id}) attached. Use \`→\` and \`←\` (or \`j\` and \`k\`) to navigate between session logs (length:${session.length}).\n\nPreview:\n` + JSON.stringify(session.logs, null, 2));
     }
 
-    // Handle global shortcut keys
-    const handleKeyDown = (event) => {
-      switch (event.key) {
-        case "Escape":
-          console.log("Shortcut: ESC");
-
-          if (document.activeElement.id === "input") {
-            // If there is input, use ESC to clear input
-            const elInput = elInputRef.current;
-            if (elInput !== null) {
-              if (elInput.value && elInput.value.length > 0) {
-                event.preventDefault();
-                clearInput("");
-              } else {
-                // ESC to unfocus input
-                event.preventDefault();
-                elInput.blur();
-              }
-            }
-          }
-
-          // If on back page, use ESC to toggle go to the front page
-          event.preventDefault();
-          setDisplay(DISPLAY.FRONT);
-          break;
-
-        case "Tab":  // TAB to focus on input
-          console.log("Shortcut: Tab");
-
-          if (document.activeElement.id !== "input") {
-            const elInput = elInputRef.current;
-            if (elInput !== null) {
-              event.preventDefault();
-              elInput.focus();
-            }
-          }
-          break;
-
-        case "/":  // Press / to focus on input
-          console.log("Shortcut: /");
-
-          if (document.activeElement.id !== "input") {
-            const elInput = elInputRef.current;
-            if (elInput !== null) {
-              event.preventDefault();
-              elInput.focus();
-            }
-          }
-          break;
-
-        case "c":  // stop generating
-          if (event.ctrlKey) {
-            console.log("Shortcut: ⌃c");
-
-            if (globalThis.STATE === STATES.DOING) {
-              event.preventDefault();
-              command(":stop");
-
-              // Send `stop` command no matter generating or not
-              console.log("Sending `stop` command...");
-            } else {
-              // Stop speaking
-              window.speechSynthesis.cancel();
-            }
-          }
-          break;
-
-        case "r":  // clear output and reset session
-          if (event.ctrlKey && !event.shiftKey) {
-            console.log("Shortcut: ⌃r");
-
-            if (globalThis.STATE === STATES.IDLE) {
-              event.preventDefault();
-
-              // Same as :clear
-              // Clear all input and output, pleaceholder, previews
-              clearInput();
-              clearOutput();
-              globalThis.rawPlaceholder = globalThis.initPlaceholder;
-              setPlaceholder({ text: globalThis.rawPlaceholder, height: null });
-              clearPreviewImages();
-              clearPreviewVideos();
-              setInfo();
-              setStats();
-              setEvaluation();
-
-              // Focus on input
-              const elInput = elInputRef.current;
-              elInput.focus();
-
-              console.log("Sending `clear` command...");
-              command(":clear");
-            }
-          }
-
-          if (event.ctrlKey && event.shiftKey) {
-            console.log("Shortcut: ⇧⌃r");
-
-            if (globalThis.STATE === STATES.IDLE) {
-              event.preventDefault();
-
-              console.log("Sending `reset` command...");
-              command(":reset");
-            }
-          }
-          break;
-
-        case "F11":  // fullscreen mode
-          console.log("Shortcut: F11");
-          event.preventDefault();
-
-          // Triggle fullscreen split
-          if (!getSetting("fullscreen").startsWith("default")) {
-            dispatchFullscreen("default");
-
-            // Update user setting
-            if (getSetting("user")) {
-              updateUserSetting("fullscreen", "default");
-            }
-          } else {
-            dispatchFullscreen("off");
-
-            // Update user setting
-            if (getSetting("user")) {
-              updateUserSetting("fullscreen", "off");
-            }
-          }
-          break;
-
-        case "\\":
-        case "|":  // fullscreen split mode
-          // alt key not usable for macOS, use command key instead
-          if (event.ctrlKey || event.metaKey) {
-            console.log("Shortcut: ⌃|");
-            event.preventDefault();
-
-            // Triggle fullscreen split
-            if (!getSetting("fullscreen").startsWith("split")) {
-              dispatchFullscreen("split");
-
-              // Update user setting
-              if (getSetting("user")) {
-                updateUserSetting("fullscreen", "split");
-              }
-            } else {
-              dispatchFullscreen("off");
-
-              // Update user setting
-              if (getSetting("user")) {
-                updateUserSetting("fullscreen", "off");
-              }
-            }
-          }
-          break;
-
-        case "ArrowUp":
-          // Command history (↑)
-          if (globalThis.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            console.log("Shortcut: ↑");
-            event.preventDefault();
-
-            // Set input to previous command history
-            const historyIndex = getHistoryCommandIndex();
-            const command = getHistoryCommand(historyIndex + 1);
-            if (command) {
-              setInput(command);
-              setSetting("historyIndex", historyIndex + 1);
-              reAdjustInputHeight();
-            }
-          }
-
-          // Navigation to previous session
-          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            console.log("Shortcut: ⌃↑");
-            event.preventDefault();
-
-            if (globalThis.STATE === STATES.IDLE) {
-              if (!getSetting("user")) {
-                console.error("User not logged in.");
-                printOutput("Please log in to view session history.");
-                return;
-              }
-
-              getHistorySession("prev", getSetting("session"))
-                .then((session) => {
-                  clearOutput(true);
-
-                  if (!session) {
-                    console.log("No previous session.");
-                    printOutput("No previous session.");
-                    setSession(-1);
-                    return;
-                  } else {
-                    // Attach to it
-                    attachSession(session);
-                  }
-                });
-            } else {
-              console.log("Aborted as generating.");
-            }
-          }
-          break;
-
-        case "h":
-          // Navigation to previous session
-          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            event.preventDefault();
-            console.log("Shortcut: h");
-
-            if (globalThis.STATE === STATES.IDLE) {
-              if (!getSetting("user")) {
-                console.error("User not logged in.");
-                printOutput("Please log in to view session history.");
-                return;
-              }
-
-              getHistorySession("prev", getSetting("session"))
-                .then((session) => {
-                  clearOutput(true);
-
-                  if (!session) {
-                    console.log("No previous session.");
-                    printOutput("No previous session.");
-                    setSession(-1);
-                    return;
-                  } else {
-                    // Attach to it
-                    attachSession(session);
-                  }
-                });
-            } else {
-              console.log("Aborted as generating.");
-            }
-          }
-          break;
-
-        case "ArrowDown":
-          // Command history (↓)
-          if (globalThis.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            console.log("Shortcut: ↓");
-            event.preventDefault();
-
-            // Set input to previous command history
-            const historyIndex = getHistoryCommandIndex();
-            const command = getHistoryCommand(historyIndex - 1);
-            if (command) {
-              setInput(command);
-              setSetting("historyIndex", historyIndex - 1);
-            } else {
-              // Clear input
-              setInput(":");
-              setSetting("historyIndex", -1);
-            }
-            reAdjustInputHeight();
-          }
-
-          // Navigate to next session
-          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            console.log("Shortcut: ⌃↓");
-            event.preventDefault();
-
-            if (globalThis.STATE === STATES.IDLE) {
-              if (!getSetting("user")) {
-                console.error("User not logged in.");
-                printOutput("Please log in to view session history.");
-                return;
-              }
-
-              getHistorySession("next", getSetting("session"))
-                .then((session) => {
-                  clearOutput(true);
-
-                  if (!session) {
-                    console.log("No next session.");
-                    printOutput("No next session.");
-                    setSession(1);
-                    return;
-                  } else {
-                    // Attach to it
-                    attachSession(session);
-                  }
-                });
-            } else {
-              console.log("Aborted as generating.");
-            }
-          }
-          break;
-
-        case "l":
-          // Navigate to next session
-          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            console.log("Shortcut: l");
-            event.preventDefault();
-
-            if (globalThis.STATE === STATES.IDLE) {
-              if (!getSetting("user")) {
-                console.error("User not logged in.");
-                printOutput("Please log in to view session history.");
-                return;
-              }
-
-              getHistorySession("next", getSetting("session"))
-                .then((session) => {
-                  clearOutput(true);
-
-                  if (!session) {
-                    console.log("No next session.");
-                    printOutput("No next session.");
-                    setSession(1);
-                    return;
-                  } else {
-                    // Attach to it
-                    attachSession(session);
-                  }
-                });
-            } else {
-              console.log("Aborted as generating.");
-            }
-          }
-          break;
-
-        case "ArrowLeft":
-          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            console.log("Shortcut: ←");
-            event.preventDefault();
-
-            // Print session log (previous)
-            if (globalThis.STATE === STATES.IDLE) {
-              getSessionLog("prev", getSetting("session"), getSetting("time"))
-                .then((r) => {
-                  if (!r.result || Object.entries(r.result).length === 0) {
-                    console.log("No previous log.");
-                    return;
-                  } else {
-                    const log = r.result["log"];
-                    printSessionLog(log);
-                  }
-                });
-            } else {
-              console.log("Aborted as generating.");
-            }
-          }
-          break;
-
-        case "k":
-          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            console.log("Shortcut: k");
-            event.preventDefault();
-
-            // Print session log (previous)
-            if (globalThis.STATE === STATES.IDLE) {
-              getSessionLog("prev", getSetting("session"), getSetting("time"))
-                .then((r) => {
-                  if (!r.result || Object.entries(r.result).length === 0) {
-                    console.log("No previous log.");
-                    return;
-                  } else {
-                    const log = r.result["log"];
-                    printSessionLog(log);
-                  }
-                });
-            } else {
-              console.log("Aborted as generating.");
-            }
-          }
-          break;
-
-        case "ArrowRight":
-          if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            console.log("Shortcut: →");
-            event.preventDefault();
-
-            // Print session log (next)
-            if (globalThis.STATE === STATES.IDLE) {
-              getSessionLog("next", getSetting("session"), getSetting("time"))
-                .then((r) => {
-                  if (!r.result || Object.entries(r.result).length === 0) {
-                    console.log("No next log.");
-                    return;
-                  } else {
-                    const log = r.result["log"];
-                    printSessionLog(log);
-                  }
-              });
-            } else {
-              console.log("Aborted as generating.");
-            }
-          }
-          break;
-
-        case "j":
-          if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-            console.log("Shortcut: j");
-            event.preventDefault();
-
-            // Print session log (next)
-            if (globalThis.STATE === STATES.IDLE) {
-              getSessionLog("next", getSetting("session"), getSetting("time"))
-                .then((r) => {
-                  if (!r.result || Object.entries(r.result).length === 0) {
-                    console.log("No next log.");
-                    return;
-                  } else {
-                    const log = r.result["log"];
-                    printSessionLog(log);
-                  }
-              });
-            } else {
-              console.log("Aborted as generating.");
-            }
-          }
-          break;
-
-        case ',':
-          if (event.ctrlKey) {
-            event.preventDefault();
-
-            // Go to Settings page
-            if (display === DISPLAY.FRONT || (display === DISPLAY.BACK && content !== CONTENT.SETTINGS)) {
-              console.log("Shortcut: ⌃,");
-
-              setDisplay(DISPLAY.BACK);
-              setContent(CONTENT.SETTINGS);
-            }
-          }
-          break;
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown, true);
-
     // Initialize global output mutation observer
     globalThis.outputMutationObserver = new MutationObserver(mutationsList => {
       for (let mutation of mutationsList) {
@@ -1113,7 +1125,6 @@ export default function Home() {
     // Cleanup
     return () => {
       // Remove event listener, this is necessary
-      window.removeEventListener("keydown", handleKeyDown, true);
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('hashchange', removeHashTag);
 
