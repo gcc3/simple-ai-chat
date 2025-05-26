@@ -2672,7 +2672,6 @@ export default function Home() {
 
     setSetting('fullscreen', mode);
 
-
     if (mode === "split") {
       // fullscreen split mode  use ⌃enter
       setEnter("⌃enter");
