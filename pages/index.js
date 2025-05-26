@@ -2665,7 +2665,7 @@ export default function Home() {
       // Mobile device
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode if the screen is small
-        mode = "default";
+        mode = "off";
         console.log("Fullscreen default: mobile device narrow.");
       }
     }
