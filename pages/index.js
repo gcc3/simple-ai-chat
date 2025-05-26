@@ -42,6 +42,7 @@ import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 import { addLocalLog, resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { isInternetAvailable } from "utils/networkUtils";
+import { getStringMonoLength } from "utils/stringUtils";
 
 
 // Status control
@@ -2583,7 +2584,7 @@ export default function Home() {
   const reAdjustPlaceholder = () => {
     const fullscreen_ = getSetting("fullscreen").trim();
     const placeholder = globalThis.rawPlaceholder;
-    const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (placeholder.length >= 45 || placeholder.includes("\n"))) ?
+    const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (getStringMonoLength(placeholder) >= 45 || placeholder.includes("\n"))) ?
                                  placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
     setPlaceholder({ text: placeholderShortern, height: null });
   }
