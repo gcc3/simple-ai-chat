@@ -2659,18 +2659,19 @@ export default function Home() {
 
   // Fullscreen control
   const dispatchFullscreen = (mode) => {
-    setSetting('fullscreen', mode);
-
     // Fullscreen control
     const userAgentInfo = checkUserAgent();
     if (userAgentInfo.isIPhone || userAgentInfo.isAndroid) {
       // Mobile device
       if (window.innerWidth < 768) {
         // Don't use fullscreen mode if the screen is small
-        mode = "off";
-        console.log("Fullscreen off: mobile device narrow.");
+        mode = "default";
+        console.log("Fullscreen default: mobile device narrow.");
       }
     }
+
+    setSetting('fullscreen', mode);
+
 
     if (mode === "split") {
       // fullscreen split mode  use ⌃enter
