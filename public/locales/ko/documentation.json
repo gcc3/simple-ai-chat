@@ -137,5 +137,8 @@
   "Image Generation & Edit": "이미지 생성 및 편집",
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data stores can be used simultaneously.": "파일 및 관계형 데이터베이스 쿼리를 지원합니다. 저장소를 사용할 경우 쿼리 결과가 프롬프트로 삽입되어 지식 기반 답변을 제공합니다. 여러 개의 데이터 저장소를 동시에 사용할 수 있습니다.",
   "GPT will choose function to use to get information it needs. Such as weather and time queries. Functions can be called by user directly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPT는 필요한 정보를 얻기 위해 사용할 함수를 선택합니다. 예: 날씨 및 시간 쿼리. 함수는 사용자가 입력에서 직접 호출할 수도 있습니다. 사용 가능한 모든 함수를 나열하려면 `:function ls`를 사용하세요. 또한 함수를 참조하세요.",
-  "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "함수 호출 중 하나인 `redirect_to_url()`은 URL을 리디렉션하거나 새 탭에서 열 수 있습니다. GPT는 이를 자동으로 수행합니다. 예: OpenAI 공식 웹사이트를 엽니다. 여러 URL을 동시에 열도록 사용할 수 있습니다."
+  "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "함수 호출 중 하나인 `redirect_to_url()`은 URL을 리디렉션하거나 새 탭에서 열 수 있습니다. GPT는 이를 자동으로 수행합니다. 예: OpenAI 공식 웹사이트를 엽니다. 여러 URL을 동시에 열도록 사용할 수 있습니다.",
+  "On the Back page.": "뒷페이지에.",
+  "Show the Front page.": "첫 페이지를 표시하세요.",
+  "Show the Settings page.": "설정 페이지를 표시하세요."
 }

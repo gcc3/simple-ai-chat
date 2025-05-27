@@ -137,5 +137,8 @@
   "Image Generation & Edit": "图片生成与编辑",
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data stores can be used simultaneously.": "支持对文件和关系型数据库的查询。如果使用存储，查询结果将被插入为提示，以提供有见识的答案。可以同时使用多个数据存储。",
   "GPT will choose function to use to get information it needs. Such as weather and time queries. Functions can be called by user directly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "GPT 会选择函数来获取所需的信息。例如天气和时间查询。用户也可以直接从输入中调用函数。要列出所有可用函数，请使用 `:function ls`。另请参阅：函数",
-  "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "作为众多 `functions calls` 之一，`redirect_to_url()` 可以重定向或在新标签页中打开 URL。GPT 会自动执行，例如：打开 OpenAI 的官方网站。您可以使用它同时打开多个 URL。"
+  "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "作为众多 `functions calls` 之一，`redirect_to_url()` 可以重定向或在新标签页中打开 URL。GPT 会自动执行，例如：打开 OpenAI 的官方网站。您可以使用它同时打开多个 URL。",
+  "On the Back page.": "在背面页面上。",
+  "Show the Front page.": "显示首页。",
+  "Show the Settings page.": "显示设置页面。"
 }
