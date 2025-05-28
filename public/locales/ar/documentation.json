@@ -137,5 +137,8 @@
   "Image Generation & Edit": "توليد وتحرير الصور",
   "Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data stores can be used simultaneously.": "دعم الملفات واستعلامات قواعد البيانات العلائقية. إذا تم استخدام مخزن بيانات، فسيتم إدراج نتائج الاستعلام كمطالبات لتقديم إجابات مستنيرة. يمكن استخدام عدة مخازن بيانات في وقت واحد.",
   "GPT will choose function to use to get information it needs. Such as weather and time queries. Functions can be called by user directly from the input as well. To list all available functions use `:function ls`. Also refer: Functions": "سيختار GPT الدالة المناسبة لاستخدامها للحصول على المعلومات التي يحتاجها. مثل استعلامات الطقس والوقت. يمكن للمستخدم أيضًا استدعاء الدوال مباشرة من الإدخال. لعرض جميع الدوال المتاحة، استخدم `:function ls`. راجع أيضًا: الدوال",
-  "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "كواحدة من `functions calls`، يمكن للدالة `redirect_to_url()` إعادة التوجيه أو فتح URL في علامة تبويب جديدة. سيقوم GPT بذلك تلقائيًا، على سبيل المثال: افتح الموقع الرسمي لـ OpenAI. يمكنك استخدامها لفتح عدة URL في آنٍ واحد."
+  "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "كواحدة من `functions calls`، يمكن للدالة `redirect_to_url()` إعادة التوجيه أو فتح URL في علامة تبويب جديدة. سيقوم GPT بذلك تلقائيًا، على سبيل المثال: افتح الموقع الرسمي لـ OpenAI. يمكنك استخدامها لفتح عدة URL في آنٍ واحد.",
+  "On the Back page.": "في الصفحة الخلفية.",
+  "Show the Front page.": "عرض الصفحة الرئيسية.",
+  "Show the Settings page.": "اعرض صفحة الإعدادات."
 }
