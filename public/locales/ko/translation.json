@@ -20,5 +20,6 @@
   "email_support_privacy_policy": "이 개인정보 보호정책에 대해 궁금한 점이나 우려사항이 있으시면 `<1><2>support@simple-ai.io</2></1>`로 문의해 주세요.",
   "email_support_subscriptions": "* 기업 사용을 위해서는 `<1><2>support@simple-ai.io</2></1>`로 문의해 주세요.",
   "banking fee ${{bankingFee}} included": "은행 수수료 ${{bankingFee}}가 포함됩니다.",
-  "You already have an unlimited expiration date for `{{role}}`.": "이미 `{{role}}`의 만료일이 무제한입니다."
+  "You already have an unlimited expiration date for `{{role}}`.": "이미 `{{role}}`의 만료일이 무제한입니다.",
+  "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "당신은 `{{role}}`이며, 현재 구독이 만료된 후 `{{targetRole}}`로 다운그레이드할 수 있습니다."
 }

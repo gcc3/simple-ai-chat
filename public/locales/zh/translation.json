@@ -20,5 +20,6 @@
   "email_support_privacy_policy": "如果您对本隐私政策有任何疑问或担忧，请通过`<1><2>support@simple-ai.io</2></1>`与我们联系。",
   "email_support_subscriptions": "如需企业使用，请通过 `<1><2>support@simple-ai.io</2></1>` 与我们联系。",
   "banking fee ${{bankingFee}} included": "银行费用 ${{bankingFee}} 已包含。",
-  "You already have an unlimited expiration date for `{{role}}`.": "您已经拥有`{{role}}`的无限有效期。"
+  "You already have an unlimited expiration date for `{{role}}`.": "您已经拥有`{{role}}`的无限有效期。",
+  "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "您是 `{{role}}`，在您当前的订阅到期后，您可以降级为 `{{targetRole}}`。"
 }

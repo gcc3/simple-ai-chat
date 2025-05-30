@@ -20,5 +20,6 @@
   "email_support_privacy_policy": "Bu gizlilik politikası hakkında herhangi bir sorunuz veya endişeniz varsa, lütfen `<1><2>support@simple-ai.io</2></1>` adresinden bizimle iletişime geçin.",
   "email_support_subscriptions": "* Kurumsal kullanım için lütfen `<1><2>support@simple-ai.io</2></1>` adresinden bizimle iletişime geçin.",
   "banking fee ${{bankingFee}} included": "Banka ücreti ${{bankingFee}} dahildir.",
-  "You already have an unlimited expiration date for `{{role}}`.": "Zaten `{{role}}` için süresiz bir son kullanma tarihiniz var."
+  "You already have an unlimited expiration date for `{{role}}`.": "Zaten `{{role}}` için süresiz bir son kullanma tarihiniz var.",
+  "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "Bir `{{role}}`sınız, mevcut aboneliğiniz sona erdikten sonra `{{targetRole}}`’e düşürebilirsiniz."
 }
