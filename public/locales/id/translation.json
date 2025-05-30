@@ -20,5 +20,6 @@
   "email_support_privacy_policy": "Jika Anda memiliki pertanyaan atau kekhawatiran mengenai kebijakan privasi ini, silakan hubungi kami di `<1><2>support@simple-ai.io</2></1>`.",
   "email_support_subscriptions": "* Untuk penggunaan enterprise, silakan hubungi kami di `<1><2>support@simple-ai.io</2></1>`.",
   "banking fee ${{bankingFee}} included": "Biaya perbankan ${{bankingFee}} sudah termasuk.",
-  "You already have an unlimited expiration date for `{{role}}`.": "Anda sudah memiliki tanggal kedaluwarsa tanpa batas untuk `{{role}}`."
+  "You already have an unlimited expiration date for `{{role}}`.": "Anda sudah memiliki tanggal kedaluwarsa tanpa batas untuk `{{role}}`.",
+  "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "Anda adalah `{{role}}`, Anda dapat menurunkan ke `{{targetRole}}` setelah langganan Anda saat ini berakhir."
 }

@@ -20,5 +20,6 @@
   "email_support_privacy_policy": "Se avete domande o preoccupazioni riguardo questa politica sulla privacy, vi preghiamo di contattarci all'indirizzo `<1><2>support@simple-ai.io</2></1>`.",
   "email_support_subscriptions": "Per l'utilizzo aziendale, si prega di contattarci all'indirizzo `<1><2>support@simple-ai.io</2></1>`.",
   "banking fee ${{bankingFee}} included": "Spese bancarie ${{bankingFee}} incluse.",
-  "You already have an unlimited expiration date for `{{role}}`.": "Hai già una data di scadenza illimitata per `{{role}}`."
+  "You already have an unlimited expiration date for `{{role}}`.": "Hai già una data di scadenza illimitata per `{{role}}`.",
+  "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "Sei un `{{role}}`, puoi effettuare il downgrade a `{{targetRole}}` dopo la scadenza del tuo abbonamento attuale."
 }

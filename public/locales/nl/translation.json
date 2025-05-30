@@ -20,5 +20,6 @@
   "email_support_privacy_policy": "Als u vragen of zorgen heeft over dit privacybeleid, neem dan contact met ons op via `<1><2>support@simple-ai.io</2></1>`.",
   "email_support_subscriptions": "* Voor zakelijk gebruik kunt u contact met ons opnemen via `<1><2>support@simple-ai.io</2></1>`.",
   "banking fee ${{bankingFee}} included": "Bankkosten ${{bankingFee}} inbegrepen.",
-  "You already have an unlimited expiration date for `{{role}}`.": "Je hebt al een onbeperkte vervaldatum voor `{{role}}`."
+  "You already have an unlimited expiration date for `{{role}}`.": "Je hebt al een onbeperkte vervaldatum voor `{{role}}`.",
+  "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "U bent een `{{role}}`, u kunt teruggaan naar `{{targetRole}}` nadat uw huidige abonnement is verlopen."
 }
