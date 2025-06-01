@@ -852,7 +852,8 @@ export default function Home() {
 
       // Subscription page (offline mode: disable if offline)
       if (globalThis.isOnline && systemInfo.use_payment) {
-        setSubscriptionDisplay(true);
+        // Disabled
+        // setSubscriptionDisplay(true);
       }
 
       // Usage page (offline mode: disable if offline)
