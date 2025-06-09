@@ -339,6 +339,21 @@ export default function Home() {
     });
   }
 
+  // Attach to session
+  const attachSession = (session) => {
+    setSession(session.id);
+    setTime(session.id);
+
+    // Truncate input and output characters
+    session.logs.map(item => {
+      if (item.input.length > 150) item.input = item.input.substring(0, 150) + " ...";
+      if (item.output.length > 150) item.output = item.output.substring(0, 150) + " ...";
+      return item;
+    });
+
+    printOutput(`Session (id:${session.id}) attached. Use \`→\` and \`←\` (or \`j\` and \`k\`) to navigate between session logs (length:${session.length}).\n\nPreview:\n` + JSON.stringify(session.logs, null, 2));
+  }
+
   // Handle global shortcut keys
   const handleKeyDown = useCallback((event) => {
     switch (event.key) {
@@ -616,7 +631,7 @@ export default function Home() {
                 if (!session) {
                   console.log("No next session.");
                   printOutput("No next session.");
-                  setSession(1);
+                  setSession(-1);
                   return;
                 } else {
                   // Attach to it
@@ -649,7 +664,7 @@ export default function Home() {
                 if (!session) {
                   console.log("No next session.");
                   printOutput("No next session.");
-                  setSession(1);
+                  setSession(-1);
                   return;
                 } else {
                   // Attach to it
@@ -972,21 +987,6 @@ export default function Home() {
     };
     window.addEventListener('resize', handleResize);
     handleResize();
-
-    // Attach to session
-    const attachSession = (session) => {
-      setSession(session.id);
-      setTime(session.id);
-
-      // Truncate input and output characters
-      session.logs.map(item => {
-        if (item.input.length > 150) item.input = item.input.substring(0, 150) + " ...";
-        if (item.output.length > 150) item.output = item.output.substring(0, 150) + " ...";
-        return item;
-      });
-
-      printOutput(`Session (id:${session.id}) attached. Use \`→\` and \`←\` (or \`j\` and \`k\`) to navigate between session logs (length:${session.length}).\n\nPreview:\n` + JSON.stringify(session.logs, null, 2));
-    }
 
     // Initialize global output mutation observer
     globalThis.outputMutationObserver = new MutationObserver(mutationsList => {

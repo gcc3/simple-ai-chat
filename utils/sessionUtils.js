@@ -46,22 +46,22 @@ function containsOnlyNumbers(str) {
   return /^\d+$/.test(str);
 }
 
-export function verifySessionId(session) {
-  if (!session) {
+export function verifySessionId(sessionId) {
+  if (!sessionId) {
     return {
       success: false,
       error: "Session is required." 
     };
   }
 
-  if (!containsOnlyNumbers(session)) {
+  if (!containsOnlyNumbers(sessionId)) {
     return {
       success: false,
       error: "Session must be a number." 
     };
   }
 
-  if (session <= 1669766400000 || session >= 2016921600000) {
+  if (sessionId <= 1669766400000 || sessionId >= 2016921600000) {
     return {
       success: false,
       error: "Time traveler detected."
