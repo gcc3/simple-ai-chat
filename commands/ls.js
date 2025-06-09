@@ -1,5 +1,4 @@
-import { attachSession } from "../utils/sessionUtils.js";
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getSetting } from "../utils/settingsUtils.js";
 
 
 export default async function ls(args) {
