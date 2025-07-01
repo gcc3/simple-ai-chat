@@ -1,0 +1,93 @@
+.commandGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.commandButton {
+  padding: 12px 15px;
+  background-color: var(--button-secondary-background-color, #6c757d);
+  color: var(--button-secondary-text-color, white);
+  border: 1px solid var(--button-secondary-border-color, #6c757d);
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.commandButton:hover {
+  background-color: var(--button-secondary-hover-background-color, #5a6268);
+  border-color: var(--button-secondary-hover-border-color, #545b62);
+}
+
+.form {
+  padding: 10px;
+  border-top: 1px solid var(--border-color, #eee);
+  margin-top: 15px;
+}
+
+.form h3 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: var(--text-color);
+}
+
+.form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: var(--text-secondary-color, #333);
+}
+
+.form input[type="text"],
+.form input[type="password"],
+.form input[type="email"] {
+  width: 100%; /* Full width */
+  padding: 10px;
+  margin-bottom: 15px; /* Increased margin */
+  border: 1px solid var(--input-border-color, #ccc);
+  border-radius: 5px;
+  box-sizing: border-box; /* Include padding and border in the element's total width and height */
+  font-size: 0.95rem;
+  background-color: var(--input-background-color, #fff);
+  color: var(--text-color, #000);
+}
+
+.form button {
+  width: 100%;
+  padding: 10px 15px;
+  background-color: var(--button-primary-background-color, #007bff);
+  color: var(--button-primary-text-color, white);
+  border: 1px solid var(--button-primary-border-color, #007bff);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.form button:hover {
+  background-color: var(--button-primary-hover-background-color, #0056b3);
+  border-color: var(--button-primary-hover-border-color, #0056b3);
+}
+
+.backButton {
+  margin-top: 10px; /* Space above the back button */
+  background-color: var(--button-tertiary-background-color, #f8f9fa); /* Lighter background for back/cancel */
+  color: var(--button-tertiary-text-color, #343a40);
+  border-color: var(--button-tertiary-border-color, #ced4da);
+}
+
+.backButton:hover {
+  background-color: var(--button-tertiary-hover-background-color, #e2e6ea);
+  border-color: var(--button-tertiary-hover-border-color, #dae0e5);
+}
+
+/* Focus styles for accessibility */
+.commandButton:focus,
+.form input:focus,
+.form button:focus {
+  outline: 2px solid var(--focus-ring-color, #0056b3);
+  outline-offset: 2px;
+}

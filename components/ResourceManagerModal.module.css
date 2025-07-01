@@ -1,0 +1,75 @@
+.form {
+  padding: 15px;
+  background-color: var(--form-background-color, #f9f9f9);
+  border-radius: 5px;
+}
+
+.form h4 { /* Though not used in current JSX, good to have */
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: var(--text-emphasis-color, #007bff);
+}
+
+.form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-secondary-color, #333);
+}
+
+.form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid var(--input-border-color, #ccc);
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 0.95rem;
+  background-color: var(--input-background-color, #fff);
+  color: var(--text-color, #000);
+}
+
+.buttonGroup {
+  display: flex;
+  gap: 10px; /* Space between Use and Unuse buttons */
+  margin-top: 15px; /* Space above the button group */
+}
+
+.buttonGroup button {
+  flex-grow: 1; /* Make buttons share the width equally */
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.useButton {
+  background-color: var(--button-success-background-color, #28a745); /* Green for 'Use' */
+  color: var(--button-success-text-color, white);
+  border: 1px solid var(--button-success-border-color, #28a745);
+}
+
+.useButton:hover {
+  background-color: var(--button-success-hover-background-color, #218838);
+  border-color: var(--button-success-hover-border-color, #1e7e34);
+}
+
+.unuseButton {
+  background-color: var(--button-danger-background-color, #dc3545); /* Red for 'Unuse' */
+  color: var(--button-danger-text-color, white);
+  border: 1px solid var(--button-danger-border-color, #dc3545);
+}
+
+.unuseButton:hover {
+  background-color: var(--button-danger-hover-background-color, #c82333);
+  border-color: var(--button-danger-hover-border-color, #bd2130);
+}
+
+/* Focus styles (optional but good for accessibility) */
+.form input:focus,
+.buttonGroup button:focus {
+  outline: 2px solid var(--focus-ring-color, #0056b3);
+  outline-offset: 2px;
+}
