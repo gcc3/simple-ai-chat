@@ -418,28 +418,33 @@ export default async function(req, res) {
       }
 
       if (part.choices.length > 0) {
+        // Use a safe reference to delta since it can be undefined
+        const delta = part.choices[0].delta || {};
+
         // 1. handle message output
-        const content = part.choices[0].delta.content;
-        if (content) {
+        const content = delta.content;
+        if (typeof content === 'string' && content.length > 0) {
           outputType = TYPE.NORMAL;
           output += content;
           streamOutput(content);
         }
 
         // 2. handle tool calls output
-        const tool_calls = part.choices[0].delta.tool_calls;
-        if (tool_calls) {
+        const tool_calls = Array.isArray(delta.tool_calls) ? delta.tool_calls : null;
+        if (tool_calls && tool_calls.length > 0) {
           outputType = TYPE.TOOL_CALL;
           res.write(`data: ###CALL###${JSON.stringify(tool_calls)}\n\n`); res.flush();
 
           const toolCall = tool_calls[0];
-          const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
-          if (toolCallSameIndex) {
-            // Found same index tool
-            toolCallSameIndex.function.arguments += toolCall.function.arguments;
-          } else {
-            // If not found, add the tool
-            toolCalls.push(toolCall);
+          if (toolCall) {
+            const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
+            if (toolCallSameIndex) {
+              // Found same index tool
+              toolCallSameIndex.function.arguments += toolCall.function.arguments;
+            } else {
+              // If not found, add the tool
+              toolCalls.push(toolCall);
+            }
           }
         }
       }
