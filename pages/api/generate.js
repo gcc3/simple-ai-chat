@@ -449,7 +449,9 @@ export default async function(req, res) {
       model,
       n: 1,
       presence_penalty: 0,
-      response_format: null,
+      response_format: {
+        type: "text"
+      },
       stream: false,
       stream_options: null,
       temperature: sysconf.temperature,
