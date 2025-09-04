@@ -1,4 +1,4 @@
-export function verifiyEmailAddress(email) {
+export function verifyEmailAddress(email) {
   // Check if the email is valid.
   if (!email.includes('@')) {
     return false;

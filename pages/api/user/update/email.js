@@ -1,6 +1,6 @@
 import { getUserByEmail } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
-import { verifiyEmailAddress, evalEmailAddress } from 'utils/emailUtils.js';
+import { verifyEmailAddress, evalEmailAddress } from 'utils/emailUtils.js';
 import { SES } from '@aws-sdk/client-ses';
 import { encode } from 'utils/authUtils.js';
 
@@ -32,7 +32,7 @@ export default async function (req, res) {
   }
 
   // Check if the email is valid.
-  if (!verifiyEmailAddress(email)) {
+  if (!verifyEmailAddress(email)) {
     return res.status(400).json({
       success: false,
       error: "`email` is invalid.",
