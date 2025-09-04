@@ -247,36 +247,6 @@ export default async function entry(args) {
       return error;
     }
   }
-  
-  // Set settings
-  if (command === "reset" && args[1]) {
-    if (args.length != 2) {
-      return "Usage: :user reset [key]";
-    }
-    
-    if (!getSetting("user")) {
-      return "Please login.";
-    }
-
-    const key = args[1];
-
-    try {
-      const data = await updateUserSetting(key);
-      if (data) {
-        if (data.success) {
-          // Refresh local user as the user.settings is updated
-          refreshLocalUser();
-          
-          return "Setting reset.";
-        } else {
-          return data.error;
-        }
-      }
-    } catch (error) {
-      console.error(error);
-      return error;
-    }
-  }
 
   // Reset password
   if (command === "reset" && args[1] === "pass") {
@@ -310,6 +280,36 @@ export default async function entry(args) {
       }
 
       return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Set settings
+  if (command === "reset" && args[1]) {
+    if (args.length != 2) {
+      return "Usage: :user reset [key]";
+    }
+    
+    if (!getSetting("user")) {
+      return "Please login.";
+    }
+
+    const key = args[1];
+
+    try {
+      const data = await updateUserSetting(key);
+      if (data) {
+        if (data.success) {
+          // Refresh local user as the user.settings is updated
+          refreshLocalUser();
+          
+          return "Setting reset.";
+        } else {
+          return data.error;
+        }
+      }
     } catch (error) {
       console.error(error);
       return error;
