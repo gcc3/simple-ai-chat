@@ -1,4 +1,4 @@
-import { verifiyEmailAddress } from "../utils/emailUtils.js";
+import { verifyEmailAddress } from "../utils/emailUtils.js";
 import { getSettings, getSetting, setSetting } from "../utils/settingsUtils.js";
 import { clearLocalUser, refreshLocalUser, generatePassword, updateUserSetting } from "../utils/userUtils.js";
 
@@ -62,7 +62,7 @@ export default async function entry(args) {
     const password = args[3] || "";
 
     // Check if the email is valid.
-    if (!verifiyEmailAddress(email)) {
+    if (!verifyEmailAddress(email)) {
       return "Email is invalid.";
     }
 
@@ -258,7 +258,7 @@ export default async function entry(args) {
     const email = args[3];
 
     // Check if the email is valid.
-    if (!verifiyEmailAddress(email)) {
+    if (!verifyEmailAddress(email)) {
       return "Email is invalid.";
     }
 
@@ -272,6 +272,27 @@ export default async function entry(args) {
           username: username,
           email: email,
         }),
+      });
+
+      const data = await response.json();
+      if (response.status !== 200) {
+        throw data.error || new Error(`Request failed with status ${response.status}`);
+      }
+
+      return data.message;
+    } catch (error) {
+      console.error(error);
+      return error;
+    }
+  }
+
+  // Reset settings
+  // :user reset settings
+  if (command === "reset" && args[1] === "settings") {
+    try {
+      const response = await fetch("/api/user/reset-settings", {
+        method: "POST",
+        credentials: 'include',
       });
 
       const data = await response.json();
@@ -310,27 +331,6 @@ export default async function entry(args) {
           return data.error;
         }
       }
-    } catch (error) {
-      console.error(error);
-      return error;
-    }
-  }
-
-  // Reset settings
-  // :user reset settings
-  if (command === "reset" && args[1] === "settings") {
-    try {
-      const response = await fetch("/api/user/reset-settings", {
-        method: "POST",
-        credentials: 'include',
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      return data.message;
     } catch (error) {
       console.error(error);
       return error;
