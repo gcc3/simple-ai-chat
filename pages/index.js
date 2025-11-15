@@ -801,16 +801,6 @@ export default function Home() {
     initializeSettings();
     initializeSessionMemory();
 
-    // Force fullscreen off for smartphones
-    const userAgentInfo = checkUserAgent();
-    if (userAgentInfo.isIPhone || userAgentInfo.isAndroid) {
-      // Mobile device - force fullscreen to off
-      if (window.innerWidth < 768) {
-        console.log("Smartphone detected: forcing fullscreen to off");
-        setSetting("fullscreen", "off");
-      }
-    }
-
     // System and user configurations
     const getSystemInfo = async () => {
       // Check online status
@@ -2672,14 +2662,11 @@ export default function Home() {
   // Fullscreen control
   const dispatchFullscreen = (mode) => {
     // Fullscreen control
-    const userAgentInfo = checkUserAgent();
-    if (userAgentInfo.isIPhone || userAgentInfo.isAndroid) {
-      // Mobile device
-      if (window.innerWidth < 768) {
-        // Don't use fullscreen mode if the screen is small
-        mode = "off";
-        console.log("Fullscreen default: mobile device narrow.");
-      }
+    // Mobile device
+    if (window.innerWidth < 520) {
+      // Don't use fullscreen mode if the screen is small
+      mode = "off";
+      console.log("Fullscreen default: mobile device, narrow.");
     }
 
     setSetting('fullscreen', mode);
