@@ -127,16 +127,21 @@ export default function Home() {
     if (elOutput) {
       if (ignoreFormatter) {
         // Temproary stop observing
-        // For some output, we don't want to format it
+        // For some output, we don't want to format them.
         globalThis.outputMutationObserver.disconnect();
       }
 
       // Print the output
-      const textHtml = text.replaceAll(/&/g, "&amp;")
+      const textHtml = text.replaceAll("<think>", "::think::")
+                           .replaceAll("</think>", "::think::")
+                           .replaceAll(/&/g, "&amp;")
                            .replaceAll(/</g, "&lt;").replace(/>/g, "&gt;")
                            .replaceAll(/"/g, "&quot;").replace(/'/g, "&#039;")
                            .replaceAll("###RETURN###", '<br>');
-      const textRaw = text.replaceAll("###RETURN###", '\n');
+      
+      const textRaw = text.replaceAll("<think>", "::think::")
+                          .replaceAll("</think>", "::think::")
+                          .replaceAll("###RETURN###", '\n');
 
       if (append) {
         elOutput.innerHTML += textHtml;
