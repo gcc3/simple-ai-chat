@@ -534,7 +534,7 @@ export default function Home() {
 
         // Navigation to previous session
         if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-          console.log("Shortcut: ⌃↑");
+          console.log("Shortcut: ↑");
           event.preventDefault();
 
           if (globalThis.STATE === STATES.IDLE) {
@@ -619,7 +619,7 @@ export default function Home() {
 
         // Navigate to next session
         if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
-          console.log("Shortcut: ⌃↓");
+          console.log("Shortcut: ↓");
           event.preventDefault();
 
           if (globalThis.STATE === STATES.IDLE) {
