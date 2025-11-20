@@ -538,8 +538,13 @@ export default function Home() {
           event.preventDefault();
 
           if (globalThis.STATE === STATES.IDLE) {
+            if (isOffline) {
+              console.log("Aborted: offline.")
+              return;
+            }
+            
             if (!getSetting("user")) {
-              console.error("User not logged in.");
+              console.error("Aborted: user not logged in.");
               printOutput("Please log in to view session history.");
               return;
             }
@@ -571,8 +576,13 @@ export default function Home() {
           console.log("Shortcut: h");
 
           if (globalThis.STATE === STATES.IDLE) {
+            if (isOffline) {
+              console.log("Aborted: offline.")
+              return;
+            }
+            
             if (!getSetting("user")) {
-              console.error("User not logged in.");
+              console.error("Aborted: user not logged in.");
               printOutput("Please log in to view session history.");
               return;
             }
@@ -623,9 +633,13 @@ export default function Home() {
           event.preventDefault();
 
           if (globalThis.STATE === STATES.IDLE) {
+            if (isOffline) {
+              console.log("Aborted: offline.")
+              return;
+            }
+            
             if (!getSetting("user")) {
-              console.error("User not logged in.");
-              printOutput("Please log in to view session history.");
+              console.error("Aborted: user not logged in.");
               return;
             }
 
@@ -656,9 +670,13 @@ export default function Home() {
           event.preventDefault();
 
           if (globalThis.STATE === STATES.IDLE) {
+            if (isOffline) {
+              console.log("Aborted: offline.")
+              return;
+            }
+            
             if (!getSetting("user")) {
-              console.error("User not logged in.");
-              printOutput("Please log in to view session history.");
+              console.error("Aborted: user not logged in.");
               return;
             }
 
