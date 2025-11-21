@@ -52,8 +52,137 @@
   font-style: normal;
 }
 
+:root {
+  /* Default Light Theme Variables */
+  --background-color: #ffffff;
+  --text-color: #202123;
+  --input-background-color: #ffffff;
+  --border-color: #e5e5e5;
+  --placeholder-color: #6c757d;
+  --icon-color: #565869;
+  --button-hover-background-color: #f0f0f0;
+  --dot-color: #cccccc;
+  --dot-hover-color: #0070f3;
+  --nav-background-color: #f0f0f0;
+  --nav-hover-background-color: #e0e0e0;
+  --content-background-color: #f9f9f9;
+  --sub-text-color: #767676;
+  --inline-code-text-color: #202123;
+  --inline-code-background-color: #f0f0f0;
+  --code-block-background-color: #f7f7f7;
+  --code-block-text-color: #202123;
+  --strong-text-background-color: #f0f0f0;
+  --underline-text-background-color: #f0f0f0;
+  --underline-text-color: #202123;
+  --underline-text-hover-background-color: #e0e0e0;
+  --table-border-color: #e0e0e0;
+  --progressbar-background-color: #e9ecef;
+  --progressbar-fill-background-color: #007bff;
+  --button-border-color: #ced4da;
+  --button-selected-background-color: #007bff;
+  --input-border-color: #ced4da;
+  --border-shadow-color: rgba(0, 0, 0, 0.1);
+  --info-text-color: #6c757d;
+  --stats-text-color: #6c757d;
+}
+
+/* Dark Theme Variables */
+html.dark {
+  --background-color: #202123; /* Dark background */
+  --text-color: #ececf1; /* Light text */
+  --input-background-color: #40414f; /* Darker input background */
+  --border-color: #565869; /* Softer borders */
+  --placeholder-color: #8e8ea0; /* Lighter placeholder */
+  --icon-color: #acacbe; /* Lighter icons */
+  --button-hover-background-color: #4d4e5f;
+  --dot-color: #565869;
+  --dot-hover-color: #8e8ea0;
+  --nav-background-color: #2a2b32;
+  --nav-hover-background-color: #343541;
+  --content-background-color: #2a2b32; /* Darker content areas */
+  --sub-text-color: #b0b3b8;
+  --inline-code-text-color: #ececf1;
+  --inline-code-background-color: #40414f;
+  --code-block-background-color: #2a2b32;
+  --code-block-text-color: #d1d5db; /* Specific for code block text in dark */
+  --strong-text-background-color: #40414f;
+  --underline-text-background-color: #40414f;
+  --underline-text-color: #ececf1;
+  --underline-text-hover-background-color: #565869;
+  --table-border-color: #565869;
+  --progressbar-background-color: #40414f;
+  --progressbar-fill-background-color: #007bff; /* Keep progress fill distinct */
+  --button-border-color: #565869;
+  --button-selected-background-color: #007bff; /* Keep selected distinct */
+  --input-border-color: #565869;
+  --border-shadow-color: rgba(0, 0, 0, 0.3); /* Darker shadow */
+  --info-text-color: #8e8ea0;
+  --stats-text-color: #8e8ea0;
+
+  /* Modal Specifics for Dark Theme */
+  --form-background-color: #2a2b32;
+  --text-emphasis-color: #8ab4f8; /* Lighter blue for emphasis */
+  --text-secondary-color: #b0b3b8;
+
+  --button-main-category-background: #4a5568;
+  --button-main-category-text-color: #e2e8f0;
+  --button-main-category-border-color: #4a5568;
+  --button-main-category-hover-background: #2d3748;
+
+  --button-secondary-background-color: #4a5568;
+  --button-secondary-text-color: #e2e8f0;
+  --button-secondary-border-color: #4a5568;
+  --button-secondary-hover-background-color: #2d3748;
+
+  --button-choice-background-color: #40414f;
+  --button-choice-text-color: #e2e8f0;
+  --button-choice-border-color: #565869;
+  --button-choice-hover-background-color: #4d4e5f;
+
+  --button-action-background-color: #3b82f6; /* Brighter blue for actions */
+  --button-action-text-color: white;
+  --button-action-border-color: #3b82f6;
+  --button-action-hover-background-color: #2563eb;
+
+  --button-tertiary-background-color: #565869;
+  --button-tertiary-text-color: #e2e8f0;
+  --button-tertiary-border-color: #565869;
+  --button-tertiary-hover-background-color: #4a5568;
+
+  --button-info-background-color: #facc15; /* Yellow for info */
+  --button-info-text-color: #422006;
+  --button-info-border-color: #facc15;
+  --button-info-hover-background-color: #eab308;
+
+  --button-success-background-color: #22c55e; /* Green for success */
+  --button-success-text-color: white;
+  --button-success-border-color: #22c55e;
+  --button-success-hover-background-color: #16a34a;
+
+  --button-danger-background-color: #ef4444; /* Red for danger */
+  --button-danger-text-color: white;
+  --button-danger-border-color: #ef4444;
+  --button-danger-hover-background-color: #dc2626;
+
+  --focus-ring-color: #60a5fa; /* Lighter blue for focus ring in dark mode */
+}
+
+
+/* Dark Theme Variables (example, you might have these defined elsewhere or via JS) */
+  /*
+  --background-color: #343541;
+  --text-color: #ececf1;
+  --input-background-color: #40414f;
+  --border-color: #565869;
+  --placeholder-color: #8e8ea0;
+  --icon-color: #acacbe;
+  --button-hover-background-color: #4d4e5f;
+  */
+}
+
 body {
   background-color: var(--background-color);
+  color: var(--text-color); /* Ensure body text color uses the variable */
 }
 code {
   font-family: "Fira Code", monospace !important;

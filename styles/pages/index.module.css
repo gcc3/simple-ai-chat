@@ -9,7 +9,17 @@
 }
 
 /* container */
-.main .front,
+.main .front {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 800px; /* Increased max-width for a wider chat interface */
+  height: 100vh; /* Full viewport height */
+  margin: 0 auto; /* Center the content */
+  padding-bottom: 80px; /* Space for the input bar */
+  box-sizing: border-box;
+}
+
 .main .back {
   flex-direction: column;
   width: 100%;
@@ -17,39 +27,75 @@
 }
 
 /* input area */
-.main .inputform {
+.main .inputForm { /* Renamed from inputform to inputForm for consistency */
   display: flex;
-  flex-direction: column;
+  align-items: center; /* Vertically align items in the input bar */
   width: 100%;
-  max-width: 625px;
-  background-color: transparent;  /* input area background color */
+  max-width: 768px; /* Max width for the input bar itself */
+  margin: 0 auto; /* Center the input bar */
+  padding: 10px;
+  background-color: var(--background-color); /* Match chatgpt theme */
+  border-top: 1px solid var(--border-color); /* Subtle top border */
+  position: fixed; /* Stick to the bottom */
+  bottom: 0;
+  left: 0;
+  right: 0;
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.05); /* Subtle shadow like chatgpt */
+  z-index: 1000; /* Ensure it's above other content */
 }
+
 .main .input {
-  height: 45px;
-  padding: 10px 14px;
+  flex-grow: 1; /* Allow textarea to take available space */
+  min-height: 45px; /* Minimum height */
+  padding: 10px 15px; /* Adjusted padding */
   outline: 0;
-  outline-color: #adadad;
-  box-shadow: none;
   border: 1px solid var(--border-color);
-  border-radius: 9px;
-  box-shadow: 0.21875rem 0.21875rem 0.875rem var(--border-shadow-color);
-  background-color: var(--background-color);
+  border-radius: 12px; /* More rounded corners */
+  background-color: var(--input-background-color, var(--background-color)); /* Use specific var or fallback */
   color: var(--text-color);
+  resize: none; /* Prevent manual resizing */
+  font-size: 1rem; /* Standard font size */
+  line-height: 1.5; /* Improved line height */
+  margin: 0 8px; /* Margin between buttons and textarea */
 }
+
 .main ::placeholder {
   color: var(--placeholder-color);
   opacity: 1;
 }
+
+.main .inputBarButton {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  cursor: pointer;
+  color: var(--icon-color, #565869); /* Default icon color */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+}
+
+.main .inputBarButton:hover {
+  background-color: var(--button-hover-background-color, #f0f0f0); /* Subtle hover */
+}
+
+.main .inputBarButton svg {
+  width: 20px; /* Consistent icon size */
+  height: 20px;
+}
+
+
 .main .submit {
-  display: none;
+  display: none; /* Hidden as per original, form submitted via JS or Enter key */
 }
 
 /* output area */
 .main .wrapper {
-  padding: 10px 14px;
-  padding-top: 30px;
+  flex-grow: 1; /* Allow output area to take available vertical space */
+  overflow-y: auto; /* Enable scrolling for output */
+  padding: 20px; /* Adjusted padding */
   width: 100%;
-  height: 100%;
 }
 .main .output {
   font-weight: normal;
