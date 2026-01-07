@@ -27,7 +27,7 @@ import katex from 'katex';
 export function markdownFormatter(elOutput) {
   if (!elOutput) return;
   let output = globalThis.rawOutput;
-  
+
   // Check the code black is closed or not
   let codeBlockOpen = false;
   output.split('\n').forEach((line, i) => {
@@ -55,7 +55,7 @@ export function markdownFormatter(elOutput) {
     // /```([^`]+)```/g, it won't match the code block with backtick in it
     // /```((?:(?!```)[\s\S])+?)```/g, it will match the code block with backtick in it
     let codeBlocks = [];
-    result = output.replace(/```((?:(?!```)[\s\S])+?)```/g, function(match, p1) {
+    result = output.replace(/```((?:(?!```)[\s\S])+?)```/g, function (match, p1) {
       codeBlocks.push(p1);
       return '\x00'; // Use a null character as a placeholder
     });
@@ -65,17 +65,17 @@ export function markdownFormatter(elOutput) {
       line = line.trim();
 
       // Replace `text` with <code>text</code>
-      if (line.includes('`')) line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, function(match, p1) {
+      if (line.includes('`')) line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, function (match, p1) {
         // Escape HTML special characters
         let code = p1.replace(/&/g, "&amp;")
-                     .replace(/</g, "&lt;").replace(/>/g, "&gt;")
-                     .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+          .replace(/</g, "&lt;").replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         return `<code class="inline-code">${code}</code>`;  // Inline code
       });
 
       // Temporarily replace text with a placeholder to avoid conflicts
       let placeholders = [];
-      line = line.replace(/\*\*([^*]+)\*\*/g, function(match, p1) {
+      line = line.replace(/\*\*([^*]+)\*\*/g, function (match, p1) {
         placeholders.push('<strong>' + p1 + '</strong>');
         return '\x00'; // Use a null character as a placeholder
       });
@@ -86,7 +86,7 @@ export function markdownFormatter(elOutput) {
       }
 
       // Remove the # at first
-      line = line.replace(/^###\s|^####\s|^#####\s/, '');
+      line = line.replace(/^##\s|^###\s|^####\s|^#####\s/, '');
 
       // Detect URLs
       line = line.replace(/\[([^\]]+)\]\(((\w+:\/\/)?[^()\s]*\([^()\s]*\)[^()\s]*|(\w+:\/\/)?[^()\s]+)\)/g, '<u><a href="$2" target="_blank">$1</a></u>');
@@ -99,7 +99,7 @@ export function markdownFormatter(elOutput) {
       }
       // Sometimes the equation block is not at the beginning of the line
       if (line.includes("\\[") && line.includes("\\]")) {
-        line = line.replace(/\\\[(.*?)\\\]/g, function(match, p1) {
+        line = line.replace(/\\\[(.*?)\\\]/g, function (match, p1) {
           return katex.renderToString(p1.trim(), { throwOnError: false });
         });
       }
@@ -117,14 +117,14 @@ export function markdownFormatter(elOutput) {
       }
       // Inline equation, e.g. /(  /)
       if (line.includes("\\(") && line.includes("\\)")) {
-        line = line.replace(/\\\((.*?)\\\)/g, function(match, p1) {
+        line = line.replace(/\\\((.*?)\\\)/g, function (match, p1) {
           return katex.renderToString(p1.trim(), { throwOnError: false });
         });
       }
 
       // Restore text from placeholders
-      placeholders.forEach(function(placeholder) {
-          line = line.replace('\x00', placeholder);
+      placeholders.forEach(function (placeholder) {
+        line = line.replace('\x00', placeholder);
       });
       return line;
     }).join('<br>');
@@ -136,7 +136,7 @@ export function markdownFormatter(elOutput) {
 
     // Restore code blocks
     // Set language name and highlight code blocks
-    result = result.replace(/\x00/g, function(match, p1) {
+    result = result.replace(/\x00/g, function (match, p1) {
       const codeBlock = codeBlocks.shift();
       if (!codeBlock.includes('\n')) {
         return "```" + codeBlock + "```";  // ignore single line code block
@@ -148,8 +148,8 @@ export function markdownFormatter(elOutput) {
 
       // Remove empty lines at the beginning and the end
       while (codeLines[0] && codeLines[0].trim() === '') codeLines.shift();
-      while (codeLines[codeLines.length - 1] 
-          && codeLines[codeLines.length - 1].trim() === '') codeLines.pop();
+      while (codeLines[codeLines.length - 1]
+        && codeLines[codeLines.length - 1].trim() === '') codeLines.pop();
 
       // indent code blocks
       let indent = Infinity;
@@ -169,8 +169,8 @@ export function markdownFormatter(elOutput) {
       // Escape HTML special characters
       // Important, if don't escape, the code will be highlighted incorrectly, especially for "html" language
       code = code.replace(/&/g, "&amp;")
-                 .replace(/</g, "&lt;").replace(/>/g, "&gt;")
-                 .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        .replace(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 
       return `<pre><code class="code-block !whitespace-pre hljs language-${language}">${code}</code></pre>`;
     });
@@ -185,10 +185,10 @@ export function markdownFormatter(elOutput) {
   })(output);
 
   // Resume observing
-  globalThis.outputMutationObserver.observe(elOutput, { 
-    childList: true, 
-    attributes: false, 
-    subtree: true, 
+  globalThis.outputMutationObserver.observe(elOutput, {
+    childList: true,
+    attributes: false,
+    subtree: true,
     characterData: true
   });
 }
