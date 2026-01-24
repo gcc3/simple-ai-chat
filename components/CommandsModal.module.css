@@ -1,0 +1,31 @@
+.categoryList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.categoryButton {
+  display: block;
+  width: 100%;
+  padding: 12px 18px; /* Increased padding for better touch targets */
+  margin-bottom: 10px;
+  background-color: var(--button-background-color, #007bff); /* Use CSS var or default */
+  color: var(--button-text-color, white); /* Use CSS var or default */
+  border: 1px solid var(--button-border-color, #007bff); /* Use CSS var or default */
+  border-radius: 6px; /* Slightly more rounded */
+  text-align: left; /* Align text to the left for a cleaner look */
+  cursor: pointer;
+  font-size: 1rem; /* Standardized font size */
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out; /* Smooth transition */
+}
+
+.categoryButton:hover {
+  background-color: var(--button-hover-background-color, #0056b3); /* Use CSS var or default */
+  border-color: var(--button-hover-border-color, #0056b3); /* Use CSS var or default */
+}
+
+/* Add focus styles for accessibility if desired */
+.categoryButton:focus {
+  outline: 2px solid var(--focus-ring-color, #0056b3); /* Example focus ring */
+  outline-offset: 2px;
+}

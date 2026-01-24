@@ -1,0 +1,66 @@
+.commandGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); /* Responsive grid */
+  gap: 15px; /* Spacing between buttons */
+  padding: 10px 0;
+}
+
+.commandButton {
+  padding: 12px 15px;
+  background-color: var(--button-secondary-background-color, #6c757d); /* A secondary button color */
+  color: var(--button-secondary-text-color, white);
+  border: 1px solid var(--button-secondary-border-color, #6c757d);
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: background-color 0.2s ease-in-out, border-color 0.2s ease-in-out;
+}
+
+.commandButton:hover {
+  background-color: var(--button-secondary-hover-background-color, #5a6268);
+  border-color: var(--button-secondary-hover-border-color, #545b62);
+}
+
+.commandButton:focus {
+  outline: 2px solid var(--focus-ring-color, #0056b3);
+  outline-offset: 2px;
+}
+
+/* Optional: Input group for commands that might take simple parameters */
+.inputGroup {
+  margin-top: 15px;
+  padding: 15px;
+  border: 1px solid var(--border-color, #eee);
+  border-radius: 6px;
+  background-color: var(--content-background-color, #f9f9f9); /* Slightly different background for grouping */
+}
+
+.inputGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500; /* Medium weight for labels */
+  color: var(--text-secondary-color, #333); /* Slightly muted text color for labels */
+}
+
+.inputGroup input[type="text"] {
+  width: calc(100% - 22px); /* Adjust width considering padding and border */
+  padding: 10px;
+  margin-bottom: 12px;
+  border: 1px solid var(--input-border-color, #ccc);
+  border-radius: 5px;
+  font-size: 0.9rem;
+}
+
+.inputGroup button {
+  width: 100%;
+  padding: 10px;
+  background-color: var(--button-primary-background-color, #007bff); /* Primary action color */
+  color: var(--button-primary-text-color, white);
+  border: 1px solid var(--button-primary-border-color, #007bff);
+}
+
+.inputGroup button:hover {
+  background-color: var(--button-primary-hover-background-color, #0056b3);
+  border-color: var(--button-primary-hover-border-color, #0056b3);
+}
