@@ -2491,7 +2491,7 @@ export default function Home() {
       // Split fullscreen use ctrl/shift to submit
       // Use enter to insert a line break
       if (fullscreen === "split") {
-        if (event.ctrlKey || event.shiftKey) {
+        if (event.ctrlKey || event.shiftKey || event.metaKey) {
           // Submit
           onSubmit(event);
         } else {
