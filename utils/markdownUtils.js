@@ -268,7 +268,8 @@ export function markdownFormatter(elOutput) {
     result = result
       .replace(/<\/pre><br><br>/g, '</pre><br>')  // Avoid consecutive breaks after </pre>
       .replace(/<br> ?<\/code><\/pre>/g, '</code></pre>')  // Remove <br> before </pre>
-      .replace(/(?:[^<br>]|^)(<br\s*\/?>\s*<pre>)/gi, '<br>$1'); // If only one <br> before <pre>, add 1 more <br>
+      .replace(/(?:[^<br>]|^)(<br\s*\/?>\s*<pre>)/gi, '<br>$1') // If only one <br> before <pre>, add 1 more <br>
+      .replace(/(<\/table><\/div>)\s*<br\s*\/?>\s*<br\s*\/?>/gi, '$1<br>'); // Reduce extra blank line after tables
 
     return result;
   })(output);
