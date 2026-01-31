@@ -124,18 +124,36 @@ a {
 
 .table-container {
   overflow-x: auto;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1.5px solid var(--table-border-color);
 }
 table {
   width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
 }
 th, td {
   padding: 3px;
   padding-left: 5px;
   padding-right: 5px;
-  border: 1.5px solid var(--table-border-color);
+  border-right: 1.5px solid var(--table-border-color);
+  border-bottom: 1.5px solid var(--table-border-color);
+}
+th:last-child, td:last-child {
+  border-right: none;
+}
+thead th {
+  border-bottom: 1.5px solid var(--table-border-color);
+}
+tbody tr:last-child th, tbody tr:last-child td {
+  border-bottom: none;
 }
 th {
   font-weight: normal;
+}
+td:empty::after {
+  content: "\00a0";
 }
 
 .progressbar {
