@@ -115,26 +115,37 @@ const initializeDatabase = (db) => {
                           return reject(err);
                         }
 
-                        // Create invites table
+                        // Create sessions table
                         db.run(
-                          `CREATE TABLE IF NOT EXISTS invites (
+                          `CREATE TABLE IF NOT EXISTS sessions (
                             id INTEGER PRIMARY KEY,
-                            user TEXT NOT NULL,
-                            code TEXT NOT NULL,
-                            invited_by TEXT NOT NULL,
-                            created_at TEXT NOT NULL
+                            parent_id INTEGER,
+                            text TEXT NOT NULL,
+                            created_by TEXT NOT NULL,
+                            created_at TEXT NOT NULL,
+                            updated_at TEXT
                           );`,
                           (err) => {
                             if (err) {
                               return reject(err);
                             }
 
-                            // Create sessions table
                             db.run(
-                              `CREATE TABLE IF NOT EXISTS sessions (
+                              `CREATE TABLE IF NOT EXISTS models (
                                 id INTEGER PRIMARY KEY,
-                                parent_id INTEGER,
-                                text TEXT NOT NULL,
+                                name TEXT NOT NULL,
+                                owner TEXT NOT NULL,
+                                base_url TEXT NOT NULL,
+                                api_key TEXT NOT NULL,
+                                price_input REAL,
+                                price_output REAL,
+                                is_tool_calls_supported TEXT NOT NULL,
+                                is_vision TEXT NOT NULL,
+                                is_audio TEXT NOT NULL,
+                                is_reasoning TEXT NOT NULL,
+                                is_image TEXT NOT NULL,
+                                context_window INTEGER,
+                                max_output INTEGER,
                                 created_by TEXT NOT NULL,
                                 created_at TEXT NOT NULL,
                                 updated_at TEXT
@@ -143,35 +154,8 @@ const initializeDatabase = (db) => {
                                 if (err) {
                                   return reject(err);
                                 }
-
-                                db.run(
-                                  `CREATE TABLE IF NOT EXISTS models (
-                                    id INTEGER PRIMARY KEY,
-                                    name TEXT NOT NULL,
-                                    owner TEXT NOT NULL,
-                                    base_url TEXT NOT NULL,
-                                    api_key TEXT NOT NULL,
-                                    price_input REAL,
-                                    price_output REAL,
-                                    is_tool_calls_supported TEXT NOT NULL,
-                                    is_vision TEXT NOT NULL,
-                                    is_audio TEXT NOT NULL,
-                                    is_reasoning TEXT NOT NULL,
-                                    is_image TEXT NOT NULL,
-                                    context_window INTEGER,
-                                    max_output INTEGER,
-                                    created_by TEXT NOT NULL,
-                                    created_at TEXT NOT NULL,
-                                    updated_at TEXT
-                                  );`,
-                                  (err) => {
-                                    if (err) {
-                                      return reject(err);
-                                    }
-            
-                                    resolve();
-                                  }
-                                );
+        
+                                resolve();
                               }
                             );
                           }
@@ -1571,45 +1555,7 @@ const updateNodeSettings = async (name, owner, key, value) => {
   }
 };
 
-// VI. Invites
-const insertInvite = async (user, code, invitedBy) => {
-  const db = await getDatabaseConnection();
-  try {
-    return await new Promise((resolve, reject) => {
-      const stmt = db.prepare(`INSERT INTO invites (user, code, invited_by, created_at) VALUES (?, ?, ?, ?)`);
-      stmt.run([user, code, invitedBy, getTimestamp()], function (err) {
-        if (err) {
-          reject(err);
-          return;
-        }
-        
-        // This `this.lastID` provides the ID of the last inserted row.
-        resolve(this.lastID);
-      });
-      stmt.finalize();
-    });
-  } finally {
-    db.close();
-  }
-}
-
-const countInvites = async (user) => {
-  const db = await getDatabaseConnection();
-  try {
-    return await new Promise((resolve, reject) => {
-      db.get(`SELECT COUNT(*) AS count FROM invites WHERE user = ? OR invited_by = ?`, [user, user], (err, rows) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(rows);
-      });
-    });
-  } finally {
-    db.close();
-  }
-};
-
-// VII. Sessions
+// VI. Sessions
 const getSession = async (id) => {
   const db = await getDatabaseConnection();
   try {
@@ -1680,7 +1626,7 @@ const insertSession = async (id, parentId, createdBy) => {
   }
 }
 
-// VIII. Models
+// VII. Models
 // Get model by name
 const getModel = async (name, user) => {
   const db = await getDatabaseConnection();
@@ -1797,8 +1743,6 @@ export {
   deleteUserNodes,
   updateNodeOwner,
   updateNodeSettings,
-  insertInvite,
-  countInvites,
   getSession,
   getPreviousSession,
   getNextSession,

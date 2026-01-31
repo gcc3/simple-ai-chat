@@ -4,7 +4,6 @@ import { generatePassword } from "utils/userUtils.js";
 import { SES } from "@aws-sdk/client-ses";
 import { encode } from "utils/authUtils";
 import { passwordCheck } from "utils/passwordUtils"
-import { generateInviteCode } from "utils/invitesUtils";
 
 export default async function (req, res) {
   // Check method

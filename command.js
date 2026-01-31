@@ -29,7 +29,6 @@ import search from "./commands/search.js";
 import node from "./commands/node.js";
 import set from "./commands/set.js";
 import generate from "./commands/generate.js";
-import invite from "./commands/invite.js";
 import attach from "./commands/attach.js";
 import use from "./commands/use.js";
 import split from "./commands/split.js";
@@ -88,7 +87,6 @@ export default function commands(input, files) {
   if (command === ":node") return node(args);
   if (command === ":set") return set(args);
   if (command === ":generate") return generate(args);
-  if (command === ":invite") return invite(args);
   if (command === ":attach") return attach(args);
   if (command === ":use") return use(args);
   if (command === ":split") return split(args);
@@ -190,7 +188,6 @@ export function getCommands() {
     { id: "", title: "", annotation: "", command: ":user join [group] [password]", options: "", short_description: "Join a group.", description: "Join a group. When creating a user, a group with the same name will also be created, and owned by this user. A user can join any group to access shared data. The password is generated and set in the user's settings." },
     { id: "", title: "", annotation: "", command: ":user leave [group]", options: "", short_description: "Leave a group.", description: "" },
     { id: "", title: "", annotation: "", command: ":user [del|delete] [username]", options: "", short_description: "Delete user with data.", description: "" },
-    { id: "", title: "", annotation: "", command: ":invite [email]", options: "", short_description: "Send invitation email.", description: "Send an invitation email (with a invitation code) to your friends or family to register as users, and both of you will get a reward." },
     { id: "", title: "", annotation: "", command: ":login [username] [password]", options: "[-s|--save]", short_description: "Login user.", description: "Log in user and load configurations from user settings. Use `[-s|--save]` option to save with a longer login experiation, by default 7 days. Or use `--save 1h`, `--save 365d` to specify a period for expiration. * Remember to `:logout` to protect your login credentials if you use a long experiation." },
     { id: "", title: "", annotation: "", command: ":logout", options: "", short_description: "Logout user.", description: "" },
     { id: "commands-config", title: "Information", annotation: "", command: ":info", options: "", short_description: "Show local config.", description: "Show local configurations and session configurations that saved in browser session storage or local storage." },

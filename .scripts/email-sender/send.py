@@ -3,7 +3,6 @@ import boto3
 from botocore.exceptions import ClientError
 from dotenv import load_dotenv
 import os
-import sys
 import argparse
 from datetime import datetime
 from time import sleep
@@ -66,12 +65,7 @@ def get_email_content(user, email_base_content):
         username = user[1]
         content = content.replace("{username}", username)
         logadd(f"{{username}}: {username}")
-
-    if "{invite_code}" in content:
-        invite_code = encode_timestamp(user[14], 3)
-        content = content.replace("{invite_code}", invite_code)
-        logadd(f"{{invite_code}}: {invite_code}")
-
+        
     return content
 
 
