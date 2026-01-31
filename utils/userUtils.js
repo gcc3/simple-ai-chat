@@ -170,7 +170,7 @@ export async function fetchUserUsage() {
 
 export async function updateUserSetting(key, value) {
   if (value) {
-    console.log("Updating user setting, key: `" + key + "`, value: `" + value);
+    console.log("Updating user setting, key: `" + key + "`, value: `" + value + "`");
   } else {
     console.log("Reseting user setting `" + key + "` to default");
   }
