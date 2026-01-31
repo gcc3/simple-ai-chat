@@ -137,6 +137,9 @@ th, td {
 th {
   font-weight: normal;
 }
+td:empty::after {
+  content: "\00a0";
+}
 
 .progressbar {
   width: 100%;
