@@ -32,7 +32,6 @@ export function isOffineCommand(command) {
   if (command === ":node") return 0;  // node command is not available offline
   if (command === ":set") return 1;
   if (command === ":generate") return 0;  // generate is a node command, it not available offline
-  if (command === ":invite") return 0;  // not available offline
   if (command === ":attach") return 0;  // session attach is not available offline
   if (command === ":use") return 1;
   if (command === ":split") return 1;
