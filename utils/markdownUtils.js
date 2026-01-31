@@ -85,8 +85,8 @@ export function markdownFormatter(elOutput) {
         line = line.replace(/\*([^*]+)\*/g, '<em>$1</em>');  // Emphasis
       }
 
-      // Remove the # at first
-      line = line.replace(/^##\s|^###\s|^####\s|^#####\s/, '');
+      // Remove the # at first (h1 to h6)
+      line = line.replace(/^#\s|^##\s|^###\s|^####\s|^#####\s|^######\s/, '');
 
       // Detect URLs
       line = line.replace(/\[([^\]]+)\]\(((\w+:\/\/)?[^()\s]*\([^()\s]*\)[^()\s]*|(\w+:\/\/)?[^()\s]+)\)/g, '<u><a href="$2" target="_blank">$1</a></u>');
