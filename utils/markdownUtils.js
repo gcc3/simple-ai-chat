@@ -51,6 +51,7 @@ export function markdownFormatter(elOutput) {
   elOutput.innerHTML = ((output) => {
     let result = "";
 
+    // Store code blocks
     // Replace ```text``` with <pre><code>text</code></pre>
     // /```([^`]+)```/g, it won't match the code block with backtick in it
     // /```((?:(?!```)[\s\S])+?)```/g, it will match the code block with backtick in it
@@ -60,7 +61,90 @@ export function markdownFormatter(elOutput) {
       return '\x00'; // Use a null character as a placeholder
     });
 
+    // Store table blocks
+    const formatInlineTextForTable = (text) => {
+      let line = text.trim();
+
+      if (line.includes('`')) {
+        line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, function (match, p1) {
+          let code = p1.replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;").replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+          return `<code class="inline-code">${code}</code>`;
+        });
+      }
+
+      let placeholders = [];
+      line = line.replace(/\*\*([^*]+)\*\*/g, function (match, p1) {
+        placeholders.push('<strong>' + p1 + '</strong>');
+        return '\x02';
+      });
+
+      if (line.includes('*')) {
+        line = line.replace(/\*([^*]+)\*/g, '<em>$1</em>');
+      }
+
+      line = line.replace(/\[([^\]]+)\]\(((\w+:\/\/)?[^()\s]*\([^()\s]*\)[^()\s]*|(\w+:\/\/)?[^()\s]+)\)/g, '<u><a href="$2" target="_blank">$1</a></u>');
+
+      if (line.includes("\\[") && line.includes("\\]")) {
+        line = line.replace(/\\\[(.*?)\\\]/g, function (match, p1) {
+          return katex.renderToString(p1.trim(), { throwOnError: false });
+        });
+      }
+      if (line.includes("\\(") && line.includes("\\)")) {
+        line = line.replace(/\\\((.*?)\\\)/g, function (match, p1) {
+          return katex.renderToString(p1.trim(), { throwOnError: false });
+        });
+      }
+
+      placeholders.forEach(function (placeholder) {
+        line = line.replace('\x02', placeholder);
+      });
+      return line;
+    };
+
+    const isTableSeparator = (line) => /^\s*\|?\s*:?\-+:?\s*(\|\s*:?\-+:?\s*)+\|?\s*$/.test(line);
+    const isTableRow = (line) => line.includes('|');
+    const parseTableRow = (line) => {
+      let row = line.trim();
+      if (row.startsWith('|')) row = row.slice(1);
+      if (row.endsWith('|')) row = row.slice(0, -1);
+      return row.split('|').map(cell => cell.trim());
+    };
+
+    const buildTableHtml = (headerLine, bodyLines) => {
+      const headers = parseTableRow(headerLine).map(cell => `<th>${formatInlineTextForTable(cell)}</th>`).join('');
+      const rows = bodyLines.map(rowLine => {
+        const cells = parseTableRow(rowLine).map(cell => `<td>${formatInlineTextForTable(cell)}</td>`).join('');
+        return `<tr>${cells}</tr>`;
+      }).join('');
+      return `<div class="table-container"><table><thead><tr>${headers}</tr></thead><tbody>${rows}</tbody></table></div>`;
+    };
+
+    let tableBlocks = [];
+    let linesForTables = result.split('\n');
+    for (let i = 0; i < linesForTables.length; i++) {
+      const headerLine = linesForTables[i];
+      const separatorLine = linesForTables[i + 1];
+
+      if (headerLine && separatorLine && isTableRow(headerLine) && isTableSeparator(separatorLine)) {
+        let bodyLines = [];
+        let j = i + 2;
+        while (j < linesForTables.length && linesForTables[j].trim() !== '' && isTableRow(linesForTables[j])) {
+          bodyLines.push(linesForTables[j]);
+          j++;
+        }
+        tableBlocks.push(buildTableHtml(headerLine, bodyLines));
+
+        // Use a placeholder for the table block
+        linesForTables.splice(i, j - i, '\x01');
+      }
+    }
+    result = linesForTables.join('\n');
+
     result = result.split('\n').map((line, i) => {
+      if (line === '\x01') return line;
+
       // Trim
       line = line.trim();
 
@@ -173,6 +257,11 @@ export function markdownFormatter(elOutput) {
         .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
 
       return `<pre><code class="code-block !whitespace-pre hljs language-${language}">${code}</code></pre>`;
+    });
+
+    // Restore table blocks
+    result = result.replace(/\x01/g, function () {
+      return tableBlocks.shift() || '';
     });
 
     // Clean up <br> tags before and after <pre> and <code>
