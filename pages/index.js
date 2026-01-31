@@ -122,7 +122,7 @@ export default function Home() {
   };
 
   // Print output
-  const printOutput = (text, ignoreFormatter=true, append=false) => {
+  const printOutput = (text, ignoreFormatter = true, append = false) => {
     const elOutput = elOutputRef.current;
     if (elOutput) {
       if (ignoreFormatter) {
@@ -133,15 +133,15 @@ export default function Home() {
 
       // Print the output
       const textHtml = text.replaceAll("<think>", "::think::")
-                           .replaceAll("</think>", "::think::")
-                           .replaceAll(/&/g, "&amp;")
-                           .replaceAll(/</g, "&lt;").replace(/>/g, "&gt;")
-                           .replaceAll(/"/g, "&quot;").replace(/'/g, "&#039;")
-                           .replaceAll("###RETURN###", '<br>');
-      
+        .replaceAll("</think>", "::think::")
+        .replaceAll(/&/g, "&amp;")
+        .replaceAll(/</g, "&lt;").replace(/>/g, "&gt;")
+        .replaceAll(/"/g, "&quot;").replace(/'/g, "&#039;")
+        .replaceAll("###RETURN###", '<br>');
+
       const textRaw = text.replaceAll("<think>", "::think::")
-                          .replaceAll("</think>", "::think::")
-                          .replaceAll("###RETURN###", '\n');
+        .replaceAll("</think>", "::think::")
+        .replaceAll("###RETURN###", '\n');
 
       if (append) {
         elOutput.innerHTML += textHtml;
@@ -237,7 +237,7 @@ export default function Home() {
   };
 
   // Print session log
-  const printSessionLog = async function(log) {
+  const printSessionLog = async function (log) {
     setTime(log["time"]);
     console.log("Session log:", JSON.stringify(log).slice(0, 500) + " ...");
 
@@ -542,7 +542,7 @@ export default function Home() {
               console.log("Aborted: offline.")
               return;
             }
-            
+
             if (!getSetting("user")) {
               console.error("Aborted: user not logged in.");
               printOutput("Please log in to view session history.");
@@ -580,7 +580,7 @@ export default function Home() {
               console.log("Aborted: offline.")
               return;
             }
-            
+
             if (!getSetting("user")) {
               console.error("Aborted: user not logged in.");
               printOutput("Please log in to view session history.");
@@ -637,7 +637,7 @@ export default function Home() {
               console.log("Aborted: offline.")
               return;
             }
-            
+
             if (!getSetting("user")) {
               console.error("Aborted: user not logged in.");
               return;
@@ -674,7 +674,7 @@ export default function Home() {
               console.log("Aborted: offline.")
               return;
             }
-            
+
             if (!getSetting("user")) {
               console.error("Aborted: user not logged in.");
               return;
@@ -762,7 +762,7 @@ export default function Home() {
                   const log = r.result["log"];
                   printSessionLog(log);
                 }
-            });
+              });
           } else {
             console.log("Aborted as generating.");
           }
@@ -785,7 +785,7 @@ export default function Home() {
                   const log = r.result["log"];
                   printSessionLog(log);
                 }
-            });
+              });
           } else {
             console.log("Aborted as generating.");
           }
@@ -974,18 +974,18 @@ export default function Home() {
       // If user set language, it will be used here.
       const lang = getSetting("lang").trim();
       console.log("User setting's language for UI: " + lang);
-      
+
       // Set i18n language
       i18nLang = lang.split("-")[0];  // i18n language, e.g. en for en-US
     } else {
       // Use the browser language to set the i18nLang
       const browserLang = navigator.language || navigator.userLanguage;
       console.log("Use browser language for UI: " + browserLang);
-      
+
       // Set i18n language
       i18nLang = browserLang.split("-")[0];
     }
-    
+
     // Set i18n language
     if (i18n.language !== i18nLang) {
       i18n.changeLanguage(i18nLang)
@@ -1098,7 +1098,7 @@ export default function Home() {
                   const log = r.result["log"];
                   printSessionLog(log);
                 }
-            });
+              });
           } else {
             console.log("Aborted as generating.");
           }
@@ -1247,17 +1247,17 @@ export default function Home() {
     }
 
     // 2. Replace the full-width characters with half-width
-    const input = globalThis.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
+    const input = globalThis.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function (s) {
       return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
     });
 
     // Check if the input is empty
     if (image_urls.length == 0
-     && file_urls.length == 0
-     && input.trim().length == 0) {
+      && file_urls.length == 0
+      && input.trim().length == 0) {
       console.log("Input is empty.");
       return;
-     }
+    }
 
     // Clear input and put it to placeholder
     const elInput = elInputRef.current;
@@ -1381,8 +1381,8 @@ export default function Home() {
       const functionString = input.substring(1);
       const functions = functionString.split(",!");
       if (functionString.length === 0
-       || !functionString.includes("(") || !functionString.includes(")")
-       || functions.length === 0) {
+        || !functionString.includes("(") || !functionString.includes(")")
+        || functions.length === 0) {
         printOutput("Function invalid.");
         return;
       }
@@ -1499,7 +1499,7 @@ export default function Home() {
     // Generation mode switch
     // Local mode
     if (getSetting("baseUrl").includes("localhost")
-     || getSetting("baseUrl").includes("127.0.0.1")) {
+      || getSetting("baseUrl").includes("127.0.0.1")) {
       console.log("Start. (Local)");
       generate_msg(input, image_urls, file_urls);
       return;
@@ -1530,7 +1530,7 @@ export default function Home() {
   }
 
   // M1. Generate SSE
-  async function generate_sse(input, images=[], files=[]) {
+  async function generate_sse(input, images = [], files = []) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -1548,7 +1548,7 @@ export default function Home() {
     // Input
     console.log("Input (" + config.session + "): " + input);
     if (images.length > 0) console.log("Images: " + images.join(", "));
-    if (files.length > 0)  console.log("Files: " + files.join(", "));
+    if (files.length > 0) console.log("Files: " + files.join(", "));
 
     // MCP functions
     const mcpTools = await getMcpTools(config.functions);
@@ -1557,33 +1557,33 @@ export default function Home() {
 
     // Send SSE request!
     const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
-                                                           + "&images=" + images.join(encodeURIComponent("###"))
-                                                           + "&files=" + files.join(encodeURIComponent("###"))
-                                                           + "&time=" + config.time
-                                                           + "&session=" + config.session
-                                                           + "&model=" + config.model
-                                                           + "&mem_length=" + config.mem_length
-                                                           + "&functions=" + config.functions
-                                                           + "&mcp_tools=" + encodeURIComponent(mcpToolsString)
-                                                           + "&role=" + config.role
-                                                           + "&stores=" + config.stores
-                                                           + "&node=" + config.node
-                                                           + "&use_stats=" + config.use_stats
-                                                           + "&use_eval=" + config.use_eval
-                                                           + "&use_location=" + config.use_location
-                                                           + "&location=" + config.location
-                                                           + "&lang=" + config.lang
-                                                           + "&use_system_role=" + config.use_system_role);
+      + "&images=" + images.join(encodeURIComponent("###"))
+      + "&files=" + files.join(encodeURIComponent("###"))
+      + "&time=" + config.time
+      + "&session=" + config.session
+      + "&model=" + config.model
+      + "&mem_length=" + config.mem_length
+      + "&functions=" + config.functions
+      + "&mcp_tools=" + encodeURIComponent(mcpToolsString)
+      + "&role=" + config.role
+      + "&stores=" + config.stores
+      + "&node=" + config.node
+      + "&use_stats=" + config.use_stats
+      + "&use_eval=" + config.use_eval
+      + "&use_location=" + config.use_location
+      + "&location=" + config.location
+      + "&lang=" + config.lang
+      + "&use_system_role=" + config.use_system_role);
 
     let done_evaluating = false;
     let toolCalls = [];
 
     // Handle the SSE events
-    openaiEssSrouce.onopen = function(event) {
+    openaiEssSrouce.onopen = function (event) {
       console.log("Session start.");
     }
 
-    openaiEssSrouce.onmessage = async function(event) {
+    openaiEssSrouce.onmessage = async function (event) {
       if (globalThis.STATE == STATES.IDLE) {
         openaiEssSrouce.close();
         console.log("Session closed by state control.")
@@ -1626,12 +1626,12 @@ export default function Home() {
         const val = parseInt(_eval_);
 
         let valColor = "#767676";                // default
-        if (val >= 7)      valColor = "green";   // green
+        if (val >= 7) valColor = "green";   // green
         else if (val >= 4) valColor = "#CC7722"; // orange
         else if (val >= 0) valColor = "#DE3163"; // red
         !minimalist && setEvaluation(
           <div>
-            self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
+            self_eval_score: <span style={{ color: valColor }}>{_eval_}</span><br></br>
           </div>
         );
 
@@ -1883,7 +1883,7 @@ export default function Home() {
       }
     };
 
-    openaiEssSrouce.onerror = function(error) {
+    openaiEssSrouce.onerror = function (error) {
       console.error("Other stream error: ", error);
       openaiEssSrouce.close();
       return;
@@ -1891,7 +1891,7 @@ export default function Home() {
   }
 
   // M2. Generate message from server, and then call local model engine
-  async function generate_msg(input, images=[], files=[]) {
+  async function generate_msg(input, images = [], files = []) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -1922,7 +1922,7 @@ export default function Home() {
       inputType = TYPE.NORMAL;
       console.log("Input (" + config.session + "): " + input);
       if (images.length > 0) console.log("Images: " + images.join(", "));
-      if (files.length > 0)  console.log("Files: " + files.join(", "));
+      if (files.length > 0) console.log("Files: " + files.join(", "));
     }
 
     // Type II. Tool calls (function calling) input
@@ -2270,7 +2270,7 @@ export default function Home() {
 
   // M0. Generate (without SSE)
   // Legacy generate function
-  async function generate(input, images=[], files=[]) {
+  async function generate(input, images = [], files = []) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -2432,12 +2432,12 @@ export default function Home() {
           const val = parseInt(_eval_);
 
           let valColor = "#767676";                // default
-          if (val >= 7)      valColor = "green";   // green
+          if (val >= 7) valColor = "green";   // green
           else if (val >= 4) valColor = "#CC7722"; // orange
           else if (val >= 0) valColor = "#DE3163"; // red
           !minimalist && setEvaluation(
             <div>
-              self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
+              self_eval_score: <span style={{ color: valColor }}>{_eval_}</span><br></br>
             </div>
           );
         }
@@ -2491,7 +2491,7 @@ export default function Home() {
       // Split fullscreen use ctrl/shift to submit
       // Use enter to insert a line break
       if (fullscreen === "split") {
-        if (event.ctrlKey || event.shiftKey) {
+        if (event.ctrlKey || event.shiftKey || event.metaKey) {
           // Submit
           onSubmit(event);
         } else {
@@ -2609,7 +2609,7 @@ export default function Home() {
     const fullscreen_ = getSetting("fullscreen").trim();
     const placeholder = globalThis.rawPlaceholder;
     const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (getStringMonoLength(placeholder) >= 45 || placeholder.includes("\n"))) ?
-                                 placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
+      placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
     setPlaceholder({ text: placeholderShortern, height: null });
   }
 
@@ -2622,22 +2622,22 @@ export default function Home() {
     }
 
     const fullscreenMode = getSetting("fullscreen");
-    
+
     // Non-fullscreen
     if (fullscreenMode === "off") {
-      
+
       if (!globalThis.rawInput) {
         elInput.style.height = `45px`;
         return;
       }
-      
+
       elInput.style.height = "auto";
-      
+
       if (doSleepToFixAuto) {
         // This sleep magically fixed the hight issue
         await sleep(1)
       }
-      
+
       // Don't know why but scroll height not 45px, will be 44px
       elInput.style.height = `${elInput.scrollHeight + 1}px`;
     }
@@ -2648,14 +2648,14 @@ export default function Home() {
         elInput.style.height = `45px`;
         return;
       }
-      
+
       elInput.style.height = "auto";
-      
+
       if (doSleepToFixAuto) {
         // This sleep magically fixed the height issue
         await sleep(1)
       }
-      
+
       // Don't know why but scroll height not 45px, will be 44px
       elInput.style.height = `${elInput.scrollHeight + 1}px`;
 
@@ -2725,7 +2725,7 @@ export default function Home() {
 
     let prefix = "+file";
     if (type === "image/png" || type === "image/jpeg") prefix = "+image";
-    const filePlaceholder = prefix + "[file_id:" + file_id +"(uploading...)] ";
+    const filePlaceholder = prefix + "[file_id:" + file_id + "(uploading...)] ";
 
     // Insert the placeholder text at the cursor position or text selection
     const text = elInputRef.current.value;
@@ -2753,10 +2753,10 @@ export default function Home() {
     } else {
       const supportedImageTypes = ["image/png", "image/jpeg", "image/jpg"];
       const supportedFileTypes = ["text/plain", "text/markdown",
-                                  "application/pdf",
-                                  "application/json",
-                                  "text/csv", "application/vnd.ms-excel",
-                                  "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
+        "application/pdf",
+        "application/json",
+        "text/csv", "application/vnd.ms-excel",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"];
       const supportedTypes = supportedImageTypes.concat(supportedFileTypes);
 
       // 2. Check file type
@@ -2888,11 +2888,11 @@ export default function Home() {
           <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
             <div className={styles.container}>
               <div className={styles.nav}>
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{ t("Documentation") }</div>
-                {usageDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>{ t("Usage") }</div>}
-                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>{ t("Subscriptions")} </div>}
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.SETTINGS)}>{ t("Settings") }</div>
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>{ t("Privacy Policy") }</div>
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{t("Documentation")}</div>
+                {usageDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>{t("Usage")}</div>}
+                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>{t("Subscriptions")} </div>}
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.SETTINGS)}>{t("Settings")}</div>
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>{t("Privacy Policy")}</div>
               </div>
               <div className={styles.content}>
                 {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
