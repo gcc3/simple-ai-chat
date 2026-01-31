@@ -7,7 +7,7 @@
   "quick_start_6": "Efter inloggning, använd `:use \"WolframAlpha\"` för att aktivera förbättrad matematik.🏛️ Tips: använd `Tab`-tangenten för att autokomplettera.💡",
   "quick_start_3": "Om du har glömt ditt lösenord, återställ det genom att använda kommandot `:user reset pass [username] [email]`.🆘",
   "quick_start_1": "Innan du börjar använda, vänligen registrera dig som en `användare` med kommandot `:user add [användarnamn] [e-post] [lösenord?]`. Till exempel, `:user add john john@example.com ********`. Obs: Inkludera inte klammerparenteserna i ditt kommando.✅",
-  "quick_start_5": "För att navigera mellan chatt-historik, använd piltangenterna `⬅️` och `➡️`. (Eller svep åt vänster och höger på smartphones.📱) För att navigera mellan `sessioner`, använd piltangenterna `⬆️` och `⬇️`.",
+  "quick_start_5": "För att navigera mellan chatt-historik, använd piltangenterna `←` och `→`. (Eller svep åt vänster och höger på smartphones.📱) För att navigera mellan `sessioner`, använd piltangenterna `↑` och `↓`.",
   "quick_start_8": "För att ändra tema, använd `:theme [light|dark|terminal]`.🌈",
   "quick_start_0": "Simple AI fungerar med ett kommandogränssnitt, genvägar och gester. Alla kommandon börjar med `:` (halvbreddskolon).⌨️",
   "quick_start_2": "För att logga in, använd kommandot `:login [användarnamn] [lösenord]`.",

@@ -7,7 +7,7 @@
   "quick_start_6": "Na het inloggen, gebruik `:use \"WolframAlpha\"` om verbeterde wiskunde in te schakelen.🏛️ Tips: gebruik de `Tab` toets om automatisch aan te vullen.💡",
   "quick_start_3": "Als u uw wachtwoord bent vergeten, kunt u het opnieuw instellen met het commando `:user reset pass [gebruikersnaam] [e-mail]`.🆘",
   "quick_start_1": "Voordat u begint met gebruiken, registreer u als `gebruiker` met het commando `:user add [gebruikersnaam] [e-mail] [wachtwoord?]`. Bijvoorbeeld, `:user add john john@example.com ********`. Let op: Voeg de haakjes niet toe aan uw commando.✅",
-  "quick_start_5": "Gebruik de `⬅️` en `➡️` pijltoetsen om tussen chatgeschiedenissen te navigeren. (Of veeg naar links en rechts op smartphones.📱) Gebruik de `⬆️` en `⬇️` pijltoetsen om tussen `sessies` te navigeren.",
+  "quick_start_5": "Gebruik de `←` en `→` pijltoetsen om tussen chatgeschiedenissen te navigeren. (Of veeg naar links en rechts op smartphones.📱) Gebruik de `↑` en `↓` pijltoetsen om tussen `sessies` te navigeren.",
   "quick_start_8": "Om het thema te wijzigen, gebruik `:theme [light|dark|terminal]`.🌈",
   "quick_start_0": "Simple AI werkt met een commando-interface, sneltoetsen en gebaren. Commando's beginnen allemaal met `:` (halve breedte dubbele punt).⌨️",
   "quick_start_2": "Om in te loggen, gebruik het commando `:login [gebruikersnaam] [wachtwoord]`.",

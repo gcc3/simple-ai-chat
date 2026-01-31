@@ -7,7 +7,7 @@
   "quick_start_6": "Setelah masuk, gunakan `:use \"WolframAlpha\"` untuk mengaktifkan matematika tingkat lanjut.🏛️ Tips: gunakan tombol `Tab` untuk autolengkap.💡",
   "quick_start_3": "Jika Anda lupa kata sandi, atur ulang dengan menggunakan perintah `:user reset pass [username] [email]`.🆘",
   "quick_start_1": "Sebelum mulai menggunakan, silakan daftar sebagai `pengguna` dengan perintah `:user add [username] [email] [password?]`. Sebagai contoh, `:user add john john@example.com ********`. Catatan: Jangan sertakan tanda kurung dalam perintah Anda.✅",
-  "quick_start_5": "Untuk berpindah antara riwayat obrolan, gunakan tombol panah `⬅️` dan `➡️`. (Atau geser ke kiri dan ke kanan pada smartphone.📱) Untuk berpindah antara `sesi`, gunakan tombol panah `⬆️` dan `⬇️`.",
+  "quick_start_5": "Untuk berpindah antara riwayat obrolan, gunakan tombol panah `←` dan `→`. (Atau geser ke kiri dan ke kanan pada smartphone.📱) Untuk berpindah antara `sesi`, gunakan tombol panah `↑` dan `↓`.",
   "quick_start_8": "Untuk mengubah tema, gunakan `:theme [light|dark|terminal]`.🌈",
   "quick_start_0": "Simple AI beroperasi menggunakan antarmuka perintah, pintasan, dan gerakan. Semua perintah dimulai dengan `:` (titik dua setengah lebar).⌨️",
   "quick_start_2": "Untuk masuk, gunakan perintah `:login [username] [password]`.",

@@ -6,7 +6,7 @@
   "Privacy Policy": "Datenschutzrichtlinie",
   "quick_start_8": "Um das Thema zu ändern, verwenden Sie `:theme [light|dark|terminal]`.🌈",
   "quick_start_3": "Wenn Sie Ihr Passwort vergessen haben, setzen Sie es mit dem Befehl `:user reset pass [Benutzername] [E-Mail]` zurück.🆘",
-  "quick_start_5": "Um zwischen Chatverläufen zu navigieren, verwenden Sie die Pfeiltasten `⬅️` und `➡️`. (Oder wischen Sie auf Smartphones nach links und rechts.📱) Um zwischen `Sitzungen` zu navigieren, verwenden Sie die Pfeiltasten `⬆️` und `⬇️`.",
+  "quick_start_5": "Um zwischen Chatverläufen zu navigieren, verwenden Sie die Pfeiltasten `←` und `→`. (Oder wischen Sie auf Smartphones nach links und rechts.📱) Um zwischen `Sitzungen` zu navigieren, verwenden Sie die Pfeiltasten `↑` und `↓`.",
   "quick_start_1": "Bevor Sie beginnen, registrieren Sie sich bitte als `Benutzer` mit dem Befehl `:user add [Benutzername] [E-Mail] [Passwort?]`. Zum Beispiel `:user add john john@example.com ********`. Hinweis: Schließen Sie die Klammern nicht in Ihren Befehl ein.✅",
   "quick_start_2": "Um sich anzumelden, verwenden Sie den Befehl `:login [Benutzername] [Passwort]`.",
   "quick_start_6": "Nach dem Einloggen verwenden Sie `:use \"WolframAlpha\"`, um erweiterte Mathematik zu aktivieren.🏛️ Tipps: Verwenden Sie die `Tab`-Taste zur Autovervollständigung.💡",

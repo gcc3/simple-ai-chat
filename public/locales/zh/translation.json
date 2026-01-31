@@ -7,7 +7,7 @@
   "quick_start_6": "登录后，使用 `:use \"WolframAlpha\"` 来启用增强数学功能。🏛️ 提示：使用 `Tab` 键来自动补全。💡",
   "quick_start_3": "如果您忘记了密码，请使用命令 `:user reset pass [username] [email]` 重置。🆘",
   "quick_start_1": "在开始使用前，请使用命令`:user add [username] [email] [password?]`注册为`用户`。例如，`:user add john john@example.com ********`。注意：在您的命令中不要包括方括号。✅",
-  "quick_start_5": "要在聊天记录之间导航，请使用 `⬅️` 和 `➡️` 箭头键。（或在智能手机上向左滑动和向右滑动。📱）要在`会话`之间导航，请使用 `⬆️` 和 `⬇️` 箭头键。",
+  "quick_start_5": "要在聊天记录之间导航，请使用 `←` 和 `→` 箭头键。（或在智能手机上向左滑动和向右滑动。📱）要在`会话`之间导航，请使用 `↑` 和 `↓` 箭头键。",
   "quick_start_8": "要更改主题，请使用 `:theme [light|dark|terminal]`。🌈",
   "quick_start_0": "Simple AI 通过命令界面、快捷方式和手势操作。所有命令都以 `:`（半角冒号）开头。⌨️",
   "quick_start_2": "要登录，请使用命令 `:login [username] [password]`。",

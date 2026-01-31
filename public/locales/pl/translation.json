@@ -7,7 +7,7 @@
   "quick_start_6": "Po zalogowaniu użyj `:use \"WolframAlpha\"`, aby włączyć zaawansowane funkcje matematyczne.🏛️ Wskazówka: użyj klawisza `Tab`, aby uzupełnić automatycznie.💡",
   "quick_start_3": "Jeśli zapomniałeś swojego hasła, zresetuj je używając komendy `:user reset pass [username] [email]`.🆘",
   "quick_start_1": "Przed rozpoczęciem korzystania proszę zarejestrować się jako `user` za pomocą komendy `:user add [username] [email] [password?]`. Na przykład, `:user add john john@example.com ********`. Uwaga: Nie dołączaj nawiasów w swojej komendzie.✅",
-  "quick_start_5": "Aby nawigować między historiami czatu, użyj klawiszy strzałek `⬅️` i `➡️`. (Lub przesuń palcem w lewo i w prawo na smartfonach.📱) Aby nawigować między `sesjami`, użyj klawiszy strzałek `⬆️` i `⬇️`.",
+  "quick_start_5": "Aby nawigować między historiami czatu, użyj klawiszy strzałek `←` i `→`. (Lub przesuń palcem w lewo i w prawo na smartfonach.📱) Aby nawigować między `sesjami`, użyj klawiszy strzałek `↑` i `↓`.",
   "quick_start_8": "Aby zmienić motyw, użyj `:theme [light|dark|terminal]`.🌈",
   "quick_start_0": "Simple AI działa przy użyciu interfejsu poleceń, skrótów i gestów. Wszystkie polecenia zaczynają się od `:` (półszerokości dwukropka).⌨️",
   "quick_start_2": "Aby się zalogować, użyj komendy `:login [username] [password]`.",
