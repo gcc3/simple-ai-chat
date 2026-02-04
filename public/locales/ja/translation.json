@@ -4,7 +4,7 @@
   "Usage": "使用量",
   "Subscriptions": "サブスクリプション",
   "Privacy Policy": "個人情報保護方針",
-  "quick_start_6": "ログイン後、`:use \"WolframAlpha\"` を使用して高度な数学機能を有効にしてください。 ヒント：`Tab` キーを使用して自動補完します。💡",
+  "quick_start_6": "ログイン後、`:use \"WolframAlpha\"` を使用して高度な数学機能を有効にしてください。 ヒント：`Tab` キーを使用して自動補完します。",
   "quick_start_3": "パスワードを忘れた場合は、コマンド `:user reset pass [username] [email]` を使用してリセットしてください。",
   "quick_start_1": "ご利用開始前に、コマンド `:user add [username] [email] [password?]` を使用して `user` として登録してください。例えば、`:user add john john@example.com ********` のように入力します。注: コマンドには括弧を含めないでください。",
   "quick_start_5": "チャット履歴を移動するには、`←` と `→` 矢印キーを使用してください。（またはスマートフォンで左右にスワイプします。）`セッション`間を移動するには、`↑` と `↓` 矢印キーを使用してください。",

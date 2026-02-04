@@ -123,7 +123,7 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Anda dapat menekan tombol Control (untuk macOS tekan tombol command) dan klik nama model, perintah `:session attach` dengan ID sesi akan secara otomatis disalin ke papan klip Anda.",
   "Models": "Model",
   "* Link with your own data. Support link to relational database.": "* Hubungkan data Anda sendiri. Mendukung tautan ke basis data relasional.",
-  "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Hai, selamat datang di Simple AI! 🚀 Saya sedang bekerja untuk menyediakan antarmuka pengguna yang lebih profesional dan ramah bagi programmer untuk berinteraksi dengan AI.",
+  "Hi, welcome to Simple AI!  I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "Hai, selamat datang di Simple AI!  Saya sedang bekerja untuk menyediakan antarmuka pengguna yang lebih profesional dan ramah bagi programmer untuk berinteraksi dengan AI.",
   "CLI (Command-line Interface)": "CLI (Antarmuka Baris Perintah)",
   "Model Context Protocol (MCP)": "Protokol Konteks Model (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "Berinteraksi dengan model visi yang kuat. Untuk menggunakan model visi, tempel atau seret dan jatuhkan gambar ke kotak input.",

@@ -123,7 +123,7 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "您可以按下 Control 键（macOS 用户请按 command 键）并点击模型名称，`:session attach` 命令及会话 ID 将自动复制到您的剪贴板。",
   "Models": "模型",
   "* Link with your own data. Support link to relational database.": "* 链接您自己的数据。支持与关系型数据库的连接。",
-  "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "嗨，欢迎来到简AI！🚀 我正在努力提供一个更专业且更适合程序员使用的用户界面，以便与AI进行交互。",
+  "Hi, welcome to Simple AI!  I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "嗨，欢迎来到简AI！ 我正在努力提供一个更专业且更适合程序员使用的用户界面，以便与AI进行交互。",
   "CLI (Command-line Interface)": "CLI（命令行界面）",
   "Model Context Protocol (MCP)": "模型上下文协议 (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "与强大的视觉模型交互。要使用视觉模型，请将图像粘贴或拖放到输入框中。",

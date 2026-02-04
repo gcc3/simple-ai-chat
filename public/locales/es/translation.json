@@ -4,7 +4,7 @@
   "Usage": "Uso",
   "Subscriptions": "Suscripciones",
   "Privacy Policy": "Política de Privacidad",
-  "quick_start_6": "Después de iniciar sesión, usa `:use \"WolframAlpha\"` para habilitar matemáticas avanzadas. Consejos: utiliza la tecla `Tab` para autocompletar.💡",
+  "quick_start_6": "Después de iniciar sesión, usa `:use \"WolframAlpha\"` para habilitar matemáticas avanzadas. Consejos: utiliza la tecla `Tab` para autocompletar.",
   "quick_start_3": "Si olvidaste tu contraseña, restablécela utilizando el comando `:user reset pass [username] [email]`.",
   "quick_start_1": "Antes de comenzar a usar, por favor regístrese como `usuario` con el comando `:user add [nombre de usuario] [correo electrónico] [contraseña?]`. Por ejemplo, `:user add john john@example.com ********`. Nota: No incluya los corchetes en su comando.",
   "quick_start_5": "Para navegar entre los historiales de chat, usa las teclas de flecha `←` y `→`. (O desliza hacia la izquierda y derecha en smartphones.) Para navegar entre `sesiones`, usa las teclas de flecha `↑` y `↓`.",

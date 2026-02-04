@@ -4,7 +4,7 @@
   "Usage": "AnvĂ¤ndning",
   "Subscriptions": "Prenumerationer",
   "Privacy Policy": "Integritetspolicy",
-  "quick_start_6": "Efter inloggning, använd `:use \"WolframAlpha\"` för att aktivera förbättrad matematik. Tips: använd `Tab`-tangenten för att autokomplettera.💡",
+  "quick_start_6": "Efter inloggning, använd `:use \"WolframAlpha\"` för att aktivera förbättrad matematik. Tips: använd `Tab`-tangenten för att autokomplettera.",
   "quick_start_3": "Om du har glömt ditt lösenord, återställ det genom att använda kommandot `:user reset pass [username] [email]`.",
   "quick_start_1": "Innan du börjar använda, vänligen registrera dig som en `användare` med kommandot `:user add [användarnamn] [e-post] [lösenord?]`. Till exempel, `:user add john john@example.com ********`. Obs: Inkludera inte klammerparenteserna i ditt kommando.",
   "quick_start_5": "För att navigera mellan chatt-historik, använd piltangenterna `←` och `→`. (Eller svep åt vänster och höger på smartphones.) För att navigera mellan `sessioner`, använd piltangenterna `↑` och `↓`.",
