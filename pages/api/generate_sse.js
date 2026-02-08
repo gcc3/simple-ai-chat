@@ -387,7 +387,6 @@ export default async function(req, res) {
       messages: msg.messages,
       model,
       n: 1,
-      presence_penalty: 0,
       response_format: {
         type: "text"
       },

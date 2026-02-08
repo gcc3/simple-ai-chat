@@ -123,7 +123,7 @@
   "You can press Control key (for macOS press command key) and click the model name, a `:session attach` command with the session ID will be automatically copied to your clipboard.": "Control 키를 누르고 모델 이름을 클릭하면(맥OS의 경우 command 키), `:session attach` 명령어와 세션 ID가 자동으로 클립보드에 복사됩니다.",
   "Models": "모델",
   "* Link with your own data. Support link to relational database.": "* 자신의 데이터와 연동하세요. 관계형 데이터베이스 연동을 지원합니다.",
-  "Hi, welcome to Simple AI! 🚀 I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "안녕하세요, Simple AI에 오신 것을 환영합니다! 🚀 AI와 상호작용하기 위한 보다 전문적이고 프로그래머 친화적인 사용자 인터페이스를 제공하기 위해 노력하고 있습니다.",
+  "Hi, welcome to Simple AI!  I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.": "안녕하세요, Simple AI에 오신 것을 환영합니다!  AI와 상호작용하기 위한 보다 전문적이고 프로그래머 친화적인 사용자 인터페이스를 제공하기 위해 노력하고 있습니다.",
   "CLI (Command-line Interface)": "CLI (명령줄 인터페이스)",
   "Model Context Protocol (MCP)": "모델 컨텍스트 프로토콜 (MCP)",
   "Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.": "강력한 Vision 모델과 상호작용하세요. Vision 모델을 사용하려면 이미지를 붙여넣거나 입력 상자에 드래그 앤 드롭하세요.",
