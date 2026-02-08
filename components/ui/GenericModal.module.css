@@ -1,0 +1,115 @@
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure it's above other content like the input bar */
+}
+
+.modal {
+  background-color: var(--background-color, #fff);
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 500px;
+  max-height: 80vh;
+  overflow-y: auto;
+  color: var(--text-color, #000);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-bottom: 1px solid var(--border-color, #eee);
+  padding-bottom: 10px;
+  margin-bottom: 20px;
+}
+
+.header h2 {
+  margin: 0;
+  font-size: 1.25rem;
+}
+
+.closeButton {
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  color: var(--text-color, #000);
+}
+
+.content {
+  /* Style as needed for content within the modal */
+}
+
+.content h3 {
+  margin-top: 0;
+  margin-bottom: 10px;
+  font-size: 1.1rem;
+}
+
+.content ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.content li {
+  margin-bottom: 10px;
+}
+
+.content button,
+.content .button { /* Allow styling <a> or other elements as buttons */
+  display: block;
+  width: 100%;
+  padding: 10px 15px;
+  background-color: var(--button-background-color, #007bff);
+  color: var(--button-text-color, #fff);
+  border: 1px solid var(--button-border-color, #007bff);
+  border-radius: 5px;
+  text-align: center;
+  cursor: pointer;
+  text-decoration: none;
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
+
+.content button:hover,
+.content .button:hover {
+  background-color: var(--button-hover-background-color, #0056b3);
+  border-color: var(--button-hover-border-color, #0056b3);
+}
+
+.content input[type="text"],
+.content input[type="password"],
+.content input[type="email"],
+.content select {
+  width: 100%;
+  padding: 8px;
+  margin-bottom: 10px;
+  border: 1px solid var(--input-border-color, #ccc);
+  border-radius: 4px;
+  box-sizing: border-box;
+  background-color: var(--input-background-color, #fff);
+  color: var(--text-color, #000);
+}
+
+.content label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.content .formActions {
+  margin-top: 20px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}

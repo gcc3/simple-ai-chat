@@ -1,0 +1,113 @@
+.commandGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 15px;
+  padding: 10px 0;
+}
+
+.categorySectionButton {
+  padding: 15px;
+  background-color: var(--button-main-category-background, #17a2b8); /* Info/Settings color */
+  color: var(--button-main-category-text-color, white);
+  border: 1px solid var(--button-main-category-border-color, #17a2b8);
+  border-radius: 6px;
+  text-align: center;
+  cursor: pointer;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.categorySectionButton:hover {
+  background-color: var(--button-main-category-hover-background, #138496);
+}
+
+.form {
+  padding: 15px;
+  border-top: 1px solid var(--border-color, #eee);
+  margin-top: 20px;
+  background-color: var(--form-background-color, #f9f9f9);
+  border-radius: 5px;
+}
+
+.form h4 {
+  margin-top: 0;
+  margin-bottom: 15px;
+  color: var(--text-emphasis-color, #138496); /* Emphasized color for form titles */
+}
+
+.form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: var(--text-secondary-color, #333);
+}
+
+.form input[type="text"] {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid var(--input-border-color, #ccc);
+  border-radius: 5px;
+  box-sizing: border-box;
+  font-size: 0.95rem;
+  background-color: var(--input-background-color, #fff);
+  color: var(--text-color, #000);
+}
+
+.form .buttonGroup {
+  display: flex;
+  gap: 10px; /* Space between buttons in a group */
+  margin-bottom: 15px;
+  flex-wrap: wrap; /* Allow buttons to wrap on smaller screens */
+}
+
+.form .buttonGroup button {
+  flex-grow: 1; /* Allow buttons to share space */
+  padding: 10px 15px;
+  background-color: var(--button-choice-background-color, #e9ecef); /* Neutral color for choices */
+  color: var(--button-choice-text-color, #212529);
+  border: 1px solid var(--button-choice-border-color, #ced4da);
+  transition: background-color 0.2s ease-in-out;
+}
+.form .buttonGroup button:hover {
+  background-color: var(--button-choice-hover-background-color, #d3d9df);
+}
+
+
+.form button { /* Default style for action buttons in the form */
+  padding: 10px 15px;
+  background-color: var(--button-action-background-color, #007bff);
+  color: var(--button-action-text-color, white);
+  border: 1px solid var(--button-action-border-color, #007bff);
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  margin-right: 10px;
+  margin-bottom: 10px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.form button:hover {
+  background-color: var(--button-action-hover-background-color, #0056b3);
+}
+
+.backButton {
+  background-color: var(--button-tertiary-background-color, #6c757d) !important;
+  color: var(--button-tertiary-text-color, white) !important;
+  border-color: var(--button-tertiary-border-color, #6c757d) !important;
+  margin-top: 10px;
+}
+
+.backButton:hover {
+  background-color: var(--button-tertiary-hover-background-color, #5a6268) !important;
+  border-color: var(--button-tertiary-hover-border-color, #545b62) !important;
+}
+
+/* Focus styles */
+.categorySectionButton:focus,
+.form input:focus,
+.form button:focus {
+  outline: 2px solid var(--focus-ring-color, #0056b3);
+  outline-offset: 2px;
+}

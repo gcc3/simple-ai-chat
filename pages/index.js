@@ -44,6 +44,14 @@ import { addLocalLog, resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { isInternetAvailable } from "utils/networkUtils";
 import { getStringMonoLength } from "utils/stringUtils";
 
+// Modal Imports
+import CommandsModal from '../components/CommandsModal';
+import SessionViewModal from '../components/SessionViewModal';
+import UserManagementModal from '../components/UserManagementModal';
+import AiConfigModal from '../components/AiConfigModal';
+import SettingsPrefsModal from '../components/SettingsPrefsModal';
+import InfoLogsModal from '../components/InfoLogsModal';
+import ResourceManagerModal from '../components/ResourceManagerModal';
 
 // Status control
 const STATES = { IDLE: 0, DOING: 1 };
@@ -106,14 +114,41 @@ export default function Home() {
   const [outputImages, setOutputImages] = useState([]);
   const [minimalist, setMinimalist] = useState(false);
 
+  // Modal States
+  const [activeModal, setActiveModal] = useState(null); // null, 'commands', 'sessionView', 'userManagement', etc.
+  const [commandCategory, setCommandCategory] = useState(null); // Stores the selected category to open specific modal
+
   // Refs
   const elInputRef = useRef(null);
   const elOutputRef = useRef(null);
   const elWrapperRef = useRef(null);
+  const fileInputRef = useRef(null); // Ref for the hidden file input
 
   // i18n
   const { t, i18n } = useTranslation();
   const { t: tt } = useTranslation("translation");
+
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      filePlus(file, file.type);
+    }
+    // Reset file input to allow selecting the same file again if needed
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
+  // Function to allow modals to show messages in the main output
+  const handleShowModalMessage = (message, type = 'info') => {
+    // Prefix message to distinguish from regular chat output, or style differently
+    const prefix = type === 'error' ? 'Modal Error: ' : 'Modal Info: ';
+    printOutput(`${prefix}${message}`);
+    // Potentially scroll to view the message if output area is scrollable
+    if (elOutputRef.current) {
+      elOutputRef.current.scrollTop = elOutputRef.current.scrollHeight;
+    }
+  };
 
   // Toggle display
   const toggleDisplay = () => {
@@ -2833,28 +2868,6 @@ export default function Home() {
         {!minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>}
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
-          <form className={styles.inputform} onSubmit={onSubmit}>
-            <textarea
-              id="input"
-              ref={elInputRef}
-              rows="1"
-              className={styles.input}
-              placeholder={placeholder.text}
-              onChange={handleInputChange}
-              onPaste={handlePaste}
-              onDragOver={handleDragOver}
-              onDrop={handleDrop}
-              autoFocus
-              onKeyDown={handleInputKeyDown}
-              autoComplete="off"
-              spellCheck="false"
-            />
-            <input
-              className={styles.submit}
-              type="submit"
-              value={enter}
-            />
-          </form>
           <div id="wrapper" ref={elWrapperRef} className={styles.wrapper}>
             {outputImages.map((image, index) => (
               <div key={index} className="mb-5 image-preview">
@@ -2870,50 +2883,138 @@ export default function Home() {
             {stats && <div className={styles.stats}>{stats}</div>}
             <div className={styles.info} onClick={(event) => {
               let copyText = "";
-              if (event.ctrlKey || event.metaKey) {
-                // Copy attach session command to share
+              if (event.ctrlKey || event.metaKey)
                 copyText = ":session attach " + getSetting("session");
-              } else {
+              else
                 copyText = globalThis.rawOutput;
-              }
               navigator.clipboard.writeText(copyText);
               console.log("Copied:\n" + copyText);
             }}>{info}</div>
           </div>
+          <form className={styles.inputForm} onSubmit={onSubmit}>
+            <input
+              type="file"
+              ref={fileInputRef}
+              onChange={handleFileSelect}
+              style={{ display: 'none' }}
+              accept="image/png, image/jpeg, image/jpg, text/plain, text/markdown, application/pdf, application/json, text/csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.wordprocessingml.document" // Added accept attribute
+            />
+            <button
+              type="button"
+              className={styles.inputBarButton}
+              aria-label="Attach file"
+              onClick={() => fileInputRef.current && fileInputRef.current.click()}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.49"></path></svg>
+            </button>
+            <textarea
+              id="input"
+              ref={elInputRef}
+              rows="1"
+              className={styles.input}
+              placeholder={placeholder.text || "Send a message..."}
+              onChange={handleInputChange}
+              onPaste={handlePaste}
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+              autoFocus
+              onKeyDown={handleInputKeyDown}
+              autoComplete="off"
+              spellCheck="false"
+            />
+            <button type="button" className={styles.inputBarButton} aria-label="Commands" onClick={() => setActiveModal('commands')}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                <polyline points="9 10 4 15 9 20"></polyline>
+                <polyline points="15 4 20 9 15 14"></polyline>
+              </svg>
+            </button>
+            <button type="button" className={styles.inputBarButton} aria-label="Settings" onClick={() => {
+              setDisplay(DISPLAY.BACK);
+              setContent(CONTENT.SETTINGS);
+            }}>
+              <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
+            </button>
+            <input // This is hidden but used to trigger form submission via JS if needed
+              className={styles.submit}
+              type="submit"
+              value={enter}
+              style={{ display: 'none' }}
+            />
+          </form>
         </div>
 
         {display === DISPLAY.BACK &&
           <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
             <div className={styles.container}>
               <div className={styles.nav}>
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{ t("Documentation") }</div>
-                {usageDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>{ t("Usage") }</div>}
-                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>{ t("Subscriptions")} </div>}
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.SETTINGS)}>{ t("Settings") }</div>
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>{ t("Privacy Policy") }</div>
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{t("Documentation")}</div>
+                {usageDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>{t("Usage")}</div>}
+                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>{t("Subscriptions")}</div>}
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.SETTINGS)}>{t("Settings")}</div>
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>{t("Privacy Policy")}</div>
               </div>
               <div className={styles.content}>
-                {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
-                  <Documentation />
-                </div>}
-                {usageDisplay && content === CONTENT.USAGE && <div className={styles.contentitem}>
-                  <Usage />
-                </div>}
-                {subscriptionDisplay && content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}>
-                  <Subscription />
-                </div>}
-                {content === CONTENT.SETTINGS && <div className={styles.contentitem}>
-                  <Settings />
-                </div>}
-                {content === CONTENT.PRIVACY && <div className={styles.contentitem}>
-                  <UserDataPrivacy />
-                </div>}
-                <div className={styles.copyrights}>
-                  <Copyrights />
-                </div>
+                {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}><Documentation /></div>}
+                {usageDisplay && content === CONTENT.USAGE && <div className={styles.contentitem}><Usage /></div>}
+                {subscriptionDisplay && content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}><Subscription /></div>}
+                {content === CONTENT.SETTINGS && <div className={styles.contentitem}><Settings /></div>}
+                {content === CONTENT.PRIVACY && <div className={styles.contentitem}><UserDataPrivacy /></div>}
+                <div className={styles.copyrights}><Copyrights /></div>
               </div>
             </div>
           </div>}
+
+        {/* Modal Rendering */}
+        <CommandsModal
+          isOpen={activeModal === 'commands'}
+          onClose={() => setActiveModal(null)}
+          onSelectCategory={(category) => {
+            setCommandCategory(category);
+            setActiveModal('categorySpecific');
+          }}
+        />
+        {activeModal === 'categorySpecific' && commandCategory === 'sessionView' && (
+          <SessionViewModal
+            isOpen={true}
+            onClose={() => { setActiveModal(null); setCommandCategory(null); }}
+            showMessage={handleShowModalMessage}
+          />
+        )}
+        {activeModal === 'categorySpecific' && commandCategory === 'userManagement' && (
+          <UserManagementModal
+            isOpen={true}
+            onClose={() => { setActiveModal(null); setCommandCategory(null); }}
+            showMessage={handleShowModalMessage}
+          />
+        )}
+        {activeModal === 'categorySpecific' && commandCategory === 'aiConfig' && (
+          <AiConfigModal
+            isOpen={true}
+            onClose={() => { setActiveModal(null); setCommandCategory(null); }}
+            showMessage={handleShowModalMessage}
+          />
+        )}
+        {activeModal === 'categorySpecific' && commandCategory === 'settingsPrefs' && (
+          <SettingsPrefsModal
+            isOpen={true}
+            onClose={() => { setActiveModal(null); setCommandCategory(null); }}
+            showMessage={handleShowModalMessage}
+          />
+        )}
+        {activeModal === 'categorySpecific' && commandCategory === 'infoLogs' && (
+          <InfoLogsModal
+            isOpen={true}
+            onClose={() => { setActiveModal(null); setCommandCategory(null); }}
+            showMessage={handleShowModalMessage}
+          />
+        )}
+        {activeModal === 'categorySpecific' && commandCategory === 'resourceManagement' && (
+          <ResourceManagerModal
+            isOpen={true}
+            onClose={() => { setActiveModal(null); setCommandCategory(null); }}
+            showMessage={handleShowModalMessage}
+          />
+        )}
       </main>
     </div>
   );
