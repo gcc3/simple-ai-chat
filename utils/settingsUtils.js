@@ -4,7 +4,7 @@ const settings = [
   { name: "User",                   key: "user",           inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: "",         },
   { name: "Language",               key: "lang",           inLocalStorage: true,    inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "",         },
   { name: "Theme",                  key: "theme",          inLocalStorage: true,    inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "light",    },
-  { name: "Fullscreen",             key: "fullscreen",     inLocalStorage: true,    inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "off",      },
+  { name: "Fullscreen",             key: "fullscreen",     inLocalStorage: true,    inSessionStorage: true,   inUserSettings: true,   defaultValueIfEmpty: "off",      },
   { name: "Use Voice Speak",        key: "useSpeak",       inLocalStorage: true,    inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "",         },
   { name: "Voice",                  key: "voice",          inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: "default",  },
   { name: "Show stats",             key: "useStats",       inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: "false",    },
@@ -60,6 +60,8 @@ export function getSetting(key) {
   if (setting.inLocalStorage) {
     value = localStorage.getItem(key);
   }
+
+  // If both storages are used (e.g., fullscreen), sessionStorage takes precedence
   if (setting.inSessionStorage) {
     value = sessionStorage.getItem(key);
   }
