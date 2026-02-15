@@ -2,7 +2,6 @@
   "hello": "你好，世界！",
   "Documentation": "帮助文档",
   "Usage": "用量",
-  "Subscriptions": "订阅",
   "Privacy Policy": "隐私政策",
   "quick_start_6": "登录后，使用 `:use \"WolframAlpha\"` 来启用增强数学功能。 提示：使用 `Tab` 键来自动补全。",
   "quick_start_3": "如果您忘记了密码，请使用命令 `:user reset pass [username] [email]` 重置。",

@@ -2,7 +2,6 @@
   "hello": "Merhaba dünya!",
   "Documentation": "Dokümantasyon",
   "Usage": "Kullanım",
-  "Subscriptions": "Abonelikler",
   "Privacy Policy": "Gizlilik Politikası",
   "quick_start_6": "Giriş yaptıktan sonra gelişmiş matematik özelliklerini etkinleştirmek için `:use \"WolframAlpha\"` komutunu kullanın. İpucu: Otomatik tamamlama için `Tab` tuşunu kullanın.",
   "quick_start_3": "Şifrenizi unuttuysanız, `:user reset pass [kullanıcı adı] [e-posta]` komutunu kullanarak sıfırlayın.",

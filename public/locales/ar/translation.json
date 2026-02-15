@@ -2,7 +2,6 @@
   "hello": "رحبا بالعالم!",
   "Documentation": "الوثائق",
   "Usage": "الاستهلاك",
-  "Subscriptions": "الاشتراكات",
   "Privacy Policy": "سياسة الخصوصية",
   "quick_start_8": "لتغيير الثيم، استخدم `:theme [light|dark|terminal]`.",
   "quick_start_3": "إذا نسيت كلمة المرور الخاصة بك، يمكنك إعادة تعيينها باستخدام الأمر `:user reset pass [username] [email]`.",

@@ -697,10 +697,10 @@ function Settings() {
     });
   }, [i18n, t, user]);
 
-  const handleSubscribe = useCallback((subscription) => async () => {
+  const handleEmailSubscribe = useCallback((state) => async () => {
     const response = await fetch("/api/user/update/email-subscription?" + new URLSearchParams({
       email: user.email,
-      email_subscription: subscription,
+      email_subscription: state,  // "1" for subscribe, "0" for non-subscribe
     }, {
       method: "GET",
       headers: {
@@ -947,8 +947,8 @@ function Settings() {
       {user && <div>
         <div className="mt-2">- {t("Email Subscription")}</div>
         <div className="flex flex-wrap items-center mt-2">
-          <button className="mr-2 mb-1" onClick={handleSubscribe("1")}>{t("Subscribe")}</button>
-          <button className="mr-2 mb-1" onClick={handleSubscribe("0")}>{t("Unsubscribe")}</button>
+          <button className="mr-2 mb-1" onClick={handleEmailSubscribe("1")}>{t("Subscribe")}</button>
+          <button className="mr-2 mb-1" onClick={handleEmailSubscribe("0")}>{t("Unsubscribe")}</button>
         </div>
       </div>}
     </>
