@@ -190,48 +190,6 @@ export default function Home() {
     }
   };
 
-  // Print video output (support: YouTube)
-  const printVideo = (videoId, targetRef, beforeOrAfter = "after") => {
-    if (targetRef.current) {
-      // Create a wrapper div to hold the iframe and control its aspect ratio
-      const videoDiv = document.createElement('div');
-      videoDiv.className = "mb-5 video-preview";
-
-      // Here the padding-top is 56.25%, which is the result of (9 / 16 * 100).
-      videoDiv.style.position = 'relative';
-      videoDiv.style.paddingTop = '56.25%'; // Aspect ratio for 16:9
-
-      // Create the iframe
-      const iframe = document.createElement('iframe');
-      iframe.className = "";
-      iframe.style.position = 'absolute';
-      iframe.style.width = '100%';
-      iframe.style.height = '100%';
-      iframe.style.left = '0';
-      iframe.style.top = '0';
-      iframe.style.outline = 'none';
-
-      // Extract the YouTube video ID from the URL
-      iframe.src = `https://www.youtube.com/embed/${videoId}`; // The URL for the YouTube video embed
-      iframe.title = "YouTube video player";
-      iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
-      iframe.allowFullscreen = true;
-
-      // Append the iframe to the wrapper div
-      videoDiv.appendChild(iframe);
-
-      // Append the videoWrapper to the div with the ref
-      const elWrapperRef = targetRef.current.parentNode; // Assuming the parent node is where you want to insert the video
-      if (beforeOrAfter === "after") {
-        elWrapperRef.appendChild(videoDiv);
-      } else if (beforeOrAfter === "before") {
-        elWrapperRef.insertBefore(videoDiv, targetRef.current);
-      }
-    } else {
-      console.error("Target ref is null.");
-    }
-  };
-
   // Print session log
   const printSessionLog = async function(log) {
     setTime(log["time"]);
