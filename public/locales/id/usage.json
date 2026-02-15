@@ -2,8 +2,6 @@
   "User information not found. Please login with command `:login [username] [password]`.": "Informasi pengguna tidak ditemukan. Silakan masuk dengan perintah `:login [nama pengguna] [kata sandi]`.",
   "User": "Pengguna",
   "Email": "Email",
-  "Subscription": "Berlangganan",
-  "Expire at": "Berakhir pada",
   "Monthly Usage": "Penggunaan Bulanan",
   "This Month": "Bulan Ini",
   "Last Month": "Bulan Lalu",

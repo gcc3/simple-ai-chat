@@ -2,8 +2,6 @@
   "User information not found. Please login with command `:login [username] [password]`.": "Информация о пользователе не найдена. Пожалуйста, войдите в систему с помощью команды `:login [имя пользователя] [пароль]`.",
   "User": "Пользователь",
   "Email": "Электронная почта",
-  "Subscription": "Подписка",
-  "Expire at": "Истекает",
   "Monthly Usage": "Ежемесячное использование",
   "This Month": "Этот месяц",
   "Last Month": "Прошлый месяц",

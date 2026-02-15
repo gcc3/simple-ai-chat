@@ -102,8 +102,6 @@ export default function Usage() {
         <div>
           <div>{ t("User") }: {user.username}</div>
           <div>{ t("Email") }: {user.email}</div>
-          <div>{ t("Subscription") }: `{user.role}`</div>
-          <div>{ t("Expire at") }: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : `(${ t("Unlimited") })`} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
           {usage && getRoleLevel(user.role) >= 1 && <div className="mt-3">
             <div>- { t("Monthly Usage") }</div>
             <div className="mt-1">{ t("Use Count") }</div>

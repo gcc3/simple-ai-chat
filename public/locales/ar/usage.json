@@ -2,8 +2,6 @@
   "User information not found. Please login with command `:login [username] [password]`.": "لم يتم العثور على معلومات المستخدم. الرجاء تسجيل الدخول باستخدام الأمر `:login [اسم المستخدم] [كلمة المرور]`.",
   "User": "المستخدم",
   "Email": "البريد الإلكتروني",
-  "Subscription": "الاشتراك",
-  "Expire at": "ينتهي في",
   "Monthly Usage": "الاستخدام الشهري",
   "This Month": "هذا الشهر",
   "Last Month": "الشهر الماضي",

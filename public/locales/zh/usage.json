@@ -2,8 +2,6 @@
   "User information not found. Please login with command `:login [username] [password]`.": "未找到用户信息。请使用 `:login [用户名] [密码]` 命令登录。",
   "User": "用户",
   "Email": "电子邮件",
-  "Subscription": "订阅",
-  "Expire at": "过期时间",
   "Monthly Usage": "每月使用量",
   "This Month": "本月",
   "Last Month": "上月",

@@ -2,8 +2,6 @@
   "User information not found. Please login with command `:login [username] [password]`.": "ログイン情報が見つかりませんでした。コマンド `:login [username] [password]` でログインしてください。",
   "User": "ユーザー",
   "Email": "メール",
-  "Subscription": "サブスクリプション",
-  "Expire at": "有効期限",
   "Monthly Usage": "月間使用量",
   "This Month": "今月",
   "Last Month": "先月",

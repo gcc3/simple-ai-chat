@@ -2,8 +2,6 @@
   "User information not found. Please login with command `:login [username] [password]`.": "उपयोगकर्ता की जानकारी नहीं मिली। कृपया कमांड `:login [उपयोगकर्ता नाम] [पासवर्ड]` के साथ लॉगिन करें।",
   "User": "उपयोगकर्ता",
   "Email": "ईमेल",
-  "Subscription": "सदस्यता",
-  "Expire at": "समाप्ति पर",
   "Monthly Usage": "मासिक उपयोग",
   "This Month": "इस महीने",
   "Last Month": "पिछला महीना",

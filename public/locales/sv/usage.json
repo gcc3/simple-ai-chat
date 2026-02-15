@@ -2,8 +2,6 @@
   "User information not found. Please login with command `:login [username] [password]`.": "Användarinformation hittades inte. Vänligen logga in med kommandot `:login [användarnamn] [lösenord]`.",
   "User": "Användare",
   "Email": "E-post",
-  "Subscription": "Prenumeration",
-  "Expire at": "Utgår den",
   "Monthly Usage": "Månatlig Användning",
   "This Month": "Denna Månad",
   "Last Month": "Förra Månaden",

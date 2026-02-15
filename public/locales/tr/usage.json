@@ -2,8 +2,6 @@
   "User information not found. Please login with command `:login [username] [password]`.": "Kullanıcı bilgisi bulunamadı. Lütfen `:login [kullanıcı adı] [şifre]` komutuyla giriş yapın.",
   "User": "Kullanıcı",
   "Email": "E-posta",
-  "Subscription": "Abonelik",
-  "Expire at": "Bitiş Tarihi",
   "Monthly Usage": "Aylık Kullanım",
   "This Month": "Bu Ay",
   "Last Month": "Geçen Ay",

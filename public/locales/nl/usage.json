@@ -2,8 +2,6 @@
   "User information not found. Please login with command `:login [username] [password]`.": "Gebruikersinformatie niet gevonden. Gelieve in te loggen met het commando `:login [gebruikersnaam] [wachtwoord]`.",
   "User": "Gebruiker",
   "Email": "E-mail",
-  "Subscription": "Abonnement",
-  "Expire at": "Verloopt op",
   "Monthly Usage": "Maandelijks Gebruik",
   "This Month": "Deze Maand",
   "Last Month": "Vorige Maand",

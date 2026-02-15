@@ -2,8 +2,6 @@
   "User information not found. Please login with command `:login [username] [password]`.": "Informazioni utente non trovate. Effettua il login con il comando `:login [nome utente] [password]`.",
   "User": "Utente",
   "Email": "Email",
-  "Subscription": "Abbonamento",
-  "Expire at": "Scade il",
   "Monthly Usage": "Utilizzo Mensile",
   "This Month": "Questo Mese",
   "Last Month": "Mese Scorso",
