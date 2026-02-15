@@ -2,7 +2,6 @@
   "hello": "Witaj świecie!",
   "Documentation": "Dokumentacja",
   "Usage": "Zużycie",
-  "Subscriptions": "Subskrypcje",
   "Privacy Policy": "Polityka prywatności",
   "quick_start_6": "Po zalogowaniu użyj `:use \"WolframAlpha\"`, aby włączyć zaawansowane funkcje matematyczne. Wskazówka: użyj klawisza `Tab`, aby uzupełnić automatycznie.",
   "quick_start_3": "Jeśli zapomniałeś swojego hasła, zresetuj je używając komendy `:user reset pass [username] [email]`.",

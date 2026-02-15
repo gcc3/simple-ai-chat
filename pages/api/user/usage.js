@@ -52,7 +52,7 @@ export default async function (req, res) {
     const payload = {
       id: user.id, 
       username: user.username,
-      subscription: user.role,
+      role: user.role,
       email: user.email,
     };
     const token = createToken(payload);

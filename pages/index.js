@@ -54,9 +54,8 @@ const DISPLAY = { FRONT: 0, BACK: 1 };
 const CONTENT = {
   DOCUMENTATION: 0,
   USAGE: 1,
-  SUBSCRIPTION: 2,
-  PRIVACY: 3,
-  SETTINGS: 4,
+  PRIVACY: 2,
+  SETTINGS: 3,
 };
 
 // Offline
