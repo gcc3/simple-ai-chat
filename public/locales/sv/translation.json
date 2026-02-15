@@ -2,7 +2,6 @@
   "hello": "Hej världen!",
   "Documentation": "Dokumentation",
   "Usage": "AnvĂ¤ndning",
-  "Subscriptions": "Prenumerationer",
   "Privacy Policy": "Integritetspolicy",
   "quick_start_6": "Efter inloggning, använd `:use \"WolframAlpha\"` för att aktivera förbättrad matematik. Tips: använd `Tab`-tangenten för att autokomplettera.",
   "quick_start_3": "Om du har glömt ditt lösenord, återställ det genom att använda kommandot `:user reset pass [username] [email]`.",

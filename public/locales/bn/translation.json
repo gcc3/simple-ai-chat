@@ -2,7 +2,6 @@
   "hello": "হ্যালো বিশ্ব!",
   "Documentation": "ডকুমেন্টেশন",
   "Usage": "ব্যবহার",
-  "Subscriptions": "সাবস্ক্রিপশন",
   "Privacy Policy": "গোপনীয়তা নীতি",
   "quick_start_8": "থিম পরিবর্তন করতে, `:theme [light|dark|terminal]` ব্যবহার করুন।",
   "quick_start_3": "যদি আপনি আপনার পাসওয়ার্ড ভুলে যান, তাহলে `:user reset pass [username] [email]` কমান্ড ব্যবহার করে এটি রিসেট করুন।",

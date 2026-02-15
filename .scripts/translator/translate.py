@@ -24,7 +24,7 @@ def translate(text, target_language_name):
                 "role": "system",
                 "content": "You're an awesome translator! I'm going to give you a text to translate.\n"
                 + 'Now you\'re translating for an AI website called "Simple AI".\n'
-                + "The content (word or sentence) is in Documentation, Usage, Subscriptions, and Prvacy Policy page.\n"
+                + "The content (word or sentence) is in Documentation, Usage, and Prvacy Policy page.\n"
                 + "Remember:\n"
                 + '1. Don\'t translate word "Simple AI", keep it, except if the target language is Chinese then translate to "Simple AI".\n'
                 + '2. Don\'t translate word "token", keep it.\n'
@@ -94,7 +94,6 @@ translation_files = [
     "documentation",
     "privacy_policy",
     "settings",
-    "subscriptions",
     "translation",
     "usage",
 ]

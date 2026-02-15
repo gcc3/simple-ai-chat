@@ -33,7 +33,7 @@ export default async function (req, res) {
       });
     }
 
-    // Extend user subscription
+    // Extend user role
     let wasSuccessful = false;
     if (user.role === role) {
       // Extend user role
@@ -53,7 +53,7 @@ export default async function (req, res) {
       if (process.env.USE_EMAIL === "false" || user.email === "") {
         return res.status(200).json({
           success: true,
-          message: 'Subscription updated.',
+          message: 'Role updated.',
         });
       }
 
@@ -67,7 +67,7 @@ export default async function (req, res) {
       });
       const from = 'support@simple-ai.io';
       const to = user.email;
-      const subject = "Super User Subscription";
+      const subject = "Role Update";
       const emailParams = {
         Source: 'Simple AI <' + from + '>',
         Destination: {
@@ -79,7 +79,7 @@ export default async function (req, res) {
           },
           Body: {
             Html: {
-              Data: "Your subscription is updated.",
+              Data: "Your user role is updated.",
             },
           },
         },
@@ -89,27 +89,27 @@ export default async function (req, res) {
         .then((data) => {
           return res.status(200).json({
             success: true,
-            message: 'Subscription updated, an email is sent to user.',
+            message: 'Role updated, an email is sent to user.',
             data
           });
         }).catch((error) => {
           console.error(error, error.stack);
           return res.status(500).json({
             success: false,
-            error: "Subscription updated, failed to send email to user.",
+            error: "Role updated, failed to send email to user.",
           });
         });
     } else {
       return res.status(400).json({
         success: false,
-        error: 'Failed to update subscription, please contact support.',
+        error: 'Failed to update user role, please contact support.',
        });
     }
   } catch (error) {
     console.error('Error:', error);
     return res.status(500).json({
       success: false,
-      error: 'Error occurred while updating the user subscription, please contact support.'
+      error: 'Error occurred while updating the user role, please contact support.'
     });
   }
 }

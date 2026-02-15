@@ -11,7 +11,6 @@ import { markdownFormatter } from "utils/markdownUtils.js";
 import { passwordFormatter, maskPassword, isCommandMusked } from "utils/passwordUtils";
 import UserDataPrivacy from "components/UserDataPrivacy";
 import Usage from "components/Usage";
-import Subscription from "components/Subscription";
 import Documentation from "components/Documentation";
 import Copyrights from "components/Copyrights";
 import Settings from "components/Settings";
@@ -20,7 +19,6 @@ import { generateFileUrl } from "utils/awsUtils";
 import { initializeSessionMemory, setSession, setTime } from "utils/sessionUtils";
 import 'katex/dist/katex.min.css';
 import { asciiframe } from "utils/donutUtils";
-import { checkUserAgent } from "utils/userAgentUtils";
 import { useTranslation } from 'react-i18next';
 import { simulateKeyPress } from "utils/keyboardUtils";
 import { getAutoCompleteOptions } from "utils/autocompleteUtils";
@@ -37,7 +35,7 @@ import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
 import { TYPE } from '../constants.js';
-import { getHistorySession, getSessionLog, attachSession } from "utils/sessionUtils";
+import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 import { addLocalLog, resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
@@ -56,9 +54,8 @@ const DISPLAY = { FRONT: 0, BACK: 1 };
 const CONTENT = {
   DOCUMENTATION: 0,
   USAGE: 1,
-  SUBSCRIPTION: 2,
-  PRIVACY: 3,
-  SETTINGS: 4,
+  PRIVACY: 2,
+  SETTINGS: 3,
 };
 
 // Offline
@@ -101,7 +98,6 @@ export default function Home() {
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
   const [content, setContent] = useState(CONTENT.DOCUMENTATION);
-  const [subscriptionDisplay, setSubscriptionDisplay] = useState(false);
   const [usageDisplay, setUsageDisplay] = useState(false);
   const [outputImages, setOutputImages] = useState([]);
   const [minimalist, setMinimalist] = useState(false);
@@ -887,12 +883,6 @@ export default function Home() {
       if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
       if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
       if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
-
-      // Subscription page (offline mode: disable if offline)
-      if (globalThis.isOnline && systemInfo.use_payment) {
-        // Disabled
-        // setSubscriptionDisplay(true);
-      }
 
       // Usage page (offline mode: disable if offline)
       if (globalThis.isOnline && systemInfo.use_payment) {
@@ -2888,7 +2878,6 @@ export default function Home() {
               <div className={styles.nav}>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{ t("Documentation") }</div>
                 {usageDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>{ t("Usage") }</div>}
-                {subscriptionDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.SUBSCRIPTION)}>{ t("Subscriptions")} </div>}
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.SETTINGS)}>{ t("Settings") }</div>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>{ t("Privacy Policy") }</div>
               </div>
@@ -2898,9 +2887,6 @@ export default function Home() {
                 </div>}
                 {usageDisplay && content === CONTENT.USAGE && <div className={styles.contentitem}>
                   <Usage />
-                </div>}
-                {subscriptionDisplay && content === CONTENT.SUBSCRIPTION && <div className={styles.contentitem}>
-                  <Subscription />
                 </div>}
                 {content === CONTENT.SETTINGS && <div className={styles.contentitem}>
                   <Settings />

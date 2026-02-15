@@ -4,8 +4,7 @@ import { getRoleLevel, fetchUserInfo, fetchUserUsage } from "utils/userUtils";
 import PayPalButton from "./PayPalButton";
 import { npre } from "utils/numberUtils";
 import { useTranslation } from "react-i18next";
-import moment from "moment";
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getSetting } from "../utils/settingsUtils.js";
 
 
 export default function Usage() {
@@ -100,78 +99,83 @@ export default function Usage() {
       {!user && <div>{ t("User information not found. Please login with command `:login [username] [password]`.") }</div>}
       {user && <div>
         <div>
-          <div className="mb-1">- { t("Subscription Status") }</div>
           <div>{ t("User") }: {user.username}</div>
           <div>{ t("Email") }: {user.email}</div>
-          <div>{ t("Subscription") }: `{user.role}`</div>
-          <div>{ t("Expire at") }: {user.role_expires_at ? moment.unix(user.role_expires_at / 1000).format('MM/DD/YYYY') : `(${ t("Unlimited") })`} {(user.role_expires_at && user.role_expires_at < new Date()) && "(Expired)"}</div>
           {usage && getRoleLevel(user.role) >= 1 && <div className="mt-3">
             <div>- { t("Monthly Usage") }</div>
             <div className="mt-1">{ t("Use Count") }</div>
-            <table className="table-fixed mt-1">
-              <tbody>
-                <tr>
-                  <td className="mr-3">{ t("Use Count") }</td>
-                  <td className="mr-3">{ t("This Month") }: {usage.use_count_monthly.this_month}</td>
-                  <td className="mr-3">{ t("Last Month") }: {usage.use_count_monthly.last_month}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="table-container mt-1">
+              <table className="table-fixed">
+                <tbody>
+                  <tr>
+                    <td className="mr-3">{ t("Use Count") }</td>
+                    <td className="mr-3">{ t("This Month") }: {usage.use_count_monthly.this_month}</td>
+                    <td className="mr-3">{ t("Last Month") }: {usage.use_count_monthly.last_month}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             {usage.model_usage.map((modelUsage, index) => (
               <React.Fragment key={index}>
                 <div className="mt-3">{modelUsage.model}</div>
-                <table className="table-fixed mt-1">
-                  <tbody>
-                    <tr>
-                      <td className="mr-3">{ t("Input Tokens") }</td>
-                      <td className="mr-3">{ t("This Month") }: {modelUsage.token.this_month.input}</td>
-                      <td className="mr-3">{ t("Last Month") }: {modelUsage.token.last_month.input}</td>
-                    </tr>
-                    <tr>
-                      <td className="mr-3">{ t("Output Tokens") }</td>
-                      <td className="mr-3">{ t("This Month") }: {modelUsage.token.this_month.output}</td>
-                      <td className="mr-3">{ t("Last Month") }: {modelUsage.token.last_month.output}</td>
-                    </tr>
-                    <tr>
-                      <td className="mr-3">{ t("Usage Fees") }:</td>
-                      <td className="mr-3"> ${modelUsage.fee.this_month}</td>
-                      <td className="mr-3"> ${modelUsage.fee.last_month}</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div className="table-container mt-1">
+                  <table className="table-fixed">
+                    <tbody>
+                      <tr>
+                        <td className="mr-3">{ t("Input Tokens") }</td>
+                        <td className="mr-3">{ t("This Month") }: {modelUsage.token.this_month.input}</td>
+                        <td className="mr-3">{ t("Last Month") }: {modelUsage.token.last_month.input}</td>
+                      </tr>
+                      <tr>
+                        <td className="mr-3">{ t("Output Tokens") }</td>
+                        <td className="mr-3">{ t("This Month") }: {modelUsage.token.this_month.output}</td>
+                        <td className="mr-3">{ t("Last Month") }: {modelUsage.token.last_month.output}</td>
+                      </tr>
+                      <tr>
+                        <td className="mr-3">{ t("Usage Fees") }:</td>
+                        <td className="mr-3"> ${modelUsage.fee.this_month}</td>
+                        <td className="mr-3"> ${modelUsage.fee.last_month}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </React.Fragment>
             ))}
             <div className="mt-2">* { t("For token pricing, refer to the OpenAI official pricing document.") } (<a href="https://openai.com/api/pricing/"><u>link</u></a>) </div>
             <div className="mt-3">- { t("Rate Limits") }</div>
-            <table className="table-fixed mt-1">
-              <tbody>
-                <tr>
-                  <td className="mr-3">{ t("Use Count") }</td>
-                  <td className="mr-3">{ t("Daily") }: {usage.use_count_frequencies.daily}</td>
-                  <td className="mr-3">{ t("Weekly") }: {usage.use_count_frequencies.weekly}</td>
-                  <td className="mr-3">{ t("Monthly") }: {usage.use_count_frequencies.monthly}</td>
-                </tr>
-              </tbody>
-            </table>
+            <div className="table-container mt-1">
+              <table className="table-fixed">
+                <tbody>
+                  <tr>
+                    <td className="mr-3">{ t("Use Count") }</td>
+                    <td className="mr-3">{ t("Daily") }: {usage.use_count_frequencies.daily}</td>
+                    <td className="mr-3">{ t("Weekly") }: {usage.use_count_frequencies.weekly}</td>
+                    <td className="mr-3">{ t("Monthly") }: {usage.use_count_frequencies.monthly}</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
             {usage.model_usage.map((modelUsage, index) => (
               <React.Fragment key={index}>
                 <div className="mt-3">{modelUsage.model}</div>
-                <table className="table-fixed mt-1">
-                  <tbody>
-                    <tr>
-                      <td className="mr-3">{ t("Input Tokens") }</td>
-                      <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.input}</td>
-                      <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.input}</td>
-                      <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.input}</td>
-                    </tr>
-                    <tr>
-                      <td className="mr-3">{ t("Output Tokens") }</td>
-                      <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.output}</td>
-                      <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.output}</td>
-                      <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.output}</td>
-                    </tr>
-                  </tbody>
-                </table>
+                <div className="table-container mt-1">
+                  <table className="table-fixed">
+                    <tbody>
+                      <tr>
+                        <td className="mr-3">{ t("Input Tokens") }</td>
+                        <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.input}</td>
+                        <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.input}</td>
+                        <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.input}</td>
+                      </tr>
+                      <tr>
+                        <td className="mr-3">{ t("Output Tokens") }</td>
+                        <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.output}</td>
+                        <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.output}</td>
+                        <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.output}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
               </React.Fragment>
             ))}
             <div className="mt-3">
@@ -185,13 +189,15 @@ export default function Usage() {
             </div>
             {getRoleLevel(user.role) >= 3 && <div className="mt-3">
               <div>- { t("Services Usage") }</div>
-              <table className="table-fixed mt-1">
-                <tbody>
-                  <tr>
-                    <td className="mr-3 mt-1">WolframAlpha: 0</td>
-                  </tr>
-                </tbody>
-              </table>
+              <div className="table-container mt-1">
+                <table className="table-fixed">
+                  <tbody>
+                    <tr>
+                      <td className="mr-3 mt-1">WolframAlpha: 0</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>}
             <div className="mt-3">
               <div>- { t("Fees and Balance") }</div>
@@ -221,7 +227,7 @@ export default function Usage() {
             {amount !== null && amount > 0 && <div className="mt-3">
               <div>{ t("Pay") }: {"$" + amount} ({ tt("banking fee ${{bankingFee}} included", { bankingFee }) })</div>
               <div className="mt-3">{ t("Payment methods") }:</div>
-              <div className="mt-1">
+              <div className="table-container mt-1">
                 <table>
                   <thead>
                     <tr>
@@ -236,8 +242,8 @@ export default function Usage() {
                     </tr>
                   </tbody>
                 </table>
-                <div className="mt-2">* { t("Your payment will be securely handled through the banking system; we do not store or collect your payment details.") }</div>
               </div>
+              <div className="mt-2">* { t("Your payment will be securely handled through the banking system; we do not store or collect your payment details.") }</div>
             </div>}
           </div>}
         </div>

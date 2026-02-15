@@ -40,12 +40,12 @@ export async function getUacResult(user, ip, session) {
     };
   }
 
-  // Subscription expired
+  // Role expired
   if (isLogin && user.role_expires_at && user.role_expires_at < Date.now()) {
-    // Urge extend subscription
+    // Urge extend role
     return {
       success: false,
-      error: "Your subscription has expired. Please renew it to continue using our services."
+      error: "Your user role has expired. Please renew it to continue."
     };
   }
 
@@ -56,7 +56,7 @@ export async function getUacResult(user, ip, session) {
     if (isFrequenciesExceeded) {
       return {
         success: false,
-        error: "Your usage frequency has reached the limit. You can upgrade your subscription to increase the limit.",
+        error: "Your usage frequency has reached the limit. Please contact support for assistance.",
       }
     }
 
