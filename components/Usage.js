@@ -100,7 +100,6 @@ export default function Usage() {
       {!user && <div>{ t("User information not found. Please login with command `:login [username] [password]`.") }</div>}
       {user && <div>
         <div>
-          <div className="mb-1">- { t("Subscription Status") }</div>
           <div>{ t("User") }: {user.username}</div>
           <div>{ t("Email") }: {user.email}</div>
           <div>{ t("Subscription") }: `{user.role}`</div>

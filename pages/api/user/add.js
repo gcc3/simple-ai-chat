@@ -169,7 +169,7 @@ export default async function (req, res) {
       .then((data) => {
         let message = "";
         if (userResume) {
-          message = "Welcome back! we've resumed your subscription status." + passwordGuide;
+          message = "Welcome back! we've resumed your account." + passwordGuide;
         } else {
           message = "User \"" + username + "\" is created." + passwordGuide + loginComamndGuide + " Please check your email for verification.";
         }
@@ -193,7 +193,7 @@ export default async function (req, res) {
     let message = "";
     let passwordGuide = !password ? ' Initial password is "' + generatedPassword + '", please change it after login.' : "";
     if (userResume) {
-      message = "Welcome back! We've resumed your subscription status." + passwordGuide;
+      message = "Welcome back! We've resumed your account." + passwordGuide;
     } else {
       // No email provided, send password to console
       message = "User \"" + username + "\" is created." + passwordGuide + loginComamndGuide;

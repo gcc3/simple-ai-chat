@@ -16,8 +16,6 @@ pattern = re.compile(r'\b(t{1,2})\s*\(\s*"([^\"]+)"\s*\)')
 mapping = {
     "documentation": "documentation",
     "settings": "settings",
-    "subscription": "subscriptions",
-    "subscriptioncomparisontable": "subscriptions",
     "usage": "usage",
     "userdataprivacy": "privacy_policy",
 }
