@@ -35,6 +35,7 @@ import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
 import { TYPE } from '../constants.js';
+import { STATES, DISPLAY, CONTENT } from './constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
@@ -43,20 +44,7 @@ import { isInternetAvailable } from "utils/networkUtils";
 import { getStringMonoLength } from "utils/stringUtils";
 
 
-// Status control
-const STATES = { IDLE: 0, DOING: 1 };
 globalThis.STATE = STATES.IDLE;  // a global state
-
-// Front or back display
-const DISPLAY = { FRONT: 0, BACK: 1 };
-
-// Back display content
-const CONTENT = {
-  DOCUMENTATION: 0,
-  USAGE: 1,
-  PRIVACY: 2,
-  SETTINGS: 3,
-};
 
 // Offline
 globalThis.isOffline = false;
@@ -1504,7 +1492,7 @@ export default function Home() {
     console.log("MCP tools: " + mcpToolsString);
 
     // Send SSE request!
-    const openaiEssSrouce = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
+    const openaiEssSource = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
                                                            + "&images=" + images.join(encodeURIComponent("###"))
                                                            + "&files=" + files.join(encodeURIComponent("###"))
                                                            + "&time=" + config.time
@@ -1527,13 +1515,13 @@ export default function Home() {
     let toolCalls = [];
 
     // Handle the SSE events
-    openaiEssSrouce.onopen = function(event) {
+    openaiEssSource.onopen = function(event) {
       console.log("Session start.");
     }
 
-    openaiEssSrouce.onmessage = async function(event) {
+    openaiEssSource.onmessage = async function(event) {
       if (globalThis.STATE == STATES.IDLE) {
-        openaiEssSrouce.close();
+        openaiEssSource.close();
         console.log("Session closed by state control.")
         return;
       }
@@ -1682,7 +1670,7 @@ export default function Home() {
 
       // Handle the DONE signal
       if (event.data === '[DONE]') {
-        openaiEssSrouce.close();
+        openaiEssSource.close();
         console.log("Session closed.")
 
         // Print raw output
@@ -1769,7 +1757,7 @@ export default function Home() {
       if (event.data.startsWith("###ERR###") || event.data.startsWith('[ERR]')) {
         globalThis.STATE = STATES.IDLE;
         window.speechSynthesis.cancel();
-        openaiEssSrouce.close();
+        openaiEssSource.close();
 
         const err = event.data.replace("###ERR###", "").replace("[ERR]", "");
         printOutput(err);
@@ -1797,7 +1785,7 @@ export default function Home() {
               // Stop generating as it will be redirected.
               globalThis.STATE = STATES.IDLE;
               window.speechSynthesis.cancel();
-              openaiEssSrouce.close();
+              openaiEssSource.close();
 
               // Redirect to URL
               window.top.location.href = _event.parameters.url;
@@ -1826,14 +1814,14 @@ export default function Home() {
       } else {
         // If not doing, close the stream
         console.log("Session closed by state control.")
-        openaiEssSrouce.close();
+        openaiEssSource.close();
         return;
       }
     };
 
-    openaiEssSrouce.onerror = function(error) {
+    openaiEssSource.onerror = function(error) {
       console.error("Other stream error: ", error);
-      openaiEssSrouce.close();
+      openaiEssSource.close();
       return;
     };
   }
@@ -1878,15 +1866,11 @@ export default function Home() {
       inputType = TYPE.TOOL_CALL;
       console.log("Input (toolcalls, session = " + config.session + "): " + input);
     }
-
-    // Model switch
-    const use_vision = images && images.length > 0;
-    const model = config.model;
-
+    
     // Set model
     !minimalist && setInfo((
       <div>
-        model: {model}<br></br>
+        model: {config.model}<br></br>
       </div>
     ));
 
@@ -1948,7 +1932,7 @@ export default function Home() {
       let messages = [];
       localLogs.forEach((log) => {
         // Only add messages with the same model
-        if (log.model === model) {
+        if (log.model === config.model) {
           messages.push({
             role: "user",
             content: log.input,
@@ -1981,7 +1965,7 @@ export default function Home() {
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
-      model: model,
+      model: config.model,
       logit_bias: null,
       n: 1,
       response_format: null,
@@ -2008,7 +1992,7 @@ export default function Home() {
           body: JSON.stringify({
             input,
             output,
-            model: model,
+            model: config.model,
             session: getSetting("session"),
             images: [],
             time: Date.now(),
@@ -2026,7 +2010,7 @@ export default function Home() {
         addLocalLog({
           input: input,
           output: output,
-          model: model,
+          model: config.model,
           session: getSetting("session"),
           images: [],
           time: Date.now(),
@@ -2166,10 +2150,9 @@ export default function Home() {
             }
 
             // Set model
-            const model = part.model;
             !minimalist && setInfo((
               <div>
-                model: {model}<br></br>
+                model: {part.model}<br></br>
               </div>
             ));
 
