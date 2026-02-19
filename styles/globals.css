@@ -52,6 +52,10 @@
   font-style: normal;
 }
 
+html {
+  overflow-y: scroll; /* Always show scrollbar gutter to prevent layout shift */
+}
+
 body {
   background-color: var(--background-color);
 }
