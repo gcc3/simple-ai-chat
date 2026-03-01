@@ -11,11 +11,11 @@ import katex from 'katex';
 
         for each line
           Trim
+          Math equation (LaTeX) support
           Inline code
           Emphasis
           Remove the # at first
           Detect URLs
-          Math equation (LaTeX) support      
 
       Resume code block
       Cleanup
@@ -148,33 +148,6 @@ export function markdownFormatter(elOutput) {
       // Trim
       line = line.trim();
 
-      // Replace `text` with <code>text</code>
-      if (line.includes('`')) line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, function (match, p1) {
-        // Escape HTML special characters
-        let code = p1.replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;").replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
-        return `<code class="inline-code">${code}</code>`;  // Inline code
-      });
-
-      // Temporarily replace text with a placeholder to avoid conflicts
-      let placeholders = [];
-      line = line.replace(/\*\*([^*]+)\*\*/g, function (match, p1) {
-        placeholders.push('<strong>' + p1 + '</strong>');
-        return '\x00'; // Use a null character as a placeholder
-      });
-
-      // Replace *text* with <em>text</em>
-      if (line.includes('*')) {
-        line = line.replace(/\*([^*]+)\*/g, '<em>$1</em>');  // Emphasis
-      }
-
-      // Remove the # at first (h1 to h6)
-      line = line.replace(/^#\s|^##\s|^###\s|^####\s|^#####\s|^######\s/, '');
-
-      // Detect URLs
-      line = line.replace(/\[([^\]]+)\]\(((\w+:\/\/)?[^()\s]*\([^()\s]*\)[^()\s]*|(\w+:\/\/)?[^()\s]+)\)/g, '<u><a href="$2" target="_blank">$1</a></u>');
-
       // Math equation (LaTeX) support
       // Equation block, e.g. \[  \]
       if (line.trim().startsWith("\\[") && line.trim().endsWith("\\]")) {
@@ -205,6 +178,33 @@ export function markdownFormatter(elOutput) {
           return katex.renderToString(p1.trim(), { throwOnError: false });
         });
       }
+
+      // Replace `text` with <code>text</code>
+      if (line.includes('`')) line = line.replace(/(?<!`)`([^`]+)`(?!`)/g, function (match, p1) {
+        // Escape HTML special characters
+        let code = p1.replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;").replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+        return `<code class="inline-code">${code}</code>`;  // Inline code
+      });
+
+      // Temporarily replace text with a placeholder to avoid conflicts
+      let placeholders = [];
+      line = line.replace(/\*\*([^*]+)\*\*/g, function (match, p1) {
+        placeholders.push('<strong>' + p1 + '</strong>');
+        return '\x00'; // Use a null character as a placeholder
+      });
+
+      // Replace *text* with <em>text</em>
+      if (line.includes('*')) {
+        line = line.replace(/\*([^*]+)\*/g, '<em>$1</em>');  // Emphasis
+      }
+
+      // Remove the # at first (h1 to h6)
+      line = line.replace(/^#\s|^##\s|^###\s|^####\s|^#####\s|^######\s/, '');
+
+      // Detect URLs
+      line = line.replace(/\[([^\]]+)\]\(((\w+:\/\/)?[^()\s]*\([^()\s]*\)[^()\s]*|(\w+:\/\/)?[^()\s]+)\)/g, '<u><a href="$2" target="_blank">$1</a></u>');
 
       // Restore text from placeholders
       placeholders.forEach(function (placeholder) {
