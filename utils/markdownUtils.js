@@ -11,7 +11,7 @@ import katex from 'katex';
 
         for each line
           Trim
-          Math equation (LaTeX) support
+          Math equation (LaTeX) support  * this should be before other formatting
           Inline code
           Emphasis
           Remove the # at first
