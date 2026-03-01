@@ -7,6 +7,7 @@ export default async function store(args, files) {
   const usage = "Usage: :store [name?]\n" +
                 "       :store [ls|list]\n" +
                 "       :store [use|unuse] [name]\n" +
+                "       :store search [text]\n" +
                 "       :store reset\n" +
                 "       :store add [engine] [name]\n" +
                 "       :store init [name?]\n" +
@@ -233,6 +234,59 @@ export default async function store(args, files) {
     // Remove from storage
     removeStoreFromSessionStorage(storeName);
     return "Store \`" + storeName + "\` unused.";
+  }
+
+  // Search
+  if (command === "search") {
+    if (args.length != 2) {
+      return "Usage: :store search [text]";
+    }
+
+    if (!args[1].startsWith("\"") || !args[1].endsWith("\"")) {
+      return "Search text must be quoted with double quotes.";
+    }
+    const searchFor = args[1].slice(1, -1);
+
+    const activeStores = getActiveStores();
+    if (activeStores.length === 0) {
+      return "No store selected.";
+    }
+
+    // TODO, use Promise.all() to make this faster
+    let results = [];
+    for (const store of activeStores) {
+      try {
+        // This will search a single store
+        const response = await fetch("/api/store/search", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            search: searchFor,
+            store,
+          }),
+        });
+    
+        const data = await response.json();
+        if (response.status !== 200) {
+          throw data.error || new Error(`Request failed with status ${response.status}`);
+        }
+    
+        if (data.success) {
+          const message = "Store: " + store + "\n"
+                        + data.message;
+          results.push(message.trim());
+        } else {
+          return data.error;
+        }
+      } catch (error) {
+        console.error(error);
+        return error;
+      }
+    }
+
+    return results.join("\n\n");
   }
 
   // Reset store

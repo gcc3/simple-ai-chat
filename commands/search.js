@@ -1,5 +1,3 @@
-import { getActiveStores } from "../utils/storageUtils.js";
-
 export default async function search(args) {
   if (args.length != 1) {
     return "Usage: :search [text]";
@@ -8,46 +6,25 @@ export default async function search(args) {
   if (!args[0].startsWith("\"") || !args[0].endsWith("\"")) {
     return "Search text must be quoted with double quotes.";
   }
-  const search = args[0].slice(1, -1);
+  const searchFor = args[0].slice(1, -1);
 
-  const activeStores = getActiveStores();
-  if (activeStores.length === 0) {
-    return "No store selected.";
+  if (searchFor.trim().length === 0) {
+    return "Search text cannot be empty or whitespace only.";
+  }
+  if (searchFor.length === 1 && /^[a-zA-Z]$/.test(searchFor)) {
+    return "Single alphabet character searches are not allowed.";
   }
 
-  // TODO, use Promise.all() to make this faster
-  let results = [];
-  for (const store of activeStores) {
-    try {
-      // This will search a single store
-      const response = await fetch("/api/store/search", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          search,
-          store,
-        }),
-      });
-  
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-  
-      if (data.success) {
-        const message = "Store: " + store + "\n"
-                       + data.message;
-        results.push(message.trim());
-      } else {
-        return data.error;
-      }
-    } catch (error) {
-      console.error(error);
-      return error;
+  try {
+    const response = await fetch(`/api/log/search?keyword=${encodeURIComponent(searchFor)}`);
+    const data = await response.json();
+    
+    if (!data.success) {
+      return `Error: ${data.error || 'Unknown error occurred'}`;
     }
+    
+    return data.message;
+  } catch (error) {
+    return `Error: Failed to search logs - ${error.message}`;
   }
-
-  return results.join("\n\n");
 }
