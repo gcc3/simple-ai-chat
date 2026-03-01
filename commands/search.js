@@ -8,5 +8,16 @@ export default async function search(args) {
   }
   const searchFor = args[0].slice(1, -1);
 
-  return "Feature under development.";
+  try {
+    const response = await fetch(`/api/log/search?keyword=${encodeURIComponent(searchFor)}`);
+    const data = await response.json();
+    
+    if (!data.success) {
+      return `Error: ${data.error || 'Unknown error occurred'}`;
+    }
+    
+    return data.message;
+  } catch (error) {
+    return `Error: Failed to search logs - ${error.message}`;
+  }
 }

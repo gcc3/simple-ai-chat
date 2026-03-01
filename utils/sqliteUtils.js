@@ -261,7 +261,24 @@ const getLog = async (time) => {
   } finally {
     db.close();
   }
-}
+};
+
+// Search from logs by keyword
+const searchFromLogs = async (keyword, username, limit = 100) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.all(`SELECT * FROM logs WHERE (input LIKE ? OR output LIKE ?) AND user = ? ORDER BY time DESC LIMIT ?`, [`%${keyword}%`, `%${keyword}%`, username, limit], (err, rows) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(rows);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
 
 const insertLog = async (session, time, username, model, input_l, input, output_l, output, images, ip, browser) => {
   const db = await getDatabaseConnection();
@@ -1682,6 +1699,7 @@ export {
   getLogs,
   countLogs,
   getLog,
+  searchFromLogs,
   insertLog,
   deleteUserLogs,
   getSessions,
