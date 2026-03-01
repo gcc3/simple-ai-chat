@@ -25,6 +25,24 @@ export default async function (req, res) {
       return;
     }
 
+    // Block whitespace-only searches
+    if (keyword.trim().length === 0) {
+      res.status(400).json({
+        success: false,
+        error: "Keyword cannot be whitespace only."
+      });
+      return;
+    }
+
+    // Block single alphabet character searches (allow single CJK characters)
+    if (keyword.length === 1 && /^[a-zA-Z]$/.test(keyword)) {
+      res.status(400).json({
+        success: false,
+        error: "Single alphabet character searches are not allowed."
+      });
+      return;
+    }
+
     // Search the logs
     if (limit > 500) {
       res.status(400).json({
