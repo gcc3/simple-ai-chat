@@ -3,7 +3,7 @@ import { searchFromLogs } from "utils/sqliteUtils";
 
 export default async function (req, res) {
   try {
-    const keyword = req.query.keyword;
+    const keyword = req.query.keyword.trim();
     const limit = req.query.limit ? parseInt(req.query.limit) : 100;
 
     // Authenticate user
@@ -26,10 +26,10 @@ export default async function (req, res) {
     }
 
     // Block whitespace-only searches
-    if (keyword.trim().length === 0) {
+    if (keyword.length === 0) {
       res.status(400).json({
         success: false,
-        error: "Keyword cannot be whitespace only."
+        error: "Keyword cannot be empty or whitespace only."
       });
       return;
     }
