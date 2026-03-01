@@ -8,6 +8,10 @@ export default async function search(args) {
   }
   const searchFor = args[0].slice(1, -1);
 
+  if (searchFor.trim().length === 0) {
+    return "Search text cannot be empty or whitespace only.";
+  }
+
   try {
     const response = await fetch(`/api/log/search?keyword=${encodeURIComponent(searchFor)}`);
     const data = await response.json();
