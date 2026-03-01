@@ -43,14 +43,16 @@ export default async function (req, res) {
       return;
     }
 
-    // Search the logs
+    // Block limit too large
     if (limit > 500) {
       res.status(400).json({
         success: false,
-        error: "Limit cannot exceed 500.",
+        error: "Search limit cannot exceed 500.",
       });
       return;
     }
+
+    // Search the logs
     const logs = await searchFromLogs(keyword, authResult.user.username, limit);
 
     // Output the result

@@ -11,6 +11,9 @@ export default async function search(args) {
   if (searchFor.trim().length === 0) {
     return "Search text cannot be empty or whitespace only.";
   }
+  if (searchFor.length === 1 && /^[a-zA-Z]$/.test(searchFor)) {
+    return "Single alphabet character searches are not allowed.";
+  }
 
   try {
     const response = await fetch(`/api/log/search?keyword=${encodeURIComponent(searchFor)}`);
