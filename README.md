@@ -37,7 +37,10 @@ Quick Start
 
 4. Ollama  
     Set the environment variable `OLLAMA_ORIGINS` to `*` or your domain to allow CORS.  
-    Use `:model ls` to list the models, and `:model use <model>` to use the Ollama models.  
+    ```
+    export OLLAMA_ORIGINS="*"
+    ollama serve
+    ```
     To use function calling, set `:stream off` as in Ollama it's not supported.  
 
 
