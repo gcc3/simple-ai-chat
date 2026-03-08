@@ -480,7 +480,7 @@ export default function Home() {
 
           if (globalThis.STATE === STATES.IDLE) {
             if (isOffline) {
-              console.log("Aborted: offline.")
+              console.log("Aborted: offline.");
               return;
             }
             
@@ -505,7 +505,7 @@ export default function Home() {
                 }
               });
           } else {
-            console.log("Aborted as generating.");
+            console.log("Aborted: generating in progress.");
           }
         }
         break;
@@ -518,7 +518,7 @@ export default function Home() {
 
           if (globalThis.STATE === STATES.IDLE) {
             if (isOffline) {
-              console.log("Aborted: offline.")
+              console.log("Aborted: offline.");
               return;
             }
             
@@ -543,7 +543,7 @@ export default function Home() {
                 }
               });
           } else {
-            console.log("Aborted as generating.");
+            console.log("Aborted: generating in progress.");
           }
         }
         break;
@@ -599,7 +599,7 @@ export default function Home() {
                 }
               });
           } else {
-            console.log("Aborted as generating.");
+            console.log("Aborted: generating in progress.");
           }
         }
         break;
@@ -636,7 +636,7 @@ export default function Home() {
                 }
               });
           } else {
-            console.log("Aborted as generating.");
+            console.log("Aborted: generating in progress.");
           }
         }
         break;
@@ -659,7 +659,7 @@ export default function Home() {
                 }
               });
           } else {
-            console.log("Aborted as generating.");
+            console.log("Aborted: generating in progress.");
           }
         }
         break;
@@ -682,7 +682,7 @@ export default function Home() {
                 }
               });
           } else {
-            console.log("Aborted as generating.");
+            console.log("Aborted: generating in progress.");
           }
         }
         break;
@@ -705,7 +705,7 @@ export default function Home() {
                 }
             });
           } else {
-            console.log("Aborted as generating.");
+            console.log("Aborted: generating in progress.");
           }
         }
         break;
@@ -728,7 +728,7 @@ export default function Home() {
                 }
             });
           } else {
-            console.log("Aborted as generating.");
+            console.log("Aborted: generating in progress.");
           }
         }
         break;
@@ -1035,7 +1035,7 @@ export default function Home() {
                 }
             });
           } else {
-            console.log("Aborted as generating.");
+            console.log("Aborted: generating in progress.");
           }
         } else {
           if (elTouch.className && (elTouch.className.indexOf("input") !== -1)) {
@@ -1057,7 +1057,7 @@ export default function Home() {
                 }
               });
           } else {
-            console.log("Aborted as generating.");
+            console.log("Aborted: generating in progress.");
           }
         }
       } else {
@@ -1231,7 +1231,7 @@ export default function Home() {
         clearDonutInterval();
       }
 
-      // If heavy command, show waiting text
+      // If heavy command, show generating text
       if (commandString.startsWith("generate")) {
         printOutput(generating);
       }
