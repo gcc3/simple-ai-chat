@@ -137,6 +137,11 @@ export default async function(req, res) {
         base_url: process.env.OPENAI_BASE_URL,
         price_input: 0,
         price_output: 0,
+        is_tool_calls_supported: 0,
+        is_vision: 0,
+        is_audio: 0,
+        is_reasoning: 0,
+        is_image: 0,
       }
     } else {
       // Already setup models but not found
@@ -174,6 +179,22 @@ export default async function(req, res) {
   if (!baseUrl) {
     updateStatus("Model's base URL is not set.");
     res.write(`data: ###ERR###Model's base URL is not set.\n\n`);
+    res.write(`data: [DONE]\n\n`);
+    res.end();
+    return;
+  }
+
+  // Model properties
+  const is_tool_calls_supported_model = modelInfo.is_tool_calls_supported === "1";
+  const is_vision_model = modelInfo.is_vision === "1";
+  const is_audio_model = modelInfo.is_audio === "1";
+  const is_reasoning_model = modelInfo.is_reasoning === "1";
+  const is_image_model = modelInfo.is_image === "1";
+
+  // Error: image input with a non-vision model
+  if (use_vision && !is_vision_model) {
+    updateStatus("This model requires image input.");
+    res.write(`data: ###ERR###Image input isn’t supported by the current model, please use a vision model instead.\n\n`);
     res.write(`data: [DONE]\n\n`);
     res.end();
     return;
@@ -381,6 +402,13 @@ export default async function(req, res) {
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");
 
+    // Reasoning model will start reasoning
+    if (is_reasoning_model) {
+      updateStatus("Start reasoning...");
+    } else {
+      updateStatus("Start generating...");
+    }
+
     // OpenAI chat completion!
     let chatCompletionUsage = { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 };
     const chatCompletion = await openai.chat.completions.create({
@@ -396,9 +424,10 @@ export default async function(req, res) {
       },
       temperature: sysconf.temperature,
       top_p: sysconf.top_p,
-      tools: (tools && tools.length > 0) ? tools : null,
-      tool_choice: (tools && tools.length > 0) ? "auto" : null,
+      tools: (tools && tools.length > 0 && !is_reasoning_model) ? tools : null,  // reasoning model cannot use tools
+      tool_choice: (tools && tools.length > 0 && !is_reasoning_model) ? "auto" : null,  // reasoning model cannot use tools
       user: user ? user.username : null,
+      reasoning_effort: is_reasoning_model ? "high" : null,
     });
 
     res.write(`data: ###MODEL###${model}\n\n`);
@@ -410,7 +439,7 @@ export default async function(req, res) {
     });
     res.flush();
 
-    // Hanldle output
+    // Handle output
     for await (const part of chatCompletion) {
       if (!part.choices) {
         continue;

@@ -77,6 +77,7 @@ export default function Home() {
   // States
   const [placeholder, setPlaceholder] = useState("");
   const [waiting, setWaiting] = useState("");
+  const [reasoning, setReasoning] = useState("Reasoning...");
   const [querying, setQuerying] = useState("Querying...");
   const [generating, setGenerating] = useState("Generating...");
   const [searching, setSearching] = useState("Searching...");
@@ -792,10 +793,11 @@ export default function Home() {
         base_url: "",
         role_content_system: "***",
         welcome_message: "",
+        waiting: "",
+        reasoning: "Reasoning...",
         querying: "Querying...",
         generating: "Generating...",
         searching: "Searching...",
-        waiting: "",
         init_placeholder: ":help",
         enter: "",
         temperature: 1,
@@ -825,6 +827,7 @@ export default function Home() {
         dispatch(toggleEnterChange(systemInfo.enter));
       }
       if (systemInfo.waiting) setWaiting(systemInfo.waiting);  // Set waiting text
+      if (systemInfo.reasoning) setReasoning(systemInfo.reasoning);  // Set reasoning text
       if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
       if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
       if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
@@ -1653,9 +1656,14 @@ export default function Home() {
           }
         }
 
-        // 3. Other
-        // Sometime the function calling make it pause
-        if (_status_.startsWith("Create chat completion.")) {
+        // 3. Reasoning model
+        if (_status_.startsWith("Start reasoning...")) {
+          printOutput(reasoning);
+        }
+
+        // 4. Non-reasoning model
+        // Sometime the tool calls make it pause
+        if (_status_.startsWith("Start generating...")) {
           printOutput(generating);
         }
         return;
@@ -1795,7 +1803,7 @@ export default function Home() {
       }
 
       // Clear the waiting or querying text
-      if (getOutput() === waiting || getOutput() === querying || getOutput() === searching || getOutput() === generating) {
+      if (getOutput() === waiting  || getOutput() === reasoning || getOutput() === querying || getOutput() === searching || getOutput() === generating) {
         clearOutput();
       }
 
