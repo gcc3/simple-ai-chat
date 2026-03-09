@@ -1,3 +1,3 @@
 export default function info(args) {
-  return "@318yang";
+  return "Created by @318yang, Kyoto, 2023.\n";
 }
