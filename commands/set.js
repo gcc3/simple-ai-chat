@@ -1,9 +1,40 @@
 import { setSession, setTime } from "../utils/sessionUtils.js";
-import { getSettings, setSetting } from "../utils/settingsUtils.js";
+import { getSettings, getSetting, setSetting } from "../utils/settingsUtils.js";
 
 export default function set(args) {
-  if (args.length != 2) {
-    return "Usage: :set [key] [value]";
+  const usage = "Usage: :set [key] [value]\n" +
+                "       :set all\n";
+
+  if (args.length !== 1 && args.length !== 2) {
+    return usage;
+  }
+
+  if (args.length === 1) {
+    if (args[0].toLowerCase() === "all") {
+      const info = "Up Time (key: `_up`): " + getSetting("_up") + " (" + new Date(parseInt(getSetting("_up"))).toLocaleString() + ")\n" +
+                   "Session ID (key: `session`): " + getSetting("session") + "\n" +
+                   "Model (key: `model`): " + getSetting("model") + "\n" +
+                   "Model Base URL (key: `baseUrl`): " + (getSetting("baseUrl") || "___") + "\n" +
+                   "Timeline (key: `time`): " + getSetting("time") + "\n" +
+                   "Language (key: `lang`): " + (getSetting("lang") || "___") + "\n" +
+                   "Functions (key: `functions`): " + (getSetting("functions") || "___") + "\n" +
+                   "Memory length (key: `memLength`, default: 7): " + getSetting("memLength") + "\n" +
+                   "Role (key: `role`): " + (getSetting("role") || "___") + "\n" +
+                   "Stores (key: `stores`): " + (getSetting("stores") || "___") + "\n" +
+                   "Node (key: `node`): " + (getSetting("node") || "___") + "\n" +
+                   "Show stats (key: `useStats`): " + getSetting("useStats") + "\n" +
+                   "Use Self Evaluation (key: `useEval`): " + getSetting("useEval") + "\n" +
+                   "Stream (key: `useStream`): " + getSetting("useStream") + "\n" +
+                   "Speak (key: `useSpeak`): " + getSetting("useSpeak") + "\n" +
+                   "Voice (key: `voice`): " + (getSetting("voice") || "default") + "\n" +
+                   "Location service (key: `useLocation`): " + getSetting("useLocation") + "\n" +
+                   "Location (key: `location`): " + (getSetting("location") || "___") + "\n" +
+                   "Password Masking (key: `passMask`): " + getSetting("passMask") + "\n" +
+                   "Use System Role (key: `useSystemRole`): " + getSetting("useSystemRole") + "\n";
+      return info.trim();
+    } else {
+      return usage;
+    }
   }
 
   // Key validation
