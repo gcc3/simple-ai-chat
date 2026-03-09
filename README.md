@@ -119,8 +119,8 @@ Set the system prompt.
 WELCOME_MESSAGE, INIT_PLACEHOLDER and ENTER  
 Control the custom welcome message, placeholder text and enter key text.  
 
-WAITING, QUERYING, GENERATING, SEARCHING  
-Indicating the message that will show when waiting and querying.  
+WAITING, REASONING, QUERYING, GENERATING, SEARCHING  
+Indicating the message that will show when waiting, reasoning, querying, generating and searching.  
 
 WOLFRAM_ALPHA_APPID  
 For API calls for wolfram alpha API.  
@@ -181,9 +181,6 @@ IP info (`ipinfo.io`) is used for getting country from IP.
 Use IP info is for enable or disable the IP support, the value should be `true` or `false`.  
 `ipinfo.io` token will be used.  
 
-NEXT_PUBLIC_DISCORD and NEXT_PUBLIC_YOUTUBE  
-Discord invitation link and YouTube channel link.  
-
 USE_USER_ACCOUNTS  
 Enable user accounts, the value should be `true` or `false`.  
 
@@ -193,4 +190,4 @@ Example:
 DEFAULT_FUNCTIONS=get_time,get_weather,redirect_to_url  
 DEFAULT_STORES=store1,store2  
 
-_Originally Forked from https://github.com/openai/openai-quickstart-node_  
+_Originally Forked from https://github.com/openai_  
