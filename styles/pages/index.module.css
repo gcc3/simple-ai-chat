@@ -6,6 +6,15 @@
   display: flex;
   flex-direction: column;
   align-items: center;
+  overflow-x: hidden;
+  height: 100vh;
+
+  /* Firefox */
+  scrollbar-width: none;
+}
+/* Chrome, Safari */
+.main::-webkit-scrollbar {
+  display: none;
 }
 
 /* Top container */
@@ -120,8 +129,8 @@
   font-size: 22px;
   text-align: center;
   position: fixed;
-  bottom: 6px;
-  right: 10px;
+  bottom: 4px;
+  right: 8px;
   width: 15px;
   color: var(--dot-color);
 }
