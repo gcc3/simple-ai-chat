@@ -85,20 +85,6 @@
 }
 
 /* back */
-.main .dot {
-  display: block;
-  font-size: 22px;
-  text-align: center;
-  position: fixed;
-  bottom: 6px;
-  right: 10px;
-  width: 15px;
-  color: var(--dot-color);
-}
-.main .dot:hover {
-  cursor: pointer;
-  color: var(--dot-hover-color);
-}
 .main .container {
   border-radius: 10px;
   width: 100%;
@@ -126,6 +112,22 @@
 }
 .main .copyrights {
   color: var(--sub-text-color);
+}
+
+/* dot */
+.main .dot {
+  display: block;
+  font-size: 22px;
+  text-align: center;
+  position: fixed;
+  bottom: 6px;
+  right: 10px;
+  width: 15px;
+  color: var(--dot-color);
+}
+.main .dot:hover {
+  cursor: pointer;
+  color: var(--dot-hover-color);
 }
 
 /* Styles for differnt window sizes */

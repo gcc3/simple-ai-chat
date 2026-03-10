@@ -116,21 +116,6 @@
 }
 
 /* back */
-.main .dot {
-  display: block;
-  font-size: 20px;
-  text-align: center;
-  position: fixed;
-  top: 2px;
-  right: var(--dot-rtl-right-offset);
-  left: var(--dot-rtl-left-offset);
-  width: 15px;
-  color: var(--dot-color);
-}
-.main .dot:hover {
-  cursor: pointer;
-  color: var(--dot-hover-color);
-}
 .main .container {
   width: 100%;
   height: 100vh;
@@ -169,6 +154,23 @@
 }
 .main .copyrights {
   color: var(--sub-text-color);
+}
+
+/* dot */
+.main .dot {
+  display: block;
+  font-size: 20px;
+  text-align: center;
+  position: fixed;
+  top: 2px;
+  right: var(--dot-rtl-right-offset);
+  left: var(--dot-rtl-left-offset);
+  width: 15px;
+  color: var(--dot-color);
+}
+.main .dot:hover {
+  cursor: pointer;
+  color: var(--dot-hover-color);
 }
 
 /* Styles for differnt window sizes */
