@@ -81,6 +81,13 @@
   padding-left: 5px;
   padding-right: 15px;
   overflow-y: auto;
+
+  /* Firefox */
+  scrollbar-width: none;
+}
+/* Chrome, Safari */
+.main .wrapper::-webkit-scrollbar {
+  display: none;
 }
 .main .output {
   font-weight: normal;
