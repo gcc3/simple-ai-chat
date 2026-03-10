@@ -6,7 +6,7 @@
   overflow-x: hidden;  /* prevent horizontal scroll */
 }
 
-/* container */
+/* Top container */
 .main .front,
 .main .back {
   flex-direction: column;
