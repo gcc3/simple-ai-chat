@@ -2416,8 +2416,8 @@ export default function Home() {
           elInput.selectionStart = pCursor + 1;
           elInput.selectionEnd = pCursor + 1;
 
-          // Re-adjust input height
-          reAdjustInputHeight();
+          // Force trigger input change
+          handleInputChange();
         } else {
           // Submit
           onSubmit(event);
@@ -2438,6 +2438,9 @@ export default function Home() {
           // Move cursor
           elInput.selectionStart = pCursor + 1;
           elInput.selectionEnd = pCursor + 1;
+
+          // Force trigger input change
+          handleInputChange();
         }
       }
     }
