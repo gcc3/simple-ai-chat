@@ -4,6 +4,13 @@
   line-height: 24px;
   color: #353740;
   overflow-x: hidden;  /* prevent horizontal scroll */
+
+  /* Firefox */
+  scrollbar-width: none;
+}
+/* Chrome, Safari */
+.main::-webkit-scrollbar {
+  display: none;
 }
 
 /* Top container */
