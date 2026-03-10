@@ -58,13 +58,7 @@
 body {
   background-color: var(--background-color);
 }
-code {
-  font-family: "Fira Code", monospace !important;
-  scrollbar-width: none;  /* For Firefox */
-}
-code::-webkit-scrollbar {
-  display: none;  /* For Chrome, Safari, and Opera */
-}
+
 
 /* Inline code */
 .inline-code {
@@ -78,6 +72,13 @@ code::-webkit-scrollbar {
 }
 
 /* Code block */
+code {
+  font-family: "Fira Code", monospace !important;
+  scrollbar-width: none;  /* For Firefox */
+}
+code::-webkit-scrollbar {
+  display: none;  /* For Chrome, Safari, and Opera */
+}
 pre {
   background: var(--code-block-background-color) !important;
   border-radius: .5rem;
