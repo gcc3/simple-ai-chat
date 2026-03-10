@@ -11,6 +11,9 @@
   flex-direction: row;
   height: 100vh;
 }
+.main .back {
+  height: 100vh;
+}
 
 /* input area */
 .main .inputform {
@@ -109,7 +112,7 @@
 .main .container {
   width: 100%;
   padding: 10px 14px;
-  overflow-y: auto;
+  overflow-y: scroll;
   display: flex;
   align-items: flex-start;
   scroll-behavior: smooth;  /* Smooth scrolling */
