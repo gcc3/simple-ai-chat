@@ -2416,8 +2416,8 @@ export default function Home() {
           elInput.selectionStart = pCursor + 1;
           elInput.selectionEnd = pCursor + 1;
 
-          // Re-adjust input height
-          reAdjustInputHeight();
+          // Force trigger input change
+          handleInputChange();
         } else {
           // Submit
           onSubmit(event);
@@ -2438,6 +2438,9 @@ export default function Home() {
           // Move cursor
           elInput.selectionStart = pCursor + 1;
           elInput.selectionEnd = pCursor + 1;
+
+          // Force trigger input change
+          handleInputChange();
         }
       }
     }
@@ -2561,17 +2564,15 @@ export default function Home() {
     
     // Non-fullscreen
     if (fullscreenMode === "off") {
-      
       if (!globalThis.rawInput) {
         elInput.style.height = `45px`;
-        return;
-      }
-      
-      elInput.style.height = "auto";
-      
-      if (doSleepToFixAuto) {
-        // This sleep magically fixed the hight issue
-        await sleep(1)
+      } else {
+        elInput.style.height = "auto";
+        
+        if (doSleepToFixAuto) {
+          // This sleep magically fixed the hight issue
+          await sleep(1)
+        }
       }
       
       // Don't know why but scroll height not 45px, will be 44px
@@ -2582,23 +2583,22 @@ export default function Home() {
     if (fullscreenMode === "default") {
       if (!globalThis.rawInput) {
         elInput.style.height = `45px`;
-        return;
-      }
-      
-      elInput.style.height = "auto";
-      
-      if (doSleepToFixAuto) {
-        // This sleep magically fixed the height issue
-        await sleep(1)
-      }
-      
-      // Don't know why but scroll height not 45px, will be 44px
-      elInput.style.height = `${elInput.scrollHeight + 1}px`;
+      } else {
+        elInput.style.height = "auto";
+        
+        if (doSleepToFixAuto) {
+          // This sleep magically fixed the height issue
+          await sleep(1)
+        }
+        
+        // Don't know why but scroll height not 45px, will be 44px
+        elInput.style.height = `${elInput.scrollHeight + 1}px`;
 
-      // If input height is larger than the window height
-      // then set it to window height
-      if (elInput.scrollHeight > window.innerHeight / 2) {
-        elInput.style.height = `${window.innerHeight / 2}px`;
+        // If input height is larger than the window height
+        // then set it to window height
+        if (elInput.scrollHeight > window.innerHeight / 2) {
+          elInput.style.height = `${window.innerHeight / 2}px`;
+        }
       }
 
       // Store input height in fullscreen mode
