@@ -105,9 +105,6 @@
   height: 100%;
   scroll-behavior: smooth;  /* Smooth scrolling */
 }
-.main .nav {
-  /* nothing */
-}
 .main .navitem {
   margin-bottom: 10px;
   padding: 10px 14px;
