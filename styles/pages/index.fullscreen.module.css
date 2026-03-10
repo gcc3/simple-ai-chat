@@ -74,6 +74,13 @@
   padding: 12px 14px 0 14px;
   overflow-y: auto;
   margin-bottom: calc(var(--input-height) + 20px);
+
+  /* Firefox */
+  scrollbar-width: none;
+}
+/* Chrome, Safari */
+.main .wrapper::-webkit-scrollbar {
+  display: none;
 }
 .main .output {
   font-weight: normal;
