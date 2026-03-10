@@ -72,7 +72,6 @@
 /* output area */
 .main .wrapper {
   width: 100%;
-  height: calc(100vh - var(--input-height) - 15px);
   padding: 10px 14px;
   padding-top: 12px;
   overflow-y: auto;
@@ -108,6 +107,7 @@
 .main .info {
   color: var(--info-text-color);;
   text-align: right;
+  margin-bottom: calc(var(--input-height) + 12px);
 }
 
 /* back */
