@@ -4,14 +4,13 @@
   line-height: 24px;
   color: #353740;
   overflow-x: hidden;  /* prevent horizontal scroll */
-  display: flex;
-  align-items: center;
 }
 
 /* container */
 .main .front,
 .main .back {
   flex-direction: column;
+  height: 100vh;
   width: 100%;
 }
 
@@ -70,10 +69,11 @@
 
 /* output area */
 .main .wrapper {
+  flex: 1;
   width: 100%;
-  padding: 12px 14px;
+  padding: 12px 14px 0 14px;
   overflow-y: auto;
-  height: calc(100vh - var(--input-height) - 12px);
+  margin-bottom: calc(var(--input-height) + 20px);
 }
 .main .output {
   font-weight: normal;
