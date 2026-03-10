@@ -6,7 +6,6 @@
   overflow-x: hidden;  /* prevent horizontal scroll */
   display: flex;
   align-items: center;
-  overflow: hidden;
 }
 
 /* container */
