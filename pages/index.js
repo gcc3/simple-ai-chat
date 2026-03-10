@@ -2571,7 +2571,7 @@ export default function Home() {
         
         if (doSleepToFixAuto) {
           // This sleep magically fixed the hight issue
-          await sleep(10)
+          await sleep(1)
         }
       }
       
