@@ -1,4 +1,5 @@
 
+/* Fira Mono */
 @font-face{
   font-family: 'Fira Mono';
   src: local('Fira Mono'),
@@ -14,6 +15,7 @@
   font-style: normal;
 }
 
+/* Fira Code */
 @font-face {
   font-family: 'Fira Code';
   src: url('/fonts/FiraCode-Light.woff2') format('woff2');
@@ -39,6 +41,7 @@
   font-style: normal;
 }
 
+/* ColfaxAI */
 @font-face {
   font-family: "ColfaxAI";
   src: url('/fonts/ColfaxAIRegular.woff2') format("woff2");
