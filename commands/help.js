@@ -9,7 +9,7 @@ export default function help(args) {
   const commands = getCommands();
 
   if (command) {
-    if (!command.startsWith("\"") || !command.startsWith("\"")) {
+    if (!command.startsWith("\"") || !command.endsWith("\"")) {
       return "Command must be enclosed in double quotes.";
     }
 
@@ -19,7 +19,7 @@ export default function help(args) {
       command = ":" + command;
     }
 
-    const targetCommands = commands.filter((c) => c.command.startsWith(command));
+    const targetCommands = commands.filter((c) => c.command.split(" ")[0] === command);
     if (targetCommands && targetCommands.length > 0) {
       for (let i = 0; i < targetCommands.length; i++) {
         const targetCommand = targetCommands[i];
