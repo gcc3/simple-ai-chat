@@ -14,12 +14,12 @@
 }
 
 /* Top container */
-.main .front {
-  flex-direction: row;
-  height: 100vh;
-}
+.main .front,
 .main .back {
   height: 100vh;
+}
+.main .front {
+  flex-direction: row;
 }
 
 /* input area */
@@ -119,7 +119,6 @@
 .main .container {
   width: 100%;
   padding: 10px 14px;
-  overflow-y: scroll;
   display: flex;
   align-items: flex-start;
   scroll-behavior: smooth;  /* Smooth scrolling */

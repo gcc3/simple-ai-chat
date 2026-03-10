@@ -14,12 +14,12 @@
 }
 
 /* Top container */
-.main .front {
-  flex-direction: column;
-  height: 100vh;
-}
+.main .front,
 .main .back {
   height: 100vh;
+}
+.main .front {
+  flex-direction: column;
 }
 
 /* input area */
@@ -130,6 +130,13 @@
   display: flex;
   align-items: flex-start;
   scroll-behavior: smooth;  /* Smooth scrolling */
+
+  /* Firefox */
+  scrollbar-width: none;
+}
+/* Chrome, Safari */
+.main .container::-webkit-scrollbar {
+  display: none;
 }
 .main .nav {
   width: 220px;
