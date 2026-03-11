@@ -829,7 +829,7 @@ export default function Home() {
         const modelName = getSetting("model");
 
         // Try remote models
-        console.log("Fetching model info: " + modelName);
+        console.log("Fetching model: " + modelName);
         const response = await fetch('/api/model/' + modelName);
         const modelResponse = await response.json();
         let model = null;

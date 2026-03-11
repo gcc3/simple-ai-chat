@@ -422,7 +422,6 @@ function Settings() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Model info
       const model = data.result;
       if (!model) {
         console.error("Model not found");
@@ -461,7 +460,6 @@ function Settings() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Model info
       const model = data.result;
       if (!model) {
         console.error("Model not found");
@@ -500,7 +498,6 @@ function Settings() {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Model info
       const model = data.result;
       if (!model) {
         console.error("Model not found");

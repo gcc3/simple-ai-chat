@@ -10,7 +10,7 @@ export default async function model(args) {
                 "       :model [use|unuse] [name]\n" +
                 "       :model reset\n";
 
-  // Get model info without name (will use current model as name)
+  // Get model without name (will use current model as name)
   // :model [name?]
   if (!command) {
     if (!getSetting("user")) {
@@ -44,7 +44,6 @@ export default async function model(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Model info
       const model = data.result;
       if (!model) {
         return "Model not found.";
@@ -57,25 +56,25 @@ export default async function model(args) {
     }
   }
 
-  // Get model info by name
+  // Get model by name
   // :model [name?]
   if (args.length === 1 && args[0].startsWith("\"") && args[0].endsWith("\"")) {
-    const modelName = args[0].slice(1, -1);
-    if (!modelName) {
+    const name = args[0].slice(1, -1);
+    if (!name) {
       return "Invalid model name.";
     }
 
     // Check local Ollama models
     if (await pingOllamaAPI()) {
       const ollamaModelList = await listOllamaModels();
-      const ollamaModel = ollamaModelList.find((m) => m.name === modelName);
+      const ollamaModel = ollamaModelList.find((m) => m.name === name);
       if (ollamaModel) {
         return JSON.stringify(ollamaModel, null, 2);
       }
     }
 
     try {
-      const response = await fetch("/api/model/" + modelName, {
+      const response = await fetch("/api/model/" + name, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -87,7 +86,6 @@ export default async function model(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Model info
       const model = data.result;
       if (!model) {
         return "Model not found.";
@@ -232,7 +230,6 @@ export default async function model(args) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        // Model info
         const model = data.result;
         if (!model) {
           return "Model not found.";

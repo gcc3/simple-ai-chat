@@ -129,7 +129,6 @@ async function findModel(name) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    // Model info
     const model = data.result;
     return model;
   }
