@@ -1,3 +1,5 @@
+import { PLACEHOLDER } from "../constants.js";
+
 export function getSystemConfigurations() {
   // Welcome message
   let welcome_message = process.env.WELCOME_MESSAGE ? process.env.WELCOME_MESSAGE : "";
@@ -8,13 +10,6 @@ export function getSystemConfigurations() {
   const model = process.env.MODEL ? process.env.MODEL : "";
   const base_url = process.env.OPENAI_BASE_URL ? process.env.OPENAI_BASE_URL : "";
   const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
-  const waiting = process.env.WAITING ? process.env.WAITING : "";
-  const reasoning = process.env.REASONING ? process.env.REASONING : "Reasoning...";
-  const querying = process.env.QUERYING ? process.env.QUERYING : "Querying...";
-  const generating = process.env.GENERATING ? process.env.GENERATING : "";
-  const searching = process.env.SEARCHING ? process.env.SEARCHING : "";
-  const init_placeholder = process.env.INIT_PLACEHOLDER ? process.env.INIT_PLACEHOLDER : ":help";
-  const enter = process.env.ENTER ? process.env.ENTER : "";
   const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 1;
   const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;
   const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
@@ -33,13 +28,6 @@ export function getSystemConfigurations() {
     base_url: base_url,
     role_content_system: role_content_system,
     welcome_message: welcome_message,
-    waiting: waiting,
-    reasoning: reasoning,
-    querying: querying,
-    generating: generating,
-    searching: searching,
-    init_placeholder: init_placeholder,
-    enter: enter,
     temperature: temperature,
     top_p: top_p,
     use_node_ai: use_node_ai,

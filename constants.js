@@ -19,3 +19,11 @@ export const CONTENT = {
   PRIVACY: 2,
   SETTINGS: 3,
 };
+
+export const PLACEHOLDER = ":help";
+
+export const WAITING = "";
+export const REASONING = "Reasoning...";
+export const QUERYING = "Querying...";
+export const GENERATING = "Generating...";
+export const SEARCHING = "Searching...";

@@ -34,7 +34,7 @@ import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
-import { TYPE, STATES, DISPLAY, CONTENT } from '../constants.js';
+import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
@@ -57,10 +57,7 @@ globalThis.outputMutationObserver = null;
 // Global raw input/output buffer
 globalThis.rawInput = "";
 globalThis.rawOutput = "";
-globalThis.rawPlaceholder = "";
-
-// Initial placeholder
-globalThis.initPlaceholder = "";
+globalThis.rawPlaceholder = PLACEHOLDER;
 
 // Donut interval id
 let dunutIntervalId = null;
@@ -75,12 +72,7 @@ export default function Home() {
   const { fullscreen, setFullscreen, enter, setEnter } = useUI();
 
   // States
-  const [placeholder, setPlaceholder] = useState("");
-  const [waiting, setWaiting] = useState("");
-  const [reasoning, setReasoning] = useState("Reasoning...");
-  const [querying, setQuerying] = useState("Querying...");
-  const [generating, setGenerating] = useState("Generating...");
-  const [searching, setSearching] = useState("Searching...");
+  const [placeholder, setPlaceholder] = useState(PLACEHOLDER);
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
@@ -195,7 +187,7 @@ export default function Home() {
 
     // Print input
     globalThis.rawPlaceholder = log["input"].trim();
-    reAdjustPlaceholder();
+    reAdjustOrUpdatePlaceholder();
 
     // Print output
     printOutput(log["output"].trim());
@@ -259,13 +251,13 @@ export default function Home() {
   const setInput = (text) => {
     elInputRef.current.value = text;
     globalThis.rawInput = text;
+    reAdjustInputHeight();
   }
 
   // Clear input
   const clearInput = () => {
     setInput("");
-    reAdjustInputHeight();
-    reAdjustPlaceholder();
+    reAdjustOrUpdatePlaceholder();
   }
 
   // Clear hash tag
@@ -298,7 +290,7 @@ export default function Home() {
       return item;
     });
 
-    printOutput(`Session (id:${session.id}) attached. Use \`→\` and \`←\` (or \`j\` and \`k\`) to navigate between session logs (length:${session.length}).\n\nPreview:\n` + JSON.stringify(session.logs, null, 2));
+    printOutput(`Session (id:${session.id}) attached. Use \`→\` and \`←\` (or \`j\` and \`k\`) to navigate between session logs(${session.length}).\n\nPreview:\n` + JSON.stringify(session.logs, null, 2));
   }
 
   // Handle global shortcut keys
@@ -381,8 +373,7 @@ export default function Home() {
             // Clear all input and output, pleaceholder, previews
             clearInput();
             clearOutput();
-            globalThis.rawPlaceholder = globalThis.initPlaceholder;
-            setPlaceholder({ text: globalThis.rawPlaceholder, height: null });
+            reAdjustOrUpdatePlaceholder(PLACEHOLDER);
             clearPreviewImages();
             clearPreviewVideos();
             setInfo();
@@ -417,18 +408,10 @@ export default function Home() {
         // Triggle fullscreen split
         if (!getSetting("fullscreen").startsWith("default")) {
           dispatchFullscreen("default");
-
-          // Update user setting
-          if (getSetting("user")) {
-            updateUserSetting("fullscreen", "default");
-          }
+          updateUserSetting("fullscreen", "default");
         } else {
           dispatchFullscreen("off");
-
-          // Update user setting
-          if (getSetting("user")) {
-            updateUserSetting("fullscreen", "off");
-          }
+          updateUserSetting("fullscreen", "off");
         }
         break;
 
@@ -442,18 +425,10 @@ export default function Home() {
           // Triggle fullscreen split
           if (!getSetting("fullscreen").startsWith("split")) {
             dispatchFullscreen("split");
-
-            // Update user setting
-            if (getSetting("user")) {
-              updateUserSetting("fullscreen", "split");
-            }
+            updateUserSetting("fullscreen", "split");
           } else {
             dispatchFullscreen("off");
-
-            // Update user setting
-            if (getSetting("user")) {
-              updateUserSetting("fullscreen", "off");
-            }
+            updateUserSetting("fullscreen", "off");
           }
         }
         break;
@@ -470,7 +445,6 @@ export default function Home() {
           if (command) {
             setInput(command);
             setSetting("historyIndex", historyIndex + 1);
-            reAdjustInputHeight();
           }
         }
 
@@ -498,11 +472,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No previous session.");
                   printOutput("No previous session.");
+                  reAdjustOrUpdatePlaceholder(PLACEHOLDER);
                   setSession(-1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
+                  reAdjustOrUpdatePlaceholder(":session attach " + session.id);
                 }
               });
           } else {
@@ -536,11 +512,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No previous session.");
                   printOutput("No previous session.");
+                  reAdjustOrUpdatePlaceholder(PLACEHOLDER);
                   setSession(-1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
+                  reAdjustOrUpdatePlaceholder(":session attach " + session.id);
                 }
               });
           } else {
@@ -566,7 +544,6 @@ export default function Home() {
             setInput(":");
             setSetting("historyIndex", -1);
           }
-          reAdjustInputHeight();
         }
 
         // Navigate to next session
@@ -592,11 +569,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No next session.");
                   printOutput("No next session.");
-                  setSession(-1);
+                  reAdjustOrUpdatePlaceholder(PLACEHOLDER);
+                  setSession(1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
+                  reAdjustOrUpdatePlaceholder(":session attach " + session.id);
                 }
               });
           } else {
@@ -629,11 +608,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No next session.");
                   printOutput("No next session.");
-                  setSession(-1);
+                  reAdjustOrUpdatePlaceholder(PLACEHOLDER);
+                  setSession(1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
+                  reAdjustOrUpdatePlaceholder(":session attach " + session.id);
                 }
               });
           } else {
@@ -793,13 +774,6 @@ export default function Home() {
         base_url: "",
         role_content_system: "***",
         welcome_message: "",
-        waiting: "",
-        reasoning: "Reasoning...",
-        querying: "Querying...",
-        generating: "Generating...",
-        searching: "Searching...",
-        init_placeholder: ":help",
-        enter: "",
         temperature: 1,
         top_p: 1,
         use_node_ai: false,
@@ -817,20 +791,6 @@ export default function Home() {
         systemInfo = (await systemInfoResponse.json()).result;
       }
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
-
-      if (systemInfo.init_placeholder) {
-        globalThis.initPlaceholder = systemInfo.init_placeholder;
-        globalThis.rawPlaceholder = systemInfo.init_placeholder;
-        setPlaceholder({ text: systemInfo.init_placeholder, height: null });  // Set placeholder text
-      }
-      if (systemInfo.enter) {
-        dispatch(toggleEnterChange(systemInfo.enter));
-      }
-      if (systemInfo.waiting) setWaiting(systemInfo.waiting);  // Set waiting text
-      if (systemInfo.reasoning) setReasoning(systemInfo.reasoning);  // Set reasoning text
-      if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
-      if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
-      if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
 
       // Usage page (offline mode: disable if offline)
       if (globalThis.isOnline && systemInfo.use_payment) {
@@ -942,9 +902,14 @@ export default function Home() {
 
     // Handle window resize
     const handleResize = () => {
-      // Readjust UI
-      reAdjustInputHeight();
-      reAdjustPlaceholder();
+      const fullscreenMode = getSetting("fullscreen");
+
+      // For non-fullscreen mode, resize will cause glitch
+      if (fullscreenMode !== "off") {
+        // Readjust UI
+        reAdjustInputHeight();
+        reAdjustOrUpdatePlaceholder();
+      }
     };
     window.addEventListener('resize', handleResize);
     handleResize();
@@ -972,7 +937,7 @@ export default function Home() {
 
     // Readjust UI
     reAdjustInputHeight();
-    reAdjustPlaceholder();
+    reAdjustOrUpdatePlaceholder();
 
     // Load additional scripts
     // KaTeX copy module
@@ -1114,8 +1079,7 @@ export default function Home() {
       // Clear all input and output, pleaceholder, previews
       clearInput();
       clearOutput();
-      globalThis.rawPlaceholder = globalThis.initPlaceholder;
-      setPlaceholder({ text: globalThis.rawPlaceholder, height: null });
+      reAdjustOrUpdatePlaceholder(PLACEHOLDER);
       clearPreviewImages();
       clearPreviewVideos();
       setInfo();
@@ -1236,7 +1200,7 @@ export default function Home() {
 
       // If heavy command, show generating text
       if (commandString.startsWith("generate")) {
-        printOutput(generating);
+        printOutput(GENERATING);
       }
 
       // Get command result
@@ -1293,7 +1257,7 @@ export default function Home() {
 
       // Readjust UI
       reAdjustInputHeight();
-      reAdjustPlaceholder();
+      reAdjustOrUpdatePlaceholder();
       return;
     } else {
       // Clear donut
@@ -1448,7 +1412,7 @@ export default function Home() {
       // Just quick setup, now only support "gpt-image-1" model for image generation
       if (getSetting('useStream') == "false" || getSetting('model') === "gpt-image-1") {
         console.log("Start. (non-stream)");
-        printOutput(waiting === "" ? "Generating..." : waiting);
+        printOutput(WAITING === "" ? GENERATING : WAITING);
         generate(input, image_urls, file_urls);
         return;
       }
@@ -1474,7 +1438,7 @@ export default function Home() {
     globalThis.STATE = STATES.DOING;
 
     // Add a waiting text
-    if (getOutput() !== querying) printOutput(waiting);
+    if (getOutput() !== QUERYING) printOutput(WAITING);
 
     // prepare speech
     var textSpoken = "";
@@ -1542,7 +1506,7 @@ export default function Home() {
 
       // II. Handle the callings (tool calls)
       if (event.data.startsWith("###CALL###")) {
-        printOutput(querying);
+        printOutput(QUERYING);
 
         const toolCall = (JSON.parse(event.data.replace("###CALL###", "")))[0];
         const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
@@ -1633,13 +1597,13 @@ export default function Home() {
         // 1. Store
         // For stores print "Searching..."
         if (_status_.startsWith("Start searching...")) {
-          printOutput(searching);
+          printOutput(SEARCHING);
         }
 
         // 2. Node
         // For node print "Generating...", because it will be slow.
         if (config.node && (_status_.startsWith("Start pre-generating...") || _status_.startsWith("Start generating..."))) {
-          printOutput(generating);
+          printOutput(GENERATING);
         }
 
         if (_status_.startsWith("Node AI querying, prompt: ")) {
@@ -1658,13 +1622,13 @@ export default function Home() {
 
         // 3. Reasoning model
         if (_status_.startsWith("Start reasoning...")) {
-          printOutput(reasoning);
+          printOutput(REASONING);
         }
 
         // 4. Non-reasoning model
         // Sometime the tool calls make it pause
         if (_status_.startsWith("Start generating...")) {
-          printOutput(generating);
+          printOutput(GENERATING);
         }
         return;
       }
@@ -1803,7 +1767,7 @@ export default function Home() {
       }
 
       // Clear the waiting or querying text
-      if (getOutput() === waiting  || getOutput() === reasoning || getOutput() === querying || getOutput() === searching || getOutput() === generating) {
+      if (getOutput() === WAITING  || getOutput() === REASONING || getOutput() === QUERYING || getOutput() === SEARCHING || getOutput() === GENERATING) {
         clearOutput();
       }
 
@@ -1840,7 +1804,7 @@ export default function Home() {
     globalThis.STATE = STATES.DOING;
 
     // Add a waiting text
-    if (getOutput() !== querying) printOutput(waiting);
+    if (getOutput() !== QUERYING) printOutput(WAITING);
 
     // Input
     let inputType = TYPE.NORMAL;
@@ -2313,7 +2277,7 @@ export default function Home() {
         setSetting("head", timeNow);
 
         // Call generate with function
-        printOutput(querying);
+        printOutput(QUERYING);
         generate(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
         return;
       }
@@ -2452,7 +2416,6 @@ export default function Home() {
       // Input from placeholder when pressing tab
       if (elInput.value.length === 0) {
         setInput(globalThis.rawPlaceholder);
-        reAdjustInputHeight();
       }
 
       // Auto complete
@@ -2469,14 +2432,12 @@ export default function Home() {
               const nextOption = options[(options.indexOf(nameToBeComleted) + 1) % options.length];
               const complation = useQuates ? "\"" + nextOption + "\"" : nextOption;
               setInput(prefix + complation);
-              reAdjustInputHeight();
             } else {
               // Try auto complete
               const matches = options.filter((o) => o.startsWith(nameToBeComleted));
               if (matches.length > 0) {
                 const complation = useQuates ? "\"" + matches[0] + "\"" : matches[0];
                 setInput(prefix + complation);
-                reAdjustInputHeight();
               }
             }
           }
@@ -2544,17 +2505,24 @@ export default function Home() {
 
   // The placeholder should be shorten if fullscreen off or default
   // For fullscreen split, the placeholder shouldn't be shorten
-  const reAdjustPlaceholder = () => {
-    const fullscreen_ = getSetting("fullscreen").trim();
+  const reAdjustOrUpdatePlaceholder = (newPlaceholderText) => {
+    if (newPlaceholderText) {
+      globalThis.rawPlaceholder = newPlaceholderText;
+    }
     const placeholder = globalThis.rawPlaceholder;
+    const fullscreen_ = getSetting("fullscreen").trim();
     const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (getStringMonoLength(placeholder) >= 45 || placeholder.includes("\n"))) ?
                                  placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
-    setPlaceholder({ text: placeholderShortern, height: null });
+    setPlaceholder(placeholderShortern);
   }
 
   // The sleep 1 will magically fix the auto -> height issue
-  // But when input change, the height will jumping, so add doSleepToFixAuto param to control
-  const reAdjustInputHeight = async (doSleepToFixAuto = false) => {
+  // But when input change, the height will be jumping, so add doSleepToFixAuto param to control
+  const reAdjustInputHeight = async (doSleepToFixAuto = false, triggerBy) => {
+    if (triggerBy) {
+      console.log("Re-adjust input height. (triggerBy: " + triggerBy + ")");
+    }
+
     const elInput = elInputRef.current;
     if (!elInput) {
       return;
@@ -2643,7 +2611,7 @@ export default function Home() {
 
     // This is necessary
     reAdjustInputHeight(true);  // !important: use doSleepToFixAuto, the magic
-    reAdjustPlaceholder();
+    reAdjustOrUpdatePlaceholder();
   }
 
   // +img[], +image[], +file[]
@@ -2675,7 +2643,6 @@ export default function Home() {
 
     // Update the textarea value with the placeholder text
     setInput(textBefore + filePlaceholder + textAfter);
-    reAdjustInputHeight();  // Re-adjust input height as input changed
 
     // Grab the file
     console.log('Image/file pasted/dropped: ' + fileName + ' (' + type + ')');
@@ -2717,9 +2684,6 @@ export default function Home() {
     }
 
     setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", message));
-
-    // Re-adjust input height as input changed
-    reAdjustInputHeight();
   }
 
   // Handle paste event on input textarea
@@ -2755,6 +2719,45 @@ export default function Home() {
     }
   }
 
+  // Copy info content
+  const handleInfoClick = async (event) => {
+    let copyText = "";
+    if (event.ctrlKey || event.metaKey) {
+      // Copy attach session command to share
+      copyText = ":session attach " + getSetting("session");
+    } else {
+      copyText = globalThis.rawOutput;
+    }
+
+    const fallbackCopy = () => {
+      const textArea = Object.assign(document.createElement("textarea"), {
+        value: copyText,
+        readOnly: true,
+      });
+      textArea.style.cssText = "position:fixed;left:-9999px;";
+      document.body.appendChild(textArea);
+      textArea.select();
+      try {
+        document.execCommand("copy");
+      } finally {
+        textArea.remove();
+      }
+    };
+
+    // iOS Safari may not support navigator.clipboard.writeText
+    if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+      try {
+        await navigator.clipboard.writeText(copyText);
+      } catch (e) {
+        fallbackCopy();
+      }
+    } else {
+      fallbackCopy();
+    }
+
+    console.log("Copied:\n" + copyText);
+  }
+
   // Styles
   let styles = defaultStyles;
   if (fullscreen === "default") styles = fullscreenStyles;
@@ -2777,12 +2780,11 @@ export default function Home() {
               ref={elInputRef}
               rows="1"
               className={styles.input}
-              placeholder={placeholder.text}
+              placeholder={placeholder}
               onChange={handleInputChange}
               onPaste={handlePaste}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
-              autoFocus
               onKeyDown={handleInputKeyDown}
               autoComplete="off"
               spellCheck="false"
@@ -2806,17 +2808,7 @@ export default function Home() {
             </div>
             {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
             {stats && <div className={styles.stats}>{stats}</div>}
-            <div className={styles.info} onClick={(event) => {
-              let copyText = "";
-              if (event.ctrlKey || event.metaKey) {
-                // Copy attach session command to share
-                copyText = ":session attach " + getSetting("session");
-              } else {
-                copyText = globalThis.rawOutput;
-              }
-              navigator.clipboard.writeText(copyText);
-              console.log("Copied:\n" + copyText);
-            }}>{info}</div>
+            <div className={styles.info} onClick={handleInfoClick}>{info}</div>
           </div>
         </div>
 

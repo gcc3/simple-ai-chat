@@ -21,7 +21,7 @@ import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import { getMcpTools } from "./function.js";
 import { getLocalLogs, addLocalLog, resetLocalLogs } from "./utils/offlineUtils.js";
 import { isInternetAvailable } from "./utils/networkUtils.js";
-
+import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "constants.js";
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');
@@ -502,13 +502,6 @@ program
         base_url: "",
         role_content_system: "***",
         welcome_message: "",
-        waiting: "",
-        reasoning: "Reasoning...",
-        querying: "Querying...",
-        generating: "Generating...",
-        searching: "Searching...",
-        init_placeholder: ":help",
-        enter: "",
         temperature: 1,
         top_p: 1,
         use_node_ai: false,
@@ -520,6 +513,7 @@ program
         default_stores: "",
         default_node: "",
       };
+
       if (globalThis.isOnline) {
         console.log("Fetching system info...");
         const systemInfoResponse = await fetch('/api/system/info');
@@ -527,11 +521,8 @@ program
       }
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
-      if (systemInfo.init_placeholder) {
-        globalThis.initPlaceholder = systemInfo.init_placeholder;
-        globalThis.rawPlaceholder = systemInfo.init_placeholder;
-        globalThis.placeholder = globalThis.initPlaceholder;
-      }
+      globalThis.rawPlaceholder = PLACEHOLDER;
+      globalThis.placeholder = PLACEHOLDER;
 
       // Set welcome message
       if (systemInfo.welcome_message && !getSetting("user")) {

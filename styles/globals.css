@@ -202,9 +202,19 @@ input:focus {
   }
 }
 .fadeIn {
-  animation: fadeIn 1s ease-in-out;
-  -webkit-animation: fadeIn 1s ease-in-out;
-  -moz-animation: fadeIn 1s ease-in-out;
-  -o-animation: fadeIn 1s ease-in-out;
-  -ms-animation: fadeIn 1s ease-in-out;
+  animation: fadeIn 0.6s ease-in-out;
+  -webkit-animation: fadeIn 0.6s ease-in-out;
+  -moz-animation: fadeIn 0.6s ease-in-out;
+  -o-animation: fadeIn 0.6s ease-in-out;
+  -ms-animation: fadeIn 0.6s ease-in-out;
+}
+/* Disable animation on touch devices to improve performance */
+@media (hover: none) and (pointer: coarse) {
+  .fadeIn {
+    animation: none !important;
+    -webkit-animation: none !important;
+    -moz-animation: none !important;
+    -o-animation: none !important;
+    -ms-animation: none !important;
+  }
 }
