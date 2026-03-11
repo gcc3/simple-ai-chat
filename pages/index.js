@@ -736,6 +736,61 @@ export default function Home() {
     }
   }, [display, content]);
 
+  const tryFetchModel = async (model) => {
+    console.log("Fetching model: " + model.model);
+    try {
+      const res = await (await fetch('/api/model/' + model.model)).json();
+      if (res.success && res.result) {
+        const resolvedModel = res.result;
+        console.log("Model found in remote.");
+        globalThis.source = "remote";
+        return resolvedModel;
+      }
+    } catch (e) {
+      console.warn("Remote model lookup failed:", e);
+    }
+    console.warn("Model `" + model.model + "` not accessible in remote.");
+    return null;
+  }
+
+  const tryGetModel = async (model) => {
+    console.log("Getting model: " + model.model);
+    if (!await pingOllamaAPI()) {
+      console.warn("Ollama API not accessible.");
+      return null;
+    }
+    const ollamaModels = await listOllamaModels();
+    const ollamaModel = ollamaModels.find(o => o.name === model.model);
+    if (ollamaModel) {
+      console.log("Model found in Ollama.");
+      setSetting("baseUrl", ollamaModel.base_url);
+      const resolvedModel = { ...model, base_url: ollamaModel.base_url };
+      globalThis.source = "local";
+      return resolvedModel;
+    }
+    console.warn("Model `" + model.model + "` not accessible in local.");
+    return null;
+  }
+
+  const getModel = async () => {
+    const model = {
+      model: getSetting("model"),
+      base_url: getSetting("baseUrl"),
+    };
+    for (const resolveModel of globalThis.source === "remote"
+      ? [tryFetchModel, tryGetModel]
+      : [tryGetModel, tryFetchModel]) {
+      const resolvedModel = await resolveModel(model);
+      if (resolvedModel) {
+        return resolvedModel;
+      }
+    }
+    setSetting("baseUrl", "");
+    globalThis.source = "remote";
+    console.error("Failed to fetch model.");
+    return model;
+  }
+
   // Handle key down (useEffect)
   useEffect(() => {
     // Add event listener for keydown
@@ -826,41 +881,7 @@ export default function Home() {
       globalThis.baseUrl = systemInfo.base_url;
 
       // Model
-      let model = {
-        model: getSetting("model"),
-        base_url: getSetting("baseUrl"),
-      };
-      console.log("Fetching model: " + model.model);
-
-      // Try remote models
-      const res = await (await fetch('/api/model/' + model.model)).json();
-      if (res.success) {
-        model = res.result;
-        if (model) {
-          // Found remote model
-          console.log("Found model in remote.");
-          globalThis.source = "remote";
-        }
-      } else {
-        console.warn("Model `" + model.model + "` not accessible in remote.");
-
-        // Try local models
-        if (await pingOllamaAPI()) {
-          const ollamaModels = await listOllamaModels();
-          const ollamaModel = ollamaModels.find(o => o.name === model.model);
-          if (ollamaModel) {
-            // Found ollama model
-            console.log("Found model in Ollama.");
-            setSetting("baseUrl", ollamaModel.base_url);
-            globalThis.source = "local";
-          } else {
-            // Both remote and local model not found, set baseUrl to empty
-            console.warn("Model `" + model.model + "` not accessible in local.");
-            setSetting("baseUrl", "");
-            globalThis.source = "remote";
-          }
-        }
-      }
+      const model = await getModel();
       console.log(JSON.stringify(model, null, 2));
     }
     getSystemInfo();
