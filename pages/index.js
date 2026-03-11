@@ -566,7 +566,7 @@ export default function Home() {
                 if (!session) {
                   console.log("No next session.");
                   printOutput("No next session.");
-                  setSession(-1);
+                  setSession(1);
                   return;
                 } else {
                   // Attach to it
@@ -603,7 +603,7 @@ export default function Home() {
                 if (!session) {
                   console.log("No next session.");
                   printOutput("No next session.");
-                  setSession(-1);
+                  setSession(1);
                   return;
                 } else {
                   // Attach to it
