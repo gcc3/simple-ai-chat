@@ -32,7 +32,7 @@ export async function attachSession(sessionId) {
     }
     const session = result.result.session;
 
-    setTime(session.created_at);
+    setTime(session.id);
     setSession(session.id);
 
     return "Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.";
