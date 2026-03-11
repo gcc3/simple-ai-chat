@@ -1,22 +1,11 @@
-import { authenticate } from 'utils/authUtils';
-import { findModel } from 'utils/modelUtils';
+import { getModel } from 'utils/sqliteUtils';
 
 export default async function (req, res) {
   const { modelName } = req.query;
 
   try {
-    const authResult = authenticate(req);
-    if (!authResult.success) {
-      res.status(401).json({
-        success: false,
-        error: authResult.error
-      });
-      return;
-    }
-    const authUser = authResult.user;
-
     // Check if role exists in user roles
-    const model = await findModel(modelName, authUser.username);
+    const model = await getModel(modelName);
     if (!model) {
       res.status(404).json({
         success: false,

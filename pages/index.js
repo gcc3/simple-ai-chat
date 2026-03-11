@@ -62,6 +62,7 @@ globalThis.rawPlaceholder = PLACEHOLDER;
 // Global default model
 globalThis.model = "";
 globalThis.baseUrl = "";
+globalThis.source = "remote";
 
 // Donut interval id
 let dunutIntervalId = null;
@@ -817,56 +818,50 @@ export default function Home() {
       if (!getSetting("role")) setSetting("role", systemInfo.default_role);    // default role
       if (!getSetting("stores")) setSetting("stores", systemInfo.default_stores);  // default stores
       if (!getSetting("node")) setSetting("node", systemInfo.default_node);    // default node
+      if (!getSetting("model")) setSetting("model", systemInfo.model);  // default model
+      if (!getSetting("baseUrl")) setSetting("baseUrl", systemInfo.base_url);  // default base url
 
-      // Set default model
+      // Reset global default model
       globalThis.model = systemInfo.model;
       globalThis.baseUrl = systemInfo.base_url;
 
-      if (!getSetting("user") || !getSetting("model")) {
-        setSetting("model", systemInfo.model);  // default model
-        setSetting("baseUrl", systemInfo.base_url);  // default base url
-      } else {
-        const modelName = getSetting("model");
+      // Model
+      let model = {
+        model: getSetting("model"),
+        base_url: getSetting("baseUrl"),
+      };
+      console.log("Fetching model: " + model.model);
 
-        // Try remote models
-        console.log("Fetching model: " + modelName);
-        const response = await fetch('/api/model/' + modelName);
-        const modelResponse = await response.json();
-        let model = null;
-        if (modelResponse.success) {
-          model = modelResponse.result;
-          console.log(JSON.stringify(model, null, 2));
-        } else {
-          console.warn(modelResponse.error);
-        }
-
-        // Found remote model
+      // Try remote models
+      const res = await (await fetch('/api/model/' + model.model)).json();
+      if (res.success) {
+        model = res.result;
         if (model) {
-          console.log("Found model in remote: " + model.model);
-          console.log("Set baseUrl: " + model.base_url);
-          setSetting("baseUrl", model.base_url);
+          // Found remote model
+          console.log("Found model in remote.");
+          globalThis.source = "remote";
         }
+      } else {
+        console.warn("Model `" + model.model + "` not accessible in remote.");
 
         // Try local models
-        if (!model) {
-          console.warn("Model `" + modelName + "` not accessible in remote.");
-          if (await pingOllamaAPI()) {
-            const ollamaModels = await listOllamaModels();
-            const ollamaModel = ollamaModels.find(o => o.name === modelName);
-            if (ollamaModel) {
-              // Found ollama model
-              console.log("Found model in local: " + ollamaModel.name);
-              console.log("Set baseUrl: " + ollamaModel.base_url);
-              setSetting("baseUrl", ollamaModel.base_url);
-            } else {
-              // Both remote and local model not found, set baseUrl to empty
-              console.warn("Model `" + modelName + "` not accessible in local.");
-              console.warn("Set baseUrl to empty.");
-              setSetting("baseUrl", "");
-            }
+        if (await pingOllamaAPI()) {
+          const ollamaModels = await listOllamaModels();
+          const ollamaModel = ollamaModels.find(o => o.name === model.model);
+          if (ollamaModel) {
+            // Found ollama model
+            console.log("Found model in Ollama.");
+            setSetting("baseUrl", ollamaModel.base_url);
+            globalThis.source = "local";
+          } else {
+            // Both remote and local model not found, set baseUrl to empty
+            console.warn("Model `" + model.model + "` not accessible in local.");
+            setSetting("baseUrl", "");
+            globalThis.source = "remote";
           }
         }
       }
+      console.log(JSON.stringify(model, null, 2));
     }
     getSystemInfo();
 
