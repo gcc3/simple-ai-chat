@@ -427,7 +427,9 @@ export default async function(req, res) {
       tools: (tools && tools.length > 0 && !is_reasoning_model) ? tools : null,  // reasoning model cannot use tools
       tool_choice: (tools && tools.length > 0 && !is_reasoning_model) ? "auto" : null,  // reasoning model cannot use tools
       user: user ? user.username : null,
-      reasoning_effort: is_reasoning_model ? "high" : null,
+
+      // conditional params
+      ...(is_reasoning_model ? { reasoning_effort: "high" } : {}),
     });
 
     res.write(`data: ###MODEL###${model}\n\n`);
