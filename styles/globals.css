@@ -208,3 +208,12 @@ input:focus {
   -o-animation: fadeIn 0.6s ease-in-out;
   -ms-animation: fadeIn 0.6s ease-in-out;
 }
+@media (hover: none) and (pointer: coarse) {
+  .fadeIn {
+    animation: none !important;
+    -webkit-animation: none !important;
+    -moz-animation: none !important;
+    -o-animation: none !important;
+    -ms-animation: none !important;
+  }
+}
