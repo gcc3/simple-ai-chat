@@ -156,27 +156,29 @@ export default function Usage() {
               </table>
             </div>
             {usage.model_usage.map((modelUsage, index) => (
-              <React.Fragment key={index}>
-                <div className="mt-3">{modelUsage.model}</div>
-                <div className="table-container mt-1">
-                  <table className="table-fixed">
-                    <tbody>
-                      <tr>
-                        <td className="mr-3">{ t("Input Tokens") }</td>
-                        <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.input}</td>
-                        <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.input}</td>
-                        <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.input}</td>
-                      </tr>
-                      <tr>
-                        <td className="mr-3">{ t("Output Tokens") }</td>
-                        <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.output}</td>
-                        <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.output}</td>
-                        <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.output}</td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </React.Fragment>
+              (modelUsage.token_frequencies.daily.input > 0 || modelUsage.token_frequencies.daily.output > 0 || modelUsage.token_frequencies.weekly.input > 0 || modelUsage.token_frequencies.weekly.output > 0 || modelUsage.token_frequencies.monthly.input > 0 || modelUsage.token_frequencies.monthly.output > 0) && (
+                <React.Fragment key={index}>
+                  <div className="mt-3">{modelUsage.model}</div>
+                  <div className="table-container mt-1">
+                    <table className="table-fixed">
+                      <tbody>
+                        <tr>
+                          <td className="mr-3">{ t("Input Tokens") }</td>
+                          <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.input}</td>
+                          <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.input}</td>
+                          <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.input}</td>
+                        </tr>
+                        <tr>
+                          <td className="mr-3">{ t("Output Tokens") }</td>
+                          <td className="mr-3">{ t("Daily") }: {modelUsage.token_frequencies.daily.output}</td>
+                          <td className="mr-3">{ t("Weekly") }: {modelUsage.token_frequencies.weekly.output}</td>
+                          <td className="mr-3">{ t("Monthly") }: {modelUsage.token_frequencies.monthly.output}</td>
+                        </tr>
+                      </tbody>
+                    </table>
+                  </div>
+                </React.Fragment>
+              )
             ))}
             <div className="mt-3">
               {usage.use_count_frequencies.daily_limit && <ProgressBar label={ t("Daily usage") } 

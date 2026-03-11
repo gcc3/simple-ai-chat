@@ -28,7 +28,7 @@ export default async function (req, res) {
     
     // Add log
     // TODO, should only allow login user add log, else will be injected
-    await logadd(user, session, time, model, 0, input, 0, output, JSON.stringify(images), ip, browser);
+    await logadd(user, session, time, model, 0, input, 0, output, JSON.stringify(images), 0, ip, browser);
 
     // Output the result
     res.status(200).json({

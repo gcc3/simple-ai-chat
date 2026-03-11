@@ -375,10 +375,10 @@ export default async function(req, res) {
         if (node_output_images.length > 0) {
           for (let i = 0; i < node_output_images.length; i++) {
             // The time cannot be same, so every image add 1 millisecond
-            await logadd(user, session, time++, nodeModel, 0, ":generate \"" + node_input + "\"", 0, node_output, JSON.stringify([node_output_images[i]]), ip, browser);
+            await logadd(user, session, time++, nodeModel, 0, ":generate \"" + node_input + "\"", 0, node_output, JSON.stringify([node_output_images[i]]), 0, ip, browser);
           }
         } else {
-          await logadd(user, session, time++, nodeModel, 0, node_input, 0, node_output, JSON.stringify([]), ip, browser);
+          await logadd(user, session, time++, nodeModel, 0, node_input, 0, node_output, JSON.stringify([]), 0, ip, browser);
         }
       }
     }
@@ -517,13 +517,13 @@ export default async function(req, res) {
         const f = functionCallingResults[i];
         const c = functionCalls[i];
 
-        // Add log
+        // Add function log
         if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
           const input_f = "F=" + JSON.stringify(c);
           let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
           const input_token_ct_f = countToken(model_, input_f);
           const output_token_ct_f = countToken(model_, output_f);
-          await logadd(user, session, time++, model_, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
+          await logadd(user, session, time++, model_, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), 0, ip, browser);
         }
       }
     }
@@ -549,17 +549,17 @@ export default async function(req, res) {
     console.log("\n--- fee_calc ---");
     const input_fee = chatCompletionUsage.prompt_tokens * model.price_input;
     const output_fee = chatCompletionUsage.completion_tokens * model.price_output;
-    const total_fee = input_fee + output_fee;
+    const cost = input_fee + output_fee;
     console.log("input_fee = " + chatCompletionUsage.prompt_tokens + " * " + model.price_input + " = " + input_fee.toFixed(5));
     console.log("output_fee = " + chatCompletionUsage.completion_tokens + " * " + model.price_output + " = " + output_fee.toFixed(5));
-    console.log("total_fee: " + total_fee.toFixed(5));
+    console.log("total_cost: " + cost.toFixed(5));
     if (user && user.username) {
-      await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
-      console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5));
+      await addUserUsage(user.username, parseFloat(cost.toFixed(6)));
+      console.log("💰 User usage added, user: " + user.username + ", total cost: " + cost.toFixed(5));
     }
 
     // Log
-    await logadd(user, session, time++, model_, chatCompletionUsage.prompt_tokens, input, chatCompletionUsage.completion_tokens, output, JSON.stringify(input_images), ip, browser);
+    await logadd(user, session, time++, model_, chatCompletionUsage.prompt_tokens, input, chatCompletionUsage.completion_tokens, output, JSON.stringify(input_images), parseFloat(cost.toFixed(6)), ip, browser);
 
     // Stats (final)
     res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${chatCompletionUsage.total_tokens},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node_},${msg.mem}\n\n`);
