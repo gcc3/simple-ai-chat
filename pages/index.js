@@ -9,8 +9,12 @@ import { setTheme } from "utils/themeUtils.js";
 import { setRtl } from "utils/rtlUtils.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
 import { passwordFormatter, maskPassword, isCommandMusked } from "utils/passwordUtils";
-import dynamic from 'next/dynamic';
-import hljs from 'highlight.js/lib/common';
+import UserDataPrivacy from "components/UserDataPrivacy";
+import Usage from "components/Usage";
+import Documentation from "components/Documentation";
+import Copyrights from "components/Copyrights";
+import Settings from "components/Settings";
+import hljs from 'highlight.js';
 import { generateFileUrl } from "utils/awsUtils";
 import { initializeSessionMemory, setSession, setTime } from "utils/sessionUtils";
 import 'katex/dist/katex.min.css';
@@ -37,11 +41,7 @@ import { getSetting, setSetting } from "../utils/settingsUtils.js";
 import { addLocalLog, resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { isInternetAvailable } from "utils/networkUtils";
 import { getStringMonoLength } from "utils/stringUtils";
-const UserDataPrivacy = dynamic(() => import('components/UserDataPrivacy'));
-const Usage = dynamic(() => import('components/Usage'));
-const Documentation = dynamic(() => import('components/Documentation'));
-const Copyrights = dynamic(() => import('components/Copyrights'));
-const Settings = dynamic(() => import('components/Settings'));
+
 
 globalThis.STATE = STATES.IDLE;  // a global state
 
