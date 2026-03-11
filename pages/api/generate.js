@@ -121,6 +121,13 @@ export default async function(req, res) {
     }
   }
 
+  // Model properties
+  const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
+  const is_vision_model = model.is_vision === "1";
+  const is_audio_model = model.is_audio === "1";
+  const is_reasoning_model = model.is_reasoning === "1";
+  const is_image_model = model.is_image === "1";
+
   // Function calling (tool calls), MCP tools
   let functions_ = req.query.functions || "";
   let mcp_tools = req.query.mcp_tools || [];
@@ -148,13 +155,6 @@ export default async function(req, res) {
     });
     return;
   }
-
-  // Model properties
-  const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
-  const is_vision_model = model.is_vision === "1";
-  const is_audio_model = model.is_audio === "1";
-  const is_reasoning_model = model.is_reasoning === "1";
-  const is_image_model = model.is_image === "1";
 
   // OpenAI
   const openai = new OpenAI({
