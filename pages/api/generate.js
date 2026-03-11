@@ -205,7 +205,7 @@ export default async function(req, res) {
       let imageGenerate = null;
       if (outputType === TYPE.IMAGE_GEN) {
         imageGenerate = await openai.images.generate({
-          model: "gpt-image-1",
+          model: model,
           prompt: input,
           n: 1,
           moderation: "low",
@@ -233,7 +233,7 @@ export default async function(req, res) {
 
         // Use all files in the edit request
         imageGenerate = await openai.images.edit({
-          model: "gpt-image-1",
+          model: model,
           prompt: input,
           image: imageFilesArray,    // pass array of File objects
           n: 1,

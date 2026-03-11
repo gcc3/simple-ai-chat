@@ -1407,17 +1407,16 @@ export default function Home() {
       return;
     }
 
+    // Server mode
     if (globalThis.isOnline) {
       // Non-stream
-      // Just quick setup, now only support "gpt-image-1" model for image generation
-      if (getSetting('useStream') == "false" || getSetting('model') === "gpt-image-1") {
+      if (getSetting('useStream') == "false") {
         console.log("Start. (non-stream)");
         printOutput(WAITING === "" ? GENERATING : WAITING);
         generate(input, image_urls, file_urls);
         return;
       }
 
-      // Server mode
       // Stream
       if (getSetting('useStream') == "true") {
         console.log("Start. (SSE)");
@@ -2283,7 +2282,7 @@ export default function Home() {
       }
 
       // Print image output
-      if (getSetting("model") === "gpt-image-1") {
+      if (data.result.images && data.result.images.length > 0) {
         const images = data.result.images;
         for (const image of images) {
           printImage(image);
