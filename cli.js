@@ -19,7 +19,7 @@ import { spawn } from "child_process";
 import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import { getMcpTools } from "./function.js";
 import { getLocalLogs, addLocalLog, resetLocalLogs } from "./utils/offlineUtils.js";
-import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "constants.js";
+import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "./constants.js";
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');
@@ -276,7 +276,7 @@ async function generate_msg(input, images=[], files=[]) {
   let msg;
 
   // Online: get remote messages
-  if (globalThis.isOnline) {
+  if (globalThis.isOnline && globalThis.source === "remote") {
     const msgResponse = await fetch("/api/generate_msg", {
       method: "POST",
       headers: {
@@ -310,8 +310,8 @@ async function generate_msg(input, images=[], files=[]) {
     msg = msgData.result.msg;
   }
 
-  // Offline: get local messages
-  if (globalThis.isOffline) {
+  // Offline / local Ollama model: get local messages
+  if (globalThis.isOffline || globalThis.source === "local") {
     // History logs
     const localLogs = getLocalLogs();
     let messages = [];
@@ -368,7 +368,7 @@ async function generate_msg(input, images=[], files=[]) {
   // Record log (chat history)
   const logadd = async (input, output) => {
     // Online: add log to server
-    if (globalThis.isOnline) {
+    if (globalThis.isOnline && globalThis.source === "remote") {
       const logaddResponse = await fetch("/api/log/add", {
         method: "POST",
         headers: {
@@ -389,8 +389,8 @@ async function generate_msg(input, images=[], files=[]) {
       }
     }
 
-    // Offline: add log to local
-    if (globalThis.isOffline) {
+    // Offline / local Ollama model: add log to local
+    if (globalThis.isOffline || globalThis.source === "local") {
       // Add to local log
       addLocalLog({
         input: input,
