@@ -776,6 +776,11 @@ export default function Home() {
     const model = {
       model: getSetting("model"),
       base_url: getSetting("baseUrl"),
+      is_tool_calls_supported: "0",
+      is_vision: "0",
+      is_audio: "0",
+      is_reasoning: "0",
+      is_image: "0"
     };
     for (const resolveModel of globalThis.source === "remote"
       ? [tryFetchModel, tryGetModel]
@@ -1418,10 +1423,13 @@ export default function Home() {
     // Clear info and start generating
     resetInfo();
 
+    // Refetch model
+    const model = await getModel();
+
     // Generation mode switch
     // Local mode
-    if (getSetting("baseUrl").includes("localhost")
-     || getSetting("baseUrl").includes("127.0.0.1")) {
+    if (model.base_url.includes("localhost")
+     || model.base_url.includes("127.0.0.1")) {
       console.log("Start. (Local)");
       generate_msg(input, image_urls, file_urls);
       return;
@@ -1430,7 +1438,7 @@ export default function Home() {
     // Server mode
     if (globalThis.isOnline) {
       // Non-stream
-      if (getSetting('useStream') == "false") {
+      if (getSetting('useStream') == "false" || model.is_image === "1") {
         console.log("Start. (non-stream)");
         printOutput(WAITING === "" ? GENERATING : WAITING);
         generate(input, image_urls, file_urls);
