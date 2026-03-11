@@ -46,18 +46,18 @@ export default async function unuse(args) {
   }
 
   // Find model
-  const modelInfo = await findModel(name);
-  if (modelInfo) {
+  const model = await findModel(name);
+  if (model) {
     // Set model
-    setSetting("model", globalThis.model);  // reset model
-    setSetting("baseUrl", globalThis.baseUrl);  // reset base url
+    setSetting("model", globalThis.model);  // reset to default model
+    setSetting("baseUrl", globalThis.baseUrl);  // reset to default base url
 
     return "Model unused, and reset to default model.";
   }
 
   // Find node
-  const nodeInfo = await findNode(name);
-  if (nodeInfo) {
+  const node = await findNode(name);
+  if (node) {
     // clear node
     setSetting("node", "");
 
@@ -67,8 +67,8 @@ export default async function unuse(args) {
   }
   
   // Find store
-  const storeInfo = await findStore(name);
-  if (storeInfo) {
+  const store = await findStore(name);
+  if (store) {
     /// Check store active
     if (!isStoreActive(name)) {
       return "Store \`" + name + "\` is not active";
@@ -110,9 +110,8 @@ async function findModel(modelName) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    // Model info
-    const modelInfo = data.result;
-    return modelInfo;
+    const model = data.result;
+    return model;
   }
   catch (error) {
     console.error(error);
@@ -135,9 +134,8 @@ async function findNode(nodeName) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    // Node info
-    const nodeInfo = data.result;
-    return nodeInfo;
+    const node = data.result;
+    return node;
   } catch (error) {
     console.error(error);
     return false;
@@ -165,8 +163,8 @@ async function findStore(storeName) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    const storeInfo = data.result;
-    return storeInfo;
+    const store = data.result;
+    return store;
   } catch (error) {
     console.error(error);
     return false;

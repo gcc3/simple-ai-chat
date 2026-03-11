@@ -13,7 +13,6 @@ export default async function node(args) {
                 "       :node set owner [owner]\n" +
                 "       :node set [key] [value]\n";
 
-  // Get node info
   // :node [name?]
   if (!command) {
     if (!getSetting("user")) {
@@ -38,20 +37,19 @@ export default async function node(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Node info
-      const nodeInfo = data.result;
-      if (!nodeInfo) {
+      const node = data.result;
+      if (!node) {
         return "Node not found.";
       }
 
-      return JSON.stringify(nodeInfo, null, 2);
+      return JSON.stringify(node, null, 2);
     } catch (error) {
       console.error(error);
       return error;
     }
   }
 
-  // Get node info by name
+  // Get node by name
   // :node [name?]
   if (args.length === 1 && args[0].startsWith("\"") && args[0].endsWith("\"")) {
     const nodeName = args[0].slice(1, -1);
@@ -72,13 +70,12 @@ export default async function node(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Node info
-      const nodeInfo = data.result;
-      if (!nodeInfo) {
+      const node = data.result;
+      if (!node) {
         return "Node not found.";
       }
 
-      return JSON.stringify(nodeInfo, null, 2);
+      return JSON.stringify(node, null, 2);
     } catch (error) {
       console.error(error);
       return error;
@@ -191,16 +188,15 @@ export default async function node(args) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        // Node info
-        const nodeInfo = data.result;
-        if (!nodeInfo) {
+        const node = data.result;
+        if (!node) {
           return "Node not found.";
         }
         
         // Set node
         setSetting("node", nodeName);
 
-        if (!nodeInfo) {
+        if (!node) {
           return "Node not found.";
         }
       } catch (error) {
