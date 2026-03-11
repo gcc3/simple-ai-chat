@@ -473,11 +473,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No previous session.");
                   printOutput("No previous session.");
+                  setPlaceholder(PLACEHOLDER);
                   setSession(-1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
+                  setPlaceholder(":session attach " + session.id);
                 }
               });
           } else {
@@ -511,11 +513,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No previous session.");
                   printOutput("No previous session.");
+                  setPlaceholder(PLACEHOLDER);
                   setSession(-1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
+                  setPlaceholder(":session attach " + session.id);
                 }
               });
           } else {
@@ -566,11 +570,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No next session.");
                   printOutput("No next session.");
+                  setPlaceholder(PLACEHOLDER);
                   setSession(1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
+                  setPlaceholder(":session attach " + session.id);
                 }
               });
           } else {
@@ -603,11 +609,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No next session.");
                   printOutput("No next session.");
+                  setPlaceholder(PLACEHOLDER);
                   setSession(1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
+                  setPlaceholder(":session attach " + session.id);
                 }
               });
           } else {
