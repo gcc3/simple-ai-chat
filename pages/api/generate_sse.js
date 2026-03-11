@@ -424,12 +424,11 @@ export default async function(req, res) {
       },
       temperature: sysconf.temperature,
       top_p: sysconf.top_p,
-      tools: (tools && tools.length > 0 && !is_reasoning_model) ? tools : null,  // reasoning model cannot use tools
-      tool_choice: (tools && tools.length > 0 && !is_reasoning_model) ? "auto" : null,  // reasoning model cannot use tools
-      user: user ? user.username : null,
 
       // conditional params
+      ...(tools && tools.length > 0 && !is_reasoning_model ? { tools: tools, tool_choice: "auto" } : {}),
       ...(is_reasoning_model ? { reasoning_effort: "high" } : {}),
+      ...(user ? { user: user.username } : {})
     });
 
     res.write(`data: ###MODEL###${model}\n\n`);
