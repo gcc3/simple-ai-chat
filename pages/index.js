@@ -1,4 +1,5 @@
 import Head from "next/head";
+import dynamic from 'next/dynamic';
 import { useState, useEffect, useRef, useCallback } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
@@ -9,11 +10,6 @@ import { setTheme } from "utils/themeUtils.js";
 import { setRtl } from "utils/rtlUtils.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
 import { passwordFormatter, maskPassword, isCommandMusked } from "utils/passwordUtils";
-import UserDataPrivacy from "components/UserDataPrivacy";
-import Usage from "components/Usage";
-import Documentation from "components/Documentation";
-import Copyrights from "components/Copyrights";
-import Settings from "components/Settings";
 import hljs from 'highlight.js';
 import { generateFileUrl } from "utils/awsUtils";
 import { initializeSessionMemory, setSession, setTime } from "utils/sessionUtils";
@@ -41,6 +37,12 @@ import { getSetting, setSetting } from "../utils/settingsUtils.js";
 import { addLocalLog, resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { isInternetAvailable } from "utils/networkUtils";
 import { getStringMonoLength } from "utils/stringUtils";
+
+const UserDataPrivacy = dynamic(() => import('components/UserDataPrivacy'), { ssr: false });
+const Usage = dynamic(() => import('components/Usage'), { ssr: false });
+const Documentation = dynamic(() => import('components/Documentation'), { ssr: false });
+const Copyrights = dynamic(() => import('components/Copyrights'), { ssr: false });
+const Settings = dynamic(() => import('components/Settings'), { ssr: false });
 
 globalThis.STATE = STATES.IDLE;  // a global state
 
