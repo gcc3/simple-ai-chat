@@ -1,7 +1,6 @@
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 import { updateUserSetting } from "../utils/userUtils.js";
 
-
 export default async function theme(args) {
   const value = args[0];
   

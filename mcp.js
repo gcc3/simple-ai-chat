@@ -8,14 +8,12 @@
 
 import express from 'express';
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
-import { SSEClientTransport } from "@modelcontextprotocol/sdk/client/sse.js";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import fs from 'fs';
 import cors from 'cors';
 import { mkdir } from 'fs/promises';
 import { homedir } from 'os';
 import { join } from 'path';
-
 
 const CONFIG = join(homedir(), '.simple', "mcpconfig.json");
 

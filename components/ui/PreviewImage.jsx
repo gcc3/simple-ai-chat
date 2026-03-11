@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 function PreviewImage({ image } = {}) {
   const [loaded, setLoaded] = useState(false);
 

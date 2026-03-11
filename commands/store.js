@@ -1,7 +1,6 @@
 import { addStoreToSessionStorage, countStoresInSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
-
 export default async function store(args, files) {
   const command = args[0];
   const usage = "Usage: :store [name?]\n" +

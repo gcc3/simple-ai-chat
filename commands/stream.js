@@ -1,5 +1,4 @@
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
-
+import { setSetting } from "../utils/settingsUtils.js";
 
 export default function stream(args) {
   const onoff = args[0];

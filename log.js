@@ -1,7 +1,6 @@
 import fs from 'fs';
 import path from 'path';
 
-
 // Read the log.config file and parse the CSV content into an array of IPs
 const readFilterList = async () => {
   try {

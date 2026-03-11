@@ -42,7 +42,6 @@ import { addLocalLog, resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { isInternetAvailable } from "utils/networkUtils";
 import { getStringMonoLength } from "utils/stringUtils";
 
-
 globalThis.STATE = STATES.IDLE;  // a global state
 
 // Offline

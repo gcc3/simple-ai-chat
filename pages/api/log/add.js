@@ -2,7 +2,6 @@ import { authenticate } from "utils/authUtils";
 import { logadd } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
 
-
 export default async function (req, res) {
    // Check method
    if (req.method !== "POST") {
