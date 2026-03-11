@@ -2773,7 +2773,7 @@ export default function Home() {
       <main className={styles.main}>
         {!minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>}
 
-        <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'}`}>
+        <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>
             <textarea
               id="input"
@@ -2813,7 +2813,7 @@ export default function Home() {
         </div>
 
         {display === DISPLAY.BACK &&
-          <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'}`}>
+          <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
             <div className={styles.container}>
               <div className={styles.nav}>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{ t("Documentation") }</div>
