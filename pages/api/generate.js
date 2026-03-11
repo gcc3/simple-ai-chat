@@ -256,13 +256,13 @@ export default async function(req, res) {
       console.log("\n--- fee_calc ---");
       const input_fee = imageGenerate.usage.input_tokens * model.price_input;
       const output_fee = imageGenerate.usage.output_tokens * model.price_output;
-      const total_fee = input_fee + output_fee;
+      const cost = input_fee + output_fee;
       console.log("input_fee = " + imageGenerate.usage.input_tokens + " * " + model.price_input + " = " + input_fee.toFixed(5));
       console.log("output_fee = " + imageGenerate.usage.output_tokens + " * " + model.price_output + " = " + output_fee.toFixed(5));
-      console.log("total_fee: " + total_fee.toFixed(5));
+      console.log("total_cost: " + cost.toFixed(5));
       if (user && user.username) {
-        await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
-        console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5));
+        await addUserUsage(user.username, parseFloat(cost.toFixed(6)));
+        console.log("💰 User usage added, user: " + user.username + ", cost: " + cost.toFixed(5));
       }
 
       res.status(200).json({
@@ -311,7 +311,7 @@ export default async function(req, res) {
       console.log("Image uploaded to S3: " + objectUrl);
 
       // Log
-      await logadd(user, session, time++, model_, imageGenerate.usage.input_tokens, input, imageGenerate.usage.output_tokens, "", JSON.stringify([objectUrl]), ip, browser);
+      await logadd(user, session, time++, model_, imageGenerate.usage.input_tokens, input, imageGenerate.usage.output_tokens, "", JSON.stringify([objectUrl]), parseFloat(cost.toFixed(6)), ip, browser);
       return;
     } catch (error) {
       console.error("Error (image generation):");
@@ -515,13 +515,13 @@ export default async function(req, res) {
         const f = functionResults[i];
         const c = functionCalls[i];
 
-        // Add log
+        // Add function log
         if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
           const input_f = "F=" + JSON.stringify(c);
           let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
           const input_token_ct_f = countToken(model_, input_f);
           const output_token_ct_f = countToken(model_, output_f);
-          await logadd(user, session, time++, model_, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
+          await logadd(user, session, time++, model_, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), 0, ip, browser);
         }
       }
     }
@@ -547,17 +547,17 @@ export default async function(req, res) {
     console.log("\n--- fee_calc ---");
     const input_fee = chatCompletion.usage.prompt_tokens * model.price_input;
     const output_fee = chatCompletion.usage.completion_tokens * model.price_output;
-    const total_fee = input_fee + output_fee;
+    const cost = input_fee + output_fee;
     console.log("input_fee = " + chatCompletion.usage.prompt_tokens + " * " + model.price_input + " = " + input_fee.toFixed(5));
     console.log("output_fee = " + chatCompletion.usage.completion_tokens + " * " + model.price_output + " = " + output_fee.toFixed(5));
-    console.log("total_fee: " + total_fee.toFixed(5));
+    console.log("total_cost: " + cost.toFixed(5));
     if (user && user.username) {
-      await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
-      console.log("💰 User usage added, user: " + user.username + ", fee: " + total_fee.toFixed(5) + "\n");
+      await addUserUsage(user.username, parseFloat(cost.toFixed(6)));
+      console.log("💰 User usage added, user: " + user.username + ", cost: " + cost.toFixed(5) + "\n");
     }
 
     // Log
-    await logadd(user, session, time++, model_, chatCompletion.usage.prompt_tokens, input, chatCompletion.usage.completion_tokens, output, JSON.stringify(input_images), ip, browser);
+    await logadd(user, session, time++, model_, chatCompletion.usage.prompt_tokens, input, chatCompletion.usage.completion_tokens, output, JSON.stringify(input_images), parseFloat(cost.toFixed(6)), ip, browser);
 
     // Result
     res.status(200).json({

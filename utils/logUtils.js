@@ -1,6 +1,6 @@
 import { getLogs, getSession, getLog, insertLog, insertSession } from "./sqliteUtils.js"
 
-export async function logadd(user, sessionId, time, model, input_token_ct, input, output_token_ct, output, images, ip, browser) {
+export async function logadd(user, sessionId, time, model, input_token_ct, input, output_token_ct, output, images, cost, ip, browser) {
   // Get username
   let username = "";
   if (user) {
@@ -8,7 +8,7 @@ export async function logadd(user, sessionId, time, model, input_token_ct, input
   }
 
   // Insert log
-  await insertLog(sessionId, time, username, model, input_token_ct, input, output_token_ct, output, images, ip, browser);
+  await insertLog(sessionId, time, username, model, input_token_ct, input, output_token_ct, output, images, cost, ip, browser);
 }
 
 export async function loglist(sessionId, limit = 50) {

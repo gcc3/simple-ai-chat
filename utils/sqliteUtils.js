@@ -33,6 +33,7 @@ const initializeDatabase = (db) => {
         output_l INTEGER,
         output TEXT,
         images TEXT,
+        cost REAL,
         ip_addr TEXT,
         browser TEXT
       );`,
@@ -280,16 +281,16 @@ const searchFromLogs = async (keyword, username, limit = 100) => {
   }
 };
 
-const insertLog = async (session, time, username, model, input_l, input, output_l, output, images, ip, browser) => {
+const insertLog = async (session, time, username, model, input_l, input, output_l, output, images, cost, ip, browser) => {
   const db = await getDatabaseConnection();
   const time_h = formatUnixTimestamp(time);
 
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare(
-        "INSERT INTO logs (session, time, time_h, user, model, input_l, input, output_l, output, images, ip_addr, browser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO logs (session, time, time_h, user, model, input_l, input, output_l, output, images, cost, ip_addr, browser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
       );
-      stmt.run([session, time, time_h, username, model, input_l, input, output_l, output, images, ip, browser], function (err) {
+      stmt.run([session, time, time_h, username, model, input_l, input, output_l, output, images, cost, ip, browser], function (err) {
         if (err) {
           reject(err);
         }
