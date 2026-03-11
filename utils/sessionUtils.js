@@ -35,7 +35,14 @@ export async function attachSession(sessionId) {
     setTime(session.id);
     setSession(session.id);
 
-    return "Session (id:" + session.id + ") attached. Use `→` or `←` to navigate between session logs.";
+    // Truncate input and output characters
+    session.logs.map(item => {
+      if (item.input.length > 150) item.input = item.input.substring(0, 150) + " ...";
+      if (item.output.length > 150) item.output = item.output.substring(0, 150) + " ...";
+      return item;
+    });
+
+    return `Session (id:${session.id}) attached. Use \`→\` and \`←\` (or \`j\` and \`k\`) to navigate between session logs(length:${session.length}).\n\nPreview:\n` + JSON.stringify(session.logs, null, 2);
   } catch (error) {
     console.error("Error attaching session:", error);
     return "Error attaching session. Please try again later.";
