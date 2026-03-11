@@ -2809,7 +2809,6 @@ export default function Home() {
               onPaste={handlePaste}
               onDragOver={handleDragOver}
               onDrop={handleDrop}
-              autoFocus
               onKeyDown={handleInputKeyDown}
               autoComplete="off"
               spellCheck="false"
