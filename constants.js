@@ -21,3 +21,8 @@ export const CONTENT = {
 };
 
 export const PLACEHOLDER = ":help";
+
+export const REASONING = "Reasoning...";
+export const QUERYING = "Querying...";
+export const GENERATING = "Generating...";
+export const SEARCHING = "Searching...";

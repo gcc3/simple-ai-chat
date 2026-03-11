@@ -34,7 +34,7 @@ import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
-import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER } from '../constants.js';
+import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
@@ -77,10 +77,10 @@ export default function Home() {
   // States
   const [placeholder, setPlaceholder] = useState({ text: PLACEHOLDER, height: null });
   const [waiting, setWaiting] = useState("");
-  const [reasoning, setReasoning] = useState("Reasoning...");
-  const [querying, setQuerying] = useState("Querying...");
-  const [generating, setGenerating] = useState("Generating...");
-  const [searching, setSearching] = useState("Searching...");
+  const [reasoning, setReasoning] = useState(REASONING);
+  const [querying, setQuerying] = useState(QUERYING);
+  const [generating, setGenerating] = useState(GENERATING);
+  const [searching, setSearching] = useState(SEARCHING);
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
@@ -776,10 +776,10 @@ export default function Home() {
         role_content_system: "***",
         welcome_message: "",
         waiting: "",
-        reasoning: "Reasoning...",
-        querying: "Querying...",
-        generating: "Generating...",
-        searching: "Searching...",
+        reasoning: REASONING,
+        querying: QUERYING,
+        generating: GENERATING,
+        searching: SEARCHING,
         init_placeholder: PLACEHOLDER,
         enter: "",
         temperature: 1,
