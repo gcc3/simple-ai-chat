@@ -15,7 +15,6 @@ export default async function (req, res) {
         base_url: sysconf.base_url,
         role_content_system: "***",
         welcome_message: sysconf.welcome_message,
-        enter: sysconf.enter,
         temperature: sysconf.temperature,
         top_p: sysconf.top_p,
         use_node_ai: sysconf.use_node_ai,

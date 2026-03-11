@@ -10,7 +10,6 @@ export function getSystemConfigurations() {
   const model = process.env.MODEL ? process.env.MODEL : "";
   const base_url = process.env.OPENAI_BASE_URL ? process.env.OPENAI_BASE_URL : "";
   const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
-  const enter = process.env.ENTER ? process.env.ENTER : "";
   const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 1;
   const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;
   const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
@@ -29,7 +28,6 @@ export function getSystemConfigurations() {
     base_url: base_url,
     role_content_system: role_content_system,
     welcome_message: welcome_message,
-    enter: enter,
     temperature: temperature,
     top_p: top_p,
     use_node_ai: use_node_ai,

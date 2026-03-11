@@ -770,7 +770,6 @@ export default function Home() {
         base_url: "",
         role_content_system: "***",
         welcome_message: "",
-        enter: "",
         temperature: 1,
         top_p: 1,
         use_node_ai: false,
@@ -788,10 +787,6 @@ export default function Home() {
         systemInfo = (await systemInfoResponse.json()).result;
       }
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
-
-      if (systemInfo.enter) {
-        dispatch(toggleEnterChange(systemInfo.enter));
-      }
 
       // Usage page (offline mode: disable if offline)
       if (globalThis.isOnline && systemInfo.use_payment) {

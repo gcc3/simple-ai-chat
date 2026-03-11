@@ -116,8 +116,8 @@ Range 0 ~ 1, 0.1 means only the tokens comprising the top 10% probability mass a
 ROLE_CONTENT_SYSTEM  
 Set the system prompt.  
 
-WELCOME_MESSAGE and ENTER  
-Control the custom welcome message, and enter key text.  
+WELCOME_MESSAGE
+Control the custom welcome message.  
 
 WOLFRAM_ALPHA_APPID  
 For API calls for wolfram alpha API.  
