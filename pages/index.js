@@ -2811,7 +2811,7 @@ export default function Home() {
             </div>
             {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
             {stats && <div className={styles.stats}>{stats}</div>}
-            <div className={styles.info} onClick={(event) => {
+            <div className={styles.info} onClick={async (event) => {
               let copyText = "";
               if (event.ctrlKey || event.metaKey) {
                 // Copy attach session command to share
@@ -2819,7 +2819,33 @@ export default function Home() {
               } else {
                 copyText = globalThis.rawOutput;
               }
-              navigator.clipboard.writeText(copyText);
+
+              const fallbackCopy = () => {
+                const textArea = Object.assign(document.createElement("textarea"), {
+                  value: copyText,
+                  readOnly: true,
+                });
+                textArea.style.cssText = "position:fixed;left:-9999px;";
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                  document.execCommand("copy");
+                } finally {
+                  textArea.remove();
+                }
+              };
+
+              // iOS Safari may not support navigator.clipboard.writeText
+              if (navigator.clipboard && typeof navigator.clipboard.writeText === "function") {
+                try {
+                  await navigator.clipboard.writeText(copyText);
+                } catch (e) {
+                  fallbackCopy();
+                }
+              } else {
+                fallbackCopy();
+              }
+
               console.log("Copied:\n" + copyText);
             }}>{info}</div>
           </div>
