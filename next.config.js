@@ -6,6 +6,8 @@ const isDev = process.env.NODE_ENV === 'development';
 // Extracted Next.js configuration
 export const nextConfig = {
   reactStrictMode: true,
+  poweredByHeader: false,
+  compress: true,
   async headers() {
     return [
       {
@@ -27,7 +29,7 @@ const withPWA = nextPWA({
       handler: 'CacheFirst',
       options: {
         cacheName: 'next-static',
-        expiration: { maxEntries: 100, maxAgeSeconds: 60 * 60 * 24 },
+        expiration: { maxEntries: 200, maxAgeSeconds: 60 * 60 * 24 * 365 },  // 1 year — safe because filenames are content-hashed
       }
     },
     {

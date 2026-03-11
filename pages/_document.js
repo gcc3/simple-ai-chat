@@ -31,7 +31,7 @@ export default function Document() {
         <meta name="apple-mobile-web-app-capable" content="yes" />
         <meta name="apple-mobile-web-app-status-bar-style" content="default" />
         <meta name="apple-mobile-web-app-title" content="simple ai - chat" />
-        <meta name="description" content="Best PWA App in the world" />
+        <meta name="description" content="Hacker-friendly, command-driven AI cockpit with web + CLI support, letting you chat, code, query files/databases, wire up MCP servers, call tools, and solve math with WolframAlpha." />
         <meta name="format-detection" content="telephone=no" />
         <meta name="mobile-web-app-capable" content="yes" />
         <meta name="theme-color" content="#FFFFFF" />
