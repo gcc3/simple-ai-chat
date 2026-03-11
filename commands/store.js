@@ -17,7 +17,6 @@ export default async function store(args, files) {
                 "       :store set owner [owner]\n" +
                 "       :store set [key] [value]\n";
 
-  // Get store info
   // :store [name?], no name
   if (!command) {
     if (!getSetting("user")) {
@@ -33,7 +32,7 @@ export default async function store(args, files) {
     let results = [];
     for (let i = 0; i < storeNames.length; i++) {
       try {
-        // Get a single store info
+        // Get a single store
         const response = await fetch("/api/store/" + storeNames[i], {
           method: "GET",
           headers: {
@@ -55,7 +54,7 @@ export default async function store(args, files) {
     return results.join(",\n");
   }
 
-  // Get store info by name
+  // Get store by name
   // :store [name?], has name
   if (args.length === 1 && args[0].startsWith("\"") && args[0].endsWith("\"")) {
     const storeName = args[0].slice(1, -1);

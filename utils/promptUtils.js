@@ -153,7 +153,7 @@ export async function generateMessages(use_system_role, lang,
     // Search all active stores
     const activeStores = stores.split(",").filter(s => s !== "");
     for (const activeStore of activeStores) {
-      // Get store info
+      // Get store
       const store = await findStore(activeStore, user.username);
       if (store) {
         const settings = JSON.parse(store.settings);
