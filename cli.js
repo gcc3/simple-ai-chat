@@ -549,24 +549,24 @@ program
         // Try remote models
         console.log("Fetching model info: " + modelName);
         const response = await fetch('/api/model/' + modelName);
-        const modelInfoResponse = await response.json();
-        let modelInfo = null;
-        if (modelInfoResponse.success) {
-          modelInfo = modelInfoResponse.result;
-          console.log(JSON.stringify(modelInfo, null, 2));
+        const modelResponse = await response.json();
+        let model = null;
+        if (modelResponse.success) {
+          model = modelResponse.result;
+          console.log(JSON.stringify(model, null, 2));
         } else {
-          console.warn(modelInfoResponse.error);
+          console.warn(modelResponse.error);
         }
 
         // Found remote model
-        if (modelInfo) {
-          console.log("Found model in remote: " + modelInfo.model);
-          console.log("Set baseUrl: " + modelInfo.base_url);
-          setSetting("baseUrl", modelInfo.base_url);
+        if (model) {
+          console.log("Found model in remote: " + model.model);
+          console.log("Set baseUrl: " + model.base_url);
+          setSetting("baseUrl", model.base_url);
         }
 
         // Try local models
-        if (!modelInfo) {
+        if (!model) {
           console.warn("Model `" + modelName + "` not accessible in remote.");
           if (await pingOllamaAPI()) {
             const ollamaModels = await listOllamaModels();

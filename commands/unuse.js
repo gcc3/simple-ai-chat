@@ -46,8 +46,8 @@ export default async function unuse(args) {
   }
 
   // Find model
-  const modelInfo = await findModel(name);
-  if (modelInfo) {
+  const model = await findModel(name);
+  if (model) {
     // Set model
     setSetting("model", globalThis.model);  // reset to default model
     setSetting("baseUrl", globalThis.baseUrl);  // reset to default base url
@@ -111,8 +111,8 @@ async function findModel(modelName) {
     }
 
     // Model info
-    const modelInfo = data.result;
-    return modelInfo;
+    const model = data.result;
+    return model;
   }
   catch (error) {
     console.error(error);

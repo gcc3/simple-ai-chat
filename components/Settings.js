@@ -423,17 +423,17 @@ function Settings() {
       }
 
       // Model info
-      const modelInfo = data.result;
-      if (!modelInfo) {
+      const model = data.result;
+      if (!model) {
         console.error("Model not found");
         return;
       }
 
       // Set model
-      globalThis.model = modelInfo.model;
-      globalThis.baseUrl = modelInfo.base_url;
-      setSetting("model", modelInfo.model);
-      setSetting("baseUrl", modelInfo.base_url);
+      globalThis.model = model.model;
+      globalThis.baseUrl = model.base_url;
+      setSetting("model", model.model);
+      setSetting("baseUrl", model.base_url);
 
       // Update state
       const currentModel = getSetting("model");
@@ -462,17 +462,17 @@ function Settings() {
       }
 
       // Model info
-      const modelInfo = data.result;
-      if (!modelInfo) {
+      const model = data.result;
+      if (!model) {
         console.error("Model not found");
         return;
       }
 
       // Set model
-      globalThis.model = modelInfo.model;
-      globalThis.baseUrl = modelInfo.base_url;
-      setSetting("model", modelInfo.model);
-      setSetting("baseUrl", modelInfo.base_url);
+      globalThis.model = model.model;
+      globalThis.baseUrl = model.base_url;
+      setSetting("model", model.model);
+      setSetting("baseUrl", model.base_url);
 
       // Update state
       const currentModel = getSetting("model");
@@ -501,17 +501,17 @@ function Settings() {
       }
 
       // Model info
-      const modelInfo = data.result;
-      if (!modelInfo) {
+      const model = data.result;
+      if (!model) {
         console.error("Model not found");
         return;
       }
 
       // Set model
-      globalThis.model = modelInfo.model;
-      globalThis.baseUrl = modelInfo.base_url;
-      setSetting("model", modelInfo.model);
-      setSetting("baseUrl", modelInfo.base_url);
+      globalThis.model = model.model;
+      globalThis.baseUrl = model.base_url;
+      setSetting("model", model.model);
+      setSetting("baseUrl", model.base_url);
 
       // Update state
       const currentModel = getSetting("model");
@@ -529,13 +529,13 @@ function Settings() {
     // Check local Ollama models
     if (await pingOllamaAPI()) {
       const ollamModels = await listOllamaModels();
-      const ollamModelInfo = ollamModels.find((m) => m.name === name);
-      if (ollamModelInfo) {
+      const ollamModel = ollamModels.find((m) => m.name === name);
+      if (ollamModel) {
         // Set model to session storage
         globalThis.model = name;
-        globalThis.baseUrl = ollamModelInfo.base_url;
+        globalThis.baseUrl = ollamModel.base_url;
         setSetting("model", name);
-        setSetting("baseUrl", ollamModelInfo.base_url);
+        setSetting("baseUrl", ollamModel.base_url);
 
         // Update state
         const currentModel = getSetting("model");

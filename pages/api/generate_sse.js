@@ -121,17 +121,17 @@ export default async function(req, res) {
   const node = user && await findNode(node_, user.username);
 
   // Model switch
-  let model = req.query.model || sysconf.model;
+  let model_ = req.query.model || sysconf.model;
   const use_vision = images && images.length > 0;
   const use_eval = use_eval_ && use_stats && !use_vision;
-  let modelInfo = models.find(m => m.name === model);
-  if (!modelInfo) {
+  let model = models.find(m => m.name === model_);
+  if (!model) {
     // Try update models
     models = await getModels();
 
     if (models.length === 0) {
       // Developer didn't setup models table
-      modelInfo = {
+      model = {
         name: process.env.MODEL,
         api_key: process.env.OPENAI_API_KEY,
         base_url: process.env.OPENAI_BASE_URL,
@@ -145,8 +145,8 @@ export default async function(req, res) {
       }
     } else {
       // Already setup models but not found
-      modelInfo = models.find(m => m.name === model);
-      if (!modelInfo) {
+      model = models.find(m => m.name === model_);
+      if (!model) {
         updateStatus("Model not exists.");
         res.write(`data: ###ERR###Model not exists.\n\n`);
         res.write(`data: [DONE]\n\n`);
@@ -159,13 +159,13 @@ export default async function(req, res) {
   // Function calling (tool calls), MCP tools
   let functions_ = req.query.functions || "";
   let mcp_tools = req.query.mcp_tools || "[]";
-  if (modelInfo.is_tool_calls_supported === "0") {
+  if (model.is_tool_calls_supported === "0") {
     functions_ = "";
     mcp_tools = "[]";
   }
   
   // Model API key check
-  const apiKey = modelInfo.api_key;
+  const apiKey = model.api_key;
   if (!apiKey) {
     updateStatus("Model's API key is not set.");
     res.write(`data: ###ERR###Model's API key is not set.\n\n`);
@@ -175,7 +175,7 @@ export default async function(req, res) {
   }
   
   // Model API base URL check
-  const baseUrl = modelInfo.base_url;
+  const baseUrl = model.base_url;
   if (!baseUrl) {
     updateStatus("Model's base URL is not set.");
     res.write(`data: ###ERR###Model's base URL is not set.\n\n`);
@@ -185,11 +185,11 @@ export default async function(req, res) {
   }
 
   // Model properties
-  const is_tool_calls_supported_model = modelInfo.is_tool_calls_supported === "1";
-  const is_vision_model = modelInfo.is_vision === "1";
-  const is_audio_model = modelInfo.is_audio === "1";
-  const is_reasoning_model = modelInfo.is_reasoning === "1";
-  const is_image_model = modelInfo.is_image === "1";
+  const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
+  const is_vision_model = model.is_vision === "1";
+  const is_audio_model = model.is_audio === "1";
+  const is_reasoning_model = model.is_reasoning === "1";
+  const is_image_model = model.is_image === "1";
 
   // Error: image input with a non-vision model
   if (use_vision && !is_vision_model) {
@@ -228,7 +228,7 @@ export default async function(req, res) {
   }
 
   // Type 0. Image generation
-  if (modelInfo.is_image === 1) {
+  if (model.is_image === 1) {
     outputType = TYPE.IMAGE_GEN;
   }
 
@@ -251,7 +251,7 @@ export default async function(req, res) {
     // Configuration info
     console.log("\n--- configuration info ---\n"
     + "lang: " + lang + "\n"
-    + "model: " + model + "\n"
+    + "model: " + model_ + "\n"
     + "temperature: " + sysconf.temperature + "\n"
     + "top_p: " + sysconf.top_p + "\n"
     + "use_system_role: " + use_system_role + "\n"
@@ -341,7 +341,7 @@ export default async function(req, res) {
     // Messages
     updateStatus("Start pre-generating...");
     const msg = await generateMessages(use_system_role, lang,
-                                       user, model,
+                                       user, model_,
                                        input, inputType, files, images, 
                                        session, mem_length,
 
@@ -390,7 +390,7 @@ export default async function(req, res) {
     if (mcpTools && mcpTools.length > 0) {
       tools = tools.concat(mcpTools);  // Concat MCP functions
     }
-    if (modelInfo.is_tool_calls_supported === "1") {
+    if (model.is_tool_calls_supported === "1") {
       console.log(JSON.stringify(tools));
     } else {
       console.log("Model doesn't support tool calls.");
@@ -413,7 +413,7 @@ export default async function(req, res) {
     let chatCompletionUsage = { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 };
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
-      model,
+      model: model_,
       n: 1,
       response_format: {
         type: "text"
@@ -431,7 +431,7 @@ export default async function(req, res) {
       ...(user ? { user: user.username } : {})
     });
 
-    res.write(`data: ###MODEL###${model}\n\n`);
+    res.write(`data: ###MODEL###${model_}\n\n`);
     res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${0},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node_},${msg.mem}\n\n`);
 
     // Print input images
@@ -521,9 +521,9 @@ export default async function(req, res) {
         if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
           const input_f = "F=" + JSON.stringify(c);
           let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
-          const input_token_ct_f = countToken(model, input_f);
-          const output_token_ct_f = countToken(model, output_f);
-          await logadd(user, session, time++, model, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
+          const input_token_ct_f = countToken(model_, input_f);
+          const output_token_ct_f = countToken(model_, output_f);
+          await logadd(user, session, time++, model_, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
         }
       }
     }
@@ -547,11 +547,11 @@ export default async function(req, res) {
 
     // Fee
     console.log("\n--- fee_calc ---");
-    const input_fee = chatCompletionUsage.prompt_tokens * modelInfo.price_input;
-    const output_fee = chatCompletionUsage.completion_tokens * modelInfo.price_output;
+    const input_fee = chatCompletionUsage.prompt_tokens * model.price_input;
+    const output_fee = chatCompletionUsage.completion_tokens * model.price_output;
     const total_fee = input_fee + output_fee;
-    console.log("input_fee = " + chatCompletionUsage.prompt_tokens + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
-    console.log("output_fee = " + chatCompletionUsage.completion_tokens + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
+    console.log("input_fee = " + chatCompletionUsage.prompt_tokens + " * " + model.price_input + " = " + input_fee.toFixed(5));
+    console.log("output_fee = " + chatCompletionUsage.completion_tokens + " * " + model.price_output + " = " + output_fee.toFixed(5));
     console.log("total_fee: " + total_fee.toFixed(5));
     if (user && user.username) {
       await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
@@ -559,7 +559,7 @@ export default async function(req, res) {
     }
 
     // Log
-    await logadd(user, session, time++, model, chatCompletionUsage.prompt_tokens, input, chatCompletionUsage.completion_tokens, output, JSON.stringify(input_images), ip, browser);
+    await logadd(user, session, time++, model_, chatCompletionUsage.prompt_tokens, input, chatCompletionUsage.completion_tokens, output, JSON.stringify(input_images), ip, browser);
 
     // Stats (final)
     res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${chatCompletionUsage.total_tokens},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node_},${msg.mem}\n\n`);

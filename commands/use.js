@@ -24,15 +24,15 @@ export default async function use(args) {
   }
 
   // Find model
-  const modelInfo = await findModel(name);
-  if (modelInfo) {
+  const model = await findModel(name);
+  if (model) {
     if (!getSetting("user")) {
       return "Please login.";
     }
 
     // Set model
     setSetting("model", name);
-    setSetting("baseUrl", modelInfo.base_url);
+    setSetting("baseUrl", model.base_url);
 
     return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
   }
@@ -106,12 +106,12 @@ async function findModel(name) {
   // Check local Ollama models
   if (await pingOllamaAPI()) {
     const ollamModels = await listOllamaModels();
-    const ollamModelInfo = ollamModels.find((m) => m.name === name);
-    if (ollamModelInfo) {
+    const ollamModel = ollamModels.find((m) => m.name === name);
+    if (ollamModel) {
       // Set model to session storage
       setSetting("model", name);
-      setSetting("baseUrl", ollamModelInfo.base_url);
-      return ollamModelInfo;
+      setSetting("baseUrl", ollamModel.base_url);
+      return ollamModel;
     }
   }
 
@@ -130,8 +130,8 @@ async function findModel(name) {
     }
 
     // Model info
-    const modelInfo = data.result;
-    return modelInfo;
+    const model = data.result;
+    return model;
   }
   catch (error) {
     console.error(error);

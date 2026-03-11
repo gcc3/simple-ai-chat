@@ -25,9 +25,9 @@ export default async function model(args) {
     // Check local Ollama models
     if (await pingOllamaAPI()) {
       const ollamaModelList = await listOllamaModels();
-      const ollamaModelInfo = ollamaModelList.find((m) => m.name === modelName);
-      if (ollamaModelInfo) {
-        return JSON.stringify(ollamaModelInfo, null, 2);
+      const ollamaModel = ollamaModelList.find((m) => m.name === modelName);
+      if (ollamaModel) {
+        return JSON.stringify(ollamaModel, null, 2);
       }
     }
 
@@ -45,12 +45,12 @@ export default async function model(args) {
       }
 
       // Model info
-      const modelInfo = data.result;
-      if (!modelInfo) {
+      const model = data.result;
+      if (!model) {
         return "Model not found.";
       }
 
-      return JSON.stringify(modelInfo, null, 2);
+      return JSON.stringify(model, null, 2);
     } catch (error) {
       console.error(error);
       return error;
@@ -68,9 +68,9 @@ export default async function model(args) {
     // Check local Ollama models
     if (await pingOllamaAPI()) {
       const ollamaModelList = await listOllamaModels();
-      const ollamaModelInfo = ollamaModelList.find((m) => m.name === modelName);
-      if (ollamaModelInfo) {
-        return JSON.stringify(ollamaModelInfo, null, 2);
+      const ollamaModel = ollamaModelList.find((m) => m.name === modelName);
+      if (ollamaModel) {
+        return JSON.stringify(ollamaModel, null, 2);
       }
     }
 
@@ -88,12 +88,12 @@ export default async function model(args) {
       }
 
       // Model info
-      const modelInfo = data.result;
-      if (!modelInfo) {
+      const model = data.result;
+      if (!model) {
         return "Model not found.";
       }
 
-      return JSON.stringify(modelInfo, null, 2);
+      return JSON.stringify(model, null, 2);
     } catch (error) {
       console.error(error);
       return error;
@@ -205,13 +205,13 @@ export default async function model(args) {
       // Check local Ollama models
       if (await pingOllamaAPI()) {
         const ollamModels = await listOllamaModels();
-        const ollamModelInfo = ollamModels.find((m) => m.name === name);
-        if (ollamModelInfo) {
+        const ollamModel = ollamModels.find((m) => m.name === name);
+        if (ollamModel) {
           // Set model to session storage
           globalThis.model = name;
-          globalThis.baseUrl = ollamModelInfo.base_url;
+          globalThis.baseUrl = ollamModel.base_url;
           setSetting("model", name);
-          setSetting("baseUrl", ollamModelInfo.base_url);
+          setSetting("baseUrl", ollamModel.base_url);
 
           return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
         }
@@ -233,16 +233,16 @@ export default async function model(args) {
         }
 
         // Model info
-        const modelInfo = data.result;
-        if (!modelInfo) {
+        const model = data.result;
+        if (!model) {
           return "Model not found.";
         }
         
         // Set model
-        globalThis.model = modelInfo.model;
-        globalThis.baseUrl = modelInfo.base_url;
-        setSetting("model", modelInfo.model);
-        setSetting("baseUrl", modelInfo.base_url);
+        globalThis.model = model.model;
+        globalThis.baseUrl = model.base_url;
+        setSetting("model", model.model);
+        setSetting("baseUrl", model.base_url);
       } catch (error) {
         console.error(error);
         return error;
