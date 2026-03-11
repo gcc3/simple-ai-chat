@@ -52,7 +52,11 @@
   background-color: var(--background-color);
   color: var(--text-color);
 }
-.main ::placeholder {
+.main .input::placeholder {
+  color: var(--placeholder-color);
+  opacity: 1;
+}
+.main .input::-webkit-input-placeholder {
   color: var(--placeholder-color);
   opacity: 1;
 }

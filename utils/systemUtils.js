@@ -1,3 +1,5 @@
+import { PLACEHOLDER } from "../constants.js";
+
 export function getSystemConfigurations() {
   // Welcome message
   let welcome_message = process.env.WELCOME_MESSAGE ? process.env.WELCOME_MESSAGE : "";
@@ -13,7 +15,7 @@ export function getSystemConfigurations() {
   const querying = process.env.QUERYING ? process.env.QUERYING : "Querying...";
   const generating = process.env.GENERATING ? process.env.GENERATING : "";
   const searching = process.env.SEARCHING ? process.env.SEARCHING : "";
-  const init_placeholder = process.env.INIT_PLACEHOLDER ? process.env.INIT_PLACEHOLDER : ":help";
+  const init_placeholder = process.env.INIT_PLACEHOLDER ? process.env.INIT_PLACEHOLDER : PLACEHOLDER;
   const enter = process.env.ENTER ? process.env.ENTER : "";
   const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 1;
   const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;

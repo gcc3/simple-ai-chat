@@ -19,3 +19,5 @@ export const CONTENT = {
   PRIVACY: 2,
   SETTINGS: 3,
 };
+
+export const PLACEHOLDER = ":help";

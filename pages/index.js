@@ -34,7 +34,7 @@ import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
-import { TYPE, STATES, DISPLAY, CONTENT } from '../constants.js';
+import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
@@ -57,10 +57,10 @@ globalThis.outputMutationObserver = null;
 // Global raw input/output buffer
 globalThis.rawInput = "";
 globalThis.rawOutput = "";
-globalThis.rawPlaceholder = "";
+globalThis.rawPlaceholder = PLACEHOLDER;
 
 // Initial placeholder
-globalThis.initPlaceholder = "";
+globalThis.initPlaceholder = PLACEHOLDER;
 
 // Donut interval id
 let dunutIntervalId = null;
@@ -75,7 +75,7 @@ export default function Home() {
   const { fullscreen, setFullscreen, enter, setEnter } = useUI();
 
   // States
-  const [placeholder, setPlaceholder] = useState("");
+  const [placeholder, setPlaceholder] = useState({ text: PLACEHOLDER, height: null });
   const [waiting, setWaiting] = useState("");
   const [reasoning, setReasoning] = useState("Reasoning...");
   const [querying, setQuerying] = useState("Querying...");
@@ -780,7 +780,7 @@ export default function Home() {
         querying: "Querying...",
         generating: "Generating...",
         searching: "Searching...",
-        init_placeholder: ":help",
+        init_placeholder: PLACEHOLDER,
         enter: "",
         temperature: 1,
         top_p: 1,
