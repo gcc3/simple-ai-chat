@@ -10,7 +10,6 @@ import { initializeSessionMemory } from "./utils/sessionUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "./utils/ollamaUtils.js";
 import { loadConfig } from "./utils/configUtils.js";
 import { setTime } from "./utils/sessionUtils.js";
-import { testSimpleAIServerConnection } from "./utils/cliUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
 import { readFileSync } from "fs";
@@ -20,7 +19,6 @@ import { spawn } from "child_process";
 import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import { getMcpTools } from "./function.js";
 import { getLocalLogs, addLocalLog, resetLocalLogs } from "./utils/offlineUtils.js";
-import { isInternetAvailable } from "./utils/networkUtils.js";
 import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "constants.js";
 
 // Disable process warnings (node)
@@ -486,17 +484,6 @@ program
 
     // System and user configurations
     const getSystemInfo = async () => {
-      // Check online status
-      // CLI support a local server so check local server too
-      if (!await isInternetAvailable() && !await testSimpleAIServerConnection()) {
-        globalThis.isOffline = true;
-        globalThis.isOnline = false;
-        console.warn("Offline mode enabled. Some features may not work.");
-
-        // Local online data
-        resetLocalLogs();
-      }
-
       // System info
       let systemInfo = {
         model: "",
@@ -515,10 +502,18 @@ program
         default_node: "",
       };
 
-      if (globalThis.isOnline) {
-        console.log("Fetching system info...");
+      // Instead of pinging first, just try system/info and treat failure as offline
+      console.log("Fetching system info...");
+      try {
         const systemInfoResponse = await fetch('/api/system/info');
         systemInfo = (await systemInfoResponse.json()).result;
+      } catch {
+        globalThis.isOffline = true;
+        globalThis.isOnline = false;
+        console.warn("Offline mode enabled. Some features may not work.");
+
+        // Local online data
+        resetLocalLogs();
       }
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
