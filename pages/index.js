@@ -187,7 +187,7 @@ export default function Home() {
 
     // Print input
     globalThis.rawPlaceholder = log["input"].trim();
-    reAdjustPlaceholder();
+    reAdjustOrUpdatePlaceholder();
 
     // Print output
     printOutput(log["output"].trim());
@@ -257,7 +257,7 @@ export default function Home() {
   // Clear input
   const clearInput = () => {
     setInput("");
-    reAdjustPlaceholder();
+    reAdjustOrUpdatePlaceholder();
   }
 
   // Clear hash tag
@@ -373,8 +373,7 @@ export default function Home() {
             // Clear all input and output, pleaceholder, previews
             clearInput();
             clearOutput();
-            globalThis.rawPlaceholder = PLACEHOLDER;
-            setPlaceholder(PLACEHOLDER);
+            reAdjustOrUpdatePlaceholder(PLACEHOLDER);
             clearPreviewImages();
             clearPreviewVideos();
             setInfo();
@@ -473,13 +472,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No previous session.");
                   printOutput("No previous session.");
-                  setPlaceholder(PLACEHOLDER);
+                  reAdjustOrUpdatePlaceholder(PLACEHOLDER);
                   setSession(-1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
-                  setPlaceholder(":session attach " + session.id);
+                  reAdjustOrUpdatePlaceholder(":session attach " + session.id);
                 }
               });
           } else {
@@ -513,13 +512,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No previous session.");
                   printOutput("No previous session.");
-                  setPlaceholder(PLACEHOLDER);
+                  reAdjustOrUpdatePlaceholder(PLACEHOLDER);
                   setSession(-1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
-                  setPlaceholder(":session attach " + session.id);
+                  reAdjustOrUpdatePlaceholder(":session attach " + session.id);
                 }
               });
           } else {
@@ -570,13 +569,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No next session.");
                   printOutput("No next session.");
-                  setPlaceholder(PLACEHOLDER);
+                  reAdjustOrUpdatePlaceholder(PLACEHOLDER);
                   setSession(1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
-                  setPlaceholder(":session attach " + session.id);
+                  reAdjustOrUpdatePlaceholder(":session attach " + session.id);
                 }
               });
           } else {
@@ -609,13 +608,13 @@ export default function Home() {
                 if (!session) {
                   console.log("No next session.");
                   printOutput("No next session.");
-                  setPlaceholder(PLACEHOLDER);
+                  reAdjustOrUpdatePlaceholder(PLACEHOLDER);
                   setSession(1);
                   return;
                 } else {
                   // Attach to it
                   attachSession(session);
-                  setPlaceholder(":session attach " + session.id);
+                  reAdjustOrUpdatePlaceholder(":session attach " + session.id);
                 }
               });
           } else {
@@ -909,7 +908,7 @@ export default function Home() {
       if (fullscreenMode !== "off") {
         // Readjust UI
         reAdjustInputHeight();
-        reAdjustPlaceholder();
+        reAdjustOrUpdatePlaceholder();
       }
     };
     window.addEventListener('resize', handleResize);
@@ -938,7 +937,7 @@ export default function Home() {
 
     // Readjust UI
     reAdjustInputHeight();
-    reAdjustPlaceholder();
+    reAdjustOrUpdatePlaceholder();
 
     // Load additional scripts
     // KaTeX copy module
@@ -1080,8 +1079,7 @@ export default function Home() {
       // Clear all input and output, pleaceholder, previews
       clearInput();
       clearOutput();
-      globalThis.rawPlaceholder = PLACEHOLDER;
-      setPlaceholder(PLACEHOLDER);
+      reAdjustOrUpdatePlaceholder(PLACEHOLDER);
       clearPreviewImages();
       clearPreviewVideos();
       setInfo();
@@ -1259,7 +1257,7 @@ export default function Home() {
 
       // Readjust UI
       reAdjustInputHeight();
-      reAdjustPlaceholder();
+      reAdjustOrUpdatePlaceholder();
       return;
     } else {
       // Clear donut
@@ -2507,13 +2505,12 @@ export default function Home() {
 
   // The placeholder should be shorten if fullscreen off or default
   // For fullscreen split, the placeholder shouldn't be shorten
-  const reAdjustPlaceholder = (triggerBy) => {
-    if (triggerBy) {
-      console.log("Re-adjust placeholder. (triggerBy: " + triggerBy + ")");
+  const reAdjustOrUpdatePlaceholder = (newPlaceholderText) => {
+    if (newPlaceholderText) {
+      globalThis.rawPlaceholder = newPlaceholderText;
     }
-
-    const fullscreen_ = getSetting("fullscreen").trim();
     const placeholder = globalThis.rawPlaceholder;
+    const fullscreen_ = getSetting("fullscreen").trim();
     const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (getStringMonoLength(placeholder) >= 45 || placeholder.includes("\n"))) ?
                                  placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
     setPlaceholder(placeholderShortern);
@@ -2614,7 +2611,7 @@ export default function Home() {
 
     // This is necessary
     reAdjustInputHeight(true);  // !important: use doSleepToFixAuto, the magic
-    reAdjustPlaceholder();
+    reAdjustOrUpdatePlaceholder();
   }
 
   // +img[], +image[], +file[]
