@@ -10,7 +10,7 @@ export default async function model(args) {
                 "       :model [use|unuse] [name]\n" +
                 "       :model reset\n";
 
-  // Get model info without name (will use current model as name)
+  // Get model without name (will use current model as name)
   // :model [name?]
   if (!command) {
     if (!getSetting("user")) {
@@ -25,9 +25,9 @@ export default async function model(args) {
     // Check local Ollama models
     if (await pingOllamaAPI()) {
       const ollamaModelList = await listOllamaModels();
-      const ollamaModelInfo = ollamaModelList.find((m) => m.name === modelName);
-      if (ollamaModelInfo) {
-        return JSON.stringify(ollamaModelInfo, null, 2);
+      const ollamaModel = ollamaModelList.find((m) => m.name === modelName);
+      if (ollamaModel) {
+        return JSON.stringify(ollamaModel, null, 2);
       }
     }
 
@@ -44,38 +44,37 @@ export default async function model(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Model info
-      const modelInfo = data.result;
-      if (!modelInfo) {
+      const model = data.result;
+      if (!model) {
         return "Model not found.";
       }
 
-      return JSON.stringify(modelInfo, null, 2);
+      return JSON.stringify(model, null, 2);
     } catch (error) {
       console.error(error);
       return error;
     }
   }
 
-  // Get model info by name
+  // Get model by name
   // :model [name?]
   if (args.length === 1 && args[0].startsWith("\"") && args[0].endsWith("\"")) {
-    const modelName = args[0].slice(1, -1);
-    if (!modelName) {
+    const name = args[0].slice(1, -1);
+    if (!name) {
       return "Invalid model name.";
     }
 
     // Check local Ollama models
     if (await pingOllamaAPI()) {
       const ollamaModelList = await listOllamaModels();
-      const ollamaModelInfo = ollamaModelList.find((m) => m.name === modelName);
-      if (ollamaModelInfo) {
-        return JSON.stringify(ollamaModelInfo, null, 2);
+      const ollamaModel = ollamaModelList.find((m) => m.name === name);
+      if (ollamaModel) {
+        return JSON.stringify(ollamaModel, null, 2);
       }
     }
 
     try {
-      const response = await fetch("/api/model/" + modelName, {
+      const response = await fetch("/api/model/" + name, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -87,13 +86,12 @@ export default async function model(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Model info
-      const modelInfo = data.result;
-      if (!modelInfo) {
+      const model = data.result;
+      if (!model) {
         return "Model not found.";
       }
 
-      return JSON.stringify(modelInfo, null, 2);
+      return JSON.stringify(model, null, 2);
     } catch (error) {
       console.error(error);
       return error;
@@ -205,13 +203,13 @@ export default async function model(args) {
       // Check local Ollama models
       if (await pingOllamaAPI()) {
         const ollamModels = await listOllamaModels();
-        const ollamModelInfo = ollamModels.find((m) => m.name === name);
-        if (ollamModelInfo) {
+        const ollamModel = ollamModels.find((m) => m.name === name);
+        if (ollamModel) {
           // Set model to session storage
           globalThis.model = name;
-          globalThis.baseUrl = ollamModelInfo.base_url;
+          globalThis.baseUrl = ollamModel.base_url;
           setSetting("model", name);
-          setSetting("baseUrl", ollamModelInfo.base_url);
+          setSetting("baseUrl", ollamModel.base_url);
 
           return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
         }
@@ -232,17 +230,16 @@ export default async function model(args) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        // Model info
-        const modelInfo = data.result;
-        if (!modelInfo) {
+        const model = data.result;
+        if (!model) {
           return "Model not found.";
         }
         
         // Set model
-        globalThis.model = modelInfo.model;
-        globalThis.baseUrl = modelInfo.base_url;
-        setSetting("model", modelInfo.model);
-        setSetting("baseUrl", modelInfo.base_url);
+        globalThis.model = model.model;
+        globalThis.baseUrl = model.base_url;
+        setSetting("model", model.model);
+        setSetting("baseUrl", model.base_url);
       } catch (error) {
         console.error(error);
         return error;
@@ -256,9 +253,8 @@ export default async function model(args) {
         return "Model `" + name + "` is not being used.";
       }
 
-      setSetting("model", globalThis.model);  // reset model
-      setSetting("baseUrl", globalThis.baseUrl);  // reset base url
-
+      setSetting("model", globalThis.model);  // reset to default model
+      setSetting("baseUrl", globalThis.baseUrl);  // reset to default base url
       return "Model unused, and reset to default model.";
     }
   }
@@ -270,8 +266,8 @@ export default async function model(args) {
       return "Model is already empty.";
     }
 
-    setSetting("model", globalThis.model);  // reset model
-    setSetting("baseUrl", globalThis.baseUrl);  // reset base url
+    setSetting("model", globalThis.model);  // reset to default model
+    setSetting("baseUrl", globalThis.baseUrl);  // reset to default base url
 
     // Reset session to forget previous memory
     initializeSessionMemory();

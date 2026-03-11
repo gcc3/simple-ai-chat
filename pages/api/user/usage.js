@@ -64,7 +64,7 @@ export default async function (req, res) {
     }
 
     // Get usage models
-    const usageModelObjs = await getUsageModels(user.username);
+    const usageModels = await getUsageModels(user.username);
     let modelUsageList = [];
 
     // Models
@@ -73,27 +73,26 @@ export default async function (req, res) {
     // Loop through usage models
     let totalUsageFeeThisMonth = 0;
     let totalUsageFeeLastMonth = 0;
-    for (const modelObj of usageModelObjs) {
-      const model = modelObj.model;
-      const modelInfo = models.find(m => m.name === model);
-      if (!modelInfo) {
+    for (const usageModel of usageModels) {
+      const model = models.find(m => m.name === usageModel.model);
+      if (!model) {
         continue;
       }
 
       // Count token
-      const tokenUsageThisMonth = await getModelTokenUsageThisMonth(user.username, model);
-      const tokenUsageLastMonth = await getModelTokenUsageLastMonth(user.username, model);
+      const tokenUsageThisMonth = await getModelTokenUsageThisMonth(user.username, usageModel.model);
+      const tokenUsageLastMonth = await getModelTokenUsageLastMonth(user.username, usageModel.model);
 
       // Fee calculation
-      const feeThisMonth = modelInfo.price_input * tokenUsageThisMonth.input + modelInfo.price_output * tokenUsageThisMonth.output;
-      const feeLastMonth = modelInfo.price_input * tokenUsageLastMonth.input + modelInfo.price_output * tokenUsageLastMonth.output;
+      const feeThisMonth = model.price_input * tokenUsageThisMonth.input + model.price_output * tokenUsageThisMonth.output;
+      const feeLastMonth = model.price_input * tokenUsageLastMonth.input + model.price_output * tokenUsageLastMonth.output;
 
       // Token frequencies
-      const tokenFrequencies = await getModelTokenFrequencies(user.username, model);
+      const tokenFrequencies = await getModelTokenFrequencies(user.username, usageModel.model);
 
       // Append to model usage
       modelUsageList.push({
-        model: model,
+        model: usageModel.model,
         token: {
           this_month: tokenUsageThisMonth,
           last_month: tokenUsageLastMonth,

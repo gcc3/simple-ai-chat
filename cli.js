@@ -31,13 +31,16 @@ process.on('warning', () => {});
 globalThis.isOffline = false;
 globalThis.isOnline = true;
 
+// Global default model
+globalThis.model = "";
+globalThis.baseUrl = "";
+
 // Simulate a localStorage and sessionStorage in Node.js
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const { LocalStorage } = require("node-localstorage");
 globalThis.localStorage = new LocalStorage('./.scratch');
 globalThis.sessionStorage = require("node-sessionstorage");
-
 
 // Monkey-patch the fetch function to use the server's base URL and handle cookies
 globalThis.serverBaseUrl = "https://simple-ai.io";
@@ -50,7 +53,6 @@ globalThis.fetch = async (url, options) => {
   }
   return fetch_c(url, options);
 };
-
 
 // Get file paths
 const __filename = fileURLToPath(import.meta.url);
@@ -66,7 +68,6 @@ const mcpProcess = spawn('node', [join(__dirname, 'mcp.js')], {
 
 // Detach the child process from the parent process
 mcpProcess.unref();
-
 
 // M1. Generate SSE
 async function generate_sse(input, images=[], files=[]) {
@@ -546,26 +547,26 @@ program
         const modelName = getSetting("model");
 
         // Try remote models
-        console.log("Fetching model info: " + modelName);
+        console.log("Fetching model: " + modelName);
         const response = await fetch('/api/model/' + modelName);
-        const modelInfoResponse = await response.json();
-        let modelInfo = null;
-        if (modelInfoResponse.success) {
-          modelInfo = modelInfoResponse.result;
-          console.log(JSON.stringify(modelInfo, null, 2));
+        const modelResponse = await response.json();
+        let model = null;
+        if (modelResponse.success) {
+          model = modelResponse.result;
+          console.log(JSON.stringify(model, null, 2));
         } else {
-          console.warn(modelInfoResponse.error);
+          console.warn(modelResponse.error);
         }
 
         // Found remote model
-        if (modelInfo) {
-          console.log("Found model in remote: " + modelInfo.model);
-          console.log("Set baseUrl: " + modelInfo.base_url);
-          setSetting("baseUrl", modelInfo.base_url);
+        if (model) {
+          console.log("Found model in remote: " + model.model);
+          console.log("Set baseUrl: " + model.base_url);
+          setSetting("baseUrl", model.base_url);
         }
 
         // Try local models
-        if (!modelInfo) {
+        if (!model) {
           console.warn("Model `" + modelName + "` not accessible in remote.");
           if (await pingOllamaAPI()) {
             const ollamaModels = await listOllamaModels();

@@ -4,7 +4,7 @@ import { findStore } from "utils/storeUtils.js";
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {
-  const { store, search } = req.body;
+  const { store: store_, search } = req.body;
 
   // Authentication
   const authResult = authenticate(req);
@@ -17,8 +17,8 @@ export default async function handler(req, res) {
   const { id, username } = authResult.user;
 
   try {
-    const storeInfo = await findStore(store, username);
-    if (!storeInfo) {
+    const store = await findStore(store_, username);
+    if (!store) {
       res.status(404).json({
         success: false,
         error: "Store not found.",
@@ -27,10 +27,10 @@ export default async function handler(req, res) {
     }
     
     // Get settings
-    const settings = JSON.parse(storeInfo.settings);
+    const settings = JSON.parse(store.settings);
 
     // File store
-    if (storeInfo.engine === "file") {
+    if (store.engine === "file") {
       const files = settings.files || [];
       if (files.length === 0) {
         res.status(400).json({
@@ -76,7 +76,7 @@ export default async function handler(req, res) {
       // Return all matches or a message if no matches were found
       res.status(200).json({
         success: true,
-        message: "Engine: \"" + storeInfo.engine + "\"\n"
+        message: "Engine: \"" + store.engine + "\"\n"
           + "Search: \"" + search + "\"\n"
           + "Matches count: " + matches.length + "\n"
           + "Matches: " + (matches.length > 0 ? JSON.stringify(matches, null, 2) : "(No matches found.)"),
@@ -84,12 +84,12 @@ export default async function handler(req, res) {
     }
 
     // MySQL store
-    if (storeInfo.engine === "mysql") {
+    if (store.engine === "mysql") {
       // Check is initialized
-      if (!isInitialized(storeInfo.engine, settings)) {
+      if (!isInitialized(store.engine, settings)) {
         res.status(400).json({
           success: false,
-          error: "Store \`" + storeInfo.store + "\` not initialized. Use `:store init [engine]` to initialize a data store.",
+          error: "Store \`" + store.store + "\` not initialized. Use `:store init [engine]` to initialize a data store.",
         });
         return;
       }
@@ -105,7 +105,7 @@ export default async function handler(req, res) {
 
       res.status(200).json({
         success: true,
-        message: "Engine: \"" + storeInfo.engine + "\"\n"
+        message: "Engine: \"" + store.engine + "\"\n"
                + "Search: \"" + search + "\"\n"
                + "Query: " + queryResult.query + "\n"
                + "Result: \n" + queryResult.message,

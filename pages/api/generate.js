@@ -86,17 +86,17 @@ export default async function(req, res) {
   }
 
   // Model switch
-  let model = req.body.model || sysconf.model;
+  let model_ = req.body.model || sysconf.model;
   const use_vision = images && images.length > 0;
   const use_eval = use_eval_ && use_stats && !use_vision;
-  let modelInfo = models.find(m => m.name === model);
-  if (!modelInfo) {
+  let model = models.find(m => m.name === model_);
+  if (!model) {
     // Try update models
     models = await getModels();
 
     if (models.length === 0) {
       // Developer didn't setup models table
-      modelInfo = {
+      model = {
         name: process.env.MODEL,
         api_key: process.env.OPENAI_API_KEY,
         base_url: process.env.OPENAI_BASE_URL,
@@ -105,8 +105,8 @@ export default async function(req, res) {
       }
     } else {
       // Already setup models but not found
-      modelInfo = models.find(m => m.name === model);
-      if (!modelInfo) {
+      model = models.find(m => m.name === model_);
+      if (!model) {
         res.status(500).json({
           success: false,
           error: "Model not exists.",
@@ -119,13 +119,13 @@ export default async function(req, res) {
   // Function calling (tool calls), MCP tools
   let functions_ = req.query.functions || "";
   let mcp_tools = req.query.mcp_tools || [];
-  if (modelInfo.is_tool_calls_supported === "0") {
+  if (model.is_tool_calls_supported === "0") {
     functions_ = "";
     mcp_tools = [];
   }
 
   // Model API key check
-  const apiKey = modelInfo.api_key;
+  const apiKey = model.api_key;
   if (!apiKey) {
     res.status(500).json({
       success: false,
@@ -135,7 +135,7 @@ export default async function(req, res) {
   }
 
   // Model API base URL check
-  const baseUrl = modelInfo.base_url;
+  const baseUrl = model.base_url;
   if (!baseUrl) {
     res.status(500).json({
       success: false,
@@ -163,7 +163,7 @@ export default async function(req, res) {
   }
 
   // Type 0. Image generation
-  if (modelInfo.is_image === "1") {
+  if (model.is_image === "1") {
     outputType = TYPE.IMAGE_GEN;
     console.log(chalk.blue("\nInput (img_gen, session = " + session + (user ? ", user = " + user.username : "") + "):"));
 
@@ -193,7 +193,7 @@ export default async function(req, res) {
 
     // Configuration info
     console.log("\n--- configuration info ---\n"
-      + "model: " + model + "\n"
+      + "model: " + model_ + "\n"
       + "n: " + 1 + "\n"
       + "moderation: " + "low" + "\n"
       + "output_format: " + output_format + "\n"
@@ -205,7 +205,7 @@ export default async function(req, res) {
       let imageGenerate = null;
       if (outputType === TYPE.IMAGE_GEN) {
         imageGenerate = await openai.images.generate({
-          model: "gpt-image-1",
+          model: model_,
           prompt: input,
           n: 1,
           moderation: "low",
@@ -233,7 +233,7 @@ export default async function(req, res) {
 
         // Use all files in the edit request
         imageGenerate = await openai.images.edit({
-          model: "gpt-image-1",
+          model: model_,
           prompt: input,
           image: imageFilesArray,    // pass array of File objects
           n: 1,
@@ -254,11 +254,11 @@ export default async function(req, res) {
       
       // Fee
       console.log("\n--- fee_calc ---");
-      const input_fee = imageGenerate.usage.input_tokens * modelInfo.price_input;
-      const output_fee = imageGenerate.usage.output_tokens * modelInfo.price_output;
+      const input_fee = imageGenerate.usage.input_tokens * model.price_input;
+      const output_fee = imageGenerate.usage.output_tokens * model.price_output;
       const total_fee = input_fee + output_fee;
-      console.log("input_fee = " + imageGenerate.usage.input_tokens + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
-      console.log("output_fee = " + imageGenerate.usage.output_tokens + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
+      console.log("input_fee = " + imageGenerate.usage.input_tokens + " * " + model.price_input + " = " + input_fee.toFixed(5));
+      console.log("output_fee = " + imageGenerate.usage.output_tokens + " * " + model.price_output + " = " + output_fee.toFixed(5));
       console.log("total_fee: " + total_fee.toFixed(5));
       if (user && user.username) {
         await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
@@ -276,7 +276,7 @@ export default async function(req, res) {
             mem: 1,
           },
           info: {
-            model: model,
+            model: model_,
           }
         },
       });
@@ -284,7 +284,7 @@ export default async function(req, res) {
       // Upoad iamge to S3
       // Generate pre-signed URL
       const fileId = session + "_" + Date.now();
-      const key = fileId + "_" + model + ".png";
+      const key = fileId + "_" + model_ + ".png";
       const bucket = process.env.AWS_S3_BUCKET_NAME;
       const presignedUrl = await getS3PresignedPutUrl({
         bucket,
@@ -311,7 +311,7 @@ export default async function(req, res) {
       console.log("Image uploaded to S3: " + objectUrl);
 
       // Log
-      await logadd(user, session, time++, model, imageGenerate.usage.input_tokens, input, imageGenerate.usage.output_tokens, "", JSON.stringify([objectUrl]), ip, browser);
+      await logadd(user, session, time++, model_, imageGenerate.usage.input_tokens, input, imageGenerate.usage.output_tokens, "", JSON.stringify([objectUrl]), ip, browser);
       return;
     } catch (error) {
       console.error("Error (image generation):");
@@ -342,7 +342,7 @@ export default async function(req, res) {
     // Configuration info
     console.log("\n--- configuration info ---\n"
     + "lang: " + lang + "\n"
-    + "model: " + model + "\n"
+    + "model: " + model_ + "\n"
     + "temperature: " + sysconf.temperature + "\n"
     + "top_p: " + sysconf.top_p + "\n"
     + "use_system_role: " + use_system_role + "\n"
@@ -410,7 +410,7 @@ export default async function(req, res) {
 
     // Messages
     const msg = await generateMessages(use_system_role, lang,
-                                       user, model,
+                                       user, model_,
                                        input, inputType, files, images,
                                        session, mem_length,
 
@@ -434,7 +434,7 @@ export default async function(req, res) {
     if (mcp_tools && mcp_tools.length > 0) {
       tools = tools.concat(mcp_tools);  // Concat MCP functions
     }
-    if (modelInfo.is_tool_calls_supported === "1") {
+    if (model.is_tool_calls_supported === "1") {
       console.log(JSON.stringify(tools));
     } else {
       console.log("Model doesn't support tool calls.");
@@ -446,7 +446,7 @@ export default async function(req, res) {
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
-      model,
+      model: model_,
       n: 1,
       response_format: {
         type: "text"
@@ -519,9 +519,9 @@ export default async function(req, res) {
         if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
           const input_f = "F=" + JSON.stringify(c);
           let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
-          const input_token_ct_f = countToken(model, input_f);
-          const output_token_ct_f = countToken(model, output_f);
-          await logadd(user, session, time++, model, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
+          const input_token_ct_f = countToken(model_, input_f);
+          const output_token_ct_f = countToken(model_, output_f);
+          await logadd(user, session, time++, model_, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
         }
       }
     }
@@ -545,11 +545,11 @@ export default async function(req, res) {
 
     // Fee
     console.log("\n--- fee_calc ---");
-    const input_fee = chatCompletion.usage.prompt_tokens * modelInfo.price_input;
-    const output_fee = chatCompletion.usage.completion_tokens * modelInfo.price_output;
+    const input_fee = chatCompletion.usage.prompt_tokens * model.price_input;
+    const output_fee = chatCompletion.usage.completion_tokens * model.price_output;
     const total_fee = input_fee + output_fee;
-    console.log("input_fee = " + chatCompletion.usage.prompt_tokens + " * " + modelInfo.price_input + " = " + input_fee.toFixed(5));
-    console.log("output_fee = " + chatCompletion.usage.completion_tokens + " * " + modelInfo.price_output + " = " + output_fee.toFixed(5));
+    console.log("input_fee = " + chatCompletion.usage.prompt_tokens + " * " + model.price_input + " = " + input_fee.toFixed(5));
+    console.log("output_fee = " + chatCompletion.usage.completion_tokens + " * " + model.price_output + " = " + output_fee.toFixed(5));
     console.log("total_fee: " + total_fee.toFixed(5));
     if (user && user.username) {
       await addUserUsage(user.username, parseFloat(total_fee.toFixed(6)));
@@ -557,7 +557,7 @@ export default async function(req, res) {
     }
 
     // Log
-    await logadd(user, session, time++, model, chatCompletion.usage.prompt_tokens, input, chatCompletion.usage.completion_tokens, output, JSON.stringify(input_images), ip, browser);
+    await logadd(user, session, time++, model_, chatCompletion.usage.prompt_tokens, input, chatCompletion.usage.completion_tokens, output, JSON.stringify(input_images), ip, browser);
 
     // Result
     res.status(200).json({
@@ -577,7 +577,7 @@ export default async function(req, res) {
           eval: eval_
         },
         info: {
-          model: model,
+          model: model_,
         }
       },
     });

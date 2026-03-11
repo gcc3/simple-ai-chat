@@ -1645,11 +1645,11 @@ const insertSession = async (id, parentId, createdBy) => {
 
 // VII. Models
 // Get model by name
-const getModel = async (name, user) => {
+const getModel = async (name) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT * FROM models WHERE name = ? AND (owner = ? OR created_by = ?)`, [name, user, user], (err, rows) => {
+      db.get(`SELECT * FROM models WHERE name = ?`, [name], (err, rows) => {
         if (err) {
           reject(err);
         }
