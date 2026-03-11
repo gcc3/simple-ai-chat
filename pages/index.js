@@ -1223,7 +1223,7 @@ export default function Home() {
 
       // If heavy command, show generating text
       if (commandString.startsWith("generate")) {
-        printOutput(generating);
+        printOutput(GENERATING);
       }
 
       // Get command result
@@ -1435,7 +1435,7 @@ export default function Home() {
       // Just quick setup, now only support "gpt-image-1" model for image generation
       if (getSetting('useStream') == "false" || getSetting('model') === "gpt-image-1") {
         console.log("Start. (non-stream)");
-        printOutput(waiting === "" ? "Generating..." : waiting);
+        printOutput(WAITING === "" ? GENERATING : WAITING);
         generate(input, image_urls, file_urls);
         return;
       }
@@ -1461,7 +1461,7 @@ export default function Home() {
     globalThis.STATE = STATES.DOING;
 
     // Add a waiting text
-    if (getOutput() !== querying) printOutput(waiting);
+    if (getOutput() !== QUERYING) printOutput(WAITING);
 
     // prepare speech
     var textSpoken = "";
@@ -1529,7 +1529,7 @@ export default function Home() {
 
       // II. Handle the callings (tool calls)
       if (event.data.startsWith("###CALL###")) {
-        printOutput(querying);
+        printOutput(QUERYING);
 
         const toolCall = (JSON.parse(event.data.replace("###CALL###", "")))[0];
         const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
@@ -1790,7 +1790,7 @@ export default function Home() {
       }
 
       // Clear the waiting or querying text
-      if (getOutput() === waiting  || getOutput() === reasoning || getOutput() === querying || getOutput() === searching || getOutput() === generating) {
+      if (getOutput() === WAITING  || getOutput() === REASONING || getOutput() === QUERYING || getOutput() === SEARCHING || getOutput() === GENERATING) {
         clearOutput();
       }
 
@@ -1827,7 +1827,7 @@ export default function Home() {
     globalThis.STATE = STATES.DOING;
 
     // Add a waiting text
-    if (getOutput() !== querying) printOutput(waiting);
+    if (getOutput() !== QUERYING) printOutput(WAITING);
 
     // Input
     let inputType = TYPE.NORMAL;
@@ -2300,7 +2300,7 @@ export default function Home() {
         setSetting("head", timeNow);
 
         // Call generate with function
-        printOutput(querying);
+        printOutput(QUERYING);
         generate(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
         return;
       }
