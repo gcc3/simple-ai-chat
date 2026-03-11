@@ -10,7 +10,7 @@ import { setTheme } from "utils/themeUtils.js";
 import { setRtl } from "utils/rtlUtils.js";
 import { markdownFormatter } from "utils/markdownUtils.js";
 import { passwordFormatter, maskPassword, isCommandMusked } from "utils/passwordUtils";
-import hljs from 'highlight.js';
+import hljs from 'highlight.js/lib/common';
 import { generateFileUrl } from "utils/awsUtils";
 import { initializeSessionMemory, setSession, setTime } from "utils/sessionUtils";
 import 'katex/dist/katex.min.css';
