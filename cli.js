@@ -31,13 +31,16 @@ process.on('warning', () => {});
 globalThis.isOffline = false;
 globalThis.isOnline = true;
 
+// Global default model
+globalThis.model = "";
+globalThis.baseUrl = "";
+
 // Simulate a localStorage and sessionStorage in Node.js
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const { LocalStorage } = require("node-localstorage");
 globalThis.localStorage = new LocalStorage('./.scratch');
 globalThis.sessionStorage = require("node-sessionstorage");
-
 
 // Monkey-patch the fetch function to use the server's base URL and handle cookies
 globalThis.serverBaseUrl = "https://simple-ai.io";
@@ -50,7 +53,6 @@ globalThis.fetch = async (url, options) => {
   }
   return fetch_c(url, options);
 };
-
 
 // Get file paths
 const __filename = fileURLToPath(import.meta.url);
@@ -66,7 +68,6 @@ const mcpProcess = spawn('node', [join(__dirname, 'mcp.js')], {
 
 // Detach the child process from the parent process
 mcpProcess.unref();
-
 
 // M1. Generate SSE
 async function generate_sse(input, images=[], files=[]) {

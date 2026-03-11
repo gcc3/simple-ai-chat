@@ -256,9 +256,8 @@ export default async function model(args) {
         return "Model `" + name + "` is not being used.";
       }
 
-      setSetting("model", globalThis.model);  // reset model
-      setSetting("baseUrl", globalThis.baseUrl);  // reset base url
-
+      setSetting("model", globalThis.model);  // reset to default model
+      setSetting("baseUrl", globalThis.baseUrl);  // reset to default base url
       return "Model unused, and reset to default model.";
     }
   }
@@ -270,8 +269,8 @@ export default async function model(args) {
       return "Model is already empty.";
     }
 
-    setSetting("model", globalThis.model);  // reset model
-    setSetting("baseUrl", globalThis.baseUrl);  // reset base url
+    setSetting("model", globalThis.model);  // reset to default model
+    setSetting("baseUrl", globalThis.baseUrl);  // reset to default base url
 
     // Reset session to forget previous memory
     initializeSessionMemory();

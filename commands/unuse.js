@@ -49,8 +49,8 @@ export default async function unuse(args) {
   const modelInfo = await findModel(name);
   if (modelInfo) {
     // Set model
-    setSetting("model", globalThis.model);  // reset model
-    setSetting("baseUrl", globalThis.baseUrl);  // reset base url
+    setSetting("model", globalThis.model);  // reset to default model
+    setSetting("baseUrl", globalThis.baseUrl);  // reset to default base url
 
     return "Model unused, and reset to default model.";
   }
