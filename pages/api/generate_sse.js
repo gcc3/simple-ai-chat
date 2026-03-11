@@ -142,7 +142,7 @@ export default async function(req, res) {
         is_audio: 0,
         is_reasoning: 0,
         is_image: 0,
-      }
+      };
     } else {
       // Already setup models but not found
       model = models.find(m => m.name === model_);
@@ -426,7 +426,7 @@ export default async function(req, res) {
       top_p: sysconf.top_p,
 
       // conditional params
-      ...(tools && tools.length > 0 && !is_reasoning_model ? { tools: tools, tool_choice: "auto" } : {}),
+      ...(is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
       ...(is_reasoning_model ? { reasoning_effort: "high" } : {}),
       ...(user ? { user: user.username } : {})
     });

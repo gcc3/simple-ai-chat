@@ -102,7 +102,12 @@ export default async function(req, res) {
         base_url: process.env.OPENAI_BASE_URL,
         price_input: 0,
         price_output: 0,
-      }
+        is_tool_calls_supported: 0,
+        is_vision: 0,
+        is_audio: 0,
+        is_reasoning: 0,
+        is_image: 0,
+      };
     } else {
       // Already setup models but not found
       model = models.find(m => m.name === model_);
@@ -119,7 +124,7 @@ export default async function(req, res) {
   // Function calling (tool calls), MCP tools
   let functions_ = req.query.functions || "";
   let mcp_tools = req.query.mcp_tools || [];
-  if (model.is_tool_calls_supported === "0") {
+  if (!is_tool_calls_supported_model) {
     functions_ = "";
     mcp_tools = [];
   }
@@ -144,6 +149,13 @@ export default async function(req, res) {
     return;
   }
 
+  // Model properties
+  const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
+  const is_vision_model = model.is_vision === "1";
+  const is_audio_model = model.is_audio === "1";
+  const is_reasoning_model = model.is_reasoning === "1";
+  const is_image_model = model.is_image === "1";
+
   // OpenAI
   const openai = new OpenAI({
     apiKey: apiKey,
@@ -163,7 +175,7 @@ export default async function(req, res) {
   }
 
   // Type 0. Image generation
-  if (model.is_image === "1") {
+  if (is_image_model) {
     outputType = TYPE.IMAGE_GEN;
     console.log(chalk.blue("\nInput (img_gen, session = " + session + (user ? ", user = " + user.username : "") + "):"));
 
@@ -434,7 +446,7 @@ export default async function(req, res) {
     if (mcp_tools && mcp_tools.length > 0) {
       tools = tools.concat(mcp_tools);  // Concat MCP functions
     }
-    if (model.is_tool_calls_supported === "1") {
+    if (is_tool_calls_supported_model) {
       console.log(JSON.stringify(tools));
     } else {
       console.log("Model doesn't support tool calls.");
@@ -455,9 +467,11 @@ export default async function(req, res) {
       stream_options: null,
       temperature: sysconf.temperature,
       top_p: sysconf.top_p,
-      tools: (tools && tools.length > 0) ? tools : null,
-      tool_choice: (tools && tools.length > 0) ? "auto" : null,
-      user: user ? user.username : null,
+
+      // conditional params
+      ...(is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
+      ...(is_reasoning_model ? { reasoning_effort: "high" } : {}),
+      ...(user ? { user: user.username } : {})
     });
 
     // Get result
