@@ -32,6 +32,67 @@ globalThis.isOnline = true;
 // Global default model
 globalThis.model = "";
 globalThis.baseUrl = "";
+globalThis.source = "remote";
+
+const tryFetchModel = async (model) => {
+  console.log("Fetching model: " + model.model);
+  try {
+    const res = await (await fetch('/api/model/' + model.model)).json();
+    if (res.success && res.result) {
+      const resolvedModel = res.result;
+      console.log("Model found in remote.");
+      globalThis.source = "remote";
+      return resolvedModel;
+    }
+  } catch (e) {
+    console.warn("Remote model lookup failed:", e);
+  }
+  console.warn("Model `" + model.model + "` not accessible in remote.");
+  return null;
+}
+
+const tryGetModel = async (model) => {
+  console.log("Getting model: " + model.model);
+  if (!await pingOllamaAPI()) {
+    console.warn("Ollama API not accessible.");
+    return null;
+  }
+  const ollamaModels = await listOllamaModels();
+  const ollamaModel = ollamaModels.find(o => o.name === model.model);
+  if (ollamaModel) {
+    console.log("Model found in Ollama.");
+    setSetting("baseUrl", ollamaModel.base_url);
+    const resolvedModel = { ...model, base_url: ollamaModel.base_url };
+    globalThis.source = "local";
+    return resolvedModel;
+  }
+  console.warn("Model `" + model.model + "` not accessible in local.");
+  return null;
+}
+
+const getModel = async () => {
+  const model = {
+    model: getSetting("model"),
+    base_url: getSetting("baseUrl"),
+    is_tool_calls_supported: "0",
+    is_vision: "0",
+    is_audio: "0",
+    is_reasoning: "0",
+    is_image: "0"
+  };
+  for (const resolveModel of globalThis.source === "remote"
+    ? [tryFetchModel, tryGetModel]
+    : [tryGetModel, tryFetchModel]) {
+    const resolvedModel = await resolveModel(model);
+    if (resolvedModel) {
+      return resolvedModel;
+    }
+  }
+  setSetting("baseUrl", "");
+  globalThis.source = "remote";
+  console.error("Failed to fetch model.");
+  return model;
+}
 
 // Simulate a localStorage and sessionStorage in Node.js
 import { createRequire } from "module";
@@ -530,56 +591,16 @@ program
       if (!getSetting("role")) setSetting("role", systemInfo.default_role);    // default role
       if (!getSetting("stores")) setSetting("stores", systemInfo.default_stores);  // default stores
       if (!getSetting("node")) setSetting("node", systemInfo.default_node);    // default node
+      if (!getSetting("model")) setSetting("model", systemInfo.model);  // default model
+      if (!getSetting("baseUrl")) setSetting("baseUrl", systemInfo.base_url);  // default base url
 
-      // Set model
-      // Auto setup the base URL too
+      // Reset global default model
       globalThis.model = systemInfo.model;
       globalThis.baseUrl = systemInfo.base_url;
-      if (!getSetting("user") || !getSetting("model")) {
-        setSetting("model", systemInfo.model);  // default model
-        setSetting("baseUrl", systemInfo.base_url);  // default base url
-      } else {
-        const modelName = getSetting("model");
 
-        // Try remote models
-        console.log("Fetching model: " + modelName);
-        const response = await fetch('/api/model/' + modelName);
-        const modelResponse = await response.json();
-        let model = null;
-        if (modelResponse.success) {
-          model = modelResponse.result;
-          console.log(JSON.stringify(model, null, 2));
-        } else {
-          console.warn(modelResponse.error);
-        }
-
-        // Found remote model
-        if (model) {
-          console.log("Found model in remote: " + model.model);
-          console.log("Set baseUrl: " + model.base_url);
-          setSetting("baseUrl", model.base_url);
-        }
-
-        // Try local models
-        if (!model) {
-          console.warn("Model `" + modelName + "` not accessible in remote.");
-          if (await pingOllamaAPI()) {
-            const ollamaModels = await listOllamaModels();
-            const ollamaModel = ollamaModels.find(o => o.name === modelName);
-            if (ollamaModel) {
-              // Found ollama model
-              console.log("Found model in local: " + ollamaModel.name);
-              console.log("Set baseUrl: " + ollamaModel.base_url);
-              setSetting("baseUrl", ollamaModel.base_url);
-            } else {
-              // Both remote and local model not found, set baseUrl to empty
-              console.warn("Model `" + modelName + "` not accessible in local.");
-              console.warn("Set baseUrl to empty.");
-              setSetting("baseUrl", "");
-            }
-          }
-        }
-      }
+      // Model
+      const model = await getModel();
+      console.log(JSON.stringify(model, null, 2));
     }
     await getSystemInfo();
 
@@ -603,24 +624,29 @@ program
         continue;
       }
 
+      // Refetch model
+      const model = await getModel();
+
       // Generation mode switch
-      if (globalThis.baseUrl.includes("localhost")
-        || globalThis.baseUrl.includes("127.0.0.1")) {
-        // Local model
+      // Local mode
+      if (model.base_url.includes("localhost")
+       || model.base_url.includes("127.0.0.1")) {
         console.log("Start. (Local)");
         await generate_msg(input, [], []);
         continue;
       }
 
+      // Server model
       if (globalThis.isOnline) {
-        // Server model
+        if (getSetting('useStream') == "false") {
+          console.log("Start. (non-stream)");
+          printOutput("Not support yet for non-stream mode.");  // TODO
+          continue;
+        }
+
         if (getSetting('useStream') == "true") {
           console.log("Start. (SSE)");
           await generate_sse(input, [], []);
-          continue;
-        } else {
-          // TODO
-          printOutput("Not support yet for non-stream mode.");
           continue;
         }
       } else {
