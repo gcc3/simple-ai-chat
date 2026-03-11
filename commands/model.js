@@ -2,7 +2,6 @@ import { listOllamaModels, pingOllamaAPI } from "../utils/ollamaUtils.js";
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
-
 export default async function model(args) {
   const command = args[0];
   const usage = "Usage: :model [name?]\n" +

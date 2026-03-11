@@ -1,6 +1,5 @@
 import { getS3PresignedPutUrl } from "utils/awsUtils";
 
-
 export default async function (req, res) {
   if (req.method !== 'GET') {
     return res.status(405).end();

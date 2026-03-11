@@ -1,6 +1,5 @@
 import { getSetting } from "../utils/settingsUtils.js";
 
-
 export default async function log(args) {
   try {
     const response = await fetch("/api/log/list?session=" + getSetting("session"), {

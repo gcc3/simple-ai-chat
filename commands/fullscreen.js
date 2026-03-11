@@ -2,7 +2,6 @@ import { updateUserSetting } from '../utils/userUtils.js';
 import emitter from '../utils/eventsUtils.js';
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
-
 export default function fullscreen(args) {
   const usage = "Usage: :fullscreen" + "\n" +
                 "       :fullscreen [split/off]";

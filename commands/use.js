@@ -5,7 +5,6 @@ import { updateUserSetting } from "../utils/userUtils.js";
 import { pingOllamaAPI, listOllamaModels } from "../utils/ollamaUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
-
 export default async function use(args) {
   const usage = "Usage: :use [function|node|store|role]\n";
 

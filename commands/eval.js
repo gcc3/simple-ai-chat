@@ -1,6 +1,5 @@
-import { getSetting, setSetting, isSettingEmpty } from "../utils/settingsUtils.js";
+import { setSetting, isSettingEmpty } from "../utils/settingsUtils.js";
 import { updateUserSetting } from "../utils/userUtils.js";
-
 
 export default async function eval_(args) {
   const eval_ = args[0];

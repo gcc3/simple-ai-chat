@@ -6,7 +6,6 @@ import { npre } from "utils/numberUtils";
 import { useTranslation } from "react-i18next";
 import { getSetting } from "../utils/settingsUtils.js";
 
-
 export default function Usage() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);

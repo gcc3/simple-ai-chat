@@ -11,7 +11,6 @@ import { setTheme } from "utils/themeUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 import { getLanguages } from "utils/langUtils.js";
 
-
 function Settings() {
   const [loading, setLoading] = useState(false);
   const [user, setUser] = useState(null);

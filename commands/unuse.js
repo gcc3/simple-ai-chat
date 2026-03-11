@@ -4,7 +4,6 @@ import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from '../utils/userUtils.js';
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
-
 export default async function unuse(args) {
   const usage = "Usage: :unuse [name]\n";
 

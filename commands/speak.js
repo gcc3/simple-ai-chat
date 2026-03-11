@@ -1,6 +1,4 @@
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
-import { updateUserSetting } from "../utils/userUtils.js";
-
+import { setSetting } from "../utils/settingsUtils.js";
 
 export default async function speak(args) {
   const speak = args[0];

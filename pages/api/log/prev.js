@@ -1,6 +1,5 @@
 import { getSessionLog } from "utils/branchUtils";
 
-
 export default async function (req, res) {
   try {
     // Check method
