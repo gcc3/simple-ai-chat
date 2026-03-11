@@ -71,8 +71,8 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
     const name = getSetting("node");
     const response = await getNode(name);
     if (response.success) {
-      const nodeInfo = response.result;
-      return Object.keys(nodeInfo.settings);
+      const node = response.result;
+      return Object.keys(node.settings);
     } else {
       return [];
     }
@@ -229,8 +229,8 @@ async function getNode(nodeName) {
     }
 
     // Node info
-    let nodeInfo = data.result;
-    if (!nodeInfo) {
+    let node = data.result;
+    if (!node) {
       return {
         success: false,
         error: "Node not exists."
@@ -238,7 +238,7 @@ async function getNode(nodeName) {
     } else {
       return {
         success: true,
-        result: data.result
+        result: node
       };
     }
   } catch (error) {

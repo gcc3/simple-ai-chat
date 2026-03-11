@@ -60,8 +60,8 @@ export default async function use(args) {
   }
 
   // Find node
-  const nodeInfo = await findNode(name);
-  if (nodeInfo) {
+  const node = await findNode(name);
+  if (node) {
     if (!getSetting("user")) {
       return "Please login.";
     }
@@ -155,8 +155,8 @@ async function findNode(name) {
     }
 
     // Node info
-    const nodeInfo = data.result;
-    return nodeInfo;
+    const node = data.result;
+    return node;
   } catch (error) {
     console.error(error);
     return false;

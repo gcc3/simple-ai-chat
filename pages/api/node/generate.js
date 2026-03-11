@@ -8,7 +8,7 @@ export default async function handler(req, res) {
     return res.status(405).end();
   }
 
-  const { node, input } = req.body;
+  const { node: node_, input } = req.body;
 
   // Authentication
   const authResult = authenticate(req);
@@ -21,8 +21,8 @@ export default async function handler(req, res) {
   const { id, username } = authResult.user;
 
   try {
-    const nodeInfo = await findNode(node, username);
-    if (!nodeInfo) {
+    const node = await findNode(node_, username);
+    if (!node) {
       res.status(404).json({
         success: false,
         error: "Node not found.",
@@ -31,7 +31,7 @@ export default async function handler(req, res) {
     }
     
     // Get settings
-    const settings = JSON.parse(nodeInfo.settings);
+    const settings = JSON.parse(node.settings);
     if (!checkIsNodeConfigured(settings)) {
       res.status(400).json({
         success: false,

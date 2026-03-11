@@ -56,8 +56,8 @@ export default async function unuse(args) {
   }
 
   // Find node
-  const nodeInfo = await findNode(name);
-  if (nodeInfo) {
+  const node = await findNode(name);
+  if (node) {
     // clear node
     setSetting("node", "");
 
@@ -136,8 +136,8 @@ async function findNode(nodeName) {
     }
 
     // Node info
-    const nodeInfo = data.result;
-    return nodeInfo;
+    const node = data.result;
+    return node;
   } catch (error) {
     console.error(error);
     return false;

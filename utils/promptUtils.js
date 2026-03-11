@@ -35,7 +35,7 @@ export async function generateMessages(use_system_role, lang,
                                        session, mem_limit = 7,
 
                                        // Role, Stores, Node
-                                       role, stores, node,
+                                       role, stores, node_,
                                        
                                        // Location info
                                        use_location, location,
@@ -227,23 +227,23 @@ export async function generateMessages(use_system_role, lang,
     };
   }
 
-  if (sysconf.use_node_ai && node) {
+  if (sysconf.use_node_ai && node_) {
     updateStatus && updateStatus("Node AI generating...");
     console.log("--- node ai ---");
-    console.log("node: " + node);
+    console.log("node: " + node_);
 
     // Get node
-    const nodeInfo = await findNode(node, user ? user.username : "root");  // root user's node is public, everyone can use it
+    const node = await findNode(node_, user ? user.username : "root");  // root user's node is public, everyone can use it
 
     // Verify node
     let isNodeConfigured = false;
     let nodeSettings = null;
-    if (nodeInfo) {
-      nodeSettings = JSON.parse(nodeInfo.settings);
+    if (node) {
+      nodeSettings = JSON.parse(node.settings);
       isNodeConfigured = checkIsNodeConfigured(nodeSettings)
     }
     
-    if (nodeInfo && nodeSettings && isNodeConfigured) {
+    if (node && nodeSettings && isNodeConfigured) {
       node_input = input;
 
       // Override node_input

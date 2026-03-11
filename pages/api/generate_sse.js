@@ -67,7 +67,7 @@ export default async function(req, res) {
   const mem_length = req.query.mem_length || 0;
   const role = req.query.role || "";
   const stores = req.query.stores || "";
-  const node = req.query.node || "";
+  const node_ = req.query.node || "";
   const use_stats = req.query.use_stats === "true" ? true : false;
   const use_eval_ = req.query.use_eval === "true" ? true : false;
   const use_location = req.query.use_location === "true" ? true : false;
@@ -118,7 +118,7 @@ export default async function(req, res) {
   }
 
   // Load node
-  const nodeInfo = user && await findNode(node, user.username);
+  const node = user && await findNode(node_, user.username);
 
   // Model switch
   let model = req.query.model || sysconf.model;
@@ -264,7 +264,7 @@ export default async function(req, res) {
     + "functions: " + (functions_ || "___") + "\n"
     + "role: " + (role || "___") + "\n"
     + "stores: " + (stores || "___") + "\n"
-    + "node: " + (node || "___"));
+    + "node: " + (node_ || "___"));
   }
 
   // Type II. Tool calls (function calling) input
@@ -346,7 +346,7 @@ export default async function(req, res) {
                                        session, mem_length,
 
                                        // Role, Stores, Node
-                                       role, stores, node,
+                                       role, stores, node_,
 
                                        // Location info
                                        use_location, location,
@@ -364,9 +364,9 @@ export default async function(req, res) {
     node_output = msg.node_output;
     node_output_images = msg.node_output_images;
 
-    if (node && nodeInfo) {
-      const settings = JSON.parse(nodeInfo.settings);
-      const nodeModel = settings.model || node;
+    if (node_ && node) {
+      const settings = JSON.parse(node.settings);
+      const nodeModel = settings.model || node_;
 
       // Add log for node
       // Use node as model name, TODO, use node response model name
@@ -432,7 +432,7 @@ export default async function(req, res) {
     });
 
     res.write(`data: ###MODEL###${model}\n\n`);
-    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${0},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node},${msg.mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${0},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node_},${msg.mem}\n\n`);
 
     // Print input images
     input_images.map(image => {
@@ -562,7 +562,7 @@ export default async function(req, res) {
     await logadd(user, session, time++, model, chatCompletionUsage.prompt_tokens, input, chatCompletionUsage.completion_tokens, output, JSON.stringify(input_images), ip, browser);
 
     // Stats (final)
-    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${chatCompletionUsage.total_tokens},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node},${msg.mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${sysconf.top_p},${chatCompletionUsage.total_tokens},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node_},${msg.mem}\n\n`);
     
     // Done message
     updateStatus("Finished.");

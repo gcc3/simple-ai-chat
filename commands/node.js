@@ -39,12 +39,12 @@ export default async function node(args) {
       }
 
       // Node info
-      const nodeInfo = data.result;
-      if (!nodeInfo) {
+      const node = data.result;
+      if (!node) {
         return "Node not found.";
       }
 
-      return JSON.stringify(nodeInfo, null, 2);
+      return JSON.stringify(node, null, 2);
     } catch (error) {
       console.error(error);
       return error;
@@ -73,12 +73,12 @@ export default async function node(args) {
       }
 
       // Node info
-      const nodeInfo = data.result;
-      if (!nodeInfo) {
+      const node = data.result;
+      if (!node) {
         return "Node not found.";
       }
 
-      return JSON.stringify(nodeInfo, null, 2);
+      return JSON.stringify(node, null, 2);
     } catch (error) {
       console.error(error);
       return error;
@@ -192,15 +192,15 @@ export default async function node(args) {
         }
 
         // Node info
-        const nodeInfo = data.result;
-        if (!nodeInfo) {
+        const node = data.result;
+        if (!node) {
           return "Node not found.";
         }
         
         // Set node
         setSetting("node", nodeName);
 
-        if (!nodeInfo) {
+        if (!node) {
           return "Node not found.";
         }
       } catch (error) {
