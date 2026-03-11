@@ -3,16 +3,18 @@
 @font-face{
   font-family: 'Fira Mono';
   src: local('Fira Mono'),
-       url('/fonts/FiraMono-Regular.woff') format('woff');
+       url('/fonts/FiraMono-Regular.woff2') format('woff');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 @font-face{
   font-family: 'Fira Mono';
   src: local('Fira Mono Bold'),
-       url('/fonts/FiraMono-Bold.woff') format('woff');
+       url('/fonts/FiraMono-Bold.woff2') format('woff');
   font-weight: 600;
   font-style: normal;
+  font-display: swap;
 }
 
 /* Fira Code */
@@ -21,24 +23,28 @@
   src: url('/fonts/FiraCode-Light.woff2') format('woff2');
   font-weight: 300;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'Fira Code';
   src: url('/fonts/FiraCode-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'Fira Code';
   src: url('/fonts/FiraCode-Medium.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: 'Fira Code';
   src: url('/fonts/FiraCode-Bold.woff2') format('woff2');
   font-weight: 700;
   font-style: normal;
+  font-display: swap;
 }
 
 /* ColfaxAI */
@@ -47,12 +53,14 @@
   src: url('/fonts/ColfaxAIRegular.woff2') format("woff2");
   font-weight: normal;
   font-style: normal;
+  font-display: swap;
 }
 @font-face {
   font-family: "ColfaxAI";
   src: url('/fonts/ColfaxAIBold.woff2') format("woff2");
   font-weight: bold;
   font-style: normal;
+  font-display: swap;
 }
 
 body {
