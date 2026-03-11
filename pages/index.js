@@ -75,12 +75,7 @@ export default function Home() {
   const { fullscreen, setFullscreen, enter, setEnter } = useUI();
 
   // States
-  const [placeholder, setPlaceholder] = useState({ text: PLACEHOLDER, height: null });
-  const [waiting, setWaiting] = useState(WAITING);
-  const [reasoning, setReasoning] = useState(REASONING);
-  const [querying, setQuerying] = useState(QUERYING);
-  const [generating, setGenerating] = useState(GENERATING);
-  const [searching, setSearching] = useState(SEARCHING);
+  const [placeholder, setPlaceholder] = useState(PLACEHOLDER);
   const [info, setInfo] = useState();
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
@@ -382,7 +377,7 @@ export default function Home() {
             clearInput();
             clearOutput();
             globalThis.rawPlaceholder = globalThis.initPlaceholder;
-            setPlaceholder({ text: globalThis.rawPlaceholder, height: null });
+            setPlaceholder(globalThis.rawPlaceholder);
             clearPreviewImages();
             clearPreviewVideos();
             setInfo();
@@ -775,12 +770,6 @@ export default function Home() {
         base_url: "",
         role_content_system: "***",
         welcome_message: "",
-        waiting: WAITING,
-        reasoning: REASONING,
-        querying: QUERYING,
-        generating: GENERATING,
-        searching: SEARCHING,
-        init_placeholder: PLACEHOLDER,
         enter: "",
         temperature: 1,
         top_p: 1,
@@ -800,19 +789,9 @@ export default function Home() {
       }
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
-      if (systemInfo.init_placeholder) {
-        globalThis.initPlaceholder = systemInfo.init_placeholder;
-        globalThis.rawPlaceholder = systemInfo.init_placeholder;
-        setPlaceholder({ text: systemInfo.init_placeholder, height: null });  // Set placeholder text
-      }
       if (systemInfo.enter) {
         dispatch(toggleEnterChange(systemInfo.enter));
       }
-      if (systemInfo.waiting) setWaiting(systemInfo.waiting);  // Set waiting text
-      if (systemInfo.reasoning) setReasoning(systemInfo.reasoning);  // Set reasoning text
-      if (systemInfo.querying) setQuerying(systemInfo.querying);  // Set querying text
-      if (systemInfo.generating) setGenerating(systemInfo.generating);  // Set generating text
-      if (systemInfo.searching) setSearching(systemInfo.searching);  // Set searching text
 
       // Usage page (offline mode: disable if offline)
       if (globalThis.isOnline && systemInfo.use_payment) {
@@ -1102,7 +1081,7 @@ export default function Home() {
       clearInput();
       clearOutput();
       globalThis.rawPlaceholder = globalThis.initPlaceholder;
-      setPlaceholder({ text: globalThis.rawPlaceholder, height: null });
+      setPlaceholder(globalThis.rawPlaceholder);
       clearPreviewImages();
       clearPreviewVideos();
       setInfo();
@@ -2537,11 +2516,11 @@ export default function Home() {
     const placeholder = globalThis.rawPlaceholder;
     const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (getStringMonoLength(placeholder) >= 45 || placeholder.includes("\n"))) ?
                                  placeholder.replaceAll("\n", " ").substring(0, 20) + " ..." : placeholder;
-    setPlaceholder({ text: placeholderShortern, height: null });
+    setPlaceholder(placeholderShortern);
   }
 
   // The sleep 1 will magically fix the auto -> height issue
-  // But when input change, the height will jumping, so add doSleepToFixAuto param to control
+  // But when input change, the height will be jumping, so add doSleepToFixAuto param to control
   const reAdjustInputHeight = async (doSleepToFixAuto = false, triggerBy) => {
     if (triggerBy) {
       console.log("Re-adjust input height. (triggerBy: " + triggerBy + ")");
@@ -2804,7 +2783,7 @@ export default function Home() {
               ref={elInputRef}
               rows="1"
               className={styles.input}
-              placeholder={placeholder.text}
+              placeholder={placeholder}
               onChange={handleInputChange}
               onPaste={handlePaste}
               onDragOver={handleDragOver}

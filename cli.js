@@ -502,12 +502,6 @@ program
         base_url: "",
         role_content_system: "***",
         welcome_message: "",
-        waiting: WAITING,
-        reasoning: REASONING,
-        querying: QUERYING,
-        generating: GENERATING,
-        searching: SEARCHING,
-        init_placeholder: PLACEHOLDER,
         enter: "",
         temperature: 1,
         top_p: 1,
@@ -520,6 +514,7 @@ program
         default_stores: "",
         default_node: "",
       };
+
       if (globalThis.isOnline) {
         console.log("Fetching system info...");
         const systemInfoResponse = await fetch('/api/system/info');
@@ -527,11 +522,9 @@ program
       }
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
-      if (systemInfo.init_placeholder) {
-        globalThis.initPlaceholder = systemInfo.init_placeholder;
-        globalThis.rawPlaceholder = systemInfo.init_placeholder;
-        globalThis.placeholder = globalThis.initPlaceholder;
-      }
+      globalThis.initPlaceholder = PLACEHOLDER;
+      globalThis.rawPlaceholder = PLACEHOLDER;
+      globalThis.placeholder = PLACEHOLDER;
 
       // Set welcome message
       if (systemInfo.welcome_message && !getSetting("user")) {

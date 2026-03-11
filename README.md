@@ -116,11 +116,8 @@ Range 0 ~ 1, 0.1 means only the tokens comprising the top 10% probability mass a
 ROLE_CONTENT_SYSTEM  
 Set the system prompt.  
 
-WELCOME_MESSAGE, INIT_PLACEHOLDER and ENTER  
-Control the custom welcome message, placeholder text and enter key text.  
-
-WAITING, REASONING, QUERYING, GENERATING, SEARCHING  
-Indicating the message that will show when waiting, reasoning, querying, generating and searching.  
+WELCOME_MESSAGE and ENTER  
+Control the custom welcome message, and enter key text.  
 
 WOLFRAM_ALPHA_APPID  
 For API calls for wolfram alpha API.  
