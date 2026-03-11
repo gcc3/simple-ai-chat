@@ -21,7 +21,7 @@ import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import { getMcpTools } from "./function.js";
 import { getLocalLogs, addLocalLog, resetLocalLogs } from "./utils/offlineUtils.js";
 import { isInternetAvailable } from "./utils/networkUtils.js";
-import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING } from "constants.js";
+import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "constants.js";
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');
@@ -502,7 +502,7 @@ program
         base_url: "",
         role_content_system: "***",
         welcome_message: "",
-        waiting: "",
+        waiting: WAITING,
         reasoning: REASONING,
         querying: QUERYING,
         generating: GENERATING,

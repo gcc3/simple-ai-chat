@@ -34,7 +34,7 @@ import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
-import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING } from '../constants.js';
+import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
@@ -76,7 +76,7 @@ export default function Home() {
 
   // States
   const [placeholder, setPlaceholder] = useState({ text: PLACEHOLDER, height: null });
-  const [waiting, setWaiting] = useState("");
+  const [waiting, setWaiting] = useState(WAITING);
   const [reasoning, setReasoning] = useState(REASONING);
   const [querying, setQuerying] = useState(QUERYING);
   const [generating, setGenerating] = useState(GENERATING);
@@ -775,7 +775,7 @@ export default function Home() {
         base_url: "",
         role_content_system: "***",
         welcome_message: "",
-        waiting: "",
+        waiting: WAITING,
         reasoning: REASONING,
         querying: QUERYING,
         generating: GENERATING,
@@ -1620,13 +1620,13 @@ export default function Home() {
         // 1. Store
         // For stores print "Searching..."
         if (_status_.startsWith("Start searching...")) {
-          printOutput(searching);
+          printOutput(SEARCHING);
         }
 
         // 2. Node
         // For node print "Generating...", because it will be slow.
         if (config.node && (_status_.startsWith("Start pre-generating...") || _status_.startsWith("Start generating..."))) {
-          printOutput(generating);
+          printOutput(GENERATING);
         }
 
         if (_status_.startsWith("Node AI querying, prompt: ")) {
@@ -1645,13 +1645,13 @@ export default function Home() {
 
         // 3. Reasoning model
         if (_status_.startsWith("Start reasoning...")) {
-          printOutput(reasoning);
+          printOutput(REASONING);
         }
 
         // 4. Non-reasoning model
         // Sometime the tool calls make it pause
         if (_status_.startsWith("Start generating...")) {
-          printOutput(generating);
+          printOutput(GENERATING);
         }
         return;
       }
