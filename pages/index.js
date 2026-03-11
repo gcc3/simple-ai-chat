@@ -35,7 +35,6 @@ import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 import { addLocalLog, resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
-import { isInternetAvailable } from "utils/networkUtils";
 import { getStringMonoLength } from "utils/stringUtils";
 
 const UserDataPrivacy = dynamic(() => import('components/UserDataPrivacy'), { ssr: false });
@@ -815,25 +814,6 @@ export default function Home() {
 
     // System and user configurations
     const getSystemInfo = async () => {
-      // Check online status
-      if (!navigator.onLine || !await isInternetAvailable()) {
-        globalThis.isOffline = true;
-        globalThis.isOnline = false;
-        console.warn("Offline mode enabled. Some features may not work.");
-
-        // Local online data
-        resetLocalLogs();
-        clearLocalUser();
-      }
-
-      // User info
-      if (getSetting("user")) {
-        // Refresh local user, will fetch the latest user info and set to local
-        refreshLocalUser();
-      } else {
-        console.warn("User not logged in.");
-      }
-
       // System info
       let systemInfo = {
         model: "",
@@ -851,12 +831,30 @@ export default function Home() {
         default_stores: "",
         default_node: "",
       };
-      if (globalThis.isOnline) {
-        console.log("Fetching system info...");
+
+      // Instead of pinging first, just try system/info and treat failure as offline
+      console.log("Fetching system info...");
+      try {
         const systemInfoResponse = await fetch('/api/system/info');
         systemInfo = (await systemInfoResponse.json()).result;
+      } catch {
+        globalThis.isOffline = true;
+        globalThis.isOnline = false;
+        console.warn("Offline mode enabled. Some features may not work.");
+
+        // Local online data
+        resetLocalLogs();
+        clearLocalUser();
       }
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
+
+      // User info
+      if (getSetting("user")) {
+        // Refresh local user, will fetch the latest user info and set to local
+        if (globalThis.isOnline) refreshLocalUser();
+      } else {
+        console.warn("User not logged in.");
+      }
 
       // Usage page (offline mode: disable if offline)
       if (globalThis.isOnline && systemInfo.use_payment) {
