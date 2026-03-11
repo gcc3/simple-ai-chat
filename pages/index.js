@@ -290,7 +290,7 @@ export default function Home() {
       return item;
     });
 
-    printOutput(`Session (id:${session.id}) attached. Use \`→\` and \`←\` (or \`j\` and \`k\`) to navigate between session logs(length:${session.length}).\n\nPreview:\n` + JSON.stringify(session.logs, null, 2));
+    printOutput(`Session (id:${session.id}) attached. Use \`→\` and \`←\` (or \`j\` and \`k\`) to navigate between session logs(${session.length}).\n\nPreview:\n` + JSON.stringify(session.logs, null, 2));
   }
 
   // Handle global shortcut keys

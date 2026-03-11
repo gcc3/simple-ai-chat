@@ -42,7 +42,7 @@ export async function attachSession(sessionId) {
       return item;
     });
 
-    return `Session (id:${session.id}) attached. Use \`→\` and \`←\` (or \`j\` and \`k\`) to navigate between session logs(length:${session.length}).\n\nPreview:\n` + JSON.stringify(session.logs, null, 2);
+    return `Session (id:${session.id}) attached. Use \`→\` and \`←\` (or \`j\` and \`k\`) to navigate between session logs(${session.length}).\n\nPreview:\n` + JSON.stringify(session.logs, null, 2);
   } catch (error) {
     console.error("Error attaching session:", error);
     return "Error attaching session. Please try again later.";
