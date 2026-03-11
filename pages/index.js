@@ -59,6 +59,10 @@ globalThis.rawInput = "";
 globalThis.rawOutput = "";
 globalThis.rawPlaceholder = PLACEHOLDER;
 
+// Global default model
+globalThis.model = "";
+globalThis.baseUrl = "";
+
 // Donut interval id
 let dunutIntervalId = null;
 const clearDonutInterval = () => {
