@@ -169,15 +169,11 @@ export async function fetchUserUsage() {
 }
 
 export async function updateUserSetting(key, value) {
-  if (value) {
-    console.log("Updating user setting, key: `" + key + "`, value: `" + value + "`");
-  } else {
-    console.log("Reseting user setting `" + key + "` to default");
-  }
-
-  // There is user logged in
-  // Update remote setting
+  // Check user logged in
   if (getSetting("user")) {
+    console.log(value ? "Updating user setting, key: `" + key + "`, value: `" + value + "`" : "Reseting user setting `" + key + "` to default");
+
+    // Update remote setting
     try {
       const response = await fetch("/api/user/update/setting", {
         method: "POST",

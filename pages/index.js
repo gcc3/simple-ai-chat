@@ -259,12 +259,12 @@ export default function Home() {
   const setInput = (text) => {
     elInputRef.current.value = text;
     globalThis.rawInput = text;
+    reAdjustInputHeight();
   }
 
   // Clear input
   const clearInput = () => {
     setInput("");
-    reAdjustInputHeight();
     reAdjustPlaceholder();
   }
 
@@ -417,18 +417,10 @@ export default function Home() {
         // Triggle fullscreen split
         if (!getSetting("fullscreen").startsWith("default")) {
           dispatchFullscreen("default");
-
-          // Update user setting
-          if (getSetting("user")) {
-            updateUserSetting("fullscreen", "default");
-          }
+          updateUserSetting("fullscreen", "default");
         } else {
           dispatchFullscreen("off");
-
-          // Update user setting
-          if (getSetting("user")) {
-            updateUserSetting("fullscreen", "off");
-          }
+          updateUserSetting("fullscreen", "off");
         }
         break;
 
@@ -442,18 +434,10 @@ export default function Home() {
           // Triggle fullscreen split
           if (!getSetting("fullscreen").startsWith("split")) {
             dispatchFullscreen("split");
-
-            // Update user setting
-            if (getSetting("user")) {
-              updateUserSetting("fullscreen", "split");
-            }
+            updateUserSetting("fullscreen", "split");
           } else {
             dispatchFullscreen("off");
-
-            // Update user setting
-            if (getSetting("user")) {
-              updateUserSetting("fullscreen", "off");
-            }
+            updateUserSetting("fullscreen", "off");
           }
         }
         break;
@@ -470,7 +454,6 @@ export default function Home() {
           if (command) {
             setInput(command);
             setSetting("historyIndex", historyIndex + 1);
-            reAdjustInputHeight();
           }
         }
 
@@ -566,7 +549,6 @@ export default function Home() {
             setInput(":");
             setSetting("historyIndex", -1);
           }
-          reAdjustInputHeight();
         }
 
         // Navigate to next session
@@ -2457,7 +2439,6 @@ export default function Home() {
       // Input from placeholder when pressing tab
       if (elInput.value.length === 0) {
         setInput(globalThis.rawPlaceholder);
-        reAdjustInputHeight();
       }
 
       // Auto complete
@@ -2474,14 +2455,12 @@ export default function Home() {
               const nextOption = options[(options.indexOf(nameToBeComleted) + 1) % options.length];
               const complation = useQuates ? "\"" + nextOption + "\"" : nextOption;
               setInput(prefix + complation);
-              reAdjustInputHeight();
             } else {
               // Try auto complete
               const matches = options.filter((o) => o.startsWith(nameToBeComleted));
               if (matches.length > 0) {
                 const complation = useQuates ? "\"" + matches[0] + "\"" : matches[0];
                 setInput(prefix + complation);
-                reAdjustInputHeight();
               }
             }
           }
@@ -2549,7 +2528,11 @@ export default function Home() {
 
   // The placeholder should be shorten if fullscreen off or default
   // For fullscreen split, the placeholder shouldn't be shorten
-  const reAdjustPlaceholder = () => {
+  const reAdjustPlaceholder = (triggerBy) => {
+    if (triggerBy) {
+      console.log("Re-adjust placeholder. (triggerBy: " + triggerBy + ")");
+    }
+
     const fullscreen_ = getSetting("fullscreen").trim();
     const placeholder = globalThis.rawPlaceholder;
     const placeholderShortern = ((fullscreen_ === "default" || fullscreen_ === "off") && (getStringMonoLength(placeholder) >= 45 || placeholder.includes("\n"))) ?
@@ -2559,7 +2542,11 @@ export default function Home() {
 
   // The sleep 1 will magically fix the auto -> height issue
   // But when input change, the height will jumping, so add doSleepToFixAuto param to control
-  const reAdjustInputHeight = async (doSleepToFixAuto = false) => {
+  const reAdjustInputHeight = async (doSleepToFixAuto = false, triggerBy) => {
+    if (triggerBy) {
+      console.log("Re-adjust input height. (triggerBy: " + triggerBy + ")");
+    }
+
     const elInput = elInputRef.current;
     if (!elInput) {
       return;
@@ -2680,7 +2667,6 @@ export default function Home() {
 
     // Update the textarea value with the placeholder text
     setInput(textBefore + filePlaceholder + textAfter);
-    reAdjustInputHeight();  // Re-adjust input height as input changed
 
     // Grab the file
     console.log('Image/file pasted/dropped: ' + fileName + ' (' + type + ')');
@@ -2722,9 +2708,6 @@ export default function Home() {
     }
 
     setInput(elInputRef.current.value.replaceAll("file_id:" + file_id + "(uploading...)", message));
-
-    // Re-adjust input height as input changed
-    reAdjustInputHeight();
   }
 
   // Handle paste event on input textarea
