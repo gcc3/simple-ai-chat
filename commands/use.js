@@ -153,7 +153,6 @@ async function findNode(name) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    // Node info
     const node = data.result;
     return node;
   } catch (error) {

@@ -13,7 +13,6 @@ export default async function node(args) {
                 "       :node set owner [owner]\n" +
                 "       :node set [key] [value]\n";
 
-  // Get node info
   // :node [name?]
   if (!command) {
     if (!getSetting("user")) {
@@ -38,7 +37,6 @@ export default async function node(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Node info
       const node = data.result;
       if (!node) {
         return "Node not found.";
@@ -51,7 +49,7 @@ export default async function node(args) {
     }
   }
 
-  // Get node info by name
+  // Get node by name
   // :node [name?]
   if (args.length === 1 && args[0].startsWith("\"") && args[0].endsWith("\"")) {
     const nodeName = args[0].slice(1, -1);
@@ -72,7 +70,6 @@ export default async function node(args) {
         throw data.error || new Error(`Request failed with status ${response.status}`);
       }
 
-      // Node info
       const node = data.result;
       if (!node) {
         return "Node not found.";
@@ -191,7 +188,6 @@ export default async function node(args) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        // Node info
         const node = data.result;
         if (!node) {
           return "Node not found.";

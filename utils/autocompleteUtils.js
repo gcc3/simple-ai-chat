@@ -228,7 +228,6 @@ async function getNode(nodeName) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    // Node info
     let node = data.result;
     if (!node) {
       return {
