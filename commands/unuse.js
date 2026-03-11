@@ -67,8 +67,8 @@ export default async function unuse(args) {
   }
   
   // Find store
-  const storeInfo = await findStore(name);
-  if (storeInfo) {
+  const store = await findStore(name);
+  if (store) {
     /// Check store active
     if (!isStoreActive(name)) {
       return "Store \`" + name + "\` is not active";
@@ -165,8 +165,8 @@ async function findStore(storeName) {
       throw data.error || new Error(`Request failed with status ${response.status}`);
     }
 
-    const storeInfo = data.result;
-    return storeInfo;
+    const store = data.result;
+    return store;
   } catch (error) {
     console.error(error);
     return false;

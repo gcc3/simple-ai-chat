@@ -152,14 +152,14 @@ export async function generateMessages(use_system_role, lang,
 
     // Search all active stores
     const activeStores = stores.split(",").filter(s => s !== "");
-    for (const store of activeStores) {
+    for (const activeStore of activeStores) {
       // Get store info
-      const storeInfo = await findStore(store, user.username);
-      if (storeInfo) {
-        const settings = JSON.parse(storeInfo.settings);
+      const store = await findStore(activeStore, user.username);
+      if (store) {
+        const settings = JSON.parse(store.settings);
 
         // File store
-        if (storeInfo.engine === "file") {
+        if (store.engine === "file") {
           const files = settings.files || [];
           // Loop through each file and fetch the content
           for (const file of files) {
@@ -170,14 +170,14 @@ export async function generateMessages(use_system_role, lang,
               stores_prompt += "\n\n" + fileContent + "\n\n";
             } catch (error) {
               console.error("Error fetching file:", error);
-              console.log("store `" + store + "`: " + "error fetching file: " + file + "\n" + error);
+              console.log("store `" + activeStore + "`: " + "error fetching file: " + file + "\n" + error);
             }
           }
         }
 
         // MySQL store
-        if (storeInfo.engine === "mysql") {
-          if (isInitialized(storeInfo.engine, settings)) {
+        if (store.engine === "mysql") {
+          if (isInitialized(store.engine, settings)) {
             let queryResult = null;
             let mysqlPrompt = "";
 
