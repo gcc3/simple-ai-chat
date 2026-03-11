@@ -818,10 +818,10 @@ export default function Home() {
       if (!getSetting("stores")) setSetting("stores", systemInfo.default_stores);  // default stores
       if (!getSetting("node")) setSetting("node", systemInfo.default_node);    // default node
 
-      // Set model
-      // Auto setup the base URL too
+      // Set default model
       globalThis.model = systemInfo.model;
       globalThis.baseUrl = systemInfo.base_url;
+
       if (!getSetting("user") || !getSetting("model")) {
         setSetting("model", systemInfo.model);  // default model
         setSetting("baseUrl", systemInfo.base_url);  // default base url
