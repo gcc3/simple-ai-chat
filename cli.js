@@ -521,7 +521,6 @@ program
       }
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
-      globalThis.initPlaceholder = PLACEHOLDER;
       globalThis.rawPlaceholder = PLACEHOLDER;
       globalThis.placeholder = PLACEHOLDER;
 

@@ -59,9 +59,6 @@ globalThis.rawInput = "";
 globalThis.rawOutput = "";
 globalThis.rawPlaceholder = PLACEHOLDER;
 
-// Initial placeholder
-globalThis.initPlaceholder = PLACEHOLDER;
-
 // Donut interval id
 let dunutIntervalId = null;
 const clearDonutInterval = () => {
@@ -376,8 +373,8 @@ export default function Home() {
             // Clear all input and output, pleaceholder, previews
             clearInput();
             clearOutput();
-            globalThis.rawPlaceholder = globalThis.initPlaceholder;
-            setPlaceholder(globalThis.rawPlaceholder);
+            globalThis.rawPlaceholder = PLACEHOLDER;
+            setPlaceholder(PLACEHOLDER);
             clearPreviewImages();
             clearPreviewVideos();
             setInfo();
@@ -1075,8 +1072,8 @@ export default function Home() {
       // Clear all input and output, pleaceholder, previews
       clearInput();
       clearOutput();
-      globalThis.rawPlaceholder = globalThis.initPlaceholder;
-      setPlaceholder(globalThis.rawPlaceholder);
+      globalThis.rawPlaceholder = PLACEHOLDER;
+      setPlaceholder(PLACEHOLDER);
       clearPreviewImages();
       clearPreviewVideos();
       setInfo();
