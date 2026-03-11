@@ -942,9 +942,14 @@ export default function Home() {
 
     // Handle window resize
     const handleResize = () => {
-      // Readjust UI
-      reAdjustInputHeight();
-      reAdjustPlaceholder();
+      const fullscreenMode = getSetting("fullscreen");
+
+      // For non-fullscreen mode, resize will cause glitch
+      if (fullscreenMode !== "off") {
+        // Readjust UI
+        reAdjustInputHeight();
+        reAdjustPlaceholder();
+      }
     };
     window.addEventListener('resize', handleResize);
     handleResize();
