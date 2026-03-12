@@ -45,8 +45,7 @@ const Settings = dynamic(() => import('components/Settings'), { ssr: false });
 
 globalThis.STATE = STATES.IDLE;  // a global state
 
-// Offline
-globalThis.isOffline = false;
+// Online status
 globalThis.isOnline = true;
 
 // Mutation observer
@@ -459,7 +458,7 @@ export default function Home() {
           event.preventDefault();
 
           if (globalThis.STATE === STATES.IDLE) {
-            if (isOffline) {
+            if (!globalThis.isOnline) {
               console.log("Aborted: offline.");
               return;
             }
@@ -499,7 +498,7 @@ export default function Home() {
           console.log("Shortcut: h");
 
           if (globalThis.STATE === STATES.IDLE) {
-            if (isOffline) {
+            if (!globalThis.isOnline) {
               console.log("Aborted: offline.");
               return;
             }
@@ -557,7 +556,7 @@ export default function Home() {
           event.preventDefault();
 
           if (globalThis.STATE === STATES.IDLE) {
-            if (isOffline) {
+            if (!globalThis.isOnline) {
               console.log("Aborted: offline.")
               return;
             }
@@ -596,7 +595,7 @@ export default function Home() {
           event.preventDefault();
 
           if (globalThis.STATE === STATES.IDLE) {
-            if (isOffline) {
+            if (!globalThis.isOnline) {
               console.log("Aborted: offline.")
               return;
             }
@@ -838,7 +837,6 @@ export default function Home() {
         const systemInfoResponse = await fetch('/api/system/info');
         systemInfo = (await systemInfoResponse.json()).result;
       } catch {
-        globalThis.isOffline = true;
         globalThis.isOnline = false;
         console.warn("Offline mode enabled. Some features may not work.");
 
@@ -886,6 +884,7 @@ export default function Home() {
 
       // Model
       const model = await getModel();
+      console.log("Set source: " + globalThis.source);
       console.log(JSON.stringify(model, null, 2));
     }
     getSystemInfo();
@@ -1132,6 +1131,13 @@ export default function Home() {
       setInfo();
       setStats();
       setEvaluation();
+    }
+
+    // Check if model is set
+    // For web interface, the default model is read from .env
+    if (getSetting("model") === "") {
+      printOutput("Model not set.");
+      return;
     }
 
     // Pre-process the input
@@ -1887,8 +1893,8 @@ export default function Home() {
     // Generate messages
     let msg;
 
-    // Online: get remote messages
     if (globalThis.isOnline) {
+      // Online: get remote messages
       const msgResponse = await fetch("/api/generate_msg", {
         method: "POST",
         headers: {
@@ -1920,10 +1926,8 @@ export default function Home() {
         throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
       }
       msg = msgData.result.msg;
-    }
-
-    // Offline: get local messages
-    if (globalThis.isOffline) {
+    } else {
+      // Offline: get local messages
       // History logs
       const localLogs = getLocalLogs();
       let messages = [];
@@ -2002,7 +2006,7 @@ export default function Home() {
       }
 
       // Offline: add log to local
-      if (globalThis.isOffline) {
+      if (!globalThis.isOnline) {
         // Add to local log
         addLocalLog({
           input: input,

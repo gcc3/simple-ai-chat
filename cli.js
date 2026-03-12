@@ -25,14 +25,16 @@ import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from
 process.removeAllListeners('warning');
 process.on('warning', () => {});
 
-// Offline
-globalThis.isOffline = false;
+// Online status
 globalThis.isOnline = true;
 
 // Global default model
 globalThis.model = "";
 globalThis.baseUrl = "";
 globalThis.source = "remote";
+
+// Global server base URL
+globalThis.serverBaseUrl = "https://simple-ai.io";
 
 const tryFetchModel = async (model) => {
   console.log("Fetching model: " + model.model);
@@ -102,7 +104,6 @@ globalThis.localStorage = new LocalStorage('./.scratch');
 globalThis.sessionStorage = require("node-sessionstorage");
 
 // Monkey-patch the fetch function to use the server's base URL and handle cookies
-globalThis.serverBaseUrl = "https://simple-ai.io";
 const cookieJar = new tough.CookieJar();  // Handle cookies
 const fetch_ = globalThis.fetch;  // Save the original fetch function
 const fetch_c = fetchCookie(fetch_, cookieJar);
@@ -270,13 +271,14 @@ async function generate_msg(input, images=[], files=[]) {
 
   // Model switch
   const use_vision = images && images.length > 0;
-  const model = config.model;
 
   // Generate messages
   let msg;
 
-  // Online: get remote messages
-  if (globalThis.isOnline && globalThis.source === "remote") {
+  if (globalThis.isOnline) {
+    // Online: get remote messages
+    console.log("Fetching messages from server.");
+
     const msgResponse = await fetch("/api/generate_msg", {
       method: "POST",
       headers: {
@@ -308,16 +310,16 @@ async function generate_msg(input, images=[], files=[]) {
       throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
     }
     msg = msgData.result.msg;
-  }
+  } else {
+    // Offline / local Ollama model: get local messages
+    console.log("Getting local messages.");
 
-  // Offline / local Ollama model: get local messages
-  if (globalThis.isOffline || globalThis.source === "local") {
     // History logs
     const localLogs = getLocalLogs();
     let messages = [];
     localLogs.forEach((log) => {
       // Only add messages with the same model
-      if (log.model === model) {
+      if (log.model === config.model) {
         messages.push({
           role: "user",
           content: log.input,
@@ -350,7 +352,7 @@ async function generate_msg(input, images=[], files=[]) {
   // OpenAI chat completion!
   const chatCompletion = await openai.chat.completions.create({
     messages: msg.messages,
-    model: model,
+    model: config.model,
     logit_bias: null,
     n: 1,
     response_format: null,
@@ -367,8 +369,8 @@ async function generate_msg(input, images=[], files=[]) {
 
   // Record log (chat history)
   const logadd = async (input, output) => {
-    // Online: add log to server
-    if (globalThis.isOnline && globalThis.source === "remote") {
+    if (globalThis.isOnline) {
+      // Online: add log to server
       const logaddResponse = await fetch("/api/log/add", {
         method: "POST",
         headers: {
@@ -377,7 +379,7 @@ async function generate_msg(input, images=[], files=[]) {
         body: JSON.stringify({
           input,
           output,
-          model: model,
+          model: config.model,
           session: getSetting("session"),
           images: [],
           time: Date.now(),
@@ -387,19 +389,19 @@ async function generate_msg(input, images=[], files=[]) {
       if (logaddResponse.status !== 200) {
         throw logaddResponse.error || new Error(`Request failed with status ${logaddResponse.status}`);
       }
-    }
-
-    // Offline / local Ollama model: add log to local
-    if (globalThis.isOffline || globalThis.source === "local") {
+      return;
+    } else {
+      // Offline / local Ollama model: add log to local
       // Add to local log
       addLocalLog({
         input: input,
         output: output,
-        model: model,
+        model: config.model,
         session: getSetting("session"),
         images: [],
         time: Date.now(),
       });
+      return;
     }
   }
 
@@ -493,17 +495,18 @@ export function getVersion() {
   }
 }
 
+// Program start
 // In commander.js, the option are converted to camelCase automatically
 // Example: --base-url <url> => opts.baseUrl
 program
   .name("simple-ai-chat")
   .description("simple-ai-chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
-  .version(getVersion())
-  .option("-v, --verbose", "enable verbose logging", false)
+  .version(getVersion(), "-v, --version")
+  .option("-d, --debug", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
   .action(async (opts) => {
     // Verbose
-    if (opts.verbose) {
+    if (opts.debug) {
       // Enable verbose logging with labeled messages
       console.log = (...args) => {
         printOutput("DEBUG: " + args.join(' '));
@@ -530,6 +533,7 @@ program
     } else {
       globalThis.serverBaseUrl = "https://simple-ai.io";
     }
+    console.log("Server base URL: " + globalThis.serverBaseUrl);
 
     const ask = async (question) =>
       new Promise((r) => rl.question(question, r));
@@ -569,13 +573,13 @@ program
         const systemInfoResponse = await fetch('/api/system/info');
         systemInfo = (await systemInfoResponse.json()).result;
       } catch {
-        globalThis.isOffline = true;
         globalThis.isOnline = false;
         console.warn("Offline mode enabled. Some features may not work.");
 
         // Local online data
         resetLocalLogs();
       }
+      console.log("Set is online: " + globalThis.isOnline);
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
       globalThis.rawPlaceholder = PLACEHOLDER;
@@ -600,6 +604,7 @@ program
 
       // Model
       const model = await getModel();
+      console.log("Set source: " + globalThis.source);
       console.log(JSON.stringify(model, null, 2));
     }
     await getSystemInfo();
@@ -610,6 +615,7 @@ program
       const input = (await ask(globalThis.model + "> ")).trim();
       if (!input) continue;
 
+      // On submit
       if (input.toLowerCase() === ":exit") break;
       if (input.toLowerCase() === ":clear") {
         process.stdout.write('\x1Bc');
@@ -621,6 +627,12 @@ program
         if (commandResult) {
           printOutput(commandResult.trim() + "\n");
         }
+        continue;
+      }
+
+      // Check if model is set
+      if (getSetting("model") === "") {
+        printOutput("Model not set.");
         continue;
       }
 
@@ -658,17 +670,15 @@ program
     rl.close();
   });
 
-// Exit
+// Program exit
 function exitProgram() {
   // Something to do before exit
   localStorage.clear();
-  console.log("Local storage cleared.");
 
   // Stop the MCP server if it's running
   if (mcpProcess) {
     mcpProcess.kill('SIGINT');
   }
-  console.log("MCP server stopped.");
 }
 process.on('exit', exitProgram);
 process.on('SIGINT', () => {
