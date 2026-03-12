@@ -498,12 +498,12 @@ export function getVersion() {
 program
   .name("simple-ai-chat")
   .description("simple-ai-chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
-  .version(getVersion())
-  .option("-v, --verbose", "enable verbose logging", false)
+  .version(getVersion(), "-v, --version")
+  .option("-d, --debug", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
   .action(async (opts) => {
     // Verbose
-    if (opts.verbose) {
+    if (opts.debug) {
       // Enable verbose logging with labeled messages
       console.log = (...args) => {
         printOutput("DEBUG: " + args.join(' '));
@@ -662,13 +662,11 @@ program
 function exitProgram() {
   // Something to do before exit
   localStorage.clear();
-  console.log("Local storage cleared.");
 
   // Stop the MCP server if it's running
   if (mcpProcess) {
     mcpProcess.kill('SIGINT');
   }
-  console.log("MCP server stopped.");
 }
 process.on('exit', exitProgram);
 process.on('SIGINT', () => {
