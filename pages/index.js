@@ -886,6 +886,7 @@ export default function Home() {
 
       // Model
       const model = await getModel();
+      console.log("Set source: " + globalThis.source);
       console.log(JSON.stringify(model, null, 2));
     }
     getSystemInfo();
@@ -1132,6 +1133,13 @@ export default function Home() {
       setInfo();
       setStats();
       setEvaluation();
+    }
+
+    // Check if model is set
+    // For web interface, the default model is read from .env
+    if (getSetting("model") === "") {
+      printOutput("Model not set.");
+      return;
     }
 
     // Pre-process the input

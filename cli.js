@@ -621,6 +621,7 @@ program
       const input = (await ask(globalThis.model + "> ")).trim();
       if (!input) continue;
 
+      // On submit
       if (input.toLowerCase() === ":exit") break;
       if (input.toLowerCase() === ":clear") {
         process.stdout.write('\x1Bc');
@@ -632,6 +633,12 @@ program
         if (commandResult) {
           printOutput(commandResult.trim() + "\n");
         }
+        continue;
+      }
+
+      // Check if model is set
+      if (getSetting("model") === "") {
+        printOutput("Model not set.");
         continue;
       }
 
