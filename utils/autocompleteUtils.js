@@ -93,8 +93,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
       } else {
         return [];
       }
-    }
-    if (globalThis.isOffline) {
+    } else {
       const models = [].concat(ollamaModels).flat();
       return models.map((m) => m.name);
     }
@@ -188,8 +187,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
           return [model.name];
         }
       }
-    }
-    if (globalThis.isOffline) {
+    } else {
       const model = [].concat(ollamaModels).flat()
                       .find((m) => m.name.startsWith(nameToBeComleted));
       if (model) {

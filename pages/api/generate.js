@@ -137,8 +137,7 @@ export default async function(req, res) {
   }
 
   // Model API key check
-  const apiKey = model.api_key;
-  if (!apiKey) {
+  if (!model.api_key) {
     res.status(500).json({
       success: false,
       error: "Model's API key is not set.",
@@ -147,8 +146,7 @@ export default async function(req, res) {
   }
 
   // Model API base URL check
-  const baseUrl = model.base_url;
-  if (!baseUrl) {
+  if (!model.base_url) {
     res.status(500).json({
       success: false,
       error: "Model's base URL is not set.",
@@ -158,8 +156,8 @@ export default async function(req, res) {
 
   // OpenAI
   const openai = new OpenAI({
-    apiKey: apiKey,
-    baseURL: baseUrl,
+    apiKey: model.api_key,
+    baseURL: model.base_url,
   });
 
   // User access control
@@ -206,6 +204,7 @@ export default async function(req, res) {
     // Configuration info
     console.log("\n--- configuration info ---\n"
       + "model: " + model_ + "\n"
+      + "base_url:" + model.base_url + "\n"
       + "n: " + 1 + "\n"
       + "moderation: " + "low" + "\n"
       + "output_format: " + output_format + "\n"
@@ -355,6 +354,7 @@ export default async function(req, res) {
     console.log("\n--- configuration info ---\n"
     + "lang: " + lang + "\n"
     + "model: " + model_ + "\n"
+    + "base_url: " + model.base_url + "\n"
     + "temperature: " + sysconf.temperature + "\n"
     + "top_p: " + sysconf.top_p + "\n"
     + "use_system_role: " + use_system_role + "\n"
