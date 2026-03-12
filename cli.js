@@ -25,8 +25,7 @@ import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from
 process.removeAllListeners('warning');
 process.on('warning', () => {});
 
-// Offline
-globalThis.isOffline = false;
+// Online status
 globalThis.isOnline = true;
 
 // Global default model
@@ -314,7 +313,7 @@ async function generate_msg(input, images=[], files=[]) {
   }
 
   // Offline / local Ollama model: get local messages
-  if (globalThis.isOffline || globalThis.source === "local") {
+  if (!globalThis.isOnline || globalThis.source === "local") {
     console.log("Getting local messages.");
 
     // History logs
@@ -372,8 +371,8 @@ async function generate_msg(input, images=[], files=[]) {
 
   // Record log (chat history)
   const logadd = async (input, output) => {
-    // Online: add log to server
     if (globalThis.isOnline) {
+      // Online: add log to server
       const logaddResponse = await fetch("/api/log/add", {
         method: "POST",
         headers: {
@@ -393,10 +392,8 @@ async function generate_msg(input, images=[], files=[]) {
         throw logaddResponse.error || new Error(`Request failed with status ${logaddResponse.status}`);
       }
       return;
-    }
-
-    // Offline / local Ollama model: add log to local
-    if (globalThis.isOffline) {
+    } else {
+      // Offline / local Ollama model: add log to local
       // Add to local log
       addLocalLog({
         input: input,
@@ -578,14 +575,13 @@ program
         const systemInfoResponse = await fetch('/api/system/info');
         systemInfo = (await systemInfoResponse.json()).result;
       } catch {
-        globalThis.isOffline = true;
         globalThis.isOnline = false;
         console.warn("Offline mode enabled. Some features may not work.");
 
         // Local online data
         resetLocalLogs();
       }
-      console.log("Set online status: " + (globalThis.isOnline ? "online" : "offline"));
+      console.log("Set is online: " + globalThis.isOnline);
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
       globalThis.rawPlaceholder = PLACEHOLDER;

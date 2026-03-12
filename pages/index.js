@@ -45,8 +45,7 @@ const Settings = dynamic(() => import('components/Settings'), { ssr: false });
 
 globalThis.STATE = STATES.IDLE;  // a global state
 
-// Offline
-globalThis.isOffline = false;
+// Online status
 globalThis.isOnline = true;
 
 // Mutation observer
@@ -459,7 +458,7 @@ export default function Home() {
           event.preventDefault();
 
           if (globalThis.STATE === STATES.IDLE) {
-            if (isOffline) {
+            if (!globalThis.isOnline) {
               console.log("Aborted: offline.");
               return;
             }
@@ -499,7 +498,7 @@ export default function Home() {
           console.log("Shortcut: h");
 
           if (globalThis.STATE === STATES.IDLE) {
-            if (isOffline) {
+            if (!globalThis.isOnline) {
               console.log("Aborted: offline.");
               return;
             }
@@ -557,7 +556,7 @@ export default function Home() {
           event.preventDefault();
 
           if (globalThis.STATE === STATES.IDLE) {
-            if (isOffline) {
+            if (!globalThis.isOnline) {
               console.log("Aborted: offline.")
               return;
             }
@@ -596,7 +595,7 @@ export default function Home() {
           event.preventDefault();
 
           if (globalThis.STATE === STATES.IDLE) {
-            if (isOffline) {
+            if (!globalThis.isOnline) {
               console.log("Aborted: offline.")
               return;
             }
@@ -838,7 +837,6 @@ export default function Home() {
         const systemInfoResponse = await fetch('/api/system/info');
         systemInfo = (await systemInfoResponse.json()).result;
       } catch {
-        globalThis.isOffline = true;
         globalThis.isOnline = false;
         console.warn("Offline mode enabled. Some features may not work.");
 
@@ -1931,7 +1929,7 @@ export default function Home() {
     }
 
     // Offline: get local messages
-    if (globalThis.isOffline) {
+    if (!globalThis.isOnline) {
       // History logs
       const localLogs = getLocalLogs();
       let messages = [];
@@ -2010,7 +2008,7 @@ export default function Home() {
       }
 
       // Offline: add log to local
-      if (globalThis.isOffline) {
+      if (!globalThis.isOnline) {
         // Add to local log
         addLocalLog({
           input: input,
