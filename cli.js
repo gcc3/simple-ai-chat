@@ -34,6 +34,9 @@ globalThis.model = "";
 globalThis.baseUrl = "";
 globalThis.source = "remote";
 
+// Global server base URL
+globalThis.serverBaseUrl = "https://simple-ai.io";
+
 const tryFetchModel = async (model) => {
   console.log("Fetching model: " + model.model);
   try {
@@ -102,7 +105,6 @@ globalThis.localStorage = new LocalStorage('./.scratch');
 globalThis.sessionStorage = require("node-sessionstorage");
 
 // Monkey-patch the fetch function to use the server's base URL and handle cookies
-globalThis.serverBaseUrl = "https://simple-ai.io";
 const cookieJar = new tough.CookieJar();  // Handle cookies
 const fetch_ = globalThis.fetch;  // Save the original fetch function
 const fetch_c = fetchCookie(fetch_, cookieJar);
@@ -270,13 +272,14 @@ async function generate_msg(input, images=[], files=[]) {
 
   // Model switch
   const use_vision = images && images.length > 0;
-  const model = config.model;
 
   // Generate messages
   let msg;
 
   // Online: get remote messages
   if (globalThis.isOnline && globalThis.source === "remote") {
+    console.log("Fetching messages from server.");
+
     const msgResponse = await fetch("/api/generate_msg", {
       method: "POST",
       headers: {
@@ -312,12 +315,14 @@ async function generate_msg(input, images=[], files=[]) {
 
   // Offline / local Ollama model: get local messages
   if (globalThis.isOffline || globalThis.source === "local") {
+    console.log("Getting local messages.");
+
     // History logs
     const localLogs = getLocalLogs();
     let messages = [];
     localLogs.forEach((log) => {
       // Only add messages with the same model
-      if (log.model === model) {
+      if (log.model === config.model) {
         messages.push({
           role: "user",
           content: log.input,
@@ -350,7 +355,7 @@ async function generate_msg(input, images=[], files=[]) {
   // OpenAI chat completion!
   const chatCompletion = await openai.chat.completions.create({
     messages: msg.messages,
-    model: model,
+    model: config.model,
     logit_bias: null,
     n: 1,
     response_format: null,
@@ -368,7 +373,7 @@ async function generate_msg(input, images=[], files=[]) {
   // Record log (chat history)
   const logadd = async (input, output) => {
     // Online: add log to server
-    if (globalThis.isOnline && globalThis.source === "remote") {
+    if (globalThis.isOnline) {
       const logaddResponse = await fetch("/api/log/add", {
         method: "POST",
         headers: {
@@ -377,7 +382,7 @@ async function generate_msg(input, images=[], files=[]) {
         body: JSON.stringify({
           input,
           output,
-          model: model,
+          model: config.model,
           session: getSetting("session"),
           images: [],
           time: Date.now(),
@@ -387,19 +392,21 @@ async function generate_msg(input, images=[], files=[]) {
       if (logaddResponse.status !== 200) {
         throw logaddResponse.error || new Error(`Request failed with status ${logaddResponse.status}`);
       }
+      return;
     }
 
     // Offline / local Ollama model: add log to local
-    if (globalThis.isOffline || globalThis.source === "local") {
+    if (globalThis.isOffline) {
       // Add to local log
       addLocalLog({
         input: input,
         output: output,
-        model: model,
+        model: config.model,
         session: getSetting("session"),
         images: [],
         time: Date.now(),
       });
+      return;
     }
   }
 
@@ -493,6 +500,7 @@ export function getVersion() {
   }
 }
 
+// Program start
 // In commander.js, the option are converted to camelCase automatically
 // Example: --base-url <url> => opts.baseUrl
 program
@@ -530,6 +538,7 @@ program
     } else {
       globalThis.serverBaseUrl = "https://simple-ai.io";
     }
+    console.log("Server base URL: " + globalThis.serverBaseUrl);
 
     const ask = async (question) =>
       new Promise((r) => rl.question(question, r));
@@ -576,6 +585,7 @@ program
         // Local online data
         resetLocalLogs();
       }
+      console.log("Set online status: " + (globalThis.isOnline ? "online" : "offline"));
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
       globalThis.rawPlaceholder = PLACEHOLDER;
@@ -600,6 +610,7 @@ program
 
       // Model
       const model = await getModel();
+      console.log("Set source: " + globalThis.source);
       console.log(JSON.stringify(model, null, 2));
     }
     await getSystemInfo();
@@ -658,7 +669,7 @@ program
     rl.close();
   });
 
-// Exit
+// Program exit
 function exitProgram() {
   // Something to do before exit
   localStorage.clear();
