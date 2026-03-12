@@ -35,7 +35,6 @@ import split from "./commands/split.js";
 import unuse from "./commands/unuse.js";
 import model from "./commands/model.js";
 
-
 export default function commands(input, files) {
   let command = input;
   let args = [];
