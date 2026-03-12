@@ -275,8 +275,8 @@ async function generate_msg(input, images=[], files=[]) {
   // Generate messages
   let msg;
 
-  // Online: get remote messages
-  if (globalThis.isOnline && globalThis.source === "remote") {
+  if (globalThis.isOnline) {
+    // Online: get remote messages
     console.log("Fetching messages from server.");
 
     const msgResponse = await fetch("/api/generate_msg", {
@@ -310,10 +310,8 @@ async function generate_msg(input, images=[], files=[]) {
       throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
     }
     msg = msgData.result.msg;
-  }
-
-  // Offline / local Ollama model: get local messages
-  if (!globalThis.isOnline || globalThis.source === "local") {
+  } else {
+    // Offline / local Ollama model: get local messages
     console.log("Getting local messages.");
 
     // History logs

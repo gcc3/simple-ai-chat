@@ -1893,8 +1893,8 @@ export default function Home() {
     // Generate messages
     let msg;
 
-    // Online: get remote messages
     if (globalThis.isOnline) {
+      // Online: get remote messages
       const msgResponse = await fetch("/api/generate_msg", {
         method: "POST",
         headers: {
@@ -1926,10 +1926,8 @@ export default function Home() {
         throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
       }
       msg = msgData.result.msg;
-    }
-
-    // Offline: get local messages
-    if (!globalThis.isOnline) {
+    } else {
+      // Offline: get local messages
       // History logs
       const localLogs = getLocalLogs();
       let messages = [];
