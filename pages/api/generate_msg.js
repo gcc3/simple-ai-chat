@@ -12,7 +12,6 @@ import { logadd } from "utils/logUtils.js";
 import { TYPE } from '../../constants.js';
 import log from "../../log.js";
 
-
 // System configurations
 const sysconf = getSystemConfigurations();
 
@@ -77,7 +76,7 @@ export default async function(req, res) {
   }
 
   // Model switch
-  let model = req.body.model || sysconf.model;
+  let model_ = req.body.model || sysconf.model;
   const use_vision = images && images.length > 0;
   const use_eval = use_eval_ && use_stats && !use_vision;
 
@@ -114,7 +113,8 @@ export default async function(req, res) {
     // Configuration info
     console.log("\n--- configuration info ---\n"
     + "lang: " + lang + "\n"
-    + "model: " + model + "\n"
+    + "model: " + model_ + "\n"
+    + "base_url:" + "(local)" + "\n"
     + "temperature: " + sysconf.temperature + "\n"
     + "top_p: " + sysconf.top_p + "\n"
     + "use_system_role: " + use_system_role + "\n"
@@ -197,7 +197,7 @@ export default async function(req, res) {
   try {
     // Messages
     const msg = await generateMessages(use_system_role, lang,
-                                       user, model,
+                                       user, model_,
                                        input, inputType, files, images,
                                        session, mem_length,
 
@@ -229,9 +229,9 @@ export default async function(req, res) {
         if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
           const input_f = "F=" + JSON.stringify(c);
           let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
-          const input_token_ct_f = countToken(model, input_f);
-          const output_token_ct_f = countToken(model, output_f);
-          await logadd(user, session, time++, model, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
+          const input_token_ct_f = countToken(model_, input_f);
+          const output_token_ct_f = countToken(model_, output_f);
+          await logadd(user, session, time++, model_, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), ip, browser);
         }
       }
     }
