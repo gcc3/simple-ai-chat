@@ -71,19 +71,19 @@ WolframAlpha APIs https://products.wolframalpha.com/api
 CLI Interface
 -------------
 
-Start the CLI with `schat` or `sc`.  
+Start the CLI with `sc` or `schat`.  
 Exit with `:exit` command.  
 
 Check version  
-`schat -v` or `schat --version`.  
+`sc -v` or `sc --version`.  
 
 Debug  
-`schat [-d|--debug]`  
+`sc [-d|--debug]`  
 
 Change server base URL  
 By default the CLI will communicate with `simple-ai.io` server.  
 To change the server base URL use the command:
-`schat [-b|--base-url <base_url>]`  
+`sc [-b|--base-url <base_url>]`  
 
 MCP client  
 Start the CLI interface will also start the MCP client.  
