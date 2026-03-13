@@ -254,8 +254,11 @@ async function generate_msg(model, input, images=[], files=[]) {
 
     const msgData = await msgResponse.json();
     if (msgResponse.status !== 200) {
-      throw msgData.error || new Error(`Request failed with status ${msgResponse.status}`);
+      console.error("Error response from server:", JSON.stringify(msgData));
+      printOutput(msgData.error?.message);
+      return;
     }
+
     msg = msgData.result.msg;
   } else {
     // Offline / local Ollama model: get local messages
@@ -406,7 +409,6 @@ async function generate_msg(model, input, images=[], files=[]) {
               output += "::think::\n";
               printOutput("::think::\n", true);
             }
-            console.log(reasoning);
             printOutput(reasoning, true);
           }
 
@@ -420,7 +422,6 @@ async function generate_msg(model, input, images=[], files=[]) {
             }
 
             output += content;
-            console.log(content);
             printOutput(content, true);
           }
 
