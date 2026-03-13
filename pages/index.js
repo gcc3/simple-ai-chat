@@ -829,9 +829,7 @@ export default function Home() {
       globalThis.usePayment = systemInfo.use_payment;
 
       // Model
-      const model = await getModel();
-      console.log(JSON.stringify(model, null, 2));
-      console.log("Set source: " + globalThis.source);
+      await getModel();
     }
     getSystemInfo();
 
@@ -1381,7 +1379,7 @@ export default function Home() {
     // Local mode
     if (model.base_url.includes("localhost")
      || model.base_url.includes("127.0.0.1")) {
-      console.log("Start. (Local)");
+      console.log("Start. (local)");
       generate_msg(input, image_urls, file_urls);
       return;
     }

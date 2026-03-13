@@ -543,9 +543,7 @@ program
       globalThis.baseUrl = systemInfo.base_url;
 
       // Model
-      const model = await getModel();
-      console.log(JSON.stringify(model, null, 2));
-      console.log("Set source: " + globalThis.source);
+      await getModel();
     }
     await getSystemInfo();
 
@@ -583,7 +581,7 @@ program
       // Local mode
       if (model.base_url.includes("localhost")
        || model.base_url.includes("127.0.0.1")) {
-        console.log("Start. (Local)");
+        console.log("Start. (local)");
         await generate_msg(input, [], []);
         continue;
       }

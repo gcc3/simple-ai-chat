@@ -52,11 +52,14 @@ export const getModel = async () => {
     : [tryGetModel, tryFetchModel]) {
     const resolvedModel = await resolveModel(model);
     if (resolvedModel) {
+      console.log(JSON.stringify(model, null, 2));
+      console.log("Set source: " + globalThis.source);
       return resolvedModel;
     }
   }
   setSetting("baseUrl", "");
   globalThis.source = "remote";
   console.error("Failed to fetch model.");
+  console.log("Set source: " + globalThis.source);
   return model;
 }
