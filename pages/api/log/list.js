@@ -19,7 +19,7 @@ export default async function (req, res) {
     // Verify user's permission for the log
     if (authResult.user.role !== "root_user") {
       const sessionLog = await getSessionLog(session);
-      if (sessionLog && sessionLog.user !== authResult.user.username) {
+      if (sessionLog && sessionLog.user && sessionLog.user !== authResult.user.username) {
         res.status(401).json({
           success: false,
           error: "Permission denied."
