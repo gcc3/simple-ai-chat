@@ -514,6 +514,7 @@ program
         systemInfo = (await systemInfoResponse.json()).result;
       } catch {
         globalThis.isOnline = false;
+        globalThis.source = "local";
         console.warn("Offline mode enabled. Some features may not work.");
 
         // Local online data
@@ -543,7 +544,12 @@ program
       globalThis.baseUrl = systemInfo.base_url;
 
       // Model
-      await getModel(getSetting("model"));
+      const model_ = getSetting("model");
+      if (model_) {
+        await getModel(model_);
+      } else {
+        console.warn("No model is set, please use command \`:model use [name]\` to set a model.");
+      }
     }
     await getSystemInfo();
 
@@ -574,8 +580,15 @@ program
         continue;
       }
 
-      // Refetch model
-      const model = await getModel(getSetting("model"));
+      // Refresh model
+      let model;
+      const model_ = getSetting("model");
+      if (model_) {
+        model = await getModel(model_);
+      } else {
+        printOutput("No model is set, please use command \`:model use [name]\` to set a model.");
+        continue;
+      }
 
       // Generation mode switch
       // Local mode

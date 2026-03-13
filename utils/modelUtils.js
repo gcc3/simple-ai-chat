@@ -29,7 +29,7 @@ const tryGetModel = async (modelName) => {
   if (ollamaModel) {
     console.log("Model found in Ollama.");
     setSetting("baseUrl", ollamaModel.base_url);
-    const resolvedModel = { ...modelName, base_url: ollamaModel.base_url };
+    const resolvedModel = { ...ollamaModel, base_url: ollamaModel.base_url };
     globalThis.source = "local";
     return resolvedModel;
   }

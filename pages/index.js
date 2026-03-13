@@ -781,6 +781,7 @@ export default function Home() {
         systemInfo = (await systemInfoResponse.json()).result;
       } catch {
         globalThis.isOnline = false;
+        globalThis.source = "local";
         console.warn("Offline mode enabled. Some features may not work.");
 
         // Local online data
@@ -829,7 +830,12 @@ export default function Home() {
       globalThis.usePayment = systemInfo.use_payment;
 
       // Model
-      await getModel(getSetting("model"));
+      const model_ = getSetting("model");
+      if (model_) {
+        await getModel(model_);
+      } else {
+        console.warn("No model is set, please use command \`:model use [name]\` to set a model.");
+      }
     }
     getSystemInfo();
 
@@ -1372,8 +1378,15 @@ export default function Home() {
     // Clear info and start generating
     resetInfo();
 
-    // Refetch model
-    const model = await getModel(getSetting("model"));
+    // Refresh model
+    let model;
+    const model_ = getSetting("model");
+    if (model_) {
+      model = await getModel(model_);
+    } else {
+      printOutput("No model is set, please use command \`:model use [name]\` to set a model.");
+      return;
+    }
 
     // Generation mode switch
     // Local mode
