@@ -594,17 +594,8 @@ program
     // Command line start
     process.stdout.write(":help for help.\n");
     while (true) {
-      // Refresh model
-      let model;
       const model_ = getSetting("model");
-      if (model_) {
-        model = await getModel(model_);
-      } else {
-        printOutput("No model is set, please use command \`:model ls\` to list available models and \`:model use [name]\` to set a model.");
-        continue;
-      }
-
-      const input = (await ask(model.name + "> ")).trim();
+      const input = (await ask(model_ + "> ")).trim();
       if (!input) continue;
 
       // On submit
@@ -622,6 +613,16 @@ program
         continue;
       }
 
+      // Refresh model
+      let model;
+      if (model_) {
+        model = await getModel(model_);
+      } else {
+        printOutput("No model is set, please use command \`:model ls\` to list available models and \`:model use [name]\` to set a model.");
+        continue;
+      }
+
+      // Start generation!
       // Generation mode switch
       // Local mode
       if (model.base_url.includes("localhost")
