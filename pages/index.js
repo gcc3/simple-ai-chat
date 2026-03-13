@@ -1809,6 +1809,13 @@ export default function Home() {
       username: getSetting("user")
     };
 
+    // Model properties
+    const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
+    const is_vision_model = model.is_vision === "1";
+    const is_audio_model = model.is_audio === "1";
+    const is_reasoning_model = model.is_reasoning === "1";
+    const is_image_model = model.is_image === "1";
+
     // Config (input)
     const config = loadConfig();
     console.log("Config: " + JSON.stringify(config));
@@ -1913,7 +1920,7 @@ export default function Home() {
       dangerouslyAllowBrowser: true,
     });
 
-    // OpenAI chat completion!
+    // OpenAI chat completion! (for local model)
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
       model: config.model,
@@ -1926,9 +1933,12 @@ export default function Home() {
       stream_options: null,
       temperature: 1,
       top_p: 1,
-      tools: useStream ? null : tools,  // function calling only available in non-stream mode
-      tool_choice: !useStream && tools.length > 0 ? "auto" : null,
-      user: user ? user.username : null,
+
+      // conditional params
+      // function calling only available in non-stream mode
+      ...(!useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
+      ...(is_reasoning_model ? {} : {}),  // TODO, reasoning param not support yet.
+      ...(user ? { user: user.username } : {})
     });
 
     // Record log (chat history)
@@ -2078,6 +2088,13 @@ export default function Home() {
           ];
           await generate_msg(model, inputParts.join(" "), [], []);
         }
+
+        // Set model info
+        !minimalist && setInfo((
+          <div>
+            model: {model.name}<br></br>
+          </div>
+        ));
       }
     }
 
@@ -2093,8 +2110,6 @@ export default function Home() {
       await new Promise((resolve, reject) => {
         // Handle the data event to process each JSON line
         stream.on('data', (part) => {
-          console.log("Stream part: " + JSON.stringify(part));
-
           try {
             // 1. handle reasoning output
             const reasoning = part.choices[0].delta.reasoning;
@@ -2125,7 +2140,7 @@ export default function Home() {
             // 3. handle tool calls
             // Streaming mode not support tool calls yet. (Ollama)
 
-            // Set model
+            // Set model info
             !minimalist && setInfo((
               <div>
                 model: {part.model}<br></br>

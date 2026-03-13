@@ -209,6 +209,13 @@ async function generate_msg(model, input, images=[], files=[]) {
     username: getSetting("user")
   };
 
+  // Model properties
+  const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
+  const is_vision_model = model.is_vision === "1";
+  const is_audio_model = model.is_audio === "1";
+  const is_reasoning_model = model.is_reasoning === "1";
+  const is_image_model = model.is_image === "1";
+
   // Model switch
   const use_vision = images && images.length > 0;
 
@@ -289,7 +296,7 @@ async function generate_msg(model, input, images=[], files=[]) {
     dangerouslyAllowBrowser: true,
   });
 
-  // OpenAI chat completion!
+  // OpenAI chat completion! (for local model)
   const chatCompletion = await openai.chat.completions.create({
     messages: msg.messages,
     model: config.model,
@@ -302,9 +309,12 @@ async function generate_msg(model, input, images=[], files=[]) {
     stream_options: null,
     temperature: 1,
     top_p: 1,
-    tools: null,  // TODO
-    tool_choice: null,  // TODO
-    user: user ? user.username : null,
+
+    // conditional params
+    // function calling only available in non-stream mode
+    ...(!useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
+    ...(is_reasoning_model ? {} : {}),  // TODO, reasoning param not support yet.
+    ...(user ? { user: user.username } : {})
   });
 
   // Record log (chat history)
@@ -354,13 +364,19 @@ async function generate_msg(model, input, images=[], files=[]) {
       printOutput("Silent...");
       return;
     } else {
-      // 1. handle message output
-      const content = choices[0].message.content;
-      if (content) {
-        output += choices[0].message.content;
+      // 1. handle reasoning output
+      const reasoning = choices[0].message.reasoning;
+      if (reasoning) {
+        output += "::think::\n" + reasoning + "::think::\n\n";
       }
 
-      // 2. handle tool calls
+      // 2. handle message output
+      const content = choices[0].message.content;
+      if (content) {
+        output += content;
+      }
+
+      // 3. handle tool calls
       // Not support yet.
     }
 
@@ -376,19 +392,40 @@ async function generate_msg(model, input, images=[], files=[]) {
     // Convert the response stream into a readable stream
     const stream = Readable.from(chatCompletion);
 
+    let hasReasoning = false;
+    let reasoningClosed = false;
     await new Promise((resolve, reject) => {
       // Handle the data event to process each JSON line
       stream.on('data', (chunk) => {
         try {
-          // 1. handle message output
+          // 1. handle reasoning output
+          const reasoning = chunk.choices[0].delta.reasoning;
+          if (reasoning) {
+            hasReasoning = true;
+            if (output.trim() === "") {
+              output += "::think::\n";
+              printOutput("::think::\n", true);
+            }
+            console.log(reasoning);
+            printOutput(reasoning, true);
+          }
+
+          // 2. handle message output
           const content = chunk.choices[0].delta.content;
           if (content) {
+            if (hasReasoning && !reasoningClosed) {
+              output += "::think::\n\n";
+              printOutput("::think::\n\n", true);
+              reasoningClosed = true;
+            }
+
             output += content;
+            console.log(content);
             printOutput(content, true);
           }
 
-          // 2. handle tool calls
-          // Not support yet.
+          // 3. handle tool calls
+          // Streaming mode not support tool calls yet. (Ollama)
         } catch (error) {
           console.error('Error parsing JSON line:', error);
           stream.destroy(error); // Destroy the stream on error
