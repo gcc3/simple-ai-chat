@@ -38,7 +38,7 @@ export async function listMcpFunctions(baseUrl = 'http://localhost:11318') {
     const data = await response.json();
     return data;
   } catch (error) {
-    console.log('Failed to list MCP functions.');
+    console.warn('Failed to list MCP functions.');
     return null;
   }
 }
