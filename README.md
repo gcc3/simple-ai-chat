@@ -80,7 +80,7 @@ Check version
 Debug  
 `schat [-d|--debug]`  
 
-Change server base URL
+Change server base URL  
 By default the CLI will communicate with `simple-ai.io` server.  
 To change the server base URL use the command:
 `schat [-b|--base-url <base_url>]`  
