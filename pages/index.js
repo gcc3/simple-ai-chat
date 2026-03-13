@@ -1826,13 +1826,6 @@ export default function Home() {
       inputType = TYPE.TOOL_CALL;
       console.log("Input (toolcalls, session = " + config.session + "): " + input);
     }
-    
-    // Set model
-    !minimalist && setInfo((
-      <div>
-        model: {config.model}<br></br>
-      </div>
-    ));
 
     // Tools
     // Tool calls only supported in non-stream mode
@@ -2095,11 +2088,26 @@ export default function Home() {
       // Convert the response stream into a readable stream
       const stream = Readable.from(chatCompletion);
 
+      let hasReasoning = false;
       await new Promise((resolve, reject) => {
         // Handle the data event to process each JSON line
         stream.on('data', (part) => {
+          console.log("Stream part: " + JSON.stringify(part));
+
           try {
-            // 1. handle message output
+            // 1. handle reasoning output
+            const reasoning = part.choices[0].delta.reasoning;
+            if (reasoning) {
+              // hasReasoning = true;
+              // if (output.trim() === "") {
+              //   output += "::think::\n";
+              //   printOutput("::think::\n", false, true);
+              // }
+              console.log(reasoning);
+              printOutput(reasoning, false, true);
+            }
+
+            // 2. handle message output
             const content = part.choices[0].delta.content;
             if (content) {
               output += content;
@@ -2107,15 +2115,15 @@ export default function Home() {
               printOutput(content, false, true);
             }
 
+            // 3. handle tool calls
+            // Streaming mode not support tool calls yet. (Ollama)
+
             // Set model
             !minimalist && setInfo((
               <div>
                 model: {part.model}<br></br>
               </div>
             ));
-
-            // 2. handle tool calls
-            // Streaming mode not support tool calls yet. (Ollama)
           } catch (error) {
             console.error('Error parsing JSON line:', error);
             stream.destroy(error); // Destroy the stream on error
