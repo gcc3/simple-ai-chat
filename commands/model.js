@@ -205,7 +205,7 @@ export default async function model(args) {
         }
         
         // Set model
-        setSetting("model", model.model);
+        setSetting("model", model.name);
         setSetting("baseUrl", model.base_url);
       } catch (error) {
         console.error(error);
@@ -229,8 +229,7 @@ export default async function model(args) {
   // Reset model
   // :model reset
   if (command === "reset") {
-    globalThis.model = "";
-    setSetting("model", "");  // reset to default model
+    setSetting("model", globalThis.model);  // reset to default model
     setSetting("baseUrl", "");  // reset to default base url
 
     // Reset session to forget previous memory

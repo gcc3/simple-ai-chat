@@ -407,9 +407,7 @@ function Settings() {
       }
 
       // Set model
-      globalThis.model = model.model;
-      globalThis.baseUrl = model.base_url;
-      setSetting("model", model.model);
+      setSetting("model", model.name);
       setSetting("baseUrl", model.base_url);
 
       // Update state
@@ -431,8 +429,6 @@ function Settings() {
       const ollamModel = ollamModels.find((m) => m.name === name);
       if (ollamModel) {
         // Set model to session storage
-        globalThis.model = name;
-        globalThis.baseUrl = ollamModel.base_url;
         setSetting("model", name);
         setSetting("baseUrl", ollamModel.base_url);
 
