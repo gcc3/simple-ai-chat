@@ -455,10 +455,10 @@ async function generate_msg(model, input, images=[], files=[]) {
 
 // Function to print output
 function printOutput(output, append=false) {
-  process.stdout.write(output);
   if (!append) {
-    process.stdout.write("\n");
+    output = output.trimEnd() + "\n";
   }
+  process.stdout.write(output);
 }
 
 // Get version from package.json
