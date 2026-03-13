@@ -1422,6 +1422,8 @@ export default function Home() {
 
   // M1. Generate SSE
   async function generate_sse(model, input, images=[], files=[]) {
+    console.log("Generating with SSE...");
+
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -1696,6 +1698,7 @@ export default function Home() {
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
             "Q=" + input                                   // original user input
           ];
+          
           await generate_sse(model, inputParts.join(" "), [], []);
           return;
         }
@@ -1788,6 +1791,8 @@ export default function Home() {
 
   // M2. Generate message from server, and then call local model engine
   async function generate_msg(model, input, images=[], files=[]) {
+    console.log("Generating message from server...");
+
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -2188,6 +2193,8 @@ export default function Home() {
   // M0. Generate (without SSE)
   // Legacy generate function
   async function generate(model, input, images=[], files=[]) {
+    console.log("Generating...");
+
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
