@@ -543,7 +543,7 @@ program
       globalThis.baseUrl = systemInfo.base_url;
 
       // Model
-      await getModel();
+      await getModel(getSetting("model"));
     }
     await getSystemInfo();
 
@@ -575,7 +575,7 @@ program
       }
 
       // Refetch model
-      const model = await getModel();
+      const model = await getModel(getSetting("model"));
 
       // Generation mode switch
       // Local mode

@@ -829,7 +829,7 @@ export default function Home() {
       globalThis.usePayment = systemInfo.use_payment;
 
       // Model
-      await getModel();
+      await getModel(getSetting("model"));
     }
     getSystemInfo();
 
@@ -1373,7 +1373,7 @@ export default function Home() {
     resetInfo();
 
     // Refetch model
-    const model = await getModel();
+    const model = await getModel(getSetting("model"));
 
     // Generation mode switch
     // Local mode
