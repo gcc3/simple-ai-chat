@@ -1,6 +1,6 @@
 import { attachSession } from "../utils/sessionUtils.js";
 import { getSetting } from "../utils/settingsUtils.js";
-
+import { getLocalLogs } from "../utils/offlineUtils.js";
 
 export default async function session(args) {
   const usage = "Usage: :session [list|ls]\n" +
@@ -13,24 +13,35 @@ export default async function session(args) {
       return "No session attached.";
     }
 
-    // Get session
-    const response = await fetch("/api/session/" + getSetting("session"), {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+    if (globalThis.isOnline) {
+      // Get session
+      const response = await fetch("/api/session/" + getSetting("session"), {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
-    const data = await response.json();
-    if (response.status !== 200) {
-      return data.error || new Error(`Request failed with status ${response.status}`);
-    }
+      const data = await response.json();
+      if (response.status !== 200) {
+        return data.error || new Error(`Request failed with status ${response.status}`);
+      }
 
-    const session = data.result.session;
-    if (session) {
-      return JSON.stringify(session, null, 2);
+      const session = data.result.session;
+      if (session) {
+        return JSON.stringify(session, null, 2);
+      } else {
+        return "Not found.\n";
+      }
     } else {
-      return "Not found.\n";
+      // Offline: get local logs
+      const localLogs = getLocalLogs();
+      const session = {
+        id: getSetting("session"),
+        length: localLogs.length,
+        logs: localLogs,
+      }
+      return JSON.stringify(session, null, 2);
     }
   }
   
