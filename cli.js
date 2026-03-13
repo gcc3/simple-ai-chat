@@ -456,7 +456,7 @@ async function generate_msg(model, input, images=[], files=[]) {
 // Function to print output
 function printOutput(output, append=false) {
   if (!append) {
-    output = output.trimEnd() + "\n\n";
+    output = output.trimEnd() + "\n";
   }
   process.stdout.write(output);
 }

@@ -18,6 +18,8 @@ import { join } from 'path';
 const CONFIG = join(homedir(), '.simple', "mcpconfig.json");
 
 async function loadMcpConfig(configPath = CONFIG) {
+  console.log(`Loading MCP config from ${configPath}...`);
+
   try {
     // Create the directory if it doesn't exist
     if (!fs.existsSync(configPath)) {
@@ -44,6 +46,7 @@ async function loadMcpConfig(configPath = CONFIG) {
       return [];
     }
 
+    console.log("MCP config: ", JSON.stringify(config, null, 2));
     return config.mcpServers;
   } catch (e) {
     console.error(`Failed to load MCP config: ${e.message}`);
