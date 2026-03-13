@@ -23,7 +23,7 @@ import { loadConfig } from "utils/configUtils";
 import OpenAI from "openai";
 import { Readable } from "stream";
 import { clearLocalUser, refreshLocalUser, updateUserSetting } from "utils/userUtils";
-import { pingOllamaAPI, listOllamaModels } from "utils/ollamaUtils";
+import { getModel } from "utils/modelUtils";
 import { useUI } from '../contexts/UIContext';
 import { initializeSettings, isSettingEmpty } from "utils/settingsUtils";
 import PreviewImage from "../components/ui/PreviewImage.jsx";
@@ -738,66 +738,6 @@ export default function Home() {
     }
   }, [display, content]);
 
-  const tryFetchModel = async (model) => {
-    console.log("Fetching model: " + model.model);
-    try {
-      const res = await (await fetch('/api/model/' + model.model)).json();
-      if (res.success && res.result) {
-        const resolvedModel = res.result;
-        console.log("Model found in remote.");
-        globalThis.source = "remote";
-        return resolvedModel;
-      }
-    } catch (e) {
-      console.warn("Remote model lookup failed:", e);
-    }
-    console.warn("Model `" + model.model + "` not accessible in remote.");
-    return null;
-  }
-
-  const tryGetModel = async (model) => {
-    console.log("Getting model: " + model.model);
-    if (!await pingOllamaAPI()) {
-      console.warn("Ollama API not accessible.");
-      return null;
-    }
-    const ollamaModels = await listOllamaModels();
-    const ollamaModel = ollamaModels.find(o => o.name === model.model);
-    if (ollamaModel) {
-      console.log("Model found in Ollama.");
-      setSetting("baseUrl", ollamaModel.base_url);
-      const resolvedModel = { ...model, base_url: ollamaModel.base_url };
-      globalThis.source = "local";
-      return resolvedModel;
-    }
-    console.warn("Model `" + model.model + "` not accessible in local.");
-    return null;
-  }
-
-  const getModel = async () => {
-    const model = {
-      model: getSetting("model"),
-      base_url: getSetting("baseUrl"),
-      is_tool_calls_supported: "0",
-      is_vision: "0",
-      is_audio: "0",
-      is_reasoning: "0",
-      is_image: "0"
-    };
-    for (const resolveModel of globalThis.source === "remote"
-      ? [tryFetchModel, tryGetModel]
-      : [tryGetModel, tryFetchModel]) {
-      const resolvedModel = await resolveModel(model);
-      if (resolvedModel) {
-        return resolvedModel;
-      }
-    }
-    setSetting("baseUrl", "");
-    globalThis.source = "remote";
-    console.error("Failed to fetch model.");
-    return model;
-  }
-
   // Handle key down (useEffect)
   useEffect(() => {
     // Add event listener for keydown
@@ -841,6 +781,7 @@ export default function Home() {
         systemInfo = (await systemInfoResponse.json()).result;
       } catch {
         globalThis.isOnline = false;
+        globalThis.source = "local";
         console.warn("Offline mode enabled. Some features may not work.");
 
         // Local online data
@@ -889,9 +830,12 @@ export default function Home() {
       globalThis.usePayment = systemInfo.use_payment;
 
       // Model
-      const model = await getModel();
-      console.log("Set source: " + globalThis.source);
-      console.log(JSON.stringify(model, null, 2));
+      const model_ = getSetting("model");
+      if (model_) {
+        await getModel(model_);
+      } else {
+        console.warn("No model is set, please use command \`:model use [name]\` to set a model.");
+      }
     }
     getSystemInfo();
 
@@ -1434,14 +1378,21 @@ export default function Home() {
     // Clear info and start generating
     resetInfo();
 
-    // Refetch model
-    const model = await getModel();
+    // Refresh model
+    let model;
+    const model_ = getSetting("model");
+    if (model_) {
+      model = await getModel(model_);
+    } else {
+      printOutput("No model is set, please use command \`:model use [name]\` to set a model.");
+      return;
+    }
 
     // Generation mode switch
     // Local mode
     if (model.base_url.includes("localhost")
      || model.base_url.includes("127.0.0.1")) {
-      console.log("Start. (Local)");
+      console.log("Start. (local)");
       generate_msg(input, image_urls, file_urls);
       return;
     }
