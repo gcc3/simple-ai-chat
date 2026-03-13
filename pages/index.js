@@ -58,7 +58,7 @@ globalThis.rawInput = "";
 globalThis.rawOutput = "";
 globalThis.rawPlaceholder = PLACEHOLDER;
 
-// Global default model
+// Global default model and base URL
 globalThis.model = "";
 globalThis.baseUrl = "";
 globalThis.source = "remote";
@@ -1086,7 +1086,7 @@ export default function Home() {
     // Check if model is set
     // For web interface, the default model is read from .env
     if (getSetting("model") === "") {
-      printOutput("Model not set.");
+      printOutput("Model not set, please use command \`:model ls\` to list available models and \`:model use [name]\` to set a model.");
       return;
     }
 
@@ -1384,7 +1384,7 @@ export default function Home() {
     if (model_) {
       model = await getModel(model_);
     } else {
-      printOutput("No model is set, please use command \`:model use [name]\` to set a model.");
+      printOutput("No model is set, please use command \`:model ls\` to list available models and \`:model use [name]\` to set a model.");
       return;
     }
 

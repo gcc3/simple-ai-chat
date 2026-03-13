@@ -28,7 +28,7 @@ process.on('warning', () => {});
 // Online status
 globalThis.isOnline = true;
 
-// Global default model
+// Global default model and base URL
 globalThis.model = "";
 globalThis.baseUrl = "";
 globalThis.source = "remote";
@@ -86,14 +86,14 @@ async function generate_sse(input, images=[], files=[]) {
     images: "",
     files: "",
     time: Date.now().toString(),
-    session: getSetting("session"),
-    model: globalThis.model,
+    session: config.session,
+    model: config.model,
     mem_length: "7",
-    functions: getSetting("functions"),
+    functions: config.functions,
     mcp_tools: mcpToolsString,
-    role: getSetting("role"),
-    stores: getSetting("stores"),
-    node: getSetting("node"),
+    role: config.role,
+    stores: config.stores,
+    node: config.node,
     use_stats: "false",
     use_eval: "false",
     use_location: "false",
@@ -548,7 +548,7 @@ program
       if (model_) {
         await getModel(model_);
       } else {
-        console.warn("No model is set, please use command \`:model use [name]\` to set a model.");
+        console.warn("No model is set, please use command `:model ls` to list available models and `:model use [name]` to set a model.");
       }
     }
     await getSystemInfo();
@@ -574,19 +574,13 @@ program
         continue;
       }
 
-      // Check if model is set
-      if (getSetting("model") === "") {
-        printOutput("Model not set.");
-        continue;
-      }
-
       // Refresh model
       let model;
       const model_ = getSetting("model");
       if (model_) {
         model = await getModel(model_);
       } else {
-        printOutput("No model is set, please use command \`:model use [name]\` to set a model.");
+        printOutput("No model is set, please use command \`:model ls\` to list available models and \`:model use [name]\` to set a model.");
         continue;
       }
 
