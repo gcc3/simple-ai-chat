@@ -1393,7 +1393,7 @@ export default function Home() {
     if (model.base_url.includes("localhost")
      || model.base_url.includes("127.0.0.1")) {
       console.log("Start. (local)");
-      generate_msg(input, image_urls, file_urls);
+      generate_msg(model, input, image_urls, file_urls);
       return;
     }
 
@@ -1403,14 +1403,14 @@ export default function Home() {
       if (getSetting('useStream') == "false" || model.is_image === "1") {
         console.log("Start. (non-stream)");
         printOutput(WAITING === "" ? GENERATING : WAITING);
-        generate(input, image_urls, file_urls);
+        generate(model, input, image_urls, file_urls);
         return;
       }
 
       // Stream
       if (getSetting('useStream') == "true") {
         console.log("Start. (SSE)");
-        generate_sse(input, image_urls_encoded, file_urls_encoded);
+        generate_sse(model, input, image_urls_encoded, file_urls_encoded);
         return;
       }
     } else {
@@ -1421,7 +1421,7 @@ export default function Home() {
   }
 
   // M1. Generate SSE
-  async function generate_sse(input, images=[], files=[]) {
+  async function generate_sse(model, input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -1696,7 +1696,7 @@ export default function Home() {
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
             "Q=" + input                                   // original user input
           ];
-          await generate_sse(inputParts.join(" "), [], []);
+          await generate_sse(model, inputParts.join(" "), [], []);
           return;
         }
 
@@ -1787,7 +1787,7 @@ export default function Home() {
   }
 
   // M2. Generate message from server, and then call local model engine
-  async function generate_msg(input, images=[], files=[]) {
+  async function generate_msg(model, input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -2083,7 +2083,7 @@ export default function Home() {
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
             "Q=" + input                                   // original user input
           ];
-          await generate_msg(inputParts.join(" "), [], []);
+          await generate_msg(model, inputParts.join(" "), [], []);
         }
       }
     }
@@ -2157,7 +2157,7 @@ export default function Home() {
 
   // M0. Generate (without SSE)
   // Legacy generate function
-  async function generate(input, images=[], files=[]) {
+  async function generate(model, input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -2265,7 +2265,7 @@ export default function Home() {
 
         // Call generate with function
         printOutput(QUERYING);
-        generate(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
+        generate(model, functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
         return;
       }
 

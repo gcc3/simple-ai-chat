@@ -70,7 +70,7 @@ const mcpProcess = spawn('node', [join(__dirname, 'mcp.js')], {
 mcpProcess.unref();
 
 // M1. Generate SSE
-async function generate_sse(input, images=[], files=[]) {
+async function generate_sse(model, input, images=[], files=[]) {
   // Config (input)
   const config = loadConfig();
   console.log("Config: " + JSON.stringify(config));
@@ -171,7 +171,7 @@ async function generate_sse(input, images=[], files=[]) {
           setSetting("head", timeNow);
 
           // Call generate with function
-          await generate_sse(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
+          await generate_sse(model, functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
           break;
         }
 
@@ -188,7 +188,7 @@ async function generate_sse(input, images=[], files=[]) {
 }
 
 // M2. Generate message from server, and then call local model engine
-async function generate_msg(input, images=[], files=[]) {
+async function generate_msg(model, input, images=[], files=[]) {
   // Config (input)
   const config = loadConfig();
   console.log("Config: " + JSON.stringify(config));
@@ -589,7 +589,7 @@ program
       if (model.base_url.includes("localhost")
        || model.base_url.includes("127.0.0.1")) {
         console.log("Start. (local)");
-        await generate_msg(input, [], []);
+        await generate_msg(model, input, [], []);
         continue;
       }
 
@@ -603,7 +603,7 @@ program
 
         if (getSetting('useStream') == "true") {
           console.log("Start. (SSE)");
-          await generate_sse(input, [], []);
+          await generate_sse(model, input, [], []);
           continue;
         }
       } else {
