@@ -594,7 +594,17 @@ program
     // Command line start
     process.stdout.write(":help for help.\n");
     while (true) {
-      const input = (await ask(globalThis.model + "> ")).trim();
+      // Refresh model
+      let model;
+      const model_ = getSetting("model");
+      if (model_) {
+        model = await getModel(model_);
+      } else {
+        printOutput("No model is set, please use command \`:model ls\` to list available models and \`:model use [name]\` to set a model.");
+        continue;
+      }
+
+      const input = (await ask(model.name + "> ")).trim();
       if (!input) continue;
 
       // On submit
@@ -609,16 +619,6 @@ program
         if (commandResult) {
           printOutput(commandResult.trim() + "\n");
         }
-        continue;
-      }
-
-      // Refresh model
-      let model;
-      const model_ = getSetting("model");
-      if (model_) {
-        model = await getModel(model_);
-      } else {
-        printOutput("No model is set, please use command \`:model ls\` to list available models and \`:model use [name]\` to set a model.");
         continue;
       }
 
