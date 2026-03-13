@@ -7,7 +7,7 @@ import tough from 'tough-cookie';
 import fetchCookie from 'fetch-cookie';
 import { initializeSettings } from "./utils/settingsUtils.js";
 import { initializeSessionMemory } from "./utils/sessionUtils.js";
-import { pingOllamaAPI, listOllamaModels } from "./utils/ollamaUtils.js";
+import { getModel } from "./utils/modelUtils.js";
 import { loadConfig } from "./utils/configUtils.js";
 import { setTime } from "./utils/sessionUtils.js";
 import { Readable } from "stream";
@@ -35,66 +35,6 @@ globalThis.source = "remote";
 
 // Global server base URL
 globalThis.serverBaseUrl = "https://simple-ai.io";
-
-const tryFetchModel = async (model) => {
-  console.log("Fetching model: " + model.model);
-  try {
-    const res = await (await fetch('/api/model/' + model.model)).json();
-    if (res.success && res.result) {
-      const resolvedModel = res.result;
-      console.log("Model found in remote.");
-      globalThis.source = "remote";
-      return resolvedModel;
-    }
-  } catch (e) {
-    console.warn("Remote model lookup failed:", e);
-  }
-  console.warn("Model `" + model.model + "` not accessible in remote.");
-  return null;
-}
-
-const tryGetModel = async (model) => {
-  console.log("Getting model: " + model.model);
-  if (!await pingOllamaAPI()) {
-    console.warn("Ollama API not accessible.");
-    return null;
-  }
-  const ollamaModels = await listOllamaModels();
-  const ollamaModel = ollamaModels.find(o => o.name === model.model);
-  if (ollamaModel) {
-    console.log("Model found in Ollama.");
-    setSetting("baseUrl", ollamaModel.base_url);
-    const resolvedModel = { ...model, base_url: ollamaModel.base_url };
-    globalThis.source = "local";
-    return resolvedModel;
-  }
-  console.warn("Model `" + model.model + "` not accessible in local.");
-  return null;
-}
-
-const getModel = async () => {
-  const model = {
-    model: getSetting("model"),
-    base_url: getSetting("baseUrl"),
-    is_tool_calls_supported: "0",
-    is_vision: "0",
-    is_audio: "0",
-    is_reasoning: "0",
-    is_image: "0"
-  };
-  for (const resolveModel of globalThis.source === "remote"
-    ? [tryFetchModel, tryGetModel]
-    : [tryGetModel, tryFetchModel]) {
-    const resolvedModel = await resolveModel(model);
-    if (resolvedModel) {
-      return resolvedModel;
-    }
-  }
-  setSetting("baseUrl", "");
-  globalThis.source = "remote";
-  console.error("Failed to fetch model.");
-  return model;
-}
 
 // Simulate a localStorage and sessionStorage in Node.js
 import { createRequire } from "module";
@@ -604,8 +544,8 @@ program
 
       // Model
       const model = await getModel();
-      console.log("Set source: " + globalThis.source);
       console.log(JSON.stringify(model, null, 2));
+      console.log("Set source: " + globalThis.source);
     }
     await getSystemInfo();
 
