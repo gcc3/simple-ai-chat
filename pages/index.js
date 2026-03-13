@@ -1698,7 +1698,6 @@ export default function Home() {
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
             "Q=" + input                                   // original user input
           ];
-          
           await generate_sse(model, inputParts.join(" "), [], []);
           return;
         }
