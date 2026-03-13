@@ -1678,23 +1678,6 @@ const getModels = async () => {
   }
 };
 
-// Get user models
-const getUserModels = async (user) => {
-  const db = await getDatabaseConnection();
-  try {
-    return await new Promise((resolve, reject) => {
-      db.all(`SELECT * FROM models WHERE owner = ? OR created_by = ?`, [user, user], (err, rows) => {
-        if (err) {
-          reject(err);
-        }
-        resolve(rows);
-      });
-    });
-  } finally {
-    db.close();
-  }
-};
-
 export {
   getLogs,
   countLogs,
@@ -1767,5 +1750,4 @@ export {
   insertSession,
   getModel,
   getModels,
-  getUserModels,
 };

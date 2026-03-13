@@ -1,5 +1,5 @@
 import { pingOllamaAPI, listOllamaModels } from './ollamaUtils.js';
-import { getSetting, setSetting } from './settingsUtils.js';
+import { setSetting } from './settingsUtils.js';
 
 const tryFetchModel = async (modelName) => {
   console.log("Fetching model: " + modelName);
@@ -55,7 +55,7 @@ export const getModel = async (modelName) => {
   globalThis.source = "remote";
   console.log("Set source: " + globalThis.source);
   return {
-    model: modelName,
+    name: modelName,
     base_url: "",
     is_tool_calls_supported: "0",
     is_vision: "0",

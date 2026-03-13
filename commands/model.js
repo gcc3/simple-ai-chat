@@ -12,10 +12,6 @@ export default async function model(args) {
   // Get model without name (will use current model as name)
   // :model [name?]
   if (!command) {
-    if (!getSetting("user")) {
-      return "Please login.";
-    }
-
     const modelName = getSetting("model");
     if (!modelName) {
       return "No model is set, please use command \`:model use [name]\` to set a model.";
@@ -106,11 +102,8 @@ export default async function model(args) {
 
     // For adding star to current store
     const currentModel = getSetting("model");
-
-    let userModels = "";
-    let groupModels = "";
-    let systemModels = "";
-    let ollamaModels = "";
+    let systemModels_ = "";
+    let ollamaModels_ = "";
 
     if (globalThis.isOnline) {
       try {
@@ -126,39 +119,18 @@ export default async function model(args) {
           throw data.error || new Error(`Request failed with status ${response.status}`);
         }
 
-        if (Object.entries(data.result.user_models).length === 0 
-        && Object.entries(data.result.group_models).length === 0 
-        && Object.entries(data.result.system_models).length === 0) {
+        let models = data.result;
+        if (Object.entries(models).length === 0) {
           // Do nothing
         } else {
-          // User models
-          if (data.result.user_models && Object.entries(data.result.user_models).length > 0) {
-            let models = [];
-            Object.entries(data.result.user_models).forEach(([key, value]) => {
-              models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
+          // Models
+          if (models && Object.entries(models).length > 0) {
+            let systemModels = [];
+            Object.entries(models).forEach(([key, value]) => {
+              systemModels.push((currentModel === value.name ? "*\\" : "\\") + value.name);
             });
-            userModels = "User models:\n" 
-                      + models.join(" ") + "\n\n";
-          }
-
-          // Group models
-          if (data.result.group_models && Object.entries(data.result.group_models).length > 0) {
-            let models = [];
-            Object.entries(data.result.group_models).forEach(([key, value]) => {
-              models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
-            });
-            groupModels = "Group models:\n" 
-                      + models.join(" ") + "\n\n"; 
-          }
-
-          // System models
-          if (data.result.system_models && Object.entries(data.result.system_models).length > 0) {
-            let models = [];
-            Object.entries(data.result.system_models).forEach(([key, value]) => {
-              models.push((currentModel === value.name ? "*\\" : "\\") + value.name);
-            });
-            systemModels = "System models:\n" 
-                        + models.join(" ") + "\n\n"; 
+            systemModels_ = "System models:\n" 
+                        + systemModels.join(" ") + "\n\n"; 
           }
         }
       } catch (error) {
@@ -170,20 +142,20 @@ export default async function model(args) {
     if (await pingOllamaAPI()) {
       const ollamaModelList = await listOllamaModels();
       if (ollamaModelList && ollamaModelList.length > 0) {
-        let models = [];
+        let ollamaModels = [];
         ollamaModelList.forEach((model) => {
-          models.push((currentModel === model.name ? "*\\" : "\\") + model.name);
+          ollamaModels.push((currentModel === model.name ? "*\\" : "\\") + model.name);
         });
-        ollamaModels = "Ollama models:\n" 
-                    + models.join(" ") + "\n\n"; 
+        ollamaModels_ = "Ollama models:\n" 
+                    + ollamaModels.join(" ") + "\n\n"; 
       }
     }
 
-    if (userModels === "" && groupModels === "" && systemModels === "" && ollamaModels === "") {
+    if (systemModels_ === "" && ollamaModels_ === "") {
       return "No available model found.";
     }
 
-    return (userModels + groupModels + systemModels + ollamaModels).trim();
+    return (systemModels_ + ollamaModels_).trim();
   }
 
   // Use model
@@ -193,8 +165,8 @@ export default async function model(args) {
       return "Usage: :model [use|unuse] [name]\n"
     }
 
-    const name = args[1].replace(/"/g, "");
-    if (!name) {
+    const modelName = args[1].replace(/"/g, "");
+    if (!modelName) {
       return "Invalid model name.";
     }
 
@@ -202,22 +174,20 @@ export default async function model(args) {
       // Check local Ollama models
       if (await pingOllamaAPI()) {
         const ollamModels = await listOllamaModels();
-        const ollamModel = ollamModels.find((m) => m.name === name);
+        const ollamModel = ollamModels.find((m) => m.name === modelName);
         if (ollamModel) {
           // Set model to session storage
-          globalThis.model = name;
-          globalThis.baseUrl = ollamModel.base_url;
-          setSetting("model", name);
+          setSetting("model", modelName);
           setSetting("baseUrl", ollamModel.base_url);
 
-          return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
+          return "Model is set to \`" + modelName + "\`. Use command \`:model\` to show current model information.";
         }
       }
 
       // Check remote models
       // Check if the model exists
       try {
-        const response = await fetch("/api/model/" + name, {
+        const response = await fetch("/api/model/" + modelName, {
           method: "GET",
           headers: {
             "Content-Type": "application/json",
@@ -235,21 +205,19 @@ export default async function model(args) {
         }
         
         // Set model
-        globalThis.model = model.model;
-        globalThis.baseUrl = model.base_url;
-        setSetting("model", model.model);
+        setSetting("model", model.name);
         setSetting("baseUrl", model.base_url);
       } catch (error) {
         console.error(error);
         return error;
       }
 
-      return "Model is set to \`" + name + "\`. Use command \`:model\` to show current model information.";
+      return "Model is set to \`" + modelName + "\`. Use command \`:model\` to show current model information.";
     }
 
     if (args[0] === "unuse") {
-      if (getSetting("model") !== name) {
-        return "Model `" + name + "` is not being used.";
+      if (getSetting("model") !== modelName) {
+        return "Model `" + modelName + "` is not being used.";
       }
 
       setSetting("model", globalThis.model);  // reset to default model
@@ -261,16 +229,12 @@ export default async function model(args) {
   // Reset model
   // :model reset
   if (command === "reset") {
-    if (getSetting("model") === "") {
-      return "Model is already empty.";
-    }
-
     setSetting("model", globalThis.model);  // reset to default model
-    setSetting("baseUrl", globalThis.baseUrl);  // reset to default base url
+    setSetting("baseUrl", "");  // reset to default base url
 
     // Reset session to forget previous memory
     initializeSessionMemory();
-    return "Model reset to default model, and session reset.";
+    return "Model reset.";
   }
 
   return usage;

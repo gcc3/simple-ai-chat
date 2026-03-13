@@ -19,8 +19,6 @@ function Settings() {
   const [lang, setLang] = useState([]);
 
   // Models
-  const [userModels, setUserModels] = useState([]);
-  const [groupModels, setGroupModels] = useState([]);
   const [systemModels, setSystemModels] = useState([]);
   const [ollamaModels, setOllamaModels] = useState([]);
   const [currentModel, setCurrentModel] = useState(null);
@@ -77,38 +75,19 @@ function Settings() {
             throw data.error || new Error(`Request failed with status ${response.status}`);
           }
 
-          if (Object.entries(data.result.user_models).length === 0
-            && Object.entries(data.result.group_models).length === 0
-            && Object.entries(data.result.system_models).length === 0) {
+          const systemModels = data.result;
+          if (systemModels.length === 0) {
             return "No available model found.";
           } else {
             // For adding star to current store
             const currentModel = getSetting("model");
             setCurrentModel(currentModel);
 
-            // User models
-            if (data.result.user_models && Object.entries(data.result.user_models).length > 0) {
-              let models = [];
-              Object.entries(data.result.user_models).forEach(([key, value]) => {
-                models.push(value.name);
-              });
-              setUserModels(models);
-            }
-
-            // Group models
-            if (data.result.group_models && Object.entries(data.result.group_models).length > 0) {
-              let models = [];
-              Object.entries(data.result.group_models).forEach(([key, value]) => {
-                models.push(value.name);
-              });
-              setGroupModels(models);
-            }
-
             // System models
-            if (data.result.system_models && Object.entries(data.result.system_models).length > 0) {
+            if (systemModels && systemModels.length > 0) {
               let models = [];
-              Object.entries(data.result.system_models).forEach(([key, value]) => {
-                models.push(value.name);
+              systemModels.forEach((model) => {
+                models.push(model.name);
               });
               setSystemModels(models);
             }
@@ -407,82 +386,6 @@ function Settings() {
     setMessage(t("Settings updated.") + " (" + getTime() + ")");
   }, []);
 
-  const handleSetUserModels = useCallback((name) => async () => {
-    try {
-      const response = await fetch("/api/model/" + name, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      const model = data.result;
-      if (!model) {
-        console.error("Model not found");
-        return;
-      }
-
-      // Set model
-      globalThis.model = model.model;
-      globalThis.baseUrl = model.base_url;
-      setSetting("model", model.model);
-      setSetting("baseUrl", model.base_url);
-
-      // Update state
-      const currentModel = getSetting("model");
-      setCurrentModel(currentModel);
-
-      console.log("Settings updated." + " (" + getTime() + ")");
-      setMessage(t("Settings updated.") + " (" + getTime() + ")");
-    } catch (error) {
-      console.error(error);
-      return;
-    }
-  }, []);
-
-  const handleSetGroupModels = useCallback((name) => async () => {
-    try {
-      const response = await fetch("/api/model/" + name, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
-
-      const data = await response.json();
-      if (response.status !== 200) {
-        throw data.error || new Error(`Request failed with status ${response.status}`);
-      }
-
-      const model = data.result;
-      if (!model) {
-        console.error("Model not found");
-        return;
-      }
-
-      // Set model
-      globalThis.model = model.model;
-      globalThis.baseUrl = model.base_url;
-      setSetting("model", model.model);
-      setSetting("baseUrl", model.base_url);
-
-      // Update state
-      const currentModel = getSetting("model");
-      setCurrentModel(currentModel);
-
-      console.log("Settings updated." + " (" + getTime() + ")");
-      setMessage(t("Settings updated.") + " (" + getTime() + ")");
-    } catch (error) {
-      console.error(error);
-      return;
-    }
-  }, []);
-
   const handleSetSystemModels = useCallback((name) => async () => {
     try {
       const response = await fetch("/api/model/" + name, {
@@ -504,9 +407,7 @@ function Settings() {
       }
 
       // Set model
-      globalThis.model = model.model;
-      globalThis.baseUrl = model.base_url;
-      setSetting("model", model.model);
+      setSetting("model", model.name);
       setSetting("baseUrl", model.base_url);
 
       // Update state
@@ -528,8 +429,6 @@ function Settings() {
       const ollamModel = ollamModels.find((m) => m.name === name);
       if (ollamModel) {
         // Set model to session storage
-        globalThis.model = name;
-        globalThis.baseUrl = ollamModel.base_url;
         setSetting("model", name);
         setSetting("baseUrl", ollamModel.base_url);
 
@@ -720,34 +619,6 @@ function Settings() {
     <>
       {message && <div>
         {<div>{message}</div>}
-      </div>}
-      {userModels && userModels.length > 0 && <div>
-        <div className="mt-3">- {t("User Models")}</div>
-        <div className="flex flex-wrap items-center mt-2">
-          {userModels.map((i) => (
-            <button
-              className={`mr-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
-              key={i}
-              onClick={handleSetUserModels(i)}
-            >
-              {i}
-            </button>
-          ))}
-        </div>
-      </div>}
-      {groupModels && groupModels.length > 0 && <div>
-        <div className="mt-3">- {t("User Group Models")}</div>
-        <div className="flex flex-wrap items-center mt-2">
-          {groupModels.map((i) => (
-            <button
-              className={`mr-2 mb-1 ${currentModel === i ? 'selected' : ''}`}
-              key={i}
-              onClick={handleSetGroupModels(i)}
-            >
-              {i}
-            </button>
-          ))}
-        </div>
       </div>}
       {systemModels && systemModels.length > 0 && <div>
         <div className="mt-3">- {t("System Models")}</div>

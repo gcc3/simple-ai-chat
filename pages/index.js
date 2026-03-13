@@ -58,7 +58,7 @@ globalThis.rawInput = "";
 globalThis.rawOutput = "";
 globalThis.rawPlaceholder = PLACEHOLDER;
 
-// Global default model
+// Global default model and base URL
 globalThis.model = "";
 globalThis.baseUrl = "";
 globalThis.source = "remote";
@@ -1086,7 +1086,7 @@ export default function Home() {
     // Check if model is set
     // For web interface, the default model is read from .env
     if (getSetting("model") === "") {
-      printOutput("Model not set.");
+      printOutput("Model not set, please use command \`:model ls\` to list available models and \`:model use [name]\` to set a model.");
       return;
     }
 
@@ -1384,7 +1384,7 @@ export default function Home() {
     if (model_) {
       model = await getModel(model_);
     } else {
-      printOutput("No model is set, please use command \`:model use [name]\` to set a model.");
+      printOutput("No model is set, please use command \`:model ls\` to list available models and \`:model use [name]\` to set a model.");
       return;
     }
 
@@ -1393,7 +1393,7 @@ export default function Home() {
     if (model.base_url.includes("localhost")
      || model.base_url.includes("127.0.0.1")) {
       console.log("Start. (local)");
-      generate_msg(input, image_urls, file_urls);
+      generate_msg(model, input, image_urls, file_urls);
       return;
     }
 
@@ -1403,14 +1403,14 @@ export default function Home() {
       if (getSetting('useStream') == "false" || model.is_image === "1") {
         console.log("Start. (non-stream)");
         printOutput(WAITING === "" ? GENERATING : WAITING);
-        generate(input, image_urls, file_urls);
+        generate(model, input, image_urls, file_urls);
         return;
       }
 
       // Stream
       if (getSetting('useStream') == "true") {
         console.log("Start. (SSE)");
-        generate_sse(input, image_urls_encoded, file_urls_encoded);
+        generate_sse(model, input, image_urls_encoded, file_urls_encoded);
         return;
       }
     } else {
@@ -1421,7 +1421,7 @@ export default function Home() {
   }
 
   // M1. Generate SSE
-  async function generate_sse(input, images=[], files=[]) {
+  async function generate_sse(model, input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -1696,7 +1696,7 @@ export default function Home() {
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
             "Q=" + input                                   // original user input
           ];
-          await generate_sse(inputParts.join(" "), [], []);
+          await generate_sse(model, inputParts.join(" "), [], []);
           return;
         }
 
@@ -1787,7 +1787,7 @@ export default function Home() {
   }
 
   // M2. Generate message from server, and then call local model engine
-  async function generate_msg(input, images=[], files=[]) {
+  async function generate_msg(model, input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -1809,6 +1809,13 @@ export default function Home() {
       username: getSetting("user")
     };
 
+    // Model properties
+    const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
+    const is_vision_model = model.is_vision === "1";
+    const is_audio_model = model.is_audio === "1";
+    const is_reasoning_model = model.is_reasoning === "1";
+    const is_image_model = model.is_image === "1";
+
     // Config (input)
     const config = loadConfig();
     console.log("Config: " + JSON.stringify(config));
@@ -1826,13 +1833,6 @@ export default function Home() {
       inputType = TYPE.TOOL_CALL;
       console.log("Input (toolcalls, session = " + config.session + "): " + input);
     }
-    
-    // Set model
-    !minimalist && setInfo((
-      <div>
-        model: {config.model}<br></br>
-      </div>
-    ));
 
     // Tools
     // Tool calls only supported in non-stream mode
@@ -1920,7 +1920,7 @@ export default function Home() {
       dangerouslyAllowBrowser: true,
     });
 
-    // OpenAI chat completion!
+    // OpenAI chat completion! (for local model)
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
       model: config.model,
@@ -1933,9 +1933,12 @@ export default function Home() {
       stream_options: null,
       temperature: 1,
       top_p: 1,
-      tools: useStream ? null : tools,  // function calling only available in non-stream mode
-      tool_choice: !useStream && tools.length > 0 ? "auto" : null,
-      user: user ? user.username : null,
+
+      // conditional params
+      // function calling only available in non-stream mode
+      ...(!useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
+      ...(is_reasoning_model ? {} : {}),  // TODO, reasoning param not support yet.
+      ...(user ? { user: user.username } : {})
     });
 
     // Record log (chat history)
@@ -2083,8 +2086,15 @@ export default function Home() {
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
             "Q=" + input                                   // original user input
           ];
-          await generate_msg(inputParts.join(" "), [], []);
+          await generate_msg(model, inputParts.join(" "), [], []);
         }
+
+        // Set model info
+        !minimalist && setInfo((
+          <div>
+            model: {model.name}<br></br>
+          </div>
+        ));
       }
     }
 
@@ -2095,27 +2105,47 @@ export default function Home() {
       // Convert the response stream into a readable stream
       const stream = Readable.from(chatCompletion);
 
+      let hasReasoning = false;
+      let reasoningClosed = false;
       await new Promise((resolve, reject) => {
         // Handle the data event to process each JSON line
         stream.on('data', (part) => {
           try {
-            // 1. handle message output
+            // 1. handle reasoning output
+            const reasoning = part.choices[0].delta.reasoning;
+            if (reasoning) {
+              hasReasoning = true;
+              if (output.trim() === "") {
+                output += "::think::\n";
+                printOutput("::think::\n", false, true);
+              }
+              console.log(reasoning);
+              printOutput(reasoning, false, true);
+            }
+
+            // 2. handle message output
             const content = part.choices[0].delta.content;
             if (content) {
+              if (hasReasoning && !reasoningClosed) {
+                output += "::think::\n\n";
+                printOutput("::think::\n\n", false, true);
+                reasoningClosed = true;
+              }
+
               output += content;
               console.log(content);
               printOutput(content, false, true);
             }
 
-            // Set model
+            // 3. handle tool calls
+            // Streaming mode not support tool calls yet. (Ollama)
+
+            // Set model info
             !minimalist && setInfo((
               <div>
                 model: {part.model}<br></br>
               </div>
             ));
-
-            // 2. handle tool calls
-            // Streaming mode not support tool calls yet. (Ollama)
           } catch (error) {
             console.error('Error parsing JSON line:', error);
             stream.destroy(error); // Destroy the stream on error
@@ -2157,7 +2187,7 @@ export default function Home() {
 
   // M0. Generate (without SSE)
   // Legacy generate function
-  async function generate(input, images=[], files=[]) {
+  async function generate(model, input, images=[], files=[]) {
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -2265,7 +2295,7 @@ export default function Home() {
 
         // Call generate with function
         printOutput(QUERYING);
-        generate(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
+        generate(model, functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
         return;
       }
 

@@ -24,7 +24,7 @@ export default async function store(args, files) {
 
     const stores = getSetting("stores");
     if (!stores) {
-      return "No data store is set, please use command \`:store use [name]\` to set a store.";
+      return "No data store is set, please use command  \`:store ls\` to list available stores and \`:store use [name]\` to set a store.";
     }
 
     const storeNames = stores.split(",").filter((store) => store !== "");
@@ -384,7 +384,7 @@ export default async function store(args, files) {
     }
 
     if (!storeName) {
-      return "No data store is set, please use command \`:store use [name]\` to set a store.";
+      return "No data store is set, please use command  \`:store ls\` to list available stores and \`:store use [name]\` to set a store.";
     }
 
     try {
@@ -466,7 +466,7 @@ export default async function store(args, files) {
     if (args.length === 2) {
       storeName = getSetting("stores");
       if (!storeName) {
-        return "No data store is set, please use command \`:store use [name]\` to set a store.";
+        return "No data store is set, please use command  \`:store ls\` to list available stores and \`:store use [name]\` to set a store.";
       }
 
       if (storeName.indexOf(",") !== -1) {
@@ -561,7 +561,7 @@ export default async function store(args, files) {
 
     const storeName = getSetting("stores");
     if (!storeName) {
-      return "No data store is set, please use command \`:store use [name]\` to set a store.";
+      return "No data store is set, please use command  \`:store ls\` to list available stores and \`:store use [name]\` to set a store.";
     }
 
     if (storeName.indexOf(",") !== -1) {
@@ -610,7 +610,7 @@ export default async function store(args, files) {
 
     const storeName = getSetting("stores");
     if (!storeName) {
-      return "No data store is set, please use command \`:store use [name]\` to set a store.";
+      return "No data store is set, please use command  \`:store ls\` to list available stores and \`:store use [name]\` to set a store.";
     }
 
     if (storeName.indexOf(",") !== -1) {

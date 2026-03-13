@@ -20,7 +20,7 @@ export default async function node(args) {
 
     const nodeName = getSetting("node");
     if (!nodeName) {
-      return "No node is set, please use command \`:node use [name]\` to set a node.";
+      return "No node is set, please use command \`:node ls\` to list available nodes and \`:node use [name]\` to set a node.";
     }
 
     try {
@@ -332,7 +332,7 @@ export default async function node(args) {
 
     const nodeName = getSetting("node");
     if (!nodeName) {
-      return "No node is set, please use command \`:node use [name]\` to set a node.";
+      return "No node is set, please use command \`:node ls\` to list available nodes and \`:node use [name]\` to set a node.";
     }
 
     const owner = args[2];
@@ -377,7 +377,7 @@ export default async function node(args) {
 
     const nodeName = getSetting("node");
     if (!nodeName) {
-      return "No node is set, please use command \`:node use [name]\` to set a node.";
+      return "No node is set, please use command \`:node ls\` to list available nodes and \`:node use [name]\` to set a node.";
     }
 
     // Check value must be quoted with double quotes.

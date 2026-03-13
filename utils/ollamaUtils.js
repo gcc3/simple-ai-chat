@@ -39,11 +39,15 @@ export async function listOllamaModels(baseUrl = 'http://localhost:11434') {
     // Use format { id: 1, name: "llama3", base_url: "http://localhost:11434/v1", price_input: 0, price_output: 0 }
     const formattedModels = trimmedModels.map((model, index) => {
       return {
-        id: index + 1,
         name: model,
         base_url: `${baseUrl}/v1`,
         price_input: 0,
-        price_output: 0
+        price_output: 0,
+        is_tool_calls_supported: "0",
+        is_vision: "0",
+        is_audio: "0",
+        is_reasoning: "0",
+        is_image: "0",
       };
     });
     return formattedModels;

@@ -88,7 +88,8 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
       const response = await fetch("/api/model/list");
       const data = await response.json();
       if (response.status === 200 && data.success) {
-        const models = [].concat(data.result.user_models, data.result.group_models, data.result.system_models, ollamaModels).flat();
+        const systemModels = data.result;
+        const models = [].concat(systemModels, ollamaModels).flat();
         return models.map((m) => m.name);
       } else {
         return [];
@@ -181,7 +182,8 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
       const responseModel = await fetch("/api/model/list");
       const dataModel = await responseModel.json();
       if (responseModel.status === 200 && dataModel.success) {
-        const model = [].concat(dataModel.result.user_models, dataModel.result.group_models, dataModel.result.system_models, ollamaModels).flat()
+        const systemModels = dataModel.result;
+        const model = [].concat(systemModels, ollamaModels).flat()
                         .find((m) => m.name.startsWith(nameToBeComleted));
         if (model) {
           return [model.name];

@@ -74,25 +74,25 @@ export default async function (req, res) {
     let totalUsageFeeThisMonth = 0;
     let totalUsageFeeLastMonth = 0;
     for (const usageModel of usageModels) {
-      const model = models.find(m => m.name === usageModel.model);
+      const model = models.find(m => m.name === usageModel.name);
       if (!model) {
         continue;
       }
 
       // Count token
-      const tokenUsageThisMonth = await getModelTokenUsageThisMonth(user.username, usageModel.model);
-      const tokenUsageLastMonth = await getModelTokenUsageLastMonth(user.username, usageModel.model);
+      const tokenUsageThisMonth = await getModelTokenUsageThisMonth(user.username, usageModel.name);
+      const tokenUsageLastMonth = await getModelTokenUsageLastMonth(user.username, usageModel.name);
 
       // Fee calculation
       const feeThisMonth = model.price_input * tokenUsageThisMonth.input + model.price_output * tokenUsageThisMonth.output;
       const feeLastMonth = model.price_input * tokenUsageLastMonth.input + model.price_output * tokenUsageLastMonth.output;
 
       // Token frequencies
-      const tokenFrequencies = await getModelTokenFrequencies(user.username, usageModel.model);
+      const tokenFrequencies = await getModelTokenFrequencies(user.username, usageModel.name);
 
       // Append to model usage
       modelUsageList.push({
-        model: usageModel.model,
+        model: usageModel.name,
         token: {
           this_month: tokenUsageThisMonth,
           last_month: tokenUsageLastMonth,
@@ -210,7 +210,7 @@ async function getUsageModels(username) {
 }
 
 // Token
-async function getModelTokenUsageThisMonth(username, model) {
+async function getModelTokenUsageThisMonth(username, modelName) {
   // Now
   const now = new Date();
 
@@ -219,10 +219,10 @@ async function getModelTokenUsageThisMonth(username, model) {
   const year = clock.getUTCFullYear();
   const month = clock.getUTCMonth() + 1; // Add 1 because getUTCMonth() returns 0-11
 
-  return getModelTokenUsageByMonth(username, model, year, month);
+  return getModelTokenUsageByMonth(username, modelName, year, month);
 }
 
-async function getModelTokenUsageLastMonth(username, model) {
+async function getModelTokenUsageLastMonth(username, modelName) {
   // Now
   const now = new Date();
 
@@ -232,25 +232,25 @@ async function getModelTokenUsageLastMonth(username, model) {
   const year = now.getUTCFullYear();
   const month = now.getUTCMonth() + 1;
 
-  return getModelTokenUsageByMonth(username, model, year, month);
+  return getModelTokenUsageByMonth(username, modelName, year, month);
 }
 
-async function getModelTokenUsageByMonth(username, model, year, month) {
+async function getModelTokenUsageByMonth(username, modelName, year, month) {
   const daysInMonth = new Date(year, month, 0).getDate();
   const start = new Date(year, month - 1, 1).getTime();
   const end = new Date(year, month - 1, daysInMonth, 23, 59, 59).getTime();
-  return await countTokenForUserByModel(username, model, start, end);
+  return await countTokenForUserByModel(username, modelName, start, end);
 }
 
 // Token frequencies
-async function getModelTokenFrequencies(username, model) {
+async function getModelTokenFrequencies(username, modelName) {
   const dailyStart = Date.now() - 86400000;
   const weeklyStart = Date.now() - 604800000;
   const monthlyStart = Date.now() - 2592000000;
   const end = Date.now();
-  const daily = await countTokenForUserByModel(username, model, dailyStart, end);
-  const weekly = await countTokenForUserByModel(username, model, weeklyStart, end);
-  const monthly = await countTokenForUserByModel(username, model, monthlyStart, end);
+  const daily = await countTokenForUserByModel(username, modelName, dailyStart, end);
+  const weekly = await countTokenForUserByModel(username, modelName, weeklyStart, end);
+  const monthly = await countTokenForUserByModel(username, modelName, monthlyStart, end);
   return {
     daily,
     weekly,
