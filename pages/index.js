@@ -2089,6 +2089,7 @@ export default function Home() {
       const stream = Readable.from(chatCompletion);
 
       let hasReasoning = false;
+      let reasoningClosed = false;
       await new Promise((resolve, reject) => {
         // Handle the data event to process each JSON line
         stream.on('data', (part) => {
@@ -2098,11 +2099,11 @@ export default function Home() {
             // 1. handle reasoning output
             const reasoning = part.choices[0].delta.reasoning;
             if (reasoning) {
-              // hasReasoning = true;
-              // if (output.trim() === "") {
-              //   output += "::think::\n";
-              //   printOutput("::think::\n", false, true);
-              // }
+              hasReasoning = true;
+              if (output.trim() === "") {
+                output += "::think::\n";
+                printOutput("::think::\n", false, true);
+              }
               console.log(reasoning);
               printOutput(reasoning, false, true);
             }
@@ -2110,6 +2111,12 @@ export default function Home() {
             // 2. handle message output
             const content = part.choices[0].delta.content;
             if (content) {
+              if (hasReasoning && !reasoningClosed) {
+                output += "::think::\n\n";
+                printOutput("::think::\n\n", false, true);
+                reasoningClosed = true;
+              }
+
               output += content;
               console.log(content);
               printOutput(content, false, true);
