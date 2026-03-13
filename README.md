@@ -27,21 +27,23 @@ Quick Start
 
 2. Command-line interface (CLI) use  
     Install: `npm i simple-ai-chat -g`  
-    Start: `schat`  
+    Start: `schat` or `sc`  
+    Start CLI will also start the MCP client.  
     npm package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)  
 
 3. MCP client  
     Install: `npm i simple-ai-chat -g`  
-    Use `smcp` (or just `schat`) to start the client service.  
-    The `mcpconfig.json` file is located in the `~/.simple`.  
+    Use `smcp` to start the client service.  
+    The `mcpconfig.json` file is located in the `~/.simple` folder.  
 
 4. Ollama  
     Set the environment variable `OLLAMA_ORIGINS` to `*` or your domain to allow CORS.  
+    Start the Ollama server with `ollama serve`.
     ```
     export OLLAMA_ORIGINS="*"
     ollama serve
     ```
-    To use function calling, set `:stream off` as in Ollama it's not supported.  
+    Note: to use function calling, set `:stream off` as in Ollama it's not supported.  
 
 
 Documentation
@@ -50,24 +52,6 @@ Documentation
 The documentation is available at [`simple-ai.io`](https://simple-ai.io). 
 In the webpage, there is a little dot on the bottom right corner, click it to open the back page. 
 Alternatively, you can use the command `:store use "Simple AI Documentation"` to enable the data to AI, and ask it.  
-
-
-Local Installation
-------------------
-
-0. Prerequisites  
-   OpenAI API key (get from https://platform.openai.com/account/api-keys)  
-
-1. Install the requirements.  
-  `npm install`  
-
-2. Create `.env` and setup it.  
-  Create `.env` from `.env.example`  
-  For setup refer to the `.env` section below.
-
-3. Build and run the app.  
-  `npm run build`  
-  Then use `npm run dev` or `npm start`  
 
 
 Dependencies
@@ -84,8 +68,50 @@ Ollama https://ollama.com/
 WolframAlpha APIs https://products.wolframalpha.com/api  
 
 
-.env
-----
+CLI Interface
+-------------
+
+Start the CLI with `schat` or `sc`.  
+Exit with `:exit` command.  
+
+Check version  
+`schat -v` or `schat --version`.  
+
+Debug  
+`schat [-d|--debug]`  
+
+Change server base URL
+By default the CLI will communicate with `simple-ai.io` server.  
+To change the server base URL use the command:
+`schat [-b|--base-url <base_url>]`  
+
+MCP client  
+Start the CLI interface will also start the MCP client.  
+
+
+Local Installation
+------------------
+
+0. Prerequisites  
+   OpenAI API key (get from https://platform.openai.com/account/api-keys)  
+
+1. Install the requirements.  
+  `npm install`  
+
+2. Create `.env` and setup it.  
+  Create `.env` from `.env.example`  
+  For setup refer to the `.env` section below.
+
+3. Run `setup.sh` to initialize.  
+  `bash setup.sh`  
+
+4. Build and run the app.  
+  `npm run build`  
+  Then use `npm run dev` or `npm start`  
+
+
+`.env` Setup
+------------
 
 Copy `.env.example` to `.env` and fill in the values.  
 
