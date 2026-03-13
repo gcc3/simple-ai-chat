@@ -169,7 +169,7 @@ When it enabled, will count user usage and limit access for normal `user`.
 The value should be `true` or `false`.
 
 USE_PAYMENT  
-Enable payment for upgrading user account.  
+Enable payment.  
 The value should be `true` or `false`.  
 
 PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET  

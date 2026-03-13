@@ -63,6 +63,9 @@ globalThis.model = "";
 globalThis.baseUrl = "";
 globalThis.source = "remote";
 
+// Global use payment
+globalThis.usePayment = true;
+
 // Donut interval id
 let dunutIntervalId = null;
 const clearDonutInterval = () => {
@@ -82,7 +85,7 @@ export default function Home() {
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
   const [content, setContent] = useState(CONTENT.DOCUMENTATION);
-  const [usageDisplay, setUsageDisplay] = useState(false);
+  const [usageDisplay, setUsageDisplay] = useState(true);
   const [outputImages, setOutputImages] = useState([]);
   const [minimalist, setMinimalist] = useState(false);
 
@@ -855,8 +858,8 @@ export default function Home() {
       }
 
       // Usage page (offline mode: disable if offline)
-      if (globalThis.isOnline && systemInfo.use_payment) {
-        setUsageDisplay(true);
+      if (!globalThis.isOnline) {
+        setUsageDisplay(false);
       }
 
       // Minimalist
@@ -881,6 +884,9 @@ export default function Home() {
       // Reset global default model
       globalThis.model = systemInfo.model;
       globalThis.baseUrl = systemInfo.base_url;
+
+      // Global use payment
+      globalThis.usePayment = systemInfo.use_payment;
 
       // Model
       const model = await getModel();

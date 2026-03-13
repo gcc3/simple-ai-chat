@@ -12,6 +12,9 @@ export default function Usage() {
   const [usage, setUsage] = useState(null);
   const [message, setMessage] = useState(null);
 
+  // Use payment
+  const usePayment = globalThis.usePayment;
+
   // For adding balance
   const [amount, setAmount] = useState(0);
   const [bankingFee, setBankingFee] = useState(0);
@@ -205,14 +208,14 @@ export default function Usage() {
               <ProgressBar label={ t("Usage") } progress={npre(user.usage)} 
                                                           progressMax={npre(user.balance)} />
               <div className="mt-3">{ t("Total Fees") }: ${npre(user.usage)}</div>
-              <div>{ t("Balance") }: ${npre(user.balance)}</div>
+              {usePayment && <div>{ t("Balance") }: ${npre(user.balance)}</div>}
             </div>
           </div>}
         </div>
         <div className="mt-4">
           {message && <div>{message}</div>}
           {!message && <div>
-            {user.role !== "root_user" && <div>
+            {usePayment && user.role !== "root_user" && <div>
               <div>- { t("Add Balance") }</div>
               <div className="flex flex-wrap items-center mt-1">
                 <div>{ t("Select amount") }:</div>
@@ -225,7 +228,7 @@ export default function Usage() {
               </div>
               <div className="mt-2">* { t("$1 token usage is equal to approximately 385,000 English words of input or 96,000 English words of output.") }</div>
             </div>}
-            {amount !== null && amount > 0 && <div className="mt-3">
+            {usePayment && amount !== null && amount > 0 && <div className="mt-3">
               <div>{ t("Pay") }: {"$" + amount} ({ tt("banking fee ${{bankingFee}} included", { bankingFee }) })</div>
               <div className="mt-3">{ t("Payment methods") }:</div>
               <div className="table-container mt-1">
