@@ -75,6 +75,7 @@ export default async function(req, res) {
   const lang = req.query.lang || "";
   const use_system_role = req.query.use_system_role || true;
 
+  // Request info
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
   const browser = req.headers['user-agent'];
 

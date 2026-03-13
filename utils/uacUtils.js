@@ -1,12 +1,13 @@
 import { countChatsForIP, countChatsForUser } from './sqliteUtils';
 import { getRoleFequencyLimit } from './usageUtils';
-
+import { getSystemConfigurations } from './systemUtils';
 
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
 // User access control utilities
 export async function getUacResult(user, ip, session) {
   const isLogin = (user !== null && user !== undefined);
+  const sysconf = getSystemConfigurations();
 
   if (!isLogin) {
     // Not a user, urge register a user
@@ -61,13 +62,15 @@ export async function getUacResult(user, ip, session) {
     }
 
     // Check usage fee
-    const isUsageExceeded = await checkUsageExceeded(user);
-    if (isUsageExceeded) {
-      return {
-        success: false,
-        error: "You have reached your usage limit. Please add credit to your balance in `Usage` page.\n" + 
-               "您的使用额度已达到上限，请前往【用量】页面进行充值。"
-      };
+    if (sysconf.use_payment) {
+      const isUsageExceeded = await checkUsageExceeded(user);
+      if (isUsageExceeded) {
+        return {
+          success: false,
+          error: "You have reached your usage limit. Please add credit to your balance in `Usage` page.\n" + 
+                "您的使用额度已达到上限，请前往【用量】页面进行充值。"
+        };
+      }
     }
   }
 

@@ -121,7 +121,6 @@ const initializeDatabase = (db) => {
                           `CREATE TABLE IF NOT EXISTS sessions (
                             id INTEGER PRIMARY KEY,
                             parent_id INTEGER,
-                            text TEXT NOT NULL,
                             created_by TEXT NOT NULL,
                             created_at TEXT NOT NULL,
                             updated_at TEXT
@@ -1627,8 +1626,8 @@ const insertSession = async (id, parentId, createdBy) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      const stmt = db.prepare(`INSERT INTO sessions (id, parent_id, text, created_by, created_at) VALUES (?, ?, ?, ?, ?)`);
-      stmt.run([id, parentId, "", createdBy, getTimestamp()], function (err) {
+      const stmt = db.prepare(`INSERT INTO sessions (id, parent_id, created_by, created_at) VALUES (?, ?, ?, ?, ?)`);
+      stmt.run([id, parentId, createdBy, getTimestamp()], function (err) {
         if (err) {
           reject(err);
           return;

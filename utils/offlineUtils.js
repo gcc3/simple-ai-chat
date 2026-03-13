@@ -13,7 +13,7 @@ export function isOffineCommand(command) {
   if (command === ":log") return 1;
   if (command === ":info") return 1;
   if (command === ":ls") return 0;  // list session is not supported offline
-  if (command === ":session") return 0;  // session is not suported offline
+  if (command === ":session") return 1;
   if (command === ":role") return 0;  // role is not available offline
   if (command === ":clear") return 1;
   if (command === ":reset") return 1;
