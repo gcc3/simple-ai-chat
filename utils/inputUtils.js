@@ -41,11 +41,9 @@ export function getInput(text_raw) {
 
   if (image_urls.length > 0) {
     has_image = true;
-    console.log("Images (input):\n" + image_urls.join("\n"));
   }
   if (file_urls.length > 0) {
     has_file = true;
-    console.log("Files (input):\n" + file_urls.join("\n"));
   }
 
   let text = text_processed.trim();

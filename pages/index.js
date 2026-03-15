@@ -425,7 +425,7 @@ export default function Home() {
 
       case "ArrowUp":
         // Command history (↑)
-        if (globalThis.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if ((globalThis.rawInput.startsWith(":") || globalThis.rawInput.startsWith("!")) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
           console.log("Shortcut: ↑");
           event.preventDefault();
 
@@ -519,7 +519,7 @@ export default function Home() {
 
       case "ArrowDown":
         // Command history (↓)
-        if (globalThis.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if ((globalThis.rawInput.startsWith(":") || globalThis.rawInput.startsWith("!")) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
           console.log("Shortcut: ↓");
           event.preventDefault();
 
@@ -1058,7 +1058,6 @@ export default function Home() {
     // Command Input (start with ":")
     if (input.is_command) {
       const command = input.command;
-      console.log(input)
       if (command.length === 0) {
         printOutput("Invalid command.");
         return;
