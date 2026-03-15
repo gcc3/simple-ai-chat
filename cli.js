@@ -17,7 +17,7 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { spawn } from "child_process";
 import { getSetting, setSetting } from "./utils/settingsUtils.js";
-import { getMcpTools } from "./function.server.js";
+import { getMcpTools } from "./function.js";
 import { getLocalLogs, resetLocalLogs } from "./utils/offlineUtils.js";
 import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "./constants.js";
 import { getInput } from "./utils/inputUtils.js";

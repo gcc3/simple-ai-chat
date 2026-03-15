@@ -6,7 +6,7 @@ import { getUacResult } from "utils/uacUtils";
 import { getSystemConfigurations } from "utils/systemUtils";
 import { ensureSession } from "utils/logUtils";
 import { getUser } from "utils/sqliteUtils";
-import { executeFunctions } from "function.server.js";
+import { executeFunctions } from "function.js";
 import { countToken } from "utils/tokenUtils.js";
 import { logadd } from "utils/logUtils.js";
 import { TYPE } from '../../constants.js';

@@ -1,6 +1,7 @@
-import { getFunctions, getMcpFunctions } from "../function.server.js";
+import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from '../utils/userUtils.js';
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
+
 
 export default async function function_(args) {
   const usage = "Usage: :function [ls|list]\n"

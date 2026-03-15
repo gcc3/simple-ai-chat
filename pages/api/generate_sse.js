@@ -3,7 +3,7 @@ import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/logUtils";
 import { evaluate } from './evaluate';
-import { executeFunctions, getTools } from "function.server.js";
+import { executeFunctions, getTools } from "function.js";
 import { countToken } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";

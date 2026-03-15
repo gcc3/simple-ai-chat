@@ -1,4 +1,4 @@
-import { getFunctions, getMcpFunctions } from "function.server";
+import { getFunctions, getMcpFunctions } from "function";
 import { getLangCodes } from "./langUtils";
 import { getSettings } from "./settingsUtils";
 import { getThemes } from "./themeUtils";

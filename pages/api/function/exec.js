@@ -1,4 +1,4 @@
-import { executeFunctions } from "function.server.js";
+import { executeFunctions } from "function.js";
 
 export default async function (req, res) {
   if (req.method !== "POST") {
