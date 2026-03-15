@@ -1592,7 +1592,7 @@ export default function Home() {
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
             "Q=" + q                                       // original user input
           ];
-          const newInput = inputParts.join(" ");
+          const newInput = getInput(inputParts.join(" "));
           await generate_sse(model, newInput);
           return;
         }
@@ -1842,7 +1842,7 @@ export default function Home() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            input: input.text,
+            input,
             output,
             model: model.name,
             session: getSetting("session"),
@@ -1979,7 +1979,7 @@ export default function Home() {
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
             "Q=" + q                                       // original user input
           ];
-          const newInput = inputParts.join(" ");
+          const newInput = getInput(inputParts.join(" "));
           await generate_msg(model, newInput);
         }
 
