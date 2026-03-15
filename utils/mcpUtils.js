@@ -44,17 +44,19 @@ export async function listMcpFunctions(baseUrl = 'http://localhost:11318') {
 }
 
 // Call MCP tool
-export async function callMcpTool(tool, args, baseUrl = 'http://localhost:11318') {
+export async function exec_mcp(tool, args, baseUrl = 'http://localhost:11318') {
   try {
     // set up timeout
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 60000); // 60 seconds timeout
+    
     const response = await fetch(`${baseUrl}/tool/call`, {
       signal: controller.signal,
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ tool, args })
     });
+
     clearTimeout(timeoutId);
     if (!response.ok) {
       throw new Error(`Error calling tool: ${response.statusText}`);

@@ -28,7 +28,7 @@ import { getModel } from "utils/modelUtils";
 import { useUI } from '../contexts/UIContext';
 import { initializeSettings, isSettingEmpty } from "utils/settingsUtils";
 import PreviewImage from "../components/ui/PreviewImage.jsx";
-import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
+import { exec_mcp, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
 import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
@@ -1502,27 +1502,22 @@ export default function Home() {
             q = input.text.split("Q=")[1];
           }
 
-          // Frontend function calling
+          // Frontend function calling (MCP)
           const functionCallingResult = [];
           if (await pingMcpServer()) {
             const mcpFunctions = await listMcpFunctions();
+
             if (mcpFunctions && mcpFunctions.length > 0) {
               const mcpFunctionNames = mcpFunctions.map((f) => f.name);
 
-              // Loop through all tool calls and call them with callMcpTool
+              // Loop through all tool calls
               for (const call of toolCalls) {
                 if (mcpFunctionNames.includes(call.function.name)) {
-                  // Call the function with callMcpTool
-                  console.log("Calling MCP function: " + JSON.stringify(call));
-                  const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
+                  // Execute the MCP tool
+                  console.log("Execute MCP function: " + JSON.stringify(call));
+                  const result = await exec_mcp(call.function.name, JSON.parse(call.function.arguments));
                   console.log("MCP function result: " + JSON.stringify(result));
-                  // Result format:
-                  // {
-                  //   success: true,
-                  //   function: f,
-                  //   message: result.message,
-                  //   event: result.event,
-                  // }
+
                   let message = "No result.";
                   if (result) {
                     message = JSON.stringify(result).substring(0, 3000);
@@ -1862,7 +1857,7 @@ export default function Home() {
                 if (mcpFunctionNames.includes(call.function.name)) {
                   // Call the function with callMcpTool
                   console.log("Calling MCP function: " + JSON.stringify(call));
-                  const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
+                  const result = await exec_mcp(call.function.name, JSON.parse(call.function.arguments));
                   console.log("MCP function result: " + JSON.stringify(result));
                   // Result format:
                   // {
