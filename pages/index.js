@@ -1078,7 +1078,6 @@ export default function Home() {
         // Same as ⌃r
         clearInput(true);
         clearOutput(true);
-        reAdjustOrUpdatePlaceholder(PLACEHOLDER);
       } else if (command === "donut") {
         // Donut command
         dunutIntervalId = setInterval(() => {
