@@ -1054,6 +1054,7 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     globalThis.rawPlaceholder = placeholder;
+    reAdjustOrUpdatePlaceholder(placeholder);
     clearInput();
 
     // Command Input (start with ":")
