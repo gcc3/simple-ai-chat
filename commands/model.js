@@ -176,7 +176,7 @@ export default async function model(args) {
         const ollamModels = await listOllamaModels();
         const ollamModel = ollamModels.find((m) => m.name === modelName);
         if (ollamModel) {
-          // Set model to session storage
+          // Set model
           setSetting("model", modelName);
           setSetting("baseUrl", ollamModel.base_url);
 
@@ -184,35 +184,41 @@ export default async function model(args) {
         }
       }
 
-      // Check remote models
+      // Not found in local models
+      // Continue to check remote models
       // Check if the model exists
-      try {
-        const response = await fetch("/api/model/" + modelName, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
+      if (globalThis.isOnline) {
+        try {
+          const response = await fetch("/api/model/" + modelName, {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
 
-        const data = await response.json();
-        if (response.status !== 200) {
-          throw data.error || new Error(`Request failed with status ${response.status}`);
-        }
+          const data = await response.json();
+          if (response.status !== 200) {
+            throw data.error || new Error(`Request failed with status ${response.status}`);
+          }
 
-        const model = data.result;
-        if (!model) {
+          const model = data.result;
+          if (!model) {
+            return "Model not found.";
+          }
+          
+          // Set model
+          setSetting("model", model.name);
+          setSetting("baseUrl", model.base_url);
+        } catch (error) {
+          console.error(error);
           return "Model not found.";
         }
-        
-        // Set model
-        setSetting("model", model.name);
-        setSetting("baseUrl", model.base_url);
-      } catch (error) {
-        console.error(error);
-        return error;
-      }
 
-      return "Model is set to \`" + modelName + "\`. Use command \`:model\` to show current model information.";
+        return "Model is set to \`" + modelName + "\`. Use command \`:model\` to show current model information.";
+      } else {
+        // Local model not found and is offline.
+        return "Model not found.";
+      }
     }
 
     if (args[0] === "unuse") {

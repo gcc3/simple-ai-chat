@@ -78,7 +78,7 @@ async function generate_sse(model, input, images=[], files=[]) {
   // MCP functions
   const mcpTools = await getMcpTools(config.functions);
   const mcpToolsString = JSON.stringify(mcpTools);
-  console.log("MCP tools string: " + mcpToolsString);
+  console.log("MCP tools: " + mcpToolsString);
 
   // Build query parameters for SSE GET request
   const params = new URLSearchParams({
