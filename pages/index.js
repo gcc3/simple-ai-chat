@@ -1523,10 +1523,14 @@ export default function Home() {
                   //   message: result.message,
                   //   event: result.event,
                   // }
+                  let message = "No result.";
+                  if (result) {
+                    message = JSON.stringify(result).substring(0, 3000);
+                  }
                   functionCallingResult.push({
                     success: true,
                     function: call.function.name,
-                    message: result ? JSON.stringify(result) : "No result.",
+                    message: message,
                     // event: ...
                   });
                 }
