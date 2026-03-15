@@ -21,6 +21,7 @@ import { getMcpTools } from "./function.js";
 import { getLocalLogs, addLocalLog, resetLocalLogs } from "./utils/offlineUtils.js";
 import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "./constants.js";
 import { getInput } from "./utils/inputUtils.js";
+import { logadd } from "./utils/client/logUtils.js";
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');
@@ -321,44 +322,6 @@ async function generate_msg(model, input) {
     ...(user ? { user: user.username } : {})
   });
 
-  // Record log (chat history)
-  const logadd = async (input, output) => {
-    if (globalThis.isOnline) {
-      // Online: add log to server
-      const logaddResponse = await fetch("/api/log/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          input,
-          output,
-          model: model.name,
-          session: getSetting("session"),
-          images: [],
-          time: Date.now(),
-        }),
-      });
-
-      if (logaddResponse.status !== 200) {
-        throw logaddResponse.error || new Error(`Request failed with status ${logaddResponse.status}`);
-      }
-      return;
-    } else {
-      // Offline / local Ollama model: add log to local
-      // Add to local log
-      addLocalLog({
-        input: input.text,
-        output: output,
-        model: model.name,
-        session: getSetting("session"),
-        images: [],
-        time: Date.now(),
-      });
-      return;
-    }
-  }
-
   // Non-stream mode
   if (!useStream) {
     // Get result
@@ -385,7 +348,7 @@ async function generate_msg(model, input) {
     }
 
     // Add log
-    await logadd(input.text, output);
+    await logadd(model, input.text, output);
 
     // Print output
     printOutput(output.trim() + "\n");
@@ -438,7 +401,7 @@ async function generate_msg(model, input) {
       // Resolve the Promise when the stream ends
       stream.on('end', async () => {
         // Add log
-        await logadd(input.text, output);
+        await logadd(model, input.text, output);
 
         // Add new line
         printOutput("\n");

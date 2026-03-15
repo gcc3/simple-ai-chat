@@ -34,9 +34,10 @@ import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENER
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
-import { addLocalLog, resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
+import { resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { getStringMonoLength } from "utils/stringUtils";
 import { getInput } from "utils/inputUtils";
+import { logadd } from "utils/client/logUtils";
 
 const UserDataPrivacy = dynamic(() => import('components/UserDataPrivacy'), { ssr: false });
 const Usage = dynamic(() => import('components/Usage'), { ssr: false });
@@ -1832,44 +1833,6 @@ export default function Home() {
       ...(user ? { user: user.username } : {})
     });
 
-    // Record log (chat history)
-    const logadd = async (input, output) => {
-      // Online: add log to server
-      if (globalThis.isOnline) {
-        const logaddResponse = await fetch("/api/log/add", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            input,
-            output,
-            model: model.name,
-            session: getSetting("session"),
-            images: [],
-            time: Date.now(),
-          }),
-        });
-
-        if (logaddResponse.status !== 200) {
-          throw logaddResponse.error || new Error(`Request failed with status ${logaddResponse.status}`);
-        }
-      }
-
-      // Offline: add log to local
-      if (!globalThis.isOnline) {
-        // Add to local log
-        addLocalLog({
-          input: input.text,
-          output: output,
-          model: model.name,
-          session: getSetting("session"),
-          images: [],
-          time: Date.now(),
-        });
-      }
-    }
-
     // Non-stream mode
     if (!useStream) {
       // Non-stream mode support tool calls
@@ -1893,7 +1856,7 @@ export default function Home() {
           if (input.is_function) {
             logInput = "Q=" + input.text.split("Q=")[1].trim();
           }
-          await logadd(logInput, output);
+          await logadd(model, logInput, output);
 
           // Print output result
           if (output) {
@@ -1916,7 +1879,7 @@ export default function Home() {
           const toolCalls = choices[0].message.tool_calls;
 
           // Add log
-          await logadd(input.text, "T=" + JSON.stringify(toolCalls));
+          await logadd(model, input.text, "T=" + JSON.stringify(toolCalls));
 
           let functions = [];
           toolCalls.map((t) => {
@@ -2063,7 +2026,7 @@ export default function Home() {
           hljs.highlightAll();
 
           // Add log
-          await logadd(input.text, output);
+          await logadd(model, input.text, output);
 
           // Reset state
           globalThis.STATE = STATES.IDLE;
