@@ -22,6 +22,7 @@ import { getLocalLogs, resetLocalLogs } from "./utils/offlineUtils.js";
 import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "./constants.js";
 import { getInput } from "./utils/inputUtils.js";
 import { logadd } from "./utils/client/logUtils.js";
+import { exec_f } from "./function.client.js";
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');
@@ -581,6 +582,30 @@ program
         const result = await exec(input.text_raw, []);
         if (result) {
           printOutput(result.trim() + "\n");
+        }
+        continue;
+      }
+
+      // Function Input
+      if (input.is_function) {
+        const results = await exec_f(input.text);
+        console.log("Function Results: " + JSON.stringify(results));
+        if (results.length === 1) {
+          const result = results[0];
+          printOutput(result.success ? result.message : result.error);
+        } else {
+          for (let i = 0; i < results.length; i++) {
+            const result = results[i];
+
+            // Print the output
+            let resultText = "!" + result.function + "\n";
+            resultText += result.success ? result.message : result.error;
+            if (elOutputRef.current.innerHTML !== "") resultText = "\n\n" + resultText;
+            printOutput(resultText, true);
+
+            // Handle function event
+            // TODO
+          }
         }
         continue;
       }

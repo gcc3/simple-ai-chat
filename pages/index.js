@@ -18,6 +18,7 @@ import { asciiframe } from "utils/donutUtils";
 import { useTranslation } from 'react-i18next';
 import { simulateKeyPress } from "utils/keyboardUtils";
 import { getAutoCompleteOptions } from "utils/autocompleteUtils";
+import { exec_f, exec_fe } from "../function.client.js";
 import { sleep } from "utils/sleepUtils";
 import { loadConfig } from "utils/configUtils";
 import OpenAI from "openai";
@@ -1159,82 +1160,34 @@ export default function Home() {
         return;
       }
 
-      const functions = input.functions;
-      console.log("Function Execute: " + JSON.stringify(functions));
       pushCommandHistory(input.text);
 
       try {
-        const response = await fetch("/api/function/exec", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            functions
-          }),
-        });
-
-        const data = await response.json();
-        if (response.status !== 200) {
-          throw data.error || new Error(`Request failed with status ${response.status}`);
-        }
-
-        if (!data.success) {
-          console.log("Function Error: " + data.error);
-          printOutput(data.error);
-          return;
-        }
-
-        const results = data.function_results;
+        const results = await exec_f(input.text);
         console.log("Function Results: " + JSON.stringify(results));
 
         if (results.length === 1) {
           const result = results[0];
-          if (result.success) {
-            printOutput(result.message);
-          } else {
-            printOutput(result.error);
-          }
+          printOutput(result.success ? result.message : result.error);
         } else {
           for (let i = 0; i < results.length; i++) {
             const result = results[i];
 
             // Print the output
             let resultText = "!" + result.function + "\n";
-            if (result.success) {
-              resultText += result.message;
-            } else {
-              resultText += result.error;
-            }
+            resultText += result.success ? result.message : result.error;
             if (elOutputRef.current.innerHTML !== "") resultText = "\n\n" + resultText;
             printOutput(resultText, true, true);
 
-            // Handle event
+            // Handle function event
             if (result.event) {
-              const _event = result.event;
-              console.log("Function Event: " + JSON.stringify(_event));
-
-              // Handle redirect event
-              if (_event.name === "redirect") {
-                console.log("Redirecting to \"" + _event.parameters.url + "\"...");
-
-                // Redirect to URL
-                if (!_event.parameters.url.startsWith("http")) {
-                  console.error("URL must start with http or https.");
-                } else {
-                  // Redirect to URL
-                  if (_event.parameters.blank == true) {
-                    window.open(_event.parameters.url, '_blank');  // open with new tab
-                  } else {
-                    window.top.location.href = _event.parameters.url;
-                  }
-                }
-              }
+              exec_fe(result.event);
             }
           }
         }
       } catch (error) {
         console.error(error);
+        printOutput(error.message || String(error));
       }
       return;
     }
