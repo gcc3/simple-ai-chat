@@ -1366,7 +1366,7 @@ export default function Home() {
         const val = parseInt(_eval_);
 
         let valColor = "#767676";                // default
-        if (val >= 7)      valColor = "green";   // green
+        if (val >= 7)      valColor = "green";     // green
         else if (val >= 4) valColor = "#CC7722"; // orange
         else if (val >= 0) valColor = "#DE3163"; // red
         !globalThis.minimalist && setEvaluation(
