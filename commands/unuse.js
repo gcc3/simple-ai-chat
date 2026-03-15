@@ -1,6 +1,6 @@
 import { initializeMemory } from "../utils/sessionUtils.js";
 import { isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
-import { getFunctions, getMcpFunctions } from "../function.js";
+import { getFunctions, getMcpFunctions } from "../function.server.js";
 import { updateUserSetting } from '../utils/userUtils.js';
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 

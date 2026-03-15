@@ -1,6 +1,6 @@
 import React, { useEffect, useState   } from 'react';
 import { getCommands } from '../command.js';
-import { getFunctions } from '../function.js';
+import { getFunctions } from '../function.server.js';
 import { useTranslation, Trans } from 'react-i18next';
 
 const Documentation = () => {

@@ -2,7 +2,7 @@ import React, { useEffect, useState, useCallback } from "react";
 import { fetchUserInfo } from "utils/userUtils";
 import { useTranslation } from "react-i18next";
 import { setRtl } from "utils/rtlUtils.js";
-import { getFunctions, getMcpFunctions } from "../function.js";
+import { getFunctions, getMcpFunctions } from "../function.server.js";
 import { updateUserSetting } from '../utils/userUtils.js';
 import { addStoreToSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
 import { getTime } from "utils/timeUtils.js";
