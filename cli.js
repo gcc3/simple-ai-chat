@@ -2,7 +2,7 @@
 
 import { program } from "commander";
 import readline from "node:readline";
-import command from "./command.js";
+import exec from "./command.js";
 import tough from 'tough-cookie';
 import fetchCookie from 'fetch-cookie';
 import { initializeSettings } from "./utils/settingsUtils.js";
@@ -18,8 +18,11 @@ import { dirname, join } from "path";
 import { spawn } from "child_process";
 import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import { getMcpTools } from "./function.js";
-import { getLocalLogs, addLocalLog, resetLocalLogs } from "./utils/offlineUtils.js";
+import { getLocalLogs, resetLocalLogs } from "./utils/offlineUtils.js";
 import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "./constants.js";
+import { getInput } from "./utils/inputUtils.js";
+import { logadd } from "./utils/client/logUtils.js";
+import { exec_f } from "./function.client.js";
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');
@@ -70,7 +73,7 @@ const mcpProcess = spawn('node', [join(__dirname, 'mcp.js')], {
 mcpProcess.unref();
 
 // M1. Generate SSE
-async function generate_sse(model, input, images=[], files=[]) {
+async function generate_sse(model, input) {
   // Config (input)
   const config = loadConfig();
   console.log("Config: " + JSON.stringify(config));
@@ -78,13 +81,13 @@ async function generate_sse(model, input, images=[], files=[]) {
   // MCP functions
   const mcpTools = await getMcpTools(config.functions);
   const mcpToolsString = JSON.stringify(mcpTools);
-  console.log("MCP tools string: " + mcpToolsString);
+  console.log("MCP tools: " + mcpToolsString);
 
   // Build query parameters for SSE GET request
   const params = new URLSearchParams({
-    user_input: input,
-    images: "",
-    files: "",
+    user_input: input.text,
+    images: input.image_urls,
+    files: input.file_urls,
     time: Date.now().toString(),
     session: config.session,
     model: config.model,
@@ -161,8 +164,9 @@ async function generate_sse(model, input, images=[], files=[]) {
           const functionInput = functions.join(",");
 
           // Generate with tool calls (function calling)
-          if (input.startsWith("!")) {
-            input = input.split("Q=")[1];
+          let q = "";
+          if (input.is_function) {
+            q = input.text.split("Q=")[1];
           }
 
           // Reset time
@@ -171,7 +175,8 @@ async function generate_sse(model, input, images=[], files=[]) {
           setSetting("head", timeNow);
 
           // Call generate with function
-          await generate_sse(model, functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
+          const newInput = getInput(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + q);
+          await generate_sse(model, newInput);
           break;
         }
 
@@ -188,15 +193,13 @@ async function generate_sse(model, input, images=[], files=[]) {
 }
 
 // M2. Generate message from server, and then call local model engine
-async function generate_msg(model, input, images=[], files=[]) {
+async function generate_msg(model, input) {
   // Config (input)
   const config = loadConfig();
   console.log("Config: " + JSON.stringify(config));
 
   // Input
-  console.log("Input (" + config.session + "): " + input);
-  if (images.length > 0) console.log("Images: " + images.join(", "));
-  if (files.length > 0)  console.log("Files: " + files.join(", "));
+  console.log("Input (" + config.session + "): " + input.text);
 
   // Output
   let output = "";
@@ -217,7 +220,7 @@ async function generate_msg(model, input, images=[], files=[]) {
   const is_image_model = model.is_image === "1";
 
   // Model switch
-  const use_vision = images && images.length > 0;
+  const use_vision = input.has_image;
 
   // Generate messages
   let msg;
@@ -233,11 +236,11 @@ async function generate_msg(model, input, images=[], files=[]) {
       },
       body: JSON.stringify({
         time: config.time,
-        user_input: input,
-        images: images,
-        files: files,
+        user_input: input.text,
+        images: input.image_urls,
+        files: input.file_urls,
         session: config.session,
-        model: config.model,
+        model: model.name,
         mem_length: config.mem_length,
         functions: config.functions,
         role: config.role,
@@ -284,7 +287,7 @@ async function generate_msg(model, input, images=[], files=[]) {
     // User input
     messages.push({
       role: "user",
-      content: input,
+      content: input.text,
     })
     msg = {
       messages,
@@ -302,7 +305,7 @@ async function generate_msg(model, input, images=[], files=[]) {
   // OpenAI chat completion! (for local model)
   const chatCompletion = await openai.chat.completions.create({
     messages: msg.messages,
-    model: config.model,
+    model: model.name,
     logit_bias: null,
     n: 1,
     response_format: null,
@@ -319,44 +322,6 @@ async function generate_msg(model, input, images=[], files=[]) {
     ...(is_reasoning_model ? {} : {}),  // TODO, reasoning param not support yet.
     ...(user ? { user: user.username } : {})
   });
-
-  // Record log (chat history)
-  const logadd = async (input, output) => {
-    if (globalThis.isOnline) {
-      // Online: add log to server
-      const logaddResponse = await fetch("/api/log/add", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          input,
-          output,
-          model: config.model,
-          session: getSetting("session"),
-          images: [],
-          time: Date.now(),
-        }),
-      });
-
-      if (logaddResponse.status !== 200) {
-        throw logaddResponse.error || new Error(`Request failed with status ${logaddResponse.status}`);
-      }
-      return;
-    } else {
-      // Offline / local Ollama model: add log to local
-      // Add to local log
-      addLocalLog({
-        input: input,
-        output: output,
-        model: config.model,
-        session: getSetting("session"),
-        images: [],
-        time: Date.now(),
-      });
-      return;
-    }
-  }
 
   // Non-stream mode
   if (!useStream) {
@@ -384,7 +349,7 @@ async function generate_msg(model, input, images=[], files=[]) {
     }
 
     // Add log
-    await logadd(input, output);
+    await logadd(model, input.text, output);
 
     // Print output
     printOutput(output.trim() + "\n");
@@ -437,7 +402,7 @@ async function generate_msg(model, input, images=[], files=[]) {
       // Resolve the Promise when the stream ends
       stream.on('end', async () => {
         // Add log
-        await logadd(input, output);
+        await logadd(model, input.text, output);
 
         // Add new line
         printOutput("\n");
@@ -455,10 +420,10 @@ async function generate_msg(model, input, images=[], files=[]) {
 
 // Function to print output
 function printOutput(output, append=false) {
-  process.stdout.write(output);
   if (!append) {
-    process.stdout.write("\n");
+    output = output.trimEnd() + "\n";
   }
+  process.stdout.write(output);
 }
 
 // Get version from package.json
@@ -591,12 +556,62 @@ program
     }
     await getSystemInfo();
 
-    // Command line start
+    // Command line start or on submit
     process.stdout.write(":help for help.\n");
     while (true) {
+      const model_ = getSetting("model");
+      const user_raw_input = (await ask(model_ + "> ")).trim();
+      if (!user_raw_input) continue;
+
+      // Input
+      const input = getInput(user_raw_input);
+      if (input.error) {
+        printOutput(input.error + "\n");
+        continue;
+      }
+
+      // Command Input
+      if (input.is_command) {
+        if (input.command === "exit") break;
+        if (input.command === "clear") {
+          process.stdout.write('\x1Bc');
+          continue;
+        }
+
+        // Execute command
+        const result = await exec(input.text_raw, []);
+        if (result) {
+          printOutput(result.trim() + "\n");
+        }
+        continue;
+      }
+
+      // Function Input
+      if (input.is_function) {
+        const results = await exec_f(input.text);
+        console.log("Function Results: " + JSON.stringify(results));
+        if (results.length === 1) {
+          const result = results[0];
+          printOutput(result.success ? result.message : result.error);
+        } else {
+          for (let i = 0; i < results.length; i++) {
+            const result = results[i];
+
+            // Print the output
+            let resultText = "!" + result.function + "\n";
+            resultText += result.success ? result.message : result.error;
+            if (elOutputRef.current.innerHTML !== "") resultText = "\n\n" + resultText;
+            printOutput(resultText, true);
+
+            // Handle function event
+            // TODO
+          }
+        }
+        continue;
+      }
+
       // Refresh model
       let model;
-      const model_ = getSetting("model");
       if (model_) {
         model = await getModel(model_);
       } else {
@@ -604,30 +619,13 @@ program
         continue;
       }
 
-      const input = (await ask(model.name + "> ")).trim();
-      if (!input) continue;
-
-      // On submit
-      if (input.toLowerCase() === ":exit") break;
-      if (input.toLowerCase() === ":clear") {
-        process.stdout.write('\x1Bc');
-        continue;
-      }
-
-      if (input.startsWith(":")) {
-        const commandResult = await command(input, []);
-        if (commandResult) {
-          printOutput(commandResult.trim() + "\n");
-        }
-        continue;
-      }
-
+      // Start generation!
       // Generation mode switch
       // Local mode
       if (model.base_url.includes("localhost")
        || model.base_url.includes("127.0.0.1")) {
         console.log("Start. (local)");
-        await generate_msg(model, input, [], []);
+        await generate_msg(model, input);
         continue;
       }
 
@@ -641,7 +639,7 @@ program
 
         if (getSetting('useStream') == "true") {
           console.log("Start. (SSE)");
-          await generate_sse(model, input, [], []);
+          await generate_sse(model, input);
           continue;
         }
       } else {

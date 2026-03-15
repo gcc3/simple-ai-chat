@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
-import command, { getHistoryCommand, getHistoryCommandIndex, pushCommandHistory } from "command.js";
+import exec, { getHistoryCommand, getHistoryCommandIndex, pushCommandHistory } from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { setRtl } from "utils/rtlUtils.js";
@@ -18,6 +18,7 @@ import { asciiframe } from "utils/donutUtils";
 import { useTranslation } from 'react-i18next';
 import { simulateKeyPress } from "utils/keyboardUtils";
 import { getAutoCompleteOptions } from "utils/autocompleteUtils";
+import { exec_f, exec_fe } from "../function.client.js";
 import { sleep } from "utils/sleepUtils";
 import { loadConfig } from "utils/configUtils";
 import OpenAI from "openai";
@@ -27,15 +28,17 @@ import { getModel } from "utils/modelUtils";
 import { useUI } from '../contexts/UIContext';
 import { initializeSettings, isSettingEmpty } from "utils/settingsUtils";
 import PreviewImage from "../components/ui/PreviewImage.jsx";
-import { callMcpTool, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
+import { exec_mcp, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
 import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
-import { addLocalLog, resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
+import { resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { getStringMonoLength } from "utils/stringUtils";
+import { getInput } from "utils/inputUtils";
+import { logadd } from "utils/client/logUtils";
 
 const UserDataPrivacy = dynamic(() => import('components/UserDataPrivacy'), { ssr: false });
 const Usage = dynamic(() => import('components/Usage'), { ssr: false });
@@ -44,6 +47,9 @@ const Copyrights = dynamic(() => import('components/Copyrights'), { ssr: false }
 const Settings = dynamic(() => import('components/Settings'), { ssr: false });
 
 globalThis.STATE = STATES.IDLE;  // a global state
+
+// Minimalist mode
+globalThis.minimalist = false;
 
 // Online status
 globalThis.isOnline = true;
@@ -87,7 +93,6 @@ export default function Home() {
   const [content, setContent] = useState(CONTENT.DOCUMENTATION);
   const [usageDisplay, setUsageDisplay] = useState(true);
   const [outputImages, setOutputImages] = useState([]);
-  const [minimalist, setMinimalist] = useState(false);
 
   // Refs
   const elInputRef = useRef(null);
@@ -97,6 +102,13 @@ export default function Home() {
   // i18n
   const { t, i18n } = useTranslation();
   const { t: tt } = useTranslation("translation");
+
+  // Clear info, stats, evaluation
+  const resetInfo = () => {
+    setInfo();
+    setStats();
+    setEvaluation();
+  }
 
   // Toggle display
   const toggleDisplay = () => {
@@ -183,13 +195,8 @@ export default function Home() {
     console.log("Session log:", JSON.stringify(log).slice(0, 500) + " ...");
 
     // Print the log
-    clearPreviewImages();
-    const resetInfo = () => {
-      setInfo();
-      setStats();
-      setEvaluation();
-    }
     resetInfo();
+    clearPreviewImages();
     clearOutput(true);
 
     // Print input
@@ -208,7 +215,7 @@ export default function Home() {
       });
     }
 
-    !minimalist && setInfo((
+    !globalThis.minimalist && setInfo((
       <div>
         model: {log && log["model"].toLowerCase()}<br></br>
       </div>
@@ -243,9 +250,8 @@ export default function Home() {
     if (all) {
       clearPreviewImages();
       clearPreviewVideos();
-      setInfo();
-      setStats();
-      setEvaluation();
+      clearDonutInterval();
+      resetInfo();
     }
   };
 
@@ -262,9 +268,11 @@ export default function Home() {
   }
 
   // Clear input
-  const clearInput = () => {
+  const clearInput = (all = false) => {
     setInput("");
-    reAdjustOrUpdatePlaceholder();
+    if (all) {
+      reAdjustOrUpdatePlaceholder(PLACEHOLDER);
+    }
   }
 
   // Clear hash tag
@@ -312,7 +320,7 @@ export default function Home() {
           if (elInput !== null) {
             if (elInput.value && elInput.value.length > 0) {
               event.preventDefault();
-              clearInput("");
+              clearInput(true);
             } else {
               // ESC to unfocus input
               event.preventDefault();
@@ -358,7 +366,7 @@ export default function Home() {
 
           if (globalThis.STATE === STATES.DOING) {
             event.preventDefault();
-            command(":stop");
+            exec(":stop");
 
             // Send `stop` command no matter generating or not
             console.log("Sending `stop` command...");
@@ -378,32 +386,9 @@ export default function Home() {
 
             // Same as :clear
             // Clear all input and output, pleaceholder, previews
-            clearInput();
-            clearOutput();
-            reAdjustOrUpdatePlaceholder(PLACEHOLDER);
-            clearPreviewImages();
-            clearPreviewVideos();
-            setInfo();
-            setStats();
-            setEvaluation();
-
-            // Focus on input
-            const elInput = elInputRef.current;
-            elInput.focus();
-
-            console.log("Sending `clear` command...");
-            command(":clear");
-          }
-        }
-
-        if (event.ctrlKey && event.shiftKey) {
-          console.log("Shortcut: ⇧⌃r");
-
-          if (globalThis.STATE === STATES.IDLE) {
-            event.preventDefault();
-
-            console.log("Sending `reset` command...");
-            command(":reset");
+            clearInput(true);
+            clearOutput(true);
+            elInputRef.current.focus();  // Focus on input
           }
         }
         break;
@@ -442,7 +427,7 @@ export default function Home() {
 
       case "ArrowUp":
         // Command history (↑)
-        if (globalThis.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if ((globalThis.rawInput.startsWith(":") || globalThis.rawInput.startsWith("!")) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
           console.log("Shortcut: ↑");
           event.preventDefault();
 
@@ -536,7 +521,7 @@ export default function Home() {
 
       case "ArrowDown":
         // Command history (↓)
-        if (globalThis.rawInput.startsWith(":") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if ((globalThis.rawInput.startsWith(":") || globalThis.rawInput.startsWith("!")) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
           console.log("Shortcut: ↓");
           event.preventDefault();
 
@@ -805,7 +790,7 @@ export default function Home() {
 
       // Minimalist
       if (systemInfo.minimalist) {
-        setMinimalist(true);
+        globalThis.minimalist = true;
       }
 
       // Set welcome message
@@ -1043,44 +1028,168 @@ export default function Home() {
 
   // On submit input
   async function onSubmit(event) {
-    if (globalThis.STATE === STATES.DOING) return;
     event.preventDefault();
+    if (globalThis.STATE === STATES.DOING) return;
+    if (globalThis.rawInput.trim() === "") return;
 
-    if (globalThis.rawInput === "") return;
-    if (globalThis.rawInput.startsWith(":clear")) {
-      // Same as ⌃r
-      // Clear all input and output, pleaceholder, previews
-      clearInput();
-      clearOutput();
-      reAdjustOrUpdatePlaceholder(PLACEHOLDER);
-      clearPreviewImages();
-      clearPreviewVideos();
-      setInfo();
-      setStats();
-      setEvaluation();
-      clearDonutInterval();
-
-      // Focus on input
-      const elInput = elInputRef.current;
-      elInput.focus();
-      command(":clear");
+    // Get input
+    const input = getInput(globalThis.rawInput);
+    if (input.error) {
+      printOutput(input.error);
       return;
     }
+    globalThis.rawInput = input.text;
 
-    if (globalThis.rawInput.startsWith(":fullscreen") || globalThis.rawInput.startsWith(":theme")) {
+    // Clear output
+    if (input.is_command && (input.command === "fullscreen" || input.command === "theme")) {
       // Don't clean output and input
     } else {
       // Clear output and preview images
       clearOutput();
-      clearPreviewImages();
-      clearPreviewVideos();
     }
 
-    // Clear info, stats, evaluation
-    const resetInfo = () => {
-      setInfo();
-      setStats();
-      setEvaluation();
+    // Clear input and put it to placeholder
+    const elInput = elInputRef.current;
+    let placeholder = elInput.value;
+    if (elInput.value.startsWith(":login") || elInput.value.startsWith(":user set pass") || elInput.value.startsWith(":user add") || elInput.value.startsWith(":user join")) {
+      placeholder = maskPassword(placeholder);  // make sure the password is masked
+    }
+    globalThis.rawPlaceholder = placeholder;
+    reAdjustOrUpdatePlaceholder(placeholder);
+    clearInput();
+
+    // Command Input (start with ":")
+    if (input.is_command) {
+      const command = input.command;
+      if (command.length === 0) {
+        printOutput("Invalid command.");
+        return;
+      }
+
+      console.log("Command Input:\n" + (!isCommandMusked(input.command_line) ? input.text_raw : "(musked)"));
+
+      // Heavy command
+      // show generating text
+      if (command === "generate") {
+        printOutput(GENERATING);
+      }
+
+      // Clear command
+      if (command === "clear") {
+        // Same as ⌃r
+        clearInput(true);
+        clearOutput(true);
+      } else if (command === "donut") {
+        // Donut command
+        dunutIntervalId = setInterval(() => {
+          asciiframe(elOutputRef.current);
+        }, 50);
+      } else {
+        // General command
+        // Get command result
+        const files = input.file_urls.concat(input.image_urls);
+        let result = await exec(input.text_raw, files);
+
+        // Use command return to bypass reset output and info
+        if (result && typeof result === "string") {
+          console.log("Command Output:\n" + result);
+
+          // Print images in command output
+          let image_urls = [];
+          let matches = [...result.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
+          matches.forEach(match => {
+            const block = match[1] + "[" + match[2] + "]";
+
+            // Extract the URL
+            const url = block.replace("+image[", "").replace("+img[", "").replace("]", "");
+
+            // Check if the URL is valid
+            if (!url.startsWith("http")) {
+              console.error("Invalid URL: " + url);
+              return;
+            }
+
+            // Add to the URL list
+            if (block.startsWith("+image[") || block.startsWith("+img[")) {
+              image_urls.push(url);
+            }
+
+            // Remove the block from the raw input
+            result = result.replace(block, "");
+          });
+          if (image_urls.length > 0) {
+            console.log("Images (command output):\n" + image_urls.join("\n"));
+            image_urls.map((image_url) => {
+              printImage(image_url);
+            });
+          }
+
+          if (command === "fullscreen" || command === "theme") {
+            // Do't print and clean info
+          } else {
+            // Print the output
+            printOutput(result.trim());
+            resetInfo();
+          }
+        } else {
+          console.log("Not command output.")
+        }
+      }
+
+      // For some command apply immediately
+      if (command === "theme") {
+        setTheme(getSetting("theme"));
+      }
+
+      // Readjust UI
+      reAdjustInputHeight();
+      reAdjustOrUpdatePlaceholder();
+      return;
+    }
+    // Clear donut
+    clearInterval(dunutIntervalId);
+
+    // Function Input (start with "!")
+    // Format: !function_name({ "arg1":"value1", "arg2":"value2", ... })
+    // Example: !get_weather({ "location":"Tokyo" })
+    // Support multple functions: !function_name({ "arg1":"value1", "arg2":"value2", ... }),!function_name({ "arg1":"value1", "arg2":"value2", ... })
+    // Example: !get_weather({ "location":"Tokyo" }),!get_time({ "timezone":"America/Los_Angeles" })
+    if (input.is_function) {
+      if (!getSetting("user")) {
+        printOutput("Please login.");
+        return;
+      }
+
+      pushCommandHistory(input.text);
+
+      try {
+        const results = await exec_f(input.text);
+        console.log("Function Results: " + JSON.stringify(results));
+
+        if (results.length === 1) {
+          const result = results[0];
+          printOutput(result.success ? result.message : result.error);
+        } else {
+          for (let i = 0; i < results.length; i++) {
+            const result = results[i];
+
+            // Print the output
+            let resultText = "!" + result.function + "\n";
+            resultText += result.success ? result.message : result.error;
+            if (elOutputRef.current.innerHTML !== "") resultText = "\n\n" + resultText;
+            printOutput(resultText, true, true);
+
+            // Handle function event
+            if (result.event) {
+              exec_fe(result.event);
+            }
+          }
+        }
+      } catch (error) {
+        console.error(error);
+        printOutput(error.message || String(error));
+      }
+      return;
     }
 
     // Check if model is set
@@ -1090,270 +1199,7 @@ export default function Home() {
       return;
     }
 
-    // Pre-process the input
-    // 1. Extract the files/images if there is any
-    // files starts with +file[url] or +image[url] or +img[url]
-    let image_urls = [], image_urls_encoded = [];
-    let file_urls = [], file_urls_encoded = [];
-    let matches = [...globalThis.rawInput.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
-    matches.forEach(match => {
-      const block = match[1] + "[" + match[2] + "]";
-
-      // Extract the URL
-      const url = block.replace("+image[", "").replace("+img[", "").replace("+file[", "").replace("]", "");
-
-      // Check if the URL is valid
-      if (!url.startsWith("http")) {
-        console.error("Invalid URL: " + url);
-        printOutput("URL must start with http or https.");
-        return;
-      }
-
-      // Add to the URL list
-      if (block.startsWith("+image[") || block.startsWith("+img[")) {
-        image_urls.push(url);
-        image_urls_encoded.push(encodeURIComponent(url));
-      } else if (block.startsWith("+file[")) {
-        file_urls.push(url);
-        file_urls_encoded.push(encodeURIComponent(url));
-      }
-
-      // Remove the block from the raw input
-      globalThis.rawInput = globalThis.rawInput.replace(block, "");
-    });
-    if (image_urls.length > 0) {
-      console.log("Images (input):\n" + image_urls.join("\n"));
-    }
-    if (file_urls.length > 0) {
-      console.log("Files:\n" + file_urls.join("\n"));
-    }
-
-    // 2. Replace the full-width characters with half-width
-    const input = globalThis.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
-      return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-    });
-
-    // Check if the input is empty
-    if (image_urls.length == 0
-     && file_urls.length == 0
-     && input.trim().length == 0) {
-      console.log("Input is empty.");
-      return;
-     }
-
-    // Clear input and put it to placeholder
-    const elInput = elInputRef.current;
-    let placeholder = elInput.value;
-    if (elInput.value.startsWith(":login") || elInput.value.startsWith(":user set pass") || elInput.value.startsWith(":user add") || elInput.value.startsWith(":user join")) {
-      placeholder = maskPassword(placeholder);  // make sure the password is masked
-    }
-    globalThis.rawPlaceholder = placeholder;
-
-    // Clear input
-    clearInput();
-
-    // Command input
-    if (!minimalist && input.startsWith(":")) {
-      const commandString = input.substring(1);
-      if (commandString.length === 0) {
-        printOutput("Invalid command.");
-        return;
-      }
-
-      console.log("Command Input:\n" + (!isCommandMusked(commandString) ? input : "(musked)"));
-
-      // Clear command
-      if (commandString.startsWith("clear")) {
-        clearOutput();
-        resetInfo();
-      }
-
-      // A donut
-      if (commandString.startsWith("donut")) {
-        dunutIntervalId = setInterval(() => {
-          asciiframe(elOutputRef.current);
-        }, 50);
-      } else {
-        // Clear donut
-        clearDonutInterval();
-      }
-
-      // If heavy command, show generating text
-      if (commandString.startsWith("generate")) {
-        printOutput(GENERATING);
-      }
-
-      // Get command result
-      const files = file_urls.concat(image_urls);
-      let commandResult = await command(input, files);
-
-      // Use command return to bypass reset output and info
-      if (commandResult && typeof commandResult === "string") {
-        console.log("Command Output:\n" + commandResult);
-
-        // Print images in command output
-        let image_urls = [];
-        let matches = [...commandResult.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
-        matches.forEach(match => {
-          const block = match[1] + "[" + match[2] + "]";
-
-          // Extract the URL
-          const url = block.replace("+image[", "").replace("+img[", "").replace("]", "");
-
-          // Check if the URL is valid
-          if (!url.startsWith("http")) {
-            console.error("Invalid URL: " + url);
-            return;
-          }
-
-          // Add to the URL list
-          if (block.startsWith("+image[") || block.startsWith("+img[")) {
-            image_urls.push(url);
-          }
-
-          // Remove the block from the raw input
-          commandResult = commandResult.replace(block, "");
-        });
-        if (image_urls.length > 0) {
-          console.log("Images (command output):\n" + image_urls.join("\n"));
-          image_urls.map((image_url) => {
-            printImage(image_url);
-          });
-        }
-
-        if (globalThis.rawInput.startsWith(":fullscree") || globalThis.rawInput.startsWith(":theme")) {
-          // Do't print and clean info
-        } else {
-          // Print the output
-          printOutput(commandResult.trim());
-          resetInfo();
-        }
-      } else {
-        console.log("Not command output.")
-      }
-
-      // For some command apply immediately
-      if (commandString.startsWith("theme")) setTheme(getSetting("theme"));
-
-      // Readjust UI
-      reAdjustInputHeight();
-      reAdjustOrUpdatePlaceholder();
-      return;
-    } else {
-      // Clear donut
-      clearInterval(dunutIntervalId);
-    }
-
-    // Check input is full-width
-    if (!minimalist && input.startsWith("：")) {
-      printOutput("Please use half-width colon (\":\").");
-      return;
-    }
-    if (!minimalist && input.startsWith("！")) {
-      printOutput("Please use half-width exclamation mark (\"!\").");
-      return;
-    }
-
-    // Function CLI
-    // Format: !function_name({ "arg1":"value1", "arg2":"value2", ... })
-    // Example: !get_weather({ "location":"Tokyo" })
-    // Support multple functions: !function_name({ "arg1":"value1", "arg2":"value2", ... }),!function_name({ "arg1":"value1", "arg2":"value2", ... })
-    // Example: !get_weather({ "location":"Tokyo" }),!get_time({ "timezone":"America/Los_Angeles" })
-    if (!minimalist && input.startsWith("!")) {
-      const functionString = input.substring(1);
-      const functions = functionString.split(",!");
-      if (functionString.length === 0
-       || !functionString.includes("(") || !functionString.includes(")")
-       || functions.length === 0) {
-        printOutput("Function invalid.");
-        return;
-      }
-
-      if (!getSetting("user")) {
-        printOutput("Please login.");
-        return;
-      }
-
-      console.log("Function CLI: " + JSON.stringify(functions));
-      pushCommandHistory(input);
-
-      try {
-        const response = await fetch("/api/function/exec", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            functions
-          }),
-        });
-
-        const data = await response.json();
-        if (response.status !== 200) {
-          throw data.error || new Error(`Request failed with status ${response.status}`);
-        }
-
-        if (!data.success) {
-          console.log("Function Error: " + data.error);
-          printOutput(data.error);
-          return;
-        }
-
-        const functionCliResults = data.function_results;
-        console.log("Function Results: " + JSON.stringify(functionCliResults));
-
-        if (functionCliResults.length === 1) {
-          const functionResult = functionCliResults[0];
-          if (functionResult.success) {
-            printOutput(functionResult.message);
-          } else {
-            printOutput(functionResult.error);
-          }
-        } else {
-          for (let i = 0; i < functionCliResults.length; i++) {
-            const functionResult = functionCliResults[i];
-
-            // Print the output
-            let resultText = "!" + functionResult.function + "\n";
-            if (functionResult.success) {
-              resultText += functionResult.message;
-            } else {
-              resultText += functionResult.error;
-            }
-            if (elOutputRef.current.innerHTML !== "") resultText = "\n\n" + resultText;
-            printOutput(resultText, true, true);
-
-            // Handle event
-            if (functionResult.event) {
-              const _event = functionResult.event;
-              console.log("Function Event: " + JSON.stringify(_event));
-
-              // Handle redirect event
-              if (_event.name === "redirect") {
-                console.log("Redirecting to \"" + _event.parameters.url + "\"...");
-
-                // Redirect to URL
-                if (!_event.parameters.url.startsWith("http")) {
-                  console.error("URL must start with http or https.");
-                } else {
-                  // Redirect to URL
-                  if (_event.parameters.blank == true) {
-                    window.open(_event.parameters.url, '_blank');  // open with new tab
-                  } else {
-                    window.top.location.href = _event.parameters.url;
-                  }
-                }
-              }
-            }
-          }
-        }
-      } catch (error) {
-        console.error(error);
-      }
-      return;
-    }
-
-    // Finally, general input
+    // General Input!
     // Detect subsession
     if (getSetting("head") !== null && getSetting("head") !== "") {
       const head = Number(getSetting("head"));
@@ -1388,12 +1234,13 @@ export default function Home() {
       return;
     }
 
+    // Start generation!
     // Generation mode switch
     // Local mode
     if (model.base_url.includes("localhost")
      || model.base_url.includes("127.0.0.1")) {
       console.log("Start. (local)");
-      generate_msg(model, input, image_urls, file_urls);
+      generate_msg(model, input);
       return;
     }
 
@@ -1403,14 +1250,14 @@ export default function Home() {
       if (getSetting('useStream') == "false" || model.is_image === "1") {
         console.log("Start. (non-stream)");
         printOutput(WAITING === "" ? GENERATING : WAITING);
-        generate(model, input, image_urls, file_urls);
+        generate(model, input);
         return;
       }
 
       // Stream
       if (getSetting('useStream') == "true") {
         console.log("Start. (SSE)");
-        generate_sse(model, input, image_urls_encoded, file_urls_encoded);
+        generate_sse(model, input);
         return;
       }
     } else {
@@ -1421,7 +1268,9 @@ export default function Home() {
   }
 
   // M1. Generate SSE
-  async function generate_sse(model, input, images=[], files=[]) {
+  async function generate_sse(model, input) {
+    console.log("Generating with SSE...");
+
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
@@ -1437,9 +1286,9 @@ export default function Home() {
     console.log("Config: " + JSON.stringify(config));
 
     // Input
-    console.log("Input (" + config.session + "): " + input);
-    if (images.length > 0) console.log("Images: " + images.join(", "));
-    if (files.length > 0)  console.log("Files: " + files.join(", "));
+    console.log("Input (" + config.session + "): " + input.text);
+    if (input.has_image) console.log("Image input:\n" + input.image_urls_encoded.join("\n"));
+    if (input.has_file) console.log("File input:\n" + input.file_urls_encoded.join("\n"));
 
     // MCP functions
     const mcpTools = await getMcpTools(config.functions);
@@ -1447,12 +1296,12 @@ export default function Home() {
     console.log("MCP tools: " + mcpToolsString);
 
     // Send SSE request!
-    const openaiEssSource = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
-                                                           + "&images=" + images.join(encodeURIComponent("###"))
-                                                           + "&files=" + files.join(encodeURIComponent("###"))
+    const openaiEssSource = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input.text)
+                                                           + "&images=" + input.image_urls_encoded.join(encodeURIComponent("###"))
+                                                           + "&files=" + input.file_urls_encoded.join(encodeURIComponent("###"))
                                                            + "&time=" + config.time
                                                            + "&session=" + config.session
-                                                           + "&model=" + config.model
+                                                           + "&model=" + model.name
                                                            + "&mem_length=" + config.mem_length
                                                            + "&functions=" + config.functions
                                                            + "&mcp_tools=" + encodeURIComponent(mcpToolsString)
@@ -1485,7 +1334,7 @@ export default function Home() {
       if (event.data.startsWith("###MODEL###")) {
         const _env_ = event.data.replace("###MODEL###", "").split(',');
         const model = _env_[0];
-        !minimalist && setInfo((
+        !globalThis.minimalist && setInfo((
           <div>
             model: {model}<br></br>
           </div>
@@ -1520,7 +1369,7 @@ export default function Home() {
         if (val >= 7)      valColor = "green";   // green
         else if (val >= 4) valColor = "#CC7722"; // orange
         else if (val >= 0) valColor = "#DE3163"; // red
-        !minimalist && setEvaluation(
+        !globalThis.minimalist && setEvaluation(
           <div>
             self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
           </div>
@@ -1545,14 +1394,14 @@ export default function Home() {
           const mem = _stats_[8];
 
           if (use_eval === "true" && !done_evaluating) {
-            !minimalist && setEvaluation(
+            !globalThis.minimalist && setEvaluation(
               <div>
                 self_eval_score: evaluating...<br></br>
               </div>
             );
           }
 
-          !minimalist && setStats(
+          !globalThis.minimalist && setStats(
             <div>
               func: {func.replaceAll('|', ", ") || "none"}<br></br>
               temperature: {temperature}<br></br>
@@ -1648,35 +1497,35 @@ export default function Home() {
           const functionCallingString = functions.join(",");
 
           // Generate with tool calls (function calling)
-          if (input.startsWith("!")) {
-            input = input.split("Q=")[1];
+          let q = "";
+          if (input.is_function) {
+            q = input.text.split("Q=")[1];
           }
 
-          // Frontend function calling
+          // Frontend function calling (MCP)
           const functionCallingResult = [];
           if (await pingMcpServer()) {
             const mcpFunctions = await listMcpFunctions();
+
             if (mcpFunctions && mcpFunctions.length > 0) {
               const mcpFunctionNames = mcpFunctions.map((f) => f.name);
 
-              // Loop through all tool calls and call them with callMcpTool
+              // Loop through all tool calls
               for (const call of toolCalls) {
                 if (mcpFunctionNames.includes(call.function.name)) {
-                  // Call the function with callMcpTool
-                  console.log("Calling MCP function: " + JSON.stringify(call));
-                  const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
+                  // Execute the MCP tool
+                  console.log("Execute MCP function: " + JSON.stringify(call));
+                  const result = await exec_mcp(call.function.name, JSON.parse(call.function.arguments));
                   console.log("MCP function result: " + JSON.stringify(result));
-                  // Result format:
-                  // {
-                  //   success: true,
-                  //   function: f,
-                  //   message: result.message,
-                  //   event: result.event,
-                  // }
+
+                  let message = "No result.";
+                  if (result) {
+                    message = JSON.stringify(result).substring(0, 3000);
+                  }
                   functionCallingResult.push({
                     success: true,
                     function: call.function.name,
-                    message: result ? JSON.stringify(result) : "No result.",
+                    message: message,
                     // event: ...
                   });
                 }
@@ -1694,9 +1543,10 @@ export default function Home() {
             functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
             "T=" + JSON.stringify(toolCalls),              // tool calls generated
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
-            "Q=" + input                                   // original user input
+            "Q=" + q                                       // original user input
           ];
-          await generate_sse(model, inputParts.join(" "), [], []);
+          const newInput = getInput(inputParts.join(" "));
+          await generate_sse(model, newInput);
           return;
         }
 
@@ -1787,19 +1637,15 @@ export default function Home() {
   }
 
   // M2. Generate message from server, and then call local model engine
-  async function generate_msg(model, input, images=[], files=[]) {
+  async function generate_msg(model, input) {
+    console.log("Generating message from server...");
+
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
 
     // Add a waiting text
     if (getOutput() !== QUERYING) printOutput(WAITING);
-
-    // Input
-    let inputType = TYPE.NORMAL;
-
-    // Output
-    let outputType = TYPE.NORMAL;
 
     // Use stream
     const useStream = getSetting('useStream') === "true";
@@ -1821,17 +1667,15 @@ export default function Home() {
     console.log("Config: " + JSON.stringify(config));
 
     // Type I. Normal input
-    if (!input.startsWith("!")) {
-      inputType = TYPE.NORMAL;
-      console.log("Input (" + config.session + "): " + input);
+    if (!input.is_function) {
+      console.log("Input (" + config.session + "): " + input.text);
       if (images.length > 0) console.log("Images: " + images.join(", "));
       if (files.length > 0)  console.log("Files: " + files.join(", "));
     }
 
     // Type II. Tool calls (function calling) input
-    if (input.startsWith("!")) {
-      inputType = TYPE.TOOL_CALL;
-      console.log("Input (toolcalls, session = " + config.session + "): " + input);
+    if (input.is_function) {
+      console.log("Input (toolcalls, session = " + config.session + "): " + input.text);
     }
 
     // Tools
@@ -1859,11 +1703,11 @@ export default function Home() {
         },
         body: JSON.stringify({
           time: config.time,
-          user_input: input,
-          images: images,
-          files: files,
+          user_input: input.text,
+          images: input.image_urls,
+          files: input.file_urls,
           session: config.session,
-          model: config.model,
+          model: model.name,
           mem_length: config.mem_length,
           functions: config.functions,
           role: config.role,
@@ -1905,7 +1749,7 @@ export default function Home() {
       // User input
       messages.push({
         role: "user",
-        content: input,
+        content: input.text,
       })
       msg = {
         messages,
@@ -1923,7 +1767,7 @@ export default function Home() {
     // OpenAI chat completion! (for local model)
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
-      model: config.model,
+      model: model.name,
       logit_bias: null,
       n: 1,
       response_format: null,
@@ -1940,44 +1784,6 @@ export default function Home() {
       ...(is_reasoning_model ? {} : {}),  // TODO, reasoning param not support yet.
       ...(user ? { user: user.username } : {})
     });
-
-    // Record log (chat history)
-    const logadd = async (input, output) => {
-      // Online: add log to server
-      if (globalThis.isOnline) {
-        const logaddResponse = await fetch("/api/log/add", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            input,
-            output,
-            model: config.model,
-            session: getSetting("session"),
-            images: [],
-            time: Date.now(),
-          }),
-        });
-
-        if (logaddResponse.status !== 200) {
-          throw logaddResponse.error || new Error(`Request failed with status ${logaddResponse.status}`);
-        }
-      }
-
-      // Offline: add log to local
-      if (!globalThis.isOnline) {
-        // Add to local log
-        addLocalLog({
-          input: input,
-          output: output,
-          model: config.model,
-          session: getSetting("session"),
-          images: [],
-          time: Date.now(),
-        });
-      }
-    }
 
     // Non-stream mode
     if (!useStream) {
@@ -1998,10 +1804,11 @@ export default function Home() {
           const output = choices[0].message.content;
 
           // Add log
-          if (inputType === TYPE.TOOL_CALL) {
-            input = "Q=" + input.split("Q=")[1].trim();
+          let logInput = "";
+          if (input.is_function) {
+            logInput = "Q=" + input.text.split("Q=")[1].trim();
           }
-          await logadd(input, output);
+          await logadd(model, logInput, output);
 
           // Print output result
           if (output) {
@@ -2024,7 +1831,7 @@ export default function Home() {
           const toolCalls = choices[0].message.tool_calls;
 
           // Add log
-          await logadd(input, "T=" + JSON.stringify(toolCalls));
+          await logadd(model, input.text, "T=" + JSON.stringify(toolCalls));
 
           let functions = [];
           toolCalls.map((t) => {
@@ -2033,8 +1840,9 @@ export default function Home() {
           const functionCallingString = functions.join(",");
 
           // Generate with tool calls (function calling)
-          if (input.startsWith("!")) {
-            input = input.split("Q=")[1];
+          let q = "";
+          if (input.is_function) {
+            q = input.text.split("Q=")[1];
           }
 
           // Frontend function calling
@@ -2049,7 +1857,7 @@ export default function Home() {
                 if (mcpFunctionNames.includes(call.function.name)) {
                   // Call the function with callMcpTool
                   console.log("Calling MCP function: " + JSON.stringify(call));
-                  const result = await callMcpTool(call.function.name, JSON.parse(call.function.arguments));
+                  const result = await exec_mcp(call.function.name, JSON.parse(call.function.arguments));
                   console.log("MCP function result: " + JSON.stringify(result));
                   // Result format:
                   // {
@@ -2084,13 +1892,14 @@ export default function Home() {
             functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
             "T=" + JSON.stringify(toolCalls),              // tool calls generated
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
-            "Q=" + input                                   // original user input
+            "Q=" + q                                       // original user input
           ];
-          await generate_msg(model, inputParts.join(" "), [], []);
+          const newInput = getInput(inputParts.join(" "));
+          await generate_msg(model, newInput);
         }
 
         // Set model info
-        !minimalist && setInfo((
+        !globalThis.minimalist && setInfo((
           <div>
             model: {model.name}<br></br>
           </div>
@@ -2141,7 +1950,7 @@ export default function Home() {
             // Streaming mode not support tool calls yet. (Ollama)
 
             // Set model info
-            !minimalist && setInfo((
+            !globalThis.minimalist && setInfo((
               <div>
                 model: {part.model}<br></br>
               </div>
@@ -2169,7 +1978,7 @@ export default function Home() {
           hljs.highlightAll();
 
           // Add log
-          await logadd(input, output);
+          await logadd(model, input.text, output);
 
           // Reset state
           globalThis.STATE = STATES.IDLE;
@@ -2187,15 +1996,17 @@ export default function Home() {
 
   // M0. Generate (without SSE)
   // Legacy generate function
-  async function generate(model, input, images=[], files=[]) {
+  async function generate(model, input) {
+    console.log("Generating...");
+
     // If already doing, return
     if (globalThis.STATE === STATES.DOING) return;
     globalThis.STATE = STATES.DOING;
 
     // Input
-    console.log("Input:\n" + input);
-    if (images.length > 0) console.log("Images:\n" + images.join("\n"));
-    if (files.length > 0) console.log("Files:\n" + files.join("\n"));
+    console.log("Input:\n" + input.text);
+    if (input.has_image) console.log("Image input:\n" + input.image_urls.join("\n"));
+    if (input.has_file) console.log("File input:\n" + input.file_urls.join("\n"));
 
     // Config (input)
     const config = loadConfig();
@@ -2214,12 +2025,12 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_input: input,
-          images: images,
-          files: files,
+          user_input: input.text,
+          images: input.image_urls,
+          files: input.file_urls,
           time: config.time,
           session: config.session,
-          model: config.model,
+          model: model.name,
           mem_length: config.mem_length,
           functions: config.functions,  // enabled function names
           mcp_tools: mcpTools, // local MCP tools (params, prompts, etc.)
@@ -2284,8 +2095,9 @@ export default function Home() {
         const functionInput = functions.join(",");
 
         // Generate with tool calls (function calling)
-        if (input.startsWith("!")) {
-          input = input.split("Q=")[1];
+        let q = "";
+        if (input.is_function) {
+          q = input.text.split("Q=")[1];
         }
 
         // Reset time
@@ -2295,7 +2107,8 @@ export default function Home() {
 
         // Call generate with function
         printOutput(QUERYING);
-        generate(model, functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
+        const newInput = getInput(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + q);
+        generate(model, newInput);
         return;
       }
 
@@ -2334,7 +2147,7 @@ export default function Home() {
         if (data.result.stats.stores) stats += "stores: " + data.result.stats.stores.replaceAll('|', ", ") + "\n";
         if (data.result.stats.node) stats += "node: " + data.result.stats.node + "\n";
 
-        !minimalist && setStats((
+        !globalThis.minimalist && setStats((
           <div>
             {stats.split("\n").map((line, index) => (
               <div key={index}>
@@ -2352,7 +2165,7 @@ export default function Home() {
           if (val >= 7)      valColor = "green";   // green
           else if (val >= 4) valColor = "#CC7722"; // orange
           else if (val >= 0) valColor = "#DE3163"; // red
-          !minimalist && setEvaluation(
+          !globalThis.minimalist && setEvaluation(
             <div>
               self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
             </div>
@@ -2360,7 +2173,7 @@ export default function Home() {
         }
       }
 
-      !minimalist && setInfo((
+      !globalThis.minimalist && setInfo((
         <div>
           model: {data.result.info.model}
           <br></br>
@@ -2788,7 +2601,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        {!minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>}
+        {!globalThis.minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>}
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>

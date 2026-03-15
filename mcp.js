@@ -18,6 +18,8 @@ import { join } from 'path';
 const CONFIG = join(homedir(), '.simple', "mcpconfig.json");
 
 async function loadMcpConfig(configPath = CONFIG) {
+  console.log(`Loading MCP config from ${configPath}...`);
+
   try {
     // Create the directory if it doesn't exist
     if (!fs.existsSync(configPath)) {
@@ -44,6 +46,7 @@ async function loadMcpConfig(configPath = CONFIG) {
       return [];
     }
 
+    console.log("MCP config: ", JSON.stringify(config, null, 2));
     return config.mcpServers;
   } catch (e) {
     console.error(`Failed to load MCP config: ${e.message}`);
@@ -74,7 +77,10 @@ export class MCPClient {
       for (const [serverName, serverConfig] of Object.entries(mcpConfigServers)) {
         process.stdout.write(`Connecting to MCP server: ${serverName}...`);
 
-        const client = new Client({ name: serverName, version: "0.0.1" });
+        const client = new Client(
+          { name: serverName, version: "0.0.1" },
+          { timeout: 300000 }  // 5 minutes — allows time for Docker image pulls
+        );
         const transport = new StdioClientTransport({
           command: serverConfig.command,
           args: serverConfig.args,

@@ -1,7 +1,7 @@
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
 import { setSetting } from "../utils/settingsUtils.js";
 
-export default async function clear(args) {
+export default async function reset(args) {
   initializeSessionMemory();
 
   setSetting("stores", "");

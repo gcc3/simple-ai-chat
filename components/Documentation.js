@@ -60,7 +60,6 @@ const Documentation = () => {
   const shortcuts = [
     { action: t("Stop generating. (`:stop`)"), shortcut: "⌃C", condition: t("Generating.") },
     { action: t("Clear output. (`:clear`)"), shortcut: "⌃R", condition: t("Has output.") },
-    { action: t("Clear output and reset session. (`:reset`)"), shortcut: "⇧⌃R", condition: "-" },
     { action: t("Fullscreen. (`:fullscreen [off?]`)"), shortcut: "F11(*)", condition: "-" },
     { action: t("Split screen. (`:fullscreen split`)"), shortcut: "⌃|", condition: "-" },
     { action: t("Clear the input."), shortcut: "ESC", condition: t("Cursor focused on the input area. Input area not empty.") },
