@@ -1,6 +1,5 @@
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
-
 export function initializeMemory() {
   console.log("Memory initializing...");
   const time = Date.now()
