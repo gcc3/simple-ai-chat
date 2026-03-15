@@ -1,1 +1,1 @@
-Copy `.vscode` folder to root.
+Copy `.vscode` folder to project root.
