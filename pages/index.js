@@ -1286,7 +1286,7 @@ export default function Home() {
     if (model.base_url.includes("localhost")
      || model.base_url.includes("127.0.0.1")) {
       console.log("Start. (local)");
-      generate_msg(model, input.text, input.image_urls, input.file_urls);
+      generate_msg(model, input);
       return;
     }
 
@@ -1296,14 +1296,14 @@ export default function Home() {
       if (getSetting('useStream') == "false" || model.is_image === "1") {
         console.log("Start. (non-stream)");
         printOutput(WAITING === "" ? GENERATING : WAITING);
-        generate(model, input.text, input.image_urls, input.file_urls);
+        generate(model, input);
         return;
       }
 
       // Stream
       if (getSetting('useStream') == "true") {
         console.log("Start. (SSE)");
-        generate_sse(model, input.text, input.image_urls_encoded, input.file_urls_encoded);
+        generate_sse(model, input);
         return;
       }
     } else {
@@ -1314,7 +1314,7 @@ export default function Home() {
   }
 
   // M1. Generate SSE
-  async function generate_sse(model, input, images=[], files=[]) {
+  async function generate_sse(model, input) {
     console.log("Generating with SSE...");
 
     // If already doing, return
@@ -1332,9 +1332,9 @@ export default function Home() {
     console.log("Config: " + JSON.stringify(config));
 
     // Input
-    console.log("Input (" + config.session + "): " + input);
-    if (images.length > 0) console.log("Images: " + images.join(", "));
-    if (files.length > 0)  console.log("Files: " + files.join(", "));
+    console.log("Input (" + config.session + "): " + input.text);
+    if (input.has_image) console.log("Image input:\n" + input.image_urls_encoded.join("\n"));
+    if (input.has_file) console.log("File input:\n" + input.file_urls_encoded.join("\n"));
 
     // MCP functions
     const mcpTools = await getMcpTools(config.functions);
@@ -1342,12 +1342,12 @@ export default function Home() {
     console.log("MCP tools: " + mcpToolsString);
 
     // Send SSE request!
-    const openaiEssSource = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input)
-                                                           + "&images=" + images.join(encodeURIComponent("###"))
-                                                           + "&files=" + files.join(encodeURIComponent("###"))
+    const openaiEssSource = new EventSource("/api/generate_sse?user_input=" + encodeURIComponent(input.text)
+                                                           + "&images=" + input.image_urls_encoded.join(encodeURIComponent("###"))
+                                                           + "&files=" + input.file_urls_encoded.join(encodeURIComponent("###"))
                                                            + "&time=" + config.time
                                                            + "&session=" + config.session
-                                                           + "&model=" + config.model
+                                                           + "&model=" + model.name
                                                            + "&mem_length=" + config.mem_length
                                                            + "&functions=" + config.functions
                                                            + "&mcp_tools=" + encodeURIComponent(mcpToolsString)
@@ -1543,8 +1543,9 @@ export default function Home() {
           const functionCallingString = functions.join(",");
 
           // Generate with tool calls (function calling)
-          if (input.startsWith("!")) {
-            input = input.split("Q=")[1];
+          let q = "";
+          if (input.is_function) {
+            q = input.text.split("Q=")[1];
           }
 
           // Frontend function calling
@@ -1589,9 +1590,10 @@ export default function Home() {
             functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
             "T=" + JSON.stringify(toolCalls),              // tool calls generated
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
-            "Q=" + input                                   // original user input
+            "Q=" + q                                       // original user input
           ];
-          await generate_sse(model, inputParts.join(" "), [], []);
+          const newInput = inputParts.join(" ");
+          await generate_sse(model, newInput);
           return;
         }
 
@@ -1682,7 +1684,7 @@ export default function Home() {
   }
 
   // M2. Generate message from server, and then call local model engine
-  async function generate_msg(model, input, images=[], files=[]) {
+  async function generate_msg(model, input) {
     console.log("Generating message from server...");
 
     // If already doing, return
@@ -1691,12 +1693,6 @@ export default function Home() {
 
     // Add a waiting text
     if (getOutput() !== QUERYING) printOutput(WAITING);
-
-    // Input
-    let inputType = TYPE.NORMAL;
-
-    // Output
-    let outputType = TYPE.NORMAL;
 
     // Use stream
     const useStream = getSetting('useStream') === "true";
@@ -1718,17 +1714,15 @@ export default function Home() {
     console.log("Config: " + JSON.stringify(config));
 
     // Type I. Normal input
-    if (!input.startsWith("!")) {
-      inputType = TYPE.NORMAL;
-      console.log("Input (" + config.session + "): " + input);
+    if (!input.is_function) {
+      console.log("Input (" + config.session + "): " + input.text);
       if (images.length > 0) console.log("Images: " + images.join(", "));
       if (files.length > 0)  console.log("Files: " + files.join(", "));
     }
 
     // Type II. Tool calls (function calling) input
-    if (input.startsWith("!")) {
-      inputType = TYPE.TOOL_CALL;
-      console.log("Input (toolcalls, session = " + config.session + "): " + input);
+    if (input.is_function) {
+      console.log("Input (toolcalls, session = " + config.session + "): " + input.text);
     }
 
     // Tools
@@ -1756,11 +1750,11 @@ export default function Home() {
         },
         body: JSON.stringify({
           time: config.time,
-          user_input: input,
-          images: images,
-          files: files,
+          user_input: input.text,
+          images: input.image_urls,
+          files: input.file_urls,
           session: config.session,
-          model: config.model,
+          model: model.name,
           mem_length: config.mem_length,
           functions: config.functions,
           role: config.role,
@@ -1802,7 +1796,7 @@ export default function Home() {
       // User input
       messages.push({
         role: "user",
-        content: input,
+        content: input.text,
       })
       msg = {
         messages,
@@ -1820,7 +1814,7 @@ export default function Home() {
     // OpenAI chat completion! (for local model)
     const chatCompletion = await openai.chat.completions.create({
       messages: msg.messages,
-      model: config.model,
+      model: model.name,
       logit_bias: null,
       n: 1,
       response_format: null,
@@ -1848,9 +1842,9 @@ export default function Home() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            input,
+            input: input.text,
             output,
-            model: config.model,
+            model: model.name,
             session: getSetting("session"),
             images: [],
             time: Date.now(),
@@ -1866,9 +1860,9 @@ export default function Home() {
       if (!globalThis.isOnline) {
         // Add to local log
         addLocalLog({
-          input: input,
+          input: input.text,
           output: output,
-          model: config.model,
+          model: model.name,
           session: getSetting("session"),
           images: [],
           time: Date.now(),
@@ -1895,10 +1889,11 @@ export default function Home() {
           const output = choices[0].message.content;
 
           // Add log
-          if (inputType === TYPE.TOOL_CALL) {
-            input = "Q=" + input.split("Q=")[1].trim();
+          let logInput = "";
+          if (input.is_function) {
+            logInput = "Q=" + input.text.split("Q=")[1].trim();
           }
-          await logadd(input, output);
+          await logadd(logInput, output);
 
           // Print output result
           if (output) {
@@ -1921,7 +1916,7 @@ export default function Home() {
           const toolCalls = choices[0].message.tool_calls;
 
           // Add log
-          await logadd(input, "T=" + JSON.stringify(toolCalls));
+          await logadd(input.text, "T=" + JSON.stringify(toolCalls));
 
           let functions = [];
           toolCalls.map((t) => {
@@ -1930,8 +1925,9 @@ export default function Home() {
           const functionCallingString = functions.join(",");
 
           // Generate with tool calls (function calling)
-          if (input.startsWith("!")) {
-            input = input.split("Q=")[1];
+          let q = "";
+          if (input.is_function) {
+            q = input.text.split("Q=")[1];
           }
 
           // Frontend function calling
@@ -1981,9 +1977,10 @@ export default function Home() {
             functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
             "T=" + JSON.stringify(toolCalls),              // tool calls generated
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
-            "Q=" + input                                   // original user input
+            "Q=" + q                                       // original user input
           ];
-          await generate_msg(model, inputParts.join(" "), [], []);
+          const newInput = inputParts.join(" ");
+          await generate_msg(model, newInput);
         }
 
         // Set model info
@@ -2066,7 +2063,7 @@ export default function Home() {
           hljs.highlightAll();
 
           // Add log
-          await logadd(input, output);
+          await logadd(input.text, output);
 
           // Reset state
           globalThis.STATE = STATES.IDLE;
@@ -2084,7 +2081,7 @@ export default function Home() {
 
   // M0. Generate (without SSE)
   // Legacy generate function
-  async function generate(model, input, images=[], files=[]) {
+  async function generate(model, input) {
     console.log("Generating...");
 
     // If already doing, return
@@ -2092,9 +2089,9 @@ export default function Home() {
     globalThis.STATE = STATES.DOING;
 
     // Input
-    console.log("Input:\n" + input);
-    if (images.length > 0) console.log("Images:\n" + images.join("\n"));
-    if (files.length > 0) console.log("Files:\n" + files.join("\n"));
+    console.log("Input:\n" + input.text);
+    if (input.has_image) console.log("Image input:\n" + input.image_urls.join("\n"));
+    if (input.has_file) console.log("File input:\n" + input.file_urls.join("\n"));
 
     // Config (input)
     const config = loadConfig();
@@ -2113,12 +2110,12 @@ export default function Home() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          user_input: input,
-          images: images,
-          files: files,
+          user_input: input.text,
+          images: input.image_urls,
+          files: input.file_urls,
           time: config.time,
           session: config.session,
-          model: config.model,
+          model: model.name,
           mem_length: config.mem_length,
           functions: config.functions,  // enabled function names
           mcp_tools: mcpTools, // local MCP tools (params, prompts, etc.)
@@ -2183,8 +2180,9 @@ export default function Home() {
         const functionInput = functions.join(",");
 
         // Generate with tool calls (function calling)
-        if (input.startsWith("!")) {
-          input = input.split("Q=")[1];
+        let q = "";
+        if (input.is_function) {
+          q = input.text.split("Q=")[1];
         }
 
         // Reset time
@@ -2194,7 +2192,8 @@ export default function Home() {
 
         // Call generate with function
         printOutput(QUERYING);
-        generate(model, functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + input, [], []);
+        const newInput = getInput(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + q);
+        generate(model, newInput);
         return;
       }
 
