@@ -10,7 +10,6 @@ import info from "./commands/info.js";
 import ls from "./commands/ls.js";
 import session from "./commands/session.js";
 import role from "./commands/role.js";
-import clear from "./commands/clear.js";
 import reset from "./commands/reset.js";
 import speak from "./commands/speak.js";
 import lang from "./commands/lang.js";
@@ -35,7 +34,7 @@ import split from "./commands/split.js";
 import unuse from "./commands/unuse.js";
 import model from "./commands/model.js";
 
-export default function commands(input, files) {
+export default function exec(input, files) {
   let command = input;
   let args = [];
 
@@ -69,7 +68,6 @@ export default function commands(input, files) {
   if (command === ":ls") return ls(args);
   if (command === ":session") return session(args);
   if (command === ":role") return role(args);
-  if (command === ":clear") return clear(args);
   if (command === ":reset") return reset(args);
   if (command === ":speak") return speak(args);
   if (command === ":lang") return lang(args);

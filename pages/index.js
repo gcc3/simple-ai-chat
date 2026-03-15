@@ -4,7 +4,7 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import defaultStyles from "../styles/pages/index.module.css";
 import fullscreenStyles from "../styles/pages/index.fullscreen.module.css";
 import fullscreenSplitStyles from "../styles/pages/index.fullscreen.split.module.css";
-import command, { getHistoryCommand, getHistoryCommandIndex, pushCommandHistory } from "command.js";
+import exec, { getHistoryCommand, getHistoryCommandIndex, pushCommandHistory } from "command.js";
 import { speak, trySpeak } from "utils/speakUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { setRtl } from "utils/rtlUtils.js";
@@ -36,6 +36,7 @@ import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 import { addLocalLog, resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { getStringMonoLength } from "utils/stringUtils";
+import { getInput } from "utils/inputUtils";
 
 const UserDataPrivacy = dynamic(() => import('components/UserDataPrivacy'), { ssr: false });
 const Usage = dynamic(() => import('components/Usage'), { ssr: false });
@@ -44,6 +45,9 @@ const Copyrights = dynamic(() => import('components/Copyrights'), { ssr: false }
 const Settings = dynamic(() => import('components/Settings'), { ssr: false });
 
 globalThis.STATE = STATES.IDLE;  // a global state
+
+// Minimalist mode
+globalThis.minimalist = false;
 
 // Online status
 globalThis.isOnline = true;
@@ -87,7 +91,6 @@ export default function Home() {
   const [content, setContent] = useState(CONTENT.DOCUMENTATION);
   const [usageDisplay, setUsageDisplay] = useState(true);
   const [outputImages, setOutputImages] = useState([]);
-  const [minimalist, setMinimalist] = useState(false);
 
   // Refs
   const elInputRef = useRef(null);
@@ -97,6 +100,13 @@ export default function Home() {
   // i18n
   const { t, i18n } = useTranslation();
   const { t: tt } = useTranslation("translation");
+
+  // Clear info, stats, evaluation
+  const resetInfo = () => {
+    setInfo();
+    setStats();
+    setEvaluation();
+  }
 
   // Toggle display
   const toggleDisplay = () => {
@@ -183,13 +193,8 @@ export default function Home() {
     console.log("Session log:", JSON.stringify(log).slice(0, 500) + " ...");
 
     // Print the log
-    clearPreviewImages();
-    const resetInfo = () => {
-      setInfo();
-      setStats();
-      setEvaluation();
-    }
     resetInfo();
+    clearPreviewImages();
     clearOutput(true);
 
     // Print input
@@ -208,7 +213,7 @@ export default function Home() {
       });
     }
 
-    !minimalist && setInfo((
+    !globalThis.minimalist && setInfo((
       <div>
         model: {log && log["model"].toLowerCase()}<br></br>
       </div>
@@ -243,9 +248,8 @@ export default function Home() {
     if (all) {
       clearPreviewImages();
       clearPreviewVideos();
-      setInfo();
-      setStats();
-      setEvaluation();
+      clearDonutInterval();
+      resetInfo();
     }
   };
 
@@ -262,9 +266,11 @@ export default function Home() {
   }
 
   // Clear input
-  const clearInput = () => {
+  const clearInput = (all = false) => {
     setInput("");
-    reAdjustOrUpdatePlaceholder();
+    if (all) {
+      reAdjustOrUpdatePlaceholder(PLACEHOLDER);
+    }
   }
 
   // Clear hash tag
@@ -312,7 +318,7 @@ export default function Home() {
           if (elInput !== null) {
             if (elInput.value && elInput.value.length > 0) {
               event.preventDefault();
-              clearInput("");
+              clearInput(true);
             } else {
               // ESC to unfocus input
               event.preventDefault();
@@ -358,7 +364,7 @@ export default function Home() {
 
           if (globalThis.STATE === STATES.DOING) {
             event.preventDefault();
-            command(":stop");
+            exec(":stop");
 
             // Send `stop` command no matter generating or not
             console.log("Sending `stop` command...");
@@ -378,32 +384,9 @@ export default function Home() {
 
             // Same as :clear
             // Clear all input and output, pleaceholder, previews
-            clearInput();
-            clearOutput();
-            reAdjustOrUpdatePlaceholder(PLACEHOLDER);
-            clearPreviewImages();
-            clearPreviewVideos();
-            setInfo();
-            setStats();
-            setEvaluation();
-
-            // Focus on input
-            const elInput = elInputRef.current;
-            elInput.focus();
-
-            console.log("Sending `clear` command...");
-            command(":clear");
-          }
-        }
-
-        if (event.ctrlKey && event.shiftKey) {
-          console.log("Shortcut: ⇧⌃r");
-
-          if (globalThis.STATE === STATES.IDLE) {
-            event.preventDefault();
-
-            console.log("Sending `reset` command...");
-            command(":reset");
+            clearInput(true);
+            clearOutput(true);
+            elInputRef.current.focus();  // Focus on input
           }
         }
         break;
@@ -805,7 +788,7 @@ export default function Home() {
 
       // Minimalist
       if (systemInfo.minimalist) {
-        setMinimalist(true);
+        globalThis.minimalist = true;
       }
 
       // Set welcome message
@@ -1043,103 +1026,25 @@ export default function Home() {
 
   // On submit input
   async function onSubmit(event) {
-    if (globalThis.STATE === STATES.DOING) return;
     event.preventDefault();
+    if (globalThis.STATE === STATES.DOING) return;
+    if (globalThis.rawInput.trim() === "") return;
 
-    if (globalThis.rawInput === "") return;
-    if (globalThis.rawInput.startsWith(":clear")) {
-      // Same as ⌃r
-      // Clear all input and output, pleaceholder, previews
-      clearInput();
-      clearOutput();
-      reAdjustOrUpdatePlaceholder(PLACEHOLDER);
-      clearPreviewImages();
-      clearPreviewVideos();
-      setInfo();
-      setStats();
-      setEvaluation();
-      clearDonutInterval();
-
-      // Focus on input
-      const elInput = elInputRef.current;
-      elInput.focus();
-      command(":clear");
+    // Get input
+    const input = getInput(globalThis.rawInput);
+    if (input.error) {
+      printOutput(input.error);
       return;
     }
+    globalThis.rawInput = input.text;
 
-    if (globalThis.rawInput.startsWith(":fullscreen") || globalThis.rawInput.startsWith(":theme")) {
+    // Clear output
+    if (input.is_command && (input.command === "fullscreen" || input.command === "theme")) {
       // Don't clean output and input
     } else {
       // Clear output and preview images
       clearOutput();
-      clearPreviewImages();
-      clearPreviewVideos();
     }
-
-    // Clear info, stats, evaluation
-    const resetInfo = () => {
-      setInfo();
-      setStats();
-      setEvaluation();
-    }
-
-    // Check if model is set
-    // For web interface, the default model is read from .env
-    if (getSetting("model") === "") {
-      printOutput("Model not set, please use command \`:model ls\` to list available models and \`:model use [name]\` to set a model.");
-      return;
-    }
-
-    // Pre-process the input
-    // 1. Extract the files/images if there is any
-    // files starts with +file[url] or +image[url] or +img[url]
-    let image_urls = [], image_urls_encoded = [];
-    let file_urls = [], file_urls_encoded = [];
-    let matches = [...globalThis.rawInput.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
-    matches.forEach(match => {
-      const block = match[1] + "[" + match[2] + "]";
-
-      // Extract the URL
-      const url = block.replace("+image[", "").replace("+img[", "").replace("+file[", "").replace("]", "");
-
-      // Check if the URL is valid
-      if (!url.startsWith("http")) {
-        console.error("Invalid URL: " + url);
-        printOutput("URL must start with http or https.");
-        return;
-      }
-
-      // Add to the URL list
-      if (block.startsWith("+image[") || block.startsWith("+img[")) {
-        image_urls.push(url);
-        image_urls_encoded.push(encodeURIComponent(url));
-      } else if (block.startsWith("+file[")) {
-        file_urls.push(url);
-        file_urls_encoded.push(encodeURIComponent(url));
-      }
-
-      // Remove the block from the raw input
-      globalThis.rawInput = globalThis.rawInput.replace(block, "");
-    });
-    if (image_urls.length > 0) {
-      console.log("Images (input):\n" + image_urls.join("\n"));
-    }
-    if (file_urls.length > 0) {
-      console.log("Files:\n" + file_urls.join("\n"));
-    }
-
-    // 2. Replace the full-width characters with half-width
-    const input = globalThis.rawInput.trim().replace(/[Ａ-Ｚａ-ｚ０-９]/g, function(s) {
-      return String.fromCharCode(s.charCodeAt(0) - 0xFEE0);
-    });
-
-    // Check if the input is empty
-    if (image_urls.length == 0
-     && file_urls.length == 0
-     && input.trim().length == 0) {
-      console.log("Input is empty.");
-      return;
-     }
 
     // Clear input and put it to placeholder
     const elInput = elInputRef.current;
@@ -1148,134 +1053,115 @@ export default function Home() {
       placeholder = maskPassword(placeholder);  // make sure the password is masked
     }
     globalThis.rawPlaceholder = placeholder;
-
-    // Clear input
     clearInput();
 
-    // Command input
-    if (!minimalist && input.startsWith(":")) {
-      const commandString = input.substring(1);
-      if (commandString.length === 0) {
+    // Command Input (start with ":")
+    if (input.is_command) {
+      const command = input.command;
+      console.log(input)
+      if (command.length === 0) {
         printOutput("Invalid command.");
         return;
       }
 
-      console.log("Command Input:\n" + (!isCommandMusked(commandString) ? input : "(musked)"));
+      console.log("Command Input:\n" + (!isCommandMusked(input.command_line) ? input.text_raw : "(musked)"));
 
-      // Clear command
-      if (commandString.startsWith("clear")) {
-        clearOutput();
-        resetInfo();
+      // Heavy command
+      // show generating text
+      if (command === "generate") {
+        printOutput(GENERATING);
       }
 
-      // A donut
-      if (commandString.startsWith("donut")) {
+      // Clear command
+      if (command === "clear") {
+        // Same as ⌃r
+        clearInput(true);
+        clearOutput(true);
+        reAdjustOrUpdatePlaceholder(PLACEHOLDER);
+      } else if (command === "donut") {
+        // Donut command
         dunutIntervalId = setInterval(() => {
           asciiframe(elOutputRef.current);
         }, 50);
       } else {
-        // Clear donut
-        clearDonutInterval();
-      }
+        // General command
+        // Get command result
+        const files = input.file_urls.concat(input.image_urls);
+        let result = await exec(input.text_raw, files);
 
-      // If heavy command, show generating text
-      if (commandString.startsWith("generate")) {
-        printOutput(GENERATING);
-      }
+        // Use command return to bypass reset output and info
+        if (result && typeof result === "string") {
+          console.log("Command Output:\n" + result);
 
-      // Get command result
-      const files = file_urls.concat(image_urls);
-      let commandResult = await command(input, files);
+          // Print images in command output
+          let image_urls = [];
+          let matches = [...result.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
+          matches.forEach(match => {
+            const block = match[1] + "[" + match[2] + "]";
 
-      // Use command return to bypass reset output and info
-      if (commandResult && typeof commandResult === "string") {
-        console.log("Command Output:\n" + commandResult);
+            // Extract the URL
+            const url = block.replace("+image[", "").replace("+img[", "").replace("]", "");
 
-        // Print images in command output
-        let image_urls = [];
-        let matches = [...commandResult.matchAll(/(\+file|\+image|\+img)\[([^\]]+)\]/g)];
-        matches.forEach(match => {
-          const block = match[1] + "[" + match[2] + "]";
+            // Check if the URL is valid
+            if (!url.startsWith("http")) {
+              console.error("Invalid URL: " + url);
+              return;
+            }
 
-          // Extract the URL
-          const url = block.replace("+image[", "").replace("+img[", "").replace("]", "");
+            // Add to the URL list
+            if (block.startsWith("+image[") || block.startsWith("+img[")) {
+              image_urls.push(url);
+            }
 
-          // Check if the URL is valid
-          if (!url.startsWith("http")) {
-            console.error("Invalid URL: " + url);
-            return;
-          }
-
-          // Add to the URL list
-          if (block.startsWith("+image[") || block.startsWith("+img[")) {
-            image_urls.push(url);
-          }
-
-          // Remove the block from the raw input
-          commandResult = commandResult.replace(block, "");
-        });
-        if (image_urls.length > 0) {
-          console.log("Images (command output):\n" + image_urls.join("\n"));
-          image_urls.map((image_url) => {
-            printImage(image_url);
+            // Remove the block from the raw input
+            result = result.replace(block, "");
           });
-        }
+          if (image_urls.length > 0) {
+            console.log("Images (command output):\n" + image_urls.join("\n"));
+            image_urls.map((image_url) => {
+              printImage(image_url);
+            });
+          }
 
-        if (globalThis.rawInput.startsWith(":fullscree") || globalThis.rawInput.startsWith(":theme")) {
-          // Do't print and clean info
+          if (command === "fullscreen" || command === "theme") {
+            // Do't print and clean info
+          } else {
+            // Print the output
+            printOutput(result.trim());
+            resetInfo();
+          }
         } else {
-          // Print the output
-          printOutput(commandResult.trim());
-          resetInfo();
+          console.log("Not command output.")
         }
-      } else {
-        console.log("Not command output.")
       }
 
       // For some command apply immediately
-      if (commandString.startsWith("theme")) setTheme(getSetting("theme"));
+      if (command === "theme") {
+        setTheme(getSetting("theme"));
+      }
 
       // Readjust UI
       reAdjustInputHeight();
       reAdjustOrUpdatePlaceholder();
       return;
-    } else {
-      // Clear donut
-      clearInterval(dunutIntervalId);
     }
+    // Clear donut
+    clearInterval(dunutIntervalId);
 
-    // Check input is full-width
-    if (!minimalist && input.startsWith("：")) {
-      printOutput("Please use half-width colon (\":\").");
-      return;
-    }
-    if (!minimalist && input.startsWith("！")) {
-      printOutput("Please use half-width exclamation mark (\"!\").");
-      return;
-    }
-
-    // Function CLI
+    // Function Input (start with "!")
     // Format: !function_name({ "arg1":"value1", "arg2":"value2", ... })
     // Example: !get_weather({ "location":"Tokyo" })
     // Support multple functions: !function_name({ "arg1":"value1", "arg2":"value2", ... }),!function_name({ "arg1":"value1", "arg2":"value2", ... })
     // Example: !get_weather({ "location":"Tokyo" }),!get_time({ "timezone":"America/Los_Angeles" })
-    if (!minimalist && input.startsWith("!")) {
-      const functionString = input.substring(1);
-      const functions = functionString.split(",!");
-      if (functionString.length === 0
-       || !functionString.includes("(") || !functionString.includes(")")
-       || functions.length === 0) {
-        printOutput("Function invalid.");
-        return;
-      }
-
+    if (input.is_function) {
       if (!getSetting("user")) {
         printOutput("Please login.");
         return;
       }
 
-      console.log("Function CLI: " + JSON.stringify(functions));
-      pushCommandHistory(input);
+      const functions = input.functions;
+      console.log("Function Execute: " + JSON.stringify(functions));
+      pushCommandHistory(input.text);
 
       try {
         const response = await fetch("/api/function/exec", {
@@ -1299,33 +1185,33 @@ export default function Home() {
           return;
         }
 
-        const functionCliResults = data.function_results;
-        console.log("Function Results: " + JSON.stringify(functionCliResults));
+        const results = data.function_results;
+        console.log("Function Results: " + JSON.stringify(results));
 
-        if (functionCliResults.length === 1) {
-          const functionResult = functionCliResults[0];
-          if (functionResult.success) {
-            printOutput(functionResult.message);
+        if (results.length === 1) {
+          const result = results[0];
+          if (result.success) {
+            printOutput(result.message);
           } else {
-            printOutput(functionResult.error);
+            printOutput(result.error);
           }
         } else {
-          for (let i = 0; i < functionCliResults.length; i++) {
-            const functionResult = functionCliResults[i];
+          for (let i = 0; i < results.length; i++) {
+            const result = results[i];
 
             // Print the output
-            let resultText = "!" + functionResult.function + "\n";
-            if (functionResult.success) {
-              resultText += functionResult.message;
+            let resultText = "!" + result.function + "\n";
+            if (result.success) {
+              resultText += result.message;
             } else {
-              resultText += functionResult.error;
+              resultText += result.error;
             }
             if (elOutputRef.current.innerHTML !== "") resultText = "\n\n" + resultText;
             printOutput(resultText, true, true);
 
             // Handle event
-            if (functionResult.event) {
-              const _event = functionResult.event;
+            if (result.event) {
+              const _event = result.event;
               console.log("Function Event: " + JSON.stringify(_event));
 
               // Handle redirect event
@@ -1353,7 +1239,14 @@ export default function Home() {
       return;
     }
 
-    // Finally, general input
+    // Check if model is set
+    // For web interface, the default model is read from .env
+    if (getSetting("model") === "") {
+      printOutput("Model not set, please use command \`:model ls\` to list available models and \`:model use [name]\` to set a model.");
+      return;
+    }
+
+    // General Input!
     // Detect subsession
     if (getSetting("head") !== null && getSetting("head") !== "") {
       const head = Number(getSetting("head"));
@@ -1388,12 +1281,13 @@ export default function Home() {
       return;
     }
 
+    // Start generation!
     // Generation mode switch
     // Local mode
     if (model.base_url.includes("localhost")
      || model.base_url.includes("127.0.0.1")) {
       console.log("Start. (local)");
-      generate_msg(model, input, image_urls, file_urls);
+      generate_msg(model, input.text, input.image_urls, input.file_urls);
       return;
     }
 
@@ -1403,14 +1297,14 @@ export default function Home() {
       if (getSetting('useStream') == "false" || model.is_image === "1") {
         console.log("Start. (non-stream)");
         printOutput(WAITING === "" ? GENERATING : WAITING);
-        generate(model, input, image_urls, file_urls);
+        generate(model, input.text, input.image_urls, input.file_urls);
         return;
       }
 
       // Stream
       if (getSetting('useStream') == "true") {
         console.log("Start. (SSE)");
-        generate_sse(model, input, image_urls_encoded, file_urls_encoded);
+        generate_sse(model, input.text, input.image_urls_encoded, input.file_urls_encoded);
         return;
       }
     } else {
@@ -1487,7 +1381,7 @@ export default function Home() {
       if (event.data.startsWith("###MODEL###")) {
         const _env_ = event.data.replace("###MODEL###", "").split(',');
         const model = _env_[0];
-        !minimalist && setInfo((
+        !globalThis.minimalist && setInfo((
           <div>
             model: {model}<br></br>
           </div>
@@ -1522,7 +1416,7 @@ export default function Home() {
         if (val >= 7)      valColor = "green";   // green
         else if (val >= 4) valColor = "#CC7722"; // orange
         else if (val >= 0) valColor = "#DE3163"; // red
-        !minimalist && setEvaluation(
+        !globalThis.minimalist && setEvaluation(
           <div>
             self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
           </div>
@@ -1547,14 +1441,14 @@ export default function Home() {
           const mem = _stats_[8];
 
           if (use_eval === "true" && !done_evaluating) {
-            !minimalist && setEvaluation(
+            !globalThis.minimalist && setEvaluation(
               <div>
                 self_eval_score: evaluating...<br></br>
               </div>
             );
           }
 
-          !minimalist && setStats(
+          !globalThis.minimalist && setStats(
             <div>
               func: {func.replaceAll('|', ", ") || "none"}<br></br>
               temperature: {temperature}<br></br>
@@ -2094,7 +1988,7 @@ export default function Home() {
         }
 
         // Set model info
-        !minimalist && setInfo((
+        !globalThis.minimalist && setInfo((
           <div>
             model: {model.name}<br></br>
           </div>
@@ -2145,7 +2039,7 @@ export default function Home() {
             // Streaming mode not support tool calls yet. (Ollama)
 
             // Set model info
-            !minimalist && setInfo((
+            !globalThis.minimalist && setInfo((
               <div>
                 model: {part.model}<br></br>
               </div>
@@ -2340,7 +2234,7 @@ export default function Home() {
         if (data.result.stats.stores) stats += "stores: " + data.result.stats.stores.replaceAll('|', ", ") + "\n";
         if (data.result.stats.node) stats += "node: " + data.result.stats.node + "\n";
 
-        !minimalist && setStats((
+        !globalThis.minimalist && setStats((
           <div>
             {stats.split("\n").map((line, index) => (
               <div key={index}>
@@ -2358,7 +2252,7 @@ export default function Home() {
           if (val >= 7)      valColor = "green";   // green
           else if (val >= 4) valColor = "#CC7722"; // orange
           else if (val >= 0) valColor = "#DE3163"; // red
-          !minimalist && setEvaluation(
+          !globalThis.minimalist && setEvaluation(
             <div>
               self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
             </div>
@@ -2366,7 +2260,7 @@ export default function Home() {
         }
       }
 
-      !minimalist && setInfo((
+      !globalThis.minimalist && setInfo((
         <div>
           model: {data.result.info.model}
           <br></br>
@@ -2794,7 +2688,7 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
-        {!minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>}
+        {!globalThis.minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>}
 
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
           <form className={styles.inputform} onSubmit={onSubmit}>
