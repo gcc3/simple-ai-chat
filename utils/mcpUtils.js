@@ -1,6 +1,5 @@
 let mcpProcess = null;
 
-
 // Pings the MCP server to check if it's running
 export async function pingMcpServer(baseUrl = 'http://localhost:11318') {
   try {
