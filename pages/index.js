@@ -2246,6 +2246,7 @@ export default function Home() {
 
       // Input from placeholder when pressing tab
       if (elInput.value.length === 0) {
+        console.log("Input from placeholder: " + globalThis.rawPlaceholder);
         setInput(globalThis.rawPlaceholder);
       }
 
