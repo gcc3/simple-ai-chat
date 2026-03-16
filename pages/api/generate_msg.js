@@ -115,7 +115,7 @@ export default async function(req, res) {
     console.log("\n--- configuration info ---\n"
     + "lang: " + lang + "\n"
     + "model: " + model_ + "\n"
-    + "base_url:" + "(local)" + "\n"
+    + "base_url: " + "(local)" + "\n"
     + "temperature: " + sysconf.temperature + "\n"
     + "top_p: " + sysconf.top_p + "\n"
     + "use_system_role: " + use_system_role + "\n"
