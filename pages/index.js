@@ -1730,7 +1730,7 @@ export default function Home() {
       let messages = [];
       localLogs.forEach((log) => {
         // Only add messages with the same model
-        if (log.model === config.model) {
+        if (log.model === model.name) {
           messages.push({
             role: "user",
             content: log.input,
@@ -1754,8 +1754,11 @@ export default function Home() {
 
     console.log("Messages: " + JSON.stringify(msg.messages));
 
+    // Print `Genrating...`
+    printOutput(GENERATING);
+
     const openai = new OpenAI({
-      baseURL: config.base_url,
+      baseURL: model.base_url,
       apiKey: "",  // not necessary for local model, but required for OpenAI API
       dangerouslyAllowBrowser: true,
     });
@@ -1915,6 +1918,11 @@ export default function Home() {
       await new Promise((resolve, reject) => {
         // Handle the data event to process each JSON line
         stream.on('data', (part) => {
+          // Clear the waiting or querying text
+          if (getOutput() === WAITING  || getOutput() === REASONING || getOutput() === QUERYING || getOutput() === SEARCHING || getOutput() === GENERATING) {
+            clearOutput();
+          }
+
           try {
             // 1. handle reasoning output
             const reasoning = part.choices[0].delta.reasoning;
