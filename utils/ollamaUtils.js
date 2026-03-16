@@ -1,5 +1,5 @@
 // Ping Ollama API to check if it is running
-export async function pingOllamaAPI(baseUrl = 'http://localhost:11434') {
+export async function pingOllamaAPI(baseUrl = globalThis.ollamaBaseUrl) {
   try {
     // set up timeout
     const controller = new AbortController();
@@ -21,7 +21,7 @@ export async function pingOllamaAPI(baseUrl = 'http://localhost:11434') {
 }
 
 // List available models
-export async function listOllamaModels(baseUrl = 'http://localhost:11434') {
+export async function listOllamaModels(baseUrl = globalThis.ollamaBaseUrl) {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 500);
@@ -58,7 +58,7 @@ export async function listOllamaModels(baseUrl = 'http://localhost:11434') {
 }
 
 // Check model is running for given model name
-export async function isModelRunning(modelName, baseUrl = 'http://localhost:11434') {
+export async function isModelRunning(modelName, baseUrl = globalThis.ollamaBaseUrl) {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 500);

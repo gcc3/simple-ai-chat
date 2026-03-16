@@ -58,6 +58,11 @@ globalThis.isOnline = true;
 
 // Ollama status
 globalThis.isOllamaAvailable = false;
+globalThis.ollamaBaseUrl = "http://localhost:11434";
+
+// MCP server
+globalThis.isMCPServerAvailable = false;
+globalThis.mcpServerBaseUrl = "http://localhost:11318";
 
 // Mutation observer
 // will setup in useEffect
@@ -75,6 +80,9 @@ globalThis.rawPlaceholder = PLACEHOLDER;
 globalThis.model = "";
 globalThis.baseUrl = "";
 globalThis.source = "remote";
+
+// Global server base URL
+globalThis.serverBaseUrl = "https://simple-ai.io";
 
 // Global use payment
 globalThis.usePayment = true;
@@ -758,6 +766,9 @@ export default function Home() {
 
       // Ollama status
       globalThis.isOllamaAvailable = await pingOllamaAPI();
+
+      // MCP server status
+      globalThis.isMCPServerAvailable = await pingMcpServer();
 
       // User info
       if (getSetting("user")) {
@@ -1488,7 +1499,7 @@ export default function Home() {
 
           // Frontend function calling (MCP)
           const functionCallingResult = [];
-          if (await pingMcpServer()) {
+          if (globalThis.isMCPServerAvailable) {
             const mcpFunctions = await listMcpFunctions();
 
             if (mcpFunctions && mcpFunctions.length > 0) {
@@ -1831,7 +1842,7 @@ export default function Home() {
 
           // Frontend function calling
           const functionCallingResult = [];
-          if (await pingMcpServer()) {
+          if (globalThis.isMCPServerAvailable) {
             const mcpFunctions = await listMcpFunctions();
             if (mcpFunctions && mcpFunctions.length > 0) {
               const mcpFunctionNames = mcpFunctions.map((f) => f.name);

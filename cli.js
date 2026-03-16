@@ -35,6 +35,11 @@ globalThis.isOnline = true;
 
 // Ollama status
 globalThis.isOllamaAvailable = false;
+globalThis.ollamaBaseUrl = "http://localhost:11434";
+
+// MCP server
+globalThis.isMCPServerAvailable = false;
+globalThis.mcpServerBaseUrl = "http://localhost:11318";
 
 // Global placeholder
 globalThis.rawPlaceholder = PLACEHOLDER;
@@ -481,10 +486,8 @@ program
     // Set the base URL
     if (opts.baseUrl) {
       globalThis.serverBaseUrl = opts.baseUrl;
-    } else {
-      globalThis.serverBaseUrl = "https://simple-ai.io";
+      console.log("Set server base URL: " + globalThis.serverBaseUrl);
     }
-    console.log("Server base URL: " + globalThis.serverBaseUrl);
 
     const ask = async (question) =>
       new Promise((r) => rl.question(question, r));
@@ -519,6 +522,9 @@ program
 
       // Ollama status
       globalThis.isOllamaAvailable = await pingOllamaAPI();
+
+      // MCP server status
+      globalThis.isMCPServerAvailable = await pingMcpServer();
 
       // Set welcome message
       if (systemInfo.welcome_message && !getSetting("user")) {
