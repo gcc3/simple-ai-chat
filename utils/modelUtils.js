@@ -3,19 +3,19 @@ import { setSetting } from './settingsUtils.js';
 
 const tryFetchModel = async (modelName) => {
   console.log("Fetching model: " + modelName);
+  let resolvedModel = null;
   try {
     const res = await (await fetch('/api/model/' + modelName)).json();
     if (res.success && res.result) {
-      const resolvedModel = res.result;
+      resolvedModel = res.result;
       console.log("Model found in remote.");
       globalThis.source = "remote";
-      return resolvedModel;
     }
   } catch (e) {
-    console.warn("Remote model lookup failed.");
+    console.warn("Model `" + modelName + "` not accessible in remote.");
+    return null;
   }
-  console.warn("Model `" + modelName + "` not accessible in remote.");
-  return null;
+  return resolvedModel;
 }
 
 const tryGetModel = async (modelName) => {
