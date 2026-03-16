@@ -234,24 +234,13 @@ export default function Home() {
     }
   }
 
-  // Clear preview videos
-  const clearPreviewVideos = () => {
-    if (elWrapperRef.current) {
-      const imageDivs = elWrapperRef.current.getElementsByClassName("video-preview");
-      while (imageDivs.length > 0) {
-        imageDivs[0].remove();
-      }
-    }
-  }
-
   // Clear output
   const clearOutput = (all = false) => {
     printOutput("");
     if (all) {
       clearPreviewImages();
-      clearPreviewVideos();
-      clearDonutInterval();
       resetInfo();
+      clearDonutInterval();
     }
   };
 
@@ -1045,7 +1034,7 @@ export default function Home() {
       // Don't clean output and input
     } else {
       // Clear output and preview images
-      clearOutput();
+      clearOutput(true);
     }
 
     // Clear input and put it to placeholder
