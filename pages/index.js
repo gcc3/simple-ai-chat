@@ -1799,7 +1799,6 @@ export default function Home() {
       } else {
         // 1. handle general message response
         if (choices[0].message.content && choices[0].message.content.length > 0) {
-          outputType = TYPE.NORMAL;
           const output = choices[0].message.content;
 
           // Add log
@@ -1826,7 +1825,6 @@ export default function Home() {
 
         // 2. handle tool calls response
         if (choices[0].message.tool_calls && choices[0].message.tool_calls.length > 0) {
-          outputType = TYPE.TOOL_CALL;
           const toolCalls = choices[0].message.tool_calls;
 
           // Add log
