@@ -19,8 +19,8 @@ export default async function model(args) {
 
     // Check local Ollama models
     if (await pingOllamaAPI()) {
-      const ollamaModelList = await listOllamaModels();
-      const ollamaModel = ollamaModelList.find((m) => m.name === modelName);
+      const ollamaModels = await listOllamaModels();
+      const ollamaModel = ollamaModels.find((m) => m.name === modelName);
       if (ollamaModel) {
         return JSON.stringify(ollamaModel, null, 2);
       }
@@ -61,8 +61,8 @@ export default async function model(args) {
 
     // Check local Ollama models
     if (await pingOllamaAPI()) {
-      const ollamaModelList = await listOllamaModels();
-      const ollamaModel = ollamaModelList.find((m) => m.name === name);
+      const ollamaModels = await listOllamaModels();
+      const ollamaModel = ollamaModels.find((m) => m.name === name);
       if (ollamaModel) {
         return JSON.stringify(ollamaModel, null, 2);
       }
@@ -140,14 +140,14 @@ export default async function model(args) {
 
     // Ollama models (local models)
     if (await pingOllamaAPI()) {
-      const ollamaModelList = await listOllamaModels();
-      if (ollamaModelList && ollamaModelList.length > 0) {
-        let ollamaModels = [];
-        ollamaModelList.forEach((model) => {
-          ollamaModels.push((currentModel === model.name ? "*\\" : "\\") + model.name);
+      const ollamaModels = await listOllamaModels();
+      if (ollamaModels && ollamaModels.length > 0) {
+        let ollamaModels_ = [];
+        ollamaModels.forEach((model) => {
+          ollamaModels_.push((currentModel === model.name ? "*\\" : "\\") + model.name);
         });
         ollamaModels_ = "Ollama models:\n" 
-                    + ollamaModels.join(" ") + "\n\n"; 
+                    + ollamaModels_.join(" ") + "\n\n"; 
       }
     }
 
@@ -173,12 +173,12 @@ export default async function model(args) {
     if (args[0] === "use") {
       // Check local Ollama models
       if (await pingOllamaAPI()) {
-        const ollamModels = await listOllamaModels();
-        const ollamModel = ollamModels.find((m) => m.name === modelName);
-        if (ollamModel) {
+        const ollamaModels = await listOllamaModels();
+        const ollamaModel = ollamaModels.find((m) => m.name === modelName);
+        if (ollamaModel) {
           // Set model
           setSetting("model", modelName);
-          setSetting("baseUrl", ollamModel.base_url);
+          setSetting("baseUrl", ollamaModel.base_url);
 
           return "Model is set to \`" + modelName + "\`. Use command \`:model\` to show current model information.";
         }

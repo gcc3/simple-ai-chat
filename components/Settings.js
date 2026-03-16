@@ -99,10 +99,10 @@ function Settings() {
 
       // Ollama models
       if (await pingOllamaAPI()) {
-        const ollamaModelList = await listOllamaModels();
-        if (ollamaModelList && ollamaModelList.length > 0) {
+        const ollamaModels = await listOllamaModels();
+        if (ollamaModels && ollamaModels.length > 0) {
           let models = [];
-          ollamaModelList.forEach((model) => {
+          ollamaModels.forEach((model) => {
             models.push(model.name);
           });
           setOllamaModels(models);
@@ -425,12 +425,12 @@ function Settings() {
   const handleSetOllamaModels = useCallback((name) => async () => {
     // Check local Ollama models
     if (await pingOllamaAPI()) {
-      const ollamModels = await listOllamaModels();
-      const ollamModel = ollamModels.find((m) => m.name === name);
-      if (ollamModel) {
+      const ollamaModels = await listOllamaModels();
+      const ollamaModel = ollamaModels.find((m) => m.name === name);
+      if (ollamaModel) {
         // Set model to session storage
         setSetting("model", name);
-        setSetting("baseUrl", ollamModel.base_url);
+        setSetting("baseUrl", ollamaModel.base_url);
 
         // Update state
         const currentModel = getSetting("model");
