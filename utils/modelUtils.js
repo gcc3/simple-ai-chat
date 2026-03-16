@@ -12,7 +12,7 @@ const tryFetchModel = async (modelName) => {
       return resolvedModel;
     }
   } catch (e) {
-    console.warn("Remote model lookup failed:", e);
+    console.warn("Remote model lookup failed.");
   }
   console.warn("Model `" + modelName + "` not accessible in remote.");
   return null;
