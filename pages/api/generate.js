@@ -177,6 +177,7 @@ export default async function(req, res) {
   if (is_image_model) {
     outputType = TYPE.IMAGE_GEN;
     console.log(chalk.blue("\nInput (img_gen, session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(input);
 
     // Images
     if (images && images.length > 0) {
@@ -340,6 +341,7 @@ export default async function(req, res) {
   if (!input.startsWith("!")) {
     inputType = TYPE.NORMAL;
     console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(input);
 
     // Images & files
     if (images && images.length > 0) {

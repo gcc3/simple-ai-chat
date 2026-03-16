@@ -212,7 +212,7 @@ async function generate_msg(model, input) {
   console.log("Config: " + JSON.stringify(config));
 
   // Input
-  console.log("Input (" + config.session + "): " + input.text);
+  console.log("Input (" + config.session + "):\n" + input.text);
 
   // Output
   let output = "";

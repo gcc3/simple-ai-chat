@@ -1281,7 +1281,7 @@ export default function Home() {
     console.log("Config: " + JSON.stringify(config));
 
     // Input
-    console.log("Input (" + config.session + "): " + input.text);
+    console.log("Input (" + config.session + "):\n" + input.text);
     if (input.has_image) console.log("Image input:\n" + input.image_urls_encoded.join("\n"));
     if (input.has_file) console.log("File input:\n" + input.file_urls_encoded.join("\n"));
 
@@ -1663,14 +1663,14 @@ export default function Home() {
 
     // Type I. Normal input
     if (!input.is_function) {
-      console.log("Input (" + config.session + "): " + input.text);
+      console.log("Input (" + config.session + "):\n" + input.text);
       if (input.has_image) console.log("Images: " + input.image_urls.join(", "));
       if (input.has_file)  console.log("Files: " + input.file_urls.join(", "));
     }
 
     // Type II. Tool calls (function calling) input
     if (input.is_function) {
-      console.log("Input (toolcalls, session = " + config.session + "): " + input.text);
+      console.log("Input (toolcalls, session = " + config.session + "):\n" + input.text);
     }
 
     // Tools
@@ -1841,6 +1841,9 @@ export default function Home() {
             q = input.text.split("Q=")[1];
           }
 
+          // Print `Querying...`
+          printOutput(QUERYING);
+
           // Frontend function calling
           const functionCallingResult = [];
           if (globalThis.isMCPServerAvailable) {
@@ -1855,13 +1858,6 @@ export default function Home() {
                   console.log("Calling MCP function: " + JSON.stringify(call));
                   const result = await exec_mcp(call.function.name, JSON.parse(call.function.arguments));
                   console.log("MCP function result: " + JSON.stringify(result));
-                  // Result format:
-                  // {
-                  //   success: true,
-                  //   function: f,
-                  //   message: result.message,
-                  //   event: result.event,
-                  // }
                   functionCallingResult.push({
                     success: true,
                     function: call.function.name,
