@@ -2,8 +2,8 @@ import { getSetting } from "../utils/settingsUtils.js";
 
 export default async function info(args) {
   return "Session: " + getSetting("session") + "\n" +
-         "Server base URL: " + globalThis.serverBaseUrl + "\n" +
          "Network status: " + (globalThis.isOnline ? "online" : "offline") + "\n" +
+         "Server base URL: " + globalThis.serverBaseUrl + "\n" +
          "Model base URL: " + (getSetting("baseUrl") || "___") + "\n" +
          "Model: " + getSetting("model") + "\n" +
          "Ollama base URL: " + globalThis.ollamaBaseUrl + "\n" +
