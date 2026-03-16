@@ -21,7 +21,6 @@ export const CONTENT = {
 };
 
 export const PLACEHOLDER = ":help";
-
 export const WAITING = "";
 export const REASONING = "Reasoning...";
 export const QUERYING = "Querying...";

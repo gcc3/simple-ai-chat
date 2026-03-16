@@ -1,16 +1,9 @@
+import { getSystemInfo } from "../utils/client/systemUtils.js";
+
 export default async function system(args) {
-  const response = await fetch("/api/system/info", {
-    method: "GET",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
-
-  const data = await response.json();
-  if (response.status !== 200) {
-    throw data.error || new Error(`Request failed with status ${response.status}`);
+  const systemInfo = await getSystemInfo();
+  if (!systemInfo) {
+    return "Failed to get system information.";
   }
-
-  const system = JSON.stringify(data.result, null, 2);
-  return system;
+  return JSON.stringify(systemInfo, null, 2);
 }

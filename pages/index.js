@@ -39,6 +39,8 @@ import { resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { getStringMonoLength } from "utils/stringUtils";
 import { getInput } from "utils/inputUtils";
 import { logadd } from "utils/client/logUtils";
+import { pingOllamaAPI } from "utils/ollamaUtils";
+import { getSystemInfo } from "utils/client/systemUtils.js"
 
 const UserDataPrivacy = dynamic(() => import('components/UserDataPrivacy'), { ssr: false });
 const Usage = dynamic(() => import('components/Usage'), { ssr: false });
@@ -54,6 +56,9 @@ globalThis.minimalist = false;
 // Online status
 globalThis.isOnline = true;
 
+// Ollama status
+globalThis.isOllamaAvailable = false;
+
 // Mutation observer
 // will setup in useEffect
 // For input change can handle by onChange
@@ -62,6 +67,8 @@ globalThis.outputMutationObserver = null;
 // Global raw input/output buffer
 globalThis.rawInput = "";
 globalThis.rawOutput = "";
+
+// Global placeholder
 globalThis.rawPlaceholder = PLACEHOLDER;
 
 // Global default model and base URL
@@ -86,7 +93,7 @@ export default function Home() {
 
   // States
   const [placeholder, setPlaceholder] = useState(PLACEHOLDER);
-  const [info, setInfo] = useState();
+  const [info, setInfo] = useState();  // Model info
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
@@ -215,7 +222,7 @@ export default function Home() {
       });
     }
 
-    !globalThis.minimalist && setInfo((
+    setInfo((
       <div>
         model: {log && log["model"].toLowerCase()}<br></br>
       </div>
@@ -728,31 +735,16 @@ export default function Home() {
     initializeSettings();
     initializeSessionMemory();
 
-    // System and user configurations
-    const getSystemInfo = async () => {
+    // Fetch system data (system info, user info, model etc.)
+    const fetchSystemData = async () => {
       // System info
-      let systemInfo = {
-        model: "",
-        base_url: "",
-        role_content_system: "***",
-        welcome_message: "",
-        temperature: 1,
-        top_p: 1,
-        use_node_ai: false,
-        use_payment: false,
-        use_email: false,
-        minimalist: false,
-        default_functions: "",
-        default_role: "",
-        default_stores: "",
-        default_node: "",
-      };
+      const systemInfo = await getSystemInfo();
+      console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
-      // Instead of pinging first, just try system/info and treat failure as offline
-      console.log("Fetching system info...");
+      // Online status
       try {
-        const systemInfoResponse = await fetch('/api/system/info');
-        systemInfo = (await systemInfoResponse.json()).result;
+        const pingResult = await fetch('/api/ping');
+        console.log(pingResult);
       } catch {
         globalThis.isOnline = false;
         globalThis.source = "local";
@@ -762,7 +754,10 @@ export default function Home() {
         resetLocalLogs();
         clearLocalUser();
       }
-      console.log("System info:", JSON.stringify(systemInfo, null, 2));
+      console.log("Set is online: " + globalThis.isOnline);
+
+      // Ollama status
+      globalThis.isOllamaAvailable = await pingOllamaAPI();
 
       // User info
       if (getSetting("user")) {
@@ -811,7 +806,7 @@ export default function Home() {
         console.warn("No model is set, please use command \`:model use [name]\` to set a model.");
       }
     }
-    getSystemInfo();
+    fetchSystemData();
 
     // Language
     let i18nLang = "en";
@@ -1323,7 +1318,7 @@ export default function Home() {
       if (event.data.startsWith("###MODEL###")) {
         const _env_ = event.data.replace("###MODEL###", "").split(',');
         const model = _env_[0];
-        !globalThis.minimalist && setInfo((
+        setInfo((
           <div>
             model: {model}<br></br>
           </div>
@@ -1358,7 +1353,7 @@ export default function Home() {
         if (val >= 7)      valColor = "green";     // green
         else if (val >= 4) valColor = "#CC7722"; // orange
         else if (val >= 0) valColor = "#DE3163"; // red
-        !globalThis.minimalist && setEvaluation(
+        setEvaluation(
           <div>
             self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
           </div>
@@ -1383,14 +1378,14 @@ export default function Home() {
           const mem = _stats_[8];
 
           if (use_eval === "true" && !done_evaluating) {
-            !globalThis.minimalist && setEvaluation(
+            setEvaluation(
               <div>
                 self_eval_score: evaluating...<br></br>
               </div>
             );
           }
 
-          !globalThis.minimalist && setStats(
+          setStats(
             <div>
               func: {func.replaceAll('|', ", ") || "none"}<br></br>
               temperature: {temperature}<br></br>
@@ -1888,7 +1883,7 @@ export default function Home() {
         }
 
         // Set model info
-        !globalThis.minimalist && setInfo((
+        setInfo((
           <div>
             model: {model.name}<br></br>
           </div>
@@ -1939,7 +1934,7 @@ export default function Home() {
             // Streaming mode not support tool calls yet. (Ollama)
 
             // Set model info
-            !globalThis.minimalist && setInfo((
+            setInfo((
               <div>
                 model: {part.model}<br></br>
               </div>
@@ -2136,7 +2131,7 @@ export default function Home() {
         if (data.result.stats.stores) stats += "stores: " + data.result.stats.stores.replaceAll('|', ", ") + "\n";
         if (data.result.stats.node) stats += "node: " + data.result.stats.node + "\n";
 
-        !globalThis.minimalist && setStats((
+        setStats((
           <div>
             {stats.split("\n").map((line, index) => (
               <div key={index}>
@@ -2154,7 +2149,7 @@ export default function Home() {
           if (val >= 7)      valColor = "green";   // green
           else if (val >= 4) valColor = "#CC7722"; // orange
           else if (val >= 0) valColor = "#DE3163"; // red
-          !globalThis.minimalist && setEvaluation(
+          setEvaluation(
             <div>
               self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
             </div>
@@ -2162,7 +2157,7 @@ export default function Home() {
         }
       }
 
-      !globalThis.minimalist && setInfo((
+      setInfo((
         <div>
           model: {data.result.info.model}
           <br></br>
@@ -2590,9 +2585,12 @@ export default function Home() {
       </Head>
 
       <main className={styles.main}>
+        {/* The dot */}
         {!globalThis.minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>}
 
+        {/* Front */}
         <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
+          {/* Input */}
           <form className={styles.inputform} onSubmit={onSubmit}>
             <textarea
               id="input"
@@ -2614,32 +2612,41 @@ export default function Home() {
               value={enter}
             />
           </form>
+
+          {/* Output */}
           <div id="wrapper" ref={elWrapperRef} className={styles.wrapper}>
             {outputImages.map((image, index) => (
               <div key={index} className="mb-5 image-preview">
                 <PreviewImage image={image} />
               </div>
             ))}
+
             <div
               id="output"
               ref={elOutputRef}
               className={styles.output}>
             </div>
-            {evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
-            {stats && <div className={styles.stats}>{stats}</div>}
-            <div className={styles.info} onClick={handleInfoClick}>{info}</div>
+
+            {!minimalist && evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
+            {!minimalist && stats && <div className={styles.stats}>{stats}</div>}
+            {!minimalist && <div className={styles.info} onClick={handleInfoClick}>{info}</div>}
           </div>
         </div>
 
+        {/* Back pages */}
         {display === DISPLAY.BACK &&
           <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
             <div className={styles.container}>
+
+              {/* Nav bar */}
               <div className={styles.nav}>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{ t("Documentation") }</div>
                 {usageDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>{ t("Usage") }</div>}
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.SETTINGS)}>{ t("Settings") }</div>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>{ t("Privacy Policy") }</div>
               </div>
+
+              {/* Content */}
               <div className={styles.content}>
                 {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
                   <Documentation />
@@ -2653,6 +2660,8 @@ export default function Home() {
                 {content === CONTENT.PRIVACY && <div className={styles.contentitem}>
                   <UserDataPrivacy />
                 </div>}
+
+                {/* Copyrights */}
                 <div className={styles.copyrights}>
                   <Copyrights />
                 </div>
