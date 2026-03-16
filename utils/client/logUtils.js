@@ -1,7 +1,7 @@
 import { getSetting } from "../settingsUtils.js";
 import { addLocalLog } from "../offlineUtils.js";
 
-export const logadd = async (input, output, model) => {
+export const logadd = async (model, input, output) => {
   // Online: add log to server
   if (globalThis.isOnline) {
     const logaddResponse = await fetch("/api/log/add", {
