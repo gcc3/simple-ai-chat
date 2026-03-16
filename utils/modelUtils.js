@@ -1,4 +1,4 @@
-import { pingOllamaAPI, listOllamaModels } from './ollamaUtils.js';
+import { listOllamaModels } from './ollamaUtils.js';
 import { setSetting } from './settingsUtils.js';
 
 const tryFetchModel = async (modelName) => {
@@ -20,10 +20,11 @@ const tryFetchModel = async (modelName) => {
 
 const tryGetModel = async (modelName) => {
   console.log("Getting model: " + modelName);
-  if (!await pingOllamaAPI()) {
+  if (!globalThis.isOllamaAvailable) {
     console.warn("Ollama API not accessible.");
     return null;
   }
+
   const ollamaModels = await listOllamaModels();
   const ollamaModel = ollamaModels.find(o => o.name === modelName);
   if (ollamaModel) {
@@ -33,6 +34,7 @@ const tryGetModel = async (modelName) => {
     globalThis.source = "local";
     return resolvedModel;
   }
+
   console.warn("Model `" + modelName + "` not accessible in local.");
   return null;
 }
