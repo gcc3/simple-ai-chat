@@ -1,7 +1,7 @@
 let mcpProcess = null;
 
 // Pings the MCP server to check if it's running
-export async function pingMcpServer(baseUrl = 'http://localhost:11318') {
+export async function pingMcpServer(baseUrl = globalThis.mcpServerBaseUrl) {
   try {
     // set up timeout
     const controller = new AbortController();
@@ -23,7 +23,7 @@ export async function pingMcpServer(baseUrl = 'http://localhost:11318') {
 }
 
 // List functions
-export async function listMcpFunctions(baseUrl = 'http://localhost:11318') {
+export async function listMcpFunctions(baseUrl = globalThis.mcpServerBaseUrl) {
   try {
     // set up timeout
     const controller = new AbortController();
@@ -43,7 +43,7 @@ export async function listMcpFunctions(baseUrl = 'http://localhost:11318') {
 }
 
 // Call MCP tool
-export async function exec_mcp(tool, args, baseUrl = 'http://localhost:11318') {
+export async function exec_mcp(tool, args, baseUrl = globalThis.mcpServerBaseUrl) {
   try {
     // set up timeout
     const controller = new AbortController();
@@ -69,7 +69,7 @@ export async function exec_mcp(tool, args, baseUrl = 'http://localhost:11318') {
 }
 
 // Stops the running MCP server by sending a shutdown request
-export async function stopMcpServer(baseUrl = 'http://localhost:11318') {
+export async function stopMcpServer(baseUrl = globalThis.mcpServerBaseUrl) {
   try {
     // set up timeout
     const controller = new AbortController();

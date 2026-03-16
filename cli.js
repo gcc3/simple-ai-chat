@@ -23,6 +23,8 @@ import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from
 import { getInput } from "./utils/inputUtils.js";
 import { logadd } from "./utils/client/logUtils.js";
 import { exec_f } from "./function.client.js";
+import { pingOllamaAPI } from "./utils/ollamaUtils";
+import { getSystemInfo } from "./utils/client/systemUtils.js"
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');
@@ -30,6 +32,17 @@ process.on('warning', () => {});
 
 // Online status
 globalThis.isOnline = true;
+
+// Ollama status
+globalThis.isOllamaAvailable = false;
+globalThis.ollamaBaseUrl = "http://localhost:11434";
+
+// MCP server
+globalThis.isMCPServerAvailable = false;
+globalThis.mcpServerBaseUrl = "http://localhost:11318";
+
+// Global placeholder
+globalThis.rawPlaceholder = PLACEHOLDER;
 
 // Global default model and base URL
 globalThis.model = "";
@@ -473,10 +486,8 @@ program
     // Set the base URL
     if (opts.baseUrl) {
       globalThis.serverBaseUrl = opts.baseUrl;
-    } else {
-      globalThis.serverBaseUrl = "https://simple-ai.io";
+      console.log("Set server base URL: " + globalThis.serverBaseUrl);
     }
-    console.log("Server base URL: " + globalThis.serverBaseUrl);
 
     const ask = async (question) =>
       new Promise((r) => rl.question(question, r));
@@ -490,31 +501,15 @@ program
     initializeSettings();
     initializeSessionMemory();
 
-    // System and user configurations
-    const getSystemInfo = async () => {
+    // Fetch system data (system info, user info, model etc.)
+    const fetchSystemData = async () => {
       // System info
-      let systemInfo = {
-        model: "",
-        base_url: "",
-        role_content_system: "***",
-        welcome_message: "",
-        temperature: 1,
-        top_p: 1,
-        use_node_ai: false,
-        use_payment: false,
-        use_email: false,
-        minimalist: false,
-        default_functions: "",
-        default_role: "",
-        default_stores: "",
-        default_node: "",
-      };
+      const systemInfo = await getSystemInfo();
+      console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
-      // Instead of pinging first, just try system/info and treat failure as offline
-      console.log("Fetching system info...");
       try {
-        const systemInfoResponse = await fetch('/api/system/info');
-        systemInfo = (await systemInfoResponse.json()).result;
+        const pingResult = await fetch('/api/ping');
+        console.log(pingResult);
       } catch {
         globalThis.isOnline = false;
         globalThis.source = "local";
@@ -524,10 +519,12 @@ program
         resetLocalLogs();
       }
       console.log("Set is online: " + globalThis.isOnline);
-      console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
-      globalThis.rawPlaceholder = PLACEHOLDER;
-      globalThis.placeholder = PLACEHOLDER;
+      // Ollama status
+      globalThis.isOllamaAvailable = await pingOllamaAPI();
+
+      // MCP server status
+      globalThis.isMCPServerAvailable = await pingMcpServer();
 
       // Set welcome message
       if (systemInfo.welcome_message && !getSetting("user")) {
@@ -554,7 +551,7 @@ program
         console.warn("No model is set, please use command `:model ls` to list available models and `:model use [name]` to set a model.");
       }
     }
-    await getSystemInfo();
+    await fetchSystemData();
 
     // Command line start or on submit
     process.stdout.write(":help for help.\n");

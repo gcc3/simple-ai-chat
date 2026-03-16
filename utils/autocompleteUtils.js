@@ -3,9 +3,8 @@ import { getLangCodes } from "./langUtils";
 import { getSettings } from "./settingsUtils";
 import { getThemes } from "./themeUtils";
 import { getVoices } from "./voiceUtils";
-import { listOllamaModels, pingOllamaAPI } from "./ollamaUtils";
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
-
+import { listOllamaModels } from "./ollamaUtils";
+import { getSetting } from "../utils/settingsUtils.js";
 
 export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   if (prefix === ":role " || prefix === ":role use " || prefix === ":role unuse ") {
@@ -80,7 +79,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
 
   if (prefix === ":model " || prefix === ":model use " || prefix === ":model unuse ") {
     let ollamaModels = [];
-    if (await pingOllamaAPI()) {
+    if (globalThis.isOllamaAvailable) {
       ollamaModels = await listOllamaModels();
     }
 
@@ -174,7 +173,7 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
 
     // 4. Models
     let ollamaModels = [];
-    if (await pingOllamaAPI()) {
+    if (globalThis.isOllamaAvailable) {
       ollamaModels = await listOllamaModels();
     }
 
