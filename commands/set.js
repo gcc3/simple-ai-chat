@@ -38,7 +38,7 @@ export default function set(args) {
         "head":           getSetting("head"),
         // "historyIndex":   getSetting("historyIndex"),
         "memLength":      getSetting("memLength"),
-        "groupPassword":  getSetting("groupPassword"),
+        // "groupPassword":  getSetting("groupPassword"),
       };
       return JSON.stringify(info, null, 2);
     } else {
