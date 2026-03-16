@@ -812,7 +812,8 @@ export default function Home() {
       // Model
       const model_ = getSetting("model");
       if (model_) {
-        await getModel(model_);
+        const model = await getModel(model_);
+        setSetting("baseUrl", model.base_url);
       } else {
         console.warn("No model is set, please use command \`:model use [name]\` to set a model.");
       }
