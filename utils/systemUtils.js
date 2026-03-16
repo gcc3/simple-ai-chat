@@ -1,5 +1,3 @@
-import { PLACEHOLDER } from "../constants.js";
-
 export function getSystemConfigurations() {
   // Welcome message
   let welcome_message = process.env.WELCOME_MESSAGE ? process.env.WELCOME_MESSAGE : "";

@@ -11,27 +11,36 @@ export default function set(args) {
 
   if (args.length === 1) {
     if (args[0].toLowerCase() === "all") {
-      const info = "Up Time (key: `_up`): " + getSetting("_up") + " (" + new Date(parseInt(getSetting("_up"))).toLocaleString() + ")\n" +
-                   "Session ID (key: `session`): " + getSetting("session") + "\n" +
-                   "Model (key: `model`): " + getSetting("model") + "\n" +
-                   "Model Base URL (key: `baseUrl`): " + (getSetting("baseUrl") || "___") + "\n" +
-                   "Timeline (key: `time`): " + getSetting("time") + "\n" +
-                   "Language (key: `lang`): " + (getSetting("lang") || "___") + "\n" +
-                   "Functions (key: `functions`): " + (getSetting("functions") || "___") + "\n" +
-                   "Memory length (key: `memLength`, default: 7): " + getSetting("memLength") + "\n" +
-                   "Role (key: `role`): " + (getSetting("role") || "___") + "\n" +
-                   "Stores (key: `stores`): " + (getSetting("stores") || "___") + "\n" +
-                   "Node (key: `node`): " + (getSetting("node") || "___") + "\n" +
-                   "Show stats (key: `useStats`): " + getSetting("useStats") + "\n" +
-                   "Use Self Evaluation (key: `useEval`): " + getSetting("useEval") + "\n" +
-                   "Stream (key: `useStream`): " + getSetting("useStream") + "\n" +
-                   "Speak (key: `useSpeak`): " + getSetting("useSpeak") + "\n" +
-                   "Voice (key: `voice`): " + (getSetting("voice") || "default") + "\n" +
-                   "Location service (key: `useLocation`): " + getSetting("useLocation") + "\n" +
-                   "Location (key: `location`): " + (getSetting("location") || "___") + "\n" +
-                   "Password Masking (key: `passMask`): " + getSetting("passMask") + "\n" +
-                   "Use System Role (key: `useSystemRole`): " + getSetting("useSystemRole") + "\n";
-      return info.trim();
+      const info = {
+        "_up":            getSetting("_up"),
+        "user":           getSetting("user"),
+        "lang":           getSetting("lang"),
+        "theme":          getSetting("theme"),
+        "fullscreen":     getSetting("fullscreen"),
+        "useSpeak":       getSetting("useSpeak"),
+        "voice":          getSetting("voice"),
+        "useStats":       getSetting("useStats"),
+        "useStream":      getSetting("useStream"),
+        "useEval":        getSetting("useEval"),
+        "useLocation":    getSetting("useLocation"),
+        "location":       getSetting("location"),
+        "useSystemRole":  getSetting("useSystemRole"),
+        // "history":        getSetting("history"),
+        "passMask":       getSetting("passMask"),
+        "functions":      getSetting("functions"),
+        "baseUrl":        getSetting("baseUrl"),
+        "role":           getSetting("role"),
+        "stores":         getSetting("stores"),
+        "node":           getSetting("node"),
+        "model":          getSetting("model"),
+        "session":        getSetting("session"),
+        "time":           getSetting("time"),
+        "head":           getSetting("head"),
+        // "historyIndex":   getSetting("historyIndex"),
+        "memLength":      getSetting("memLength"),
+        "groupPassword":  getSetting("groupPassword"),
+      };
+      return JSON.stringify(info, null, 2);
     } else {
       return usage;
     }
