@@ -23,12 +23,7 @@ export async function pingOllamaAPI(baseUrl = globalThis.ollamaBaseUrl) {
 // List available models
 export async function listOllamaModels(baseUrl = globalThis.ollamaBaseUrl) {
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 500);
-    const response = await fetch(`${baseUrl}/v1/models`, { 
-      signal: controller.signal
-    });
-    clearTimeout(timeoutId);
+    const response = await fetch(`${baseUrl}/v1/models`);
     if (!response.ok) return [];
     const data = await response.json();
     const models = data.data.map(model => model.id);
@@ -60,12 +55,7 @@ export async function listOllamaModels(baseUrl = globalThis.ollamaBaseUrl) {
 // Check model is running for given model name
 export async function isModelRunning(modelName, baseUrl = globalThis.ollamaBaseUrl) {
   try {
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 500);
-    const response = await fetch(`${baseUrl}/api/ps`, { 
-      signal: controller.signal
-    });
-    clearTimeout(timeoutId);
+    const response = await fetch(`${baseUrl}/api/ps`);
 
     if (!response.ok) return false;
     const data = await response.json();
