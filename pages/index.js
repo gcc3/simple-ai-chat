@@ -1777,7 +1777,7 @@ export default function Home() {
       top_p: 1,
 
       // conditional params
-      // function calling only available in non-stream mode
+      // function calling only available in non-stream mode for Ollama
       ...(!useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
       ...(is_reasoning_model ? {} : {}),  // TODO, reasoning param not support yet.
       ...(user ? { user: user.username } : {})
@@ -1929,7 +1929,9 @@ export default function Home() {
                 output += "::think::\n";
                 printOutput("::think::\n", false, true);
               }
-              console.log(reasoning);
+
+              output += reasoning;
+              console.log("::" + reasoning);
               printOutput(reasoning, false, true);
             }
 
@@ -1937,9 +1939,11 @@ export default function Home() {
             const content = part.choices[0].delta.content;
             if (content) {
               if (hasReasoning && !reasoningClosed) {
-                output += "::think::\n\n";
-                printOutput("::think::\n\n", false, true);
                 reasoningClosed = true;
+
+                let hasNewLine = output.endsWith("\n");
+                output += (hasNewLine ? "" : "\n") + "::think::\n\n";
+                printOutput((hasNewLine ? "" : "\n") + "::think::\n\n", false, true);
               }
 
               output += content;
