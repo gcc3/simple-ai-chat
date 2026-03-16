@@ -1658,8 +1658,8 @@ export default function Home() {
     // Type I. Normal input
     if (!input.is_function) {
       console.log("Input (" + config.session + "): " + input.text);
-      if (images.length > 0) console.log("Images: " + images.join(", "));
-      if (files.length > 0)  console.log("Files: " + files.join(", "));
+      if (input.has_image) console.log("Images: " + input.image_urls.join(", "));
+      if (input.has_file)  console.log("Files: " + input.file_urls.join(", "));
     }
 
     // Type II. Tool calls (function calling) input
