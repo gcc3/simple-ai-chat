@@ -38,11 +38,11 @@ export async function listOllamaModels(baseUrl = globalThis.ollamaBaseUrl) {
         base_url: `${baseUrl}/v1`,
         price_input: 0,
         price_output: 0,
-        is_tool_calls_supported: 0,
-        is_vision: 0,
-        is_audio: 0,
-        is_reasoning: 0,
-        is_image: 0,
+        is_tool_calls_supported: "0",
+        is_vision: "0",
+        is_audio: "0",
+        is_reasoning: "0",
+        is_image: "0",
       };
     });
     return formattedModels;
@@ -70,11 +70,11 @@ export async function getOllamaModel(modelName, baseUrl = globalThis.ollamaBaseU
       base_url: `${baseUrl}/v1`,
       price_input: 0,
       price_output: 0,
-      is_tool_calls_supported: capabilities.includes('tools') ? 1 : 0,
-      is_vision: capabilities.includes('vision') ? 1 : 0,
-      is_audio: 0,
-      is_reasoning: capabilities.includes('thinking') ? 1 : 0,
-      is_image: 0,
+      is_tool_calls_supported: capabilities.includes('tools') ? "1" : "0",
+      is_vision: capabilities.includes('vision') ? "1" : "0",
+      is_audio: "0",
+      is_reasoning: capabilities.includes('thinking') ? "1" : "0",
+      is_image: "0",
     };
   } catch (error) {
     console.error("Error fetching model info from Ollama API:", error);
