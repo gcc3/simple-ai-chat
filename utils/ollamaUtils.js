@@ -3,7 +3,7 @@ export async function pingOllamaAPI(baseUrl = 'http://localhost:11434') {
   try {
     // set up timeout
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 100);
+    const timeoutId = setTimeout(() => controller.abort(), 500);
     const response = await fetch(`${baseUrl}`, { 
       signal: controller.signal,
       method: 'GET',
@@ -24,7 +24,7 @@ export async function pingOllamaAPI(baseUrl = 'http://localhost:11434') {
 export async function listOllamaModels(baseUrl = 'http://localhost:11434') {
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 100);
+    const timeoutId = setTimeout(() => controller.abort(), 500);
     const response = await fetch(`${baseUrl}/v1/models`, { 
       signal: controller.signal
     });
@@ -61,7 +61,7 @@ export async function listOllamaModels(baseUrl = 'http://localhost:11434') {
 export async function isModelRunning(modelName, baseUrl = 'http://localhost:11434') {
   try {
     const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 100);
+    const timeoutId = setTimeout(() => controller.abort(), 500);
     const response = await fetch(`${baseUrl}/api/ps`, { 
       signal: controller.signal
     });

@@ -1,4 +1,4 @@
-import { listOllamaModels, pingOllamaAPI } from "../utils/ollamaUtils.js";
+import { listOllamaModels } from "../utils/ollamaUtils.js";
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
@@ -18,7 +18,7 @@ export default async function model(args) {
     }
 
     // Check local Ollama models
-    if (await pingOllamaAPI()) {
+    if (globalThis.isOllamaAvailable) {
       const ollamaModels = await listOllamaModels();
       const ollamaModel = ollamaModels.find((m) => m.name === modelName);
       if (ollamaModel) {
@@ -60,7 +60,7 @@ export default async function model(args) {
     }
 
     // Check local Ollama models
-    if (await pingOllamaAPI()) {
+    if (globalThis.isOllamaAvailable) {
       const ollamaModels = await listOllamaModels();
       const ollamaModel = ollamaModels.find((m) => m.name === name);
       if (ollamaModel) {
@@ -139,7 +139,7 @@ export default async function model(args) {
     }
 
     // Ollama models (local models)
-    if (await pingOllamaAPI()) {
+    if (globalThis.isOllamaAvailable) {
       const ollamaModels = await listOllamaModels();
       if (ollamaModels && ollamaModels.length > 0) {
         let ollamaModels_ = [];
@@ -172,7 +172,7 @@ export default async function model(args) {
 
     if (args[0] === "use") {
       // Check local Ollama models
-      if (await pingOllamaAPI()) {
+      if (globalThis.isOllamaAvailable) {
         const ollamaModels = await listOllamaModels();
         const ollamaModel = ollamaModels.find((m) => m.name === modelName);
         if (ollamaModel) {

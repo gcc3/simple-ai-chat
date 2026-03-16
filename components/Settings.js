@@ -6,7 +6,7 @@ import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from '../utils/userUtils.js';
 import { addStoreToSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
 import { getTime } from "utils/timeUtils.js";
-import { pingOllamaAPI, listOllamaModels } from "../utils/ollamaUtils.js";
+import { listOllamaModels } from "../utils/ollamaUtils.js";
 import { setTheme } from "utils/themeUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 import { getLanguages } from "utils/langUtils.js";
@@ -98,7 +98,7 @@ function Settings() {
       }
 
       // Ollama models
-      if (await pingOllamaAPI()) {
+      if (globalThis.isOllamaAvailable) {
         const ollamaModels = await listOllamaModels();
         if (ollamaModels && ollamaModels.length > 0) {
           let models = [];
@@ -424,7 +424,7 @@ function Settings() {
 
   const handleSetOllamaModels = useCallback((name) => async () => {
     // Check local Ollama models
-    if (await pingOllamaAPI()) {
+    if (globalThis.isOllamaAvailable) {
       const ollamaModels = await listOllamaModels();
       const ollamaModel = ollamaModels.find((m) => m.name === name);
       if (ollamaModel) {
