@@ -751,8 +751,7 @@ export default function Home() {
 
       // Online status
       try {
-        const pingResult = await fetch('/api/ping');
-        console.log(pingResult);
+        await fetch('/api/ping');
       } catch {
         globalThis.isOnline = false;
         globalThis.source = "local";

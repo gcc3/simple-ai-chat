@@ -509,8 +509,7 @@ program
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
       try {
-        const pingResult = await fetch('/api/ping');
-        console.log(pingResult);
+        await fetch('/api/ping');
       } catch {
         globalThis.isOnline = false;
         globalThis.source = "local";

@@ -32,23 +32,53 @@ export async function listOllamaModels(baseUrl = globalThis.ollamaBaseUrl) {
     const trimmedModels = models.map(model => model.endsWith(':latest') ? model.slice(0, -7) : model);
     
     // Use format { id: 1, name: "llama3", base_url: "http://localhost:11434/v1", price_input: 0, price_output: 0 }
-    const formattedModels = trimmedModels.map((model, index) => {
+    const formattedModels = trimmedModels.map((modelName, index) => {
       return {
-        name: model,
+        name: modelName,
         base_url: `${baseUrl}/v1`,
         price_input: 0,
         price_output: 0,
-        is_tool_calls_supported: "0",
-        is_vision: "0",
-        is_audio: "0",
-        is_reasoning: "0",
-        is_image: "0",
+        is_tool_calls_supported: 0,
+        is_vision: 0,
+        is_audio: 0,
+        is_reasoning: 0,
+        is_image: 0,
       };
     });
     return formattedModels;
   } catch (error) { 
     console.error("Error fetching models from Ollama API:", error);
     return [];
+  }
+}
+
+// Get model info by name
+export async function getOllamaModel(modelName, baseUrl = globalThis.ollamaBaseUrl) {
+  try {
+    const response = await fetch(`${baseUrl}/api/show`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: modelName, verbose: false }),
+    });
+
+    if (!response.ok) return null;
+    const data = await response.json();
+
+    const capabilities = data.capabilities;
+    return {
+      name: modelName,
+      base_url: `${baseUrl}/v1`,
+      price_input: 0,
+      price_output: 0,
+      is_tool_calls_supported: capabilities.includes('tools') ? 1 : 0,
+      is_vision: capabilities.includes('vision') ? 1 : 0,
+      is_audio: 0,
+      is_reasoning: capabilities.includes('thinking') ? 1 : 0,
+      is_image: 0,
+    };
+  } catch (error) {
+    console.error("Error fetching model info from Ollama API:", error);
+    return null;
   }
 }
 

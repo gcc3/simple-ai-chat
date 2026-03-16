@@ -1,4 +1,4 @@
-import { listOllamaModels } from './ollamaUtils.js';
+import { getOllamaModel } from './ollamaUtils.js';
 import { setSetting } from './settingsUtils.js';
 
 const tryFetchModel = async (modelName) => {
@@ -25,8 +25,7 @@ const tryGetModel = async (modelName) => {
     return null;
   }
 
-  const ollamaModels = await listOllamaModels();
-  const ollamaModel = ollamaModels.find(o => o.name === modelName);
+  const ollamaModel = await getOllamaModel(modelName);
   if (ollamaModel) {
     console.log("Model found in Ollama.");
     setSetting("baseUrl", ollamaModel.base_url);
