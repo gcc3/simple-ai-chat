@@ -2337,7 +2337,7 @@ export default function Home() {
           }, 0);
         } else {
           // Remove line including its trailing newline
-          const deletedLine = value.substring(lineStart, lineEnd);
+          const deletedLine = value.substring(lineStart, lineEnd + 1);
           navigator.clipboard?.writeText(deletedLine);
           const newValue = value.substring(0, lineStart) + value.substring(lineEnd + 1);
           setInput(newValue);
