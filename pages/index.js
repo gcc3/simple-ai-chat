@@ -31,16 +31,16 @@ import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { exec_mcp, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
-import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
+import { STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils";
 import { resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { getStringMonoLength } from "utils/stringUtils";
 import { getInput } from "utils/inputUtils";
 import { logadd } from "utils/client/logUtils";
 import { pingOllamaAPI } from "utils/ollamaUtils";
-import { getSystemInfo } from "utils/client/systemUtils.js"
+import { getSystemInfo } from "utils/client/systemUtils"
 
 const UserDataPrivacy = dynamic(() => import('components/UserDataPrivacy'), { ssr: false });
 const Usage = dynamic(() => import('components/Usage'), { ssr: false });
@@ -2310,6 +2310,43 @@ export default function Home() {
         autocomplete(":model ", true);
         autocomplete(":model use ", true);
         autocomplete(":model unuse ", true);
+      }
+    }
+
+    // Editor shortcuts
+    // Cmd+X (Mac) / Ctrl+X (Windows/Linux): delete current row when no selection
+    if (event.key === "x" && (event.metaKey || event.ctrlKey)) {
+      const start = event.target.selectionStart;
+      const end = event.target.selectionEnd;
+      if (start === end) {
+        event.preventDefault();
+        const value = elInput.value;
+        const lineStart = value.lastIndexOf("\n", start - 1) + 1;
+        const lineEnd = value.indexOf("\n", start);
+        if (lineEnd === -1) {
+          // Last line (no trailing newline)
+          const deletedLine = value.substring(lineStart);
+          navigator.clipboard?.writeText(deletedLine);
+          const newValue = lineStart > 0
+            ? value.substring(0, lineStart - 1)
+            : "";
+          setInput(newValue);
+          setTimeout(() => {
+            elInput.selectionStart = lineStart > 0 ? lineStart - 1 : 0;
+            elInput.selectionEnd = lineStart > 0 ? lineStart - 1 : 0;
+          }, 0);
+        } else {
+          // Remove line including its trailing newline
+          const deletedLine = value.substring(lineStart, lineEnd + 1);
+          navigator.clipboard?.writeText(deletedLine);
+          const newValue = value.substring(0, lineStart) + value.substring(lineEnd + 1);
+          setInput(newValue);
+          setTimeout(() => {
+            elInput.selectionStart = lineStart;
+            elInput.selectionEnd = lineStart;
+          }, 0);
+        }
+        handleInputChange();
       }
     }
   };

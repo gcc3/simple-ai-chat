@@ -4,7 +4,7 @@ import { getSettings } from "./settingsUtils";
 import { getThemes } from "./themeUtils";
 import { getVoices } from "./voiceUtils";
 import { listOllamaModels } from "./ollamaUtils";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting } from "./settingsUtils";
 
 export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   if (prefix === ":role " || prefix === ":role use " || prefix === ":role unuse ") {
