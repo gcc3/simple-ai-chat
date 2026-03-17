@@ -98,7 +98,7 @@ Instll from npm package
 Start the CLI with npm package command
 `sc` or `schat`  
 
-Update
+Update  
 `npm update simple-ai-chat -g`  
 
 Note: Start the CLI interface will also start the MCP client.  
@@ -113,15 +113,15 @@ Start the MCP client
 `node mcp.js`  
 
 Configure the MCP client  
-The `mcpconfig.json` file is located in the `~/.simple` folder.  
+Use `mcpconfig.json` located in the `~/.simple` folder to setup the MCP connection.  
 
-npm package start
+npm package start  
 After installing the npm package, start with the command  
 `smcp`  
 
 Work with Docker MCP Tookit  
 Install Docker and setup the [MCP Tookit](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/).  
-Refer `mcpconfig.json.docker.example`.  
+Use `mcpconfig.json.docker.example` to connect.  
 
 
 Local Installation
