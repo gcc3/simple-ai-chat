@@ -23,7 +23,7 @@ import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from
 import { getInput } from "./utils/inputUtils.js";
 import { logadd } from "./utils/client/logUtils.js";
 import { exec_f } from "./function.client.js";
-import { pingOllamaAPI } from "./utils/ollamaUtils";
+import { pingOllamaAPI } from "./utils/ollamaUtils.js";
 import { getSystemInfo } from "./utils/client/systemUtils.js"
 
 // Disable process warnings (node)
