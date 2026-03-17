@@ -72,7 +72,7 @@ export default async function function_(args) {
         }
       }
 
-      return "Callable functions:\n" + callables + "\n\n"
+      return "Callables:\n" + callables + "\n\n"
            + "System functions:\n" + systemFunctions + "\n\n"
            + (mcpFunctionList.length > 0 ? "MCP functions:\n" + mcpFunctions : "");
     }

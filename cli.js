@@ -212,7 +212,7 @@ async function generate_msg(model, input) {
   console.log("Config: " + JSON.stringify(config));
 
   // Input
-  console.log("Input (" + config.session + "): " + input.text);
+  console.log("Input (" + config.session + "):\n" + input.text);
 
   // Output
   let output = "";
@@ -285,7 +285,7 @@ async function generate_msg(model, input) {
     let messages = [];
     localLogs.forEach((log) => {
       // Only add messages with the same model
-      if (log.model === config.model) {
+      if (log.model === model.name) {
         messages.push({
           role: "user",
           content: log.input,
@@ -309,8 +309,9 @@ async function generate_msg(model, input) {
 
   console.log("Messages: " + JSON.stringify(msg.messages));
 
+  // Local OpenAI client
   const openai = new OpenAI({
-    baseURL: config.base_url,
+    baseURL: model.base_url,
     apiKey: "",  // not necessary for local model, but required for OpenAI API
     dangerouslyAllowBrowser: true,
   });
@@ -508,8 +509,7 @@ program
       console.log("System info:", JSON.stringify(systemInfo, null, 2));
 
       try {
-        const pingResult = await fetch('/api/ping');
-        console.log(pingResult);
+        await fetch('/api/ping');
       } catch {
         globalThis.isOnline = false;
         globalThis.source = "local";

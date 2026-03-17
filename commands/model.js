@@ -1,4 +1,4 @@
-import { listOllamaModels } from "../utils/ollamaUtils.js";
+import { getOllamaModel, listOllamaModels } from "../utils/ollamaUtils.js";
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 
@@ -19,8 +19,7 @@ export default async function model(args) {
 
     // Check local Ollama models
     if (globalThis.isOllamaAvailable) {
-      const ollamaModels = await listOllamaModels();
-      const ollamaModel = ollamaModels.find((m) => m.name === modelName);
+      const ollamaModel = await getOllamaModel(modelName);
       if (ollamaModel) {
         return JSON.stringify(ollamaModel, null, 2);
       }
@@ -54,22 +53,21 @@ export default async function model(args) {
   // Get model by name
   // :model [name?]
   if (args.length === 1 && args[0].startsWith("\"") && args[0].endsWith("\"")) {
-    const name = args[0].slice(1, -1);
-    if (!name) {
+    const modelName = args[0].slice(1, -1);
+    if (!modelName) {
       return "Invalid model name.";
     }
 
     // Check local Ollama models
     if (globalThis.isOllamaAvailable) {
-      const ollamaModels = await listOllamaModels();
-      const ollamaModel = ollamaModels.find((m) => m.name === name);
+      const ollamaModel = await getOllamaModel(modelName);
       if (ollamaModel) {
         return JSON.stringify(ollamaModel, null, 2);
       }
     }
 
     try {
-      const response = await fetch("/api/model/" + name, {
+      const response = await fetch("/api/model/" + modelName, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -125,12 +123,12 @@ export default async function model(args) {
         } else {
           // Models
           if (models && Object.entries(models).length > 0) {
-            let systemModels = [];
+            let modelNames = [];
             Object.entries(models).forEach(([key, value]) => {
-              systemModels.push((currentModel === value.name ? "*\\" : "\\") + value.name);
+              modelNames.push((currentModel === value.name ? "*\\" : "\\") + value.name);
             });
             systemModels_ = "System models:\n" 
-                        + systemModels.join(" ") + "\n\n"; 
+                        + modelNames.join(" ") + "\n\n"; 
           }
         }
       } catch (error) {
@@ -142,12 +140,12 @@ export default async function model(args) {
     if (globalThis.isOllamaAvailable) {
       const ollamaModels = await listOllamaModels();
       if (ollamaModels && ollamaModels.length > 0) {
-        let ollamaModels_ = [];
+        let modelNames = [];
         ollamaModels.forEach((model) => {
-          ollamaModels_.push((currentModel === model.name ? "*\\" : "\\") + model.name);
+          modelNames.push((currentModel === model.name ? "*\\" : "\\") + model.name);
         });
         ollamaModels_ = "Ollama models:\n" 
-                    + ollamaModels_.join(" ") + "\n\n"; 
+                    + modelNames.join(" ") + "\n\n"; 
       }
     }
 

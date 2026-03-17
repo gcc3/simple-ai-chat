@@ -297,7 +297,7 @@ export default function Home() {
     });
   }
 
-  // Attach to session
+  // Attach to session (from history)
   const attachSession = (session) => {
     setSession(session.id);
     setTime(session.id);
@@ -751,8 +751,7 @@ export default function Home() {
 
       // Online status
       try {
-        const pingResult = await fetch('/api/ping');
-        console.log(pingResult);
+        await fetch('/api/ping');
       } catch {
         globalThis.isOnline = false;
         globalThis.source = "local";
@@ -1282,7 +1281,7 @@ export default function Home() {
     console.log("Config: " + JSON.stringify(config));
 
     // Input
-    console.log("Input (" + config.session + "): " + input.text);
+    console.log("Input (" + config.session + "):\n" + input.text);
     if (input.has_image) console.log("Image input:\n" + input.image_urls_encoded.join("\n"));
     if (input.has_file) console.log("File input:\n" + input.file_urls_encoded.join("\n"));
 
@@ -1539,7 +1538,7 @@ export default function Home() {
             functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
             "T=" + JSON.stringify(toolCalls),              // tool calls generated
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
-            "Q=" + q                                       // original user input
+            "Q=" + input.text                              // original user input
           ];
           const newInput = getInput(inputParts.join(" "));
           await generate_sse(model, newInput);
@@ -1664,14 +1663,14 @@ export default function Home() {
 
     // Type I. Normal input
     if (!input.is_function) {
-      console.log("Input (" + config.session + "): " + input.text);
+      console.log("Input (" + config.session + "):\n" + input.text);
       if (input.has_image) console.log("Images: " + input.image_urls.join(", "));
       if (input.has_file)  console.log("Files: " + input.file_urls.join(", "));
     }
 
     // Type II. Tool calls (function calling) input
     if (input.is_function) {
-      console.log("Input (toolcalls, session = " + config.session + "): " + input.text);
+      console.log("Input (toolcalls, session = " + config.session + "):\n" + input.text);
     }
 
     // Tools
@@ -1730,7 +1729,7 @@ export default function Home() {
       let messages = [];
       localLogs.forEach((log) => {
         // Only add messages with the same model
-        if (log.model === config.model) {
+        if (log.model === model.name) {
           messages.push({
             role: "user",
             content: log.input,
@@ -1754,8 +1753,11 @@ export default function Home() {
 
     console.log("Messages: " + JSON.stringify(msg.messages));
 
+    // Print `Genrating...`
+    printOutput(GENERATING);
+
     const openai = new OpenAI({
-      baseURL: config.base_url,
+      baseURL: model.base_url,
       apiKey: "",  // not necessary for local model, but required for OpenAI API
       dangerouslyAllowBrowser: true,
     });
@@ -1775,7 +1777,7 @@ export default function Home() {
       top_p: 1,
 
       // conditional params
-      // function calling only available in non-stream mode
+      // function calling only available in non-stream mode for Ollama
       ...(!useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
       ...(is_reasoning_model ? {} : {}),  // TODO, reasoning param not support yet.
       ...(user ? { user: user.username } : {})
@@ -1796,7 +1798,6 @@ export default function Home() {
       } else {
         // 1. handle general message response
         if (choices[0].message.content && choices[0].message.content.length > 0) {
-          outputType = TYPE.NORMAL;
           const output = choices[0].message.content;
 
           // Add log
@@ -1823,7 +1824,6 @@ export default function Home() {
 
         // 2. handle tool calls response
         if (choices[0].message.tool_calls && choices[0].message.tool_calls.length > 0) {
-          outputType = TYPE.TOOL_CALL;
           const toolCalls = choices[0].message.tool_calls;
 
           // Add log
@@ -1841,6 +1841,9 @@ export default function Home() {
             q = input.text.split("Q=")[1];
           }
 
+          // Print `Querying...`
+          printOutput(QUERYING);
+
           // Frontend function calling
           const functionCallingResult = [];
           if (globalThis.isMCPServerAvailable) {
@@ -1855,13 +1858,6 @@ export default function Home() {
                   console.log("Calling MCP function: " + JSON.stringify(call));
                   const result = await exec_mcp(call.function.name, JSON.parse(call.function.arguments));
                   console.log("MCP function result: " + JSON.stringify(result));
-                  // Result format:
-                  // {
-                  //   success: true,
-                  //   function: f,
-                  //   message: result.message,
-                  //   event: result.event,
-                  // }
                   functionCallingResult.push({
                     success: true,
                     function: call.function.name,
@@ -1888,7 +1884,7 @@ export default function Home() {
             functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
             "T=" + JSON.stringify(toolCalls),              // tool calls generated
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
-            "Q=" + q                                       // original user input
+            "Q=" + input.text                              // original user input
           ];
           const newInput = getInput(inputParts.join(" "));
           await generate_msg(model, newInput);
@@ -1915,6 +1911,11 @@ export default function Home() {
       await new Promise((resolve, reject) => {
         // Handle the data event to process each JSON line
         stream.on('data', (part) => {
+          // Clear the waiting or querying text
+          if (getOutput() === WAITING  || getOutput() === REASONING || getOutput() === QUERYING || getOutput() === SEARCHING || getOutput() === GENERATING) {
+            clearOutput();
+          }
+
           try {
             // 1. handle reasoning output
             const reasoning = part.choices[0].delta.reasoning;
@@ -1924,7 +1925,9 @@ export default function Home() {
                 output += "::think::\n";
                 printOutput("::think::\n", false, true);
               }
-              console.log(reasoning);
+
+              output += reasoning;
+              console.log("::" + reasoning);
               printOutput(reasoning, false, true);
             }
 
@@ -1932,9 +1935,11 @@ export default function Home() {
             const content = part.choices[0].delta.content;
             if (content) {
               if (hasReasoning && !reasoningClosed) {
-                output += "::think::\n\n";
-                printOutput("::think::\n\n", false, true);
                 reasoningClosed = true;
+
+                let hasNewLine = output.endsWith("\n");
+                output += (hasNewLine ? "" : "\n") + "::think::\n\n";
+                printOutput((hasNewLine ? "" : "\n") + "::think::\n\n", false, true);
               }
 
               output += content;
@@ -2241,6 +2246,7 @@ export default function Home() {
 
       // Input from placeholder when pressing tab
       if (elInput.value.length === 0) {
+        console.log("Input from placeholder: " + globalThis.rawPlaceholder);
         setInput(globalThis.rawPlaceholder);
       }
 

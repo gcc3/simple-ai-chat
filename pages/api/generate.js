@@ -49,12 +49,12 @@ export default async function(req, res) {
   const role = req.body.role || "";
   const stores = req.body.stores || "";
   const node = req.body.node || "";
-  const use_stats = req.body.use_stats || false;
-  const use_eval_ = req.body.use_eval || false;
-  const use_location = req.body.use_location || false;
+  const use_stats = req.body.use_stats === "true";
+  const use_eval_ = req.body.use_eval === "true";
+  const use_location = req.body.use_location === "true";
   const location = req.body.location || "";
   const lang = req.body.lang || "";
-  const use_system_role = req.body.use_system_role || true;
+  const use_system_role = req.body.use_system_role === "true";
 
   // Request info
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -177,6 +177,7 @@ export default async function(req, res) {
   if (is_image_model) {
     outputType = TYPE.IMAGE_GEN;
     console.log(chalk.blue("\nInput (img_gen, session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(input);
 
     // Images
     if (images && images.length > 0) {
@@ -340,6 +341,7 @@ export default async function(req, res) {
   if (!input.startsWith("!")) {
     inputType = TYPE.NORMAL;
     console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(input);
 
     // Images & files
     if (images && images.length > 0) {
@@ -454,7 +456,7 @@ export default async function(req, res) {
     }
 
     console.log("\n--- messages ---");
-    console.log(JSON.stringify(msg.messages) + "\n");
+    console.log(JSON.stringify(msg.messages).trim());
 
     // OpenAI chat completion!
     const chatCompletion = await openai.chat.completions.create({

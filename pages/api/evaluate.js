@@ -61,7 +61,7 @@ export async function evaluate(user, input, raw_prompt, output) {
   })
 
   console.log("--- result evaluation --- ");
-  console.log("eval_message: " + JSON.stringify(eval_message));
+  console.log("eval_message: " + JSON.stringify(eval_message).trim());
 
   try {
     let eval_output = "";
