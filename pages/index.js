@@ -2312,6 +2312,39 @@ export default function Home() {
         autocomplete(":model unuse ", true);
       }
     }
+
+    // Editor shortcuts
+    // Cmd+X (Mac) / Ctrl+X (Windows/Linux): delete current row when no selection
+    if (event.key === "x" && (event.metaKey || event.ctrlKey)) {
+      const start = event.target.selectionStart;
+      const end = event.target.selectionEnd;
+      if (start === end) {
+        event.preventDefault();
+        const value = elInput.value;
+        const lineStart = value.lastIndexOf("\n", start - 1) + 1;
+        const lineEnd = value.indexOf("\n", start);
+        if (lineEnd === -1) {
+          // Last line (no trailing newline)
+          const newValue = lineStart > 0
+            ? value.substring(0, lineStart - 1)
+            : "";
+          setInput(newValue);
+          setTimeout(() => {
+            elInput.selectionStart = lineStart > 0 ? lineStart - 1 : 0;
+            elInput.selectionEnd = lineStart > 0 ? lineStart - 1 : 0;
+          }, 0);
+        } else {
+          // Remove line including its trailing newline
+          const newValue = value.substring(0, lineStart) + value.substring(lineEnd + 1);
+          setInput(newValue);
+          setTimeout(() => {
+            elInput.selectionStart = lineStart;
+            elInput.selectionEnd = lineStart;
+          }, 0);
+        }
+        handleInputChange();
+      }
+    }
   };
 
   // Handle input change
