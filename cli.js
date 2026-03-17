@@ -25,6 +25,7 @@ import { logadd } from "./utils/client/logUtils.js";
 import { exec_f } from "./function.client.js";
 import { pingOllamaAPI } from "./utils/ollamaUtils.js";
 import { getSystemInfo } from "./utils/client/systemUtils.js"
+import { pingMcpServer } from "./utils/mcpUtils.js";
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');

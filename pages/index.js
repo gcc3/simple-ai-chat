@@ -34,13 +34,13 @@ import { isUrl } from "utils/urlUtils";
 import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settingsUtils";
 import { resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { getStringMonoLength } from "utils/stringUtils";
 import { getInput } from "utils/inputUtils";
 import { logadd } from "utils/client/logUtils";
 import { pingOllamaAPI } from "utils/ollamaUtils";
-import { getSystemInfo } from "utils/client/systemUtils.js"
+import { getSystemInfo } from "utils/client/systemUtils"
 
 const UserDataPrivacy = dynamic(() => import('components/UserDataPrivacy'), { ssr: false });
 const Usage = dynamic(() => import('components/Usage'), { ssr: false });
