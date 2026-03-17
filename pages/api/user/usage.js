@@ -57,7 +57,7 @@ export default async function (req, res) {
     };
     const token = createToken(payload);
     if (!token) {
-      return res.status(500).json({ 
+      return res.status(500).json({
         success: false,
         error: 'Failed to create token.'
       });
@@ -74,25 +74,25 @@ export default async function (req, res) {
     let totalUsageFeeThisMonth = 0;
     let totalUsageFeeLastMonth = 0;
     for (const usageModel of usageModels) {
-      const model = models.find(m => m.name === usageModel.name);
+      const model = models.find(m => m.name === usageModel.model);
       if (!model) {
         continue;
       }
 
       // Count token
-      const tokenUsageThisMonth = await getModelTokenUsageThisMonth(user.username, usageModel.name);
-      const tokenUsageLastMonth = await getModelTokenUsageLastMonth(user.username, usageModel.name);
+      const tokenUsageThisMonth = await getModelTokenUsageThisMonth(user.username, usageModel.model);
+      const tokenUsageLastMonth = await getModelTokenUsageLastMonth(user.username, usageModel.model);
 
       // Fee calculation
       const feeThisMonth = model.price_input * tokenUsageThisMonth.input + model.price_output * tokenUsageThisMonth.output;
       const feeLastMonth = model.price_input * tokenUsageLastMonth.input + model.price_output * tokenUsageLastMonth.output;
 
       // Token frequencies
-      const tokenFrequencies = await getModelTokenFrequencies(user.username, usageModel.name);
+      const tokenFrequencies = await getModelTokenFrequencies(user.username, usageModel.model);
 
       // Append to model usage
       modelUsageList.push({
-        model: usageModel.name,
+        model: usageModel.model,
         token: {
           this_month: tokenUsageThisMonth,
           last_month: tokenUsageLastMonth,
