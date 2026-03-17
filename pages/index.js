@@ -297,7 +297,7 @@ export default function Home() {
     });
   }
 
-  // Attach to session
+  // Attach to session (from history)
   const attachSession = (session) => {
     setSession(session.id);
     setTime(session.id);

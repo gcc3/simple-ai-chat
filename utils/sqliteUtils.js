@@ -385,7 +385,7 @@ const getSessionLogs = async (session, limit = 12) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.all(`SELECT time, time_h, input, output FROM logs WHERE session = ? LIMIT ?`, [session, limit], (err, rows) => {
+      db.all(`SELECT time, time_h, model, images, input, output FROM logs WHERE session = ? LIMIT ?`, [session, limit], (err, rows) => {
         if (err) {
           reject(err);
         }
