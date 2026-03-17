@@ -215,7 +215,7 @@ export default async function(req, res) {
                                        null, null);
     
     console.log("\n--- messages ---");
-    console.log(JSON.stringify(msg.messages));
+    console.log(JSON.stringify(msg.messages).trim());
     console.log("\nMessage completed.\n");
 
     // Log (chat history)

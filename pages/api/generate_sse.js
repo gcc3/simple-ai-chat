@@ -398,7 +398,7 @@ export default async function(req, res) {
     }
 
     console.log("\n--- messages ---");
-    console.log(JSON.stringify(msg.messages));
+    console.log(JSON.stringify(msg.messages).trim());
 
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");
