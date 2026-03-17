@@ -71,11 +71,16 @@ WolframAlpha APIs https://products.wolframalpha.com/api
 CLI Interface
 -------------
 
-Start the CLI with `sc` or `schat`.  
-Exit with `:exit` command.  
+`cli.js` is for the command-line interface. 
+
+Start the CLI  
+`node cli.js`  
+
+Exit
+`:exit`  
 
 Check version  
-`sc -v` or `sc --version`.  
+`sc [-v|--version]`  
 
 Debug  
 `sc [-d|--debug]`  
@@ -85,8 +90,38 @@ By default the CLI will communicate with `simple-ai.io` server.
 To change the server base URL use the command:
 `sc [-b|--base-url <base_url>]`  
 
-MCP client  
-Start the CLI interface will also start the MCP client.  
+* npm package
+
+Instll from npm package  
+`npm i simple-ai-chat -g`  
+
+Start the CLI with npm package command
+`sc` or `schat`  
+
+Update
+`npm update simple-ai-chat -g`  
+
+Note: Start the CLI interface will also start the MCP client.  
+
+
+MCP Client
+----------
+
+`mcp.js` is for the MCP client.  
+
+Start the MCP client  
+`node mcp.js`  
+
+Configure the MCP client  
+The `mcpconfig.json` file is located in the `~/.simple` folder.  
+
+npm package start
+After installing the npm package, start with the command  
+`smcp`  
+
+Work with Docker MCP Tookit  
+Install Docker and setup the [MCP Tookit](https://docs.docker.com/ai/mcp-catalog-and-toolkit/toolkit/).  
+Refer `mcpconfig.json.docker.example`.  
 
 
 Local Installation
