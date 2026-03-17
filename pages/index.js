@@ -31,7 +31,7 @@ import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { exec_mcp, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
-import { TYPE, STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
+import { STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils";
