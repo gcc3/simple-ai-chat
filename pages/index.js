@@ -2325,6 +2325,8 @@ export default function Home() {
         const lineEnd = value.indexOf("\n", start);
         if (lineEnd === -1) {
           // Last line (no trailing newline)
+          const deletedLine = value.substring(lineStart);
+          navigator.clipboard?.writeText(deletedLine);
           const newValue = lineStart > 0
             ? value.substring(0, lineStart - 1)
             : "";
@@ -2335,6 +2337,8 @@ export default function Home() {
           }, 0);
         } else {
           // Remove line including its trailing newline
+          const deletedLine = value.substring(lineStart, lineEnd);
+          navigator.clipboard?.writeText(deletedLine);
           const newValue = value.substring(0, lineStart) + value.substring(lineEnd + 1);
           setInput(newValue);
           setTimeout(() => {
