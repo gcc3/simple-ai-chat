@@ -1538,7 +1538,7 @@ export default function Home() {
             functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
             "T=" + JSON.stringify(toolCalls),              // tool calls generated
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
-            "Q=" + q                                       // original user input
+            "Q=" + input.text                              // original user input
           ];
           const newInput = getInput(inputParts.join(" "));
           await generate_sse(model, newInput);
@@ -1884,7 +1884,7 @@ export default function Home() {
             functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
             "T=" + JSON.stringify(toolCalls),              // tool calls generated
             "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
-            "Q=" + q                                       // original user input
+            "Q=" + input.text                              // original user input
           ];
           const newInput = getInput(inputParts.join(" "));
           await generate_msg(model, newInput);
