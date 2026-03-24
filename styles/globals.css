@@ -55,6 +55,10 @@
   font-style: normal;
 }
 
+html, body {
+  overscroll-behavior: none;
+}
+
 body {
   background-color: var(--background-color);
 }
