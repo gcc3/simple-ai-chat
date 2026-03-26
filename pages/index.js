@@ -100,8 +100,8 @@ export default function Home() {
   const { fullscreen, setFullscreen, enter, setEnter } = useUI();
 
   // States
-  const [placeholder, setPlaceholder] = useState(PLACEHOLDER);
-  const [info, setInfo] = useState();  // Model info
+  const [placeholder, setPlaceholder] = useState("");  // lazy load
+  const [info, setInfo] = useState();  // model info
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.FRONT);
