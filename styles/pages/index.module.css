@@ -31,7 +31,7 @@
   /* position: sticky;
   top: 0;
   z-index: 10; */
-  padding: 0 8px 20px 8px;
+  padding: 8px;
   background: var(--background-color);
   display: flex;
   flex-direction: column;
@@ -103,6 +103,7 @@
 
 /* back */
 .main .container {
+  padding: 8px;
   border-radius: 10px;
   width: 100%;
   height: 100%;
@@ -149,9 +150,16 @@
 
 /* Styles for differnt window sizes */
 @media screen and (max-width: 649px) {
+  .main .wrapper {
+    padding-bottom: 24px;
+  }
+  .main .output {
+    margin-top: 12px;
+  }
+}
+@media screen and (min-width: 650px) and (max-width: 800px) {
   .main .inputform {
-    padding-top: 8px;
-    padding-bottom: 12px;
+    padding-top: 24px;
   }
   .main .wrapper {
     padding-bottom: 24px;
@@ -160,28 +168,12 @@
     margin-top: 12px;
   }
   .main .container {
-    padding: 8px 8px;
-  }
-}
-@media screen and (min-width: 650px) and (max-width: 800px) {
-  .main .inputform {
-    padding-top: 25px;
-    padding-bottom: 10px;
-  }
-  .main .wrapper {
-    padding-bottom: 24px;
-  }
-  .main .output {
-    margin-top: 10px;
-  }
-  .main .container {
-    padding: 25px 8px;
+    padding: 24px 8px;
   }
 }
 @media screen and (min-width: 801px) {
   .main .inputform {
-    padding-top: 50px;
-    padding-bottom: 20px;
+    padding-top: 56px;
   }
   .main .wrapper {
     padding-bottom: 45px;
@@ -190,6 +182,6 @@
     margin-top: 20px;
   }
   .main .container {
-    padding: 50px 8px;
+    padding: 56px 8px;
   }
 }
