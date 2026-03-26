@@ -151,24 +151,36 @@
 @media screen and (max-width: 649px) {
   .main .inputform {
     padding-top: 8px;
+    padding-bottom: 8px;
   }
   .main .wrapper {
     padding-bottom: 8px;
+  }
+  .main .output {
+    margin-top: 4px;
   }
 }
 @media screen and (min-width: 650px) and (max-width: 800px) {
   .main .inputform {
     padding-top: 25px;
+    padding-bottom: 10px;
   }
   .main .wrapper {
     padding-bottom: 25px;
+  }
+  .main .output {
+    margin-top: 5px;
   }
 }
 @media screen and (min-width: 801px) {
   .main .inputform {
     padding-top: 50px;
+    padding-bottom: 20px;
   }
   .main .wrapper {
     padding-bottom: 50px;
+  }
+  .main .output {
+    margin-top: 10px;
   }
 }
