@@ -27,7 +27,7 @@
   width: 50%;
   height: 100vh;
   background-color: transparent;  /* input area background color */
-  padding: 10px 14px;
+  padding: 14px 14px;
   z-index: 10;  /* ensure it's always on top */
   box-sizing: border-box;
   display: flex;  /* use flexbox to align the input and button */
@@ -207,9 +207,14 @@
     margin-right: 0px;
   }
 }
-@media screen and (min-width: 1000px) and (max-width: 1919px) {
-  
+@media screen and (min-width: 650px) and (max-width: 800px) {
+  .main .copyrights {
+    padding-bottom: 16px;
+  }
 }
-@media screen and (min-width: 1920px) {
-  
+@media screen and (min-width: 801px) {
+  .main .copyrights {
+    padding-bottom: 16px;
+  }
 }
+
