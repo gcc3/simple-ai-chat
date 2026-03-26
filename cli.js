@@ -494,6 +494,20 @@ program
     const ask = async (question) =>
       new Promise((r) => rl.question(question, r));
 
+    const askPassword = async (question) =>
+      new Promise((r) => {
+        const originalWrite = rl._writeToOutput.bind(rl);
+        rl._writeToOutput = (str) => {
+          if (str === question) rl.output.write(str);
+          else if (str === '\r\n' || str === '\n') rl.output.write('\n');
+          else rl.output.write('*'.repeat(str.length));
+        };
+        rl.question(question, (answer) => {
+          rl._writeToOutput = originalWrite;
+          r(answer);
+        });
+      });
+
     const rl = readline.createInterface({
       input: process.stdin,
       output: process.stdout,
@@ -575,6 +589,12 @@ program
         if (input.command === "clear") {
           process.stdout.write('\x1Bc');
           continue;
+        }
+
+        if (input.command === "login") {
+          const username = input.arguments_[0];
+          const password = (await askPassword("")).trim();
+          input.text_raw = ":login " + username + " " + password;
         }
 
         // Execute command
