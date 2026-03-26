@@ -2692,7 +2692,6 @@ export default function Home() {
         {display === DISPLAY.BACK &&
           <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
             <div className={styles.container}>
-
               {/* Nav bar */}
               <div className={styles.nav}>
                 <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{ t("Documentation") }</div>

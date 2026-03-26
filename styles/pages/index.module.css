@@ -8,6 +8,7 @@
   align-items: center;
   overflow-x: hidden;
   height: 100vh;
+  overscroll-behavior: none;
 
   /* Firefox */
   scrollbar-width: none;
@@ -27,11 +28,15 @@
 
 /* input area */
 .main .inputform {
+  /* position: sticky;
+  top: 0;
+  z-index: 10; */
+  padding: 0 8px 20px 8px;
+  background: var(--background-color);
   display: flex;
   flex-direction: column;
   width: 100%;
   max-width: 625px;
-  background-color: transparent;  /* input area background color */
 }
 .main .input {
   height: 45px;
@@ -59,14 +64,13 @@
 
 /* output area */
 .main .wrapper {
-  padding: 10px 14px;
-  padding-top: 30px;
+  padding: 0 18px 50px 18px;
   width: 100%;
   height: 100%;
 }
 .main .output {
   font-weight: normal;
-  margin-top: 20px;
+  margin-top: 10px;
   margin-bottom: 30px;
   margin-left: 4px;
   margin-right: 4px;
@@ -145,19 +149,47 @@
 
 /* Styles for differnt window sizes */
 @media screen and (max-width: 649px) {
-  .main {
-    padding: 8px;
+  .main .inputform {
+    padding-top: 8px;
+    padding-bottom: 8px;
+  }
+  .main .wrapper {
+    padding-bottom: 6px;
+  }
+  .main .output {
+    margin-top: 4px;
+  }
+  .main .container {
+    padding: 8px 8px;
   }
 }
 @media screen and (min-width: 650px) and (max-width: 800px) {
-  .main {
+  .main .inputform {
     padding-top: 25px;
-    padding-bottom: 25px;
+    padding-bottom: 10px;
+  }
+  .main .wrapper {
+    padding-bottom: 20px;
+  }
+  .main .output {
+    margin-top: 10px;
+  }
+  .main .container {
+    padding: 25px 8px;
   }
 }
 @media screen and (min-width: 801px) {
-  .main {
+  .main .inputform {
     padding-top: 50px;
-    padding-bottom: 50px;
+    padding-bottom: 20px;
+  }
+  .main .wrapper {
+    padding-bottom: 45px;
+  }
+  .main .output {
+    margin-top: 20px;
+  }
+  .main .container {
+    padding: 50px 8px;
   }
 }
