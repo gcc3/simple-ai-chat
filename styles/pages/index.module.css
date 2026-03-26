@@ -151,13 +151,13 @@
 @media screen and (max-width: 649px) {
   .main .inputform {
     padding-top: 8px;
-    padding-bottom: 8px;
+    padding-bottom: 12px;
   }
   .main .wrapper {
-    padding-bottom: 6px;
+    padding-bottom: 24px;
   }
   .main .output {
-    margin-top: 4px;
+    margin-top: 12px;
   }
   .main .container {
     padding: 8px 8px;
@@ -169,7 +169,7 @@
     padding-bottom: 10px;
   }
   .main .wrapper {
-    padding-bottom: 20px;
+    padding-bottom: 24px;
   }
   .main .output {
     margin-top: 10px;
