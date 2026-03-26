@@ -161,11 +161,11 @@
   .main .inputform {
     padding-top: 24px;
   }
-  .main .wrapper {
-    padding-bottom: 24px;
-  }
   .main .output {
     margin-top: 12px;
+  }
+  .main .wrapper {
+    padding-bottom: 24px;
   }
   .main .container {
     padding: 24px 8px;
@@ -175,11 +175,11 @@
   .main .inputform {
     padding-top: 56px;
   }
-  .main .wrapper {
-    padding-bottom: 45px;
-  }
   .main .output {
     margin-top: 20px;
+  }
+  .main .wrapper {
+    padding-bottom: 42px;
   }
   .main .container {
     padding: 56px 8px;
