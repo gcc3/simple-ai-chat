@@ -115,7 +115,7 @@ async function generate_sse(model, input) {
     use_eval: "false",
     use_location: "false",
     location: "",
-    lang: "en-US",
+    lang: config.lang,
     use_system_role: "true",
   });
 

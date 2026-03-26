@@ -1,4 +1,4 @@
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getSetting } from "../utils/settingsUtils.js";
 
 
 export function loadConfig() {
