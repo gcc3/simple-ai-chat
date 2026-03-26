@@ -555,6 +555,7 @@ program
     await fetchSystemData();
 
     // Command line start or on submit
+    process.stdout.write('\x1Bc');  // clear
     process.stdout.write(":help for help.\n");
     while (true) {
       const model_ = getSetting("model");
