@@ -15,7 +15,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--stats-text-color", "#767676");
     document.documentElement.style.setProperty("--info-text-color", "#cccccc");
     document.documentElement.style.setProperty("--border-color", "#ccc");
-    document.documentElement.style.setProperty("--border-shadow-color", "rgba(139, 139, 139, 0.4)");
+    document.documentElement.style.setProperty("--border-shadow-color", "rgba(128, 128, 128, 0.4)");
     document.documentElement.style.setProperty("--code-block-background-color", "#f6f6f6");
     document.documentElement.style.setProperty("--code-block-text-color", "#000000");
     document.documentElement.style.setProperty("--inline-code-background-color", "#f6f6f6");
@@ -48,7 +48,7 @@ export function setTheme(theme) {
     document.documentElement.style.setProperty("--stats-text-color", "#9a9a9a");
     document.documentElement.style.setProperty("--info-text-color", "#a1a1a1");
     document.documentElement.style.setProperty("--border-color", "#2c2c2c");
-    document.documentElement.style.setProperty("--border-shadow-color", "rgba(50, 50, 50, 0.4)");
+    document.documentElement.style.setProperty("--border-shadow-color", "rgba(128, 128, 128, 0.4)");
     document.documentElement.style.setProperty("--code-block-background-color", "#212121");
     document.documentElement.style.setProperty("--code-block-text-color", "#c7c7c7");
     document.documentElement.style.setProperty("--inline-code-background-color", "#212121");
