@@ -2385,6 +2385,12 @@ export default function Home() {
     setPlaceholder(placeholderShortern);
   }
 
+  // Re-adjust input height when display (front/back) change.
+  useEffect(() => {
+    reAdjustInputHeight();
+    reAdjustOrUpdatePlaceholder();
+  }, [display]);
+
   // The sleep 1 will magically fix the auto -> height issue
   // But when input change, the height will be jumping, so add doSleepToFixAuto param to control
   const reAdjustInputHeight = async (doSleepToFixAuto = false, triggerBy) => {
@@ -2394,6 +2400,12 @@ export default function Home() {
 
     const elInput = elInputRef.current;
     if (!elInput) {
+      return;
+    }
+
+    // Stop adjusting height when in the back page
+    // When the front page is hidden (display: none), scrollHeight is 0 — skip.
+    if (elInput.offsetParent === null) {
       return;
     }
 
@@ -2410,10 +2422,10 @@ export default function Home() {
           // This sleep magically fixed the hight issue
           await sleep(1)
         }
+
+        // Don't know why but scroll height not 45px, will be 44px
+        elInput.style.height = `${elInput.scrollHeight + 1}px`;
       }
-      
-      // Don't know why but scroll height not 45px, will be 44px
-      elInput.style.height = `${elInput.scrollHeight + 1}px`;
     }
 
     // Fullscreen
