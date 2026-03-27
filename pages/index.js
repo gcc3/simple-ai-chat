@@ -2385,6 +2385,12 @@ export default function Home() {
     setPlaceholder(placeholderShortern);
   }
 
+  // Re-adjust input height when display (front/back) change.
+  useEffect(() => {
+    reAdjustInputHeight();
+    reAdjustOrUpdatePlaceholder();
+  }, [display]);
+
   // The sleep 1 will magically fix the auto -> height issue
   // But when input change, the height will be jumping, so add doSleepToFixAuto param to control
   const reAdjustInputHeight = async (doSleepToFixAuto = false, triggerBy) => {
