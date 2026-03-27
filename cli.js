@@ -492,7 +492,37 @@ program
     }
 
     const ask = async (question) =>
-      new Promise((r) => rl.question(question, r));
+      new Promise((r) => {
+        const originalWrite = rl._writeToOutput.bind(rl);
+        rl._writeToOutput = (str) => {
+          // rl.line is updated before _writeToOutput is called, so it reflects
+          // the current buffer including the character just typed.
+          const line = rl.line || "";
+
+          // Match :login <username> <password-so-far>
+          const loginMatch = line.match(/^(:login\s+\S+\s+)(\S*)$/);
+          if (loginMatch) {
+            const passwordLen = loginMatch[2].length;
+            if (str.length === 1 && str.charCodeAt(0) > 32) {
+              // Single printable non-space character being echoed → mask it
+              rl.output.write("*");
+              return;
+            }
+            // Redraw (backspace / cursor move): str contains prompt + line.
+            // Replace the plaintext password portion with stars.
+            const maskedLine = loginMatch[1] + "*".repeat(passwordLen);
+            const maskedStr = str.replace(line, maskedLine);
+            rl.output.write(maskedStr);
+            return;
+          }
+          
+          rl.output.write(str);
+        };
+        rl.question(question, (answer) => {
+          rl._writeToOutput = originalWrite;
+          r(answer);
+        });
+      });
 
     const rl = readline.createInterface({
       input: process.stdin,
