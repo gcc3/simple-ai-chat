@@ -499,10 +499,17 @@ program
           // the current buffer including the character just typed.
           const line = rl.line || "";
 
-          // Match :login <username> <password-so-far>
-          const loginMatch = line.match(/^(:login\s+\S+\s+)(\S*)$/);
-          if (loginMatch) {
-            const passwordLen = loginMatch[2].length;
+          // Patterns that have a password field — capture (prefix, password-so-far)
+          const passwordPatterns = [
+            /^(:login\s+\S+\s+)(\S*)$/,           // :login <user> <password>
+            /^(:user\s+set\s+pass\s+)(\S*)$/,      // :user set pass <password>
+            /^(:user\s+add\s+\S+\s+\S+\s+)(\S*)$/, // :user add <user> <email> <password>
+            /^(:user\s+join\s+\S+\s+)(\S*)$/,      // :user join <group> <password>
+          ];
+
+          const passwordMatch = passwordPatterns.reduce((found, re) => found || line.match(re), null);
+          if (passwordMatch) {
+            const passwordLen = passwordMatch[2].length;
             if (str.length === 1 && str.charCodeAt(0) > 32) {
               // Single printable non-space character being echoed → mask it
               rl.output.write("*");
@@ -510,12 +517,12 @@ program
             }
             // Redraw (backspace / cursor move): str contains prompt + line.
             // Replace the plaintext password portion with stars.
-            const maskedLine = loginMatch[1] + "*".repeat(passwordLen);
+            const maskedLine = passwordMatch[1] + "*".repeat(passwordLen);
             const maskedStr = str.replace(line, maskedLine);
             rl.output.write(maskedStr);
             return;
           }
-          
+
           rl.output.write(str);
         };
         rl.question(question, (answer) => {
