@@ -43,7 +43,6 @@
   padding: 10px 14px;
   outline: 0;
   outline-color: #adadad;
-  box-shadow: none;
   border: 1px solid var(--border-color);
   border-radius: 9px;
   box-shadow: 0.21875rem 0.21875rem 0.875rem var(--border-shadow-color);
@@ -176,7 +175,7 @@
     padding-top: 56px;
   }
   .main .output {
-    margin-top: 32px;
+    margin-top: 34px;
   }
   .main .wrapper {
     padding-bottom: 52px;

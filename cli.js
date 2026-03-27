@@ -115,7 +115,7 @@ async function generate_sse(model, input) {
     use_eval: "false",
     use_location: "false",
     location: "",
-    lang: "en-US",
+    lang: config.lang,
     use_system_role: "true",
   });
 
@@ -492,7 +492,46 @@ program
     }
 
     const ask = async (question) =>
-      new Promise((r) => rl.question(question, r));
+      new Promise((r) => {
+        const originalWrite = rl._writeToOutput.bind(rl);
+        rl._writeToOutput = (str) => {
+          // rl.line is updated before _writeToOutput is called, so it reflects
+          // the current buffer including the character just typed.
+          const line = rl.line || "";
+
+          // Patterns that have a password field — capture (prefix, password-so-far)
+          const passwordPatterns = [
+            /^(:login\s+\S+\s+)(\S*)$/,           // :login <user> <password>
+            /^(:user\s+set\s+pass\s+)(\S*)$/,      // :user set pass <password>
+            /^(:user\s+add\s+\S+\s+\S+\s+)(\S*)$/, // :user add <user> <email> <password>
+            /^(:user\s+join\s+\S+\s+)(\S*)$/,      // :user join <group> <password>
+          ];
+
+          const passwordMatch = passwordPatterns.reduce((found, re) => found || line.match(re), null);
+
+          // `passMask` settting is true → mask password input with "*"
+          if (passwordMatch && getSetting("passMask") === "true") {
+            const passwordLen = passwordMatch[2].length;
+            if (str.length === 1 && str.charCodeAt(0) > 32) {
+              // Single printable non-space character being echoed → mask it
+              rl.output.write("*");
+              return;
+            }
+            // Redraw (backspace / cursor move): str contains prompt + line.
+            // Replace the plaintext password portion with stars.
+            const maskedLine = passwordMatch[1] + "*".repeat(passwordLen);
+            const maskedStr = str.replace(line, maskedLine);
+            rl.output.write(maskedStr);
+            return;
+          }
+
+          rl.output.write(str);
+        };
+        rl.question(question, (answer) => {
+          rl._writeToOutput = originalWrite;
+          r(answer);
+        });
+      });
 
     const rl = readline.createInterface({
       input: process.stdin,
@@ -555,6 +594,7 @@ program
     await fetchSystemData();
 
     // Command line start or on submit
+    process.stdout.write('\x1Bc');  // clear
     process.stdout.write(":help for help.\n");
     while (true) {
       const model_ = getSetting("model");
