@@ -493,44 +493,82 @@ program
 
     const ask = async (question) =>
       new Promise((r) => {
-        const originalWrite = rl._writeToOutput.bind(rl);
-        rl._writeToOutput = (str) => {
-          // rl.line is updated before _writeToOutput is called, so it reflects
-          // the current buffer including the character just typed.
-          const line = rl.line || "";
+        const lines = [];
 
-          // Patterns that have a password field — capture (prefix, password-so-far)
-          const passwordPatterns = [
-            /^(:login\s+\S+\s+)(\S*)$/,           // :login <user> <password>
-            /^(:user\s+set\s+pass\s+)(\S*)$/,      // :user set pass <password>
-            /^(:user\s+add\s+\S+\s+\S+\s+)(\S*)$/, // :user add <user> <email> <password>
-            /^(:user\s+join\s+\S+\s+)(\S*)$/,      // :user join <group> <password>
-          ];
+        // Installs the password-masking write hook and returns the original writer.
+        const installMaskingWrite = () => {
+          const originalWrite = rl._writeToOutput.bind(rl);
+          rl._writeToOutput = (str) => {
+            // rl.line is updated before _writeToOutput is called, so it reflects
+            // the current buffer including the character just typed.
+            const line = rl.line || "";
 
-          const passwordMatch = passwordPatterns.reduce((found, re) => found || line.match(re), null);
+            // Patterns that have a password field — capture (prefix, password-so-far)
+            const passwordPatterns = [
+              /^(:login\s+\S+\s+)(\S*)$/,           // :login <user> <password>
+              /^(:user\s+set\s+pass\s+)(\S*)$/,      // :user set pass <password>
+              /^(:user\s+add\s+\S+\s+\S+\s+)(\S*)$/, // :user add <user> <email> <password>
+              /^(:user\s+join\s+\S+\s+)(\S*)$/,      // :user join <group> <password>
+            ];
 
-          // `passMask` settting is true → mask password input with "*"
-          if (passwordMatch && getSetting("passMask") === "true") {
-            const passwordLen = passwordMatch[2].length;
-            if (str.length === 1 && str.charCodeAt(0) > 32) {
-              // Single printable non-space character being echoed → mask it
-              rl.output.write("*");
+            const passwordMatch = passwordPatterns.reduce((found, re) => found || line.match(re), null);
+
+            // `passMask` settting is true → mask password input with "*"
+            if (passwordMatch && getSetting("passMask") === "true") {
+              const passwordLen = passwordMatch[2].length;
+              if (str.length === 1 && str.charCodeAt(0) > 32) {
+                // Single printable non-space character being echoed → mask it
+                rl.output.write("*");
+                return;
+              }
+              // Redraw (backspace / cursor move): str contains prompt + line.
+              // Replace the plaintext password portion with stars.
+              const maskedLine = passwordMatch[1] + "*".repeat(passwordLen);
+              const maskedStr = str.replace(line, maskedLine);
+              rl.output.write(maskedStr);
               return;
             }
-            // Redraw (backspace / cursor move): str contains prompt + line.
-            // Replace the plaintext password portion with stars.
-            const maskedLine = passwordMatch[1] + "*".repeat(passwordLen);
-            const maskedStr = str.replace(line, maskedLine);
-            rl.output.write(maskedStr);
-            return;
-          }
 
-          rl.output.write(str);
+            rl.output.write(str);
+          };
+          return originalWrite;
         };
-        rl.question(question, (answer) => {
-          rl._writeToOutput = originalWrite;
-          r(answer);
-        });
+
+        // Recursively collect lines.
+        // - Typing "\" alone on its own line enters multi-line mode.
+        // - Typing "END" on its own line submits everything collected so far.
+        // - Any other line in normal mode submits immediately (single-line fast path).
+        const collectLine = (prompt, multiLineMode = false) => {
+          const originalWrite = installMaskingWrite();
+          rl.question(prompt, (answer) => {
+            rl._writeToOutput = originalWrite;
+
+            // "END" sentinel – submit whatever has been accumulated.
+            if (answer === "END") {
+              r(lines.join("\n"));
+              return;
+            }
+
+            // A lone "\" triggers multi-line mode without adding anything to lines.
+            if (answer === "\\") {
+              collectLine("... ", true);
+              return;
+            }
+
+            // Plain line.
+            lines.push(answer);
+
+            if (multiLineMode) {
+              // In multi-line mode; continue collecting until "END".
+              collectLine("... ", true);
+            } else {
+              // Single-line fast path – return immediately (original behaviour).
+              r(lines[0]);
+            }
+          });
+        };
+
+        collectLine(question);
       });
 
     const rl = readline.createInterface({
