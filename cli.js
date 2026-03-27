@@ -2,7 +2,7 @@
 
 import { program } from "commander";
 import readline from "node:readline";
-import exec from "./command.js";
+import exec, { alias } from "./command.js";
 import tough from 'tough-cookie';
 import fetchCookie from 'fetch-cookie';
 import { initializeSettings } from "./utils/settingsUtils.js";
@@ -12,7 +12,8 @@ import { loadConfig } from "./utils/configUtils.js";
 import { setTime } from "./utils/sessionUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync, unlinkSync } from "fs";
+import { tmpdir } from "os";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { spawn } from "child_process";
@@ -146,6 +147,9 @@ async function generate_sse(model, input) {
 
       let dataStr = part.replace(/^data: /, "");
 
+      // Newline
+      dataStr = dataStr.replace(/###RETURN###/g, "\n");  // Replace all "###RETUREN###" with "\n"
+
       // Status messages
       if (/^###.+?###/.test(dataStr)) {
         // Handle the callings (tool calls)
@@ -162,6 +166,7 @@ async function generate_sse(model, input) {
             console.log(JSON.stringify(toolCall));
           }
         }
+
         continue;
       }
 
@@ -200,7 +205,6 @@ async function generate_sse(model, input) {
       }
 
       // Message
-      dataStr = dataStr.replace(/###RETURN###/g, "\n");  // Replace all "###RETUREN###" with "\n"
       printOutput(dataStr, true);
     }
   }
@@ -458,7 +462,7 @@ export function getVersion() {
 // Example: --base-url <url> => opts.baseUrl
 program
   .name("simple-ai-chat")
-  .description("simple-ai-chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
+  .description("simple-ai chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
   .version(getVersion(), "-v, --version")
   .option("-d, --debug", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
@@ -598,14 +602,65 @@ program
     process.stdout.write(":help for help.\n");
     while (true) {
       const model_ = getSetting("model");
-      const user_raw_input = (await ask(model_ + "> ")).trim();
+
+      // Start
+      let user_raw_input = (await ask("\n" + model_ + "> ")).trim();
       if (!user_raw_input) continue;
 
       // Input
-      const input = getInput(user_raw_input);
+      let input = getInput(user_raw_input);
       if (input.error) {
         printOutput(input.error + "\n");
         continue;
+      }
+
+      // Command alias support
+      input.command = alias(input.command, false);
+
+      // Pre-process input
+      // [:vi] — open editor to compose input
+      if (input.is_command && input.command === "vi" && input.arguments_.length === 0) {
+        const editor = process.env.VISUAL || process.env.EDITOR || input.command;  // $VISUAL > $EDITOR > "vi"
+
+        // Create a temporary file
+        const tmpFile = join(tmpdir(), `sai-vi-${Date.now()}.txt`);
+        writeFileSync(tmpFile, "");  // Create an empty temp file
+        rl.pause();
+
+        const viProcess = spawn(editor, [tmpFile], { stdio: "inherit" });
+        let spawnError = null;
+        viProcess.on("error", (err) => { spawnError = err; });
+        await new Promise((resolve) => viProcess.on("close", resolve));
+        rl.resume();
+        if (spawnError) {
+          if (spawnError.code === "ENOENT") {
+            printOutput(`Editor "${editor}" not found. Please install it or set $VISUAL/$EDITOR.\n`);
+          } else {
+            printOutput(`Editor error: ${spawnError.message}\n`);
+          }
+          try { unlinkSync(tmpFile); } catch { /* ignore */ }
+          continue;
+        }
+        try {
+          user_raw_input = readFileSync(tmpFile, "utf8").trim();
+        } catch {
+          continue;
+        } finally {
+          try { unlinkSync(tmpFile); } catch { /* ignore */ }
+        }
+
+        // Re-create the input
+        input = getInput(user_raw_input);
+        if (input.error) {
+          printOutput(input.error + "\n");
+          continue;
+        }
+
+        // Print the edited input
+        if (user_raw_input) {
+          const quoted = user_raw_input.split("\n").map(line => `> ${line}`).join("\n");
+          printOutput(`${quoted}\n`);
+        }
       }
 
       // Command Input

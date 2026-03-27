@@ -73,14 +73,34 @@ CLI Interface
 
 `cli.js` is for the command-line interface. 
 
-Start the CLI  
-`node cli.js`  
+* Setup with npm package  
 
-Exit
-`:exit`  
+Instll from npm package  
+`npm i simple-ai-chat -g`  
+
+Start the CLI with npm package command
+`sc` or `schat`  
 
 Check version  
 `sc [-v|--version]`  
+
+Update  
+`npm update simple-ai-chat -g`  
+
+Note: Start the CLI interface will also start the MCP client.  
+
+* CLI commands
+
+Use the VI as editor for input  
+`:vi`  
+
+Exit  
+`:exit`  
+
+* Development  
+
+Start the CLI  
+`node cli.js`  
 
 Debug  
 `sc [-d|--debug]`  
@@ -89,19 +109,6 @@ Change server base URL
 By default the CLI will communicate with `simple-ai.io` server.  
 To change the server base URL use the command:
 `sc [-b|--base-url <base_url>]`  
-
-* npm package
-
-Instll from npm package  
-`npm i simple-ai-chat -g`  
-
-Start the CLI with npm package command
-`sc` or `schat`  
-
-Update  
-`npm update simple-ai-chat -g`  
-
-Note: Start the CLI interface will also start the MCP client.  
 
 
 MCP Client
