@@ -147,6 +147,9 @@ async function generate_sse(model, input) {
 
       let dataStr = part.replace(/^data: /, "");
 
+      // Newline
+      dataStr = dataStr.replace(/###RETURN###/g, "\n");  // Replace all "###RETUREN###" with "\n"
+
       // Status messages
       if (/^###.+?###/.test(dataStr)) {
         // Handle the callings (tool calls)
@@ -163,6 +166,7 @@ async function generate_sse(model, input) {
             console.log(JSON.stringify(toolCall));
           }
         }
+
         continue;
       }
 
@@ -201,7 +205,6 @@ async function generate_sse(model, input) {
       }
 
       // Message
-      dataStr = dataStr.replace(/###RETURN###/g, "\n");  // Replace all "###RETUREN###" with "\n"
       printOutput(dataStr, true);
     }
   }
