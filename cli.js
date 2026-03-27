@@ -458,7 +458,7 @@ export function getVersion() {
 // Example: --base-url <url> => opts.baseUrl
 program
   .name("simple-ai-chat")
-  .description("simple-ai-chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
+  .description("simple-ai chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
   .version(getVersion(), "-v, --version")
   .option("-d, --debug", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
