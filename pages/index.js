@@ -2397,6 +2397,12 @@ export default function Home() {
       return;
     }
 
+    // Stop adjusting height when in the back page
+    // When the front page is hidden (display: none), scrollHeight is 0 — skip.
+    if (elInput.offsetParent === null) {
+      return;
+    }
+
     const fullscreenMode = getSetting("fullscreen");
     
     // Non-fullscreen
@@ -2410,10 +2416,10 @@ export default function Home() {
           // This sleep magically fixed the hight issue
           await sleep(1)
         }
+
+        // Don't know why but scroll height not 45px, will be 44px
+        elInput.style.height = `${elInput.scrollHeight + 1}px`;
       }
-      
-      // Don't know why but scroll height not 45px, will be 44px
-      elInput.style.height = `${elInput.scrollHeight + 1}px`;
     }
 
     // Fullscreen
