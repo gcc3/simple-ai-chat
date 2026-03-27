@@ -508,7 +508,9 @@ program
           ];
 
           const passwordMatch = passwordPatterns.reduce((found, re) => found || line.match(re), null);
-          if (passwordMatch) {
+
+          // `passMask` settting is true → mask password input with "*"
+          if (passwordMatch && getSetting("passMask") === "true") {
             const passwordLen = passwordMatch[2].length;
             if (str.length === 1 && str.charCodeAt(0) > 32) {
               // Single printable non-space character being echoed → mask it
