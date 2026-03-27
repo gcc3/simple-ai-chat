@@ -12,8 +12,8 @@ import { loadConfig } from "./utils/configUtils.js";
 import { setTime } from "./utils/sessionUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
-import { readFileSync, writeFileSync, unlinkSync } from "fs";
-import { tmpdir } from "os";
+import { readFileSync, writeFileSync, unlinkSync, mkdirSync, existsSync } from "fs";
+import { tmpdir, homedir } from "os";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { spawn } from "child_process";
@@ -597,6 +597,27 @@ program
     }
     await fetchSystemData();
 
+    // Load cookie
+    const cookieFile = join(homedir(), ".simple", "cookie");
+    if (existsSync(cookieFile)) {
+      try {
+        const cookieData = JSON.parse(readFileSync(cookieFile, "utf-8"));
+        tough.CookieJar.deserialize(cookieData, (err, tempJar) => {
+          if (err) {
+            console.error("Error deserializing cookies:", err);
+            return;
+          }
+          tempJar.store.getAllCookies((err, cookies) => {
+            if (err || !cookies) return;
+            cookies.forEach(cookie => cookieJar.store.putCookie(cookie, () => {}));
+            console.log("Cookies loaded from file: " + cookieFile);
+          });
+        });
+      } catch (error) {
+        console.error("Error reading cookie file:", error);
+      }
+    }
+
     // Command line start or on submit
     process.stdout.write('\x1Bc');  // clear
     process.stdout.write(":help for help.\n");
@@ -676,6 +697,25 @@ program
         if (result) {
           printOutput(result.trim() + "\n");
         }
+
+        // Store cookie
+        if (input.command === "login") {
+          // Store login cookie into ~/.simple/cookie for future use
+          const cookieDir = join(homedir(), ".simple");
+          if (!existsSync(cookieDir)) mkdirSync(cookieDir, { recursive: true });
+          const cookieFile = join(cookieDir, "cookie");
+          if (cookieJar && cookieJar.serialize) {
+            cookieJar.serialize((err, serialized) => {
+              if (err) {
+                console.error("Error serializing cookies:", err);
+                return;
+              }
+              writeFileSync(cookieFile, JSON.stringify(serialized));
+              console.log("Cookies saved to: " + cookieFile);
+            });
+          }
+        } 
+
         continue;
       }
 
