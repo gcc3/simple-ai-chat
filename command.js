@@ -55,6 +55,9 @@ export default function exec(input, files) {
   if (!globalThis.isOnline && isOffineCommand(command) === 0) {
     return "\`" + command + "\` command is not available offline.";
   }
+
+  // Command alias support
+  command = alias(command, true);
   
   // Use strict equality for command matching to avoid partial matches
   if (command === ":help") return help(args);
@@ -231,4 +234,35 @@ export function getHistoryCommandIndex() {
   }
 
   return parseInt(getSetting("historyIndex"));
+}
+
+export function alias(command, hasColon = false) {
+  if (hasColon) {
+    command = command.substring(1);
+  }
+
+  switch (command) {
+    case "h":    command = "help";     break;
+    case "s":    command = "session";  break;
+    case "sa":   command = "attach";   break;  // :session attach [session_id]
+    case "sys":  command = "system";   break;
+    case "u":    command = "user";     break;
+    case "g":    command = "generate"; break;
+    case "m":    command = "model";    break;
+    case "sr":   command = "search";   break;
+    case "f":
+    case "func": command = "function"; break;
+    case "n":    command = "node";     break;
+    case "st":   command = "store";    break;
+    case "r":    command = "reset";    break;
+    case "t":    command = "theme";    break;
+    case "l":    command = "log";      break;
+    case "i":    command = "info";     break;
+    case "v":    command = "vi";       break;
+    case "q":
+    case "quit": command = "exit";     break;
+  }
+
+  // Default to the original command if no match is found
+  return hasColon ? ":" + command : command;
 }

@@ -2,7 +2,7 @@
 
 import { program } from "commander";
 import readline from "node:readline";
-import exec from "./command.js";
+import exec, { alias } from "./command.js";
 import tough from 'tough-cookie';
 import fetchCookie from 'fetch-cookie';
 import { initializeSettings } from "./utils/settingsUtils.js";
@@ -605,17 +605,28 @@ program
 
       // Start
       let user_raw_input = (await ask("\n" + model_ + "> ")).trim();
+      if (!user_raw_input) continue;
 
-      // Pre-input processing (e.g. :vi command)
-      const preInput = getInput(user_raw_input);
+      // Input
+      let input = getInput(user_raw_input);
+      if (input.error) {
+        printOutput(input.error + "\n");
+        continue;
+      }
 
+      // Command alias support
+      input.command = alias(input.command, false);
+
+      // Pre-process input
       // [:vi] — open editor to compose input
-      if (preInput.is_command && preInput.command === "vi" && preInput.arguments_.length === 0) {
-        const editor = process.env.VISUAL || process.env.EDITOR || preInput.command;  // $VISUAL > $EDITOR > "vi"
-        const initialText = user_raw_input.substring(preInput.command.length + 1).trim();
+      if (input.is_command && input.command === "vi" && input.arguments_.length === 0) {
+        const editor = process.env.VISUAL || process.env.EDITOR || input.command;  // $VISUAL > $EDITOR > "vi"
+
+        // Create a temporary file
         const tmpFile = join(tmpdir(), `sai-vi-${Date.now()}.txt`);
-        writeFileSync(tmpFile, initialText);
+        writeFileSync(tmpFile, "");  // Create an empty temp file
         rl.pause();
+
         const viProcess = spawn(editor, [tmpFile], { stdio: "inherit" });
         let spawnError = null;
         viProcess.on("error", (err) => { spawnError = err; });
@@ -638,20 +649,18 @@ program
           try { unlinkSync(tmpFile); } catch { /* ignore */ }
         }
 
+        // Re-create the input
+        input = getInput(user_raw_input);
+        if (input.error) {
+          printOutput(input.error + "\n");
+          continue;
+        }
+
         // Print the edited input
         if (user_raw_input) {
           const quoted = user_raw_input.split("\n").map(line => `> ${line}`).join("\n");
           printOutput(`${quoted}\n`);
         }
-      }
-
-      if (!user_raw_input) continue;
-
-      // Input
-      const input = getInput(user_raw_input);
-      if (input.error) {
-        printOutput(input.error + "\n");
-        continue;
       }
 
       // Command Input
