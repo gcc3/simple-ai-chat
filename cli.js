@@ -601,7 +601,7 @@ program
       const model_ = getSetting("model");
 
       // Start
-      let user_raw_input = (await ask(model_ + "> ")).trim();
+      let user_raw_input = (await ask("\n" + model_ + "> ")).trim();
 
       // Pre-input processing (e.g. :vi command)
       const preInput = getInput(user_raw_input);
