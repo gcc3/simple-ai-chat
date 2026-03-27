@@ -12,7 +12,8 @@ import { loadConfig } from "./utils/configUtils.js";
 import { setTime } from "./utils/sessionUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
-import { readFileSync } from "fs";
+import { readFileSync, writeFileSync, unlinkSync } from "fs";
+import { tmpdir } from "os";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { spawn } from "child_process";
@@ -598,7 +599,49 @@ program
     process.stdout.write(":help for help.\n");
     while (true) {
       const model_ = getSetting("model");
-      const user_raw_input = (await ask(model_ + "> ")).trim();
+
+      // Start
+      let user_raw_input = (await ask(model_ + "> ")).trim();
+
+      // Pre-input processing (e.g. :vi command)
+      const preInput = getInput(user_raw_input);
+
+      // [:vi] — open editor to compose input
+      if (preInput.is_command && preInput.command === "vi" && preInput.arguments_.length === 0) {
+        const editor = process.env.VISUAL || process.env.EDITOR || preInput.command;  // $VISUAL > $EDITOR > "vi"
+        const initialText = user_raw_input.substring(preInput.command.length + 1).trim();
+        const tmpFile = join(tmpdir(), `sai-vi-${Date.now()}.txt`);
+        writeFileSync(tmpFile, initialText);
+        rl.pause();
+        const viProcess = spawn(editor, [tmpFile], { stdio: "inherit" });
+        let spawnError = null;
+        viProcess.on("error", (err) => { spawnError = err; });
+        await new Promise((resolve) => viProcess.on("close", resolve));
+        rl.resume();
+        if (spawnError) {
+          if (spawnError.code === "ENOENT") {
+            printOutput(`Editor "${editor}" not found. Please install it or set $VISUAL/$EDITOR.\n`);
+          } else {
+            printOutput(`Editor error: ${spawnError.message}\n`);
+          }
+          try { unlinkSync(tmpFile); } catch { /* ignore */ }
+          continue;
+        }
+        try {
+          user_raw_input = readFileSync(tmpFile, "utf8").trim();
+        } catch {
+          continue;
+        } finally {
+          try { unlinkSync(tmpFile); } catch { /* ignore */ }
+        }
+
+        // Print the edited input
+        if (user_raw_input) {
+          const quoted = user_raw_input.split("\n").map(line => `> ${line}`).join("\n");
+          printOutput(`${quoted}\n`);
+        }
+      }
+
       if (!user_raw_input) continue;
 
       // Input
