@@ -544,14 +544,14 @@ program
             rl._writeToOutput = originalWrite;
 
             // "END" sentinel – submit whatever has been accumulated.
-            if (answer === "END") {
+            if (answer === ":q") {
               r(lines.join("\n"));
               return;
             }
 
             // A lone "\" triggers multi-line mode without adding anything to lines.
-            if (answer === "\\") {
-              collectLine("... ", true);
+            if (answer === ":multi" || answer === ":ml") {
+                collectLine("Multi-line mode enabled. Type `:q` to submit.\n", true);
               return;
             }
 
@@ -559,8 +559,8 @@ program
             lines.push(answer);
 
             if (multiLineMode) {
-              // In multi-line mode; continue collecting until "END".
-              collectLine("... ", true);
+              // In multi-line mode; continue collecting until ":q".
+              collectLine("", true);
             } else {
               // Single-line fast path – return immediately (original behaviour).
               r(lines[0]);
