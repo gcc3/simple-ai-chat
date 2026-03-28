@@ -899,10 +899,12 @@ export default function Home() {
     // Touch event handler
     let xDown = null;
     let yDown = null;
+    let isTwoFingerTouch = false;
     const handleTouchStart = (event) => {
       if (event.touches.length > 1) {
         event.preventDefault();
       }
+      isTwoFingerTouch = event.touches.length === 2;
       xDown = event.touches[0].clientX;
       yDown = event.touches[0].clientY;
     };
@@ -943,18 +945,35 @@ export default function Home() {
             return;
           }
 
-          // Left swipe show next log
+          // Left swipe: 2-finger = next session, 1-finger = next log
           if (globalThis.STATE === STATES.IDLE) {
-            getSessionLog("next", getSetting("session"), getSetting("time"))
-              .then((r) => {
-                if (!r.result || Object.entries(r.result).length === 0) {
-                  console.log("No next log.");
-                  return;
-                } else {
-                  const log = r.result["log"];
-                  printSessionLog(log);
-                }
-            });
+            if (isTwoFingerTouch) {
+              getHistorySession("next", getSetting("session"))
+                .then((session) => {
+                  clearOutput(true);
+                  if (!session) {
+                    console.log("No next session.");
+                    printOutput("No next session.");
+                    reAdjustOrUpdatePlaceholder(PLACEHOLDER);
+                    setSession(-1);
+                    return;
+                  } else {
+                    attachSession(session);
+                    reAdjustOrUpdatePlaceholder(":session attach " + session.id);
+                  }
+                });
+            } else {
+              getSessionLog("next", getSetting("session"), getSetting("time"))
+                .then((r) => {
+                  if (!r.result || Object.entries(r.result).length === 0) {
+                    console.log("No next log.");
+                    return;
+                  } else {
+                    const log = r.result["log"];
+                    printSessionLog(log);
+                  }
+                });
+            }
           } else {
             console.log("Aborted: generating in progress.");
           }
@@ -965,18 +984,35 @@ export default function Home() {
             return;
           }
 
-          // Right swipe show previous log
+          // Right swipe: 2-finger = previous session, 1-finger = previous log
           if (globalThis.STATE === STATES.IDLE) {
-            getSessionLog("prev", getSetting("session"), getSetting("time"))
-              .then((r) => {
-                if (!r.result || Object.entries(r.result).length === 0) {
-                  console.log("No previous log.");
-                  return;
-                } else {
-                  const log = r.result["log"];
-                  printSessionLog(log);
-                }
-              });
+            if (isTwoFingerTouch) {
+              getHistorySession("prev", getSetting("session"))
+                .then((session) => {
+                  clearOutput(true);
+                  if (!session) {
+                    console.log("No previous session.");
+                    printOutput("No previous session.");
+                    reAdjustOrUpdatePlaceholder(PLACEHOLDER);
+                    setSession(-1);
+                    return;
+                  } else {
+                    attachSession(session);
+                    reAdjustOrUpdatePlaceholder(":session attach " + session.id);
+                  }
+                });
+            } else {
+              getSessionLog("prev", getSetting("session"), getSetting("time"))
+                .then((r) => {
+                  if (!r.result || Object.entries(r.result).length === 0) {
+                    console.log("No previous log.");
+                    return;
+                  } else {
+                    const log = r.result["log"];
+                    printSessionLog(log);
+                  }
+                });
+            }
           } else {
             console.log("Aborted: generating in progress.");
           }
