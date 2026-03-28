@@ -30,7 +30,6 @@
   "Generating.": "Genererar.",
   "Clear output. (`:clear`)": "Rensa utdata. (`:clear`)",
   "Has output.": "Har utdata.",
-  "Clear output and reset session. (`:reset`)": "Rensa utdata och återställ sessionen. (`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "Helskärm. (`:fullscreen [av?]`)",
   "Split screen. (`:fullscreen split`)": "Delskärm. (:fullscreen split)",
   "Clear the input.": "Rensa inmatningen.",
@@ -42,8 +41,6 @@
   "Next command.": "Nästa kommando.",
   "Change focus to input area.": "Byt fokus till inmatningsområdet.",
   "Unfocused from the input area.": "Ofokuserad från inmatningsområdet.",
-  "Swipe Right": "Svep Höger",
-  "Swipe Left": "Svep åt vänster",
   "Not on code block.": "Inte på kodblock.",
   "Generate a response from the AI model with stream.": "Generera ett svar från AI-modellen med ström.",
   "Generate a response from the AI model.": "Skapa ett svar från AI-modellen.",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Som en av `functions calls` kan `redirect_to_url()` omdirigera eller öppna en URL i en ny flik. GPT kommer att göra det automatiskt, till exempel: Öppna OpenAIs officiella webbplats. Du kan använda den för att öppna flera URL:er samtidigt.",
   "On the Back page.": "På baksidan.",
   "Show the Front page.": "Visa förstasidan.",
-  "Show the Settings page.": "Visa sidan Inställningar."
+  "Show the Settings page.": "Visa sidan Inställningar.",
+  "Cut the current row.": "Klipp ut den aktuella raden.",
+  "Cursor is focused on the input area. No text is selected.": "Markören är fokuserad på inmatningsområdet. Ingen text är markerad.",
+  "Swipe from left to right with two fingers.": "Svep från vänster till höger med två fingrar.",
+  "Swipe from left to right": "Svep från vänster till höger",
+  "Swipe from right to left with two fingers.": "Svep från höger till vänster med två fingrar.",
+  "Swipe from right to left": "Svep från höger till vänster"
 }

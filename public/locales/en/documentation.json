@@ -30,7 +30,6 @@
   "Generating.": "Generating.",
   "Clear output. (`:clear`)": "Clear output. (`:clear`)",
   "Has output.": "Has output.",
-  "Clear output and reset session. (`:reset`)": "Clear output and reset session. (`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "Fullscreen. (`:fullscreen [off?]`)",
   "Split screen. (`:fullscreen split`)": "Split screen. (`:fullscreen split`)",
   "Clear the input.": "Clear the input.",
@@ -46,8 +45,6 @@
   "Next command.": "Next command.",
   "Change focus to input area.": "Change focus to input area.",
   "Unfocused from the input area.": "Unfocused from the input area.",
-  "Swipe Right": "Swipe Right",
-  "Swipe Left": "Swipe Left",
   "Not on code block.": "Not on code block.",
   "Generate a response from the AI model with stream.": "Generate a response from the AI model with stream.",
   "Generate a response from the AI model.": "Generate a response from the AI model.",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.",
   "On the Back page.": "On the Back page.",
   "Show the Front page.": "Show the Front page.",
-  "Show the Settings page.": "Show the Settings page."
+  "Show the Settings page.": "Show the Settings page.",
+  "Cut the current row.": "Cut the current row.",
+  "Cursor is focused on the input area. No text is selected.": "Cursor is focused on the input area. No text is selected.",
+  "Swipe from left to right with two fingers.": "Swipe from left to right with two fingers.",
+  "Swipe from left to right": "Swipe from left to right",
+  "Swipe from right to left with two fingers.": "Swipe from right to left with two fingers.",
+  "Swipe from right to left": "Swipe from right to left"
 }

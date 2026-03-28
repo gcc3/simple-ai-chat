@@ -30,7 +30,6 @@
   "Generating.": "Üretiyor.",
   "Clear output. (`:clear`)": "Net çıktı. (`:temizle`)",
   "Has output.": "Çıktı var.",
-  "Clear output and reset session. (`:reset`)": "Çıktıyı temizle ve oturumu sıfırla. (`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "Tam ekran. (`:tam ekran [kapalı?]`)",
   "Split screen. (`:fullscreen split`)": "Bölünmüş ekran. (`:fullscreen split`)",
   "Clear the input.": "Girişi temizle.",
@@ -42,8 +41,6 @@
   "Next command.": "Sonraki komut.",
   "Change focus to input area.": "Odağı giriş alanına çevir.",
   "Unfocused from the input area.": "Giriş alanından dikkati dağılmış.",
-  "Swipe Right": "Sağa Kaydır",
-  "Swipe Left": "Sola Kaydır",
   "Not on code block.": "Kod bloğunda değil.",
   "Generate a response from the AI model with stream.": "Yapay zeka modelinden akış ile yanıt oluşturun.",
   "Generate a response from the AI model.": "AI modelinden bir yanıt üretin.",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Fonksiyon çağrılarından biri olarak, `redirect_to_url()` URL'yi yeni bir sekmede yeniden yönlendirebilir veya açabilir. GPT bunu otomatik olarak yapar, örneğin: OpenAI'ın resmi web sitesini aç. Aynı anda birden fazla URL açmak için kullanabilirsiniz.",
   "On the Back page.": "Arka sayfada.",
   "Show the Front page.": "Ana sayfayı göster.",
-  "Show the Settings page.": "Ayarlar sayfasını göster."
+  "Show the Settings page.": "Ayarlar sayfasını göster.",
+  "Cut the current row.": "Geçerli satırı kes.",
+  "Cursor is focused on the input area. No text is selected.": "İmleç giriş alanına odaklanmış. Hiçbir metin seçili değil.",
+  "Swipe from left to right with two fingers.": "İki parmağınızla soldan sağa kaydırın.",
+  "Swipe from left to right": "Soldan sağa kaydırın",
+  "Swipe from right to left with two fingers.": "İki parmakla sağdan sola kaydırın.",
+  "Swipe from right to left": "Sağdan sola kaydırın"
 }

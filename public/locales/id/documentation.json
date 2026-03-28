@@ -30,7 +30,6 @@
   "Generating.": "Menghasilkan.",
   "Clear output. (`:clear`)": "Keluaran bersih. (`:clear`)",
   "Has output.": "Memiliki keluaran.",
-  "Clear output and reset session. (`:reset`)": "Bersihkan output dan setel ulang sesi. (`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "Layar penuh. (`:fullscreen [mati?]`)",
   "Split screen. (`:fullscreen split`)": "Pembagian layar. (`:layar penuh split`)",
   "Clear the input.": "Bersihkan inputan.",
@@ -42,8 +41,6 @@
   "Next command.": "Perintah berikutnya.",
   "Change focus to input area.": "Ubah fokus ke area input.",
   "Unfocused from the input area.": "Tidak fokus dari area inputan.",
-  "Swipe Right": "Geser ke Kanan",
-  "Swipe Left": "Geser ke Kiri",
   "Not on code block.": "Tidak pada blok kode.",
   "Generate a response from the AI model with stream.": "Hasilkan respons dari model AI dengan stream.",
   "Generate a response from the AI model.": "Hasilkan respons dari model AI.",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Sebagai salah satu `panggilan fungsi`, `redirect_to_url()` dapat mengarahkan atau membuka URL di tab baru. GPT akan melakukannya secara otomatis, misalnya: Buka situs resmi OpenAI. Anda dapat menggunakannya untuk membuka beberapa URL secara bersamaan.",
   "On the Back page.": "Di halaman belakang.",
   "Show the Front page.": "Tampilkan Halaman Depan.",
-  "Show the Settings page.": "Tampilkan halaman Pengaturan."
+  "Show the Settings page.": "Tampilkan halaman Pengaturan.",
+  "Cut the current row.": "Potong baris saat ini.",
+  "Cursor is focused on the input area. No text is selected.": "Kursor difokuskan pada area input. Tidak ada teks yang dipilih.",
+  "Swipe from left to right with two fingers.": "Geser dari kiri ke kanan dengan dua jari.",
+  "Swipe from left to right": "Geser dari kiri ke kanan",
+  "Swipe from right to left with two fingers.": "Gesek dari kanan ke kiri dengan dua jari.",
+  "Swipe from right to left": "Geser dari kanan ke kiri"
 }

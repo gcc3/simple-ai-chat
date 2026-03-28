@@ -30,7 +30,6 @@
   "Generating.": "генерация",
   "Clear output. (`:clear`)": "Очистить вывод. (`:clear`)",
   "Has output.": "Имеет выход.",
-  "Clear output and reset session. (`:reset`)": "Очистить вывод и сбросить сессию. (`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "Полноэкранный режим. (`:fullscreen [выключить?]`)",
   "Split screen. (`:fullscreen split`)": "Разделенный экран. (:fullscreen split)",
   "Clear the input.": "Очистить ввод.",
@@ -42,8 +41,6 @@
   "Next command.": "Следующая команда.",
   "Change focus to input area.": "Переключите фокус на область ввода.",
   "Unfocused from the input area.": "Ушёл с фокуса из поля ввода.",
-  "Swipe Right": "Свайп вправо",
-  "Swipe Left": "Свайп влево",
   "Not on code block.": "Не на блоке кода.",
   "Generate a response from the AI model with stream.": "Создайте ответ от модели ИИ с помощью потока.",
   "Generate a response from the AI model.": "Сгенерируйте ответ от модели ИИ.",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "В качестве одного из `вызовов функций`, `redirect_to_url()` может перенаправлять или открывать URL в новой вкладке. GPT сделает это автоматически, например: Откройте официальный сайт OpenAI. Вы можете использовать его для одновременного открытия нескольких URL.",
   "On the Back page.": "На обратной странице.",
   "Show the Front page.": "Показать главную страницу.",
-  "Show the Settings page.": "Показать страницу настроек."
+  "Show the Settings page.": "Показать страницу настроек.",
+  "Cut the current row.": "Вырезать текущую строку.",
+  "Cursor is focused on the input area. No text is selected.": "Курсор находится в области ввода. Нет выделенного текста.",
+  "Swipe from left to right with two fingers.": "Проведите двумя пальцами слева направо.",
+  "Swipe from left to right": "Смахните слева направо",
+  "Swipe from right to left with two fingers.": "Проведите двумя пальцами справа налево.",
+  "Swipe from right to left": "Смахните справа налево"
 }

@@ -30,7 +30,6 @@
   "Generating.": "生成中。",
   "Clear output. (`:clear`)": "出力をクリアします。(`:clear`)",
   "Has output.": "出力があります。",
-  "Clear output and reset session. (`:reset`)": "出力をクリアしてセッションをリセットします。（`:reset`）",
   "Fullscreen. (`:fullscreen [off?]`)": "フルスクリーン。（`:fullscreen [off?]`）",
   "Split screen. (`:fullscreen split`)": "分割画面。（`:fullscreen split`）",
   "Clear the input.": "入力をクリアします。",
@@ -42,8 +41,6 @@
   "Next command.": "次のコマンド。",
   "Change focus to input area.": "入力エリアにフォーカスを変更します。",
   "Unfocused from the input area.": "入力エリアからフォーカスが外れました。",
-  "Swipe Right": "右にスワイプ",
-  "Swipe Left": "左にスワイプ",
   "Not on code block.": "コードブロックではありません。",
   "Generate a response from the AI model with stream.": "AIモデルからストリームで応答を生成します。",
   "Generate a response from the AI model.": "AIモデルからの応答を生成します。",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "関数呼び出しの一つである`redirect_to_url()`は、URLをリダイレクトしたり新しいタブで開いたりできます。GPTはこれを自動で行います。例えば：OpenAIの公式ウェブサイトを開く。複数のURLを同時に開くことも可能です。",
   "On the Back page.": "裏面のページに。",
   "Show the Front page.": "フロントページを表示します。",
-  "Show the Settings page.": "設定ページを表示"
+  "Show the Settings page.": "設定ページを表示",
+  "Cut the current row.": "現在の行を切り取る",
+  "Cursor is focused on the input area. No text is selected.": "カーソルは入力エリアにフォーカスされています。テキストは選択されていません。",
+  "Swipe from left to right with two fingers.": "2本の指で左から右にスワイプしてください。",
+  "Swipe from left to right": "左から右へスワイプ",
+  "Swipe from right to left with two fingers.": "二本の指で右から左へスワイプしてください。",
+  "Swipe from right to left": "右から左にスワイプ"
 }

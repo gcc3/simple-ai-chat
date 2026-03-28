@@ -30,7 +30,6 @@
   "Generating.": "생성 중입니다.",
   "Clear output. (`:clear`)": "명확한 출력. (`:clear`)",
   "Has output.": "출력이 있습니다.",
-  "Clear output and reset session. (`:reset`)": "출력을 지우고 세션을 재설정합니다. (`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "전체 화면. (`:fullscreen [끄기?]`)",
   "Split screen. (`:fullscreen split`)": "분할 화면. (`:fullscreen split`)",
   "Clear the input.": "입력을 지워주세요.",
@@ -42,8 +41,6 @@
   "Next command.": "다음 명령.",
   "Change focus to input area.": "입력 영역으로 포커스를 변경하세요.",
   "Unfocused from the input area.": "입력 영역에서 초점이 이탈하였습니다.",
-  "Swipe Right": "오른쪽으로 밀기",
-  "Swipe Left": "왼쪽으로 밀기",
   "Not on code block.": "코드 블록이 아닙니다.",
   "Generate a response from the AI model with stream.": "AI 모델에서 스트림으로 응답을 생성합니다.",
   "Generate a response from the AI model.": "AI 모델로부터 응답을 생성하십시오.",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "함수 호출 중 하나인 `redirect_to_url()`은 URL을 리디렉션하거나 새 탭에서 열 수 있습니다. GPT는 이를 자동으로 수행합니다. 예: OpenAI 공식 웹사이트를 엽니다. 여러 URL을 동시에 열도록 사용할 수 있습니다.",
   "On the Back page.": "뒷페이지에.",
   "Show the Front page.": "첫 페이지를 표시하세요.",
-  "Show the Settings page.": "설정 페이지를 표시하세요."
+  "Show the Settings page.": "설정 페이지를 표시하세요.",
+  "Cut the current row.": "현재 행 잘라내기",
+  "Cursor is focused on the input area. No text is selected.": "커서가 입력 영역에 포커스되어 있습니다. 선택된 텍스트가 없습니다.",
+  "Swipe from left to right with two fingers.": "두 손가락으로 왼쪽에서 오른쪽으로 스와이프하세요.",
+  "Swipe from left to right": "왼쪽에서 오른쪽으로 스와이프하세요",
+  "Swipe from right to left with two fingers.": "두 손가락으로 오른쪽에서 왼쪽으로 스와이프하세요.",
+  "Swipe from right to left": "오른쪽에서 왼쪽으로 스와이프하세요"
 }

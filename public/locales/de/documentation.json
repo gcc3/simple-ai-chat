@@ -30,7 +30,6 @@
   "Generating.": "Erzeugen.",
   "Clear output. (`:clear`)": "Klare Ausgabe. (`:clear`)",
   "Has output.": "Hat Ausgabe.",
-  "Clear output and reset session. (`:reset`)": "Ausgabe löschen und Sitzung zurücksetzen. (`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "Vollbild. (`:fullscreen [aus?]`)",
   "Split screen. (`:fullscreen split`)": "Geteilter Bildschirm. (`:fullscreen split`)",
   "Clear the input.": "Löschen Sie die Eingabe.",
@@ -42,8 +41,6 @@
   "Next command.": "Nächster Befehl.",
   "Change focus to input area.": "Fokussiere auf das Eingabefeld.",
   "Unfocused from the input area.": "Unfokussiert vom Eingabebereich.",
-  "Swipe Right": "Nach rechts wischen",
-  "Swipe Left": "Wischen Sie nach links",
   "Not on code block.": "Nicht im Codeblock.",
   "Generate a response from the AI model with stream.": "Erzeuge eine Antwort vom KI-Modell im Stream.",
   "Generate a response from the AI model.": "Generiere eine Antwort aus dem KI-Modell.",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Als einer der `Funktionsaufrufe` kann `redirect_to_url()` eine URL umleiten oder in einem neuen Tab öffnen. GPT erledigt dies automatisch, zum Beispiel: Öffne die offizielle Website von OpenAI. Sie können es verwenden, um mehrere URLs gleichzeitig zu öffnen.",
   "On the Back page.": "Auf der Rückseite.",
   "Show the Front page.": "Zeige die Startseite.",
-  "Show the Settings page.": "Zeige die Einstellungsseite an."
+  "Show the Settings page.": "Zeige die Einstellungsseite an.",
+  "Cut the current row.": "Aktuelle Zeile ausschneiden.",
+  "Cursor is focused on the input area. No text is selected.": "Der Cursor befindet sich im Eingabebereich. Kein Text ist ausgewählt.",
+  "Swipe from left to right with two fingers.": "Wische mit zwei Fingern von links nach rechts.",
+  "Swipe from left to right": "Von links nach rechts wischen",
+  "Swipe from right to left with two fingers.": "Wischen Sie mit zwei Fingern von rechts nach links.",
+  "Swipe from right to left": "Wische von rechts nach links"
 }

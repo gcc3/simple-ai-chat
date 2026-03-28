@@ -30,7 +30,6 @@
   "Generating.": "جارٍ التوليد.",
   "Clear output. (`:clear`)": "مخرجات واضحة. (`:clear`)",
   "Has output.": "لديه مخرجات.",
-  "Clear output and reset session. (`:reset`)": "مسح الناتج وإعادة تعيين الجلسة. (`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "ملء الشاشة. (':fullscreen [إيقاف؟]')",
   "Split screen. (`:fullscreen split`)": "شاشة منقسمة. (`:شاشة كاملة منقسمة`)",
   "Clear the input.": "امسح الإدخال.",
@@ -42,8 +41,6 @@
   "Next command.": "الأمر التالي.",
   "Change focus to input area.": "غير التركيز إلى منطقة الإدخال.",
   "Unfocused from the input area.": "غير مركز من منطقة الإدخال",
-  "Swipe Right": "اسحب لليمين",
-  "Swipe Left": "اسحب لليسار",
   "Not on code block.": "ليس على كتلة الكود.",
   "Generate a response from the AI model with stream.": "قم بإنشاء استجابة من نموذج الذكاء الاصطناعي مع التدفق.",
   "Generate a response from the AI model.": "توليد استجابة من نموذج الذكاء الاصطناعي.",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "كواحدة من `functions calls`، يمكن للدالة `redirect_to_url()` إعادة التوجيه أو فتح URL في علامة تبويب جديدة. سيقوم GPT بذلك تلقائيًا، على سبيل المثال: افتح الموقع الرسمي لـ OpenAI. يمكنك استخدامها لفتح عدة URL في آنٍ واحد.",
   "On the Back page.": "في الصفحة الخلفية.",
   "Show the Front page.": "عرض الصفحة الرئيسية.",
-  "Show the Settings page.": "اعرض صفحة الإعدادات."
+  "Show the Settings page.": "اعرض صفحة الإعدادات.",
+  "Cut the current row.": "قص الصف الحالي.",
+  "Cursor is focused on the input area. No text is selected.": "المؤشر مُركّز على منطقة الإدخال. لم يتم تحديد أي نص.",
+  "Swipe from left to right with two fingers.": "اسحب بإصبعين من اليسار إلى اليمين.",
+  "Swipe from left to right": "اسحب من اليسار إلى اليمين",
+  "Swipe from right to left with two fingers.": "اسحب من اليمين إلى اليسار بإصبعين.",
+  "Swipe from right to left": "اسحب من اليمين إلى اليسار"
 }

@@ -30,7 +30,6 @@
   "Generating.": "Generowanie.",
   "Clear output. (`:clear`)": "Wyczyść wynik. (':clear')",
   "Has output.": "Ma wyjście.",
-  "Clear output and reset session. (`:reset`)": "Wyczyść wyjście i zresetuj sesję. (`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "Pełny ekran. (`:fullscreen [wył.]`)",
   "Split screen. (`:fullscreen split`)": "Podzielony ekran. (`:fullscreen split`)",
   "Clear the input.": "Wyczyść dane wejściowe.",
@@ -42,8 +41,6 @@
   "Next command.": "Następne polecenie.",
   "Change focus to input area.": "Zmień fokus na obszar wprowadzania.",
   "Unfocused from the input area.": "Niezasugerowany z pola wejściowego.",
-  "Swipe Right": "Przesuń w prawo",
-  "Swipe Left": "Przesuń w lewo",
   "Not on code block.": "Nie na bloku kodu.",
   "Generate a response from the AI model with stream.": "Wygeneruj odpowiedź z modelu AI za pomocą strumienia.",
   "Generate a response from the AI model.": "Wygeneruj odpowiedź z modelu AI.",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Jako jedno z `wywołań funkcji`, `redirect_to_url()` może przekierować lub otworzyć URL w nowej karcie. GPT zrobi to automatycznie, na przykład: Otwórz oficjalną stronę OpenAI. Możesz użyć go do jednoczesnego otwierania wielu adresów URL.",
   "On the Back page.": "Na tylnej stronie.",
   "Show the Front page.": "Pokaż stronę główną.",
-  "Show the Settings page.": "Pokaż stronę Ustawień."
+  "Show the Settings page.": "Pokaż stronę Ustawień.",
+  "Cut the current row.": "Wytnij bieżący wiersz.",
+  "Cursor is focused on the input area. No text is selected.": "Kursor jest ustawiony w obszarze wprowadzania. Żaden tekst nie jest zaznaczony.",
+  "Swipe from left to right with two fingers.": "Przeciągnij z lewej do prawej dwoma palcami.",
+  "Swipe from left to right": "Przeciągnij z lewej do prawej",
+  "Swipe from right to left with two fingers.": "Przeciągnij dwoma palcami od prawej do lewej.",
+  "Swipe from right to left": "Przeciągnij od prawej do lewej"
 }

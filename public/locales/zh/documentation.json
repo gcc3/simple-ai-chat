@@ -30,7 +30,6 @@
   "Generating.": "正在生成。",
   "Clear output. (`:clear`)": "清除输出。(`:clear`)",
   "Has output.": "已有输出。",
-  "Clear output and reset session. (`:reset`)": "清除输出并重置会话。(`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "全屏。(`:fullscreen [off?]`)",
   "Split screen. (`:fullscreen split`)": "左右分屏。(`:fullscreen split`)",
   "Clear the input.": "清除输入。",
@@ -42,8 +41,6 @@
   "Next command.": "下一个命令。",
   "Change focus to input area.": "改变聚焦至输入区域。",
   "Unfocused from the input area.": "从输入区域取消聚焦。",
-  "Swipe Right": "向右滑动",
-  "Swipe Left": "向左滑动",
   "Not on code block.": "不在代码块上。",
   "Generate a response from the AI model with stream.": "用流式处理从AI模型生成响应。",
   "Generate a response from the AI model.": "从AI模型生成响应。",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "作为众多 `functions calls` 之一，`redirect_to_url()` 可以重定向或在新标签页中打开 URL。GPT 会自动执行，例如：打开 OpenAI 的官方网站。您可以使用它同时打开多个 URL。",
   "On the Back page.": "在背面页面上。",
   "Show the Front page.": "显示首页。",
-  "Show the Settings page.": "显示设置页面。"
+  "Show the Settings page.": "显示设置页面。",
+  "Cut the current row.": "剪切当前行。",
+  "Cursor is focused on the input area. No text is selected.": "光标聚焦在输入区域。未选择任何文本。",
+  "Swipe from left to right with two fingers.": "用两根手指从左向右滑动。",
+  "Swipe from left to right": "从左向右滑动",
+  "Swipe from right to left with two fingers.": "用两根手指从右向左滑动。",
+  "Swipe from right to left": "从右向左滑动"
 }

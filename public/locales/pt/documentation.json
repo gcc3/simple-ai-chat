@@ -30,7 +30,6 @@
   "Generating.": "Gerando.",
   "Clear output. (`:clear`)": "Saída limpa. (`:clear`)",
   "Has output.": "Tem saída.",
-  "Clear output and reset session. (`:reset`)": "Limpar saída e reiniciar a sessão. (':reset')",
   "Fullscreen. (`:fullscreen [off?]`)": "Tela cheia. (`:fullscreen [desligar?]`)",
   "Split screen. (`:fullscreen split`)": "Tela dividida. (`:fullscreen split`)",
   "Clear the input.": "Limpe a entrada.",
@@ -42,8 +41,6 @@
   "Next command.": "Próximo comando.",
   "Change focus to input area.": "Mudar foco para área de entrada.",
   "Unfocused from the input area.": "Desfocado da área de entrada.",
-  "Swipe Right": "Deslize para a Direita",
-  "Swipe Left": "Deslize para a Esquerda",
   "Not on code block.": "Não em bloco de código.",
   "Generate a response from the AI model with stream.": "Gerar uma resposta do modelo de IA com stream.",
   "Generate a response from the AI model.": "Gere uma resposta a partir do modelo de IA.",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Como uma das `functions calls`, `redirect_to_url()` pode redirecionar ou abrir uma URL em uma nova aba. O GPT fará isso automaticamente, por exemplo: abra o site oficial da OpenAI. Você pode usá-lo para abrir várias URLs simultaneamente.",
   "On the Back page.": "Na página de trás.",
   "Show the Front page.": "Mostrar a página inicial.",
-  "Show the Settings page.": "Mostrar a página de Configurações."
+  "Show the Settings page.": "Mostrar a página de Configurações.",
+  "Cut the current row.": "Cortar a linha atual.",
+  "Cursor is focused on the input area. No text is selected.": "O cursor está focado na área de entrada. Nenhum texto está selecionado.",
+  "Swipe from left to right with two fingers.": "Deslize da esquerda para a direita com dois dedos.",
+  "Swipe from left to right": "Deslize da esquerda para a direita",
+  "Swipe from right to left with two fingers.": "Deslize da direita para a esquerda com dois dedos.",
+  "Swipe from right to left": "Deslize da direita para a esquerda"
 }
