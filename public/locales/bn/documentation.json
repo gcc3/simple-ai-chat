@@ -30,7 +30,6 @@
   "Generating.": "তৈরি করা হচ্ছে।",
   "Clear output. (`:clear`)": "স্পষ্ট আউটপুট। (`:clear`)",
   "Has output.": "আউটপুট আছে।",
-  "Clear output and reset session. (`:reset`)": "আউটপুট পরিষ্কার এবং সেশন রিসেট করুন। (`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "পূর্ণ পর্দা। (`:fullscreen [বন্ধ?]`)",
   "Split screen. (`:fullscreen split`)": "স্ক্রিন ভাগ করা (':fullscreen split')",
   "Clear the input.": "ইনপুট ক্লিয়ার করুন।",
@@ -42,8 +41,6 @@
   "Next command.": "পরবর্তী কমান্ড।",
   "Change focus to input area.": "ইনপুট এরিয়ায় ফোকাস পরিবর্তন করুন।",
   "Unfocused from the input area.": "ইনপুট এলাকা থেকে অমনোযোগী।",
-  "Swipe Right": "ডানে সোয়াইপ করুন",
-  "Swipe Left": "বামে সোয়াইপ করুন",
   "Not on code block.": "কোড ব্লকে না।",
   "Generate a response from the AI model with stream.": "এআই মডেল থেকে স্ট্রিমের মাধ্যমে একটি রেসপন্স জেনারেট করুন।",
   "Generate a response from the AI model.": "AI মডেল থেকে উত্তর জেনারেট করুন।",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "`functions calls`-এর একটি অংশ হিসেবে, `redirect_to_url()` একটি URL-কে নতুন ট্যাবে রিডাইরেক্ট করতে বা খুলতে পারে। GPT এটি স্বয়ংক্রিয়ভাবে করবে, উদাহরণস্বরূপ: OpenAI-এর অফিসিয়াল ওয়েবসাইট খুলুন। একাধিক URL একসঙ্গে খুলতে আপনি এটি ব্যবহার করতে পারেন।",
   "On the Back page.": "পেছনের পৃষ্ঠায়।",
   "Show the Front page.": "ফ্রন্ট পৃষ্ঠা দেখান।",
-  "Show the Settings page.": "সেটিংস পৃষ্ঠা দেখান।"
+  "Show the Settings page.": "সেটিংস পৃষ্ঠা দেখান।",
+  "Cut the current row.": "বর্তমান সারি কেটে ফেলুন।",
+  "Cursor is focused on the input area. No text is selected.": "কার্সর ইনপুট ক্ষেত্রটিতে ফোকাস রয়েছে। কোনো টেক্সট নির্বাচিত হয়নি।",
+  "Swipe from left to right with two fingers.": "দুই আঙ্গুল ব্যবহার করে বামে থেকে ডানে সোয়াইপ করুন।",
+  "Swipe from left to right": "বাম থেকে ডান দিকে সোয়াইপ করুন",
+  "Swipe from right to left with two fingers.": "দুই আঙুল দিয়ে ডান থেকে বামে সোয়াইপ করুন।",
+  "Swipe from right to left": "ডান থেকে বামে স্বাইপ করুন"
 }

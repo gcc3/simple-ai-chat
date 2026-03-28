@@ -69,7 +69,7 @@
 }
 .main .output {
   font-weight: normal;
-  margin-top: 10px;
+  margin-top: 34px;
   margin-bottom: 30px;
   margin-left: 4px;
   margin-right: 4px;
@@ -152,16 +152,10 @@
   .main .wrapper {
     padding-bottom: 24px;
   }
-  .main .output {
-    margin-top: 12px;
-  }
 }
 @media screen and (min-width: 650px) and (max-width: 800px) {
   .main .inputform {
     padding-top: 24px;
-  }
-  .main .output {
-    margin-top: 24px;
   }
   .main .wrapper {
     padding-bottom: 24px;
@@ -173,9 +167,6 @@
 @media screen and (min-width: 801px) {
   .main .inputform {
     padding-top: 56px;
-  }
-  .main .output {
-    margin-top: 34px;
   }
   .main .wrapper {
     padding-bottom: 52px;

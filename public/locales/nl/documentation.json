@@ -30,7 +30,6 @@
   "Generating.": "Genereren.",
   "Clear output. (`:clear`)": "Duidelijke uitvoer. (`:clear`)",
   "Has output.": "Heeft output.",
-  "Clear output and reset session. (`:reset`)": "Wis uitvoer en reset sessie. (':reset')",
   "Fullscreen. (`:fullscreen [off?]`)": "Volledig scherm. (`:fullscreen [uit?]`)",
   "Split screen. (`:fullscreen split`)": "Splitscreen. (':volledig scherm splitsen')",
   "Clear the input.": "Wis de invoer.",
@@ -42,8 +41,6 @@
   "Next command.": "Volgend commando.",
   "Change focus to input area.": "Verander focus naar invoergebied.",
   "Unfocused from the input area.": "Niet gefocust van het invoerveld.",
-  "Swipe Right": "Swipe naar rechts",
-  "Swipe Left": "Veeg naar links",
   "Not on code block.": "Niet op codeblok.",
   "Generate a response from the AI model with stream.": "Genereer een reactie van het AI-model met stream.",
   "Generate a response from the AI model.": "Genereer een reactie van het AI-model.",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "Als een van de `functions calls` kan `redirect_to_url()` een URL omleiden of in een nieuw tabblad openen. GPT doet dit automatisch, bijvoorbeeld: Open de officiële website van OpenAI. Je kunt het gebruiken om meerdere URL's tegelijkertijd te openen.",
   "On the Back page.": "Op de achterpagina.",
   "Show the Front page.": "Toon de voorpagina.",
-  "Show the Settings page.": "Toon de instellingenpagina."
+  "Show the Settings page.": "Toon de instellingenpagina.",
+  "Cut the current row.": "Knip de huidige rij.",
+  "Cursor is focused on the input area. No text is selected.": "De cursor staat in het invoerveld. Er is geen tekst geselecteerd.",
+  "Swipe from left to right with two fingers.": "Veeg met twee vingers van links naar rechts.",
+  "Swipe from left to right": "Veeg van links naar rechts",
+  "Swipe from right to left with two fingers.": "Veeg met twee vingers van rechts naar links.",
+  "Swipe from right to left": "Veeg van rechts naar links"
 }

@@ -30,7 +30,6 @@
   "Generating.": "जेनरेटिंग।",
   "Clear output. (`:clear`)": "स्पष्ट आउटपुट। (`:clear`)",
   "Has output.": "के पास आउटपुट है।",
-  "Clear output and reset session. (`:reset`)": "आउटपुट साफ करें और सत्र को रीसेट करें। (`:reset`)",
   "Fullscreen. (`:fullscreen [off?]`)": "पूर्ण स्क्रीन। (`:fullscreen [बंद?]`)",
   "Split screen. (`:fullscreen split`)": "स्प्लिट स्क्रीन। (:fullscreen split)",
   "Clear the input.": "इनपुट को साफ़ करें।",
@@ -42,8 +41,6 @@
   "Next command.": "अगला आदेश।",
   "Change focus to input area.": "इनपुट क्षेत्र पर फोकस बदलें।",
   "Unfocused from the input area.": "इनपुट क्षेत्र से अनफोकस्ड।",
-  "Swipe Right": "दायें स्वाइप करें",
-  "Swipe Left": "बाएं स्वाइप करें",
   "Not on code block.": "कोड ब्लॉक पर नहीं।",
   "Generate a response from the AI model with stream.": "AI मॉडल से प्रतिक्रिया उत्पन्न करें स्ट्रीम के साथ।",
   "Generate a response from the AI model.": "AI मॉडल से प्रतिक्रिया उत्पन्न करें।",
@@ -140,5 +137,11 @@
   "As one of the `functions calls`, `redirect_to_url()` can redirect or open URL in a new tab. GPT will do it automatically, for example: Open the official website of OpenAI. You can use it to open multiple URLs, simultaneously.": "एक `functions calls` में से, `redirect_to_url()` किसी URL को रीडायरेक्ट कर सकता है या नई टैब में खोल सकता है। GPT इसे स्वतः करेगा, उदाहरण के लिए: \"Open the official website of OpenAI\". आप इसका उपयोग एक साथ कई URLs खोलने के लिए कर सकते हैं।",
   "On the Back page.": "पिछले पृष्ठ पर।",
   "Show the Front page.": "मुखपृष्ठ दिखाएँ।",
-  "Show the Settings page.": "सेटिंग्स पृष्ठ दिखाएं।"
+  "Show the Settings page.": "सेटिंग्स पृष्ठ दिखाएं।",
+  "Cut the current row.": "वर्तमान पंक्ति काटें।",
+  "Cursor is focused on the input area. No text is selected.": "कर्सर इनपुट क्षेत्र पर केंद्रित है। कोई पाठ चयनित नहीं है।",
+  "Swipe from left to right with two fingers.": "दो उंगलियों से बाईं ओर से दाईं ओर स्वाइप करें।",
+  "Swipe from left to right": "बाएं से दाएं स्वाइप करें",
+  "Swipe from right to left with two fingers.": "दो उंगलियों से दाएं से बाएं स्वाइप करें।",
+  "Swipe from right to left": "दाएँ से बाएँ स्वाइप करें"
 }

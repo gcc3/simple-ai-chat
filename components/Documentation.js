@@ -79,10 +79,12 @@ const Documentation = () => {
   ];
 
   const gestures = [
-    { action: t("Previous log (same session)."), gesture: t("Swipe Right"), condition: t("Not on code block.") },
-    { action: t("Next log (same session)."), gesture: t("Swipe Left"), condition: t("Not on code block.") },
-    { action: t("Auto input/Autocomplete."), gesture: t("Swipe Right"), condition: t("Touch swipe on input box.") },
-    { action: t("Delete input."), gesture: t("Swipe Left"), condition: t("Touch swipe on input box.") },
+    { action: t("Previous log (same session)."), gesture: t("Swipe from right to left"), condition: t("Not on code block.") },
+    { action: t("Next log (same session)."), gesture: t("Swipe from left to right"), condition: t("Not on code block.") },
+    { action: t("Previous session."), gesture: t("Swipe from right to left with two fingers."), condition: t("Not on code block.") },
+    { action: t("Next session."), gesture: t("Swipe from left to right with two fingers."), condition: t("Not on code block.") },
+    { action: t("Auto input/Autocomplete."), gesture: t("Swipe from left to right"), condition: t("Touch swipe on input box.") },
+    { action: t("Delete input."), gesture: t("Swipe from right to left"), condition: t("Touch swipe on input box.") },
   ];
 
   const apis = [
