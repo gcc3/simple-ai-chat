@@ -1,6 +1,7 @@
 import { updateUserSetting } from '../utils/userUtils.js';
 import emitter from '../utils/eventsUtils.js';
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { FULLSCREEN } from "../constants.js";
 
 export default function fullscreen(args) {
   const usage = "Usage: :fullscreen" + "\n" +
@@ -8,11 +9,11 @@ export default function fullscreen(args) {
 
   // If no argument is provided
   if (args.length === 0) {
-    setSetting('fullscreen', "default");
-    emitter.emit("ui:set_fullscreen", "default");
+    setSetting('fullscreen', FULLSCREEN.Default);
+    emitter.emit("ui:set_fullscreen", FULLSCREEN.Default);
     
     if (getSetting("user")) {
-      updateUserSetting("fullscreen", "default");
+      updateUserSetting("fullscreen", FULLSCREEN.Default);
     }
     return "Fullscreen default enabled.";
   }
@@ -30,21 +31,21 @@ export default function fullscreen(args) {
     }
 
     if (config === "split") {
-      setSetting('fullscreen', "split");
-      emitter.emit("ui:set_fullscreen", "split");
+      setSetting('fullscreen', FULLSCREEN.Split);
+      emitter.emit("ui:set_fullscreen", FULLSCREEN.Split);
       
       if (getSetting("user")) {
-        updateUserSetting("fullscreen", "split");
+        updateUserSetting("fullscreen", FULLSCREEN.Split);
       }
       return "Fullscreen split vertically.";
     }
 
     if (config === "off") {
-      setSetting('fullscreen', "off");
-      emitter.emit("ui:set_fullscreen", "off");
+      setSetting('fullscreen', FULLSCREEN.Off);
+      emitter.emit("ui:set_fullscreen", FULLSCREEN.Off);
 
       if (getSetting("user")) {
-        updateUserSetting("fullscreen", "off");
+        updateUserSetting("fullscreen", FULLSCREEN.Off);
       }
       return "Fullscreen disabled.";
     }

@@ -1041,7 +1041,7 @@ export default function Home() {
     window.addEventListener('touchend', handleTouchEnd, false);
 
     // UI event listeners
-    emitter.on("ui:set_fullscreen", setFullscreen);
+    emitter.on("ui:set_fullscreen", dispatchFullscreen);
     emitter.on("ui:set_enter", setEnter);
 
     // Cleanup
@@ -1056,7 +1056,7 @@ export default function Home() {
       window.removeEventListener('touchend', handleTouchEnd, false);
 
       // Remove UI event listeners
-      emitter.removeListener("ui:set_fullscreen", setFullscreen);
+      emitter.removeListener("ui:set_fullscreen", dispatchFullscreen);
       emitter.removeListener("ui:set_enter", setEnter);
     }
   }, []);
