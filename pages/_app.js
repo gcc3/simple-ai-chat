@@ -1,7 +1,6 @@
 import '../styles/globals.css';
 import '../styles/tailwind.css';
 import '../i18n';
-import Providers from '../contexts/Providers';
 import Head from 'next/head';
 import { useEffect } from 'react';
 
@@ -28,9 +27,7 @@ function App({ Component, pageProps }) {
         />
       </Head>
       
-      <Providers>
-        <Component {...pageProps} />
-      </Providers>
+      <Component {...pageProps} />
     </>
   );
 }

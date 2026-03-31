@@ -25,7 +25,6 @@ import OpenAI from "openai";
 import { Readable } from "stream";
 import { clearLocalUser, refreshLocalUser, updateUserSetting } from "utils/userUtils";
 import { getModel } from "utils/modelUtils";
-import { useUI } from '../contexts/UIContext';
 import { initializeSettings, isSettingEmpty } from "utils/settingsUtils";
 import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { exec_mcp, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
@@ -41,6 +40,7 @@ import { getInput } from "utils/inputUtils";
 import { logadd } from "utils/client/logUtils";
 import { pingOllamaAPI } from "utils/ollamaUtils";
 import { getSystemInfo } from "utils/client/systemUtils"
+import emitter from "../utils/eventsUtils.js";
 
 const UserDataPrivacy = dynamic(() => import('components/UserDataPrivacy'), { ssr: false });
 const Usage = dynamic(() => import('components/Usage'), { ssr: false });
@@ -97,9 +97,9 @@ const clearDonutInterval = () => {
 }
 
 export default function Home() {
-  const { fullscreen, setFullscreen, enter, setEnter } = useUI();
-
   // States
+  const [fullscreen, setFullscreen] = useState(FULLSCREEN.Default);
+  const [enter, setEnter] = useState("");
   const [placeholder, setPlaceholder] = useState("");  // lazy load
   const [info, setInfo] = useState();  // model info
   const [stats, setStats] = useState();
@@ -128,8 +128,7 @@ export default function Home() {
   // Toggle display
   const toggleDisplay = (displayFor = null) => {
     displayFor = displayFor || (display === DISPLAY.Front ? DISPLAY.Back : DISPLAY.Front);
-
-    console.log("Display: " + (displayFor === DISPLAY.Front ? "front" : "back") + " -> " + displayFor);
+    console.log("Display: " + (displayFor === DISPLAY.Front ? "back" : "front") + " -> " + displayFor);
     setDisplay(displayFor);
   };
 
@@ -1036,14 +1035,18 @@ export default function Home() {
       }
     }
 
-    // Add touch event listener
+    // Touch screen event listeners
     window.addEventListener('touchstart', handleTouchStart, false);
     window.addEventListener('touchmove', handleTouchMove, false);
     window.addEventListener('touchend', handleTouchEnd, false);
 
+    // UI event listeners
+    emitter.on("ui:set_fullscreen", setFullscreen);
+    emitter.on("ui:set_enter", setEnter);
+
     // Cleanup
     return () => {
-      // Remove event listener, this is necessary
+      // Remove event listeners, this is necessary
       window.removeEventListener('resize', handleResize);
       window.removeEventListener('hashchange', removeHashTag);
 
@@ -1051,6 +1054,10 @@ export default function Home() {
       window.removeEventListener('touchstart', handleTouchStart, false);
       window.removeEventListener('touchmove', handleTouchMove, false);
       window.removeEventListener('touchend', handleTouchEnd, false);
+
+      // Remove UI event listeners
+      emitter.removeListener("ui:set_fullscreen", setFullscreen);
+      emitter.removeListener("ui:set_enter", setEnter);
     }
   }, []);
 
@@ -2697,7 +2704,7 @@ export default function Home() {
 
       <main className={styles.main}>
         {/* The dot */}
-        {!globalThis.minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.Front ? "•" : "╳"}</div>}
+        {!globalThis.minimalist && <div id="btn-dot" onClick={() => toggleDisplay()} className={`${styles.dot} select-none`}>{display === DISPLAY.Front ? "•" : "╳"}</div>}
 
         {/* Front */}
         <div className={`${styles.front} ${display === DISPLAY.Front ? 'flex' : 'hidden'} fadeIn`}>
