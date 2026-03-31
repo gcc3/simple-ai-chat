@@ -31,7 +31,7 @@ import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { exec_mcp, listMcpFunctions, pingMcpServer } from "utils/mcpUtils";
 import { getTools, getMcpTools } from "../function";
 import { isUrl } from "utils/urlUtils";
-import { STATES, DISPLAY, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
+import { STATES, DISPLAY, FULLSCREEN, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/sessionUtils";
 import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils";
@@ -405,11 +405,11 @@ export default function Home() {
 
         // Triggle fullscreen split
         if (!getSetting("fullscreen").startsWith("default")) {
-          dispatchFullscreen("default");
-          updateUserSetting("fullscreen", "default");
+          dispatchFullscreen(FULLSCREEN.DEFAULT);
+          updateUserSetting("fullscreen", FULLSCREEN.DEFAULT);
         } else {
-          dispatchFullscreen("off");
-          updateUserSetting("fullscreen", "off");
+          dispatchFullscreen(FULLSCREEN.OFF);
+          updateUserSetting("fullscreen", FULLSCREEN.OFF);
         }
         break;
 
@@ -422,11 +422,11 @@ export default function Home() {
 
           // Triggle fullscreen split
           if (!getSetting("fullscreen").startsWith("split")) {
-            dispatchFullscreen("split");
-            updateUserSetting("fullscreen", "split");
+            dispatchFullscreen(FULLSCREEN.SPLIT);
+            updateUserSetting("fullscreen", FULLSCREEN.SPLIT);
           } else {
-            dispatchFullscreen("off");
-            updateUserSetting("fullscreen", "off");
+            dispatchFullscreen(FULLSCREEN.OFF);
+            updateUserSetting("fullscreen", FULLSCREEN.OFF);
           }
         }
         break;
@@ -2425,6 +2425,7 @@ export default function Home() {
 
   // Re-adjust input height when display (front/back) change.
   useEffect(() => {
+    console.log("Display changed: " + display);
     reAdjustInputHeight(false, "display change");
     reAdjustOrUpdatePlaceholder();
   }, [display]);
@@ -2507,6 +2508,8 @@ export default function Home() {
 
   // Fullscreen control
   const dispatchFullscreen = (mode) => {
+    console.log("Dispatch fullscreen mode: " + mode);
+
     // Fullscreen control
     // Mobile device
     if (window.innerWidth < 520) {
