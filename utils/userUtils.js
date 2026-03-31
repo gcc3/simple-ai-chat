@@ -24,6 +24,8 @@ export async function refreshLocalUser(user = null) {
     return;
   }
 
+  console.log("User info:", JSON.stringify(user, null, 2));
+
   // 1. Set local user
   setSetting("user", user.username);
 
@@ -45,10 +47,12 @@ export async function refreshLocalUser(user = null) {
 
   // fullscreen
   if ("fullscreen" in settings) {
-    setSetting("fullscreen", settings.fullscreen);
+    if (getSetting("fullscreen") !== settings.fullscreen) {
+      setSetting("fullscreen", settings.fullscreen);
 
-    // Trigger the fullscreen event
-    emitter.emit("ui:set_fullscreen", settings.fullscreen);
+      // Trigger the fullscreen event
+      emitter.emit("ui:set_fullscreen", settings.fullscreen);
+    }
   }
 
   // useSpeak

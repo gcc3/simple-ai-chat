@@ -1180,7 +1180,7 @@ export default function Home() {
       }
 
       // Readjust UI
-      reAdjustInputHeight(false, "command executed");
+      reAdjustInputHeight(false);
       reAdjustOrUpdatePlaceholder();
       return;
     }
@@ -2412,7 +2412,7 @@ export default function Home() {
     }
 
     // Re-adjust input height
-    reAdjustInputHeight(false, "input change");
+    reAdjustInputHeight(false);
   };
 
   // The placeholder should be shorten if fullscreen off or default
@@ -2514,7 +2514,7 @@ export default function Home() {
 
   // Fullscreen control
   const dispatchFullscreen = (mode) => {
-    console.log("Dispatch fullscreen mode: " + mode);
+    console.log("Dispatch fullscreen mode: " + mode + " (current: " + fullscreen + ")");
 
     // Fullscreen control
     // Mobile device
