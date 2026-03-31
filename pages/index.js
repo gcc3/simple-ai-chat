@@ -98,7 +98,7 @@ const clearDonutInterval = () => {
 
 export default function Home() {
   // States
-  const [fullscreen, setFullscreen] = useState(FULLSCREEN.Default);
+  const [fullscreen, setFullscreen] = useState(FULLSCREEN.Off);
   const [enter, setEnter] = useState("");
   const [placeholder, setPlaceholder] = useState("");  // lazy load
   const [info, setInfo] = useState();  // model info
@@ -403,7 +403,7 @@ export default function Home() {
         event.preventDefault();
 
         // Triggle fullscreen split
-        if (!getSetting("fullscreen").startsWith("default")) {
+        if (fullscreen !== FULLSCREEN.Default) {
           dispatchFullscreen(FULLSCREEN.Default);
           updateUserSetting("fullscreen", FULLSCREEN.Default);
         } else {
@@ -420,7 +420,7 @@ export default function Home() {
           event.preventDefault();
 
           // Triggle fullscreen split
-          if (!getSetting("fullscreen").startsWith("split")) {
+          if (fullscreen !== FULLSCREEN.Split) {
             dispatchFullscreen(FULLSCREEN.Split);
             updateUserSetting("fullscreen", FULLSCREEN.Split);
           } else {
@@ -726,7 +726,7 @@ export default function Home() {
         }
         break;
     }
-  }, [display, content]);
+  }, [fullscreen, display, content]);
 
   // Handle key down (useEffect)
   useEffect(() => {
@@ -849,6 +849,9 @@ export default function Home() {
     } else {
       setRtl(i18nLang === "ar");
     }
+
+    // Fullscreen
+    dispatchFullscreen(getSetting("fullscreen") || FULLSCREEN.Off);
 
     // Theme
     setTheme(getSetting("theme"))
@@ -1060,13 +1063,6 @@ export default function Home() {
       emitter.removeListener("ui:set_enter", setEnter);
     }
   }, []);
-
-  useEffect(() => {
-    console.log("`fullscreen` changed: " + fullscreen);
-
-    // Fullscreen control
-    dispatchFullscreen(getSetting("fullscreen"));
-  }, [fullscreen]);
 
   // On submit input
   async function onSubmit(event) {
@@ -2524,13 +2520,13 @@ export default function Home() {
     // Mobile device
     if (window.innerWidth < 520) {
       // Don't use fullscreen mode if the screen is small
-      mode = "off";
+      mode = FULLSCREEN.Off;
       console.log("Fullscreen default: mobile device, narrow.");
     }
 
     setSetting('fullscreen', mode);
 
-    if (mode === "split") {
+    if (mode === FULLSCREEN.Split) {
       // fullscreen split mode  use ⌃enter
       setEnter("⌃enter");
     } else {
