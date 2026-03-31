@@ -1055,6 +1055,8 @@ export default function Home() {
   }, []);
 
   useEffect(() => {
+    console.log("`fullscreen` changed: " + fullscreen);
+
     // Fullscreen control
     dispatchFullscreen(getSetting("fullscreen"));
   }, [fullscreen]);
@@ -2425,7 +2427,8 @@ export default function Home() {
 
   // Re-adjust input height when display (front/back) change.
   useEffect(() => {
-    console.log("Display changed: " + display);
+    console.log("`display` changed: " + display);
+
     reAdjustInputHeight(false, "display change");
     reAdjustOrUpdatePlaceholder();
   }, [display]);
