@@ -126,9 +126,11 @@ export default function Home() {
   }
 
   // Toggle display
-  const toggleDisplay = () => {
-    console.log("Display: " + (display === DISPLAY.FRONT ? "front" : "back") + " -> " + (display === DISPLAY.FRONT ? "back" : "front"));
-    setDisplay(display === DISPLAY.FRONT ? DISPLAY.BACK : DISPLAY.FRONT);
+  const toggleDisplay = (displayFor = null) => {
+    displayFor = displayFor || (display === DISPLAY.FRONT ? DISPLAY.BACK : DISPLAY.FRONT);
+
+    console.log("Display: " + (displayFor === DISPLAY.FRONT ? "front" : "back") + " -> " + displayFor);
+    setDisplay(displayFor);
   };
 
   // Print output
@@ -268,7 +270,7 @@ export default function Home() {
   const setInput = (text) => {
     elInputRef.current.value = text;
     globalThis.rawInput = text;
-    reAdjustInputHeight();
+    reAdjustInputHeight(false, "set input.");
   }
 
   // Clear input
@@ -336,7 +338,7 @@ export default function Home() {
         // If on back page, use ESC to toggle go to the front page
         if (display === DISPLAY.BACK) {
           event.preventDefault();
-          setDisplay(DISPLAY.FRONT);
+          toggleDisplay(DISPLAY.FRONT);
         }
         break;
 
@@ -719,7 +721,7 @@ export default function Home() {
           if (display === DISPLAY.FRONT || (display === DISPLAY.BACK && content !== CONTENT.SETTINGS)) {
             console.log("Shortcut: ⌃,");
 
-            setDisplay(DISPLAY.BACK);
+            toggleDisplay(DISPLAY.BACK);
             setContent(CONTENT.SETTINGS);
           }
         }
@@ -860,7 +862,7 @@ export default function Home() {
       // For non-fullscreen mode, resize will cause glitch
       if (fullscreenMode !== "off") {
         // Readjust UI
-        reAdjustInputHeight();
+        reAdjustInputHeight(false);
         reAdjustOrUpdatePlaceholder();
       }
     };
@@ -889,7 +891,7 @@ export default function Home() {
     window.addEventListener('hashchange', removeHashTag, false);
 
     // Readjust UI
-    reAdjustInputHeight();
+    reAdjustInputHeight(false, "initializing");
     reAdjustOrUpdatePlaceholder();
 
     // Load additional scripts
@@ -1173,7 +1175,7 @@ export default function Home() {
       }
 
       // Readjust UI
-      reAdjustInputHeight();
+      reAdjustInputHeight(false, "command executed");
       reAdjustOrUpdatePlaceholder();
       return;
     }
@@ -2405,7 +2407,7 @@ export default function Home() {
     }
 
     // Re-adjust input height
-    reAdjustInputHeight();
+    reAdjustInputHeight(false, "input change");
   };
 
   // The placeholder should be shorten if fullscreen off or default
@@ -2423,7 +2425,7 @@ export default function Home() {
 
   // Re-adjust input height when display (front/back) change.
   useEffect(() => {
-    reAdjustInputHeight();
+    reAdjustInputHeight(false, "display change");
     reAdjustOrUpdatePlaceholder();
   }, [display]);
 
@@ -2431,7 +2433,7 @@ export default function Home() {
   // But when input change, the height will be jumping, so add doSleepToFixAuto param to control
   const reAdjustInputHeight = async (doSleepToFixAuto = false, triggerBy) => {
     if (triggerBy) {
-      console.log("Re-adjust input height. (triggerBy: " + triggerBy + ")");
+      console.log("Re-adjust input height. (trigger by: " + triggerBy + ")");
     }
 
     const elInput = elInputRef.current;
@@ -2527,7 +2529,7 @@ export default function Home() {
     setFullscreen(mode);
 
     // This is necessary
-    reAdjustInputHeight(true);  // !important: use doSleepToFixAuto, the magic
+    reAdjustInputHeight(true, "dispatch fullscreen");  // !important: use doSleepToFixAuto, the magic
     reAdjustOrUpdatePlaceholder();
   }
 
