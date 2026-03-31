@@ -45,7 +45,7 @@ export const getModel = async (modelName) => {
     : [tryGetModel, tryFetchModel]) {
     const resolvedModel = await resolveModel(modelName);
     if (resolvedModel) {
-      console.log(JSON.stringify(resolvedModel, null, 2));
+      console.log("Model:", JSON.stringify(resolvedModel, null, 2));
       console.log("Set source: " + globalThis.source);
       return resolvedModel;
     }
