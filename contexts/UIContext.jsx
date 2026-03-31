@@ -1,10 +1,11 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import emitter from "../utils/eventsUtils.js";
+import { FULLSCREEN } from "../constants.js";
 
 const UIContext = createContext();
 
 export const UIProvider = ({ children }) => {
-  const [fullscreen, setFullscreen] = useState(false);
+  const [fullscreen, setFullscreen] = useState(FULLSCREEN.DEFAULT);
   const [enter, setEnter] = useState("");
 
   useEffect(() => {
