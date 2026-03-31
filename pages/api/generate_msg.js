@@ -21,7 +21,7 @@ export default async function(req, res) {
 
   // Input
   let input = req.body.user_input.trim() || "";
-  let inputType = TYPE.NORMAL;
+  let inputType = TYPE.Normal;
   const images = req.body.images || null;
   const files = req.body.files || null;
 
@@ -97,7 +97,7 @@ export default async function(req, res) {
 
   // Type I. Normal input
   if (!input.startsWith("!")) {
-    inputType = TYPE.NORMAL;
+    inputType = TYPE.Normal;
     console.log(chalk.yellowBright("\nInput (msg, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
 
@@ -138,7 +138,7 @@ export default async function(req, res) {
   let functionCalls = [];    // function calls in input
   let functionCallingResults = [];  // function call results
   if (input.startsWith("!")) {
-    inputType = TYPE.TOOL_CALL;
+    inputType = TYPE.ToolCall;
     console.log(chalk.cyanBright("\nInput (msg, toolcalls, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
  

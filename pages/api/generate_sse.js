@@ -29,7 +29,7 @@ export default async function(req, res) {
   
   // Input
   let input = req.query.user_input.trim() || "";
-  let inputType = TYPE.NORMAL;
+  let inputType = TYPE.Normal;
 
   // Input: Images & files
   const decodedImages = req.query.images || "";
@@ -59,7 +59,7 @@ export default async function(req, res) {
 
   // Output
   let output = "";
-  let outputType = TYPE.NORMAL;
+  let outputType = TYPE.Normal;
 
   // Config (input)
   const time_ = req.query.time || "";
@@ -229,12 +229,12 @@ export default async function(req, res) {
   // Type 0. Image generation
   if (is_image_model) {
     // TODO: support image generation
-    outputType = TYPE.IMAGE_GEN;
+    outputType = TYPE.ImageGen;
   }
 
   // Type I. Normal input
   if (!input.startsWith("!")) {
-    inputType = TYPE.NORMAL;
+    inputType = TYPE.Normal;
     console.log(chalk.yellowBright("\nInput (sse, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
 
@@ -275,7 +275,7 @@ export default async function(req, res) {
   let functionCalls = [];    // function calls in input
   let functionCallingResults = [];  // function call results
   if (input.startsWith("!")) {
-    inputType = TYPE.TOOL_CALL;
+    inputType = TYPE.ToolCall;
     console.log(chalk.cyanBright("\nInput (sse, toolcalls, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
  
@@ -454,7 +454,7 @@ export default async function(req, res) {
         // 1. handle message output
         const content = delta.content;
         if (typeof content === 'string' && content.length > 0) {
-          outputType = TYPE.NORMAL;
+          outputType = TYPE.Normal;
           output += content;
           streamOutput(content);
         }
@@ -462,7 +462,7 @@ export default async function(req, res) {
         // 2. handle tool calls output
         const tool_calls = Array.isArray(delta.tool_calls) ? delta.tool_calls : null;
         if (tool_calls && tool_calls.length > 0) {
-          outputType = TYPE.TOOL_CALL;
+          outputType = TYPE.ToolCall;
           res.write(`data: ###CALL###${JSON.stringify(tool_calls)}\n\n`); res.flush();
 
           const toolCall = tool_calls[0];
@@ -530,11 +530,11 @@ export default async function(req, res) {
     }
 
     // 2. general input/output log
-    if (inputType === TYPE.TOOL_CALL) {
+    if (inputType === TYPE.ToolCall) {
       // Function calling input is already logged
       input = "Q=" + input;
     }
-    if (outputType === TYPE.TOOL_CALL) {
+    if (outputType === TYPE.ToolCall) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }

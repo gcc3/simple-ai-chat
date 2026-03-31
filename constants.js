@@ -1,30 +1,30 @@
 // Input output type
 export const TYPE = {
-  NORMAL: "normal",
-  TOOL_CALL: "tool_call",
-  IMAGE_GEN: "image_gen",
-  IMAGE_EDIT: "image_edit",
+  Normal: "normal",
+  ToolCall: "tool_call",
+  ImageGen: "image_gen",
+  ImageEdit: "image_edit",
 };
 
 // Status control
-export const STATES = { IDLE: "idle", DOING: "doing" };
+export const STATES = { Idle: "idle", Doing: "doing" };
 
 // Front or back display
-export const DISPLAY = { FRONT: "front", BACK: "back" };
+export const DISPLAY = { Front: "front", Back: "back" };
 
 // Back display content
 export const CONTENT = {
-  DOCUMENTATION: "documentation",
-  USAGE: "usage",
-  PRIVACY: "privacy",
-  SETTINGS: "settings",
+  Documentation: "documentation",
+  Usage: "usage",
+  Privacy: "privacy",
+  Settings: "settings",
 };
 
 // Fullscreen mode
 export const FULLSCREEN = {
-  DEFAULT: "default",
-  OFF: "off",
-  SPLIT: "split"
+  Default: "default",
+  Off: "off",
+  Split: "split"
 };
 
 export const PLACEHOLDER = ":help";

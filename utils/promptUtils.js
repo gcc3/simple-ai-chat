@@ -471,7 +471,7 @@ export async function generateMessages(use_system_role, lang,
 
   // 0. User input
   let user_input_file_prompt = "";
-  if (inputType !== TYPE.TOOL_CALL) {
+  if (inputType !== TYPE.ToolCall) {
     messages.push({ 
       role: "user", 
       content: await (async () => {
@@ -527,7 +527,7 @@ export async function generateMessages(use_system_role, lang,
   // 1. Function calling result
   // The latest function calling result, not the history
   let function_prompt = "";
-  if (inputType === TYPE.TOOL_CALL && functionCallingResults && functionCallingResults.length > 0) {
+  if (inputType === TYPE.ToolCall && functionCallingResults && functionCallingResults.length > 0) {
     for (let i = 0; i < functionCallingResults.length; i++) {
       const f = functionCallingResults[i];
       const c = functionCalls[i];

@@ -5,7 +5,7 @@ import { FULLSCREEN } from "../constants.js";
 const UIContext = createContext();
 
 export const UIProvider = ({ children }) => {
-  const [fullscreen, setFullscreen] = useState(FULLSCREEN.DEFAULT);
+  const [fullscreen, setFullscreen] = useState(FULLSCREEN.Default);
   const [enter, setEnter] = useState("");
 
   useEffect(() => {

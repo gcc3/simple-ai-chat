@@ -31,13 +31,13 @@ export default async function(req, res) {
   
   // Input
   let input = req.body.user_input.trim() || "";
-  let inputType = TYPE.NORMAL;
+  let inputType = TYPE.Normal;
   let images = req.body.images || null;
   const files = req.body.files || null;
 
   // Output
   let output = "";
-  let outputType = TYPE.NORMAL;
+  let outputType = TYPE.Normal;
   let eval_ = "";
   let toolCalls = [];
   let events = [];
@@ -175,13 +175,13 @@ export default async function(req, res) {
 
   // Type 0. Image generation
   if (is_image_model) {
-    outputType = TYPE.IMAGE_GEN;
+    outputType = TYPE.ImageGen;
     console.log(chalk.blue("\nInput (img_gen, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
 
     // Images
     if (images && images.length > 0) {
-      outputType = TYPE.IMAGE_EDIT;
+      outputType = TYPE.ImageEdit;
       console.log("\n--- images (user input) ---");
       console.log(images.join("\n"));
     } 
@@ -193,7 +193,7 @@ export default async function(req, res) {
       images = images.concat(prevLogImages);
 
       if (images && images.length > 0) {
-        outputType = TYPE.IMAGE_EDIT;
+        outputType = TYPE.ImageEdit;
         console.log("\n--- images (previous log) ---");
         console.log(JSON.stringify(prevLogImages.map(i => i.slice(0, 200))));
       }
@@ -216,7 +216,7 @@ export default async function(req, res) {
     try {
       // OpenAI image generation
       let imageGenerate = null;
-      if (outputType === TYPE.IMAGE_GEN) {
+      if (outputType === TYPE.ImageGen) {
         imageGenerate = await openai.images.generate({
           model: model_,
           prompt: input,
@@ -229,7 +229,7 @@ export default async function(req, res) {
         });
       }
 
-      if (outputType === TYPE.IMAGE_EDIT) {
+      if (outputType === TYPE.ImageEdit) {
         // From URLs to File objects
         const imageFilesArray = await Promise.all(images.map(async (image, index) => {
           if (isUrl(image)) {
@@ -339,7 +339,7 @@ export default async function(req, res) {
 
   // Type I. Normal input
   if (!input.startsWith("!")) {
-    inputType = TYPE.NORMAL;
+    inputType = TYPE.Normal;
     console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
 
@@ -380,7 +380,7 @@ export default async function(req, res) {
   let functionCalls = [];    // function calls in input
   let functionResults = [];  // function call results
   if (input.startsWith("!")) {
-    inputType = TYPE.TOOL_CALL;
+    inputType = TYPE.ToolCall;
     console.log(chalk.cyanBright("\nInput (toolcalls, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(input);
 
@@ -487,14 +487,14 @@ export default async function(req, res) {
       // 1. handle message output
       const content = choices[0].message.content;
       if (content) {
-        outputType = TYPE.NORMAL;
+        outputType = TYPE.Normal;
         output += choices[0].message.content;
       }
 
       // 2. handle tool call output
       const tool_calls = choices[0].message.tool_calls
       if (tool_calls) {
-        outputType = TYPE.TOOL_CALL;
+        outputType = TYPE.ToolCall;
         toolCalls = choices[0].message.tool_calls
       }
     }
@@ -544,11 +544,11 @@ export default async function(req, res) {
     }
 
     // 2. general input/output log
-    if (inputType === TYPE.TOOL_CALL) {
+    if (inputType === TYPE.ToolCall) {
       // Function calling input is already logged
       input = "Q=" + input;
     }
-    if (outputType === TYPE.TOOL_CALL) {
+    if (outputType === TYPE.ToolCall) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }

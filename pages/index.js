@@ -48,7 +48,7 @@ const Documentation = dynamic(() => import('components/Documentation'), { ssr: f
 const Copyrights = dynamic(() => import('components/Copyrights'), { ssr: false });
 const Settings = dynamic(() => import('components/Settings'), { ssr: false });
 
-globalThis.STATE = STATES.IDLE;  // a global state
+globalThis.STATE = STATES.Idle;  // a global state
 
 // Minimalist mode
 globalThis.minimalist = false;
@@ -104,8 +104,8 @@ export default function Home() {
   const [info, setInfo] = useState();  // model info
   const [stats, setStats] = useState();
   const [evaluation, setEvaluation] = useState();
-  const [display, setDisplay] = useState(DISPLAY.FRONT);
-  const [content, setContent] = useState(CONTENT.DOCUMENTATION);
+  const [display, setDisplay] = useState(DISPLAY.Front);
+  const [content, setContent] = useState(CONTENT.Documentation);
   const [usageDisplay, setUsageDisplay] = useState(true);
   const [outputImages, setOutputImages] = useState([]);
 
@@ -127,9 +127,9 @@ export default function Home() {
 
   // Toggle display
   const toggleDisplay = (displayFor = null) => {
-    displayFor = displayFor || (display === DISPLAY.FRONT ? DISPLAY.BACK : DISPLAY.FRONT);
+    displayFor = displayFor || (display === DISPLAY.Front ? DISPLAY.Back : DISPLAY.Front);
 
-    console.log("Display: " + (displayFor === DISPLAY.FRONT ? "front" : "back") + " -> " + displayFor);
+    console.log("Display: " + (displayFor === DISPLAY.Front ? "front" : "back") + " -> " + displayFor);
     setDisplay(displayFor);
   };
 
@@ -336,9 +336,9 @@ export default function Home() {
         }
 
         // If on back page, use ESC to toggle go to the front page
-        if (display === DISPLAY.BACK) {
+        if (display === DISPLAY.Back) {
           event.preventDefault();
-          toggleDisplay(DISPLAY.FRONT);
+          toggleDisplay(DISPLAY.Front);
         }
         break;
 
@@ -370,7 +370,7 @@ export default function Home() {
         if (event.ctrlKey) {
           console.log("Shortcut: ⌃c");
 
-          if (globalThis.STATE === STATES.DOING) {
+          if (globalThis.STATE === STATES.Doing) {
             event.preventDefault();
             exec(":stop");
 
@@ -387,7 +387,7 @@ export default function Home() {
         if (event.ctrlKey && !event.shiftKey) {
           console.log("Shortcut: ⌃r");
 
-          if (globalThis.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.Idle) {
             event.preventDefault();
 
             // Same as :clear
@@ -405,11 +405,11 @@ export default function Home() {
 
         // Triggle fullscreen split
         if (!getSetting("fullscreen").startsWith("default")) {
-          dispatchFullscreen(FULLSCREEN.DEFAULT);
-          updateUserSetting("fullscreen", FULLSCREEN.DEFAULT);
+          dispatchFullscreen(FULLSCREEN.Default);
+          updateUserSetting("fullscreen", FULLSCREEN.Default);
         } else {
-          dispatchFullscreen(FULLSCREEN.OFF);
-          updateUserSetting("fullscreen", FULLSCREEN.OFF);
+          dispatchFullscreen(FULLSCREEN.Off);
+          updateUserSetting("fullscreen", FULLSCREEN.Off);
         }
         break;
 
@@ -422,11 +422,11 @@ export default function Home() {
 
           // Triggle fullscreen split
           if (!getSetting("fullscreen").startsWith("split")) {
-            dispatchFullscreen(FULLSCREEN.SPLIT);
-            updateUserSetting("fullscreen", FULLSCREEN.SPLIT);
+            dispatchFullscreen(FULLSCREEN.Split);
+            updateUserSetting("fullscreen", FULLSCREEN.Split);
           } else {
-            dispatchFullscreen(FULLSCREEN.OFF);
-            updateUserSetting("fullscreen", FULLSCREEN.OFF);
+            dispatchFullscreen(FULLSCREEN.Off);
+            updateUserSetting("fullscreen", FULLSCREEN.Off);
           }
         }
         break;
@@ -451,7 +451,7 @@ export default function Home() {
           console.log("Shortcut: ↑");
           event.preventDefault();
 
-          if (globalThis.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.Idle) {
             if (!globalThis.isOnline) {
               console.log("Aborted: offline.");
               return;
@@ -491,7 +491,7 @@ export default function Home() {
           event.preventDefault();
           console.log("Shortcut: h");
 
-          if (globalThis.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.Idle) {
             if (!globalThis.isOnline) {
               console.log("Aborted: offline.");
               return;
@@ -549,7 +549,7 @@ export default function Home() {
           console.log("Shortcut: ↓");
           event.preventDefault();
 
-          if (globalThis.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.Idle) {
             if (!globalThis.isOnline) {
               console.log("Aborted: offline.")
               return;
@@ -588,7 +588,7 @@ export default function Home() {
           console.log("Shortcut: l");
           event.preventDefault();
 
-          if (globalThis.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.Idle) {
             if (!globalThis.isOnline) {
               console.log("Aborted: offline.")
               return;
@@ -627,7 +627,7 @@ export default function Home() {
           event.preventDefault();
 
           // Print session log (previous)
-          if (globalThis.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.Idle) {
             getSessionLog("prev", getSetting("session"), getSetting("time"))
               .then((r) => {
                 if (!r.result || Object.entries(r.result).length === 0) {
@@ -650,7 +650,7 @@ export default function Home() {
           event.preventDefault();
 
           // Print session log (previous)
-          if (globalThis.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.Idle) {
             getSessionLog("prev", getSetting("session"), getSetting("time"))
               .then((r) => {
                 if (!r.result || Object.entries(r.result).length === 0) {
@@ -673,7 +673,7 @@ export default function Home() {
           event.preventDefault();
 
           // Print session log (next)
-          if (globalThis.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.Idle) {
             getSessionLog("next", getSetting("session"), getSetting("time"))
               .then((r) => {
                 if (!r.result || Object.entries(r.result).length === 0) {
@@ -696,7 +696,7 @@ export default function Home() {
           event.preventDefault();
 
           // Print session log (next)
-          if (globalThis.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.Idle) {
             getSessionLog("next", getSetting("session"), getSetting("time"))
               .then((r) => {
                 if (!r.result || Object.entries(r.result).length === 0) {
@@ -718,11 +718,11 @@ export default function Home() {
           event.preventDefault();
 
           // Go to Settings page
-          if (display === DISPLAY.FRONT || (display === DISPLAY.BACK && content !== CONTENT.SETTINGS)) {
+          if (display === DISPLAY.Front || (display === DISPLAY.Back && content !== CONTENT.Settings)) {
             console.log("Shortcut: ⌃,");
 
-            toggleDisplay(DISPLAY.BACK);
-            setContent(CONTENT.SETTINGS);
+            toggleDisplay(DISPLAY.Back);
+            setContent(CONTENT.Settings);
           }
         }
         break;
@@ -874,7 +874,7 @@ export default function Home() {
       for (let mutation of mutationsList) {
         if (mutation.type === 'childList' || mutation.type === 'characterData') {
           // Formatter should only works when generating
-          if (globalThis.STATE === STATES.DOING) {
+          if (globalThis.STATE === STATES.Doing) {
 
             // Markdown formatter
             markdownFormatter(elOutputRef.current);
@@ -948,7 +948,7 @@ export default function Home() {
           }
 
           // Left swipe: 2-finger = next session, 1-finger = next log
-          if (globalThis.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.Idle) {
             if (isTwoFingerTouch) {
               getHistorySession("next", getSetting("session"))
                 .then((session) => {
@@ -987,7 +987,7 @@ export default function Home() {
           }
 
           // Right swipe: 2-finger = previous session, 1-finger = previous log
-          if (globalThis.STATE === STATES.IDLE) {
+          if (globalThis.STATE === STATES.Idle) {
             if (isTwoFingerTouch) {
               getHistorySession("prev", getSetting("session"))
                 .then((session) => {
@@ -1064,7 +1064,7 @@ export default function Home() {
   // On submit input
   async function onSubmit(event) {
     event.preventDefault();
-    if (globalThis.STATE === STATES.DOING) return;
+    if (globalThis.STATE === STATES.Doing) return;
     if (globalThis.rawInput.trim() === "") return;
 
     // Get input
@@ -1307,8 +1307,8 @@ export default function Home() {
     console.log("Generating with SSE...");
 
     // If already doing, return
-    if (globalThis.STATE === STATES.DOING) return;
-    globalThis.STATE = STATES.DOING;
+    if (globalThis.STATE === STATES.Doing) return;
+    globalThis.STATE = STATES.Doing;
 
     // Add a waiting text
     if (getOutput() !== QUERYING) printOutput(WAITING);
@@ -1359,7 +1359,7 @@ export default function Home() {
     }
 
     openaiEssSource.onmessage = async function(event) {
-      if (globalThis.STATE == STATES.IDLE) {
+      if (globalThis.STATE == STATES.Idle) {
         openaiEssSource.close();
         console.log("Session closed by state control.")
         return;
@@ -1521,7 +1521,7 @@ export default function Home() {
         console.log(globalThis.rawOutput);
 
         // Reset state
-        globalThis.STATE = STATES.IDLE;
+        globalThis.STATE = STATES.Idle;
 
         // Tool calls (function calling)
         if (toolCalls.length > 0) {
@@ -1600,7 +1600,7 @@ export default function Home() {
 
       // VI. Handle error
       if (event.data.startsWith("###ERR###") || event.data.startsWith('[ERR]')) {
-        globalThis.STATE = STATES.IDLE;
+        globalThis.STATE = STATES.Idle;
         window.speechSynthesis.cancel();
         openaiEssSource.close();
 
@@ -1628,7 +1628,7 @@ export default function Home() {
               window.open(_event.parameters.url, '_blank');
             } else {
               // Stop generating as it will be redirected.
-              globalThis.STATE = STATES.IDLE;
+              globalThis.STATE = STATES.Idle;
               window.speechSynthesis.cancel();
               openaiEssSource.close();
 
@@ -1647,7 +1647,7 @@ export default function Home() {
 
       // Stream output
       let output = event.data;
-      if (globalThis.STATE === STATES.DOING) {
+      if (globalThis.STATE === STATES.Doing) {
         // Print output
         printOutput(output, false, true);
         console.log(event.data);
@@ -1676,8 +1676,8 @@ export default function Home() {
     console.log("Generating message from server...");
 
     // If already doing, return
-    if (globalThis.STATE === STATES.DOING) return;
-    globalThis.STATE = STATES.DOING;
+    if (globalThis.STATE === STATES.Doing) return;
+    globalThis.STATE = STATES.Doing;
 
     // Add a waiting text
     if (getOutput() !== QUERYING) printOutput(WAITING);
@@ -1827,7 +1827,7 @@ export default function Home() {
     if (!useStream) {
       // Non-stream mode support tool calls
       // Reset state
-      globalThis.STATE = STATES.IDLE;
+      globalThis.STATE = STATES.Idle;
 
       // Get result
       const choices = chatCompletion.choices;
@@ -2022,7 +2022,7 @@ export default function Home() {
           await logadd(model, input.text, output);
 
           // Reset state
-          globalThis.STATE = STATES.IDLE;
+          globalThis.STATE = STATES.Idle;
           resolve();
         });
 
@@ -2041,8 +2041,8 @@ export default function Home() {
     console.log("Generating...");
 
     // If already doing, return
-    if (globalThis.STATE === STATES.DOING) return;
-    globalThis.STATE = STATES.DOING;
+    if (globalThis.STATE === STATES.Doing) return;
+    globalThis.STATE = STATES.Doing;
 
     // Input
     console.log("Input:\n" + input.text);
@@ -2093,7 +2093,7 @@ export default function Home() {
       }
 
       // Reset state
-      globalThis.STATE = STATES.IDLE;
+      globalThis.STATE = STATES.Idle;
 
       // Events
       const events = data.result.events;
@@ -2114,7 +2114,7 @@ export default function Home() {
                 window.open(event.parameters.url, '_blank');
               } else {
                 // Stop generating as it will be redirected.
-                globalThis.STATE = STATES.IDLE;
+                globalThis.STATE = STATES.Idle;
                 window.speechSynthesis.cancel();
 
                 // Redirect to URL
@@ -2697,10 +2697,10 @@ export default function Home() {
 
       <main className={styles.main}>
         {/* The dot */}
-        {!globalThis.minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.FRONT ? "•" : "╳"}</div>}
+        {!globalThis.minimalist && <div id="btn-dot" onClick={toggleDisplay} className={`${styles.dot} select-none`}>{display === DISPLAY.Front ? "•" : "╳"}</div>}
 
         {/* Front */}
-        <div className={`${styles.front} ${display === DISPLAY.FRONT ? 'flex' : 'hidden'} fadeIn`}>
+        <div className={`${styles.front} ${display === DISPLAY.Front ? 'flex' : 'hidden'} fadeIn`}>
           {/* Input */}
           <form className={styles.inputform} onSubmit={onSubmit}>
             <textarea
@@ -2745,29 +2745,29 @@ export default function Home() {
         </div>
 
         {/* Back pages */}
-        {display === DISPLAY.BACK &&
-          <div className={`${styles.back} ${display === DISPLAY.BACK ? 'flex' : 'hidden'} fadeIn`}>
+        {display === DISPLAY.Back &&
+          <div className={`${styles.back} ${display === DISPLAY.Back ? 'flex' : 'hidden'} fadeIn`}>
             <div className={styles.container}>
               {/* Nav bar */}
               <div className={styles.nav}>
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.DOCUMENTATION)}>{ t("Documentation") }</div>
-                {usageDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.USAGE)}>{ t("Usage") }</div>}
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.SETTINGS)}>{ t("Settings") }</div>
-                <div className={styles.navitem} onClick={() => setContent(CONTENT.PRIVACY)}>{ t("Privacy Policy") }</div>
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.Documentation)}>{ t("Documentation") }</div>
+                {usageDisplay && <div className={styles.navitem} onClick={() => setContent(CONTENT.Usage)}>{ t("Usage") }</div>}
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.Settings)}>{ t("Settings") }</div>
+                <div className={styles.navitem} onClick={() => setContent(CONTENT.Privacy)}>{ t("Privacy Policy") }</div>
               </div>
 
               {/* Content */}
               <div className={styles.content}>
-                {content === CONTENT.DOCUMENTATION && <div className={styles.contentitem}>
+                {content === CONTENT.Documentation && <div className={styles.contentitem}>
                   <Documentation />
                 </div>}
-                {usageDisplay && content === CONTENT.USAGE && <div className={styles.contentitem}>
+                {usageDisplay && content === CONTENT.Usage && <div className={styles.contentitem}>
                   <Usage />
                 </div>}
-                {content === CONTENT.SETTINGS && <div className={styles.contentitem}>
+                {content === CONTENT.Settings && <div className={styles.contentitem}>
                   <Settings />
                 </div>}
-                {content === CONTENT.PRIVACY && <div className={styles.contentitem}>
+                {content === CONTENT.Privacy && <div className={styles.contentitem}>
                   <UserDataPrivacy />
                 </div>}
 
