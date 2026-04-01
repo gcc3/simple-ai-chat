@@ -20,5 +20,6 @@
   "email_support_subscriptions": "Für den Unternehmenseinsatz kontaktieren Sie uns bitte unter `<1><2>support@simple-ai.io</2></1>`.",
   "banking fee ${{bankingFee}} included": "Bankgebühr ${{bankingFee}} inbegriffen.",
   "You already have an unlimited expiration date for `{{role}}`.": "Sie haben bereits ein unbegrenztes Ablaufdatum für `{{role}}`.",
-  "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "Du bist ein `{{role}}`, du kannst nach Ablauf deines aktuellen Abonnements auf `{{targetRole}}` herabstufen."
+  "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "Du bist ein `{{role}}`, du kannst nach Ablauf deines aktuellen Abonnements auf `{{targetRole}}` herabstufen.",
+  "simple_ai_docs": "Vollständige Dokumentation: <1><2>`simple-ai.io/docs`</2></1>."
 }

@@ -126,6 +126,13 @@ const Documentation = () => {
       <div className="mt-2">
         { t("Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.") }
       </div>
+      <div className="mt-2">
+        <Trans
+          i18nKey="simple_ai_docs"
+          components={{ 1: <a href="https://simple-ai.io/docs" target="_blank" rel="noopener noreferrer">{ `simple-ai.io/docs` }</a>, 2: <u></u> }}
+          ns="translation"
+        />
+      </div>
       <div id="quick-start" className="mt-5">{ t("Quick Start") }</div>
       <div className="mt-2">
         {quick_starts.map((item, index) => (

@@ -20,5 +20,6 @@
   "email_support_subscriptions": "* Для корпоративного использования, пожалуйста, свяжитесь с нами по адресу `<1><2>support@simple-ai.io</2></1>`.",
   "banking fee ${{bankingFee}} included": "Банковская комиссия ${{bankingFee}} включена.",
   "You already have an unlimited expiration date for `{{role}}`.": "У вас уже есть неограниченный срок действия для `{{role}}`.",
-  "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "Вы являетесь `{{role}}`, вы можете понизить уровень до `{{targetRole}}` после истечения срока действия вашей текущей подписки."
+  "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "Вы являетесь `{{role}}`, вы можете понизить уровень до `{{targetRole}}` после истечения срока действия вашей текущей подписки.",
+  "simple_ai_docs": "Полная документация: <1><2>`simple-ai.io/docs`</2></1>."
 }
