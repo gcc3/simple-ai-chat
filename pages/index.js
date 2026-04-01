@@ -2730,7 +2730,7 @@ export default function Home() {
           {/* Output */}
           <div id="wrapper" ref={elWrapperRef} className={styles.wrapper}>
             {outputImages.map((image, index) => (
-              <div key={index} className="mb-5 image-preview">
+              <div key={index} className="mt-8 mb-5 image-preview">
                 <PreviewImage image={image} />
               </div>
             ))}
