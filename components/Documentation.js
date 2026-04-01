@@ -30,19 +30,16 @@ const Documentation = () => {
   ];
 
   const features = [
-    { id: "features-gpt-textgeneration", name: t("Text Generation"), description: t("Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...") },
-    { id: "features-gpt-vision", name: t("GPT Vision"), description: t("Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.") },
-    { id: "features-gpt-image-gen", name: t("Image Generation & Edit"), description: t("Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.") },
-    { id: "features-mcp-client", name: t("Model Context Protocol (MCP)"), description: t("Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.") },
-    { id: "features-fileinput", name: t("File Input"), description: t("Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.") },
-    { id: "features-roles", name: t("Roles"), description: t("Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.") },
-    { id: "features-stores", name: t("Data Stores"), description: t("Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data stores can be used simultaneously.") },
-    { id: "features-nodes", name: t("Nodes (Node AI)"), description: t("Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.") },
-    { id: "features-mathematics-wolframalpha", name: t("Enhanced Knowledge & Mathematics (WolframAlpha)"), description: t("As one of the AI callable function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided.") },
-    { id: "features-cli", name: t("Command-line Interface (CLI)"), description: t("Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.") },
-  ];
-
-  const sub_features = [
+    { name: t("Text Generation"), description: t("Chat with the state-of-the-art LLM powered by OpenAI, xAI, Google, Anthropic, Ollama and more...") },
+    { name: t("GPT Vision"), description: t("Interact with powerful vision models. To use Vision model, paste or drag and drop the image to the input box.") },
+    { name: t("Image Generation & Edit"), description: t("Generate beautiful images using prompts, and edit generated or uploaded images, or combine images to one image based on your instructions.") },
+    { name: t("Model Context Protocol (MCP)"), description: t("Simple AI functions as a Model Context Protocol (MCP) client. Connect to MCP servers to access a wealth of data and applications.") },
+    { name: t("File Input"), description: t("Upload files (supporting plain text, DOCX, PDF, JSON), and they will be processed as text. The results will be inserted into the prompt and will provide a GPT reference.") },
+    { name: t("Roles"), description: t("Allow GPT to act as a role to provide more satisfactory answers. You can either use pre-defined system roles or create custom instruction prompts to tailor user roles to your specific requirements.") },
+    { name: t("Data Stores"), description: t("Support for files and relational database queries. If a store is used, the query results will be inserted as prompts to provide knowledgeable answers. Multiple data stores can be used simultaneously.") },
+    { name: t("Nodes (Node AI)"), description: t("Connect to another AI or any data source to use its data. When a node is used, the results will be utilized as prompts provided for the AI.") },
+    { name: t("Enhanced Knowledge & Mathematics (WolframAlpha)"), description: t("As one of the AI callable function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided.") },
+    { name: t("Command-line Interface (CLI)"), description: t("Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.") },
     { name: t("Full-screen mode and split-screen mode"), description: t("For easy use requiring extensive input and output, such as programmers, essay writer. To use split-screen mode, use command `:fullscreen split`.") },
     { name: t("De-hallucination"), description: t("Detect hallucinations in chat to provide more trustworthiness. When the AI exhibits hallucination, it can sometimes generate completely fabricated answers. By enabling the dehallucination feature, a message in stats (`self_eval_score`) will be displayed along with statistics to allow users to judge the accuracy of the information. Essentially, this feature resends the user's input and the AI's output, along with reference information, back to AI for self-evaluation. Use command `:stats on`, and `:eval on` to turn on it.") },
     { name: t("TTS voice"), description: t("Reading with an option to select from the system's local TTS voice library, use command `:speak on` to enable.") },
@@ -102,17 +99,7 @@ const Documentation = () => {
       <div>
         <div className="mt-2"><a href="#introduction"><u>{ t("Introduction") }</u></a></div>
         <div className="mt-2"><a href="#quick-start"><u>{ t("Quick Start") }</u></a></div>
-        <div>
-          <div className="mt-2"><a href="#features"><u>{ t("Features") }</u></a></div>
-          <div className="ml-3">
-            {features.map((feature, index) => (
-              <div key={index}>
-                <a href={`#${feature.id}`}>- <u>{feature.name}</u></a>
-              </div>
-            ))}
-            <div><a href="#features-more">- <u>{ t("more...") }</u></a></div>
-          </div>
-        </div>
+        <div className="mt-2"><a href="#features"><u>{ t("Features") }</u></a></div>
         <div>
           <div className="mt-2"><a href="#commands"><u>{ t("Commands") }</u></a></div>
           <div className="ml-3">
@@ -137,28 +124,7 @@ const Documentation = () => {
       </div>
       <div id="introduction" className="mt-5">{ t("Introduction") }</div>
       <div className="mt-2">
-        { t("Hi, welcome to Simple AI!  I'm working to provide a more professional and programmer-friendly user interface for interacting with the AI.") }
-      </div>
-      <div className="mt-2">
-        - { t("What I can do with Simple AI?") }<br/>
-        <div className="mt-1">
-          { t("1. Basic Use") }<br/>
-          { t("* Chat. Ask complex questions. Problem Solving.") }<br/>
-          { t("* Generate text or translate text, for any languages.") }<br/>
-          { t("* Summarize long text.") }<br/>
-          { t("* Upload an image and inquire about it.") }<br/>
-          { t("* Upload a text, Word or PDF file and ask about the content.") }<br/>
-          { t("* Access a wide range of knowledge.") }<br/>
-          { t("* Generate source code from natural language.") }<br/>
-          { t("* Give GPT a preset instruction, or role play.") }<br/>
-        </div>
-        <div className="mt-1">
-          { t("2. Advanced Use") }<br/>
-          { t("* Solve complex mathematical problems. (with WolframAlpha)") }<br/>
-          { t("* Link with your own data. Support link to relational database.") }<br/>
-          { t("* Build to link with other AI systems, or your own APIs.") }<br/>
-          <div className="ml-5">{ t("And more...") }</div>
-        </div>
+        { t("Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.") }
       </div>
       <div id="quick-start" className="mt-5">{ t("Quick Start") }</div>
       <div className="mt-2">
@@ -171,15 +137,6 @@ const Documentation = () => {
       <div id="features" className="mt-5">{ t("Features") }</div>
       <div>
         {features.map((item, index) => (
-          <div key={index} className="mt-2">
-            <div id={item.id}>- {item.name}</div>
-            <div>{item.description}</div>
-          </div>
-        ))}
-      </div>
-      <div id="features-more" className="mt-2">{ t("More features") }:</div>
-      <div>
-        {sub_features.map((item, index) => (
           <div key={index} className="mt-2">
             <div>- {item.name}</div>
             <div>{item.description}</div>
