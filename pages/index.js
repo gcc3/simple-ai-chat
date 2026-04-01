@@ -242,12 +242,8 @@ export default function Home() {
 
   // Clear preview images
   const clearPreviewImages = () => {
-    if (elWrapperRef.current) {
-      const imageDivs = elWrapperRef.current.getElementsByClassName("image-preview");
-      while (imageDivs.length > 0) {
-        imageDivs[0].remove();
-      }
-    }
+    setOutputImages([]);
+    console.log("Cleared preview images.");
   }
 
   // Clear output
@@ -2730,7 +2726,7 @@ export default function Home() {
           {/* Output */}
           <div id="wrapper" ref={elWrapperRef} className={styles.wrapper}>
             {outputImages.map((image, index) => (
-              <div key={index} className="mt-8 mb-5 image-preview">
+              <div key={index} className={styles.previewImage}>
                 <PreviewImage image={image} />
               </div>
             ))}

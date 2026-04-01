@@ -99,6 +99,9 @@
   text-align: right;
   color: var(--info-text-color);
 }
+.main .previewImage {
+  margin-top: 34px;
+}
 
 /* back */
 .main .container {
