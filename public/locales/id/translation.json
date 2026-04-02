@@ -21,5 +21,5 @@
   "banking fee ${{bankingFee}} included": "Biaya perbankan ${{bankingFee}} sudah termasuk.",
   "You already have an unlimited expiration date for `{{role}}`.": "Anda sudah memiliki tanggal kedaluwarsa tanpa batas untuk `{{role}}`.",
   "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "Anda adalah `{{role}}`, Anda dapat menurunkan ke `{{targetRole}}` setelah langganan Anda saat ini berakhir.",
-  "simple_ai_docs": "Dokumentasi lengkap: <1><2>`simple-ai.io/docs`</2></1>."
+  "simple_ai_docs": "Dokumentasi lengkap: `<1><2>simple-ai.io/docs</2></1>`."
 }

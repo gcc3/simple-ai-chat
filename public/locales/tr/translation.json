@@ -21,5 +21,5 @@
   "banking fee ${{bankingFee}} included": "Banka ücreti ${{bankingFee}} dahildir.",
   "You already have an unlimited expiration date for `{{role}}`.": "Zaten `{{role}}` için süresiz bir son kullanma tarihiniz var.",
   "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "Bir `{{role}}`sınız, mevcut aboneliğiniz sona erdikten sonra `{{targetRole}}`’e düşürebilirsiniz.",
-  "simple_ai_docs": "Tam dokümantasyon: <1><2>`simple-ai.io/docs`</2></1>."
+  "simple_ai_docs": "Tam dokümantasyon: `<1><2>simple-ai.io/docs</2></1>`."
 }

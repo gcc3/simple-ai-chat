@@ -21,5 +21,5 @@
   "banking fee ${{bankingFee}} included": "銀行手数料 ${{bankingFee}} が含まれています。",
   "You already have an unlimited expiration date for `{{role}}`.": "「{{role}}」の有効期限は既に無制限です。",
   "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "あなたは `{{role}}` です。現在のサブスクリプションが終了すると、`{{targetRole}}` にダウングレードできます。",
-  "simple_ai_docs": "完全なドキュメント: <1><2>`simple-ai.io/docs`</2></1>."
+  "simple_ai_docs": "完全なドキュメント: `<1><2>simple-ai.io/docs</2></1>`."
 }

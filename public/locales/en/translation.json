@@ -17,5 +17,5 @@
   "banking fee ${{bankingFee}} included": "Banking fee ${{bankingFee}} included.",
   "You already have an unlimited expiration date for `{{role}}`.": "You already have an unlimited expiration date for `{{role}}`.",
   "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.": "You are a `{{role}}`, you can downgrade to `{{targetRole}}` after your current subscription expires.",
-  "simple_ai_docs": "Full documentation: <1><2>`simple-ai.io/docs`</2></1>."
+  "simple_ai_docs": "Full documentation: `<1><2>simple-ai.io/docs</2></1>`."
 }
