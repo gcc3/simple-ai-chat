@@ -21,7 +21,7 @@ export async function getVoice(voiceName) {
 
   if (!voice_) {
     voice_ = voices[0];
-    console.warn("Voice `" + voiceName + "` not found for lang `" + currentLang + "`" + ", use default voice: " + voice_.name);
+    console.warn("Voice `" + voiceName + "` not found in lang `" + currentLang + "` voices, use default voice: " + voice_.name);
   }
 
   return voice_;
