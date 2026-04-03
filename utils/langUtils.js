@@ -100,3 +100,12 @@ export function getLanguageName(code) {
   if (code === "zh-TW") return "Chinese (T)";
   return "Unknown";
 }
+
+export function getBrowserLang() {
+  const browserLang = navigator.language || navigator.userLanguage;
+  if (getLangCodes().includes(browserLang)) {
+    return browserLang;
+  } else {
+    return "en-US";
+  }
+}

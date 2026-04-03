@@ -41,6 +41,7 @@ import { logadd } from "utils/client/logUtils";
 import { pingOllamaAPI } from "utils/ollamaUtils";
 import { getSystemInfo } from "utils/client/systemUtils"
 import emitter from "../utils/eventsUtils.js";
+import { getBrowserLang } from "utils/langUtils.js";
 
 const UserDataPrivacy = dynamic(() => import('components/UserDataPrivacy'), { ssr: false });
 const Usage = dynamic(() => import('components/Usage'), { ssr: false });
@@ -827,7 +828,7 @@ export default function Home() {
       i18nLang = lang.split("-")[0];  // i18n language, e.g. en for en-US
     } else {
       // Use the browser language to set the i18nLang
-      const browserLang = navigator.language || navigator.userLanguage;
+      const browserLang = getBrowserLang();
       console.log("Use browser language for UI: " + browserLang);
       
       // Set i18n language

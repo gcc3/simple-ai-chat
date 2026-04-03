@@ -1,24 +1,29 @@
 import { getVoice, getVoices } from "../utils/voiceUtils.js"
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getBrowserLang } from "../utils/langUtils.js";
 
 export default async function voice(args) {
   const command = args[0];
 
   if (command === "ls" || command === "list") {
-    const currentLang = getSetting("lang");
-    const voices = await getVoices(currentLang);
+    // Get current language
+    const voiceLang = getSetting("lang") || getBrowserLang();
+    if (!voiceLang) {
+      return "Language not set.";
+    }
+
+    const voices = await getVoices(voiceLang);
+
     let langVoiceList = [];
+
     for (let i = 0; i < voices.length ; i++) {
+      // Print voices
       console.log(`Voice ${i+1}: ${voices[i].name}, ${voices[i].lang}`);
       langVoiceList.push(voices[i].name);
     }
 
     if (langVoiceList.length === 0) {
-      if (currentLang) {
-        return "No voices found for language `" + currentLang + "`.";
-      } else {
-        return "Language not set."
-      }
+      return "No voices found for language `" + voiceLang + "`.";
     } else {
       // Add star to current voice
       let result = "\\" + langVoiceList.join(" \\") + " ";

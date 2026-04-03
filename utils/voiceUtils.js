@@ -1,8 +1,9 @@
 import { getSetting } from "../utils/settingsUtils.js";
+import { getBrowserLang } from "./langUtils.js";
 
 
 export async function getVoice(voiceName) {
-  const currentLang = getSetting("lang") || "en-US";  // by default use "en-US"
+  const currentLang = getSetting("lang") || getBrowserLang();  // by default use "en-US"
 
   const voices = await getVoices(currentLang);
 
