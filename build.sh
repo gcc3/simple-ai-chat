@@ -1,2 +1,6 @@
-bash .script/docker-clean.sh
-bash .script/docker-compose.sh
+#!/bin/bash
+
+set -e
+
+echo "Building app..."
+npm run build
