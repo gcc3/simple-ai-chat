@@ -9,8 +9,25 @@ export async function speak(text) {
   // Remove all emojis in text
   text = text.trim();
   text = removeEmoji(text);
+
+  let speakLang = getSetting("lang");
+  if (!speakLang) {
+    console.warn("Speak language not set, use default: en-US");
+    speakLang = "en-US";
+  }
+
+  let speakVoice_ = getSetting("voice");
+  const speakVoice = await getVoice(speakLang, speakVoice_);
+  if (!speakVoice_) {
+    if (speakVoice) {
+      console.warn("Speak voice not set, use default voice: " + speakVoice.name);
+    } else {
+      console.error("Speak voice not found.");
+      return;
+    }
+  }
   
-  console.log("Speak: " + text);
+  console.log("Speak(" + speakLang + ", " + speakVoice.name + "): " + text);
   try {
     // Speak settings
     const utterance = new SpeechSynthesisUtterance();
@@ -20,17 +37,11 @@ export async function speak(text) {
     utterance.pitch = 1.1;   // 0 to 2
 
     // Speak language
-    utterance.lang = getSetting("lang") || "en-US";
+    utterance.lang = speakLang;
     
     // Speak voice
-    const voice_ = getSetting("voice");
-    const voice = await getVoice(voice_);
-    if (voice) {
-      utterance.voice = voice;
-      window.speechSynthesis.speak(utterance);
-    } else {
-      console.warn("Voice `" + voice_ + "` not found.");
-    }
+    utterance.voice = speakVoice;
+    window.speechSynthesis.speak(utterance);
   } catch (error) {
     console.error("Failed to speak:", error);
   }
