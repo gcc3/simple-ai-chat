@@ -27,6 +27,12 @@ export async function getVoice(voiceName) {
   return voice_;
 }
 
+const strangeVoiceList = [
+  "Albert",
+  "Bad News",
+  "Whisper"
+]
+
 export function getVoices(lang = "") {
   return new Promise((resolve) => {
     let id;
@@ -37,7 +43,7 @@ export function getVoices(lang = "") {
         if (!targetLang) {
           resolve(voices);
         } else {
-          resolve(voices.filter((voice) => voice.lang === targetLang));
+          resolve(voices.filter((voice) => voice.lang === targetLang && !strangeVoiceList.includes(voice.name)));
         }
         clearInterval(id);
       }
