@@ -17,7 +17,7 @@ export async function speak(text) {
   }
 
   let speakVoice_ = getSetting("voice");
-  const speakVoice = await getVoice(speakLang, speakVoice_);
+  const speakVoice = await getVoice(speakVoice_);
   if (!speakVoice_) {
     if (speakVoice) {
       console.warn("Speak voice not set, use default voice: " + speakVoice.name);
