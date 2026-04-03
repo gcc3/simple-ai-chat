@@ -23,12 +23,12 @@ You can fork this code and deploy it on your own machine for non-commercial use.
 Quick Start
 -----------
 
-1. Web use  
+1. Web interface  
     [`https://simple-ai.io`](https://simple-ai.io)  
 
-2. Command-line interface (CLI) use  
+2. CLI  
     Install: `npm i simple-ai-chat -g`  
-    Start: `schat` or `sc`  
+    Start: `simple-ai-chat` or `sc`  
     Start CLI will also start the MCP client.  
     npm package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)  
 
@@ -80,7 +80,7 @@ Instll from npm package
 `npm i simple-ai-chat -g`  
 
 Start the CLI with npm package command
-`sc` or `schat`  
+`simple-ai-chat` or `sc`  
 
 Check version  
 `sc [-v|--version]`  

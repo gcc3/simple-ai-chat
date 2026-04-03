@@ -76,7 +76,7 @@
   },
   "bin": {
     "sc": "./cli.js",
-    "schat": "./cli.js",
+    "simple-ai-chat": "./cli.js",
     "smcp": "./mcp.js"
   }
 }
