@@ -9,3 +9,6 @@ for f in $(find . -maxdepth 1 -name "*.example"); do
     echo "Skipped (exists): $dest"
   fi
 done
+
+echo "Installing npm dependencies..."
+npm install

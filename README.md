@@ -158,6 +158,12 @@ Local Installation
 
 Copy `.env.example` to `.env` and fill in the values.  
 
+PORT  
+The port for the server, default is `3000`.  
+
+PM2_NAME  
+The process name for PM2, default is `simple-ai.io`.  
+
 NODE_ENV  
 For development environment use `development`.  
 For production environment use `production`.  
