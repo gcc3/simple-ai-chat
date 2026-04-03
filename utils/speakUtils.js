@@ -28,13 +28,12 @@ export async function speak(text) {
     // Speak voice
     const voice_ = getSetting("voice");
     const voice = await getVoice(voice_);
-    if (voice) { 
+    if (voice) {
       utterance.voice = voice;
-      console.log("Speaking with voice: " + voice.name + ", lang: " + utterance.lang);
+      console.log("Speaking, voice: " + voice.name + ", lang: " + utterance.lang + ", text: " + utterance.text);
       window.speechSynthesis.speak(utterance);
     } else {
-      console.warn("Voice `" + voice_ + "` not found, try use default voice.");
-      window.speechSynthesis.speak(utterance);
+      console.warn("Voice `" + voice_ + "` not found.");
     }
   } catch (error) {
     console.error("Failed to speak:", error);

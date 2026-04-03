@@ -3,7 +3,7 @@ import { getSetting } from "../utils/settingsUtils.js";
 
 export async function getVoice(voiceName) {
   const currentLang = getSetting("lang") || "en-US";  // by default use "en-US"
-  
+
   const voices = await getVoices(currentLang);
 
   if (!voices || voices.length === 0) {
@@ -19,8 +19,8 @@ export async function getVoice(voiceName) {
   }
 
   if (!voice_) {
-    console.warn("Voice `" + voiceName + "` not found for lang `" + currentLang + "`" + ", use default voice.");
     voice_ = voices[0];
+    console.warn("Voice `" + voiceName + "` not found for lang `" + currentLang + "`" + ", use default voice: " + voice_.name);
   }
 
   return voice_;
