@@ -12,5 +12,7 @@ export default async function speak(args) {
   // Update local setting
   setSetting('useSpeak', value);
   
-  return speak == "on" ? "Switched on auto speak." : "Switched off auto speak.";
+  return speak === "on"
+  ? "Text-to-speech enabled."
+  : "Text-to-speech disabled.";
 }
