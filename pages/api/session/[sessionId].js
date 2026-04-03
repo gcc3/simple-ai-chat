@@ -9,7 +9,7 @@ export default async function (req, res) {
     if (!session) {
       return res.status(404).json({ 
         success: false,
-        error: "Session is empty."
+        error: "Session not found."
       });
     }
 

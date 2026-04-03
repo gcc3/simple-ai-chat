@@ -5,6 +5,15 @@ import { getBrowserLang } from "../utils/langUtils.js";
 export default async function voice(args) {
   const command = args[0];
 
+  if (!command) {
+    const currentVoice = getSetting("voice");
+    if (currentVoice) {
+      return "Current voice: \"" + currentVoice + "\".";
+    } else {
+      return "Voice not set.";
+    }
+  }
+
   if (command === "ls" || command === "list") {
     // Get current language
     const voiceLang = getSetting("lang") || getBrowserLang();

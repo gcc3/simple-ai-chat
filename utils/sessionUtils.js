@@ -20,7 +20,7 @@ export async function attachSession(sessionId) {
   try {
     const verifyResult = verifySessionId(sessionId);
     if (!verifyResult.success) {
-      return verifyResult.message;
+      return verifyResult.error;
     }
 
     // Get session with API
