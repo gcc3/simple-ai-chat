@@ -8,7 +8,10 @@ export default async function voice(args) {
   if (!command) {
     const currentVoice = getSetting("voice");
     if (currentVoice) {
-      return "Current voice: \"" + currentVoice + "\".";
+      const voice = await getVoice(currentVoice);
+      if (voice) {
+        return "Current voice: \"" + currentVoice + "\". Voice language: \"" + voice.lang + "\".";
+      }
     } else {
       return "Voice not set.";
     }
@@ -61,10 +64,16 @@ export default async function voice(args) {
       setSetting("voice", voiceName);
       return "Voice is set to \"" + voiceName + "\".";
     } else {
-      return "Voice not found."
+      return "Voice not found.";
     }
   }
 
+  if (command === "reset") {
+    setSetting("voice", "");
+    return "Voice has been reset.";
+  }
+
   return "Usage: :voice [ls|list]" + "\n" +
-         "       :voice use [voice_name]" + "\n";
+         "       :voice use [voice_name]" + "\n" +
+         "       :voice reset";
 }
