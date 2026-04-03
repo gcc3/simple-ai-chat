@@ -33,12 +33,14 @@ export async function refreshLocalUser(user = null) {
   const settings = user.settings;
 
   // lang
-  if ("lang" in settings) {
+  // If set, override with user setting
+  if ("lang" in settings && settings.lang) {
     setSetting("lang", settings.lang);
   }
 
   // theme
-  if ("theme" in settings) {
+  // If set, override with user setting
+  if ("theme" in settings && settings.theme) {
     setSetting("theme", settings.theme);
 
     // Trigger the theme change
@@ -56,60 +58,68 @@ export async function refreshLocalUser(user = null) {
   }
 
   // useSpeak
-  if ("useSpeak" in settings) {
+  // If set, override with user setting
+  if ("useSpeak" in settings && settings.useSpeak) {
     setSetting("useSpeak", settings.useSpeak == "true" ? true : false);
   }
 
   // useStats
-  if ("useStats" in settings) {
+  // If set, override with user setting
+  if ("useStats" in settings && settings.useStats) {
     setSetting("useStats", settings.useStats == "true" ? true : false);
   }
 
   // useEval
-  if ("useEval" in settings) {
+  // If set, override with user setting
+  if ("useEval" in settings && settings.useEval) {
     setSetting("useEval", settings.useEval == "true" ? true : false);
   }
 
   // useSystemRole
-  if ("useSystemRole" in settings) {
+  // If set, override with user setting
+  if ("useSystemRole" in settings && settings.useSystemRole) {
     setSetting("useSystemRole", settings.useSystemRole == "true" ? true : false);
   }
 
   // model
-  if ("model" in settings) {
-    // If user indeed set a model, not empty, use it!
-    if (settings.model) {
-      setSetting("model", settings.model);
-    }
+  // If set, override with user setting
+  if ("model" in settings && settings.model) {
+    setSetting("model", settings.model);
   }
 
   // functions
+  // Override with user setting
   if ("functions" in settings) {
     setSetting("functions", settings.functions);
   }
 
   // role
+  // Override with user setting
   if ("role" in settings) {
     setSetting("role", settings.role);
   }
 
   // store
+  // Override with user setting
   if ("stores" in settings) {
     setSetting("stores", settings.stores);
   }
 
   // node
+  // Override with user setting
   if ("node" in settings) {
     setSetting("node", settings.node);
   }
 
   // memLength
+  // Override with user setting
   if ("memLength" in settings) {
     setSetting("memLength", settings.memLength);
   }
 
   // passMask
-  if ("passMask" in settings) {
+  // If set, override with user setting
+  if ("passMask" in settings && settings.passMask) {
     setSetting("passMask", settings.passMask);
   }
 }
