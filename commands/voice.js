@@ -5,14 +5,12 @@ export default async function voice(args) {
   const command = args[0];
 
   if (command === "ls" || command === "list") {
-    const voices = await getVoices();
-    let langVoiceList = [];
     const currentLang = getSetting("lang");
+    const voices = await getVoices(currentLang);
+    let langVoiceList = [];
     for (let i = 0; i < voices.length ; i++) {
-      if (voices[i].lang === currentLang) {
-        console.log(`Voice ${i+1}: ${voices[i].name}, ${voices[i].lang}`);
-        langVoiceList.push(voices[i].name);
-      }
+      console.log(`Voice ${i+1}: ${voices[i].name}, ${voices[i].lang}`);
+      langVoiceList.push(voices[i].name);
     }
 
     if (langVoiceList.length === 0) {

@@ -15,15 +15,27 @@ export async function speak(text) {
   text = removeEmoji(text);
   
   try {
+    // Speak settings
     var utterance = new SpeechSynthesisUtterance();
     utterance.text = text;
     utterance.volume = 0.7;  // 0 to 1
     utterance.rate = 1;      // 0.1 to 10
     utterance.pitch = 1.1;   // 0 to 2
-    utterance.lang = getSetting("lang");
-    const voice = await getVoice(getSetting("voice"));
-    if (voice) utterance.voice = voice;
-    window.speechSynthesis.speak(utterance);
+
+    // Speak language
+    utterance.lang = getSetting("lang") || "en-US";
+    
+    // Speak voice
+    const voice_ = getSetting("voice");
+    const voice = await getVoice(voice_);
+    if (voice) { 
+      utterance.voice = voice;
+      console.log("Speaking with voice: " + voice_ + ", lang: " + utterance.lang);
+      window.speechSynthesis.speak(utterance);
+    } else {
+      console.warn("Voice `" + voice_ + "` not found, try use default voice.");
+      window.speechSynthesis.speak(utterance);
+    }
   } catch (error) {
     console.error("Failed to speak:", error);
   }

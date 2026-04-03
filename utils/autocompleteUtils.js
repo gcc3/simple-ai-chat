@@ -198,14 +198,12 @@ export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   }
 
   if (prefix === ":voice use ") {
-    const voices = await getVoices();
-    let langVoiceList = [];
     const currentLang = getSetting("lang");
+    const voices = await getVoices(currentLang);
+    let langVoiceList = [];
     for (let i = 0; i < voices.length ; i++) {
-      if (voices[i].lang === currentLang) {
-        console.log(`Voice ${i+1}: ${voices[i].name}, ${voices[i].lang}`);
-        langVoiceList.push(voices[i].name);
-      }
+      console.log(`Voice ${i+1}: ${voices[i].name}, ${voices[i].lang}`);
+      langVoiceList.push(voices[i].name);
     }
     return langVoiceList;
   }
