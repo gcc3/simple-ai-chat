@@ -6,6 +6,7 @@ import { getSystemRoles } from 'utils/roleUtils';
 import { getSettings, getDefaultSetting } from 'utils/settingsUtils';
 import { getLangCodes } from 'utils/langUtils';
 
+// Update one of user settings
 export default async function (req, res) {
   // Check method
   if (req.method !== 'POST') {
@@ -41,9 +42,11 @@ export default async function (req, res) {
     });
   }
   
+  // New value
   let { value } = req.body;
+
   if (!value) {
-    // Reset key's value to default
+    // Empty value, reset to default
     value = getDefaultSetting(key);
   } else {
     // I. Check if key is valid
@@ -61,7 +64,7 @@ export default async function (req, res) {
       if (!validValues.includes(value)) {
         return res.status(400).json({
           success: false,
-          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ') + ", or empty."
         });
       }
     }
@@ -72,7 +75,7 @@ export default async function (req, res) {
       if (!validValues.includes(value_)) {
         return res.status(400).json({
           success: false,
-          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ') + ", or empty."
         });
       }
     }
@@ -82,7 +85,7 @@ export default async function (req, res) {
       if (!validValues.includes(value)) {
         return res.status(400).json({
           success: false,
-          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ') + ", or empty."
         });
       }
     }
@@ -92,7 +95,7 @@ export default async function (req, res) {
       if (!validValues.includes(value)) {
         return res.status(400).json({
           success: false,
-          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ') + ", or empty."
         });
       }
     }
@@ -102,7 +105,7 @@ export default async function (req, res) {
       if (!validValues.includes(value)) {
         return res.status(400).json({
           success: false,
-          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ') + ", or empty."
         });
       }
     }
@@ -117,7 +120,6 @@ export default async function (req, res) {
           error: 'No role found.'
         });
       }
-
       let validValues = [];
 
       // Add empty role
@@ -135,7 +137,7 @@ export default async function (req, res) {
       if (!validValues.includes("\"" + value + "\"")) {
         return res.status(400).json({
           success: false,
-          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ') + ", or empty."
         });
       }
     }
@@ -162,7 +164,7 @@ export default async function (req, res) {
         if (!validValues.includes("\"" + values[i] + "\"")) {
           return res.status(400).json({
             success: false,
-            error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+            error: 'Invalid value, value must be one of: ' + validValues.join(', ') + ", or empty."
           });
         }
       }
@@ -186,7 +188,7 @@ export default async function (req, res) {
       if (!validValues.includes("\"" + value + "\"")) {
         return res.status(400).json({
           success: false,
-          error: 'Invalid value, value must be one of: ' + validValues.join(', ')
+          error: 'Invalid value, value must be one of: ' + validValues.join(', ') + ", or empty."
         });
       }
     }
