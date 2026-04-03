@@ -1,5 +1,7 @@
 #!/bin/bash
 
+set -e
+
 # Copy .example files to their non-.example counterparts if they don't already exist
 for f in $(find . -maxdepth 1 -name "*.example"); do
   dest="${f%.example}"
@@ -9,6 +11,9 @@ for f in $(find . -maxdepth 1 -name "*.example"); do
     echo "Skipped (exists): $dest"
   fi
 done
+
+echo "Pulling latest code..."
+git pull
 
 echo "Installing npm dependencies..."
 npm install
