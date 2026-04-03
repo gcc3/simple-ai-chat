@@ -30,7 +30,7 @@ export async function speak(text) {
     const voice = await getVoice(voice_);
     if (voice) { 
       utterance.voice = voice;
-      console.log("Speaking with voice: " + voice_ + ", lang: " + utterance.lang);
+      console.log("Speaking with voice: " + voice.name + ", lang: " + utterance.lang);
       window.speechSynthesis.speak(utterance);
     } else {
       console.warn("Voice `" + voice_ + "` not found, try use default voice.");
