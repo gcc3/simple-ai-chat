@@ -70,6 +70,7 @@ const Documentation = () => {
     { action: t("Previous command."), shortcut: "↑", condition: t("Cursor is focused on the input area. The current input is starts with `:`. Has a previous command in command history.") },
     { action: t("Next command."), shortcut: "↓", condition: t("Cursor is focused on the input area. The current input is starts with `:`. Has a next command in command history.") },
     { action: t("Cut the current row."), shortcut: "⌘X or ⌃X", condition: t("Cursor is focused on the input area. No text is selected.") },
+    { action: t("Delete a word."), shortcut: "^W", condition: t("Cursor is focused on the input area.") },
     { action: t("Change focus to input area."), shortcut: "Tab or /", condition: t("Unfocused from the input area.") },
     { action: t("Show the Settings page."), shortcut: "⌃,", condition: "-" },
     { action: t("Show the Front page."), shortcut: "ESC", condition: t("On the Back page.") },

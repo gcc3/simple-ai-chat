@@ -709,6 +709,33 @@ export default function Home() {
         }
         break;
 
+      case 'w':
+        if (document.activeElement.id === "input" && event.ctrlKey) {
+          event.preventDefault();
+
+          // Delete word before cursor (Unix-style Ctrl+W)
+          const elInput = elInputRef.current;
+          if (elInput !== null) {
+            const val = elInput.value;
+            const pos = elInput.selectionStart;
+
+            // Find start of the word to delete: skip trailing spaces, then skip word chars
+            let i = pos;
+            while (i > 0 && val[i - 1] === ' ') i--;
+            while (i > 0 && val[i - 1] !== ' ') i--;
+
+            const newVal = val.slice(0, i) + val.slice(pos);
+            setInput(newVal);
+
+            // Restore cursor position
+            requestAnimationFrame(() => {
+              elInput.selectionStart = i;
+              elInput.selectionEnd = i;
+            });
+          }
+        }
+        break;
+
       case ',':
         if (event.ctrlKey) {
           event.preventDefault();
