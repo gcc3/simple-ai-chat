@@ -1692,8 +1692,14 @@ export default function Home() {
     };
 
     openaiEssSource.onerror = function(error) {
-      console.error("Other stream error: ", error);
+      // Reset state
+      globalThis.STATE = STATES.Idle;
+      window.speechSynthesis.cancel();
       openaiEssSource.close();
+
+      // Print error message
+      console.error("Other stream error: ", error);
+      printOutput("Error: stream error.");
       return;
     };
   }
