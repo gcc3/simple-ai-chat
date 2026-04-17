@@ -429,7 +429,7 @@ export default function Home() {
 
       case "ArrowUp":
         // Command history (↑)
-        if ((globalThis.rawInput.startsWith(":") || globalThis.rawInput.startsWith("!")) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if ((globalThis.rawInput.startsWith(":") || globalThis.rawInput.startsWith("!")) && !event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
           console.log("Shortcut: ↑");
           event.preventDefault();
 
@@ -443,7 +443,7 @@ export default function Home() {
         }
 
         // Navigation to previous session
-        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
           console.log("Shortcut: ↑");
           event.preventDefault();
 
@@ -483,7 +483,7 @@ export default function Home() {
 
       case "h":
         // Navigation to previous session
-        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
           event.preventDefault();
           console.log("Shortcut: h");
 
@@ -523,7 +523,7 @@ export default function Home() {
 
       case "ArrowDown":
         // Command history (↓)
-        if ((globalThis.rawInput.startsWith(":") || globalThis.rawInput.startsWith("!")) && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if ((globalThis.rawInput.startsWith(":") || globalThis.rawInput.startsWith("!")) && !event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
           console.log("Shortcut: ↓");
           event.preventDefault();
 
@@ -541,7 +541,7 @@ export default function Home() {
         }
 
         // Navigate to next session
-        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
           console.log("Shortcut: ↓");
           event.preventDefault();
 
@@ -580,7 +580,7 @@ export default function Home() {
 
       case "l":
         // Navigate to next session
-        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
           console.log("Shortcut: l");
           event.preventDefault();
 
@@ -618,7 +618,7 @@ export default function Home() {
         break;
 
       case "ArrowLeft":
-        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
           console.log("Shortcut: ←");
           event.preventDefault();
 
@@ -641,7 +641,7 @@ export default function Home() {
         break;
 
       case "k":
-        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
           console.log("Shortcut: k");
           event.preventDefault();
 
@@ -664,7 +664,7 @@ export default function Home() {
         break;
 
       case "ArrowRight":
-        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if ((document.activeElement.id !== "input" || elInputRef.current.value === "") && !event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
           console.log("Shortcut: →");
           event.preventDefault();
 
@@ -687,7 +687,7 @@ export default function Home() {
         break;
 
       case "j":
-        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey) {
+        if (document.activeElement.id !== "input" && !event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
           console.log("Shortcut: j");
           event.preventDefault();
 
@@ -737,7 +737,7 @@ export default function Home() {
         break;
 
       case ',':
-        if (event.ctrlKey) {
+        if (event.ctrlKey && !event.shiftKey && !event.altKey && !event.metaKey) {
           event.preventDefault();
 
           // Go to Settings page
