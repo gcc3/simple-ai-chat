@@ -188,7 +188,7 @@ lower values like 0.2 will make it more focused and deterministic.
 ROLE_CONTENT_SYSTEM  
 Set the system prompt.  
 
-WELCOME_MESSAGE
+WELCOME_MESSAGE  
 Control the custom welcome message.  
 
 WOLFRAM_ALPHA_APPID  
