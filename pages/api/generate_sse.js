@@ -57,10 +57,10 @@ export default async function(req, res) {
   }
 
   // If input is all empty, return
-  if (input.trim().length === 0 && images.length == 0 && files.length == 0) {
+  if (input === "") {
     updateStatus("Input empty.");
-    console.error("\nError: input cannot be empty.");
-    res.write(`data: Error: input cannot be empty.\n\n`); res.flush();
+    console.error("\nInput cannot be empty.");
+    res.write(`data: Input cannot be empty.\n\n`); res.flush();
     res.write(`data: [DONE]\n\n`); res.flush();
     res.end();
     return;

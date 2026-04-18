@@ -24,8 +24,8 @@ export default async function(req, res) {
   let inputType = TYPE.Normal;
   const images = req.body.images || null;
   const files = req.body.files || null;
-  if (input === "" && (!images || images.length === 0) && (!files || files.length === 0)) {
-    console.error("\nError: input cannot be empty.");
+  if (input === "") {
+    console.error("\nInput cannot be empty.");
     res.status(400).json({
       success: false,
       error: "Input cannot be empty.",
