@@ -431,6 +431,23 @@ const countChatsForIP = async (ip, start, end) => {
   }
 };
 
+// Count how many times the same IP sent exactly the same input (all time)
+const countExactSameInputForIP = async (ip, input, start, end) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      db.get(`SELECT COUNT(*) AS count FROM logs WHERE ip_addr = ? AND input = ? AND time >= ? AND time <= ?`, [ip, input, start, end], (err, row) => {
+        if (err) {
+          reject(err);
+        }
+        resolve(row.count);
+      });
+    });
+  } finally {
+    db.close();
+  }
+};
+
 // Count how many chats for a user for a date range
 const countChatsForUser = async (user, start, end) => {
   const db = await getDatabaseConnection();
@@ -1691,6 +1708,7 @@ export {
   getSessionLogs,
   getLastLogBySessionAndModel,
   countChatsForIP,
+  countExactSameInputForIP,
   countChatsForUser,
   countTokenForUserByModel,
   getUsageModelsForUser,

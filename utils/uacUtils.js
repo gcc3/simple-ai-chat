@@ -1,4 +1,4 @@
-import { countChatsForIP, countChatsForUser } from './sqliteUtils';
+import { countChatsForIP, countChatsForUser, countExactSameInputForIP } from './sqliteUtils';
 import { getRoleFequencyLimit } from './usageUtils';
 import { getSystemConfigurations } from './systemUtils';
 
@@ -9,6 +9,7 @@ export async function getUacResult(user, ip, session) {
   const isLogin = (user !== null && user !== undefined);
   const sysconf = getSystemConfigurations();
 
+  // Check IP-based access
   if (!isLogin) {
     // Not a user, urge register a user
     const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());
@@ -23,7 +24,16 @@ export async function getUacResult(user, ip, session) {
       };
     }
   }
-  
+
+  // Check same IP sending too much same request
+  const exactSameInputCount = await countExactSameInputForIP(ip, session.input, Date.now() - 86400000, Date.now());
+  if (exactSameInputCount >= 5) {
+    return {
+      success: false,
+      error: "You have sent the same request too many times. Please wait before trying again."
+    };
+  }
+
   // Check user status
   if (isLogin && user.status === 'suspend') {
     return {
