@@ -155,7 +155,7 @@ const initializeDatabase = (db) => {
                                 if (err) {
                                   return reject(err);
                                 }
-        
+
                                 resolve();
                               }
                             );
@@ -421,7 +421,7 @@ const countChatsForIP = async (ip, start, end) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT COUNT(*) AS count FROM logs WHERE ip_addr = ? AND create_at >= ? AND create_at <= ?`, [ip, start, end], (err, row) => {
+      db.get(`SELECT COUNT(*) AS count FROM logs WHERE ip_addr = ? AND created_at >= ? AND created_at <= ?`, [ip, start, end], (err, row) => {
         if (err) {
           reject(err);
         }
@@ -438,7 +438,7 @@ const countExactSameInputForIP = async (ip, input, start, end) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT COUNT(*) AS count FROM logs WHERE ip_addr = ? AND input = ? AND create_at >= ? AND create_at <= ?`, [ip, input, start, end], (err, row) => {
+      db.get(`SELECT COUNT(*) AS count FROM logs WHERE ip_addr = ? AND input = ? AND created_at >= ? AND created_at <= ?`, [ip, input, start, end], (err, row) => {
         if (err) {
           reject(err);
         }
@@ -539,9 +539,9 @@ const countUserByIP = async (ip) => {
 };
 
 const insertUser = async (username, role, role_expires_at, password, email, balance, settings) => {
-  console.log("Inserting new user: " + username　+ "...");
+  console.log("Inserting new user: " + username + "...");
   const db = await getDatabaseConnection();
-  
+
   try {
     return await new Promise((resolve, reject) => {
       // First, check if the username already exists
@@ -1257,7 +1257,7 @@ const insertStore = async (name, engine, settings, creator) => {
             reject(err);
             return;
           }
-          
+
           // This `this.lastID` provides the ID of the last inserted row.
           resolve(this.lastID);
         });
@@ -1476,7 +1476,7 @@ const insertNode = async (name, settings, creator) => {
             reject(err);
             return;
           }
-          
+
           // This `this.lastID` provides the ID of the last inserted row.
           resolve(this.lastID);
         });
@@ -1651,7 +1651,7 @@ const insertSession = async (id, parentId, createdBy) => {
           reject(err);
           return;
         }
-        
+
         // This `this.lastID` provides the ID of the last inserted row.
         resolve(this.lastID);
       });
