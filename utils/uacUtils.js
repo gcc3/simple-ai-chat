@@ -27,7 +27,6 @@ export async function getUacResult(user, ip, session, input) {
 
   // Check same IP sending too much same request
   const exactSameInputCount = await countExactSameInputForIP(ip, input, Date.now() - 86400000, Date.now());
-  console.log("Exact same input count for IP " + ip + ": " + exactSameInputCount);
   if (exactSameInputCount >= 5) {
     return {
       success: false,
