@@ -27,6 +27,14 @@ export default async function(req, res) {
   // Access log
   log(req);
 
+  res.writeHead(200, {
+    'connection': 'keep-alive',
+    'Cache-Control': 'no-cache',
+    'Content-Type': 'text/event-stream',
+    'X-Accel-Buffering': 'no',  // disables proxy buffering for NGINX
+                                // IMPORTANT! without this the stream not working on remote server
+  });
+
   // Update stats callback
   const updateStatus = (status) => {
     res.write(`data: ###STATUS###${status}\n\n`); res.flush();
@@ -103,14 +111,6 @@ export default async function(req, res) {
   // Ensure session
   // In sessions table, create session if not exists
   await ensureSession(session, user ? user.username : "");
-
-  res.writeHead(200, {
-    'connection': 'keep-alive',
-    'Cache-Control': 'no-cache',
-    'Content-Type': 'text/event-stream',
-    'X-Accel-Buffering': 'no',  // disables proxy buffering for NGINX
-                                // IMPORTANT! without this the stream not working on remote server
-  });
 
   updateStatus("Preparing...");
   
