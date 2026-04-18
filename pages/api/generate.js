@@ -138,8 +138,8 @@ export default async function(req, res) {
   const is_image_model = model.is_image === "1";
 
   // Function calling (tool calls), MCP tools
-  let functions_ = req.query.functions || "";
-  let mcp_tools = req.query.mcp_tools || [];
+  let functions_ = req.body.functions || "";
+  let mcp_tools = req.body.mcp_tools || [];
   if (!is_tool_calls_supported_model) {
     functions_ = "";
     mcp_tools = [];
