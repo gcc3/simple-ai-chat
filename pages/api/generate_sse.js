@@ -26,6 +26,11 @@ let models = await getModels();
 export default async function(req, res) {
   // Access log
   log(req);
+
+  // Update stats callback
+  const updateStatus = (status) => {
+    res.write(`data: ###STATUS###${status}\n\n`); res.flush();
+  }
   
   // Input
   let input = req.query.user_input.trim() || "";
@@ -53,7 +58,11 @@ export default async function(req, res) {
 
   // If input is all empty, return
   if (input.trim().length === 0 && images.length == 0 && files.length == 0) {
-    console.log("Input is empty.");
+    updateStatus("Input empty.");
+    console.error("\nError: input cannot be empty.");
+    res.write(`data: Error: input cannot be empty.\n\n`); res.flush();
+    res.write(`data: [DONE]\n\n`); res.flush();
+    res.end();
     return;
   }
 
@@ -103,10 +112,6 @@ export default async function(req, res) {
                                 // IMPORTANT! without this the stream not working on remote server
   });
 
-  // Update stats callback
-  const updateStatus = (status) => {
-    res.write(`data: ###STATUS###${status}\n\n`); res.flush();
-  }
   updateStatus("Preparing...");
   
   // Session ID
