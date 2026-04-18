@@ -35,7 +35,8 @@ const initializeDatabase = (db) => {
         images TEXT,
         cost REAL,
         ip_addr TEXT,
-        browser TEXT
+        browser TEXT,
+        created_at TEXT
       );`,
       (err) => {
         if (err) {
@@ -283,13 +284,14 @@ const searchFromLogs = async (keyword, username, limit = 100) => {
 const insertLog = async (session, time, username, model, input_l, input, output_l, output, images, cost, ip, browser) => {
   const db = await getDatabaseConnection();
   const time_h = formatUnixTimestamp(time);
+  const created_at = getTimestamp();
 
   try {
     return await new Promise((resolve, reject) => {
       const stmt = db.prepare(
-        "INSERT INTO logs (session, time, time_h, user, model, input_l, input, output_l, output, images, cost, ip_addr, browser) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
+        "INSERT INTO logs (session, time, time_h, user, model, input_l, input, output_l, output, images, cost, ip_addr, browser, created_at) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)"
       );
-      stmt.run([session, time, time_h, username, model, input_l, input, output_l, output, images, cost, ip, browser], function (err) {
+      stmt.run([session, time, time_h, username, model, input_l, input, output_l, output, images, cost, ip, browser, created_at], function (err) {
         if (err) {
           reject(err);
         }
@@ -419,7 +421,7 @@ const countChatsForIP = async (ip, start, end) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT COUNT(*) AS count FROM logs WHERE ip_addr = ? AND time >= ? AND time <= ?`, [ip, start, end], (err, row) => {
+      db.get(`SELECT COUNT(*) AS count FROM logs WHERE ip_addr = ? AND create_at >= ? AND create_at <= ?`, [ip, start, end], (err, row) => {
         if (err) {
           reject(err);
         }
@@ -436,7 +438,7 @@ const countExactSameInputForIP = async (ip, input, start, end) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT COUNT(*) AS count FROM logs WHERE ip_addr = ? AND input = ? AND time >= ? AND time <= ?`, [ip, input, start, end], (err, row) => {
+      db.get(`SELECT COUNT(*) AS count FROM logs WHERE ip_addr = ? AND input = ? AND create_at >= ? AND create_at <= ?`, [ip, input, start, end], (err, row) => {
         if (err) {
           reject(err);
         }

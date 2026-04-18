@@ -12,11 +12,13 @@ export function formatUnixTimestamp(unixTime) {
 }
 
 // Get a timestamp in milliseconds as a string
+// e.g., "1697059200000"
 export function getTimestamp() {
   return (new Date().getTime()).toString();
 }
 
 // Get human-readable time
+// e.g., "16:00:00 10/11/2023"
 export function getTime() {
   return moment().format('HH:mm:ss MM/DD/YYYY');
 }
