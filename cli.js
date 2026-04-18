@@ -333,7 +333,6 @@ async function generate_msg(model, input) {
     stream: useStream,
     stream_options: null,
     temperature: 1,
-    top_p: 1,
 
     // conditional params
     // function calling only available in non-stream mode

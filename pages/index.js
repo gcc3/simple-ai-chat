@@ -1446,7 +1446,6 @@ export default function Home() {
         if (getSetting('useStats') === "true") {
           const _stats_ = event.data.replace("###STATS###", "").split(',');
           const temperature = _stats_[0];
-          const top_p = _stats_[1];
           const token_ct = _stats_[2];
           const use_eval = _stats_[3];
           const func = _stats_[4];
@@ -1467,7 +1466,6 @@ export default function Home() {
             <div>
               func: {func.replaceAll('|', ", ") || "none"}<br></br>
               temperature: {temperature}<br></br>
-              top_p: {top_p}<br></br>
               token_ct: {token_ct}<br></br>
               mem: {mem}/{getSetting("memLength")}<br></br>
               {role && <div>role: {role}<br></br></div>}
@@ -1847,7 +1845,6 @@ export default function Home() {
       stream: useStream,
       stream_options: null,
       temperature: 1,
-      top_p: 1,
 
       // conditional params
       // function calling only available in non-stream mode for Ollama
@@ -2214,7 +2211,6 @@ export default function Home() {
         let stats = "";
         if (data.result.stats.func) stats += "func: " + data.result.stats.func.replaceAll('|', ", ") + "\n";
         if (data.result.stats.temperature) stats += "temperature: " + data.result.stats.temperature + "\n";
-        if (data.result.stats.top_p) stats += "top_p: " + data.result.stats.top_p + "\n";
         if (data.result.stats.token_ct) stats += "token_ct: " + data.result.stats.token_ct + "\n";
         if (data.result.stats.mem) stats += "mem: " + data.result.stats.mem + "/" + getSetting("memLength") + "\n";
         if (data.result.stats.role) stats += "role: " + data.result.stats.role + "\n";

@@ -6,7 +6,6 @@ export async function getSystemInfo() {
     role_content_system: "***",
     welcome_message: "",
     temperature: 1,
-    top_p: 1,
     use_node_ai: false,
     use_payment: false,
     use_email: false,

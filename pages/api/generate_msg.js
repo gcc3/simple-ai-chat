@@ -125,7 +125,6 @@ export default async function(req, res) {
     + "model: " + model_ + "\n"
     + "base_url: " + "(local)" + "\n"
     + "temperature: " + sysconf.temperature + "\n"
-    + "top_p: " + sysconf.top_p + "\n"
     + "use_system_role: " + use_system_role + "\n"
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
@@ -252,7 +251,6 @@ export default async function(req, res) {
         events: events,
         stats: {
           temperature: sysconf.temperature,
-          top_p: sysconf.top_p,
           token_ct: 0,
           mem: msg.mem,
           func: functionNames.join('|'),

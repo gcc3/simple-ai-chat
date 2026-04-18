@@ -71,7 +71,6 @@ export async function evaluate(user, input, raw_prompt, output) {
       model: sysconf.model,
       messages: eval_message,
       temperature: sysconf.temperature,
-      top_p: sysconf.top_p,
     });
 
     // Get result

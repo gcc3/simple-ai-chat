@@ -367,7 +367,6 @@ export default async function(req, res) {
     + "model: " + model_ + "\n"
     + "base_url: " + model.base_url + "\n"
     + "temperature: " + sysconf.temperature + "\n"
-    + "top_p: " + sysconf.top_p + "\n"
     + "use_system_role: " + use_system_role + "\n"
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
@@ -471,13 +470,9 @@ export default async function(req, res) {
       messages: msg.messages,
       model: model_,
       n: 1,
-      response_format: {
-        type: "text"
-      },
       stream: false,
       stream_options: null,
       temperature: sysconf.temperature,
-      top_p: sysconf.top_p,
 
       // conditional params
       ...(is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
@@ -592,7 +587,6 @@ export default async function(req, res) {
         events: events,
         stats: {
           temperature: sysconf.temperature,
-          top_p: sysconf.top_p,
           token_ct: chatCompletion.usage.total_tokens,
           mem: msg.mem,
           func: functionNames.join('|'),

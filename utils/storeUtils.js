@@ -120,7 +120,6 @@ async function generateMysqlQuery(input, description, schema, tableColumnsDef) {
       response_format: { type: "json_object" },
       messages: messages,
       temperature: 0,
-      top_p: 1,
     });
 
     // Get result

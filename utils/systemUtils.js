@@ -9,7 +9,6 @@ export function getSystemConfigurations() {
   const base_url = process.env.OPENAI_BASE_URL ? process.env.OPENAI_BASE_URL : "";
   const role_content_system = process.env.ROLE_CONTENT_SYSTEM ? process.env.ROLE_CONTENT_SYSTEM : "";
   const temperature = process.env.TEMPERATURE ? Number(process.env.TEMPERATURE) : 1;
-  const top_p = process.env.TOP_P ? Number(process.env.TOP_P) : 1;
   const use_node_ai = process.env.USE_NODE_AI == "true" ? true : false;
   const use_user_accounts = process.env.USE_USER_ACCOUNTS == "true" ? true : false;
   const use_payment = process.env.USE_PAYMENT == "true" ? true : false;
@@ -27,7 +26,6 @@ export function getSystemConfigurations() {
     role_content_system: role_content_system,
     welcome_message: welcome_message,
     temperature: temperature,
-    top_p: top_p,
     use_node_ai: use_node_ai,
     use_user_accounts: use_user_accounts,
     use_payment: use_payment,
