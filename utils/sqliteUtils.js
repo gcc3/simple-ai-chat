@@ -36,7 +36,7 @@ const initializeDatabase = (db) => {
         cost REAL,
         ip_addr TEXT,
         browser TEXT,
-        created_at TEXT
+        created_at TEXT NOT NULL
       );`,
       (err) => {
         if (err) {
