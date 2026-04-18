@@ -618,19 +618,21 @@ program
       }
     }
 
-    // One-shot mode: sc "text"
+    // One-shot mode
     if (text) {
+      const input = getInput(text);
+      if (input.error) {
+        printOutput(input.error + "\n");
+        process.exit(1);
+      }
+
+      // Generate one-shot
       const model_ = getSetting("model");
       if (!model_) {
         printOutput("No model is set. Use `:model use [name]` to set a model.");
         process.exit(1);
       }
       const model = await getModel(model_);
-      const input = getInput(text);
-      if (input.error) {
-        printOutput(input.error + "\n");
-        process.exit(1);
-      }
       if (model.base_url.includes("localhost") || model.base_url.includes("127.0.0.1")) {
         await generate_msg(model, input);
       } else if (globalThis.isOnline) {
