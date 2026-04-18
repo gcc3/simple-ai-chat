@@ -91,7 +91,7 @@ export default async function(req, res) {
 
   // User access control
   if (sysconf.use_access_control) {
-    const uacResult = await getUacResult(user, ip, session);
+    const uacResult = await getUacResult(user, ip, session, input);
     if (!uacResult.success) {
       res.status(400).json({
         success: false,

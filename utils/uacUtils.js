@@ -5,7 +5,7 @@ import { getSystemConfigurations } from './systemUtils';
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
 
 // User access control utilities
-export async function getUacResult(user, ip, session) {
+export async function getUacResult(user, ip, session, input) {
   const isLogin = (user !== null && user !== undefined);
   const sysconf = getSystemConfigurations();
 
@@ -26,7 +26,8 @@ export async function getUacResult(user, ip, session) {
   }
 
   // Check same IP sending too much same request
-  const exactSameInputCount = await countExactSameInputForIP(ip, session.input, Date.now() - 86400000, Date.now());
+  const exactSameInputCount = await countExactSameInputForIP(ip, input, Date.now() - 86400000, Date.now());
+  console.log("Exact same input count for IP " + ip + ": " + exactSameInputCount);
   if (exactSameInputCount >= 5) {
     return {
       success: false,
