@@ -30,7 +30,7 @@ import { pingMcpServer } from "./utils/mcpUtils.js";
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');
-process.on('warning', () => {});
+process.on('warning', () => { });
 
 // Online status
 globalThis.isOnline = true;
@@ -437,7 +437,7 @@ async function generate_msg(model, input) {
 }
 
 // Function to print output
-function printOutput(output, append=false) {
+function printOutput(output, append = false) {
   if (!append) {
     output = output.trimEnd() + "\n";
   }
@@ -463,9 +463,10 @@ program
   .name("simple-ai-chat")
   .description("simple-ai chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
   .version(getVersion(), "-v, --version")
+  .argument("[text]", "text to send to AI (one-shot mode)")
   .option("-d, --debug", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
-  .action(async (opts) => {
+  .action(async (text, opts) => {
     // Verbose
     if (opts.debug) {
       // Enable verbose logging with labeled messages
@@ -483,9 +484,9 @@ program
     } else {
       // Disable console output when not in verbose mode
       // Monkey-patch console methods to disable output
-      console.log = function() {};
-      console.error = function() {};
-      console.warn = function() {};
+      console.log = function () { };
+      console.error = function () { };
+      console.warn = function () { };
     }
 
     // Set the base URL
@@ -608,13 +609,37 @@ program
           }
           tempJar.store.getAllCookies((err, cookies) => {
             if (err || !cookies) return;
-            cookies.forEach(cookie => cookieJar.store.putCookie(cookie, () => {}));
+            cookies.forEach(cookie => cookieJar.store.putCookie(cookie, () => { }));
             console.log("Cookies loaded from file: " + cookieFile);
           });
         });
       } catch (error) {
         console.error("Error reading cookie file:", error);
       }
+    }
+
+    // One-shot mode: sc "text"
+    if (text) {
+      const model_ = getSetting("model");
+      if (!model_) {
+        printOutput("No model is set. Use `:model use [name]` to set a model.");
+        process.exit(1);
+      }
+      const model = await getModel(model_);
+      const input = getInput(text);
+      if (input.error) {
+        printOutput(input.error + "\n");
+        process.exit(1);
+      }
+      if (model.base_url.includes("localhost") || model.base_url.includes("127.0.0.1")) {
+        await generate_msg(model, input);
+      } else if (globalThis.isOnline) {
+        await generate_sse(model, input);
+      } else {
+        printOutput("You are offline.");
+        process.exit(1);
+      }
+      process.exit(0);
     }
 
     // Command line start or on submit
@@ -713,7 +738,7 @@ program
               console.log("Cookies saved to: " + cookieFile);
             });
           }
-        } 
+        }
 
         continue;
       }
@@ -755,7 +780,7 @@ program
       // Generation mode switch
       // Local mode
       if (model.base_url.includes("localhost")
-       || model.base_url.includes("127.0.0.1")) {
+        || model.base_url.includes("127.0.0.1")) {
         console.log("Start. (local)");
         await generate_msg(model, input);
         continue;
