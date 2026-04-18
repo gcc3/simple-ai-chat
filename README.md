@@ -185,9 +185,6 @@ TEMPERATURE
 What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random  
 lower values like 0.2 will make it more focused and deterministic.  
 
-TOP_P  
-Range 0 ~ 1, 0.1 means only the tokens comprising the top 10% probability mass are considered.  
-
 ROLE_CONTENT_SYSTEM  
 Set the system prompt.  
 
