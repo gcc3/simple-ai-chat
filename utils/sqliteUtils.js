@@ -433,17 +433,26 @@ const countChatsForIP = async (ip, start, end) => {
   }
 };
 
-// Count how many times the same IP sent exactly the same input (all time)
+// Count how many consecutive times the same IP sent exactly the same input
 const countExactSameInputForIP = async (ip, input, start, end) => {
   const db = await getDatabaseConnection();
   try {
     return await new Promise((resolve, reject) => {
-      db.get(`SELECT COUNT(*) AS count FROM logs WHERE ip_addr = ? AND input = ? AND created_at >= ? AND created_at <= ?`, [ip, input, start, end], (err, row) => {
-        if (err) {
-          reject(err);
+      db.get(
+        `SELECT COUNT(*) AS count FROM logs
+         WHERE ip_addr = ? AND input = ? AND created_at >= ? AND created_at <= ?
+         AND time > COALESCE(
+           (SELECT MAX(time) FROM logs WHERE ip_addr = ? AND input != ? AND created_at >= ? AND created_at <= ?),
+           0
+         )`,
+        [ip, input, start, end, ip, input, start, end],
+        (err, row) => {
+          if (err) {
+            reject(err);
+          }
+          resolve(row.count);
         }
-        resolve(row.count);
-      });
+      );
     });
   } finally {
     db.close();
