@@ -18,7 +18,6 @@ import { isUrl } from "utils/urlUtils";
 import { getS3PresignedPutUrl } from "utils/awsUtils";
 import log from "../../log.js";
 
-
 // System configurations
 const sysconf = getSystemConfigurations();
 
@@ -30,11 +29,11 @@ export default async function(req, res) {
   log(req);
   
   // Input
-  let input = req.body.user_input.trim() || "";
+  let input_ = req.body.user_input.trim() || "";
   let inputType = TYPE.Normal;
   let images = req.body.images || null;
   const files = req.body.files || null;
-  if (input === "") {
+  if (input_ === "") {
     console.error("\nInput cannot be empty.");
     res.status(400).json({
       success: false,
@@ -171,7 +170,7 @@ export default async function(req, res) {
 
   // User access control
   if (sysconf.use_access_control) {
-    const uacResult = await getUacResult(user, ip, session, input);
+    const uacResult = await getUacResult(user, ip, session, input_);
     if (!uacResult.success) {
       res.status(400).json({
         success: false,
@@ -185,7 +184,7 @@ export default async function(req, res) {
   if (is_image_model) {
     outputType = TYPE.ImageGen;
     console.log(chalk.blue("\nInput (img_gen, session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log(input);
+    console.log(input_);
 
     // Images
     if (images && images.length > 0) {
@@ -227,7 +226,7 @@ export default async function(req, res) {
       if (outputType === TYPE.ImageGen) {
         imageGenerate = await openai.images.generate({
           model: model_,
-          prompt: input,
+          prompt: input_,
           n: 1,
           moderation: "low",
           quality: quality,
@@ -255,7 +254,7 @@ export default async function(req, res) {
         // Use all files in the edit request
         imageGenerate = await openai.images.edit({
           model: model_,
-          prompt: input,
+          prompt: input_,
           image: imageFilesArray,    // pass array of File objects
           n: 1,
           moderation: "low",
@@ -332,7 +331,7 @@ export default async function(req, res) {
       console.log("Image uploaded to S3: " + objectUrl);
 
       // Log
-      await logadd(user, session, time++, model_, imageGenerate.usage.input_tokens, input, imageGenerate.usage.output_tokens, "", JSON.stringify([objectUrl]), parseFloat(cost.toFixed(6)), ip, browser);
+      await logadd(user, session, time++, model_, imageGenerate.usage.input_tokens, input_, imageGenerate.usage.output_tokens, "", JSON.stringify([objectUrl]), parseFloat(cost.toFixed(6)), ip, browser);
       return;
     } catch (error) {
       console.error("Error (image generation):");
@@ -346,10 +345,10 @@ export default async function(req, res) {
   }
 
   // Type I. Normal input
-  if (!input.startsWith("!")) {
+  if (!input_.startsWith("!")) {
     inputType = TYPE.Normal;
     console.log(chalk.yellowBright("\nInput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log(input);
+    console.log(input_);
 
     // Images & files
     if (images && images.length > 0) {
@@ -386,23 +385,23 @@ export default async function(req, res) {
   let functionNames = [];    // functionc called
   let functionCalls = [];    // function calls in input
   let functionResults = [];  // function call results
-  if (input.startsWith("!")) {
+  if (input_.startsWith("!")) {
     inputType = TYPE.ToolCall;
     console.log(chalk.cyanBright("\nInput (toolcalls, session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log(input);
+    console.log(input_);
 
     // OpenAI support function calling in tool calls.
     console.log("\n--- function calling ---");
     
     // Function name and arguments
-    const functions = input.split("T=")[0].trim().substring(1).split(",!");
+    const functions = input_.split("T=")[0].trim().substring(1).split(",!");
     console.log("Functions: " + JSON.stringify(functions));
 
     // Tool calls
-    functionCalls = JSON.parse(input.split("T=")[1].trim().split("Q=")[0].trim());
+    functionCalls = JSON.parse(input_.split("T=")[1].trim().split("Q=")[0].trim());
 
     // Replace input with original
-    input = input.split("Q=")[1];
+    input_ = input_.split("Q=")[1];
 
     // Execute function
     functionResults = await executeFunctions(functions);
@@ -433,7 +432,7 @@ export default async function(req, res) {
     // Messages
     const msg = await generateMessages(use_system_role, lang,
                                        user, model_,
-                                       input, inputType, files, images,
+                                       input_, inputType, files, images,
                                        session, mem_length,
 
                                        // Role, Stores, Node
@@ -506,7 +505,7 @@ export default async function(req, res) {
     // vision models not support evaluation
     if (use_eval) {
       if (output.trim().length > 0) {
-        const evalResult = await evaluate(user, input, msg.raw_prompt, output);
+        const evalResult = await evaluate(user, input_, msg.raw_prompt, output);
         if (evalResult.success) {
           eval_ = evalResult.output;
           console.log("eval: " + evalResult.output + "\n");
@@ -549,14 +548,14 @@ export default async function(req, res) {
     // 2. general input/output log
     if (inputType === TYPE.ToolCall) {
       // Function calling input is already logged
-      input = "Q=" + input;
+      input_ = "Q=" + input_;
     }
     if (outputType === TYPE.ToolCall) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }
     if (files.length > 0 && msg.file_content) {
-      input += "\n\n" + msg.file_content;
+      input_ += "\n\n" + msg.file_content;
     }
 
     // Token
@@ -577,7 +576,7 @@ export default async function(req, res) {
     }
 
     // Log
-    await logadd(user, session, time++, model_, chatCompletion.usage.prompt_tokens, input, chatCompletion.usage.completion_tokens, output, JSON.stringify(input_images), parseFloat(cost.toFixed(6)), ip, browser);
+    await logadd(user, session, time++, model_, chatCompletion.usage.prompt_tokens, input_, chatCompletion.usage.completion_tokens, output, JSON.stringify(input_images), parseFloat(cost.toFixed(6)), ip, browser);
 
     // Result
     res.status(200).json({

@@ -16,7 +16,6 @@ import { addUserUsage } from "utils/sqliteUtils.js";
 import { TYPE } from '../../constants.js';
 import log from "../../log.js";
 
-
 // System configurations
 const sysconf = getSystemConfigurations();
 
@@ -41,7 +40,7 @@ export default async function(req, res) {
   }
   
   // Input
-  let input = req.query.user_input.trim() || "";
+  let input_ = req.query.user_input.trim() || "";
   let inputType = TYPE.Normal;
 
   // Input: Images & files
@@ -65,7 +64,7 @@ export default async function(req, res) {
   }
 
   // If input is all empty, return
-  if (input === "") {
+  if (input_ === "") {
     updateStatus("Input empty.");
     console.error("\nInput cannot be empty.");
     res.write(`data: Input cannot be empty.\n\n`); res.flush();
@@ -222,7 +221,7 @@ export default async function(req, res) {
 
   // User access control
   if (sysconf.use_access_control) {
-    const uacResult = await getUacResult(user, ip, session, input);
+    const uacResult = await getUacResult(user, ip, session, input_);
     if (!uacResult.success) {
       res.write(`data: ${uacResult.error}\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
@@ -238,10 +237,10 @@ export default async function(req, res) {
   }
 
   // Type I. Normal input
-  if (!input.startsWith("!")) {
+  if (!input_.startsWith("!")) {
     inputType = TYPE.Normal;
     console.log(chalk.yellowBright("\nInput (sse, session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log(input);
+    console.log(input_);
 
     // Images & files
     if (images && images.length > 0) {
@@ -278,23 +277,23 @@ export default async function(req, res) {
   let functionNames = [];    // functionc called
   let functionCalls = [];    // function calls in input
   let functionCallingResults = [];  // function call results
-  if (input.startsWith("!")) {
+  if (input_.startsWith("!")) {
     inputType = TYPE.ToolCall;
     console.log(chalk.cyanBright("\nInput (sse, toolcalls, session = " + session + (user ? ", user = " + user.username : "") + "):"));
-    console.log(input);
+    console.log(input_);
  
     // OpenAI support function calling in tool calls.
     console.log("\n--- function calling ---");
 
     // Function name and arguments
-    const functions = input.split("T=")[0].trim().substring(1).split(",!");
+    const functions = input_.split("T=")[0].trim().substring(1).split(",!");
     console.log("Functions: " + JSON.stringify(functions));
 
     // Tool calls
-    functionCalls = JSON.parse(input.split("T=")[1].trim().split("R=")[0].trim());
+    functionCalls = JSON.parse(input_.split("T=")[1].trim().split("R=")[0].trim());
 
     // Tool calls result (frontend)
-    functionCallingResults = JSON.parse(input.split("T=")[1].split("Q=")[0].trim().split("R=")[1].trim());
+    functionCallingResults = JSON.parse(input_.split("T=")[1].split("Q=")[0].trim().split("R=")[1].trim());
     if (functionCallingResults && functionCallingResults.length > 0) {
       console.log("Frontend function calling results: " + JSON.stringify(functionCallingResults));
     }
@@ -333,7 +332,7 @@ export default async function(req, res) {
     }
 
     // Replace input with original user input
-    input = input.split("Q=")[1].trim();
+    input_ = input_.split("Q=")[1].trim();
   }
 
   try {
@@ -347,7 +346,7 @@ export default async function(req, res) {
     updateStatus("Start pre-generating...");
     const msg = await generateMessages(use_system_role, lang,
                                        user, model_,
-                                       input, inputType, files, images, 
+                                       input_, inputType, files, images, 
                                        session, mem_length,
 
                                        // Role, Stores, Node
@@ -489,7 +488,7 @@ export default async function(req, res) {
     // vision models not support evaluation
     if (use_eval) {
       if (output.trim().length > 0) {
-        const evalResult = await evaluate(user, input, msg.raw_prompt, output);
+        const evalResult = await evaluate(user, input_, msg.raw_prompt, output);
         if (evalResult.success) {
           res.write(`data: ###EVAL###${evalResult.output}\n\n`); res.flush();
           console.log("eval: " + evalResult.output + "\n");
@@ -532,14 +531,14 @@ export default async function(req, res) {
     // 2. general input/output log
     if (inputType === TYPE.ToolCall) {
       // Function calling input is already logged
-      input = "Q=" + input;
+      input_ = "Q=" + input_;
     }
     if (outputType === TYPE.ToolCall) {
       // Add tool calls output to log
       output = "T=" + output_tool_calls;
     }
     if (files.length > 0 && msg.file_content) {
-      input += "\n\n" + msg.file_content;
+      input_ += "\n\n" + msg.file_content;
     }
 
     // Token
@@ -560,7 +559,7 @@ export default async function(req, res) {
     }
 
     // Log
-    await logadd(user, session, time++, model_, chatCompletionUsage.prompt_tokens, input, chatCompletionUsage.completion_tokens, output, JSON.stringify(input_images), parseFloat(cost.toFixed(6)), ip, browser);
+    await logadd(user, session, time++, model_, chatCompletionUsage.prompt_tokens, input_, chatCompletionUsage.completion_tokens, output, JSON.stringify(input_images), parseFloat(cost.toFixed(6)), ip, browser);
 
     // Stats (final)
     res.write(`data: ###STATS###${sysconf.temperature},${chatCompletionUsage.total_tokens},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node_},${msg.mem}\n\n`);
