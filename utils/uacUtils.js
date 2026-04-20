@@ -11,10 +11,10 @@ export async function getUacResult(user, ip, session, input) {
 
   // Run both IP checks in parallel
   const now = Date.now();
-  const since24h = now - 86400000;
+  const since8h = now - 28800000;
   const [chatCount, exactSameInputCount] = await Promise.all([
-    !isLogin ? countChatsForIP(ip, since24h, now) : Promise.resolve(0),
-    countExactSameInputForIP(ip, input, since24h, now),
+    !isLogin ? countChatsForIP(ip, since8h, now) : Promise.resolve(0),
+    countExactSameInputForIP(ip, input, since8h, now),
   ]);
 
   // Check IP-based access
@@ -99,9 +99,13 @@ async function checkFrequenciesExceeded(user) {
     return false;
   }
 
-  const daily = await countChatsForUser(user.username, Date.now() - 86400000, Date.now());
-  const weekly = await countChatsForUser(user.username, Date.now() - 604800000, Date.now());
-  const monthly = await countChatsForUser(user.username, Date.now() - 2592000000, Date.now());
+  const now = Date.now();
+  const [daily, weekly, monthly] = await Promise.all([
+    countChatsForUser(user.username, now - 86400000, now),
+    countChatsForUser(user.username, now - 604800000, now),
+    countChatsForUser(user.username, now - 2592000000, now),
+  ]);
+
   const usageLimit = getRoleFequencyLimit(user.role);
   if (daily >= usageLimit.daily_limit || weekly >= usageLimit.weekly_limit || monthly >= usageLimit.monthly_limit) {
     // Usage exceeded
