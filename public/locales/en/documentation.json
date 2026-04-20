@@ -28,8 +28,6 @@
   "Supports convenient shortcut operations. Refer: `Shortcuts`": "Supports convenient shortcut operations. Refer: `Shortcuts`",
   "Stop generating. (`:stop`)": "Stop generating. (`:stop`)",
   "Generating.": "Generating.",
-  "Clear output. (`:clear`)": "Clear output. (`:clear`)",
-  "Has output.": "Has output.",
   "Fullscreen. (`:fullscreen [off?]`)": "Fullscreen. (`:fullscreen [off?]`)",
   "Split screen. (`:fullscreen split`)": "Split screen. (`:fullscreen split`)",
   "Clear the input.": "Clear the input.",
@@ -126,5 +124,9 @@
   "Swipe from left to right with two fingers.": "Swipe from left to right with two fingers.",
   "Swipe from left to right": "Swipe from left to right",
   "Swipe from right to left with two fingers.": "Swipe from right to left with two fingers.",
-  "Swipe from right to left": "Swipe from right to left"
+  "Swipe from right to left": "Swipe from right to left",
+  "Cursor is focused on the input area.": "Cursor is focused on the input area.",
+  "Delete a word.": "Delete a word.",
+  "Clear input and output. (`:clear`)": "Clear input and output. (`:clear`)",
+  "Create a new session. Clear input and output, and reset session. (`:clear` and `:reset`)": "Create a new session. Clear input and output, and reset session. (`:clear` and `:reset`)"
 }

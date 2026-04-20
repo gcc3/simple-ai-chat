@@ -28,8 +28,6 @@
   "Supports convenient shortcut operations. Refer: `Shortcuts`": "Mendukung operasi pintasan yang mudah. Lihat: `Pintasan`",
   "Stop generating. (`:stop`)": "Berhenti menghasilkan. (`:stop`)",
   "Generating.": "Menghasilkan.",
-  "Clear output. (`:clear`)": "Keluaran bersih. (`:clear`)",
-  "Has output.": "Memiliki keluaran.",
   "Fullscreen. (`:fullscreen [off?]`)": "Layar penuh. (`:fullscreen [mati?]`)",
   "Split screen. (`:fullscreen split`)": "Pembagian layar. (`:layar penuh split`)",
   "Clear the input.": "Bersihkan inputan.",
@@ -126,5 +124,9 @@
   "Swipe from left to right": "Geser dari kiri ke kanan",
   "Swipe from right to left with two fingers.": "Gesek dari kanan ke kiri dengan dua jari.",
   "Swipe from right to left": "Geser dari kanan ke kiri",
-  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI adalah aplikasi chat AI berbasis perintah yang dirancang untuk menyediakan antarmuka yang bersih dan profesional."
+  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI adalah aplikasi chat AI berbasis perintah yang dirancang untuk menyediakan antarmuka yang bersih dan profesional.",
+  "Cursor is focused on the input area.": "Kursor sedang fokus pada area input.",
+  "Delete a word.": "Hapus sebuah kata.",
+  "Clear input and output. (`:clear`)": "Hapus input dan output. (`:clear`)",
+  "Create a new session. Clear input and output, and reset session. (`:clear` and `:reset`)": "Buat sesi baru. Bersihkan input dan output, dan atur ulang sesi. (`:clear` dan `:reset`)"
 }

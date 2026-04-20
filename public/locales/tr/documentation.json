@@ -28,8 +28,6 @@
   "Supports convenient shortcut operations. Refer: `Shortcuts`": "Kolay kısayol işlemlerini destekler. Bakınız: `Kısayollar`",
   "Stop generating. (`:stop`)": "Üretimi durdur. (`:stop`)",
   "Generating.": "Üretiyor.",
-  "Clear output. (`:clear`)": "Net çıktı. (`:temizle`)",
-  "Has output.": "Çıktı var.",
   "Fullscreen. (`:fullscreen [off?]`)": "Tam ekran. (`:tam ekran [kapalı?]`)",
   "Split screen. (`:fullscreen split`)": "Bölünmüş ekran. (`:fullscreen split`)",
   "Clear the input.": "Girişi temizle.",
@@ -126,5 +124,9 @@
   "Swipe from left to right": "Soldan sağa kaydırın",
   "Swipe from right to left with two fingers.": "İki parmakla sağdan sola kaydırın.",
   "Swipe from right to left": "Sağdan sola kaydırın",
-  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI, temiz ve profesyonel bir arayüz sağlamak üzere tasarlanmış komut tabanlı bir AI sohbet uygulamasıdır."
+  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI, temiz ve profesyonel bir arayüz sağlamak üzere tasarlanmış komut tabanlı bir AI sohbet uygulamasıdır.",
+  "Cursor is focused on the input area.": "İmleç giriş alanına odaklanmış durumda.",
+  "Delete a word.": "Bir kelimeyi sil.",
+  "Clear input and output. (`:clear`)": "Girdi ve çıktıyı temizle. (`:clear`)",
+  "Create a new session. Clear input and output, and reset session. (`:clear` and `:reset`)": "Yeni bir oturum oluşturun. Giriş ve çıkışı temizleyin ve oturumu sıfırlayın. (`:clear` ve `:reset`)"
 }

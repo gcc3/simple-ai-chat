@@ -28,8 +28,6 @@
   "Supports convenient shortcut operations. Refer: `Shortcuts`": "편리한 단축키 작업을 지원합니다. 참조: `단축키`",
   "Stop generating. (`:stop`)": "생성을 중지하세요. (`:stop`)",
   "Generating.": "생성 중입니다.",
-  "Clear output. (`:clear`)": "명확한 출력. (`:clear`)",
-  "Has output.": "출력이 있습니다.",
   "Fullscreen. (`:fullscreen [off?]`)": "전체 화면. (`:fullscreen [끄기?]`)",
   "Split screen. (`:fullscreen split`)": "분할 화면. (`:fullscreen split`)",
   "Clear the input.": "입력을 지워주세요.",
@@ -126,5 +124,9 @@
   "Swipe from left to right": "왼쪽에서 오른쪽으로 스와이프하세요",
   "Swipe from right to left with two fingers.": "두 손가락으로 오른쪽에서 왼쪽으로 스와이프하세요.",
   "Swipe from right to left": "오른쪽에서 왼쪽으로 스와이프하세요",
-  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI는 명령 기반 AI 채팅 애플리케이션으로, 깔끔하고 전문적인 인터페이스를 제공합니다."
+  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI는 명령 기반 AI 채팅 애플리케이션으로, 깔끔하고 전문적인 인터페이스를 제공합니다.",
+  "Cursor is focused on the input area.": "커서가 입력 영역에 포커스되어 있습니다.",
+  "Delete a word.": "단어를 삭제하세요.",
+  "Clear input and output. (`:clear`)": "입력과 출력을 지웁니다. (`:clear`)",
+  "Create a new session. Clear input and output, and reset session. (`:clear` and `:reset`)": "새 세션을 생성합니다. 입력 및 출력을 지우고 세션을 재설정합니다. (`:clear` 및 `:reset`)"
 }

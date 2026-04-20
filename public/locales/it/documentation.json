@@ -28,8 +28,6 @@
   "Supports convenient shortcut operations. Refer: `Shortcuts`": "Supporta operazioni rapide tramite scorciatoie. Vedi: 'Scorciatoie'",
   "Stop generating. (`:stop`)": "Smetti di generare. (`:stop`)",
   "Generating.": "Generando.",
-  "Clear output. (`:clear`)": "Output chiaro. (`:clear`)",
-  "Has output.": "Ha prodotto.",
   "Fullscreen. (`:fullscreen [off?]`)": "Schermo intero. (`:fullscreen [disattiva?]`)",
   "Split screen. (`:fullscreen split`)": "Schermo diviso (`:fullscreen split`)",
   "Clear the input.": "Pulisci l'input.",
@@ -126,5 +124,9 @@
   "Swipe from left to right": "Scorri da sinistra a destra",
   "Swipe from right to left with two fingers.": "Scorri da destra a sinistra con due dita.",
   "Swipe from right to left": "Scorri da destra verso sinistra",
-  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI è un'applicazione di chat AI basata su comandi, progettata per offrire un'interfaccia pulita e professionale."
+  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI è un'applicazione di chat AI basata su comandi, progettata per offrire un'interfaccia pulita e professionale.",
+  "Cursor is focused on the input area.": "Il cursore è focalizzato sull'area di input.",
+  "Delete a word.": "Elimina una parola.",
+  "Clear input and output. (`:clear`)": "Pulisci input e output. (`:clear`)",
+  "Create a new session. Clear input and output, and reset session. (`:clear` and `:reset`)": "Crea una nuova sessione. Pulisci input e output e reimposta la sessione. (`:clear` e `:reset`)"
 }

@@ -28,8 +28,6 @@
   "Supports convenient shortcut operations. Refer: `Shortcuts`": "يدعم عمليات الاختصارات المريحة. انظر: 'الاختصارات'",
   "Stop generating. (`:stop`)": "توقف عن التوليد. (`:stop`)",
   "Generating.": "جارٍ التوليد.",
-  "Clear output. (`:clear`)": "مخرجات واضحة. (`:clear`)",
-  "Has output.": "لديه مخرجات.",
   "Fullscreen. (`:fullscreen [off?]`)": "ملء الشاشة. (':fullscreen [إيقاف؟]')",
   "Split screen. (`:fullscreen split`)": "شاشة منقسمة. (`:شاشة كاملة منقسمة`)",
   "Clear the input.": "امسح الإدخال.",
@@ -126,5 +124,9 @@
   "Swipe from left to right": "اسحب من اليسار إلى اليمين",
   "Swipe from right to left with two fingers.": "اسحب من اليمين إلى اليسار بإصبعين.",
   "Swipe from right to left": "اسحب من اليمين إلى اليسار",
-  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI هو تطبيق محادثة بالذكاء الاصطناعي يعتمد على الأوامر، مصمم لتقديم واجهة نظيفة واحترافية."
+  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI هو تطبيق محادثة بالذكاء الاصطناعي يعتمد على الأوامر، مصمم لتقديم واجهة نظيفة واحترافية.",
+  "Cursor is focused on the input area.": "المؤشر في منطقة الإدخال.",
+  "Delete a word.": "احذف كلمة.",
+  "Clear input and output. (`:clear`)": "مسح الإدخال والإخراج. (`:clear`)",
+  "Create a new session. Clear input and output, and reset session. (`:clear` and `:reset`)": "أنشئ جلسة جديدة. امسح الإدخال والإخراج، وأعد ضبط الجلسة. (`:clear` و `:reset`)"
 }

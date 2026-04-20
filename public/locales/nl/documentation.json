@@ -28,8 +28,6 @@
   "Supports convenient shortcut operations. Refer: `Shortcuts`": "Ondersteunt gemakkelijke sneltoetsoperaties. Zie: `Sneltoetsen`",
   "Stop generating. (`:stop`)": "Stop met genereren. (`:stop`)",
   "Generating.": "Genereren.",
-  "Clear output. (`:clear`)": "Duidelijke uitvoer. (`:clear`)",
-  "Has output.": "Heeft output.",
   "Fullscreen. (`:fullscreen [off?]`)": "Volledig scherm. (`:fullscreen [uit?]`)",
   "Split screen. (`:fullscreen split`)": "Splitscreen. (':volledig scherm splitsen')",
   "Clear the input.": "Wis de invoer.",
@@ -126,5 +124,9 @@
   "Swipe from left to right": "Veeg van links naar rechts",
   "Swipe from right to left with two fingers.": "Veeg met twee vingers van rechts naar links.",
   "Swipe from right to left": "Veeg van rechts naar links",
-  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI is een op commando's gebaseerde AI-chatapplicatie, ontworpen om een overzichtelijke en professionele interface te bieden."
+  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI is een op commando's gebaseerde AI-chatapplicatie, ontworpen om een overzichtelijke en professionele interface te bieden.",
+  "Cursor is focused on the input area.": "De cursor is gericht op het invoerveld.",
+  "Delete a word.": "Verwijder een woord.",
+  "Clear input and output. (`:clear`)": "Wis invoer en uitvoer. (`:clear`)",
+  "Create a new session. Clear input and output, and reset session. (`:clear` and `:reset`)": "Maak een nieuwe sessie aan. Wis invoer en uitvoer en stel de sessie opnieuw in. (`:clear` en `:reset`)"
 }

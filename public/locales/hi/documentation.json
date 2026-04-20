@@ -28,8 +28,6 @@
   "Supports convenient shortcut operations. Refer: `Shortcuts`": "सुविधाजनक शॉर्टकट ऑपरेशन्स का समर्थन करता है। देखें: 'शॉर्टकट्स'",
   "Stop generating. (`:stop`)": "उत्पन्न करना बंद करें। (`:stop`)",
   "Generating.": "जेनरेटिंग।",
-  "Clear output. (`:clear`)": "स्पष्ट आउटपुट। (`:clear`)",
-  "Has output.": "के पास आउटपुट है।",
   "Fullscreen. (`:fullscreen [off?]`)": "पूर्ण स्क्रीन। (`:fullscreen [बंद?]`)",
   "Split screen. (`:fullscreen split`)": "स्प्लिट स्क्रीन। (:fullscreen split)",
   "Clear the input.": "इनपुट को साफ़ करें।",
@@ -126,5 +124,9 @@
   "Swipe from left to right": "बाएं से दाएं स्वाइप करें",
   "Swipe from right to left with two fingers.": "दो उंगलियों से दाएं से बाएं स्वाइप करें।",
   "Swipe from right to left": "दाएँ से बाएँ स्वाइप करें",
-  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI एक कमांड-आधारित AI चैट एप्लिकेशन है, जो एक साफ़ और पेशेवर इंटरफ़ेस प्रदान करने के लिए डिज़ाइन किया गया है।"
+  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI एक कमांड-आधारित AI चैट एप्लिकेशन है, जो एक साफ़ और पेशेवर इंटरफ़ेस प्रदान करने के लिए डिज़ाइन किया गया है।",
+  "Cursor is focused on the input area.": "कर्सर इनपुट क्षेत्र पर केंद्रित है।",
+  "Delete a word.": "एक शब्द हटाएं।",
+  "Clear input and output. (`:clear`)": "इनपुट और आउटपुट को साफ़ करें। (`:clear`)",
+  "Create a new session. Clear input and output, and reset session. (`:clear` and `:reset`)": "एक नया सेशन बनाएँ। इनपुट और आउटपुट साफ़ करें, और सेशन रीसेट करें। (`:clear` और `:reset`)"
 }

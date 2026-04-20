@@ -28,8 +28,6 @@
   "Supports convenient shortcut operations. Refer: `Shortcuts`": "Поддерживает удобные операции с использованием сочетаний клавиш. Смотрите: `Быстрые клавиши`",
   "Stop generating. (`:stop`)": "Прекратите генерацию. (`:stop`)",
   "Generating.": "генерация",
-  "Clear output. (`:clear`)": "Очистить вывод. (`:clear`)",
-  "Has output.": "Имеет выход.",
   "Fullscreen. (`:fullscreen [off?]`)": "Полноэкранный режим. (`:fullscreen [выключить?]`)",
   "Split screen. (`:fullscreen split`)": "Разделенный экран. (:fullscreen split)",
   "Clear the input.": "Очистить ввод.",
@@ -126,5 +124,9 @@
   "Swipe from left to right": "Смахните слева направо",
   "Swipe from right to left with two fingers.": "Проведите двумя пальцами справа налево.",
   "Swipe from right to left": "Смахните справа налево",
-  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI — это чат-приложение с ИИ на основе команд, предназначенное для предоставления чистого и профессионального интерфейса."
+  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AI — это чат-приложение с ИИ на основе команд, предназначенное для предоставления чистого и профессионального интерфейса.",
+  "Cursor is focused on the input area.": "Курсор сфокусирован на поле ввода.",
+  "Delete a word.": "Удалить слово.",
+  "Clear input and output. (`:clear`)": "Очистить ввод и вывод. (`:clear`)",
+  "Create a new session. Clear input and output, and reset session. (`:clear` and `:reset`)": "Создайте новую сессию. Очистите ввод и вывод и сбросьте сессию. (`:clear` и `:reset`)"
 }

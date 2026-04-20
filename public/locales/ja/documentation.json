@@ -28,8 +28,6 @@
   "Supports convenient shortcut operations. Refer: `Shortcuts`": "便利なショートカット操作をサポートします。参照：`ショートカット`",
   "Stop generating. (`:stop`)": "生成を停止します。(`:stop`)",
   "Generating.": "生成中。",
-  "Clear output. (`:clear`)": "出力をクリアします。(`:clear`)",
-  "Has output.": "出力があります。",
   "Fullscreen. (`:fullscreen [off?]`)": "フルスクリーン。（`:fullscreen [off?]`）",
   "Split screen. (`:fullscreen split`)": "分割画面。（`:fullscreen split`）",
   "Clear the input.": "入力をクリアします。",
@@ -126,5 +124,9 @@
   "Swipe from left to right": "左から右へスワイプ",
   "Swipe from right to left with two fingers.": "二本の指で右から左へスワイプしてください。",
   "Swipe from right to left": "右から左にスワイプ",
-  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AIはコマンドベースのAIチャットアプリケーションで、クリーンでプロフェッショナルなインターフェースを提供するよう設計されています。"
+  "Simple AI is a command-based AI chat application, designed to provide a clean and professional interface.": "Simple AIはコマンドベースのAIチャットアプリケーションで、クリーンでプロフェッショナルなインターフェースを提供するよう設計されています。",
+  "Cursor is focused on the input area.": "カーソルが入力エリアにフォーカスされています。",
+  "Delete a word.": "単語を削除する。",
+  "Clear input and output. (`:clear`)": "入力と出力をクリアします。 (`:clear`)",
+  "Create a new session. Clear input and output, and reset session. (`:clear` and `:reset`)": "新しいセッションを作成します。入力と出力をクリアし、セッションをリセットします。(`:clear` と `:reset`)"
 }
