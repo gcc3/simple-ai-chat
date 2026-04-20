@@ -2,11 +2,12 @@ import { getSetting } from "../utils/settingsUtils.js";
 import { getBrowserLang } from "./langUtils.js";
 
 const VOICE_FALLBACK = {
-  "en-US": ["Samantha"],
-  "zh-CN": ["Tingting"],
-  "zh-TW": ["Meijia"],
-  "zh-HK": ["Sinji"],
-  "ja-JP": ["Kyoko"],
+  "en-US": ["Google US English", "Samantha"],
+  "en-GB": ["Google UK English Female", "Google UK English Male", "Daniel"],
+  "zh-CN": ["Google 普通话（中国大陆）", "Tingting"],
+  "zh-TW": ["Google 國語（臺灣）", "Meijia"],
+  "zh-HK": ["Google 粤語（香港）", "Sinji"],
+  "ja-JP": ["Google 日本語", "Kyoko"],
 };
 
 export function getFallbackVoiceNames(lang) {
