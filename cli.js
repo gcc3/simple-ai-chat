@@ -87,6 +87,7 @@ const mcpProcess = spawn('node', [join(__dirname, 'mcp.js')], {
 // Detach the child process from the parent process
 mcpProcess.unref();
 
+// ---- Generation Methods -------------------------------------------
 // M1. Generate SSE
 async function generate_sse(model, input) {
   // Config (input)
@@ -436,6 +437,8 @@ async function generate_msg(model, input) {
   }
 }
 
+// ---- CLI Program --------------------------------------------------
+// Utils
 // Function to print output
 function printOutput(output, append = false) {
   if (!append) {
