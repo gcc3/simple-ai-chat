@@ -106,7 +106,7 @@ async function generate_sse(model, input) {
     files: input.file_urls,
     time: Date.now().toString(),
     session: config.session,
-    model: config.model,
+    model: model.name,
     mem_length: "7",
     functions: config.functions,
     mcp_tools: mcpToolsString,
@@ -166,6 +166,11 @@ async function generate_sse(model, input) {
             toolCalls.push(toolCall);
             console.log(JSON.stringify(toolCall));
           }
+        }
+
+        // Handle error
+        if (dataStr.startsWith("###ERR###")) {
+          printOutput(dataStr.replace("###ERR###", ""))
         }
 
         continue;
@@ -437,6 +442,73 @@ async function generate_msg(model, input) {
   }
 }
 
+// M3. Generate One-shot
+async function generate_one(model, input) {
+  // Config (input)
+  const config = loadConfig();
+  console.log("Config: " + JSON.stringify(config));
+
+  // Build query parameters for SSE GET request
+  const params = new URLSearchParams({
+    user_input: input.text,
+    time: Date.now().toString(),
+    session: config.session,
+    model: model.name,
+  });
+
+  const url = `${globalThis.serverBaseUrl}/api/generate_one?${params.toString()}`;
+  const res = await fetch(url);
+  if (!res.ok) {
+    throw new Error(`[${res.status}] ${await res.text()}`);
+  }
+
+  // Stream SSE events
+  const reader = res.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = "";
+  let done = false;
+
+  while (!done) {
+    const { value, done: streamDone } = await reader.read();
+    if (streamDone) break;
+
+    buffer += decoder.decode(value, { stream: true });
+    const parts = buffer.split("\n\n");
+    buffer = parts.pop();
+
+    for (const part of parts) {
+      if (!part.startsWith("data:")) continue;
+
+      let dataStr = part.replace(/^data: /, "");
+
+      // Newline
+      dataStr = dataStr.replace(/###RETURN###/g, "\n");  // Replace all "###RETUREN###" with "\n"
+
+      // Status messages
+      if (/^###.+?###/.test(dataStr)) {
+        // Handle error
+        if (dataStr.startsWith("###ERR###")) {
+          printOutput(dataStr.replace("###ERR###", ""))
+        }
+
+        continue;
+      }
+
+      // DONE message
+      if (dataStr === "[DONE]") {
+        done = true;
+
+        // Print new line
+        printOutput("\n");
+        break;
+      }
+
+      // Message
+      printOutput(dataStr, true);
+    }
+  }
+}
+
 // ---- CLI Program --------------------------------------------------
 // Utils
 // Function to print output
@@ -639,7 +711,7 @@ program
       if (model.base_url.includes("localhost") || model.base_url.includes("127.0.0.1")) {
         await generate_msg(model, input);
       } else if (globalThis.isOnline) {
-        await generate_sse(model, input);
+        await generate_one(model, input);
       } else {
         printOutput("You are offline.");
         process.exit(1);

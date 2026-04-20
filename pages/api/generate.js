@@ -24,6 +24,7 @@ const sysconf = getSystemConfigurations();
 // Models
 let models = await getModels();
 
+// Generate
 export default async function(req, res) {
   // Access log
   log(req);
@@ -98,34 +99,18 @@ export default async function(req, res) {
   const use_vision = images && images.length > 0;
   const use_eval = use_eval_ && use_stats && !use_vision;
   let model = models.find(m => m.name === model_);
+
+  // Already setup models but not found
   if (!model) {
     // Try update models
     models = await getModels();
-
-    if (models.length === 0) {
-      // Developer didn't setup models table
-      model = {
-        name: process.env.MODEL,
-        api_key: process.env.OPENAI_API_KEY,
-        base_url: process.env.OPENAI_BASE_URL,
-        price_input: 0,
-        price_output: 0,
-        is_tool_calls_supported: 0,
-        is_vision: 0,
-        is_audio: 0,
-        is_reasoning: 0,
-        is_image: 0,
-      };
-    } else {
-      // Already setup models but not found
-      model = models.find(m => m.name === model_);
-      if (!model) {
-        res.status(500).json({
-          success: false,
-          error: "Model not exists.",
-        });
-        return;
-      }
+    model = models.find(m => m.name === model_);
+    if (!model) {
+      res.status(500).json({
+        success: false,
+        error: "Model not exists.",
+      });
+      return;
     }
   }
 

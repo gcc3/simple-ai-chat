@@ -15,6 +15,7 @@ import log from "../../log.js";
 // System configurations
 const sysconf = getSystemConfigurations();
 
+// Generate message only
 export default async function(req, res) {
   // Access log
   log(req);
