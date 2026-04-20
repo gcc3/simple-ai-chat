@@ -9,11 +9,16 @@ export async function getUacResult(user, ip, session, input) {
   const isLogin = (user !== null && user !== undefined);
   const sysconf = getSystemConfigurations();
 
+  // Run both IP checks in parallel
+  const now = Date.now();
+  const since24h = now - 86400000;
+  const [chatCount, exactSameInputCount] = await Promise.all([
+    !isLogin ? countChatsForIP(ip, since24h, now) : Promise.resolve(0),
+    countExactSameInputForIP(ip, input, since24h, now),
+  ]);
+
   // Check IP-based access
   if (!isLogin) {
-    // Not a user, urge register a user
-    const chatCount = await countChatsForIP(ip, Date.now() - 86400000, Date.now());
-
     // Forbidden as noticed some users can use fake IP to bypass the limit
     // But if user cannot chat, it will be inconvenient... temporarily enabled.
     if (chatCount >= 7) {
@@ -26,7 +31,6 @@ export async function getUacResult(user, ip, session, input) {
   }
 
   // Check same IP sending too much same request
-  const exactSameInputCount = await countExactSameInputForIP(ip, input, Date.now() - 86400000, Date.now());
   if (exactSameInputCount >= 5) {
     return {
       success: false,
