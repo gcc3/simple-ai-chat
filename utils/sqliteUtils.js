@@ -36,7 +36,7 @@ const initializeDatabase = (db) => {
         cost REAL,
         ip_addr TEXT,
         browser TEXT,
-        created_at TEXT NOT NULL
+        created_at INTEGER NOT NULL
       );`,
       (err) => {
         if (err) {
@@ -284,7 +284,7 @@ const searchFromLogs = async (keyword, username, limit = 100) => {
 const insertLog = async (session, time, username, model, input_l, input, output_l, output, images, cost, ip, browser) => {
   const db = await getDatabaseConnection();
   const time_h = formatUnixTimestamp(time);
-  const created_at = getTimestamp();
+  const created_at = Date.now();
 
   try {
     return await new Promise((resolve, reject) => {
