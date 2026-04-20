@@ -37,6 +37,7 @@ export default async function(req, res) {
   
   // Input
   let input_ = req.query.user_input.trim() || "";
+  let inputType = TYPE.Normal;
 
   // If input is all empty, return
   if (input_ === "") {
@@ -106,7 +107,6 @@ export default async function(req, res) {
   }
 
   // Model properties
-  const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
   const is_reasoning_model = model.is_reasoning === "1";
   
   // Model API key check
