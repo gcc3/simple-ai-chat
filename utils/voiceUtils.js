@@ -1,12 +1,22 @@
 import { getSetting } from "../utils/settingsUtils.js";
 import { getBrowserLang } from "./langUtils.js";
 
+const VOICE_FALLBACK = {
+  "en-US": ["Samantha"],
+  "zh-CN": ["Tingting"],
+  "zh-TW": ["Meijia"],
+  "zh-HK": ["Sinji"],
+  "ja-JP": ["Kyoko"],
+};
+
+export function getFallbackVoiceNames(lang) {
+  return VOICE_FALLBACK[lang] || null;
+}
 
 export async function getVoice(voiceName) {
   const currentLang = getSetting("lang") || getBrowserLang();  // by default use "en-US"
 
   const voices = await getVoices(currentLang);
-
   if (!voices || voices.length === 0) {
     console.warn("No voices found for lang `" + currentLang + "`.");
     return null;
@@ -16,22 +26,33 @@ export async function getVoice(voiceName) {
   for (const voice of voices) {
     if (voice.lang === currentLang && voice.name === voiceName) {
       voice_ = voice;
+      break;
     }
   }
 
+  // Find suggested voice
+  if (!voice_) {
+    const fallbackVoiceNames = getFallbackVoiceNames(currentLang);
+    if (fallbackVoiceNames) {
+      for (const fallbackName of fallbackVoiceNames) {
+        for (const voice of voices) {
+          if (voice.lang === currentLang && voice.name === fallbackName) {
+            voice_ = voice;
+            break;
+          }
+        }
+        if (voice_) break;
+      }
+    }
+  }
+
+  // Use the first voice as fallback
   if (!voice_) {
     voice_ = voices[0];
-    console.warn("Voice `" + voiceName + "` not found in lang `" + currentLang + "` voices, use default voice: " + voice_.name);
   }
 
   return voice_;
 }
-
-const strangeVoiceList = [
-  "Albert",
-  "Bad News",
-  "Whisper"
-]
 
 export function getVoices(lang = "") {
   return new Promise((resolve) => {
@@ -43,7 +64,7 @@ export function getVoices(lang = "") {
         if (!targetLang) {
           resolve(voices);
         } else {
-          resolve(voices.filter((voice) => voice.lang === targetLang && !strangeVoiceList.includes(voice.name)));
+          resolve(voices.filter((voice) => voice.lang === targetLang));
         }
         clearInterval(id);
       }
