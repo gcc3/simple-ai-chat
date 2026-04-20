@@ -379,7 +379,7 @@ export default function Home() {
         }
         break;
 
-      case "r":  // clear output and reset session
+      case "r":  // clear input and output
         if (event.ctrlKey && !event.shiftKey) {
           console.log("Shortcut: ⌃r");
 
@@ -391,6 +391,28 @@ export default function Home() {
             clearInput(true);
             clearOutput(true);
             elInputRef.current.focus();  // Focus on input
+          }
+        }
+        break;
+
+      case "n":  // clear input and output, and reset session
+        if (event.ctrlKey && !event.shiftKey) {
+          console.log("Shortcut: ⌃n");
+
+          if (globalThis.STATE === STATES.Idle) {
+            event.preventDefault();
+
+            // Same as :clear
+            // Clear all input and output, pleaceholder, previews
+            clearInput(true);
+            clearOutput(true);
+            elInputRef.current.focus();  // Focus on input
+
+            // Reset (same as `:reset` command)
+            initializeSessionMemory();
+            setSetting("stores", "");
+            setSetting("node", "");
+            setSetting("role", "");
           }
         }
         break;
