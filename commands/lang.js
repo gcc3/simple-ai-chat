@@ -1,5 +1,6 @@
 import { getLangCodes, getLanguageName } from "../utils/langUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { updateUserSetting } from '../utils/userUtils.js';
 
 export default async function lang(args) {
   const command = args[0];
@@ -19,6 +20,12 @@ export default async function lang(args) {
         console.warn("Unknown language code: " + currentLang + ". Resetting to default.");
 
         setSetting("lang", "");
+
+        // Update user settings
+        if (user) {
+          await updateUserSetting("lang", "");
+        }
+
         return "No language set.";
       }
 
@@ -60,6 +67,12 @@ export default async function lang(args) {
 
     if (langCodes.includes(newLangCode)) {
       setSetting("lang", newLangCode);
+
+      // Update user settings
+      if (user) {
+        await updateUserSetting("lang", newLangCode);
+      }
+
       return "Language set to `" + getLanguageName(newLangCode) + "`, country-language code: " + newLangCode + ". Please refresh to see changes.";
     } else {
       return "Language code not found.";
@@ -68,6 +81,12 @@ export default async function lang(args) {
   
   if (command === "reset") {
     setSetting("lang", "");
+
+    // Update user settings
+    if (user) {
+      await updateUserSetting("lang", "");
+    }
+    
     return "Language reset.";
   }
 
