@@ -22,7 +22,7 @@ export default async function lang(args) {
         setSetting("lang", "");
 
         // Update user settings
-        if (user) {
+        if (getSetting("user")) {
           await updateUserSetting("lang", "");
         }
 
@@ -69,7 +69,7 @@ export default async function lang(args) {
       setSetting("lang", newLangCode);
 
       // Update user settings
-      if (user) {
+      if (getSetting("user")) {
         await updateUserSetting("lang", newLangCode);
       }
 
@@ -83,7 +83,7 @@ export default async function lang(args) {
     setSetting("lang", "");
 
     // Update user settings
-    if (user) {
+    if (getSetting("user")) {
       await updateUserSetting("lang", "");
     }
     
