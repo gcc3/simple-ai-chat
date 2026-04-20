@@ -21,7 +21,7 @@ import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import { getMcpTools } from "./function.js";
 import { getLocalLogs, resetLocalLogs } from "./utils/offlineUtils.js";
 import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "./constants.js";
-import { getInput } from "./utils/inputUtils.js";
+import { getInput } from "./utils/client/inputUtils.js";
 import { logadd } from "./utils/client/logUtils.js";
 import { exec_f } from "./function.client.js";
 import { pingOllamaAPI } from "./utils/ollamaUtils.js";

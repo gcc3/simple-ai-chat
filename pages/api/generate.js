@@ -1,13 +1,13 @@
 import OpenAI, { toFile } from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
-import { logadd } from "utils/logUtils.js";
+import { logadd } from "utils/server/logUtils.js";
 import { authenticate } from "utils/authUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { getUacResult } from "utils/uacUtils";
 import { countToken } from "utils/tokenUtils";
-import { getSystemConfigurations } from "utils/systemUtils";
-import { ensureSession } from "utils/logUtils";
+import { getSystemConfigurations } from "utils/server/systemUtils";
+import { ensureSession } from "utils/server/logUtils";
 import { getUser, addUserUsage } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
 import { evaluate } from './evaluate';

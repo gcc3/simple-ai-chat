@@ -3,12 +3,12 @@ import { generateMessages } from "utils/promptUtils";
 import { authenticate } from "utils/authUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { getUacResult } from "utils/uacUtils";
-import { getSystemConfigurations } from "utils/systemUtils";
-import { ensureSession } from "utils/logUtils";
+import { getSystemConfigurations } from "utils/server/systemUtils.js";
+import { ensureSession } from "utils/server/logUtils.js";
 import { getUser } from "utils/sqliteUtils";
 import { executeFunctions } from "function.js";
 import { countToken } from "utils/tokenUtils.js";
-import { logadd } from "utils/logUtils.js";
+import { logadd } from "utils/server/logUtils.js";
 import { TYPE } from '../../constants.js';
 import log from "../../log.js";
 

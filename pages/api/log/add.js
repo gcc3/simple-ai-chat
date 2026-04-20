@@ -1,5 +1,5 @@
 import { authenticate } from "utils/authUtils";
-import { logadd } from "utils/logUtils";
+import { logadd } from "utils/server/logUtils";
 import { getUser } from "utils/sqliteUtils";
 
 export default async function (req, res) {

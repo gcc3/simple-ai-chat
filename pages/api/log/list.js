@@ -1,4 +1,4 @@
-import { loglist } from "utils/logUtils";
+import { loglist } from "utils/server/logUtils";
 import { authenticate } from "utils/authUtils";
 import { getSessionLog } from "utils/sqliteUtils";
 

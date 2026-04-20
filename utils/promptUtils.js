@@ -1,9 +1,9 @@
-import { loglist } from './logUtils.js';
+import { loglist } from './server/logUtils.js';
 import { getRolePrompt } from './roleUtils.js';
 import { getRole } from './sqliteUtils.js';
 import { getAddress } from "utils/googleMapsUtils";
 import { fetchImageSize } from "utils/imageUtils";
-import { getSystemConfigurations } from "utils/systemUtils.js";
+import { getSystemConfigurations } from "utils/server/systemUtils.js";
 import { findNode, queryNode, checkIsNodeConfigured } from "utils/nodeUtils";
 import { findStore, isInitialized, searchMysqlStore } from "utils/storeUtils";
 import fetch from 'node-fetch';

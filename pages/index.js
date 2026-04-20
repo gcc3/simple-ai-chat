@@ -36,7 +36,7 @@ import { toDataUri } from "utils/base64Utils";
 import { getSetting, setSetting } from "../utils/settingsUtils";
 import { resetLocalLogs, getLocalLogs } from "utils/offlineUtils";
 import { getStringMonoLength } from "utils/stringUtils";
-import { getInput } from "utils/inputUtils";
+import { getInput } from "utils/client/inputUtils";
 import { logadd } from "utils/client/logUtils";
 import { pingOllamaAPI } from "utils/ollamaUtils";
 import { getSystemInfo } from "utils/client/systemUtils"
