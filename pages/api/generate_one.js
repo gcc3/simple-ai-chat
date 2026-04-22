@@ -18,7 +18,7 @@ const sysconf = getSystemConfigurations();
 let models = await getModels();
 
 // Generate one-shot
-export default async function(req, res) {
+export default async function (req, res) {
   // Access log
   log(req);
 
@@ -27,14 +27,14 @@ export default async function(req, res) {
     'Cache-Control': 'no-cache',
     'Content-Type': 'text/event-stream',
     'X-Accel-Buffering': 'no',  // disables proxy buffering for NGINX
-                                // IMPORTANT! without this the stream not working on remote server
+    // IMPORTANT! without this the stream not working on remote server
   });
 
   // Update stats callback
   const updateStatus = (status) => {
     res.write(`data: ###STATUS###${status}\n\n`); res.flush();
   }
-  
+
   // Input
   let input_ = req.query.user_input.trim() || "";
   let inputType = TYPE.Normal;
@@ -78,7 +78,7 @@ export default async function(req, res) {
   await ensureSession(session, user ? user.username : "");
 
   updateStatus("Preparing...");
-  
+
   // Session ID
   const verifyResult = verifySessionId(session);
   if (!verifyResult.success) {
@@ -108,7 +108,7 @@ export default async function(req, res) {
 
   // Model properties
   const is_reasoning_model = model.is_reasoning === "1";
-  
+
   // Model API key check
   if (!model.api_key) {
     updateStatus("Model's API key is not set.");
@@ -117,7 +117,7 @@ export default async function(req, res) {
     res.end();
     return;
   }
-  
+
   // Model API base URL check
   if (!model.base_url) {
     updateStatus("Model's base URL is not set.");
@@ -172,6 +172,15 @@ export default async function(req, res) {
     let chatCompletionUsage = { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 };
     const chatCompletion = await openai.chat.completions.create({
       messages: [
+        {
+          "role": "system",
+          "content": [
+            {
+              "type": "text",
+              "text": "Answer in as few words as possible. One sentence or less. No explanations."
+            }
+          ]
+        },
         {
           "role": "user",
           "content": [
