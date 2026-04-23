@@ -16,7 +16,7 @@ import { readFileSync, writeFileSync, unlinkSync, mkdirSync, existsSync } from "
 import { tmpdir, homedir } from "os";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
-import { spawn } from "child_process";
+import { spawn, execSync } from "child_process";
 import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import { getMcpTools } from "./function.js";
 import { getLocalLogs, resetLocalLogs } from "./utils/offlineUtils.js";
@@ -31,6 +31,10 @@ import { pingMcpServer } from "./utils/mcpUtils.js";
 // Disable process warnings (node)
 process.removeAllListeners('warning');
 process.on('warning', () => { });
+
+// Mode
+// "interactive" or "oneshot"
+globalThis.mode = "interactive";
 
 // Online status
 globalThis.isOnline = true;
@@ -443,7 +447,7 @@ async function generate_msg(model, input) {
 }
 
 // M3. Generate One-shot
-async function generate_one(model, input) {
+async function generate_oneshot(model, input) {
   // Config (input)
   const config = loadConfig();
   console.log("Config: " + JSON.stringify(config));
@@ -456,7 +460,7 @@ async function generate_one(model, input) {
     model: model.name,
   });
 
-  const url = `${globalThis.serverBaseUrl}/api/generate_one?${params.toString()}`;
+  const url = `${globalThis.serverBaseUrl}/api/generate/bash-command?${params.toString()}`;
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error(`[${res.status}] ${await res.text()}`);
@@ -542,6 +546,13 @@ program
   .option("-d, --debug", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
   .action(async (text, opts) => {
+    // Mode
+    if (text) {
+      globalThis.mode = "oneshot";
+    } else {
+      globalThis.mode = "interactive";
+    }
+
     // Verbose
     if (opts.debug) {
       // Enable verbose logging with labeled messages
@@ -694,7 +705,7 @@ program
     }
 
     // One-shot mode
-    if (text) {
+    if (globalThis.mode === "oneshot") {
       const input = getInput(text);
       if (input.error) {
         printOutput(input.error + "\n");
@@ -708,14 +719,65 @@ program
         process.exit(1);
       }
       const model = await getModel(model_);
+
+      // Capture generated output
+      let capturedOutput = "";
+      const originalWrite = process.stdout.write.bind(process.stdout);
+      process.stdout.write = (data) => {
+        capturedOutput += data;
+        return originalWrite(data);
+      };
+
       if (model.base_url.includes("localhost") || model.base_url.includes("127.0.0.1")) {
         await generate_msg(model, input);
       } else if (globalThis.isOnline) {
-        await generate_one(model, input);
+        await generate_oneshot(model, input);
       } else {
+        process.stdout.write = originalWrite;
         printOutput("You are offline.");
         process.exit(1);
       }
+      process.stdout.write = originalWrite;
+
+      // Execute the generated bash command
+      const command = capturedOutput.trim();
+      if (command) {
+        // Prompt user to confirm execution
+        const confirmed = await new Promise((resolve) => {
+          process.stdout.write("Press ENTER to execute or ESC to cancel...");
+          
+          const stdin = process.stdin;
+          stdin.setRawMode(true);
+          stdin.resume();
+          stdin.setEncoding('utf8');
+          
+          const onData = (char) => {
+            if (char === '\u001b') {  // ESC key
+              stdin.setRawMode(false);
+              stdin.pause();
+              stdin.removeListener('data', onData);
+              process.stdout.write("\nCancelled.\n");
+              resolve(false);
+            } else if (char === '\r' || char === '\n') {  // ENTER key
+              stdin.setRawMode(false);
+              stdin.pause();
+              stdin.removeListener('data', onData);
+              resolve(true);
+            }
+          };
+          
+          stdin.on('data', onData);
+        });
+        
+        if (confirmed) {
+          try {
+            execSync(command, { stdio: "inherit" });
+          } catch (err) {
+            process.exit(err.status || 1);
+          }
+        }
+      }
+      
       process.exit(0);
     }
 

@@ -8,8 +8,8 @@ import { getModels, getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/server/systemUtils";
 import { ensureSession } from "utils/server/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";
-import { TYPE } from '../../constants.js';
-import log from "../../log.js";
+import { TYPE } from '../../../constants.js';
+import log from "../../../log.js";
 
 // System configurations
 const sysconf = getSystemConfigurations();
