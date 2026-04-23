@@ -542,13 +542,18 @@ program
   .name("simple-ai-chat")
   .description("simple-ai chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
   .version(getVersion(), "-v, --version")
-  .argument("[instruct]", "instruct to send to AI (one-shot mode)")
+  .argument("[instruct...]", "instruct to send to AI (one-shot mode)")
   .option("-d, --debug", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
   .action(async (instruct, opts) => {
     // Mode
     if (instruct) {
       globalThis.mode = "oneshot";
+
+      // Join variadic words into a single string
+      if (Array.isArray(instruct)) {
+        instruct = instruct.join(" ") || "";
+      }
     } else {
       globalThis.mode = "interactive";
     }
@@ -945,6 +950,18 @@ program
       }
     }
     rl.close();
+  });
+
+// Update command
+program
+  .command("update")
+  .description("Update simple-ai-chat to the latest version")
+  .action(() => {
+    try {
+      execSync("npm update simple-ai-chat -g", { stdio: "inherit" });
+    } catch (err) {
+      process.exit(err.status || 1);
+    }
   });
 
 // Program exit
