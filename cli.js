@@ -952,18 +952,6 @@ program
     rl.close();
   });
 
-// Update command
-program
-  .command("update")
-  .description("Update simple-ai-chat to the latest version")
-  .action(() => {
-    try {
-      execSync("npm install simple-ai-chat -g", { stdio: "inherit" });
-    } catch (err) {
-      process.exit(err.status || 1);
-    }
-  });
-
 // Program exit
 function exitProgram() {
   // Something to do before exit
