@@ -542,12 +542,12 @@ program
   .name("simple-ai-chat")
   .description("simple-ai chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
   .version(getVersion(), "-v, --version")
-  .argument("[text]", "text to send to AI (one-shot mode)")
+  .argument("[instruct]", "instruct to send to AI (one-shot mode)")
   .option("-d, --debug", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
-  .action(async (text, opts) => {
+  .action(async (instruct, opts) => {
     // Mode
-    if (text) {
+    if (instruct) {
       globalThis.mode = "oneshot";
     } else {
       globalThis.mode = "interactive";
@@ -706,7 +706,7 @@ program
 
     // One-shot mode
     if (globalThis.mode === "oneshot") {
-      const input = getInput(text);
+      const input = getInput(instruct);
       if (input.error) {
         printOutput(input.error + "\n");
         process.exit(1);
