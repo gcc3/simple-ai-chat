@@ -86,7 +86,7 @@ Check version
 `sc [-v|--version]`  
 
 Update  
-`npm update simple-ai-chat -g`  
+`npm install simple-ai-chat -g`  
 
 Note: Start the CLI interface will also start the MCP client.  
 
