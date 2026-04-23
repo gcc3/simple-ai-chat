@@ -958,7 +958,7 @@ program
   .description("Update simple-ai-chat to the latest version")
   .action(() => {
     try {
-      execSync("npm update simple-ai-chat -g", { stdio: "inherit" });
+      execSync("npm install simple-ai-chat -g", { stdio: "inherit" });
     } catch (err) {
       process.exit(err.status || 1);
     }
