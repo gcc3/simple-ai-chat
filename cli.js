@@ -453,11 +453,13 @@ async function generate_oneshot(model, input) {
   console.log("Config: " + JSON.stringify(config));
 
   // Collect shell context for bash command generation
-  let pwd = "", whoami = "", lsla = "";
+  let pwd = "", whoami = "", lsla = "", uname = "", shell = "";
   try { pwd = execSync('pwd', { encoding: 'utf8' }).trim(); } catch (_) {}
   try { whoami = execSync('whoami', { encoding: 'utf8' }).trim(); } catch (_) {}
   try { lsla = execSync('ls -la', { encoding: 'utf8' }).trim().split('\n').slice(0, 100).join('\n'); } catch (_) {}
-  const environment_context = `\n\npwd:\n${pwd}\n\nwhoami:\n${whoami}\n\nls -la:\n${lsla}`;
+  try { uname = execSync('uname -a', { encoding: 'utf8' }).trim(); } catch (_) {}
+  try { shell = execSync('echo $SHELL', { encoding: 'utf8' }).trim(); } catch (_) {}
+  const environment_context = `\n\npwd:\n${pwd}\n\nwhoami:\n${whoami}\n\nuname:\n${uname}\n\nshell:\n${shell}\n\nls -la:\n${lsla}`;
 
   // Build query parameters for SSE GET request
   const params = new URLSearchParams({
