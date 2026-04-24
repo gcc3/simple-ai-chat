@@ -153,7 +153,7 @@ async function generate_sse(model, input) {
       let dataStr = part.replace(/^data: /, "");
 
       // Newline
-      dataStr = dataStr.replace(/###RETURN###/g, "\n");  // Replace all "###RETUREN###" with "\n"
+      dataStr = dataStr.replace(/###RETURN###/g, "\n");  // Replace all "###RETURN###" with "\n"
 
       // Status messages
       if (/^###.+?###/.test(dataStr)) {
@@ -174,7 +174,7 @@ async function generate_sse(model, input) {
 
         // Handle error
         if (dataStr.startsWith("###ERR###")) {
-          printOutput(dataStr.replace("###ERR###", ""))
+          printOutput(dataStr.replace("###ERR###", ""), true);
         }
 
         continue;
@@ -496,16 +496,13 @@ async function generate_oneshot(model, input) {
       let dataStr = part.replace(/^data: /, "");
 
       // Newline
-      dataStr = dataStr.replace(/###RETURN###/g, "\n");  // Replace all "###RETUREN###" with "\n"
+      dataStr = dataStr.replace(/###RETURN###/g, "\n");  // Replace all "###RETURN###" with "\n"
 
       // Status messages
       if (/^###.+?###/.test(dataStr)) {
         // Handle error
         if (dataStr.startsWith("###ERR###")) {
-          printOutput(dataStr.replace("###ERR###", ""))
-
-          // Exit
-          process.exit(1);
+          printOutput(dataStr.replace("###ERR###", ""), true);
         }
 
         continue;

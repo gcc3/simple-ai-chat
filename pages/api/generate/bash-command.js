@@ -209,7 +209,7 @@ export default async function (req, res) {
 
     res.write(`data: ###MODEL###${model_}\n\n`);
     res.flush();
-
+    
     // Handle output
     for await (const part of chatCompletion) {
       if (!part.choices) {
