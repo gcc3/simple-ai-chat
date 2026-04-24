@@ -3,4 +3,4 @@
 # Bump the version, publish to npm, and update the global package
 npm version patch
 npm publish
-echo "About 3 minutes later, run \`npm install simple-ai-chat -g\` to update the global package to the latest version."
+echo "About 3 minutes later, run \`npm i simple-ai-chat -g\` to update the global package to the latest version."
