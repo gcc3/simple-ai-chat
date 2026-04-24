@@ -62,7 +62,7 @@ globalThis.serverBaseUrl = "https://simple-ai.io";
 import { createRequire } from "module";
 const require = createRequire(import.meta.url);
 const { LocalStorage } = require("node-localstorage");
-globalThis.localStorage = new LocalStorage('./.scratch');
+globalThis.localStorage = new LocalStorage(join(homedir(), '.simple', '.scratch'));
 globalThis.sessionStorage = require("node-sessionstorage");
 
 // Monkey-patch the fetch function to use the server's base URL and handle cookies
