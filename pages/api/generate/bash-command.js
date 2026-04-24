@@ -39,6 +39,9 @@ export default async function (req, res) {
   let input_ = req.query.user_input.trim() || "";
   let inputType = TYPE.Normal;
 
+  // Shell context
+  const environment_context_ = req.query.environment_context || "";
+
   // If input is all empty, return
   if (input_ === "") {
     updateStatus("Input empty.");
@@ -177,7 +180,7 @@ export default async function (req, res) {
           "content": [
             {
               "type": "text",
-              "text": "Generate a one line bash command. Don't use Markdown, just the pure command. No explanations."
+              "text": `Generate a one line bash command. Don't use Markdown, just the pure command. No explanations.\n\nEnvironment context:\n${environment_context_}`
             }
           ]
         },

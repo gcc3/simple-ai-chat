@@ -452,12 +452,20 @@ async function generate_oneshot(model, input) {
   const config = loadConfig();
   console.log("Config: " + JSON.stringify(config));
 
+  // Collect shell context for bash command generation
+  let pwd = "", whoami = "", lsla = "";
+  try { pwd = execSync('pwd', { encoding: 'utf8' }).trim(); } catch (_) {}
+  try { whoami = execSync('whoami', { encoding: 'utf8' }).trim(); } catch (_) {}
+  try { lsla = execSync('ls -la', { encoding: 'utf8' }).trim().split('\n').slice(0, 100).join('\n'); } catch (_) {}
+  const environment_context = `\n\npwd:\n${pwd}\n\nwhoami:\n${whoami}\n\nls -la:\n${lsla}`;
+
   // Build query parameters for SSE GET request
   const params = new URLSearchParams({
     user_input: input.text,
     time: Date.now().toString(),
     session: config.session,
     model: model.name,
+    environment_context,
   });
 
   const url = `${globalThis.serverBaseUrl}/api/generate/bash-command?${params.toString()}`;
