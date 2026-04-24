@@ -503,6 +503,10 @@ async function generate_oneshot(model, input) {
         // Handle error
         if (dataStr.startsWith("###ERR###")) {
           printOutput(dataStr.replace("###ERR###", ""), true);
+
+          // Exit
+          printOutput("\n");
+          process.exit(1);
         }
 
         continue;
@@ -752,6 +756,7 @@ program
         printOutput("You are offline.");
         process.exit(1);
       }
+
       process.stdout.write = originalWrite;
 
       // Execute the generated bash command
