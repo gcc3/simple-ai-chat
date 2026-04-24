@@ -503,6 +503,9 @@ async function generate_oneshot(model, input) {
         // Handle error
         if (dataStr.startsWith("###ERR###")) {
           printOutput(dataStr.replace("###ERR###", ""))
+
+          // Exit
+          process.exit(1);
         }
 
         continue;

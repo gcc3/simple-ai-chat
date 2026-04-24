@@ -46,7 +46,7 @@ export default async function (req, res) {
   if (input_ === "") {
     updateStatus("Input empty.");
     console.error("\nInput cannot be empty.");
-    res.write(`data: Input cannot be empty.\n\n`); res.flush();
+    res.write(`data: ###ERR###Input cannot be empty.\n\n`); res.flush();
     res.write(`data: [DONE]\n\n`); res.flush();
     res.end();
     return;
@@ -85,7 +85,7 @@ export default async function (req, res) {
   // Session ID
   const verifyResult = verifySessionId(session);
   if (!verifyResult.success) {
-    res.write(`data: ${verifyResult.message}\n\n`); res.flush();
+    res.write(`data: ###ERR###${verifyResult.message}\n\n`); res.flush();
     res.write(`data: [DONE]\n\n`); res.flush();
     res.end();
     return;
@@ -150,7 +150,7 @@ export default async function (req, res) {
   if (sysconf.use_access_control) {
     const uacResult = await getUacResult(user, ip, session, input_);
     if (!uacResult.success) {
-      res.write(`data: ${uacResult.error}\n\n`); res.flush();
+      res.write(`data: ###ERR###${uacResult.error}\n\n`); res.flush();
       res.write(`data: [DONE]\n\n`); res.flush();
       res.end();
       return;
