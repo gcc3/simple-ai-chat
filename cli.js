@@ -557,7 +557,7 @@ program
   .option("-b, --base-url <url>", "base URL for the server")
   .action(async (instruct, opts) => {
     // Mode
-    if (instruct) {
+    if (instruct && instruct.length > 0) {
       globalThis.mode = "oneshot";
 
       // Join variadic words into a single string
