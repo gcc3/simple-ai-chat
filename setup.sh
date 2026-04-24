@@ -26,3 +26,16 @@ git pull
 
 echo "Installing npm dependencies..."
 npm install
+
+echo "Cloning docs repository..."
+if [ ! -d "docs" ]; then
+  git clone https://github.com/gcc3/content-hub docs
+else
+  echo "Skipped (exists): docs"
+fi
+if [ ! -f "docs/public/notes/note.sh" ]; then
+  rm -rf docs/public/notes
+  git clone https://github.com/gcc3/simple-ai-docs docs/public/notes
+else
+  echo "Skipped (exists): docs/public/notes"
+fi
