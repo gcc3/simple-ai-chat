@@ -10,6 +10,7 @@ export default async function location(args) {
         navigator.geolocation.getCurrentPosition((position) => {
           console.log("Location: (" + position.coords.latitude + "," + position.coords.longitude + ")");
           setSetting("location", "(" + position.coords.latitude + "," + position.coords.longitude + ")");
+          setSetting("useLocation", true);
           resolve();
         }, reject);
       });
