@@ -275,10 +275,15 @@ export default async function(req, res) {
     console.log("Functions: " + JSON.stringify(functions));
 
     // Tool calls
-    functionCalls = JSON.parse(input_.split("T=")[1].trim().split("R=")[0].trim());
+    // Input format: !funcs T=<toolCalls> [R=<results>] Q=<query>
+    // R= is optional (absent when the backend executes the functions instead of the frontend).
+    const afterT = input_.split("T=")[1] ?? "";
+    const beforeQ = afterT.split("Q=")[0];
+    const rParts = beforeQ.split("R=");
+    functionCalls = JSON.parse(rParts[0].trim());
 
     // Tool calls result (frontend)
-    functionCallingResults = JSON.parse(input_.split("T=")[1].split("Q=")[0].trim().split("R=")[1].trim());
+    functionCallingResults = rParts.length > 1 ? JSON.parse(rParts[1].trim()) : [];
     if (functionCallingResults && functionCallingResults.length > 0) {
       console.log("Frontend function calling results: " + JSON.stringify(functionCallingResults));
     }
