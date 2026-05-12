@@ -27,6 +27,7 @@ import { exec_f } from "./function.client.js";
 import { pingOllamaAPI } from "./utils/ollamaUtils.js";
 import { getSystemInfo } from "./utils/client/systemUtils.js"
 import { pingMcpServer } from "./utils/mcpUtils.js";
+import { refreshLocalUser } from "./utils/userUtils.js";
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');
@@ -651,6 +652,35 @@ program
     initializeSettings();
     initializeSessionMemory();
 
+    // Load cookie BEFORE fetching system data so requests carry auth.
+    // Awaited via a Promise wrapper because tough-cookie / store ops are callback-based.
+    const cookieFile = join(homedir(), ".simple", "cookie");
+    if (existsSync(cookieFile)) {
+      try {
+        const cookieData = JSON.parse(readFileSync(cookieFile, "utf-8"));
+        await new Promise((resolve) => {
+          tough.CookieJar.deserialize(cookieData, (err, tempJar) => {
+            if (err) {
+              console.error("Error deserializing cookies:", err);
+              return resolve();
+            }
+            tempJar.store.getAllCookies((err, cookies) => {
+              if (err || !cookies || cookies.length === 0) return resolve();
+              let pending = cookies.length;
+              cookies.forEach((cookie) => {
+                cookieJar.store.putCookie(cookie, () => {
+                  if (--pending === 0) resolve();
+                });
+              });
+            });
+          });
+        });
+        console.log("Cookies loaded from file: " + cookieFile);
+      } catch (error) {
+        console.error("Error reading cookie file:", error);
+      }
+    }
+
     // Fetch system data (system info, user info, model etc.)
     const fetchSystemData = async () => {
       // System info
@@ -702,24 +732,14 @@ program
     }
     await fetchSystemData();
 
-    // Load cookie
-    const cookieFile = join(homedir(), ".simple", "cookie");
-    if (existsSync(cookieFile)) {
+    // Re-hydrate local user from server using the cookie we just loaded.
+    // If the cookie is valid the server returns the user and we restore the
+    // `user` setting; if not, local user is cleared.
+    if (globalThis.isOnline) {
       try {
-        const cookieData = JSON.parse(readFileSync(cookieFile, "utf-8"));
-        tough.CookieJar.deserialize(cookieData, (err, tempJar) => {
-          if (err) {
-            console.error("Error deserializing cookies:", err);
-            return;
-          }
-          tempJar.store.getAllCookies((err, cookies) => {
-            if (err || !cookies) return;
-            cookies.forEach(cookie => cookieJar.store.putCookie(cookie, () => { }));
-            console.log("Cookies loaded from file: " + cookieFile);
-          });
-        });
+        await refreshLocalUser();
       } catch (error) {
-        console.error("Error reading cookie file:", error);
+        console.error("Error refreshing local user:", error);
       }
     }
 
@@ -969,8 +989,9 @@ program
 
 // Program exit
 function exitProgram() {
-  // Something to do before exit
-  localStorage.clear();
+  // Note: do NOT clear localStorage here — settings like `user` are persisted
+  // to disk via node-localstorage and must survive across sessions so login
+  // state (paired with ~/.simple/cookie) is remembered.
 
   // Stop the MCP server if it's running
   if (mcpProcess) {

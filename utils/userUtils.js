@@ -17,8 +17,10 @@ export async function refreshLocalUser(user = null) {
     if (getSetting("user")) {
       clearLocalUser();
 
-      // Clear auth cookie
-      document.cookie = "auth=; Path=/;";
+      // Clear auth cookie (browser only — CLI keeps its cookie in the jar/file)
+      if (typeof document !== "undefined") {
+        document.cookie = "auth=; Path=/;";
+      }
       console.log("User data is incomplete, local user data cleared.");
     }
     return;
