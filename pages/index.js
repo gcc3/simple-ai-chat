@@ -1159,7 +1159,7 @@ export default function Home() {
       }
 
       // Clear command
-      if (command === "clear") {
+      if (command === "clear" || command === "reset") {
         // Same as ⌃r
         clearInput(true);
         clearOutput(true);
