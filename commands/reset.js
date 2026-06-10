@@ -8,5 +8,5 @@ export default async function reset(args) {
   setSetting("node", "");
   setSetting("role", "");
 
-  return "Reset.";
+  return "";
 }
