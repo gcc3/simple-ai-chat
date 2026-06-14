@@ -34,7 +34,7 @@ process.removeAllListeners('warning');
 process.on('warning', () => { });
 
 // Mode
-// "interactive" or "oneshot"
+// "interactive" or "bash-command"
 globalThis.mode = "interactive";
 
 // Online status
@@ -447,8 +447,8 @@ async function generate_msg(model, input) {
   }
 }
 
-// M3. Generate One-shot
-async function generate_oneshot(model, input) {
+// M3. Generate Bash Command
+async function generate_bash_command(model, input) {
   // Config (input)
   const config = loadConfig();
   console.log("Config: " + JSON.stringify(config));
@@ -557,13 +557,13 @@ program
   .name("simple-ai-chat")
   .description("simple-ai chat (cli) " + getVersion() + "\nFor more information, please visit https://simple-ai.io")
   .version(getVersion(), "-v, --version")
-  .argument("[instruct...]", "instruct to send to AI (one-shot mode)")
+  .argument("[instruct...]", "instruct to send to AI (bash-command mode)")
   .option("-d, --debug", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
   .action(async (instruct, opts) => {
     // Mode
     if (instruct && instruct.length > 0) {
-      globalThis.mode = "oneshot";
+      globalThis.mode = "bash-command";
 
       // Join variadic words into a single string
       if (Array.isArray(instruct)) {
@@ -743,15 +743,15 @@ program
       }
     }
 
-    // One-shot mode
-    if (globalThis.mode === "oneshot") {
+    // Bash-command mode
+    if (globalThis.mode === "bash-command") {
       const input = getInput(instruct);
       if (input.error) {
         printOutput(input.error + "\n");
         process.exit(1);
       }
 
-      // Generate one-shot
+      // Generate bash command
       const model_ = getSetting("model");
       if (!model_) {
         printOutput("No model is set. Use `:model use [name]` to set a model.");
@@ -770,7 +770,7 @@ program
       if (model.base_url.includes("localhost") || model.base_url.includes("127.0.0.1")) {
         await generate_msg(model, input);
       } else if (globalThis.isOnline) {
-        await generate_oneshot(model, input);
+        await generate_bash_command(model, input);
       } else {
         process.stdout.write = originalWrite;
         printOutput("You are offline.");

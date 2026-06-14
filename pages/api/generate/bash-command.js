@@ -17,7 +17,7 @@ const sysconf = getSystemConfigurations();
 // Models
 let models = await getModels();
 
-// Generate one-shot
+// Generate bash command
 export default async function (req, res) {
   // Access log
   log(req);
@@ -266,7 +266,7 @@ export default async function (req, res) {
     res.end();
     return;
   } catch (error) {
-    console.log("Error (Generate One-shot API):");
+    console.log("Error (Generate bash-command API):");
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.write(`data: ###ERR###An error occurred during your request. (${error.response.status})\n\n`)
