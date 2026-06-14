@@ -1,5 +1,6 @@
 import OpenAI from "openai";
 import chalk from 'chalk';
+import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/server/logUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
@@ -17,7 +18,7 @@ const sysconf = getSystemConfigurations();
 // Models
 let models = await getModels();
 
-// Generate one-shot
+// Generate short
 export default async function (req, res) {
   // Access log
   log(req);
@@ -56,6 +57,7 @@ export default async function (req, res) {
   // Config (input)
   const time_ = req.query.time || "";
   const session = req.query.session || "";
+  const mem_length = req.query.mem_length || 0;
 
   // Request info
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -158,6 +160,27 @@ export default async function (req, res) {
   console.log(input_);
 
   try {
+    // Messages (with chat history)
+    updateStatus("Start pre-generating...");
+    const msg = await generateMessages(false, "",
+                                       user, model_,
+                                       input_, inputType, [], [],
+                                       session, mem_length,
+                                       "", "", "",
+                                       false, "",
+                                       [], [],
+                                       updateStatus, streamOutput);
+    updateStatus("Pre-generating finished.");
+
+    // Prepend the short-answer system prompt
+    const messages = [
+      {
+        role: "system",
+        content: "Answer in as few words as possible. One sentence or less. No explanations.",
+      },
+      ...msg.messages,
+    ];
+
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");
 
@@ -171,26 +194,7 @@ export default async function (req, res) {
     // OpenAI chat completion!
     let chatCompletionUsage = { prompt_tokens: 0, completion_tokens: 0, total_tokens: 0 };
     const chatCompletion = await openai.chat.completions.create({
-      messages: [
-        {
-          "role": "system",
-          "content": [
-            {
-              "type": "text",
-              "text": "Answer in as few words as possible. One sentence or less. No explanations."
-            }
-          ]
-        },
-        {
-          "role": "user",
-          "content": [
-            {
-              "type": "text",
-              "text": input_
-            }
-          ]
-        }
-      ],
+      messages,
       model: model_,
       n: 1,
       stream: true,
@@ -263,7 +267,7 @@ export default async function (req, res) {
     res.end();
     return;
   } catch (error) {
-    console.log("Error (Generate One-shot API):");
+    console.log("Error (Generate short API):");
     if (error.response) {
       console.error(error.response.status, error.response.data);
       res.write(`data: ###ERR###An error occurred during your request. (${error.response.status})\n\n`)
