@@ -58,6 +58,13 @@ export default async function (req, res) {
   const time_ = req.query.time || "";
   const session = req.query.session || "";
   const mem_length = req.query.mem_length || 0;
+  const role = req.query.role || "";
+  const stores = req.query.stores || "";
+  const node_ = req.query.node || "";
+  const use_location = req.query.use_location === "true" ? true : false;
+  const location = req.query.location || "";
+  const lang = req.query.lang || "";
+  const use_system_role = req.query.use_system_role || true;
 
   // Request info
   const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
@@ -162,12 +169,12 @@ export default async function (req, res) {
   try {
     // Messages (with chat history)
     updateStatus("Start pre-generating...");
-    const msg = await generateMessages(false, "",
+    const msg = await generateMessages(use_system_role, lang,
                                        user, model_,
                                        input_, inputType, [], [],
                                        session, mem_length,
-                                       "", "", "",
-                                       false, "",
+                                       role, stores, node_,
+                                       use_location, location,
                                        [], [],
                                        updateStatus, streamOutput);
     updateStatus("Pre-generating finished.");
