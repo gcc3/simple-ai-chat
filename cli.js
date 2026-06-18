@@ -9,7 +9,6 @@ import { initializeSettings } from "./utils/settingsUtils.js";
 import { initializeSessionMemory } from "./utils/sessionUtils.js";
 import { getModel } from "./utils/modelUtils.js";
 import { loadConfig } from "./utils/configUtils.js";
-import { setTime } from "./utils/sessionUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
 import { readFileSync, writeFileSync, unlinkSync, mkdirSync, existsSync } from "fs";
@@ -18,8 +17,8 @@ import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { spawn, execSync } from "child_process";
 import { getSetting, setSetting } from "./utils/settingsUtils.js";
-import { getMcpTools } from "./function.js";
 import { getLocalLogs, resetLocalLogs } from "./utils/offlineUtils.js";
+import { getMcpTools } from "./function.js";
 import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "./constants.js";
 import { getInput } from "./utils/inputUtils.js";
 import { logadd } from "./utils/client/logUtils.js";
@@ -107,8 +106,6 @@ async function generate_sse(model, input) {
   // Build query parameters for SSE GET request
   const params = new URLSearchParams({
     user_input: input.text,
-    images: input.image_urls,
-    files: input.file_urls,
     time: Date.now().toString(),
     session: config.session,
     model: model.name,
@@ -118,15 +115,14 @@ async function generate_sse(model, input) {
     role: config.role,
     stores: config.stores,
     node: config.node,
-    use_stats: "false",
-    use_eval: "false",
     use_location: "false",
     location: "",
     lang: config.lang,
     use_system_role: "true",
   });
 
-  const url = `${globalThis.serverBaseUrl}/api/generate_sse?${params.toString()}`;
+  // Previously used generate_sse
+  const url = `${globalThis.serverBaseUrl}/api/generate/short?${params.toString()}`;
   const res = await fetch(url);
   if (!res.ok) {
     throw new Error(`[${res.status}] ${await res.text()}`);
@@ -154,20 +150,18 @@ async function generate_sse(model, input) {
       let dataStr = part.replace(/^data: /, "");
 
       // Newline
-      dataStr = dataStr.replace(/###RETURN###/g, "\n");  // Replace all "###RETURN###" with "\n"
+      dataStr = dataStr.replace(/###RETURN###/g, "\n");
 
       // Status messages
       if (/^###.+?###/.test(dataStr)) {
-        // Handle the callings (tool calls)
+        // Handle tool calls
         if (dataStr.startsWith("###CALL###")) {
           const toolCall = (JSON.parse(dataStr.replace("###CALL###", "")))[0];
           const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
           if (toolCallSameIndex) {
-            // Found same index tool
             toolCallSameIndex.function.arguments += toolCall.function.arguments;
             console.log(toolCall.function.arguments);
           } else {
-            // If not found, add the tool
             toolCalls.push(toolCall);
             console.log(JSON.stringify(toolCall));
           }
@@ -177,7 +171,6 @@ async function generate_sse(model, input) {
         if (dataStr.startsWith("###ERR###")) {
           printOutput(dataStr.replace("###ERR###", ""), true);
         }
-
         continue;
       }
 
@@ -193,24 +186,19 @@ async function generate_sse(model, input) {
           });
           const functionInput = functions.join(",");
 
-          // Generate with tool calls (function calling)
           let q = "";
           if (input.is_function) {
             q = input.text.split("Q=")[1];
           }
 
-          // Reset time
           const timeNow = Date.now();
-          setTime(timeNow);
           setSetting("head", timeNow);
 
-          // Call generate with function
           const newInput = getInput(functionInput + " T=" + JSON.stringify(toolCalls) + " Q=" + q);
           await generate_sse(model, newInput);
           break;
         }
 
-        // Print new line
         printOutput("\n");
         break;
       }

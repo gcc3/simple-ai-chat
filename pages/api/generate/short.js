@@ -2,6 +2,8 @@ import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/server/logUtils";
+import { executeFunctions, getTools } from "function.js";
+import { countToken } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
@@ -116,7 +118,16 @@ export default async function (req, res) {
   }
 
   // Model properties
+  const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
   const is_reasoning_model = model.is_reasoning === "1";
+
+  // Function calling (tool calls), MCP tools
+  let functions_ = req.query.functions || "";
+  let mcp_tools = req.query.mcp_tools || "[]";
+  if (!is_tool_calls_supported_model) {
+    functions_ = "";
+    mcp_tools = "[]";
+  }
 
   // Model API key check
   if (!model.api_key) {
@@ -163,10 +174,65 @@ export default async function (req, res) {
     }
   }
 
-  console.log(chalk.yellowBright("\nInput (oneshot, session = " + session + (user ? ", user = " + user.username : "") + "):"));
-  console.log(input_);
+  // Type I. Normal input
+  let functionNames = [];
+  let functionCalls = [];
+  let functionCallingResults = [];
+
+  if (!input_.startsWith("!")) {
+    inputType = TYPE.Normal;
+    console.log(chalk.yellowBright("\nInput (short, session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(input_);
+  }
+
+  // Type II. Tool calls (function calling) input
+  if (input_.startsWith("!")) {
+    inputType = TYPE.ToolCall;
+    console.log(chalk.cyanBright("\nInput (short, toolcalls, session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(input_);
+
+    console.log("\n--- function calling ---");
+
+    const functions = input_.split("T=")[0].trim().substring(1).split(",!");
+    console.log("Functions: " + JSON.stringify(functions));
+
+    const afterT = input_.split("T=")[1] ?? "";
+    const beforeQ = afterT.split("Q=")[0];
+    const rParts = beforeQ.split("R=");
+    functionCalls = JSON.parse(rParts[0].trim());
+
+    functionCallingResults = rParts.length > 1 ? JSON.parse(rParts[1].trim()) : [];
+    if (functionCallingResults && functionCallingResults.length > 0) {
+      console.log("Frontend function calling results: " + JSON.stringify(functionCallingResults));
+    }
+
+    if (functionCallingResults.length == 0) {
+      functionCallingResults = await executeFunctions(functions);
+      console.log("Backend function calling result:" + JSON.stringify(functionCallingResults));
+
+      if (functionCallingResults.length > 0) {
+        for (let i = 0; i < functionCallingResults.length; i++) {
+          const f = functionCallingResults[i];
+
+          const functionName = f.function.split("(")[0].trim();
+          if (functionNames.indexOf(functionName) === -1) {
+            functionNames.push(functionName);
+          }
+
+          if (f.event) {
+            const event = JSON.stringify(f.event);
+            res.write(`data: ###EVENT###${event}\n\n`);
+          }
+        }
+      }
+    }
+
+    input_ = input_.split("Q=")[1].trim();
+  }
 
   try {
+    let toolCalls = [];
+
     // Messages (with chat history)
     updateStatus("Start pre-generating...");
     const msg = await generateMessages(use_system_role, lang,
@@ -175,7 +241,7 @@ export default async function (req, res) {
                                        session, mem_length,
                                        role, stores, node_,
                                        use_location, location,
-                                       [], [],
+                                       functionCalls, functionCallingResults,
                                        updateStatus, streamOutput);
     updateStatus("Pre-generating finished.");
 
@@ -187,6 +253,19 @@ export default async function (req, res) {
       },
       ...msg.messages,
     ];
+
+    // Tools
+    console.log("\n--- tools ---");
+    let tools = getTools(functions_);
+    let mcpTools = JSON.parse(mcp_tools);
+    if (mcpTools && mcpTools.length > 0) {
+      tools = tools.concat(mcpTools);
+    }
+    if (is_tool_calls_supported_model) {
+      console.log(JSON.stringify(tools));
+    } else {
+      console.log("Model doesn't support tool calls.");
+    }
 
     // endpoint: /v1/chat/completions
     updateStatus("Create chat completion.");
@@ -211,6 +290,7 @@ export default async function (req, res) {
       temperature: sysconf.temperature,
 
       // conditional params
+      ...(is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
       ...(is_reasoning_model ? { reasoning_effort: "high" } : {}),
       ...(user ? { user: user.username } : {})
     });
@@ -225,7 +305,6 @@ export default async function (req, res) {
       }
 
       if (part.choices.length > 0) {
-        // Use a safe reference to delta since it can be undefined
         const delta = part.choices[0].delta || {};
 
         // Handle message output
@@ -234,6 +313,23 @@ export default async function (req, res) {
           outputType = TYPE.Normal;
           output += content;
           streamOutput(content);
+        }
+
+        // Handle tool calls output
+        const tool_calls = Array.isArray(delta.tool_calls) ? delta.tool_calls : null;
+        if (tool_calls && tool_calls.length > 0) {
+          outputType = TYPE.ToolCall;
+          res.write(`data: ###CALL###${JSON.stringify(tool_calls)}\n\n`); res.flush();
+
+          const toolCall = tool_calls[0];
+          if (toolCall) {
+            const toolCallSameIndex = toolCalls.find(t => t.index === toolCall.index);
+            if (toolCallSameIndex) {
+              toolCallSameIndex.function.arguments += toolCall.function.arguments;
+            } else {
+              toolCalls.push(toolCall);
+            }
+          }
         }
       }
 
@@ -244,10 +340,41 @@ export default async function (req, res) {
     }
 
     // Output
-    console.log(chalk.blueBright("\nOutput (oneshot, session = " + session + (user ? ", user = " + user.username : "") + "):"));
+    console.log(chalk.blueBright("\nOutput (short, session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log((output.trim() || "(null)"));
 
+    // Tool calls output
+    const output_tool_calls = JSON.stringify(toolCalls);
+    if (output_tool_calls && toolCalls.length > 0) {
+      console.log("\n--- tool calls ---");
+      console.log(output_tool_calls);
+    }
+
     // Log (chat history)
+    // 1. tool calls log
+    if (functionCalls && functionCalls.length > 0 && functionCallingResults && functionCallingResults.length > 0) {
+      for (let i = 0; i < functionCallingResults.length; i++) {
+        const f = functionCallingResults[i];
+        const c = functionCalls[i];
+
+        if (c.type === "function" && c.function && c.function.name === f.function.split("(")[0].trim()) {
+          const input_f = "F=" + JSON.stringify(c);
+          let output_f = f.success ? "F=" + f.message : "F=Error: " + f.error;
+          const input_token_ct_f = countToken(model_, input_f);
+          const output_token_ct_f = countToken(model_, output_f);
+          await logadd(user, session, time++, model_, input_token_ct_f, input_f, output_token_ct_f, output_f, JSON.stringify([]), 0, ip, browser);
+        }
+      }
+    }
+
+    // 2. general input/output log
+    if (inputType === TYPE.ToolCall) {
+      input_ = "Q=" + input_;
+    }
+    if (outputType === TYPE.ToolCall) {
+      output = "T=" + output_tool_calls;
+    }
+
     // Token
     console.log("\n--- token_ct ---");
     console.log("response_token_ct: " + JSON.stringify(chatCompletionUsage));
