@@ -176,7 +176,7 @@ export default async function (req, res) {
     const messages = [
       {
         role: "system",
-        content: "Answer in as few words as possible. One sentence or less. No explanations.",
+        content: "Reply in plain text only. No markdown, no code blocks, no extra explanation. Be as brief as possible while still being correct and helpful."
       },
       ...msg.messages,
     ];
