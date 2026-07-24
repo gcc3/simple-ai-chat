@@ -460,7 +460,7 @@ export default async function(req, res) {
 
       // conditional params
       ...(is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
-      ...(is_reasoning_model ? { reasoning_effort: "high" } : {}),
+      ...(is_reasoning_model ? { reasoning_effort: (is_tool_calls_supported_model && tools && tools.length > 0) ? "none" : "high" } : {}),
       ...(user ? { user: user.username } : {})
     });
 
