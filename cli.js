@@ -233,6 +233,7 @@ async function generate_msg(model, input) {
   const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
   const is_vision_model = model.is_vision === "1";
   const is_audio_model = model.is_audio === "1";
+  const is_reasoning_model = model.is_reasoning === "1";
   const is_image_model = model.is_image === "1";
 
   // Model switch
@@ -335,6 +336,7 @@ async function generate_msg(model, input) {
     // conditional params
     // function calling only available in non-stream mode
     ...(!useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
+    ...(is_reasoning_model && !useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { reasoning_effort: "none" } : {}),
     ...(user ? { user: user.username } : {})
   });
 

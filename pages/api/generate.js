@@ -118,6 +118,7 @@ export default async function(req, res) {
   const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
   const is_vision_model = model.is_vision === "1";
   const is_audio_model = model.is_audio === "1";
+  const is_reasoning_model = model.is_reasoning === "1";
   const is_image_model = model.is_image === "1";
 
   // Function calling (tool calls), MCP tools
@@ -459,6 +460,7 @@ export default async function(req, res) {
 
       // conditional params
       ...(is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
+      ...(is_reasoning_model && is_tool_calls_supported_model && tools && tools.length > 0 ? { reasoning_effort: "none" } : {}),
       ...(user ? { user: user.username } : {})
     });
 

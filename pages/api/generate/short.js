@@ -291,6 +291,7 @@ export default async function (req, res) {
 
       // conditional params
       ...(is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
+      ...(is_reasoning_model && is_tool_calls_supported_model && tools && tools.length > 0 ? { reasoning_effort: "none" } : {}),
       ...(user ? { user: user.username } : {})
     });
 
