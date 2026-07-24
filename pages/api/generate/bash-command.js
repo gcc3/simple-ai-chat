@@ -203,7 +203,6 @@ export default async function (req, res) {
       temperature: sysconf.temperature,
 
       // conditional params
-      ...(is_reasoning_model ? { reasoning_effort: "high" } : {}),
       ...(user ? { user: user.username } : {})
     });
 

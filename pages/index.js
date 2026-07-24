@@ -1747,7 +1747,6 @@ export default function Home() {
     const is_tool_calls_supported_model = model.is_tool_calls_supported === "1";
     const is_vision_model = model.is_vision === "1";
     const is_audio_model = model.is_audio === "1";
-    const is_reasoning_model = model.is_reasoning === "1";
     const is_image_model = model.is_image === "1";
 
     // Config (input)
@@ -1871,7 +1870,6 @@ export default function Home() {
       // conditional params
       // function calling only available in non-stream mode for Ollama
       ...(!useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
-      ...(is_reasoning_model ? {} : {}),  // TODO, reasoning param not support yet.
       ...(user ? { user: user.username } : {})
     });
 
