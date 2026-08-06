@@ -7,7 +7,7 @@ import tough from 'tough-cookie';
 import fetchCookie from 'fetch-cookie';
 import { initializeSettings } from "./utils/settingsUtils.js";
 import { initializeSessionMemory } from "./utils/sessionUtils.js";
-import { getModel } from "./utils/modelUtils.js";
+import { getModel } from "./ai/model.js";
 import { loadConfig } from "./utils/configUtils.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
@@ -20,12 +20,12 @@ import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import { getLocalLogs, resetLocalLogs } from "./utils/offlineUtils.js";
 import { getMcpTools } from "./function.js";
 import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "./constants.js";
-import { getInput } from "./utils/inputUtils.js";
+import { getInput } from "./ai/context/input.js";
 import { logadd } from "./utils/client/logUtils.js";
 import { exec_f } from "./function.client.js";
-import { pingOllamaAPI } from "./utils/ollamaUtils.js";
+import { pingOllamaAPI } from "./ai/ollama.js";
 import { getSystemInfo } from "./utils/client/systemUtils.js"
-import { pingMcpServer } from "./utils/mcpUtils.js";
+import { pingMcpServer } from "./ai/mcp.js";
 import { refreshLocalUser } from "./utils/userUtils.js";
 
 // Disable process warnings (node)

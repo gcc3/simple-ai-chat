@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import chalk from 'chalk';
-import { generateMessages } from "utils/promptUtils";
+import { generateMessages } from "ai/context/prompt";
 import { logadd } from "utils/server/logUtils";
 import { executeFunctions, getTools } from "function.js";
 import { countToken } from "utils/tokenUtils";
@@ -9,7 +9,7 @@ import { authenticate } from "utils/authUtils";
 import { getUacResult } from "utils/uacUtils";
 import { getModels, getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/server/systemUtils";
-import { findNode } from "utils/nodeUtils.js";
+import { findNode } from "ai/extensions/node.js";
 import { ensureSession } from "utils/server/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";
 import { TYPE } from '../../constants.js';

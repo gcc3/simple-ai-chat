@@ -1,8 +1,8 @@
 import { authenticate } from 'utils/authUtils.js';
 import { getUser, countUserRoles } from 'utils/sqliteUtils.js';
 import { createToken } from 'utils/authUtils.js';
-import { getAvailableStoresForUser } from 'utils/storeUtils';
-import { getAvailableNodesForUser } from 'utils/nodeUtils';
+import { getAvailableStoresForUser } from 'ai/extensions/store';
+import { getAvailableNodesForUser } from 'ai/extensions/node';
 import { npre } from "utils/numberUtils";
 import moment from 'moment';
 

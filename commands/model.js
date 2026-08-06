@@ -1,4 +1,4 @@
-import { getOllamaModel, listOllamaModels } from "../utils/ollamaUtils.js";
+import { getOllamaModel, listOllamaModels } from "../ai/ollama.js";
 import { initializeSessionMemory } from "../utils/sessionUtils.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";
 

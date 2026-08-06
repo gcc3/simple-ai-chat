@@ -1,6 +1,6 @@
 import OpenAI from "openai";
 import chalk from 'chalk';
-import { generateMessages } from "utils/promptUtils";
+import { generateMessages } from "ai/context/prompt";
 import { logadd } from "utils/server/logUtils";
 import { executeFunctions, getTools } from "function.js";
 import { countToken } from "utils/tokenUtils";

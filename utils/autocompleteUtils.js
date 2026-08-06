@@ -3,7 +3,7 @@ import { getLangCodes } from "./langUtils";
 import { getSettings } from "./settingsUtils";
 import { getThemes } from "./themeUtils";
 import { getVoices } from "./voiceUtils";
-import { listOllamaModels } from "./ollamaUtils";
+import { listOllamaModels } from "../ai/ollama";
 import { getSetting } from "./settingsUtils";
 
 export async function getAutoCompleteOptions(prefix, nameToBeComleted) {

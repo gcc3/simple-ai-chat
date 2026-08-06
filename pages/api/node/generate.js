@@ -1,6 +1,6 @@
 import { authenticate } from "utils/authUtils";
-import { queryNode, checkIsNodeConfigured } from "utils/nodeUtils";
-import { findNode } from "utils/nodeUtils";
+import { queryNode, checkIsNodeConfigured } from "ai/extensions/node";
+import { findNode } from "ai/extensions/node";
 
 export default async function handler(req, res) {
   // Check method

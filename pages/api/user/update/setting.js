@@ -1,8 +1,8 @@
 import { updateUserSetting, getUser, getUserRoles } from 'utils/sqliteUtils.js';
 import { authenticate } from 'utils/authUtils.js';
-import { getAvailableStoresForUser } from 'utils/storeUtils';
-import { getAvailableNodesForUser } from 'utils/nodeUtils';
-import { getSystemRoles } from 'utils/roleUtils';
+import { getAvailableStoresForUser } from 'ai/extensions/store';
+import { getAvailableNodesForUser } from 'ai/extensions/node';
+import { getSystemRoles } from 'ai/extensions/role';
 import { getSettings, getDefaultSetting } from 'utils/settingsUtils';
 import { getLangCodes } from 'utils/langUtils';
 

@@ -1,7 +1,7 @@
 import { deleteStore } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
-import { isInitialized } from "utils/storeUtils";
-import { findStore } from "utils/storeUtils.js";
+import { isInitialized } from "ai/extensions/store";
+import { findStore } from "ai/extensions/store.js";
 
 export default async function (req, res) {
   // Check method

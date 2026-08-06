@@ -6,7 +6,7 @@ import { getFunctions, getMcpFunctions } from "../function.js";
 import { updateUserSetting } from 'utils/userUtils.js';
 import { addStoreToSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils.js";
 import { getTime } from "utils/timeUtils.js";
-import { listOllamaModels } from "utils/ollamaUtils.js";
+import { listOllamaModels } from "ai/ollama.js";
 import { setTheme } from "utils/themeUtils.js";
 import { getSetting, setSetting } from "utils/settingsUtils.js";
 import { getLanguages } from "utils/langUtils.js";

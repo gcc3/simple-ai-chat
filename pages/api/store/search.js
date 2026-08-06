@@ -1,6 +1,6 @@
 import { authenticate } from "utils/authUtils";
-import { searchMysqlStore, isInitialized } from "utils/storeUtils";
-import { findStore } from "utils/storeUtils.js";
+import { searchMysqlStore, isInitialized } from "ai/extensions/store";
+import { findStore } from "ai/extensions/store.js";
 import fetch from 'node-fetch';
 
 export default async function handler(req, res) {

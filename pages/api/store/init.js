@@ -1,7 +1,7 @@
 import { updateStoreSettings } from "utils/sqliteUtils.js";
 import { authenticate } from "utils/authUtils.js";
 import { mysqlQuery } from "utils/mysqlUtils.js";
-import { findStore } from "utils/storeUtils.js";
+import { findStore } from "ai/extensions/store.js";
 
 export default async function (req, res) {
   // Check method

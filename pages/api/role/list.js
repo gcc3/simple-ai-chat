@@ -1,4 +1,4 @@
-import { getSystemRoles } from 'utils/roleUtils';
+import { getSystemRoles } from 'ai/extensions/role';
 import { authenticate } from 'utils/authUtils';
 import { getUserRoles } from 'utils/sqliteUtils';
 

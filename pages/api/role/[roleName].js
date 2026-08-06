@@ -1,4 +1,4 @@
-import { getRolePrompt } from 'utils/roleUtils';
+import { getRolePrompt } from 'ai/extensions/role';
 import { getRole } from 'utils/sqliteUtils';
 import { authenticate } from 'utils/authUtils';
 

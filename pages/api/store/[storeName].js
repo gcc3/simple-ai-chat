@@ -1,5 +1,5 @@
 import { authenticate } from 'utils/authUtils';
-import { findStore, isInitialized } from 'utils/storeUtils';
+import { findStore, isInitialized } from 'ai/extensions/store';
 import { testConnection } from 'utils/mysqlUtils';
 
 export default async function (req, res) {

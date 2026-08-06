@@ -1,5 +1,5 @@
 import { authenticate } from "utils/authUtils.js";
-import { findStore } from "utils/storeUtils.js";
+import { findStore } from "ai/extensions/store.js";
 import { updateStoreSetting } from 'utils/sqliteUtils.js';
 
 export default async function (req, res) {

@@ -1,5 +1,5 @@
 import chalk from 'chalk';
-import { generateMessages } from "utils/promptUtils";
+import { generateMessages } from "ai/context/prompt";
 import { authenticate } from "utils/authUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { getUacResult } from "utils/uacUtils";

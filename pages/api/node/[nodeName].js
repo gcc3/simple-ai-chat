@@ -1,6 +1,6 @@
 import { authenticate } from 'utils/authUtils';
-import { checkIsNodeConfigured, verifyNodeSettings, pingNode } from 'utils/nodeUtils';
-import { findNode } from 'utils/nodeUtils';
+import { checkIsNodeConfigured, verifyNodeSettings, pingNode } from 'ai/extensions/node';
+import { findNode } from 'ai/extensions/node';
 
 export default async function (req, res) {
   const { nodeName } = req.query;
