@@ -78,5 +78,8 @@
     "sc": "./cli.js",
     "simple-ai-chat": "./cli.js",
     "smcp": "./mcp.js"
+  },
+  "overrides": {
+    "fast-xml-parser": "5.3.5"
   }
 }
