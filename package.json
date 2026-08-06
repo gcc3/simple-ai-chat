@@ -78,5 +78,12 @@
     "sc": "./cli.js",
     "simple-ai-chat": "./cli.js",
     "smcp": "./mcp.js"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "sharp",
+      "sqlite3",
+      "unrs-resolver"
+    ]
   }
 }
