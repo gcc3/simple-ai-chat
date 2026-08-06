@@ -8,6 +8,7 @@ import { getModels, getUser } from "utils/sqliteUtils";
 import { getSystemConfigurations } from "utils/server/systemUtils";
 import { ensureSession } from "utils/server/logUtils.js";
 import { addUserUsage } from "utils/sqliteUtils.js";
+import { extractIpTag, isLocalRequestIp } from "utils/ipUtils.js";
 import { TYPE } from '../../../constants.js';
 import log from "../../../log.js";
 
@@ -36,7 +37,11 @@ export default async function (req, res) {
   }
 
   // Input
-  let input_ = req.query.user_input.trim() || "";
+  // Stripped of its `@ip[...]` tag before anything else looks at it, so the tag reaches
+  // neither the model nor the log; `taggedIp` is the user the bridge sent it for.
+  const tagged = extractIpTag(req.query.user_input);
+  let input_ = tagged.text;
+  const taggedIp = tagged.ip;
   let inputType = TYPE.Normal;
 
   // Shell context
@@ -61,7 +66,12 @@ export default async function (req, res) {
   const session = req.query.session || "";
 
   // Request info
-  const ip = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  // A tag is only honoured on a request from this machine — that is the bridge, running
+  // the CLI on someone's behalf, and the only party entitled to name a different user.
+  // Anything arriving from elsewhere speaks for itself, so its own address wins and a tag
+  // it carries is just text somebody typed.
+  const requestIp = req.headers['x-forwarded-for'] || req.connection.remoteAddress;
+  const ip = isLocalRequestIp(requestIp) && taggedIp ? taggedIp : requestIp;
   const browser = req.headers['user-agent'];
 
   // Time
