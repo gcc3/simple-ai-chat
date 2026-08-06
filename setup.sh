@@ -25,10 +25,7 @@ echo "Pulling latest code..."
 git pull
 
 echo "Installing npm dependencies..."
-# --include=dev: the build runs on the server, and `next build` needs the dev
-# deps (tailwindcss, postcss, autoprefixer). Without this, a production
-# environment (NODE_ENV=production or omit=dev in .npmrc) skips them.
-npm install --include=dev
+npm install
 
 echo "Cloning docs repository..."
 if [ ! -d "docs" ]; then
