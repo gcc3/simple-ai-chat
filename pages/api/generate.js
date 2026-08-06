@@ -384,7 +384,7 @@ export default async function(req, res) {
     input_ = input_.split("Q=")[1];
 
     // Execute function
-    functionResults = await executeFunctions(functions);
+    functionResults = await executeFunctions(functions, lang);
     console.log("Result:" + JSON.stringify(functionResults) + "\n");
     if (functionResults.length > 0) {
       for (let i = 0; i < functionResults.length; i++) {

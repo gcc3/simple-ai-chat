@@ -68,6 +68,7 @@ Google AI https://ai.google.dev/gemini-api/docs
 xAI https://x.ai/  
 Ollama https://ollama.com/  
 WolframAlpha APIs https://products.wolframalpha.com/api  
+Brave Search API https://brave.com/search/api/
 
 
 CLI Interface
@@ -196,6 +197,11 @@ WOLFRAM_ALPHA_APPID
 For API calls for wolfram alpha API.  
 Get from https://products.wolframalpha.com/api
 
+BRAVE_SEARCH_API_KEY  
+For the `web_search` function, uses the Brave Search API LLM Context endpoint.  
+The search language follows the language set with `:lang use [language code]`.  
+Get from https://api-dashboard.search.brave.com/app/keys
+
 USE_NODE_AI  
 [Simple AI Node](https://github.com/gcc3/simple-ai-node) is available to help the chat answer with data.
 To use multiple nodes, consider using [Simple AI Hub](https://github.com/gcc3/simple-ai-hub).  
@@ -257,7 +263,7 @@ Enable user accounts, the value should be `true` or `false`.
 DEFAULT_FUNCTIONS, DEFAULT_ROLE, DEFAULT_STORES, DEFAULT_NODE  
 Default functions, role, stores and node.  
 Example: 
-DEFAULT_FUNCTIONS=get_time,get_weather,redirect_to_url  
+DEFAULT_FUNCTIONS=get_time,get_weather,web_search,redirect_to_url  
 DEFAULT_STORES=store1,store2  
 
 _Originally Forked from https://github.com/openai_  

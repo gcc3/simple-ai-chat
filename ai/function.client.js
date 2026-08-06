@@ -1,11 +1,14 @@
+import { getSetting } from "../utils/settings.js";
+
 export async function exec_f(input) {
   const response = await fetch("/api/function/exec", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ 
-      functions: input.substring(1).split(",!")
+    body: JSON.stringify({
+      functions: input.substring(1).split(",!"),
+      lang: (getSetting("lang") || "").trim(),
     }),
   });
 

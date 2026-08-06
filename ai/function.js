@@ -2,6 +2,7 @@ import getWeather from "./functions/get_weather.js";
 import getTime from "./functions/get_time.js";
 import redirectToUrl from "./functions/redirect_to_url.js";
 import askWolframalpha from "./functions/ask_wolframalpha.js";
+import webSearch from "./functions/web_search.js";
 import { listMcpFunctions } from "./mcp.js";
 
 // `tools` is a generated json from OpenAI API
@@ -35,12 +36,12 @@ e.g. [
   }
 ]
 */
-export function executeFunctions(functions) {
+export function executeFunctions(functions, lang = "") {
   return Promise.all(functions.map(async (f) => {
     const funcName = f.split("(")[0];
     const funcArgs = f.slice(funcName.length + 1, -1);
     try {
-      const result = await executeFunction(funcName, funcArgs);
+      const result = await executeFunction(funcName, funcArgs, lang);
       if (!result.success) {
         throw new Error(result.error);
       }
@@ -61,7 +62,8 @@ export function executeFunctions(functions) {
   }));
 }
 
-export function executeFunction(functionName, argsString) {
+// `lang` is the country-language code of the user, e.g. `en-US`
+export function executeFunction(functionName, argsString, lang = "") {
   // functionArgs is a json string
   let paramObject = null;
   try {
@@ -84,6 +86,10 @@ export function executeFunction(functionName, argsString) {
 
   if (functionName === "ask_wolframalpha") {
     return askWolframalpha(paramObject);
+  }
+
+  if (functionName === "web_search") {
+    return webSearch(paramObject, lang);
   }
 
   if (functionName === "redirect_to_url") {
@@ -152,6 +158,28 @@ export function getFunctions(functions_ = null) {
           },
         },
         required: ["query", "keyword"],
+      }
+    });
+  }
+
+  // Web search
+  if (functions_ === null || callables.includes("web_search")) {
+    functions.push({
+      name: 'web_search',
+      description: 'Search the web and get the content of the result pages. Use this function when the question needs up-to-date, real-time or niche information that is not in the model knowledge, e.g. news, prices, releases, documentation, or anything about recent events. Also use it to verify a fact before answering.',
+      parameters: {
+        type: "object",
+        properties: {
+          query: {
+            type: "string",
+            description: "The search query, max 400 characters and 50 words. Use keywords or a natural question, generate it from the user question.",
+          },
+          freshness: {
+            type: "string",
+            description: "Optional. Limit the results by discovered date. `pd` past day, `pw` past week, `pm` past month, `py` past year, or a date range as `YYYY-MM-DDtoYYYY-MM-DD`. Only set it when the question is about recent events.",
+          },
+        },
+        required: ["query"],
       }
     });
   }

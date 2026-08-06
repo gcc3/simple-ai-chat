@@ -6,6 +6,7 @@ export default async function (req, res) {
   }
 
   const { functions } = req.body;
+  const lang = req.body.lang || "";
   if (!functions) {
     return res.status(400).json({
       success: false,
@@ -16,7 +17,7 @@ export default async function (req, res) {
   try {
     res.status(200).json({
       success: true,
-      function_results: await executeFunctions(functions),
+      function_results: await executeFunctions(functions, lang),
     });
   } catch (error) {
     console.error(error);

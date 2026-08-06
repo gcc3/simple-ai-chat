@@ -217,7 +217,7 @@ export default async function (req, res) {
     }
 
     if (functionCallingResults.length == 0) {
-      functionCallingResults = await executeFunctions(functions);
+      functionCallingResults = await executeFunctions(functions, lang);
       console.log("Backend function calling result:" + JSON.stringify(functionCallingResults));
 
       if (functionCallingResults.length > 0) {
