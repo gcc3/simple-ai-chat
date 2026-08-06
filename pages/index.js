@@ -28,7 +28,7 @@ import { getModel } from "ai/model";
 import { initializeSettings, isSettingEmpty } from "utils/settings";
 import PreviewImage from "../components/ui/PreviewImage.jsx";
 import { exec_mcp, listMcpFunctions, pingMcpServer } from "ai/mcp";
-import { getTools, getMcpTools } from "../ai/function";
+import { getTools, getMcpTools, mergeToolCallDelta } from "../ai/function";
 import { isUrl } from "utils/url";
 import { STATES, DISPLAY, FULLSCREEN, CONTENT, PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from '../constants.js';
 import { getHistorySession, getSessionLog } from "utils/session";
@@ -1322,7 +1322,7 @@ export default function Home() {
     if (model.base_url.includes("localhost")
      || model.base_url.includes("127.0.0.1")) {
       console.log("Start. (local)");
-      generate_msg(model, input);
+      generate_msg(model, input).catch(handleGenerateError);
       return;
     }
 
@@ -1692,6 +1692,20 @@ export default function Home() {
     };
   }
 
+  // Handle a generation error
+  // The error thrown from the server API is an object with a `message`, e.g. { message: "Login or register..." }
+  // Same as the SSE error handling, print the error message and reset the state
+  function handleGenerateError(error) {
+    // Reset state
+    globalThis.STATE = STATES.Idle;
+    window.speechSynthesis.cancel();
+
+    // Print error message
+    const message = error && error.message ? error.message : String(error);
+    console.error(error);
+    printOutput(message);
+  }
+
   // M2. Generate message from server, and then call local model engine
   async function generate_msg(model, input) {
     console.log("Generating message from server...");
@@ -1735,14 +1749,13 @@ export default function Home() {
     }
 
     // Tools
-    // Tool calls only supported in non-stream mode
+    // Tool calls are supported in both stream and non-stream mode
     let tools = [];
-    if (!useStream) {
-      tools = tools.concat(getTools(config.functions));
+    tools = tools.concat(getTools(config.functions));
 
-      // This is local, can access directly
-      tools = tools.concat(await getMcpTools(config.functions));
-    }
+    // This is local, can access directly
+    tools = tools.concat(await getMcpTools(config.functions));
+
     if (tools.length > 0) {
       console.log("Tools: " + JSON.stringify(tools));
     }
@@ -1813,6 +1826,65 @@ export default function Home() {
 
     console.log("Messages: " + JSON.stringify(msg.messages));
 
+    // Handle tool calls (function calling) response
+    // Used by both non-stream and stream mode
+    async function handleToolCalls(toolCalls) {
+      // Add log
+      await logadd(model, input.text, "T=" + JSON.stringify(toolCalls));
+
+      // The final output shouldn't be a tool call
+      console.log("Output Tool Calls:\n" + JSON.stringify(toolCalls));
+
+      let functions = [];
+      toolCalls.map((t) => {
+        functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
+      });
+      const functionCallingString = functions.join(",");
+
+      // Print `Querying...`
+      printOutput(QUERYING);
+
+      // Frontend function calling
+      const functionCallingResult = [];
+      if (globalThis.isMCPServerAvailable) {
+        const mcpFunctions = await listMcpFunctions();
+        if (mcpFunctions && mcpFunctions.length > 0) {
+          const mcpFunctionNames = mcpFunctions.map((f) => f.name);
+
+          // Loop through all tool calls and call them with callMcpTool
+          for (const call of toolCalls) {
+            if (mcpFunctionNames.includes(call.function.name)) {
+              // Call the function with callMcpTool
+              console.log("Calling MCP function: " + JSON.stringify(call));
+              const result = await exec_mcp(call.function.name, JSON.parse(call.function.arguments));
+              console.log("MCP function result: " + JSON.stringify(result));
+              functionCallingResult.push({
+                success: true,
+                function: call.function.name,
+                message: result && result.content && result.content[0] ? result.content[0].text : "No result.",
+                // event: ...
+              });
+            }
+          }
+        }
+      }
+
+      // Set time
+      const timeNow = Date.now();
+      setTime(timeNow);
+      setSetting("head", timeNow);
+
+      // Re-call generate with tool calls!
+      const inputParts = [
+        functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
+        "T=" + JSON.stringify(toolCalls),              // tool calls generated
+        "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
+        "Q=" + input.text                              // original user input
+      ];
+      const newInput = getInput(inputParts.join(" "));
+      await generate_msg(model, newInput);
+    }
+
     // Print `Genrating...`
     printOutput(GENERATING);
 
@@ -1836,9 +1908,9 @@ export default function Home() {
       temperature: 1,
 
       // conditional params
-      // function calling only available in non-stream mode for Ollama
-      ...(!useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
-      ...(is_reasoning_model && !useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { reasoning_effort: "none" } : {}),
+      // function calling is available in both stream and non-stream mode for Ollama
+      ...(is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
+      ...(is_reasoning_model && is_tool_calls_supported_model && tools && tools.length > 0 ? { reasoning_effort: "none" } : {}),
       ...(user ? { user: user.username } : {})
     });
 
@@ -1883,70 +1955,7 @@ export default function Home() {
 
         // 2. handle tool calls response
         if (choices[0].message.tool_calls && choices[0].message.tool_calls.length > 0) {
-          const toolCalls = choices[0].message.tool_calls;
-
-          // Add log
-          await logadd(model, input.text, "T=" + JSON.stringify(toolCalls));
-
-          let functions = [];
-          toolCalls.map((t) => {
-            functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
-          });
-          const functionCallingString = functions.join(",");
-
-          // Generate with tool calls (function calling)
-          let q = "";
-          if (input.is_function) {
-            q = input.text.split("Q=")[1];
-          }
-
-          // Print `Querying...`
-          printOutput(QUERYING);
-
-          // Frontend function calling
-          const functionCallingResult = [];
-          if (globalThis.isMCPServerAvailable) {
-            const mcpFunctions = await listMcpFunctions();
-            if (mcpFunctions && mcpFunctions.length > 0) {
-              const mcpFunctionNames = mcpFunctions.map((f) => f.name);
-
-              // Loop through all tool calls and call them with callMcpTool
-              for (const call of toolCalls) {
-                if (mcpFunctionNames.includes(call.function.name)) {
-                  // Call the function with callMcpTool
-                  console.log("Calling MCP function: " + JSON.stringify(call));
-                  const result = await exec_mcp(call.function.name, JSON.parse(call.function.arguments));
-                  console.log("MCP function result: " + JSON.stringify(result));
-                  functionCallingResult.push({
-                    success: true,
-                    function: call.function.name,
-                    message: result ? result.content[0].text : "No result.",
-                    // event: ...
-                  });
-                }
-              }
-            }
-          }
-
-          if (toolCalls.length > 0) {
-            // The final output shouldn't be a tool call
-            console.log("Output Tool Calls:\n" + JSON.stringify(toolCalls));
-          }
-
-          // Set time
-          const timeNow = Date.now();
-          setTime(timeNow);
-          setSetting("head", timeNow);
-
-          // Re-call generate with tool calls!
-          const inputParts = [
-            functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
-            "T=" + JSON.stringify(toolCalls),              // tool calls generated
-            "R=" + JSON.stringify(functionCallingResult),  // frontend function calling result
-            "Q=" + input.text                              // original user input
-          ];
-          const newInput = getInput(inputParts.join(" "));
-          await generate_msg(model, newInput);
+          await handleToolCalls(choices[0].message.tool_calls);
         }
 
         // Set model info
@@ -1967,17 +1976,24 @@ export default function Home() {
 
       let hasReasoning = false;
       let reasoningClosed = false;
+      let toolCalls = [];
       await new Promise((resolve, reject) => {
         // Handle the data event to process each JSON line
         stream.on('data', (part) => {
+          // Skip the parts without choices, e.g. the usage part
+          if (!part.choices || part.choices.length === 0) return;
+
           // Clear the waiting or querying text
           if (getOutput() === WAITING  || getOutput() === REASONING || getOutput() === QUERYING || getOutput() === SEARCHING || getOutput() === GENERATING) {
             clearOutput();
           }
 
           try {
+            // Use a safe reference to delta since it can be undefined
+            const delta = part.choices[0].delta || {};
+
             // 1. handle reasoning output
-            const reasoning = part.choices[0].delta.reasoning;
+            const reasoning = delta.reasoning;
             if (reasoning) {
               hasReasoning = true;
               if (output.trim() === "") {
@@ -1991,7 +2007,7 @@ export default function Home() {
             }
 
             // 2. handle message output
-            const content = part.choices[0].delta.content;
+            const content = delta.content;
             if (content) {
               if (hasReasoning && !reasoningClosed) {
                 reasoningClosed = true;
@@ -2007,7 +2023,17 @@ export default function Home() {
             }
 
             // 3. handle tool calls
-            // Streaming mode not support tool calls yet. (Ollama)
+            // Stream mode supports tool calls, they are generated in deltas
+            const toolCallDeltas = Array.isArray(delta.tool_calls) ? delta.tool_calls : null;
+            if (toolCallDeltas && toolCallDeltas.length > 0) {
+              // Print `Querying...` if there is no output yet
+              if (output.trim() === "") printOutput(QUERYING);
+
+              console.log("Tool call delta: " + JSON.stringify(toolCallDeltas));
+              toolCallDeltas.map((toolCallDelta) => {
+                mergeToolCallDelta(toolCalls, toolCallDelta);
+              });
+            }
 
             // Set model info
             setInfo((
@@ -2038,7 +2064,10 @@ export default function Home() {
           hljs.highlightAll();
 
           // Add log
-          await logadd(model, input.text, output);
+          // If the output is a tool call, the log is added in `handleToolCalls`
+          if (toolCalls.length === 0) {
+            await logadd(model, input.text, output);
+          }
 
           // Reset state
           globalThis.STATE = STATES.Idle;
@@ -2046,11 +2075,17 @@ export default function Home() {
         });
 
         // Reject the Promise on error
+        // The error message is printed by the caller
         stream.on('error', (error) => {
-          printOutput(error);
           reject(error);
         });
       });
+
+      // Handle tool calls (function calling)
+      // The state is reset above, so the re-called generation can start
+      if (toolCalls.length > 0) {
+        await handleToolCalls(toolCalls);
+      }
     }
   }
 

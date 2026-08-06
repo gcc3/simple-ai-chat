@@ -218,6 +218,48 @@ export function getTools(functions_) {
   return tools;
 }
 
+/*
+Merge a streamed tool call delta into the accumulated tool calls.
+In stream mode the tool calls are generated in pieces, e.g.
+  { index: 0, id: "call_1", type: "function", function: { name: "get_time", arguments: "{\"timezo" } }
+  { index: 0, function: { arguments: "ne\": \"UTC\"}" } }
+the arguments of the deltas with the same index must be concatenated.
+`toolCalls` is the accumulator, it is modified in place and returned.
+*/
+export function mergeToolCallDelta(toolCalls, delta) {
+  if (!delta) return toolCalls;
+  const hasIndex = delta.index !== undefined && delta.index !== null;
+
+  // Find the tool call this delta belongs to
+  let toolCall = null;
+  if (hasIndex) {
+    toolCall = toolCalls.find(t => t.index === delta.index);
+  } else if (!delta.id && toolCalls.length > 0) {
+    // Some models don't provide an index,
+    // a delta without both index and id is a continuation of the last tool call.
+    toolCall = toolCalls[toolCalls.length - 1];
+  }
+
+  // Not found, this delta starts a new tool call
+  if (!toolCall) {
+    toolCall = {
+      index: hasIndex ? delta.index : toolCalls.length,
+      id: "",
+      type: "function",
+      function: { name: "", arguments: "" },
+    };
+    toolCalls.push(toolCall);
+  }
+
+  if (delta.id) toolCall.id = delta.id;
+  if (delta.type) toolCall.type = delta.type;
+  if (delta.function) {
+    if (delta.function.name) toolCall.function.name += delta.function.name;
+    if (delta.function.arguments) toolCall.function.arguments += delta.function.arguments;
+  }
+  return toolCalls;
+}
+
 // Get MCP tools
 export async function getMcpTools(functions_) {
   let functions = await getMcpFunctions(functions_);

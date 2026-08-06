@@ -44,7 +44,8 @@ Quick Start
     export OLLAMA_ORIGINS="*"
     ollama serve
     ```
-    Note: to use function calling, set `:stream off` as in Ollama it's not supported.  
+    Note: function calling works in both stream and non-stream mode.  
+    The model itself must support tools (e.g. `llama3.1`, `qwen3`, `gpt-oss`), use `:model` to check `is_tool_calls_supported`.  
 
 
 Documentation

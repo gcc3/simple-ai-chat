@@ -18,14 +18,14 @@ import { dirname, join } from "path";
 import { spawn, execSync } from "child_process";
 import { getSetting, setSetting } from "./utils/settings.js";
 import { getLocalLogs, resetLocalLogs } from "./utils/offline.js";
-import { getMcpTools } from "./ai/function.js";
+import { getTools, getMcpTools, mergeToolCallDelta } from "./ai/function.js";
 import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "./constants.js";
 import { getInput } from "./ai/context/input.js";
 import { logadd } from "./utils/client/log.js";
 import { exec_f } from "./ai/function.client.js";
 import { pingOllamaAPI } from "./ai/ollama.js";
 import { getSystemInfo } from "./utils/client/system.js"
-import { pingMcpServer } from "./ai/mcp.js";
+import { pingMcpServer, listMcpFunctions, exec_mcp } from "./ai/mcp.js";
 import { refreshLocalUser } from "./utils/user.js";
 
 // Disable process warnings (node)
@@ -239,6 +239,72 @@ async function generate_msg(model, input) {
   // Model switch
   const use_vision = input.has_image;
 
+  // Tools
+  // Tool calls are supported in both stream and non-stream mode
+  let tools = [];
+  tools = tools.concat(getTools(config.functions));
+
+  // This is local, can access directly
+  tools = tools.concat(await getMcpTools(config.functions));
+
+  if (tools.length > 0) {
+    console.log("Tools: " + JSON.stringify(tools));
+  }
+
+  // Handle tool calls (function calling) response
+  // Used by both non-stream and stream mode
+  async function handleToolCalls(toolCalls) {
+    console.log("Output Tool Calls:\n" + JSON.stringify(toolCalls));
+
+    // Add log
+    await logadd(model, input.text, "T=" + JSON.stringify(toolCalls));
+
+    let functions = [];
+    toolCalls.map((t) => {
+      functions.push("!" + t.function.name + "(" + t.function.arguments + ")");
+    });
+    const functionCallingString = functions.join(",");
+
+    // Local function calling (MCP)
+    const functionCallingResult = [];
+    if (globalThis.isMCPServerAvailable) {
+      const mcpFunctions = await listMcpFunctions();
+      if (mcpFunctions && mcpFunctions.length > 0) {
+        const mcpFunctionNames = mcpFunctions.map((f) => f.name);
+
+        // Loop through all tool calls and call them with callMcpTool
+        for (const call of toolCalls) {
+          if (mcpFunctionNames.includes(call.function.name)) {
+            // Call the function with callMcpTool
+            console.log("Calling MCP function: " + JSON.stringify(call));
+            const result = await exec_mcp(call.function.name, JSON.parse(call.function.arguments));
+            console.log("MCP function result: " + JSON.stringify(result));
+            functionCallingResult.push({
+              success: true,
+              function: call.function.name,
+              message: result && result.content && result.content[0] ? result.content[0].text : "No result.",
+              // event: ...
+            });
+          }
+        }
+      }
+    }
+
+    // Set time
+    const timeNow = Date.now();
+    setSetting("head", timeNow);
+
+    // Re-call generate with tool calls!
+    const inputParts = [
+      functionCallingString,                         // function calling string, use `!` to trigger backend function calling method
+      "T=" + JSON.stringify(toolCalls),              // tool calls generated
+      "R=" + JSON.stringify(functionCallingResult),  // local function calling result
+      "Q=" + input.text                              // original user input
+    ];
+    const newInput = getInput(inputParts.join(" "));
+    await generate_msg(model, newInput);
+  }
+
   // Generate messages
   let msg;
 
@@ -333,9 +399,9 @@ async function generate_msg(model, input) {
     temperature: 1,
 
     // conditional params
-    // function calling only available in non-stream mode
-    ...(!useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
-    ...(is_reasoning_model && !useStream && is_tool_calls_supported_model && tools && tools.length > 0 ? { reasoning_effort: "none" } : {}),
+    // function calling is available in both stream and non-stream mode
+    ...(is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
+    ...(is_reasoning_model && is_tool_calls_supported_model && tools && tools.length > 0 ? { reasoning_effort: "none" } : {}),
     ...(user ? { user: user.username } : {})
   });
 
@@ -347,21 +413,29 @@ async function generate_msg(model, input) {
       console.error("No choice\n");
       printOutput("Silent...");
       return;
-    } else {
-      // 1. handle reasoning output
-      const reasoning = choices[0].message.reasoning;
-      if (reasoning) {
-        output += "::think::\n" + reasoning + "::think::\n\n";
-      }
+    }
 
-      // 2. handle message output
-      const content = choices[0].message.content;
-      if (content) {
-        output += content;
-      }
+    // 1. handle reasoning output
+    const reasoning = choices[0].message.reasoning;
+    if (reasoning) {
+      output += "::think::\n" + reasoning + "::think::\n\n";
+    }
 
-      // 3. handle tool calls
-      // Not support yet.
+    // 2. handle message output
+    const content = choices[0].message.content;
+    if (content) {
+      output += content;
+    }
+
+    // 3. handle tool calls
+    const toolCalls = choices[0].message.tool_calls;
+    if (toolCalls && toolCalls.length > 0) {
+      // Print the output generated together with the tool calls
+      if (output.trim() !== "") printOutput(output.trim() + "\n");
+
+      // Generate again with the tool calls result
+      await handleToolCalls(toolCalls);
+      return;
     }
 
     // Add log
@@ -378,12 +452,19 @@ async function generate_msg(model, input) {
 
     let hasReasoning = false;
     let reasoningClosed = false;
+    let toolCalls = [];
     await new Promise((resolve, reject) => {
       // Handle the data event to process each JSON line
       stream.on('data', (chunk) => {
+        // Skip the chunks without choices, e.g. the usage chunk
+        if (!chunk.choices || chunk.choices.length === 0) return;
+
         try {
+          // Use a safe reference to delta since it can be undefined
+          const delta = chunk.choices[0].delta || {};
+
           // 1. handle reasoning output
-          const reasoning = chunk.choices[0].delta.reasoning;
+          const reasoning = delta.reasoning;
           if (reasoning) {
             hasReasoning = true;
             if (output.trim() === "") {
@@ -394,7 +475,7 @@ async function generate_msg(model, input) {
           }
 
           // 2. handle message output
-          const content = chunk.choices[0].delta.content;
+          const content = delta.content;
           if (content) {
             if (hasReasoning && !reasoningClosed) {
               output += "::think::\n\n";
@@ -407,7 +488,14 @@ async function generate_msg(model, input) {
           }
 
           // 3. handle tool calls
-          // Streaming mode not support tool calls yet. (Ollama)
+          // Stream mode supports tool calls, they are generated in deltas
+          const toolCallDeltas = Array.isArray(delta.tool_calls) ? delta.tool_calls : null;
+          if (toolCallDeltas && toolCallDeltas.length > 0) {
+            console.log("Tool call delta: " + JSON.stringify(toolCallDeltas));
+            toolCallDeltas.map((toolCallDelta) => {
+              mergeToolCallDelta(toolCalls, toolCallDelta);
+            });
+          }
         } catch (error) {
           console.error('Error parsing JSON line:', error);
           stream.destroy(error); // Destroy the stream on error
@@ -418,19 +506,27 @@ async function generate_msg(model, input) {
       // Resolve the Promise when the stream ends
       stream.on('end', async () => {
         // Add log
-        await logadd(model, input.text, output);
+        // If the output is a tool call, the log is added in `handleToolCalls`
+        if (toolCalls.length === 0) {
+          await logadd(model, input.text, output);
+        }
 
         // Add new line
-        printOutput("\n");
+        if (output.trim() !== "") printOutput("\n");
         resolve();
       });
 
       // Reject the Promise on error
+      // The error message is printed by the caller
       stream.on('error', (error) => {
-        printOutput(error);
         reject(error);
       });
     });
+
+    // Handle tool calls (function calling)
+    if (toolCalls.length > 0) {
+      await handleToolCalls(toolCalls);
+    }
   }
 }
 
@@ -523,6 +619,12 @@ function printOutput(output, append = false) {
     output = output.trimEnd() + "\n";
   }
   process.stdout.write(output);
+}
+
+// Get the message of a generation error
+// The error thrown from the server API is an object with a `message`, e.g. { message: "Login or register..." }
+function getErrorMessage(error) {
+  return error && error.message ? error.message : String(error);
 }
 
 // Get version from package.json
@@ -754,13 +856,21 @@ program
         return originalWrite(data);
       };
 
-      if (model.base_url.includes("localhost") || model.base_url.includes("127.0.0.1")) {
-        await generate_msg(model, input);
-      } else if (globalThis.isOnline) {
-        await generate_bash_command(model, input);
-      } else {
+      try {
+        if (model.base_url.includes("localhost") || model.base_url.includes("127.0.0.1")) {
+          await generate_msg(model, input);
+        } else if (globalThis.isOnline) {
+          await generate_bash_command(model, input);
+        } else {
+          process.stdout.write = originalWrite;
+          printOutput("You are offline.");
+          process.exit(1);
+        }
+      } catch (error) {
+        // Print the error message instead of crashing with a stack trace
         process.stdout.write = originalWrite;
-        printOutput("You are offline.");
+        console.error(error);
+        printOutput(getErrorMessage(error));
         process.exit(1);
       }
 
@@ -948,7 +1058,13 @@ program
       if (model.base_url.includes("localhost")
         || model.base_url.includes("127.0.0.1")) {
         console.log("Start. (local)");
-        await generate_msg(model, input);
+        try {
+          await generate_msg(model, input);
+        } catch (error) {
+          // Print the error message instead of crashing the session
+          console.error(error);
+          printOutput(getErrorMessage(error));
+        }
         continue;
       }
 
@@ -962,7 +1078,13 @@ program
 
         if (getSetting('useStream') == "true") {
           console.log("Start. (SSE)");
-          await generate_sse(model, input);
+          try {
+            await generate_sse(model, input);
+          } catch (error) {
+            // Print the error message instead of crashing the session
+            console.error(error);
+            printOutput(getErrorMessage(error));
+          }
           continue;
         }
       } else {
