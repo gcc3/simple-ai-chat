@@ -2,7 +2,6 @@ import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "utils/promptUtils";
 import { logadd } from "utils/server/logUtils";
-import { evaluate } from './evaluate';
 import { executeFunctions, getTools } from "function.js";
 import { countToken } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
@@ -86,7 +85,6 @@ export default async function(req, res) {
   const stores = req.query.stores || "";
   const node_ = req.query.node || "";
   const use_stats = req.query.use_stats === "true" ? true : false;
-  const use_eval_ = req.query.use_eval === "true" ? true : false;
   const use_location = req.query.use_location === "true" ? true : false;
   const location = req.query.location || "";
   const lang = req.query.lang || "";
@@ -129,7 +127,6 @@ export default async function(req, res) {
   // Model switch
   let model_ = req.query.model || sysconf.model;
   const use_vision = images && images.length > 0;
-  const use_eval = use_eval_ && use_stats && !use_vision;
   let model = models.find(m => m.name === model_);
 
   // Already setup models but not found
@@ -246,7 +243,6 @@ export default async function(req, res) {
     + "use_system_role: " + use_system_role + "\n"
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
-    + "use_eval: " + use_eval + "\n"
     + "use_node_ai: " + sysconf.use_node_ai + "\n"
     + "use_location: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
@@ -422,7 +418,7 @@ export default async function(req, res) {
     });
 
     res.write(`data: ###MODEL###${model_}\n\n`);
-    res.write(`data: ###STATS###${sysconf.temperature},${0},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node_},${msg.mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${0},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node_},${msg.mem}\n\n`);
 
     // Print input images
     input_images.map(image => {
@@ -471,20 +467,6 @@ export default async function(req, res) {
       // For the last part, it will include the usage
       if (part.usage) {
         chatCompletionUsage = part.usage;
-      }
-    }
-
-    // Evaluate result
-    // vision models not support evaluation
-    if (use_eval) {
-      if (output.trim().length > 0) {
-        const evalResult = await evaluate(user, input_, msg.raw_prompt, output);
-        if (evalResult.success) {
-          res.write(`data: ###EVAL###${evalResult.output}\n\n`); res.flush();
-          console.log("eval: " + evalResult.output + "\n");
-        } else {
-          res.write(`data: ###EVAL###${evalResult.error}\n\n`); res.flush();
-        }
       }
     }
 
@@ -552,7 +534,7 @@ export default async function(req, res) {
     await logadd(user, session, time++, model_, chatCompletionUsage.prompt_tokens, input_, chatCompletionUsage.completion_tokens, output, JSON.stringify(input_images), parseFloat(cost.toFixed(6)), ip, browser);
 
     // Stats (final)
-    res.write(`data: ###STATS###${sysconf.temperature},${chatCompletionUsage.total_tokens},${use_eval},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node_},${msg.mem}\n\n`);
+    res.write(`data: ###STATS###${sysconf.temperature},${chatCompletionUsage.total_tokens},${functionNames.join('|')},${role},${stores.replaceAll(",","|")},${node_},${msg.mem}\n\n`);
     
     // Done message
     updateStatus("Finished.");

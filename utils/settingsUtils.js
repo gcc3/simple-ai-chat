@@ -9,7 +9,6 @@ const settings = [
   { name: "Voice",                  key: "voice",          inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: "default",  },
   { name: "Show stats",             key: "useStats",       inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: "false",    },
   { name: "Use Stream",             key: "useStream",      inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: "true",     },
-  { name: "Use Self Evaluation",    key: "useEval",        inLocalStorage: true,    inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "false",    },
   { name: "Use Location Service",   key: "useLocation",    inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: "false",    },
   { name: "Location",               key: "location",       inLocalStorage: true,    inSessionStorage: false,  inUserSettings: false,  defaultValueIfEmpty: "",         },
   { name: "Use System Role",        key: "useSystemRole",  inLocalStorage: true,    inSessionStorage: false,  inUserSettings: true,   defaultValueIfEmpty: "true",     },

@@ -104,7 +104,6 @@ export default function Home() {
   const [placeholder, setPlaceholder] = useState("");  // lazy load
   const [info, setInfo] = useState();  // model info
   const [stats, setStats] = useState();
-  const [evaluation, setEvaluation] = useState();
   const [display, setDisplay] = useState(DISPLAY.Front);
   const [content, setContent] = useState(CONTENT.Documentation);
   const [usageDisplay, setUsageDisplay] = useState(true);
@@ -119,11 +118,10 @@ export default function Home() {
   const { t, i18n } = useTranslation();
   const { t: tt } = useTranslation("translation");
 
-  // Clear info, stats, evaluation
+  // Clear info, stats
   const resetInfo = () => {
     setInfo();
     setStats();
-    setEvaluation();
   }
 
   // Toggle display
@@ -1393,13 +1391,11 @@ export default function Home() {
                                                            + "&stores=" + config.stores
                                                            + "&node=" + config.node
                                                            + "&use_stats=" + config.use_stats
-                                                           + "&use_eval=" + config.use_eval
                                                            + "&use_location=" + config.use_location
                                                            + "&location=" + config.location
                                                            + "&lang=" + config.lang
                                                            + "&use_system_role=" + config.use_system_role);
 
-    let done_evaluating = false;
     let toolCalls = [];
 
     // Handle the SSE events
@@ -1444,45 +1440,17 @@ export default function Home() {
         return;
       }
 
-      // III. Evaluation result
-      if (event.data.startsWith("###EVAL###")) {
-        const _eval_ = event.data.replace("###EVAL###", "");
-        const val = parseInt(_eval_);
-
-        let valColor = "#767676";                // default
-        if (val >= 7)      valColor = "green";     // green
-        else if (val >= 4) valColor = "#CC7722"; // orange
-        else if (val >= 0) valColor = "#DE3163"; // red
-        setEvaluation(
-          <div>
-            self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
-          </div>
-        );
-
-        done_evaluating = true;
-        return;
-      }
-
-      // IV. Stats
+      // III. Stats
       if (event.data.startsWith("###STATS###")) {
         if (getSetting('useStats') === "true") {
           const _stats_ = event.data.replace("###STATS###", "").split(',');
           const temperature = _stats_[0];
-          const token_ct = _stats_[2];
-          const use_eval = _stats_[3];
-          const func = _stats_[4];
-          const role = _stats_[5];
-          const stores = _stats_[6].replaceAll('|', ", ");
-          const node = _stats_[7];
-          const mem = _stats_[8];
-
-          if (use_eval === "true" && !done_evaluating) {
-            setEvaluation(
-              <div>
-                self_eval_score: evaluating...<br></br>
-              </div>
-            );
-          }
+          const token_ct = _stats_[1];
+          const func = _stats_[2];
+          const role = _stats_[3];
+          const stores = _stats_[4].replaceAll('|', ", ");
+          const node = _stats_[5];
+          const mem = _stats_[6];
 
           setStats(
             <div>
@@ -1499,7 +1467,7 @@ export default function Home() {
         return;
       }
 
-      // V. Handle images
+      // IV. Handle images
       if (event.data.startsWith("###IMG###")) {
         const _image_ = event.data.replace("###IMG###", "");
         console.log("Image (###IMG###): " + _image_);
@@ -1509,7 +1477,7 @@ export default function Home() {
         return;
       }
 
-      // VI. Handle status
+      // V. Handle status
       if (event.data.startsWith("###STATUS###")) {
         const _status_ = event.data.replace("###STATUS###", "");
         console.log("Status: " + _status_);
@@ -1802,7 +1770,6 @@ export default function Home() {
           stores: config.stores,
           node: config.node,
           use_stats: config.use_stats,
-          use_eval: config.use_eval,
           use_location: config.use_location,
           location: config.location,
           lang: config.lang,
@@ -2131,7 +2098,6 @@ export default function Home() {
           stores: config.stores,
           node: config.node,
           use_stats: config.use_stats,
-          use_eval: config.use_eval,
           use_location: config.use_location,
           location: config.location,
           lang: config.lang,
@@ -2248,21 +2214,6 @@ export default function Home() {
             ))}
           </div>
         ));
-
-        if (config.use_eval === "true") {
-          const _eval_ = data.result.stats.eval;
-          const val = parseInt(_eval_);
-
-          let valColor = "#767676";                // default
-          if (val >= 7)      valColor = "green";   // green
-          else if (val >= 4) valColor = "#CC7722"; // orange
-          else if (val >= 0) valColor = "#DE3163"; // red
-          setEvaluation(
-            <div>
-              self_eval_score: <span style={{color: valColor}}>{_eval_}</span><br></br>
-            </div>
-          );
-        }
       }
 
       setInfo((
@@ -2789,7 +2740,6 @@ export default function Home() {
               className={styles.output}>
             </div>
 
-            {!minimalist && evaluation && stats && <div className={styles.evaluation}>{evaluation}</div>}
             {!minimalist && stats && <div className={styles.stats}>{stats}</div>}
             {!minimalist && <div className={styles.info} onClick={handleInfoClick}>{info}</div>}
           </div>

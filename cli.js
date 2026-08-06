@@ -264,7 +264,6 @@ async function generate_msg(model, input) {
         stores: config.stores,
         node: config.node,
         use_stats: config.use_stats,
-        use_eval: config.use_eval,
         use_location: config.use_location,
         location: config.location,
         lang: config.lang,

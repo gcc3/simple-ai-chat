@@ -6,7 +6,6 @@ import { getSetting } from "./settingsUtils.js";
 export function isOffineCommand(command) {
   if (command === ":help") return 1;
   if (command === ":stats") return 1;
-  if (command === ":eval") return 1;
   if (command === ":stream") return 1;
   if (command === ":login") return 0;  // login are not available offline
   if (command === ":logout") return 0;  // logout is not available offline

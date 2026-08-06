@@ -21,7 +21,6 @@ export default function set(args) {
         "voice":          getSetting("voice"),
         "useStats":       getSetting("useStats"),
         "useStream":      getSetting("useStream"),
-        "useEval":        getSetting("useEval"),
         "useLocation":    getSetting("useLocation"),
         "location":       getSetting("location"),
         "useSystemRole":  getSetting("useSystemRole"),
@@ -129,12 +128,6 @@ export default function set(args) {
         return "Invalid value. Value must be true or false.";
       }
       setSetting("useStats", value);
-      break;
-    case "useeval":
-      if (value != "true" && value != "false") {
-        return "Invalid value. Value must be true or false.";
-      }
-      setSetting("useEval", value);
       break;
     case "usesystemrole":
       if (value != "true" && value != "false") {

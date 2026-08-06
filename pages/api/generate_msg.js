@@ -36,7 +36,6 @@ export default async function(req, res) {
 
   // Output
   // This is only for generating messages, so no need output here.
-  let eval_ = "";
   let events = [];
 
   // Config (input)
@@ -48,7 +47,6 @@ export default async function(req, res) {
   const stores = req.body.stores || "";
   const node = req.body.node || "";
   const use_stats = req.body.use_stats || false;
-  const use_eval_ = req.body.use_eval || false;
   const use_location = req.body.use_location || false;
   const location = req.body.location || "";
   const lang = req.body.lang || "";
@@ -88,7 +86,6 @@ export default async function(req, res) {
   // Model switch
   let model_ = req.body.model || sysconf.model;
   const use_vision = images && images.length > 0;
-  const use_eval = use_eval_ && use_stats && !use_vision;
 
   // User access control
   if (sysconf.use_access_control) {
@@ -129,7 +126,6 @@ export default async function(req, res) {
     + "use_system_role: " + use_system_role + "\n"
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
-    + "use_eval: " + use_eval + "\n"
     + "use_node_ai: " + sysconf.use_node_ai + "\n"
     + "use_location: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
@@ -263,7 +259,6 @@ export default async function(req, res) {
           role: role,
           stores: stores,
           node: node,
-          eval: eval_
         }
       },
     });

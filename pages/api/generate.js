@@ -10,7 +10,6 @@ import { getSystemConfigurations } from "utils/server/systemUtils";
 import { ensureSession } from "utils/server/logUtils";
 import { getUser, addUserUsage } from "utils/sqliteUtils";
 import { executeFunctions, getTools } from "function.js";
-import { evaluate } from './evaluate';
 import { getModels } from "utils/sqliteUtils.js";
 import { TYPE } from '../../constants.js';
 import { getSessionLog } from "utils/branchUtils";
@@ -46,7 +45,6 @@ export default async function(req, res) {
   // Output
   let output = "";
   let outputType = TYPE.Normal;
-  let eval_ = "";
   let toolCalls = [];
   let events = [];
 
@@ -58,7 +56,6 @@ export default async function(req, res) {
   const stores = req.body.stores || "";
   const node = req.body.node || "";
   const use_stats = req.body.use_stats === "true";
-  const use_eval_ = req.body.use_eval === "true";
   const use_location = req.body.use_location === "true";
   const location = req.body.location || "";
   const lang = req.body.lang || "";
@@ -97,7 +94,6 @@ export default async function(req, res) {
   // Model switch
   let model_ = req.body.model || sysconf.model;
   const use_vision = images && images.length > 0;
-  const use_eval = use_eval_ && use_stats && !use_vision;
   let model = models.find(m => m.name === model_);
 
   // Already setup models but not found
@@ -354,7 +350,6 @@ export default async function(req, res) {
     + "use_system_role: " + use_system_role + "\n"
     + "role_content_system (chat): " + sysconf.role_content_system.replaceAll("\n", " ") + "\n"
     + "use_vision: " + use_vision + "\n"
-    + "use_eval: " + use_eval + "\n"
     + "use_node_ai: " + sysconf.use_node_ai + "\n"
     + "use_location: " + use_location + "\n"
     + "location: " + (use_location ? (location === "" ? "___" : location) : "(disabled)") + "\n"
@@ -486,20 +481,6 @@ export default async function(req, res) {
       }
     }
 
-    // Evaluate result
-    // vision models not support evaluation
-    if (use_eval) {
-      if (output.trim().length > 0) {
-        const evalResult = await evaluate(user, input_, msg.raw_prompt, output);
-        if (evalResult.success) {
-          eval_ = evalResult.output;
-          console.log("eval: " + evalResult.output + "\n");
-        } else {
-          eval_ = evalResult.error;
-        }
-      }
-    }
-
     // Output
     console.log(chalk.blueBright("\nOutput (session = " + session + (user ? ", user = " + user.username : "") + "):"));
     console.log(output.trim() || "(null)");
@@ -577,7 +558,6 @@ export default async function(req, res) {
           role: role,
           store: stores,
           node: node,
-          eval: eval_
         },
         info: {
           model: model_,

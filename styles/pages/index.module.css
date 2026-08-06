@@ -77,7 +77,6 @@
   overflow-wrap: break-word;
   color: var(--text-color);
 }
-.main .evaluation,
 .main .stats,
 .main .info {
   margin-left: 4px;
@@ -85,10 +84,6 @@
   font-weight: normal;
   font-size: 12px;
   user-select: none;
-}
-.main .evaluation {
-  text-align: left;
-  color: var(--stats-text-color);
 }
 .main .stats {
   text-align: left;

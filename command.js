@@ -3,7 +3,6 @@ import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import { isOffineCommand } from "./utils/offlineUtils.js";
 import help from "./commands/help.js";
 import stats from "./commands/stats.js";
-import eval_ from "./commands/eval.js";
 import stream from "./commands/stream.js";
 import log from "./commands/log.js";
 import info from "./commands/info.js";
@@ -62,7 +61,6 @@ export default function exec(input, files) {
   // Use strict equality for command matching to avoid partial matches
   if (command === ":help") return help(args);
   if (command === ":stats") return stats(args);
-  if (command === ":eval") return eval_(args);
   if (command === ":stream") return stream(args);
   if (command === ":login") return login(args);
   if (command === ":logout") return logout(args);
@@ -148,8 +146,7 @@ export function getCommands() {
     { id: "", title: "", annotation: "", command: ":model [ls|list]", options: "", short_description: "List available models.", description: "Include user models and shared models." },
     { id: "", title: "", annotation: "", command: ":model [use|unuse] [name]", options: "", short_description: "Use/unuse a model.", description: "" },
     { id: "", title: "", annotation: "", command: ":model reset", options: "", short_description: "Reset model to system default model.", description: "" },
-    { id: "commands-eval", title: "Stats & Self-evaluation", annotation: "", command: ":stats [on|off]", options: "", short_description: "Show stats info.", description: "A stats information will show below." },
-    { id: "", title: "", annotation: "", command: ":eval [on|off]", options: "", short_description: "Enable the self evaluation score.", description: "" },
+    { id: "commands-stats", title: "Stats", annotation: "", command: ":stats [on|off]", options: "", short_description: "Show stats info.", description: "A stats information will show below." },
     { id: "commands-speak", title: "Speak", annotation: "", command: ":speak [on|off]", options: "", short_description: "Switch on/off auto speak.", description: "Auto read the result with system TTS voice." },
     { id: "", title: "", annotation: "", command: ":voice", options: "", short_description: "Show current voice.", description: "" },
     { id: "", title: "", annotation: "", command: ":voice [ls|list]", options: "", short_description: "List all supported voices.", description: "List all system supported TTS voices." },

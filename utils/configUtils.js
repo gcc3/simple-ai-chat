@@ -13,7 +13,6 @@ export function loadConfig() {
     stores: getSetting("stores"),
     node: getSetting("node"),
     use_stats: getSetting("useStats"),
-    use_eval: getSetting("useEval"),
     use_location: getSetting("useLocation"),
     location: getSetting("location"),
     lang: getSetting("lang").trim(),

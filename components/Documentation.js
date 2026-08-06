@@ -41,7 +41,6 @@ const Documentation = () => {
     { name: t("Enhanced Knowledge & Mathematics (WolframAlpha)"), description: t("As one of the AI callable function, WolframAlpha is a highly capable computational knowledge engine that enhances the reliability of answers provided.") },
     { name: t("Command-line Interface (CLI)"), description: t("Command-line interface software is provided via the Node Package Manager (npm) and supports the same features as the web UI.") },
     { name: t("Full-screen mode and split-screen mode"), description: t("For easy use requiring extensive input and output, such as programmers, essay writer. To use split-screen mode, use command `:fullscreen split`.") },
-    { name: t("De-hallucination"), description: t("Detect hallucinations in chat to provide more trustworthiness. When the AI exhibits hallucination, it can sometimes generate completely fabricated answers. By enabling the dehallucination feature, a message in stats (`self_eval_score`) will be displayed along with statistics to allow users to judge the accuracy of the information. Essentially, this feature resends the user's input and the AI's output, along with reference information, back to AI for self-evaluation. Use command `:stats on`, and `:eval on` to turn on it.") },
     { name: t("TTS voice"), description: t("Reading with an option to select from the system's local TTS voice library, use command `:speak on` to enable.") },
     { name: t("Themes"), description: t("Supports 3 themes: Light mode, Dark mode, and Matrix-style Terminal mode.") },
     { name: t("Function calls"), description: t("GPT will choose function to use to get information it needs. Such as weather and time queries. Functions can be called by user directly from the input as well. To list all available functions use `:function ls`. Also refer: Functions") },
@@ -87,8 +86,8 @@ const Documentation = () => {
   ];
 
   const apis = [
-    { endpoint: "GET /api/generate_sse", parameters: "session, mem_length, role, stores, node, use_stats, use_eval, use_location, location, images, files", description: t("Generate a response from the AI model with stream.") },
-    { endpoint: "POST /api/generate", parameters: "session, mem_length, role, stores, node, use_stats, use_eval, use_location, location, images, files", description: t("Generate a response from the AI model.") },
+    { endpoint: "GET /api/generate_sse", parameters: "session, mem_length, role, stores, node, use_stats, use_location, location, images, files", description: t("Generate a response from the AI model with stream.") },
+    { endpoint: "POST /api/generate", parameters: "session, mem_length, role, stores, node, use_stats, use_location, location, images, files", description: t("Generate a response from the AI model.") },
   ];
 
   const faqs = [
@@ -108,7 +107,7 @@ const Documentation = () => {
             <div><a href="#commands-general">- <u>{ t("General") }</u></a></div>
             <div><a href="#commands-session">- <u>{ t("Sessions & Logs") }</u></a></div>
             <div><a href="#commands-model">- <u>{ t("Models") }</u></a></div>
-            <div><a href="#commands-eval">- <u>{ t("Stats & Self-evaluation") }</u></a></div>
+            <div><a href="#commands-stats">- <u>{ t("Stats") }</u></a></div>
             <div><a href="#commands-speak">- <u>{ t("Speak") }</u></a></div>
             <div><a href="#commands-role">- <u>{ t("Roles") }</u></a></div>
             <div><a href="#commands-store">- <u>{ t("Data Store") }</u></a></div>

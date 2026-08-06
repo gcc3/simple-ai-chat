@@ -71,12 +71,6 @@ export async function refreshLocalUser(user = null) {
     setSetting("useStats", settings.useStats == "true" ? true : false);
   }
 
-  // useEval
-  // If set, override with user setting
-  if ("useEval" in settings && settings.useEval) {
-    setSetting("useEval", settings.useEval == "true" ? true : false);
-  }
-
   // useSystemRole
   // If set, override with user setting
   if ("useSystemRole" in settings && settings.useSystemRole) {
