@@ -1,5 +1,5 @@
-import { addStoreToSessionStorage, countStoresInSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { addStoreToSessionStorage, countStoresInSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "../utils/storage.js";
+import { getSetting, setSetting } from "../utils/settings.js";
 
 export default async function store(args, files) {
   const command = args[0];

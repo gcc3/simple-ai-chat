@@ -1,4 +1,4 @@
-import { getModel } from 'utils/sqliteUtils';
+import { getModel } from 'utils/sqlite';
 
 export default async function (req, res) {
   const { modelName } = req.query;

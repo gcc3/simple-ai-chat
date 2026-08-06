@@ -1,4 +1,4 @@
-import { getLogs, getSession } from "utils/sqliteUtils";
+import { getLogs, getSession } from "utils/sqlite";
 
 
 // Get session log

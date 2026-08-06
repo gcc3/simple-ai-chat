@@ -1,7 +1,7 @@
 import sqlite3 from "sqlite3";
 import { promises as fs } from "fs";
-import { formatUnixTimestamp, getTimestamp } from "./timeUtils.js";
-import { getSettings } from "./settingsUtils.js";
+import { formatUnixTimestamp, getTimestamp } from "./time.js";
+import { getSettings } from "./settings.js";
 
 const createDatabaseFile = () => {
   return new Promise((resolve, reject) => {

@@ -1,4 +1,4 @@
-import { updateUserStatus, getUser } from "utils/sqliteUtils.js";
+import { updateUserStatus, getUser } from "utils/sqlite.js";
 
 export default async (req, res) =>  {
   // Check method

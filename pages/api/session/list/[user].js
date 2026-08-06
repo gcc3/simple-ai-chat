@@ -1,5 +1,5 @@
-import { getSessionLog, getUserSessions } from "utils/sqliteUtils";
-import { authenticate } from "utils/authUtils";
+import { getSessionLog, getUserSessions } from "utils/sqlite";
+import { authenticate } from "utils/auth";
 
 export default async function (req, res) {
   const { user } = req.query;

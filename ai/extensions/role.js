@@ -1,6 +1,6 @@
 import { parse } from 'csv-parse';
 import fs from 'fs';
-import { fixLastRowNotEmpty } from '../../utils/fileUtils';
+import { fixLastRowNotEmpty } from '../../utils/file';
 
 export async function getSystemRoles() {
   // Check if the file exists, if not create from role.csv.example

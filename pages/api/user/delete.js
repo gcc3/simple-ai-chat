@@ -1,5 +1,5 @@
-import { softDeleteUser, deleteUserLogs, deleteUserRoles, deleteUserStores } from 'utils/sqliteUtils.js';
-import { authenticate } from 'utils/authUtils.js';
+import { softDeleteUser, deleteUserLogs, deleteUserRoles, deleteUserStores } from 'utils/sqlite.js';
+import { authenticate } from 'utils/auth.js';
 
 // Soft delete user
 export default async function (req, res) {

@@ -1,5 +1,5 @@
-import { initializeSessionMemory } from "../utils/sessionUtils.js";
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { initializeSessionMemory } from "../utils/session.js";
+import { getSetting, setSetting } from "../utils/settings.js";
 
 export default async function node(args) {
   const command = args[0];

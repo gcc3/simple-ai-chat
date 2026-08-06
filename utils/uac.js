@@ -1,6 +1,6 @@
-import { countChatsForIP, countChatsForUser, countExactSameInputForIP } from './sqliteUtils';
-import { getRoleFequencyLimit } from './usageUtils';
-import { getSystemConfigurations } from './server/systemUtils';
+import { countChatsForIP, countChatsForUser, countExactSameInputForIP } from './sqlite';
+import { getRoleFequencyLimit } from './usage';
+import { getSystemConfigurations } from './server/system';
 
 const use_email = process.env.USE_EMAIL == "true" ? true : false;
 

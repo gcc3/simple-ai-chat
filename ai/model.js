@@ -1,5 +1,5 @@
 import { getOllamaModel } from './ollama.js';
-import { setSetting } from '../utils/settingsUtils.js';
+import { setSetting } from '../utils/settings.js';
 
 const tryFetchModel = async (modelName) => {
   console.log("Fetching model: " + modelName);

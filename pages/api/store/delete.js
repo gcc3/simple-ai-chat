@@ -1,5 +1,5 @@
-import { deleteStore } from "utils/sqliteUtils.js";
-import { authenticate } from "utils/authUtils.js";
+import { deleteStore } from "utils/sqlite.js";
+import { authenticate } from "utils/auth.js";
 import { isInitialized } from "ai/extensions/store";
 import { findStore } from "ai/extensions/store.js";
 

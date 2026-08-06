@@ -1,5 +1,5 @@
-import { authenticate } from 'utils/authUtils';
-import { getUser, getUserStores } from 'utils/sqliteUtils';
+import { authenticate } from 'utils/auth';
+import { getUser, getUserStores } from 'utils/sqlite';
 
 export default async function(req, res) {
   try {

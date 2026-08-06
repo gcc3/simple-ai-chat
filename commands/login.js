@@ -1,6 +1,6 @@
-import { initializeSessionMemory } from "../utils/sessionUtils.js";
-import { refreshLocalUser } from "../utils/userUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
+import { initializeSessionMemory } from "../utils/session.js";
+import { refreshLocalUser } from "../utils/user.js";
+import { getSetting } from "../utils/settings.js";
 
 export default async function login(args) {
   if (args.length < 2 && args.length > 4) {

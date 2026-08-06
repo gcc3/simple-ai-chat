@@ -1,4 +1,4 @@
-import { getModels } from 'utils/sqliteUtils';
+import { getModels } from 'utils/sqlite';
 
 export default async function(req, res) {
   try {

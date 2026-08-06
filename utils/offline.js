@@ -1,5 +1,5 @@
 
-import { getSetting } from "./settingsUtils.js";
+import { getSetting } from "./settings.js";
 
 
 // Determine command is available offline

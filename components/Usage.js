@@ -1,10 +1,10 @@
 import React, { useEffect, useState, useCallback } from "react";
 import ProgressBar from "./ProgressBar";
-import { getRoleLevel, fetchUserInfo, fetchUserUsage } from "utils/userUtils";
+import { getRoleLevel, fetchUserInfo, fetchUserUsage } from "utils/user";
 import PayPalButton from "./PayPalButton";
-import { npre } from "utils/numberUtils";
+import { npre } from "utils/number";
 import { useTranslation } from "react-i18next";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting } from "../utils/settings.js";
 
 export default function Usage() {
   const [loading, setLoading] = useState(true);

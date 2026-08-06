@@ -1,5 +1,5 @@
-import { getRole, insertRole } from "utils/sqliteUtils.js";
-import { authenticate } from "utils/authUtils.js";
+import { getRole, insertRole } from "utils/sqlite.js";
+import { authenticate } from "utils/auth.js";
 
 export default async function (req, res) {
   // Check method

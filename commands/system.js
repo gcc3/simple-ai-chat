@@ -1,4 +1,4 @@
-import { getSystemInfo } from "../utils/client/systemUtils.js";
+import { getSystemInfo } from "../utils/client/system.js";
 
 export default async function system(args) {
   const systemInfo = await getSystemInfo();

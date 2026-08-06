@@ -1,7 +1,7 @@
-import { setTheme } from "./themeUtils.js";
-import { initializeSessionMemory } from "./sessionUtils.js";
-import { getSetting, setSetting } from "./settingsUtils.js";
-import emitter from './eventsUtils.js';
+import { setTheme } from "./theme.js";
+import { initializeSessionMemory } from "./session.js";
+import { getSetting, setSetting } from "./settings.js";
+import emitter from './events.js';
 
 
 export async function refreshLocalUser(user = null) {

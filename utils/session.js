@@ -1,4 +1,4 @@
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settings.js";
 
 export function initializeMemory() {
   console.log("Memory initializing...");

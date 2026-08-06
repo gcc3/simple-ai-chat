@@ -1,4 +1,4 @@
-import { countLogs, getSession, getSessionLogs } from "utils/sqliteUtils";
+import { countLogs, getSession, getSessionLogs } from "utils/sqlite";
 
 export default async function (req, res) {
   const { sessionId: id } = req.query;

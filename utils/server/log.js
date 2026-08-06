@@ -1,4 +1,4 @@
-import { getLogs, getSession, getLog, insertLog, insertSession } from "../sqliteUtils.js"
+import { getLogs, getSession, getLog, insertLog, insertSession } from "../sqlite.js"
 
 export async function logadd(user, sessionId, time, model, input_token_ct, input, output_token_ct, output, images, cost, ip, browser) {
   // Get username

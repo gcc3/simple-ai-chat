@@ -1,5 +1,5 @@
-import { getUser, updateUserIPAndLastLogin, updateUserStatus } from "utils/sqliteUtils.js";
-import { createToken } from "utils/authUtils.js";
+import { getUser, updateUserIPAndLastLogin, updateUserStatus } from "utils/sqlite.js";
+import { createToken } from "utils/auth.js";
 
 export default async (req, res) => {
   // Check method

@@ -1,7 +1,7 @@
-import { decode } from "utils/authUtils"
-import { getUser, updateUserEmailVerifiedAt, updateUserIPAndLastLogin, updateUserEmail } from "utils/sqliteUtils"
-import { getUserByEmail } from "utils/sqliteUtils"
-import { getRedirectableHtml } from "utils/emailUtils";
+import { decode } from "utils/auth"
+import { getUser, updateUserEmailVerifiedAt, updateUserIPAndLastLogin, updateUserEmail } from "utils/sqlite"
+import { getUserByEmail } from "utils/sqlite"
+import { getRedirectableHtml } from "utils/email";
 
 export default async function (req, res) {
   // Check method

@@ -1,4 +1,4 @@
-import { isNode } from "../utils/cliUtils.js";
+import { isNode } from "../utils/cli.js";
 import { getCommands } from "../command.js";
 
 export default function help(args) {

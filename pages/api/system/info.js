@@ -1,4 +1,4 @@
-import { getSystemConfigurations } from "utils/server/systemUtils.js";
+import { getSystemConfigurations } from "utils/server/system.js";
 import log from "../../../log.js";
 
 export default async function (req, res) {

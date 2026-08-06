@@ -1,20 +1,20 @@
 import OpenAI, { toFile } from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "ai/context/prompt";
-import { logadd } from "utils/server/logUtils.js";
-import { authenticate } from "utils/authUtils";
-import { verifySessionId } from "utils/sessionUtils";
-import { getUacResult } from "utils/uacUtils";
-import { countToken } from "utils/tokenUtils";
-import { getSystemConfigurations } from "utils/server/systemUtils";
-import { ensureSession } from "utils/server/logUtils";
-import { getUser, addUserUsage } from "utils/sqliteUtils";
+import { logadd } from "utils/server/log.js";
+import { authenticate } from "utils/auth";
+import { verifySessionId } from "utils/session";
+import { getUacResult } from "utils/uac";
+import { countToken } from "utils/token";
+import { getSystemConfigurations } from "utils/server/system";
+import { ensureSession } from "utils/server/log";
+import { getUser, addUserUsage } from "utils/sqlite";
 import { executeFunctions, getTools } from "ai/function.js";
-import { getModels } from "utils/sqliteUtils.js";
+import { getModels } from "utils/sqlite.js";
 import { TYPE } from '../../constants.js';
-import { getSessionLog } from "utils/branchUtils";
-import { isUrl } from "utils/urlUtils";
-import { getS3PresignedPutUrl } from "utils/awsUtils";
+import { getSessionLog } from "utils/branch";
+import { isUrl } from "utils/url";
+import { getS3PresignedPutUrl } from "utils/aws";
 import log from "../../log.js";
 
 // System configurations

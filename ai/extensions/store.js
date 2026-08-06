@@ -1,5 +1,5 @@
-import { mysqlQuery } from "../../utils/mysqlUtils";
-import { getUser, getStore, getUserStores } from "../../utils/sqliteUtils";
+import { mysqlQuery } from "../../utils/mysql";
+import { getUser, getStore, getUserStores } from "../../utils/sqlite";
 import OpenAI from "openai";
 
 export async function findStore(storeName, username) {

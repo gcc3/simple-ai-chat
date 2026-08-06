@@ -1,9 +1,9 @@
-import { evalEmailAddress } from "utils/emailUtils";
-import { insertUser, getUser, getUserByEmail, updateUsername, countUserByIP } from "utils/sqliteUtils.js";
-import { generatePassword } from "utils/userUtils.js";
+import { evalEmailAddress } from "utils/email";
+import { insertUser, getUser, getUserByEmail, updateUsername, countUserByIP } from "utils/sqlite.js";
+import { generatePassword } from "utils/user.js";
 import { SES } from "@aws-sdk/client-ses";
-import { encode } from "utils/authUtils";
-import { passwordCheck } from "utils/passwordUtils"
+import { encode } from "utils/auth";
+import { passwordCheck } from "utils/password"
 
 export default async function (req, res) {
   // Check method

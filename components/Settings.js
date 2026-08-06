@@ -1,15 +1,15 @@
 import React, { useEffect, useState, useCallback } from "react";
-import { fetchUserInfo } from "utils/userUtils";
+import { fetchUserInfo } from "utils/user";
 import { useTranslation } from "react-i18next";
-import { setRtl } from "utils/rtlUtils.js";
+import { setRtl } from "utils/rtl.js";
 import { getFunctions, getMcpFunctions } from "../ai/function.js";
-import { updateUserSetting } from 'utils/userUtils.js';
-import { addStoreToSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "utils/storageUtils.js";
-import { getTime } from "utils/timeUtils.js";
+import { updateUserSetting } from 'utils/user.js';
+import { addStoreToSessionStorage, getActiveStores, isStoreActive, removeStoreFromSessionStorage } from "utils/storage.js";
+import { getTime } from "utils/time.js";
 import { listOllamaModels } from "ai/ollama.js";
-import { setTheme } from "utils/themeUtils.js";
-import { getSetting, setSetting } from "utils/settingsUtils.js";
-import { getLanguages } from "utils/langUtils.js";
+import { setTheme } from "utils/theme.js";
+import { getSetting, setSetting } from "utils/settings.js";
+import { getLanguages } from "utils/lang.js";
 
 function Settings() {
   const [loading, setLoading] = useState(false);

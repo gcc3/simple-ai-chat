@@ -1,5 +1,5 @@
-import { initializeMemory } from "../utils/sessionUtils.js";
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { initializeMemory } from "../utils/session.js";
+import { getSetting, setSetting } from "../utils/settings.js";
 
 export default async function role(args) {
   const command = args[0];

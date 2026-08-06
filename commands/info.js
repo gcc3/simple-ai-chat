@@ -1,4 +1,4 @@
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting } from "../utils/settings.js";
 
 export default async function info(args) {
   return "Session: " + getSetting("session") + "\n" +

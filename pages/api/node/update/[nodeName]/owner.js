@@ -1,5 +1,5 @@
-import { updateNodeOwner, getUser } from 'utils/sqliteUtils.js';
-import { authenticate } from 'utils/authUtils.js';
+import { updateNodeOwner, getUser } from 'utils/sqlite.js';
+import { authenticate } from 'utils/auth.js';
 import { findNode } from 'ai/extensions/node.js';
 
 export default async function (req, res) {

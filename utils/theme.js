@@ -1,5 +1,5 @@
-import { isNode } from './cliUtils.js';
-import { enableCSSRulesBySelector, disableCSSRulesBySelector, setHighlightjsTheme, unsetHighlightjsTheme } from './cssUtils.js';
+import { isNode } from './cli.js';
+import { enableCSSRulesBySelector, disableCSSRulesBySelector, setHighlightjsTheme, unsetHighlightjsTheme } from './css.js';
 
 export function setTheme(theme) {
   // Support cli

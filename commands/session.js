@@ -1,6 +1,6 @@
-import { attachSession } from "../utils/sessionUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
-import { getLocalLogs } from "../utils/offlineUtils.js";
+import { attachSession } from "../utils/session.js";
+import { getSetting } from "../utils/settings.js";
+import { getLocalLogs } from "../utils/offline.js";
 
 export default async function session(args) {
   const usage = "Usage: :session [list|ls]\n" +

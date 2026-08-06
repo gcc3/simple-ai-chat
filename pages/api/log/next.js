@@ -1,4 +1,4 @@
-import { getSessionLog } from "utils/branchUtils";
+import { getSessionLog } from "utils/branch";
 
 export default async function (req, res) {
   try {

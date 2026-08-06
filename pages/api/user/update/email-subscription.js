@@ -1,4 +1,4 @@
-import { getUserByEmail, updateUserEmailSubscription } from 'utils/sqliteUtils.js';
+import { getUserByEmail, updateUserEmailSubscription } from 'utils/sqlite.js';
 import { SES } from '@aws-sdk/client-ses';
 
 export default async function (req, res) {

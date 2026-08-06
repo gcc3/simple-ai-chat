@@ -1,14 +1,14 @@
 import chalk from 'chalk';
 import { generateMessages } from "ai/context/prompt";
-import { authenticate } from "utils/authUtils";
-import { verifySessionId } from "utils/sessionUtils";
-import { getUacResult } from "utils/uacUtils";
-import { getSystemConfigurations } from "utils/server/systemUtils.js";
-import { ensureSession } from "utils/server/logUtils.js";
-import { getUser } from "utils/sqliteUtils";
+import { authenticate } from "utils/auth";
+import { verifySessionId } from "utils/session";
+import { getUacResult } from "utils/uac";
+import { getSystemConfigurations } from "utils/server/system.js";
+import { ensureSession } from "utils/server/log.js";
+import { getUser } from "utils/sqlite";
 import { executeFunctions } from "ai/function.js";
-import { countToken } from "utils/tokenUtils.js";
-import { logadd } from "utils/server/logUtils.js";
+import { countToken } from "utils/token.js";
+import { logadd } from "utils/server/log.js";
 import { TYPE } from '../../constants.js';
 import log from "../../log.js";
 

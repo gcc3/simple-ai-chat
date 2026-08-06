@@ -1,6 +1,6 @@
-import { authenticate } from "utils/authUtils";
-import { logadd } from "utils/server/logUtils";
-import { getUser } from "utils/sqliteUtils";
+import { authenticate } from "utils/auth";
+import { logadd } from "utils/server/log";
+import { getUser } from "utils/sqlite";
 
 export default async function (req, res) {
    // Check method

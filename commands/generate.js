@@ -1,4 +1,4 @@
-import { getSetting } from "../utils/settingsUtils.js";
+import { getSetting } from "../utils/settings.js";
 
 export default async function generate(args) {
   if (args.length != 1) {

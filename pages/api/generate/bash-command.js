@@ -1,14 +1,14 @@
 import OpenAI from "openai";
 import chalk from 'chalk';
-import { logadd } from "utils/server/logUtils";
-import { verifySessionId } from "utils/sessionUtils";
-import { authenticate } from "utils/authUtils";
-import { getUacResult } from "utils/uacUtils";
-import { getModels, getUser } from "utils/sqliteUtils";
-import { getSystemConfigurations } from "utils/server/systemUtils";
-import { ensureSession } from "utils/server/logUtils.js";
-import { addUserUsage } from "utils/sqliteUtils.js";
-import { extractIpTag, isLocalRequestIp } from "utils/ipUtils.js";
+import { logadd } from "utils/server/log";
+import { verifySessionId } from "utils/session";
+import { authenticate } from "utils/auth";
+import { getUacResult } from "utils/uac";
+import { getModels, getUser } from "utils/sqlite";
+import { getSystemConfigurations } from "utils/server/system";
+import { ensureSession } from "utils/server/log.js";
+import { addUserUsage } from "utils/sqlite.js";
+import { extractIpTag, isLocalRequestIp } from "utils/ip.js";
 import { TYPE } from '../../../constants.js';
 import log from "../../../log.js";
 

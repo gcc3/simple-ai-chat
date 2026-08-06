@@ -1,4 +1,4 @@
-import { authenticate } from "utils/authUtils";
+import { authenticate } from "utils/auth";
 import { queryNode, checkIsNodeConfigured } from "ai/extensions/node";
 import { findNode } from "ai/extensions/node";
 

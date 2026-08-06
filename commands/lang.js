@@ -1,6 +1,6 @@
-import { getLangCodes, getLanguageName } from "../utils/langUtils.js";
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
-import { updateUserSetting } from '../utils/userUtils.js';
+import { getLangCodes, getLanguageName } from "../utils/lang.js";
+import { getSetting, setSetting } from "../utils/settings.js";
+import { updateUserSetting } from '../utils/user.js';
 
 export default async function lang(args) {
   const command = args[0];

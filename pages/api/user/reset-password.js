@@ -1,6 +1,6 @@
 import { SES } from "@aws-sdk/client-ses";
-import { getUser, updateUserPassword } from "utils/sqliteUtils";
-import { generatePassword } from "utils/userUtils";
+import { getUser, updateUserPassword } from "utils/sqlite";
+import { generatePassword } from "utils/user";
 
 export default async function handler(req, res) {
   // Check method

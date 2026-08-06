@@ -1,5 +1,5 @@
-import { getSetting } from "../utils/settingsUtils.js";
-import { getBrowserLang } from "./langUtils.js";
+import { getSetting } from "../utils/settings.js";
+import { getBrowserLang } from "./lang.js";
 
 const VOICE_FALLBACK = {
   "en-US": ["Google US English", "Samantha"],

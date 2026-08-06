@@ -5,10 +5,10 @@ import readline from "node:readline";
 import exec, { alias } from "./command.js";
 import tough from 'tough-cookie';
 import fetchCookie from 'fetch-cookie';
-import { initializeSettings } from "./utils/settingsUtils.js";
-import { initializeSessionMemory } from "./utils/sessionUtils.js";
+import { initializeSettings } from "./utils/settings.js";
+import { initializeSessionMemory } from "./utils/session.js";
 import { getModel } from "./ai/model.js";
-import { loadConfig } from "./utils/configUtils.js";
+import { loadConfig } from "./utils/config.js";
 import { Readable } from "stream";
 import { OpenAI } from "openai";
 import { readFileSync, writeFileSync, unlinkSync, mkdirSync, existsSync } from "fs";
@@ -16,17 +16,17 @@ import { tmpdir, homedir } from "os";
 import { fileURLToPath } from "url";
 import { dirname, join } from "path";
 import { spawn, execSync } from "child_process";
-import { getSetting, setSetting } from "./utils/settingsUtils.js";
-import { getLocalLogs, resetLocalLogs } from "./utils/offlineUtils.js";
+import { getSetting, setSetting } from "./utils/settings.js";
+import { getLocalLogs, resetLocalLogs } from "./utils/offline.js";
 import { getMcpTools } from "./ai/function.js";
 import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "./constants.js";
 import { getInput } from "./ai/context/input.js";
-import { logadd } from "./utils/client/logUtils.js";
+import { logadd } from "./utils/client/log.js";
 import { exec_f } from "./ai/function.client.js";
 import { pingOllamaAPI } from "./ai/ollama.js";
-import { getSystemInfo } from "./utils/client/systemUtils.js"
+import { getSystemInfo } from "./utils/client/system.js"
 import { pingMcpServer } from "./ai/mcp.js";
-import { refreshLocalUser } from "./utils/userUtils.js";
+import { refreshLocalUser } from "./utils/user.js";
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');

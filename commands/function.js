@@ -1,6 +1,6 @@
 import { getFunctions, getMcpFunctions } from "../ai/function.js";
-import { updateUserSetting } from '../utils/userUtils.js';
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { updateUserSetting } from '../utils/user.js';
+import { getSetting, setSetting } from "../utils/settings.js";
 
 
 export default async function function_(args) {

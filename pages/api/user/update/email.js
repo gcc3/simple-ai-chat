@@ -1,8 +1,8 @@
-import { getUserByEmail } from 'utils/sqliteUtils.js';
-import { authenticate } from 'utils/authUtils.js';
-import { verifyEmailAddress, evalEmailAddress } from 'utils/emailUtils.js';
+import { getUserByEmail } from 'utils/sqlite.js';
+import { authenticate } from 'utils/auth.js';
+import { verifyEmailAddress, evalEmailAddress } from 'utils/email.js';
 import { SES } from '@aws-sdk/client-ses';
-import { encode } from 'utils/authUtils.js';
+import { encode } from 'utils/auth.js';
 
 export default async function (req, res) {
   // Check method

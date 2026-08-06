@@ -1,6 +1,6 @@
-import { isCommandMusked } from "./utils/passwordUtils.js";
-import { getSetting, setSetting } from "./utils/settingsUtils.js";
-import { isOffineCommand } from "./utils/offlineUtils.js";
+import { isCommandMusked } from "./utils/password.js";
+import { getSetting, setSetting } from "./utils/settings.js";
+import { isOffineCommand } from "./utils/offline.js";
 import help from "./commands/help.js";
 import stats from "./commands/stats.js";
 import stream from "./commands/stream.js";

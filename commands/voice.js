@@ -1,6 +1,6 @@
-import { getVoice, getVoices } from "../utils/voiceUtils.js"
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
-import { getBrowserLang } from "../utils/langUtils.js";
+import { getVoice, getVoices } from "../utils/voice.js"
+import { getSetting, setSetting } from "../utils/settings.js";
+import { getBrowserLang } from "../utils/lang.js";
 
 export default async function voice(args) {
   const command = args[0];

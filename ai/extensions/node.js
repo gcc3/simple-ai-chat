@@ -1,5 +1,5 @@
-import { getUser, getNode, getUserNodes } from '../../utils/sqliteUtils.js';
-import { getBaseURL } from '../../utils/urlUtils.js';
+import { getUser, getNode, getUserNodes } from '../../utils/sqlite.js';
+import { getBaseURL } from '../../utils/url.js';
 
 const axios = require('axios');
 const { Readable } = require('stream');

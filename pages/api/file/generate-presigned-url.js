@@ -1,4 +1,4 @@
-import { getS3PresignedPutUrl } from "utils/awsUtils";
+import { getS3PresignedPutUrl } from "utils/aws";
 
 export default async function (req, res) {
   if (req.method !== 'GET') {

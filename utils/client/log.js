@@ -1,5 +1,5 @@
-import { getSetting } from "../settingsUtils.js";
-import { addLocalLog } from "../offlineUtils.js";
+import { getSetting } from "../settings.js";
+import { addLocalLog } from "../offline.js";
 
 export const logadd = async (model, input, output) => {
   // Online: add log to server

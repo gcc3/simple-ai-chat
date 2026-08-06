@@ -1,7 +1,7 @@
-import { updateUserSettings, getUser } from 'utils/sqliteUtils.js';
-import { authenticate } from 'utils/authUtils.js';
-import { getSettings } from 'utils/settingsUtils.js';
-import { generatePassword } from 'utils/userUtils';
+import { updateUserSettings, getUser } from 'utils/sqlite.js';
+import { authenticate } from 'utils/auth.js';
+import { getSettings } from 'utils/settings.js';
+import { generatePassword } from 'utils/user';
 
 export default async function (req, res) {
   // Check method

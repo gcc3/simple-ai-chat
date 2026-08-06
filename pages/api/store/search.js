@@ -1,4 +1,4 @@
-import { authenticate } from "utils/authUtils";
+import { authenticate } from "utils/auth";
 import { searchMysqlStore, isInitialized } from "ai/extensions/store";
 import { findStore } from "ai/extensions/store.js";
 import fetch from 'node-fetch';

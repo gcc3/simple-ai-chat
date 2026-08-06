@@ -1,9 +1,9 @@
-import { initializeMemory } from "../utils/sessionUtils.js";
-import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } from "../utils/storageUtils.js";
+import { initializeMemory } from "../utils/session.js";
+import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } from "../utils/storage.js";
 import { getFunctions, getMcpFunctions } from "../ai/function.js";
-import { updateUserSetting } from "../utils/userUtils.js";
+import { updateUserSetting } from "../utils/user.js";
 import { listOllamaModels } from "../ai/ollama.js";
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { getSetting, setSetting } from "../utils/settings.js";
 
 export default async function use(args) {
   const usage = "Usage: :use [function|node|store|role]\n";

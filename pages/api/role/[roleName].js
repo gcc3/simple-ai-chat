@@ -1,6 +1,6 @@
 import { getRolePrompt } from 'ai/extensions/role';
-import { getRole } from 'utils/sqliteUtils';
-import { authenticate } from 'utils/authUtils';
+import { getRole } from 'utils/sqlite';
+import { authenticate } from 'utils/auth';
 
 export default async function (req, res) {
   const { roleName } = req.query;

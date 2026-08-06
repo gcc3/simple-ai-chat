@@ -1,17 +1,17 @@
 import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "ai/context/prompt";
-import { logadd } from "utils/server/logUtils";
+import { logadd } from "utils/server/log";
 import { executeFunctions, getTools } from "ai/function.js";
-import { countToken } from "utils/tokenUtils";
-import { verifySessionId } from "utils/sessionUtils";
-import { authenticate } from "utils/authUtils";
-import { getUacResult } from "utils/uacUtils";
-import { getModels, getUser } from "utils/sqliteUtils";
-import { getSystemConfigurations } from "utils/server/systemUtils";
+import { countToken } from "utils/token";
+import { verifySessionId } from "utils/session";
+import { authenticate } from "utils/auth";
+import { getUacResult } from "utils/uac";
+import { getModels, getUser } from "utils/sqlite";
+import { getSystemConfigurations } from "utils/server/system";
 import { findNode } from "ai/extensions/node.js";
-import { ensureSession } from "utils/server/logUtils.js";
-import { addUserUsage } from "utils/sqliteUtils.js";
+import { ensureSession } from "utils/server/log.js";
+import { addUserUsage } from "utils/sqlite.js";
 import { TYPE } from '../../constants.js';
 import log from "../../log.js";
 

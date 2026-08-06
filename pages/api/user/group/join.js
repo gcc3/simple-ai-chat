@@ -1,5 +1,5 @@
-import { getUser, userJoinGroup } from "utils/sqliteUtils.js";
-import { authenticate } from "utils/authUtils";
+import { getUser, userJoinGroup } from "utils/sqlite.js";
+import { authenticate } from "utils/auth";
 
 export default async (req, res) => {
   // Check method

@@ -1,10 +1,10 @@
 import { getFunctions, getMcpFunctions } from "ai/function";
-import { getLangCodes } from "./langUtils";
-import { getSettings } from "./settingsUtils";
-import { getThemes } from "./themeUtils";
-import { getVoices } from "./voiceUtils";
+import { getLangCodes } from "./lang";
+import { getSettings } from "./settings";
+import { getThemes } from "./theme";
+import { getVoices } from "./voice";
 import { listOllamaModels } from "../ai/ollama";
-import { getSetting } from "./settingsUtils";
+import { getSetting } from "./settings";
 
 export async function getAutoCompleteOptions(prefix, nameToBeComleted) {
   if (prefix === ":role " || prefix === ":role use " || prefix === ":role unuse ") {

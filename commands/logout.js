@@ -1,5 +1,5 @@
-import { clearLocalUser } from "../utils/userUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
+import { clearLocalUser } from "../utils/user.js";
+import { getSetting } from "../utils/settings.js";
 
 export default async function logout(args) {
   const username = getSetting("user");

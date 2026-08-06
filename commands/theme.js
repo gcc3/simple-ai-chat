@@ -1,5 +1,5 @@
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
-import { updateUserSetting } from "../utils/userUtils.js";
+import { getSetting, setSetting } from "../utils/settings.js";
+import { updateUserSetting } from "../utils/user.js";
 
 export default async function theme(args) {
   const value = args[0];

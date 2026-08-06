@@ -1,6 +1,6 @@
 import { getSystemRoles } from 'ai/extensions/role';
-import { authenticate } from 'utils/authUtils';
-import { getUserRoles } from 'utils/sqliteUtils';
+import { authenticate } from 'utils/auth';
+import { getUserRoles } from 'utils/sqlite';
 
 export default async function (req, res) {
   try {

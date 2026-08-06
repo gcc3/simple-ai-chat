@@ -1,6 +1,6 @@
-import { loglist } from "utils/server/logUtils";
-import { authenticate } from "utils/authUtils";
-import { getSessionLog } from "utils/sqliteUtils";
+import { loglist } from "utils/server/log";
+import { authenticate } from "utils/auth";
+import { getSessionLog } from "utils/sqlite";
 
 export default async function (req, res) {
   try {

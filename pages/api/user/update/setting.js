@@ -1,10 +1,10 @@
-import { updateUserSetting, getUser, getUserRoles } from 'utils/sqliteUtils.js';
-import { authenticate } from 'utils/authUtils.js';
+import { updateUserSetting, getUser, getUserRoles } from 'utils/sqlite.js';
+import { authenticate } from 'utils/auth.js';
 import { getAvailableStoresForUser } from 'ai/extensions/store';
 import { getAvailableNodesForUser } from 'ai/extensions/node';
 import { getSystemRoles } from 'ai/extensions/role';
-import { getSettings, getDefaultSetting } from 'utils/settingsUtils';
-import { getLangCodes } from 'utils/langUtils';
+import { getSettings, getDefaultSetting } from 'utils/settings';
+import { getLangCodes } from 'utils/lang';
 
 // Update one of user settings
 export default async function (req, res) {

@@ -1,6 +1,6 @@
-import { authenticate } from 'utils/authUtils';
+import { authenticate } from 'utils/auth';
 import { findStore, isInitialized } from 'ai/extensions/store';
-import { testConnection } from 'utils/mysqlUtils';
+import { testConnection } from 'utils/mysql';
 
 export default async function (req, res) {
   const { storeName, verbose } = req.query;

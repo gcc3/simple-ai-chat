@@ -1,5 +1,5 @@
-import { updateUserRole, extendUserRole, getUser } from 'utils/sqliteUtils.js';
-import { authenticate } from 'utils/authUtils.js';
+import { updateUserRole, extendUserRole, getUser } from 'utils/sqlite.js';
+import { authenticate } from 'utils/auth.js';
 import { SES } from '@aws-sdk/client-ses';
 import moment from 'moment';
 

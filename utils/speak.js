@@ -1,5 +1,5 @@
-import { getVoice } from "../utils/voiceUtils.js"
-import { getSetting } from "../utils/settingsUtils.js";
+import { getVoice } from "../utils/voice.js"
+import { getSetting } from "../utils/settings.js";
 
 function removeEmoji(text) {
     return text.replace(/[\p{Emoji_Presentation}\p{Extended_Pictographic}]/gu, '');

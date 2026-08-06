@@ -1,5 +1,5 @@
-import { getLocalLogs } from "../utils/offlineUtils.js";
-import { getSetting } from "../utils/settingsUtils.js";
+import { getLocalLogs } from "../utils/offline.js";
+import { getSetting } from "../utils/settings.js";
 
 export default async function log(args) {
   if (globalThis.isOnline) {

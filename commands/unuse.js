@@ -1,8 +1,8 @@
-import { initializeMemory } from "../utils/sessionUtils.js";
-import { isStoreActive, removeStoreFromSessionStorage } from "../utils/storageUtils.js";
+import { initializeMemory } from "../utils/session.js";
+import { isStoreActive, removeStoreFromSessionStorage } from "../utils/storage.js";
 import { getFunctions, getMcpFunctions } from "../ai/function.js";
-import { updateUserSetting } from '../utils/userUtils.js';
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { updateUserSetting } from '../utils/user.js';
+import { getSetting, setSetting } from "../utils/settings.js";
 
 export default async function unuse(args) {
   const usage = "Usage: :unuse [name]\n";

@@ -1,5 +1,5 @@
-import { setSession, setTime } from "../utils/sessionUtils.js";
-import { getSettings, getSetting, setSetting } from "../utils/settingsUtils.js";
+import { setSession, setTime } from "../utils/session.js";
+import { getSettings, getSetting, setSetting } from "../utils/settings.js";
 
 export default function set(args) {
   const usage = "Usage: :set [key] [value]\n" +

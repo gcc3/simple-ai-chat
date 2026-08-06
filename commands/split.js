@@ -1,6 +1,6 @@
-import { updateUserSetting } from '../utils/userUtils.js';
-import emitter from '../utils/eventsUtils.js';
-import { getSetting, setSetting } from "../utils/settingsUtils.js";
+import { updateUserSetting } from '../utils/user.js';
+import emitter from '../utils/events.js';
+import { getSetting, setSetting } from "../utils/settings.js";
 
 export default async function fullscreen(args) {
   const usage = "Usage: :split";

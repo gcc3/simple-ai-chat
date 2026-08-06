@@ -1,5 +1,5 @@
-import { updateNodeSettings } from 'utils/sqliteUtils.js';
-import { authenticate } from 'utils/authUtils.js';
+import { updateNodeSettings } from 'utils/sqlite.js';
+import { authenticate } from 'utils/auth.js';
 import { findNode, getInitNodeSettings } from 'ai/extensions/node.js';
 
 export default async function (req, res) {
