@@ -9,7 +9,7 @@ import { countToken } from "utils/tokenUtils";
 import { getSystemConfigurations } from "utils/server/systemUtils";
 import { ensureSession } from "utils/server/logUtils";
 import { getUser, addUserUsage } from "utils/sqliteUtils";
-import { executeFunctions, getTools } from "function.js";
+import { executeFunctions, getTools } from "ai/function.js";
 import { getModels } from "utils/sqliteUtils.js";
 import { TYPE } from '../../constants.js';
 import { getSessionLog } from "utils/branchUtils";

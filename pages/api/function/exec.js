@@ -1,4 +1,4 @@
-import { executeFunctions } from "function.js";
+import { executeFunctions } from "ai/function.js";
 
 export default async function (req, res) {
   if (req.method !== "POST") {

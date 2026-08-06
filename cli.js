@@ -18,11 +18,11 @@ import { dirname, join } from "path";
 import { spawn, execSync } from "child_process";
 import { getSetting, setSetting } from "./utils/settingsUtils.js";
 import { getLocalLogs, resetLocalLogs } from "./utils/offlineUtils.js";
-import { getMcpTools } from "./function.js";
+import { getMcpTools } from "./ai/function.js";
 import { PLACEHOLDER, REASONING, QUERYING, GENERATING, SEARCHING, WAITING } from "./constants.js";
 import { getInput } from "./ai/context/input.js";
 import { logadd } from "./utils/client/logUtils.js";
-import { exec_f } from "./function.client.js";
+import { exec_f } from "./ai/function.client.js";
 import { pingOllamaAPI } from "./ai/ollama.js";
 import { getSystemInfo } from "./utils/client/systemUtils.js"
 import { pingMcpServer } from "./ai/mcp.js";

@@ -1,6 +1,6 @@
 import { initializeMemory } from "../utils/sessionUtils.js";
 import { addStoreToSessionStorage, countStoresInSessionStorage, isStoreActive } from "../utils/storageUtils.js";
-import { getFunctions, getMcpFunctions } from "../function.js";
+import { getFunctions, getMcpFunctions } from "../ai/function.js";
 import { updateUserSetting } from "../utils/userUtils.js";
 import { listOllamaModels } from "../ai/ollama.js";
 import { getSetting, setSetting } from "../utils/settingsUtils.js";

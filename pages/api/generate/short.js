@@ -2,7 +2,7 @@ import OpenAI from "openai";
 import chalk from 'chalk';
 import { generateMessages } from "ai/context/prompt";
 import { logadd } from "utils/server/logUtils";
-import { executeFunctions, getTools } from "function.js";
+import { executeFunctions, getTools } from "ai/function.js";
 import { countToken } from "utils/tokenUtils";
 import { verifySessionId } from "utils/sessionUtils";
 import { authenticate } from "utils/authUtils";
