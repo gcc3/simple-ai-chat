@@ -90,14 +90,17 @@ export default async function (req, res) {
   const browser = req.headers['user-agent'];
 
   // Time
+  // The log time is the log's own ID, and a session can be branched from it,
+  // so a missing or broken `time` must fallback to now instead of becoming 0.
   let time = Number(time_);
+  if (!Number.isFinite(time) || time <= 0) {
+    time = Date.now();
+  }
 
   // Authentication
   const authResult = authenticate(req);
   let user = null;
-  let authUser = null;
   if (authResult.success) {
-    authUser = authResult.user;
     user = await getUser(authResult.user.username);
   }
 
