@@ -44,16 +44,16 @@ Quick Start
     export OLLAMA_ORIGINS="*"
     ollama serve
     ```
-    Note: function calling works in both stream and non-stream mode.  
-    The model itself must support tools (e.g. `llama3.1`, `qwen3`, `gpt-oss`), use `:model` to check `is_tool_calls_supported`.  
 
 
 Documentation
 -------------
 
-The documentation is available at [`simple-ai.io`](https://simple-ai.io). 
+The documentation of user manual is available at [`simple-ai.io`](https://simple-ai.io). 
 In the webpage, there is a little dot on the bottom right corner, click it to open the back page. 
 Alternatively, you can use the command `:store use "Simple AI Documentation"` to enable the data to AI, and ask it.  
+
+Full documentation is available at [`simple-ai.io/docs`](https://simple-ai.io/docs).
 
 
 Dependencies
