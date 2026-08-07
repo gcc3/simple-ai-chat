@@ -1,20 +1,14 @@
 import jwt from 'jsonwebtoken';
 
 export const authenticate = (req) => {
-  const token = req.cookies && req.cookies.auth;
+  // Token can be provided by cookie, request body or query string
+  const token = (req.cookies && req.cookies.auth)
+             || (req.body && req.body.auth)
+             || (req.query && req.query.auth);
 
   // Token not provided
   if (!token) {
-    // Try username and password auth
-    if ((req.method === "POST" && req.body.username === "root" && req.body.password === process.env.ROOT_PASS) ||
-        (req.method === "GET" && req.query.username === "root" && req.query.password === process.env.ROOT_PASS)) {
-      return {
-        success: true, 
-        user: { username: "root" }
-      };
-    }
-
-    return { 
+    return {
       success: false,
       error: 'Please login.'
     };
