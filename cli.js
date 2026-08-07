@@ -27,6 +27,7 @@ import { pingOllamaAPI } from "./ai/ollama.js";
 import { getSystemInfo } from "./utils/client/system.js"
 import { pingMcpServer, listMcpFunctions, exec_mcp } from "./ai/mcp.js";
 import { refreshLocalUser } from "./utils/user.js";
+import { decodeStdinLine } from "./utils/stdin.js";
 
 // Disable process warnings (node)
 process.removeAllListeners('warning');
@@ -925,7 +926,10 @@ program
       const model_ = getSetting("model");
 
       // Start
-      let user_raw_input = (await ask("\n" + model_ + "> ")).trim();
+      // Decoded rather than just trimmed: a bridge-driven CLI receives a multi-line message
+      // encoded onto this one line, because readline would otherwise read it as several. A
+      // line a person typed carries no marker and comes back exactly as it went in, trimmed.
+      let user_raw_input = decodeStdinLine(await ask("\n" + model_ + "> "));
       if (!user_raw_input) continue;
 
       // Input
