@@ -40,11 +40,11 @@ export default async function (req, res) {
     res.write(`data: ###STATUS###${status}\n\n`); res.flush();
   }
 
-  // Input
+  // Prompt, tells how the content will be edited
   // Stripped of its `@ip[...]` tag before anything else looks at it, so the tag reaches
   // neither the model nor the log; `taggedIp` is the user the bridge sent it for.
   const tagged = extractIpTag(params.prompt);
-  let input_ = tagged.text;  // the prompt, tells how the content will be edited
+  const prompt_ = tagged.text;
   const taggedIp = tagged.ip;
   let inputType = TYPE.Normal;
 
@@ -53,7 +53,7 @@ export default async function (req, res) {
   const instruct_ = String(params.instruct ?? "");
 
   // If prompt is all empty, return
-  if (input_ === "") {
+  if (prompt_ === "") {
     updateStatus("Prompt empty.");
     console.error("\nPrompt cannot be empty.");
     res.write(`data: ###ERR###Prompt cannot be empty.\n\n`); res.flush();
@@ -71,6 +71,11 @@ export default async function (req, res) {
     res.end();
     return;
   }
+
+  // Input
+  // The content and the prompt are one message to the model, so they are one input:
+  // this is what the access control counts and what the log stores.
+  let input_ = `Content:\n${content_}\n\nInstruction:\n${prompt_}`;
 
   // Output
   let output = "";
@@ -187,8 +192,7 @@ export default async function (req, res) {
 
   console.log(chalk.yellowBright("\nInput (edit, session = " + session + (user ? ", user = " + user.username : "") + "):"));
   if (instruct_) console.log("Instruct: " + instruct_);
-  console.log("Prompt: " + input_);
-  console.log("Content:\n" + content_);
+  console.log(input_);
 
   try {
     // endpoint: /v1/chat/completions
@@ -225,7 +229,7 @@ export default async function (req, res) {
           "content": [
             {
               "type": "text",
-              "text": `Content:\n${content_}\n\nInstruction:\n${input_}`
+              "text": input_
             }
           ]
         }
