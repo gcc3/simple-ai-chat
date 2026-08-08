@@ -1,7 +1,7 @@
 .main {
-  font-size: 16px;
+  font-size: 14px;
   font-family: "Fira Mono", "Fira Code VF", "ColfaxAI", "PingFang SC", "Microsoft Yahei", "Helvetica Neue", "Helvetica", "Arial", sans-serif;
-  line-height: 24px;
+  line-height: 22px;
   color: #353740;
   overflow-x: hidden;  /* prevent horizontal scroll */
 
@@ -27,7 +27,7 @@
   width: 50%;
   height: 100vh;
   background-color: transparent;  /* input area background color */
-  padding: 14px 14px;
+  padding: 12px 12px;
   z-index: 10;  /* ensure it's always on top */
   box-sizing: border-box;
   display: flex;  /* use flexbox to align the input and button */
@@ -36,14 +36,14 @@
 .main .input {
   overflow-y: auto;
   width: 100%;
-  padding: 10px 14px;
-  padding-bottom: 40px;
-  font-size: 16px;
+  padding: 8px 12px;
+  padding-bottom: 36px;
+  font-size: 14px;
   outline: 0;
   outline-color: #adadad;
   box-sizing: border-box;
   border: 1px solid var(--border-color);
-  border-radius: 9px;
+  border-radius: 8px;
   box-shadow: 0.21875rem 0.21875rem 0.875rem var(--border-shadow-color);
   background-color: var(--background-color);
   color: var(--text-color);
@@ -57,11 +57,11 @@
   opacity: 1;
 }
 .main .submit {
-  font-size: 14px;
+  font-size: 12px;
   position: absolute;
   right: var(--submit-rtl-right-offset);
   left: var(--submit-rtl-left-offset);
-  bottom: 10px;
+  bottom: 8px;
   transform: translateY(-50%);  /* vertically center the button */
   background-color: var(--submit-button-color) !important;  /* submit has a different button color */
   color: var(--submit-button-text-color) !important;  /* submit has a different button text color */
@@ -69,8 +69,8 @@
   border-radius: 4px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  padding-left: 3px;
-  padding-right: 3px;
+  padding-left: 2px;
+  padding-right: 2px;
 }
 .main .submit:hover {
   background-color: var(--submit-button-hover-color) !important;  /* darken the button color on hover */
@@ -80,10 +80,10 @@
 .main .wrapper {
   width: 50%;
   height: 100vh;
-  padding-top: 15px;
-  padding-bottom: 15px;
-  padding-left: 5px;
-  padding-right: 15px;
+  padding-top: 14px;
+  padding-bottom: 14px;
+  padding-left: 4px;
+  padding-right: 14px;
   overflow-y: auto;
 
   /* Firefox */
@@ -95,24 +95,24 @@
 }
 .main .output {
   font-weight: normal;
-  margin-top: 5px;
-  margin-bottom: 30px;
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-top: 4px;
+  margin-bottom: 26px;
+  margin-left: 8px;
+  margin-right: 8px;
   white-space: pre-wrap;
   overflow-wrap: break-word;
   color: var(--text-color);
 }
 .main .stats,
 .main .info {
-  margin-left: 10px;
-  margin-right: 10px;
+  margin-left: 8px;
+  margin-right: 8px;
   font-weight: normal;
-  font-size: 12px;
+  font-size: 10px;
   user-select: none;
 }
 .main .stats {
-  margin-bottom: 30px;
+  margin-bottom: 26px;
   color: var(--stats-text-color);;
   text-align: left;
 }
@@ -124,7 +124,7 @@
 /* back */
 .main .container {
   width: 100%;
-  padding: 10px 14px;
+  padding: 8px 12px;
   display: flex;
   align-items: flex-start;
   scroll-behavior: smooth;  /* Smooth scrolling */
@@ -137,13 +137,13 @@
   display: none;
 }
 .main .nav {
-  width: 220px;
+  width: 192px;
   margin-right: var(--nav-rtl-right-margin);
   margin-left: var(--nav-rtl-left-margin);
 }
 .main .navitem {
-  margin-bottom: 10px;
-  padding: 10px 14px;
+  margin-bottom: 8px;
+  padding: 8px 12px;
   border-radius: 6px;
   color: var(--text-color);
   background: var(--nav-background-color);
@@ -159,7 +159,7 @@
   color: var(--text-color);
 }
 .main .contentitem {
-  padding: 10px 14px;
+  padding: 8px 12px;
   border-radius: 6px;
   background: var(--content-background-color);
 }
@@ -170,13 +170,13 @@
 /* dot */
 .main .dot {
   display: block;
-  font-size: 20px;
+  font-size: 18px;
   text-align: center;
   position: fixed;
   top: 2px;
   right: var(--dot-rtl-right-offset);
   left: var(--dot-rtl-left-offset);
-  width: 15px;
+  width: 14px;
   color: var(--dot-color);
 }
 .main .dot:hover {
@@ -190,7 +190,7 @@
     visibility: hidden;
   }
   .main .input {
-    padding-right: 10px;
+    padding-right: 8px;
   }
 
   /* nav vertical */
@@ -204,12 +204,11 @@
 }
 @media screen and (min-width: 650px) and (max-width: 800px) {
   .main .copyrights {
-    padding-bottom: 16px;
+    padding-bottom: 14px;
   }
 }
 @media screen and (min-width: 801px) {
   .main .copyrights {
-    padding-bottom: 16px;
+    padding-bottom: 14px;
   }
 }
-

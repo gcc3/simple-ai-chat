@@ -65,7 +65,7 @@ body {
 
 /* Inline code */
 .inline-code {
-  font-size: 14px !important;
+  font-size: 12px !important;
   color: var(--inline-code-text-color);
   background: var(--inline-code-background-color);
   word-wrap: break-word;
@@ -90,13 +90,13 @@ pre {
   background: var(--code-block-background-color) !important;
   border-radius: .5rem;
   overflow-x: auto;
-  padding: .6rem;  /* actual padding */
+  padding: .5rem;  /* actual padding */
 
   /* rtl lang: avoid code direction rtl */
   direction: ltr;
 }
 .code-block {
-  font-size: 14px !important;
+  font-size: 12px !important;
   color: var(--code-block-text-color) !important;
   background: transparent !important;
   padding: .0rem !important;  /* override the highlight.js padding */
@@ -128,7 +128,7 @@ u {
   text-decoration: underline !important;
   padding: .2rem .0rem .2rem;
   border-radius: .3rem;
-  font-size: 15px !important;
+  font-size: 14px !important;
 }
 u:hover {
   background: var(--underline-text-hover-background-color);
@@ -151,9 +151,9 @@ table {
   border-spacing: 0;
 }
 th, td {
-  padding: 3px;
-  padding-left: 5px;
-  padding-right: 5px;
+  padding: 2px;
+  padding-left: 4px;
+  padding-right: 4px;
   border-right: 1.5px solid var(--table-border-color);
   border-bottom: 1.5px solid var(--table-border-color);
 }
@@ -175,7 +175,7 @@ td:empty::after {
 
 .progressbar {
   width: 100%;
-  height: 20px;
+  height: 18px;
   background-color: var(--progressbar-background-color);
   border-radius: 1px;
 }
@@ -186,7 +186,7 @@ td:empty::after {
 }
 
 button {
-  padding: 3px 5px 3px 5px !important;
+  padding: 2px 4px 2px 4px !important;
   border: 1.5px solid var(--button-border-color);
   border-radius: 6px;
   cursor: pointer;
@@ -201,7 +201,7 @@ button.selected {
 input {
   background-color: transparent !important;
   border: 1.5px solid var(--input-border-color) !important;
-  border-radius: 9px;
+  border-radius: 8px;
 }
 input:focus {
   outline: none;

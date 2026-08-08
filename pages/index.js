@@ -2470,8 +2470,36 @@ export default function Home() {
     reAdjustOrUpdatePlaceholder();
   }, [display]);
 
-  // The sleep 1 will magically fix the auto -> height issue
-  // But when input change, the height will be jumping, so add doSleepToFixAuto param to control
+  // Must be kept in sync with `.input { height }` in the index / index.fullscreen CSS modules.
+  // It is the height of the empty (placeholder only) input, and also the floor for a filled one,
+  // otherwise the box visibly shrinks the moment the first character is typed.
+  const INPUT_MIN_HEIGHT = 40;
+
+  // Measure the height the textarea needs for its current content.
+  //
+  // `height: auto` collapses the textarea to its `rows` attribute (1 row), which is what makes
+  // `scrollHeight` report the real content height instead of the current box height.
+  //
+  // `scrollHeight` covers content + padding but never the border, and the textarea is
+  // `box-sizing: border-box`, so the border has to be added back by hand — leaving it out is what
+  // made the box come back short (the old "+1px" workaround was guessing at this and only
+  // covered one of the two borders).
+  //
+  // The sleep 1 magically fixes the auto -> height issue, it lets React commit the swapped
+  // fullscreen styles so the padding/border read below belongs to the new mode.
+  // But when input changes, the height will be jumping, so it is opt-in via doSleepToFixAuto.
+  const measureInputHeight = async (elInput, doSleepToFixAuto) => {
+    elInput.style.height = "auto";
+
+    if (doSleepToFixAuto) {
+      await sleep(1);
+    }
+
+    const style = window.getComputedStyle(elInput);
+    const borderHeight = parseFloat(style.borderTopWidth) + parseFloat(style.borderBottomWidth);
+    return Math.max(INPUT_MIN_HEIGHT, Math.ceil(elInput.scrollHeight + borderHeight));
+  }
+
   const reAdjustInputHeight = async (doSleepToFixAuto = false, triggerBy) => {
     if (triggerBy) {
       console.log("Re-adjust input height. (trigger by: " + triggerBy + ")");
@@ -2493,40 +2521,22 @@ export default function Home() {
     // Non-fullscreen
     if (fullscreenMode === "off") {
       if (!globalThis.rawInput) {
-        elInput.style.height = `45px`;
+        elInput.style.height = `${INPUT_MIN_HEIGHT}px`;
       } else {
-        elInput.style.height = "auto";
-        
-        if (doSleepToFixAuto) {
-          // This sleep magically fixed the hight issue
-          await sleep(1)
-        }
-
-        // Don't know why but scroll height not 45px, will be 44px
-        elInput.style.height = `${elInput.scrollHeight + 1}px`;
+        elInput.style.height = `${await measureInputHeight(elInput, doSleepToFixAuto)}px`;
       }
     }
 
     // Fullscreen
     if (fullscreenMode === "default") {
       if (!globalThis.rawInput) {
-        elInput.style.height = `45px`;
+        elInput.style.height = `${INPUT_MIN_HEIGHT}px`;
       } else {
-        elInput.style.height = "auto";
-        
-        if (doSleepToFixAuto) {
-          // This sleep magically fixed the height issue
-          await sleep(1)
-        }
-        
-        // Don't know why but scroll height not 45px, will be 44px
-        elInput.style.height = `${elInput.scrollHeight + 1}px`;
+        const height = await measureInputHeight(elInput, doSleepToFixAuto);
 
-        // If input height is larger than the window height
-        // then set it to window height
-        if (elInput.scrollHeight > window.innerHeight / 2) {
-          elInput.style.height = `${window.innerHeight / 2}px`;
-        }
+        // If input height is larger than half the window height
+        // then cap it to half the window height
+        elInput.style.height = `${Math.min(height, Math.round(window.innerHeight / 2))}px`;
       }
 
       // Store input height in fullscreen mode
