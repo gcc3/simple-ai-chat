@@ -255,14 +255,6 @@ export default async function (req, res) {
                                        updateStatus, streamOutput);
     updateStatus("Pre-generating finished.");
 
-    // Answer length budget
-    // A short answer is a normal conversational turn, not an essay: around three times the
-    // user's own message at most. Measured in tokens so it holds for CJK input too, then
-    // handed to the model as words, which is the unit it can actually count.
-    const questionTokenCt = countToken(model_, input_);
-    const maxWords = Math.min(300, Math.max(12, Math.round(questionTokenCt * 3 * 0.75)));
-    const maxAnswerTokens = maxWords * 2 + 40;  // backstop, generous enough not to cut mid-sentence
-
     // Append the short-answer system prompt
     // It goes last, after the master and role prompts, so recency puts it on top of them
     // instead of underneath.
@@ -271,7 +263,7 @@ export default async function (req, res) {
       {
         role: "system",
         content: "Reply in plain text only. No markdown, no code blocks, no bullet lists, no headings.\n"
-               + "Keep the reply to a normal conversational length: at most " + maxWords + " words, and never more than about three times the length of the user's message.\n"
+               + "Keep the reply to a normal conversational length.\n"
                + "Answer directly. No preamble, no restating the question, no summary at the end, no offers of further help.\n"
                + "If one sentence answers it, reply with one sentence. Only add detail when the answer is wrong or useless without it."
       },
@@ -313,9 +305,6 @@ export default async function (req, res) {
       temperature: sysconf.temperature,
 
       // conditional params
-      // Hard cap on the answer length. Skipped for reasoning models, where the cap would be
-      // spent on reasoning tokens and leave nothing for the answer itself.
-      ...(is_reasoning_model ? {} : { max_tokens: maxAnswerTokens }),
       ...(is_tool_calls_supported_model && tools && tools.length > 0 ? { tools: tools, tool_choice: "auto" } : {}),
       ...(is_reasoning_model && is_tool_calls_supported_model && tools && tools.length > 0 ? { reasoning_effort: "none" } : {}),
       ...(user ? { user: user.username } : {})
