@@ -164,12 +164,12 @@
 }
 @media screen and (min-width: 801px) {
   .main .inputform {
-    padding-top: 50px;
+    padding-top: 40px;
   }
   .main .wrapper {
-    padding-bottom: 46px;
+    padding-bottom: 40px;
   }
   .main .container {
-    padding: 50px 8px;
+    padding: 40px 8px;
   }
 }
