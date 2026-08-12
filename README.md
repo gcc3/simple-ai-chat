@@ -24,26 +24,22 @@ Quick Start
 -----------
 
 1. Web interface  
-    [`https://simple-ai.io`](https://simple-ai.io)  
+  [`https://simple-ai.io`](https://simple-ai.io)  
 
 2. CLI  
-    Install: `npm i simple-ai-chat -g`  
-    Start: `simple-ai-chat` or `sc`  
-    Start CLI will also start the MCP client.  
-    npm package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)  
+  Install: `npm i simple-ai-chat -g`  
+  Start: `simple-ai-chat` or `sc`  
+  Start CLI will also start the MCP client.  
+  npm package: [`simple-ai-chat`](https://www.npmjs.com/package/simple-ai-chat)  
 
-3. MCP client  
-    Install: `npm i simple-ai-chat -g`  
-    Use `smcp` to start the client service.  
-    The `mcpconfig.json` file is located in the `~/.simple` folder.  
+3. Web CLI  
+  [`https://cli.simple-ai.io`](https://cli.simple-ai.io)  
+  The CLI interface in the browser, no installation needed.  
 
-4. Ollama  
-    Set the environment variable `OLLAMA_ORIGINS` to `*` or your domain to allow CORS.  
-    Start the Ollama server with `ollama serve`.
-    ```
-    export OLLAMA_ORIGINS="*"
-    ollama serve
-    ```
+4. MCP client  
+  Install: `npm i simple-ai-chat -g`  
+  Use `smcp` to start the client service.  
+  The `mcpconfig.json` file is located in the `~/.simple` folder.  
 
 
 Documentation
@@ -54,21 +50,6 @@ In the webpage, there is a little dot on the bottom right corner, click it to op
 Alternatively, you can use the command `:store use "Simple AI Documentation"` to enable the data to AI, and ask it.  
 
 Full documentation is available at [`simple-ai.io/docs`](https://simple-ai.io/docs).
-
-
-Dependencies
-------------
-
-OpenAI https://platform.openai.com/docs/api-reference  
-React https://reactjs.org/  
-Next.js https://nextjs.org/  
-tailwind https://tailwindcss.com/docs/  
-Anthropic https://www.anthropic.com/  
-Google AI https://ai.google.dev/gemini-api/docs  
-xAI https://x.ai/  
-Ollama https://ollama.com/  
-WolframAlpha APIs https://products.wolframalpha.com/api  
-Brave Search API https://brave.com/search/api/
 
 
 CLI Interface
@@ -145,7 +126,6 @@ Local Installation
 
 2. Create `.env` and setup it.  
   Create `.env` from `.env.example`  
-  For setup refer to the `.env` section below.
 
 3. Run `setup.sh` to initialize.  
   `bash setup.sh`  
@@ -153,118 +133,6 @@ Local Installation
 4. Build and run the app.  
   `npm run build`  
   Then use `npm run dev` or `npm start`  
-
-
-`.env` Setup
-------------
-
-Copy `.env.example` to `.env` and fill in the values.  
-
-PORT  
-The port for the server, default is `3000`.  
-
-PM2_NAME  
-The process name for PM2, default is `simple-ai.io`.  
-
-NODE_ENV  
-For development environment use `development`.  
-For production environment use `production`.  
-
-NEXT_PUBLIC_BASE_URL  
-Fill in the base URL, for example: `http://localhost:3000`  
-
-ROOT_PASS  
-System root password, will be set when database initialized.  
-
-OPENAI_BASE_URL and OPENAI_API_KEY  
-Key can get from https://platform.openai.com/account/api-keys  
-Base URL is the API endpoint, `https://api.openai.com/v1`, etc...
-
-MODEL  
-Large language model, `gpt-4o`, etc...  
-
-TEMPERATURE  
-What sampling temperature to use, between 0 and 2. Higher values like 0.8 will make the output more random  
-lower values like 0.2 will make it more focused and deterministic.  
-
-ROLE_CONTENT_SYSTEM  
-Set the system prompt.  
-
-WELCOME_MESSAGE  
-Control the custom welcome message.  
-
-WOLFRAM_ALPHA_APPID  
-For API calls for wolfram alpha API.  
-Get from https://products.wolframalpha.com/api
-
-BRAVE_SEARCH_API_KEY  
-For the `web_search` function, uses the Brave Search API LLM Context endpoint.  
-The search language follows the language set with `:lang use [language code]`.  
-Get from https://api-dashboard.search.brave.com/app/keys
-
-USE_NODE_AI  
-[Simple AI Node](https://github.com/gcc3/simple-ai-node) is available to help the chat answer with data.
-To use multiple nodes, consider using [Simple AI Hub](https://github.com/gcc3/simple-ai-hub).  
-
-DB  
-Database engline, example `DB=sqlite`.  
-Supported engine: `sqlite`.  
-
-JWT_SECRET  
-Secret for user authentication.  
-Generate with `openssl rand -hex 16`.  
-
-AWS_REGION, AWS_ACCESS_KEY_ID, AWS_SECRET_ACCESS_KEY, AWS_S3_BUCKET_NAME  
-Config to use AWS service, eg, S3 Bucket, SES.  
-
-USE_ACCESS_CONTROL  
-When it enabled, will count user usage and limit access for normal `user`.
-The value should be `true` or `false`.
-
-USE_PAYMENT  
-Enable payment.  
-The value should be `true` or `false`.  
-
-PAYPAL_CLIENT_ID and PAYPAL_CLIENT_SECRET  
-When using paypal as a payment method.
-
-SAME_SITE_COOKIE  
-In production set to `SameSite=Lax; Secure`
-
-USE_EMAIL  
-Use email to reset password or notifications.  
-The value should be `true` or `false`.  
-
-NEXT_PUBLIC_ROLE_USAGE_LIMIT and NEXT_PUBLIC_ROLE_AMOUNT  
-Usage limit is for setting limit for different roles.  
-Format: `role:daily_limit,weekly_limit,monthly_limit`.  
-Role amount is for setting price.  
-Format `role:amount`.  
-Roles are separated by `;`.  
-
-HUNTER_API_KEY  
-Use hunter API to verify email.  
-
-GOOGLE_API_KEY  
-Use for detect accurate address.   
-
-MINIMALIST  
-For minimalist, a more simple UI.  
-The value should be `true` or `false`.  
-
-IPINFO_TOKEN  
-IP info (`ipinfo.io`) is used for getting country from IP.   
-Use IP info is for enable or disable the IP support, the value should be `true` or `false`.  
-`ipinfo.io` token will be used.  
-
-USE_USER_ACCOUNTS  
-Enable user accounts, the value should be `true` or `false`.  
-
-DEFAULT_FUNCTIONS, DEFAULT_ROLE, DEFAULT_STORES, DEFAULT_NODE  
-Default functions, role, stores and node.  
-Example: 
-DEFAULT_FUNCTIONS=get_time,get_weather,web_search,redirect_to_url  
-DEFAULT_STORES=store1,store2  
 
 
 License
