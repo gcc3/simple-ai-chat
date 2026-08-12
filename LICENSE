@@ -1,5 +1,5 @@
 Simple AI License
-Version 1.0, Dec 8, 2023
+Version 1.1, Aug 12, 2026
 
 Copyright (C) 2023 simple-ai.io
 All rights reserved.
@@ -21,6 +21,14 @@ from this software without specific prior written permission.
 4. Users are not permitted to use this software or any part of it for commercial
 purposes. "Commercial purposes" refers to any activity that involves the exchange
 of money or other forms of compensation.
+
+5. Users are not permitted to use this software or any part of it to provide or
+promote any product that competes with this software, whether or not that product
+is provided in exchange for money or other forms of compensation. A product
+competes if it is offered to others as a substitute for the functionality or
+value of this software, however it is designed, named, packaged, or delivered —
+including as an application, a service, a library, or a plug-in, written in any
+programming language and running on any platform.
 
 THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS" AND
 ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED

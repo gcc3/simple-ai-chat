@@ -17,7 +17,7 @@ Features like function calling and the Model Control Protocol (MCP) are also sup
 
 The application is deployed at [simple-ai.io](https://simple-ai.io).  
 
-You can fork this code and deploy it on your own machine for non-commercial use. (For details, please refer to the [LICENSE](https://github.com/gcc3/simple-ai-chat/blob/master/LICENSE) file.) For bugs or suggestions, please report them to the repository's [GitHub Issues page](https://github.com/gcc3/simple-ai-chat/issues).  
+For bugs or suggestions, please report them to the repository's [GitHub Issues page](https://github.com/gcc3/simple-ai-chat/issues).  
 
 
 Quick Start
@@ -265,5 +265,17 @@ Default functions, role, stores and node.
 Example: 
 DEFAULT_FUNCTIONS=get_time,get_weather,web_search,redirect_to_url  
 DEFAULT_STORES=store1,store2  
+
+
+License
+-------
+
+[Simple AI License](LICENSE) © 2023 simple-ai.io
+
+You can fork this code and deploy it on your own machine for non-commercial use.  
+Commercial use of the software, or any part of it, is not permitted, and neither is  
+offering a product that competes with it, free of charge or not.  
+
+Portions of this project are based on code from OpenAI and are provided under the MIT License.  
 
 _Originally Forked from https://github.com/openai_  
