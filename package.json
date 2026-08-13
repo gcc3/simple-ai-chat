@@ -31,6 +31,7 @@
     "autoprefixer": "^10.4.16",
     "axios": "^1.7.9",
     "chalk": "^5.2.0",
+    "commander": "^15.0.0",
     "cors": "^2.8.5",
     "csv": "^6.3.0",
     "csv-writer": "^1.6.0",
