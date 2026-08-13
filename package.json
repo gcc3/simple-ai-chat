@@ -13,6 +13,7 @@
   "author": "Heyang Liu",
   "license": "Simple AI License",
   "type": "module",
+  "packageManager": "pnpm@11.21.0",
   "scripts": {
     "build": "next build",
     "dev": "next dev",
@@ -79,12 +80,5 @@
     "sc": "./cli.js",
     "simple-ai-chat": "./cli.js",
     "smcp": "./mcp.js"
-  },
-  "pnpm": {
-    "onlyBuiltDependencies": [
-      "sharp",
-      "sqlite3",
-      "unrs-resolver"
-    ]
   }
 }
