@@ -24,8 +24,9 @@ done
 echo "Pulling latest code..."
 git pull
 
-echo "Installing npm dependencies..."
-npm install
+echo "Installing dependencies with pnpm..."
+corepack enable
+pnpm install --frozen-lockfile
 
 echo "Cloning docs repository..."
 if [ ! -d "docs" ]; then

@@ -121,8 +121,11 @@ Local Installation
 0. Prerequisites  
    OpenAI API key (get from https://platform.openai.com/account/api-keys)  
 
-1. Install the requirements.  
-  `npm install`  
+1. Install the requirements.
+
+   `corepack enable`
+
+   `pnpm install --frozen-lockfile`
 
 2. Create `.env` and setup it.  
   Create `.env` from `.env.example`  
@@ -130,9 +133,11 @@ Local Installation
 3. Run `setup.sh` to initialize.  
   `bash setup.sh`  
 
-4. Build and run the app.  
-  `npm run build`  
-  Then use `npm run dev` or `npm start`  
+4. Build and run the app.
+
+   `pnpm build`
+
+   Then use `pnpm dev` or `pnpm start`
 
 
 License
