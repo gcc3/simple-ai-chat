@@ -207,6 +207,18 @@ input:focus {
   outline: none;
 }
 
+/* iOS Safari zooms the page in when a focused text field renders below 16px.
+   `maximum-scale=1` in the viewport meta is not honored on every iOS version, so touch devices
+   also get 16px on the text-entry fields, which is what actually suppresses the zoom.
+   Buttons (submit / reset / checkbox / radio) never trigger it, so they keep their own size. */
+@media (hover: none) and (pointer: coarse) {
+  textarea,
+  select,
+  input:not([type="submit"]):not([type="button"]):not([type="reset"]):not([type="checkbox"]):not([type="radio"]) {
+    font-size: 16px !important;
+  }
+}
+
 @keyframes fadeIn {
   from {
     opacity: 0;
