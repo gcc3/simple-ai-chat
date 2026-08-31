@@ -17,6 +17,7 @@
 .main .front,
 .main .back {
   height: 100vh;
+  height: 100dvh;  /* fix iOS standalone PWA: 100vh is taller than the visible viewport */
 }
 .main .front {
   flex-direction: row;
@@ -26,6 +27,7 @@
 .main .inputform {
   width: 50%;
   height: 100vh;
+  height: 100dvh;  /* fix iOS standalone PWA: 100vh is taller than the visible viewport */
   background-color: transparent;  /* input area background color */
   padding: 12px 12px;
   z-index: 10;  /* ensure it's always on top */
@@ -80,6 +82,7 @@
 .main .wrapper {
   width: 50%;
   height: 100vh;
+  height: 100dvh;  /* fix iOS standalone PWA: 100vh is taller than the visible viewport */
   padding-top: 14px;
   padding-bottom: 14px;
   padding-left: 4px;

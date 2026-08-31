@@ -8,6 +8,7 @@
   align-items: center;
   overflow-x: hidden;
   height: 100vh;
+  height: 100dvh;  /* fix iOS standalone PWA: 100vh is taller than the visible viewport */
   overscroll-behavior: none;
 
   /* Firefox */
