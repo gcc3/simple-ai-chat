@@ -21,9 +21,12 @@ function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <meta 
-          name="viewport" 
-          content="width=device-width, initial-scale=1.0, viewport-fit=cover"
+        {/* `maximum-scale=1` is what stops iOS Safari from zooming the whole page in when a form
+            field smaller than 16px gets focus; `user-scalable=no` matches the pinch-to-zoom
+            prevention done in the touchmove handler above. */}
+        <meta
+          name="viewport"
+          content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover"
         />
       </Head>
       
