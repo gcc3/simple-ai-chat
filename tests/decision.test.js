@@ -6,9 +6,9 @@ import { SourceTextModule, SyntheticModule } from "node:vm";
 import { decisionPrompt, decisionRefinementPrompt, normalizeDecisionInput, parseDecision } from "../utils/decision.js";
 
 const decision = {
-  analysis: "先根据预算和生活习惯比较居住成本。",
   options: ["上海", "东京"],
   dimensions: [{ name: "房价", analysis: "住房负担取决于目标区域、面积以及当地收入。", conclusion: "应按目标区域、面积和收入比较住房负担。" }],
+  overall_analysis: "先根据预算和生活习惯比较居住成本。",
   overall_conclusion: "根据工作地点、预算和语言能力选择。",
 };
 const source = await readFile(new URL("../pages/api/generate/decision.js", import.meta.url), "utf8");
@@ -72,6 +72,7 @@ test("returns a decision object from only a question and records usage", async (
   const response = await app.request();
   assert.equal(response.statusCode, 200);
   assert.deepEqual(JSON.parse(JSON.stringify(response.body)), decision);
+  assert.deepEqual(Object.keys(response.body), ["options", "dimensions", "overall_analysis", "overall_conclusion"]);
   assert.equal(app.calls.completions[0].messages[1].content, "比较上海和东京居住哪里好");
   assert.equal(app.calls.completions[0].messages[0].content, decisionPrompt);
   assert.equal(app.calls.completions[0].response_format.type, "json_object");
@@ -125,7 +126,8 @@ test("returns JSON errors on provider failure", async () => {
 
 test("requires populated text, distinct options, dimensions and final conclusion", () => {
   for (const override of [
-    { analysis: " " }, { options: [] }, { options: ["上海", " 上海 "] },
+    { overall_analysis: " " }, { overall_analysis: undefined }, { overall_analysis: 1 },
+    { options: [] }, { options: ["上海", " 上海 "] },
     { options: ["上海", 1] }, { dimensions: [] }, { dimensions: [null] },
     { dimensions: [{ ...decision.dimensions[0], conclusion: "" }] }, { overall_conclusion: null },
   ]) {
@@ -173,7 +175,7 @@ test("accepts incomplete drafts and keeps request settings out of the draft", as
 test("rejects malformed drafts before generation", async () => {
   const app = await setup();
   for (const draft of [
-    {}, [], { unrelated: "data" }, { analysis: " " }, { analysis: 1 },
+    {}, [], { unrelated: "data" }, { overall_analysis: " " }, { overall_analysis: 1 },
     { options: "上海" }, { options: [1] }, { options: [] },
     { dimensions: {} }, { dimensions: [null] }, { dimensions: [{ name: 1 }] },
     { dimensions: [{ name: "房价", analysis: [] }] },
