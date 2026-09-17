@@ -17,7 +17,7 @@ export default async function handler(req, res) {
   const params = req.body || {};
   let input, isDraft;
   try {
-    ({ input, isDraft } = normalizeDecisionInput(params.question ?? params.user_input ?? params));
+    ({ input, isDraft } = normalizeDecisionInput(params.question ?? params.user_input ?? params, params.background));
   } catch (error) {
     return res.status(400).json({ success: false, error: error.message });
   }

@@ -19,6 +19,8 @@ const decision = {
   overall_analysis: "先根据预算和生活习惯比较居住成本。",
   overall_conclusion: "根据工作地点、预算和语言能力选择。",
 };
+const question = "比较上海和东京居住哪里好";
+const background = "在外企做软件开发，预算有限，会说一点日语。";
 const source = await readFile(new URL("../pages/api/generate/decision.js", import.meta.url), "utf8");
 
 async function setup({ output = JSON.stringify(decision), finishReason = "stop", denied = false, authenticated = false, upstreamError = false } = {}) {
@@ -62,7 +64,7 @@ async function setup({ output = JSON.stringify(decision), finishReason = "stop",
 
   return {
     calls,
-    async request(body = { question: "比较上海和东京居住哪里好" }, method = "POST") {
+    async request(body = { question, background: ` ${background} ` }, method = "POST") {
       const response = {
         headers: {},
         setHeader(name, value) { this.headers[name] = value; },
@@ -75,7 +77,7 @@ async function setup({ output = JSON.stringify(decision), finishReason = "stop",
   };
 }
 
-test("returns a decision object from only a question and records usage", async () => {
+test("returns a decision object from a question and background and records usage", async () => {
   const app = await setup({ authenticated: true });
   const response = await app.request();
   assert.equal(response.statusCode, 200);
@@ -83,7 +85,7 @@ test("returns a decision object from only a question and records usage", async (
   assert.deepEqual(Object.keys(response.body), ["options", "dimensions", "overall_analysis", "overall_conclusion"]);
   assert.deepEqual(Object.keys(response.body.dimensions[0]), ["name", "options", "analysis", "conclusion"]);
   assert.deepEqual(Object.keys(response.body.dimensions[0].options[0]), ["name", "pros_cons"]);
-  assert.equal(app.calls.completions[0].messages[1].content, "比较上海和东京居住哪里好");
+  assert.equal(app.calls.completions[0].messages[1].content, JSON.stringify({ question, background }));
   assert.equal(app.calls.completions[0].messages[0].content, decisionPrompt);
   assert.equal(app.calls.completions[0].response_format.type, "json_object");
   assert.equal(app.calls.sessions.length, 1);
@@ -94,12 +96,13 @@ test("returns a decision object from only a question and records usage", async (
 test("supports the existing user_input parameter", async () => {
   const app = await setup();
   assert.equal((await app.request({ user_input: " 上海还是东京？ " })).statusCode, 200);
-  assert.equal(app.calls.completions[0].messages[1].content, "上海还是东京？");
+  assert.deepEqual(JSON.parse(app.calls.completions[0].messages[1].content), { question: "上海还是东京？", background: "" });
 });
 
 test("rejects invalid input before model calls or database writes", async () => {
   const app = await setup();
-  for (const body of [{}, { question: " " }, { question: 1 }, { question: [] }, { question: "选择城市", session: "bad" }]) {
+  for (const body of [{}, { question: " " }, { question: 1 }, { question: [] }, { question: "选择城市", session: "bad" },
+    { background }, { question, background: 1 }, { question, background: null }, { question, background: [background] }]) {
     assert.equal((await app.request(body)).statusCode, 400);
   }
   const response = await app.request(undefined, "GET");
@@ -185,15 +188,16 @@ test("rejects missing, empty or non-string dimension analysis", async () => {
 test("refines a decision sent directly, as an object, or as serialized JSON", async () => {
   const improved = { ...decision, overall_conclusion: "优化后的最终结论。" };
   for (const body of [decision, { question: decision }, { user_input: decision },
-    { question: JSON.stringify(decision) }, { user_input: JSON.stringify(decision) }]) {
+    { question: JSON.stringify(decision) }, { user_input: JSON.stringify(decision) }]
+    .map((body) => ({ ...body, background }))) {
     const app = await setup({ output: JSON.stringify(improved) });
     const response = await app.request(body);
     assert.equal(response.statusCode, 200);
     assert.deepEqual(JSON.parse(JSON.stringify(response.body)), improved);
     const messages = app.calls.completions[0].messages;
     assert.equal(messages[0].content, decisionRefinementPrompt);
-    assert.deepEqual(JSON.parse(messages[1].content), decision);
-    assert.deepEqual(JSON.parse(app.calls.logs[0][5]), decision);
+    assert.deepEqual(JSON.parse(messages[1].content), { question: decision, background });
+    assert.deepEqual(JSON.parse(app.calls.logs[0][5]), { question: decision, background });
   }
 });
 
@@ -208,7 +212,7 @@ test("accepts incomplete drafts and keeps request settings out of the draft", as
     const app = await setup();
     const response = await app.request({ ...draft, model: "test-model", session: "1789600000000" });
     assert.equal(response.statusCode, 200);
-    assert.deepEqual(JSON.parse(app.calls.completions[0].messages[1].content), expected ?? draft);
+    assert.deepEqual(JSON.parse(app.calls.completions[0].messages[1].content), { question: expected ?? draft, background: "" });
     assert.equal(app.calls.completions[0].messages[0].content, decisionRefinementPrompt);
     assert.equal(app.calls.sessions[0][0], "1789600000000");
     assert.deepEqual(JSON.parse(JSON.stringify(response.body)), decision);
@@ -227,7 +231,7 @@ test("rejects malformed drafts before generation", async () => {
     { dimensions: [{ options: [{ name: " ", pros_cons: "" }] }] },
     { options: ["上海"], overall_conclusion: false }, "{invalid", "[]",
   ]) {
-    assert.equal((await app.request({ question: draft })).statusCode, 400);
+    assert.equal((await app.request({ question: draft, background })).statusCode, 400);
   }
   assert.equal(app.calls.completions.length, 0);
   assert.equal(app.calls.sessions.length, 0);
