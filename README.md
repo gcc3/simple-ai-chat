@@ -51,6 +51,55 @@ Alternatively, you can use the command `:store use "Simple AI Documentation"` to
 
 Full documentation is available at [`simple-ai.io/docs`](https://simple-ai.io/docs).
 
+### Decision generation API
+
+`POST /api/generate/decision` accepts a question or an existing decision JSON draft and returns a complete JSON decision object directly.
+
+```sh
+curl http://localhost:3000/api/generate/decision \
+  -H 'Content-Type: application/json' \
+  -d '{"question":"比较上海和东京居住哪里好"}'
+```
+
+Response structure (illustrative content):
+
+```json
+{
+  "analysis": "先结合预算、工作地点和生活习惯，比较住房、日常消费与通勤成本。",
+  "options": ["上海", "东京"],
+  "dimensions": [
+    { "name": "房价", "analysis": "两地的住房负担都受区域、面积和收入影响，仅比较总价不足以判断。", "conclusion": "应按目标区域、住房面积和当地收入比较实际负担。" },
+    { "name": "物价", "analysis": "日常支出取决于外食频率、采购渠道和消费偏好，需要采用相同消费标准比较。", "conclusion": "应根据饮食和消费习惯比较每月日常开销。" },
+    { "name": "交通费", "analysis": "交通支出取决于实际通勤路线和公司补贴，还需考虑通勤时间。", "conclusion": "应结合通勤距离、交通方式及公司补贴比较支出。" }
+  ],
+  "overall_conclusion": "优先选择工作机会、语言环境与预算更匹配的城市；明确收入和目标区域后再做最终决定。"
+}
+```
+
+To supplement and improve an existing decision, send it directly as the request body:
+
+```sh
+curl http://localhost:3000/api/generate/decision \
+  -H 'Content-Type: application/json' \
+  -d '{"analysis":"比较上海和东京的居住成本","options":["上海","东京"],"dimensions":[{"name":"房价","analysis":"","conclusion":""}],"overall_conclusion":""}'
+```
+
+The AI builds on the draft's topic, options and relevant dimensions, fills gaps, improves
+the analysis and conclusions, and adds useful missing dimensions. It returns the full updated
+object in the same response structure. Draft fields may be omitted or left empty, but at least
+one field must contain meaningful content. Supplied fields must have the types shown above.
+
+`question` accepts either question text or a decision object (also accepted as a JSON string).
+The existing `user_input` field is an alias. A decision object can also be sent directly as
+the request body, as in the example above.
+Optional fields: `model`, `session`, and `time`. The configured model is used by default;
+a timestamp session is created when omitted. The model must support text generation and
+JSON object output. Values follow the question's language, and dimensions are chosen for
+each question. Every dimension includes non-empty `name`, `analysis`, and `conclusion` strings.
+Existing authentication, access control, usage accounting and history logging apply.
+Invalid input returns HTTP 400; invalid or incomplete model output returns HTTP 502.
+Errors have the shape `{ "success": false, "error": "..." }`.
+
 
 CLI Interface
 -------------
