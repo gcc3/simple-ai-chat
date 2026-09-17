@@ -6,11 +6,16 @@ import { SourceTextModule, SyntheticModule } from "node:vm";
 import { decisionPrompt, decisionRefinementPrompt, normalizeDecisionInput, parseDecision } from "../utils/decision.js";
 
 const decision = {
-  options: [
-    { name: "上海", advantages_disadvantages: "优势是中文环境、适应成本低；劣势是核心区域房价较高。" },
-    { name: "东京", advantages_disadvantages: "优势是公共交通发达；劣势是需要日语能力。" },
-  ],
-  dimensions: [{ name: "房价", analysis: "住房负担取决于目标区域、面积以及当地收入。", conclusion: "应按目标区域、面积和收入比较住房负担。" }],
+  options: ["上海", "东京"],
+  dimensions: [{
+    name: "房价",
+    options: [
+      { name: "上海", pros_cons: "优点是郊区房源选择多；缺点是核心区域房价较高。" },
+      { name: "东京", pros_cons: "优点是租赁房源供应充足；缺点是市中心租金较高。" },
+    ],
+    analysis: "住房负担取决于目标区域、面积以及当地收入。",
+    conclusion: "应按目标区域、面积和收入比较住房负担。",
+  }],
   overall_analysis: "先根据预算和生活习惯比较居住成本。",
   overall_conclusion: "根据工作地点、预算和语言能力选择。",
 };
@@ -76,7 +81,8 @@ test("returns a decision object from only a question and records usage", async (
   assert.equal(response.statusCode, 200);
   assert.deepEqual(JSON.parse(JSON.stringify(response.body)), decision);
   assert.deepEqual(Object.keys(response.body), ["options", "dimensions", "overall_analysis", "overall_conclusion"]);
-  assert.deepEqual(Object.keys(response.body.options[0]), ["name", "advantages_disadvantages"]);
+  assert.deepEqual(Object.keys(response.body.dimensions[0]), ["name", "options", "analysis", "conclusion"]);
+  assert.deepEqual(Object.keys(response.body.dimensions[0].options[0]), ["name", "pros_cons"]);
   assert.equal(app.calls.completions[0].messages[1].content, "比较上海和东京居住哪里好");
   assert.equal(app.calls.completions[0].messages[0].content, decisionPrompt);
   assert.equal(app.calls.completions[0].response_format.type, "json_object");
@@ -112,7 +118,7 @@ test("honors access control before generation", async () => {
 
 test("rejects malformed and incomplete model output as upstream errors", async () => {
   for (const output of ["not json", "", "null", "{}", JSON.stringify({ ...decision, dimensions: [{ name: "房价" }] }),
-    JSON.stringify({ ...decision, options: ["上海", "东京"] })]) {
+    JSON.stringify({ ...decision, options: decision.dimensions[0].options })]) {
     const app = await setup({ output });
     assert.equal((await app.request()).statusCode, 502);
     assert.equal(app.calls.logs.length, 1);
@@ -130,28 +136,38 @@ test("returns JSON errors on provider failure", async () => {
 });
 
 test("requires populated text, distinct options, dimensions and final conclusion", () => {
-  const [shanghai, tokyo] = decision.options;
   for (const override of [
     { overall_analysis: " " }, { overall_analysis: undefined }, { overall_analysis: 1 },
-    { options: [] }, { options: [shanghai] }, { options: [shanghai, { ...tokyo, name: " 上海 " }] },
-    { options: [shanghai, null] }, { options: [shanghai, "东京"] }, { options: [shanghai, { ...tokyo, name: "" }] },
-    { dimensions: [] }, { dimensions: [null] },
+    { options: [] }, { options: ["上海"] }, { options: ["上海", " 上海 "] },
+    { options: ["上海", null] }, { options: ["上海", ""] }, { options: decision.dimensions[0].options },
+    { dimensions: [] }, { dimensions: [null] }, { dimensions: ["房价"] },
     { dimensions: [{ ...decision.dimensions[0], conclusion: "" }] }, { overall_conclusion: null },
   ]) {
     assert.throws(() => parseDecision(JSON.stringify({ ...decision, ...override })), /invalid decision JSON/);
   }
 });
 
-test("rejects missing, empty or non-string option advantages_disadvantages", async () => {
-  for (const advantages_disadvantages of [undefined, "", " ", null, 1, ["优势"], {}]) {
-    const output = JSON.stringify({
-      ...decision,
-      options: [decision.options[0], { ...decision.options[1], advantages_disadvantages }],
-    });
+test("requires pros_cons for every option in every dimension", async () => {
+  const [dimension] = decision.dimensions;
+  const [shanghai, tokyo] = dimension.options;
+  for (const options of [
+    undefined, null, {}, [], [shanghai], [shanghai, shanghai], [shanghai, null], [shanghai, "东京"],
+    [shanghai, { ...tokyo, name: "大阪" }], [shanghai, { ...tokyo, name: "" }],
+    [shanghai, tokyo, { name: "大阪", pros_cons: "优点是生活成本较低；缺点是工作机会较少。" }],
+    ...[undefined, "", " ", null, 1, ["优点"], {}].map((pros_cons) => [shanghai, { ...tokyo, pros_cons }]),
+  ]) {
+    const output = JSON.stringify({ ...decision, dimensions: [{ ...dimension, options }] });
     assert.throws(() => parseDecision(output), /invalid decision JSON/);
     const app = await setup({ output });
     assert.equal((await app.request()).statusCode, 502);
   }
+});
+
+test("orders each dimension's pros_cons by the decision options", () => {
+  const [dimension] = decision.dimensions;
+  const [shanghai, tokyo] = dimension.options;
+  const output = JSON.stringify({ ...decision, dimensions: [{ ...dimension, options: [{ ...tokyo, name: " 东京 " }, shanghai] }] });
+  assert.deepEqual(parseDecision(output), decision);
 });
 
 test("rejects missing, empty or non-string dimension analysis", async () => {
@@ -182,11 +198,12 @@ test("refines a decision sent directly, as an object, or as serialized JSON", as
 });
 
 test("accepts incomplete drafts and keeps request settings out of the draft", async () => {
-  const partialOptions = { options: ["上海", { name: "东京", advantages_disadvantages: "" }] };
+  const partialDimension = { name: "房价", options: [{ name: "东京", pros_cons: "" }], analysis: "" };
   for (const [draft, expected] of [
     [{ options: ["上海", "东京"], dimensions: [{ name: "房价", analysis: "" }] }],
-    [{ options: ["上海", { ...partialOptions.options[1], extra: "ignored" }] }, partialOptions],
-    [{ options: [{ advantages_disadvantages: "交通便利" }] }],
+    [{ dimensions: [{ ...partialDimension, options: [{ ...partialDimension.options[0], extra: "ignored" }] }] },
+      { dimensions: [partialDimension] }],
+    [{ dimensions: [{ options: [{ pros_cons: "交通便利" }] }] }],
   ]) {
     const app = await setup();
     const response = await app.request({ ...draft, model: "test-model", session: "1789600000000" });
@@ -202,11 +219,12 @@ test("rejects malformed drafts before generation", async () => {
   const app = await setup();
   for (const draft of [
     {}, [], { unrelated: "data" }, { overall_analysis: " " }, { overall_analysis: 1 },
-    { options: "上海" }, { options: [1] }, { options: [null] }, { options: [[]] }, { options: [] },
-    { options: [{ name: 1 }] }, { options: [{ name: "上海", advantages_disadvantages: ["交通便利"] }] },
-    { options: [{ name: "上海", advantages_disadvantages: 1 }] }, { options: [{ name: " ", advantages_disadvantages: "" }] },
+    { options: "上海" }, { options: [1] }, { options: [null] }, { options: [{ name: "上海" }] }, { options: [] },
     { dimensions: {} }, { dimensions: [null] }, { dimensions: [{ name: 1 }] },
-    { dimensions: [{ name: "房价", analysis: [] }] },
+    { dimensions: [{ name: "房价", analysis: [] }] }, { dimensions: [{ name: "房价", options: {} }] },
+    { dimensions: [{ options: ["上海"] }] }, { dimensions: [{ options: [null] }] }, { dimensions: [{ options: [{ name: 1 }] }] },
+    { dimensions: [{ options: [{ name: "上海", pros_cons: ["交通便利"] }] }] },
+    { dimensions: [{ options: [{ name: " ", pros_cons: "" }] }] },
     { options: ["上海"], overall_conclusion: false }, "{invalid", "[]",
   ]) {
     assert.equal((await app.request({ question: draft })).statusCode, 400);

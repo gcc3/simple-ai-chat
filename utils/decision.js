@@ -1,12 +1,17 @@
 export const decisionPrompt = `Help the user compare options and make a decision based on their question.
 Return only a JSON object with exactly this structure, without Markdown or extra text:
 {
-  "options": [
-    { "name": "Option A", "advantages_disadvantages": "The key advantages and disadvantages of this option." },
-    { "name": "Option B", "advantages_disadvantages": "The key advantages and disadvantages of this option." }
-  ],
+  "options": ["Option A", "Option B"],
   "dimensions": [
-    { "name": "Dimension name", "analysis": "A concise comparison of the options on this dimension, including relevant factors and tradeoffs.", "conclusion": "The conclusion for this dimension based on its analysis." }
+    {
+      "name": "Dimension name",
+      "options": [
+        { "name": "Option A", "pros_cons": "The pros and cons of Option A on this dimension." },
+        { "name": "Option B", "pros_cons": "The pros and cons of Option B on this dimension." }
+      ],
+      "analysis": "A concise comparison of the options on this dimension, including relevant factors and tradeoffs.",
+      "conclusion": "The conclusion for this dimension based on its analysis."
+    }
   ],
   "overall_analysis": "A short paragraph explaining the comparison approach, relevant priorities and assumptions.",
   "overall_conclusion": "A final recommendation explaining the main tradeoffs and when each option is preferable."
@@ -14,9 +19,9 @@ Return only a JSON object with exactly this structure, without Markdown or extra
 Rules:
 - Use the language of the user's question for all values; keep the JSON keys in English.
 - Identify the options from the question. If they are not specified, propose relevant alternatives.
-- Every option's advantages_disadvantages must concisely cover both its key advantages and key disadvantages, specific to the question and the other options.
 - Choose relevant comparison dimensions from the question; do not use a fixed list.
 - Every dimension must have a non-empty name, analysis comparing the options, and conclusion summarizing the finding for that dimension.
+- Every dimension's options must list each top-level option exactly once, using the same name and order. Each pros_cons concisely covers both the pros and cons of that option on that dimension only, relative to the other options.
 - All text fields and option names must be non-empty strings. Include at least two distinct options and one dimension.
 - The top-level overall_analysis is a concise overview of the approach and appears immediately before overall_conclusion. Each dimension's analysis explains the relevant comparison and assumptions. Do not provide step-by-step reasoning transcripts.
 - Respect stated priorities. When priorities or facts are missing, state assumptions and make the recommendation conditional.
@@ -29,7 +34,7 @@ The user input is an existing decision JSON draft, not a new question.
 - Supplement and improve that draft, returning the complete updated decision object in the same output structure, not a patch or commentary.
 - Preserve the decision topic, stated priorities, options and relevant dimensions. Build on the existing content instead of starting an unrelated comparison.
 - Fill missing or empty fields, deepen each dimension's analysis, and improve its conclusion and the overall conclusion for clarity and consistency.
-- Draft options may be plain names; return every option as a complete object. Complete and improve each option's advantages_disadvantages.
+- Complete and improve each dimension's pros_cons for every option, including options added to the comparison.
 - Add useful missing dimensions when needed. Add options only when needed to complete the comparison; do not replace the user's options.
 - Correct unsupported or inconsistent claims, qualify uncertainty, and preserve valid user-provided context.
 - Use the language of the draft's content for all values; keep JSON keys in English.
@@ -39,6 +44,17 @@ const isText = (value) => typeof value === "string" && value.trim().length > 0;
 const isObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
 const hasText = (value) => isText(value)
   || (Array.isArray(value) ? value.some(hasText) : isObject(value) && Object.values(value).some(hasText));
+
+const pickStrings = (value, fields, label) => {
+  const result = {};
+  for (const field of fields) {
+    if (value[field] !== undefined) {
+      if (typeof value[field] !== "string") throw new Error(`${label} ${field} must be a string.`);
+      result[field] = value[field];
+    }
+  }
+  return result;
+};
 
 // Drafts may be incomplete; generated output still passes the stricter parseDecision check.
 export function normalizeDecisionInput(value) {
@@ -59,46 +75,41 @@ export function normalizeDecisionInput(value) {
 
   const draft = {};
   if (value.options !== undefined) {
-    if (!Array.isArray(value.options)) throw new Error("Decision options must be an array.");
-    draft.options = value.options.map((option) => {
-      if (typeof option === "string") return option;
-      if (!isObject(option)) throw new Error("Each option must be a string or an object.");
-      const result = {};
-      for (const field of ["name", "advantages_disadvantages"]) {
-        if (option[field] !== undefined) {
-          if (typeof option[field] !== "string") throw new Error(`Option ${field} must be a string.`);
-          result[field] = option[field];
-        }
-      }
-      return result;
-    });
+    if (!Array.isArray(value.options) || !value.options.every((option) => typeof option === "string")) {
+      throw new Error("Decision options must be an array of strings.");
+    }
+    draft.options = value.options;
   }
   if (value.dimensions !== undefined) {
     if (!Array.isArray(value.dimensions)) throw new Error("Decision dimensions must be an array.");
     draft.dimensions = value.dimensions.map((dimension) => {
       if (!isObject(dimension)) throw new Error("Each dimension must be an object.");
-      const result = {};
-      for (const field of ["name", "analysis", "conclusion"]) {
-        if (dimension[field] !== undefined) {
-          if (typeof dimension[field] !== "string") throw new Error(`Dimension ${field} must be a string.`);
-          result[field] = dimension[field];
-        }
+      const result = pickStrings(dimension, ["name"], "Dimension");
+      if (dimension.options !== undefined) {
+        if (!Array.isArray(dimension.options)) throw new Error("Dimension options must be an array.");
+        result.options = dimension.options.map((option) => {
+          if (!isObject(option)) throw new Error("Each dimension option must be an object.");
+          return pickStrings(option, ["name", "pros_cons"], "Dimension option");
+        });
       }
-      return result;
+      return { ...result, ...pickStrings(dimension, ["analysis", "conclusion"], "Dimension") };
     });
   }
-
-  for (const field of ["overall_analysis", "overall_conclusion"]) {
-    if (value[field] !== undefined) {
-      if (typeof value[field] !== "string") throw new Error(`Decision ${field} must be a string.`);
-      draft[field] = value[field];
-    }
-  }
+  Object.assign(draft, pickStrings(value, ["overall_analysis", "overall_conclusion"], "Decision"));
 
   if (!hasText(draft)) throw new Error("Decision JSON must contain some content to improve.");
 
   return { input: JSON.stringify(draft), isDraft: true };
 }
+
+// A dimension must give pros_cons for each decision option exactly once, matched by trimmed name.
+const findDimensionOption = (dimension, name) => dimension.options
+  .find((option) => option.name.trim() === name.trim());
+
+const coversOptions = (dimension, options) => Array.isArray(dimension.options)
+  && dimension.options.length === options.length
+  && dimension.options.every((option) => isObject(option) && isText(option.name) && isText(option.pros_cons))
+  && options.every((name) => findDimensionOption(dimension, name));
 
 export function parseDecision(content) {
   const invalid = () => new Error("Model returned an invalid decision JSON.");
@@ -114,19 +125,24 @@ export function parseDecision(content) {
   if (!result || Array.isArray(result)
       || !isText(result.overall_analysis)
       || !Array.isArray(result.options) || result.options.length < 2
-      || !result.options.every((option) => isObject(option)
-        && isText(option.name) && isText(option.advantages_disadvantages))
-      || new Set(result.options.map((option) => option.name.trim())).size !== result.options.length
+      || !result.options.every(isText)
+      || new Set(result.options.map((option) => option.trim())).size !== result.options.length
       || !Array.isArray(result.dimensions) || result.dimensions.length === 0
-      || !result.dimensions.every((dimension) => dimension
-        && isText(dimension.name) && isText(dimension.analysis) && isText(dimension.conclusion))
+      || !result.dimensions.every((dimension) => isObject(dimension)
+        && isText(dimension.name) && isText(dimension.analysis) && isText(dimension.conclusion)
+        && coversOptions(dimension, result.options))
       || !isText(result.overall_conclusion)) {
     throw invalid();
   }
 
   return {
-    options: result.options.map(({ name, advantages_disadvantages }) => ({ name, advantages_disadvantages })),
-    dimensions: result.dimensions.map(({ name, analysis, conclusion }) => ({ name, analysis, conclusion })),
+    options: result.options,
+    dimensions: result.dimensions.map((dimension) => ({
+      name: dimension.name,
+      options: result.options.map((name) => ({ name, pros_cons: findDimensionOption(dimension, name).pros_cons })),
+      analysis: dimension.analysis,
+      conclusion: dimension.conclusion,
+    })),
     overall_analysis: result.overall_analysis,
     overall_conclusion: result.overall_conclusion,
   };
