@@ -650,6 +650,7 @@ program
   .argument("[instruct...]", "instruct to send to AI (bash-command mode)")
   .option("-d, --debug", "enable verbose logging", false)
   .option("-b, --base-url <url>", "base URL for the server")
+  .addHelpText("after", "\nTo update sc:\n  npm i simple-ai-chat -g")
   .action(async (instruct, opts) => {
     // Mode
     if (instruct && instruct.length > 0) {
