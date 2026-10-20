@@ -582,7 +582,6 @@ export default function Home() {
 
                 if (!session) {
                   console.log("No next session.");
-                  printOutput("No next session.");
                   reAdjustOrUpdatePlaceholder(PLACEHOLDER);
                   setSession(1);
                   return;
