@@ -1,4 +1,4 @@
-import { getLogs, getSession, getLog, insertLog, insertSession } from "../sqlite.js"
+import { getLogs, getSession, getLog, insertLog, insertSession, updateSessionCreatedBy } from "../sqlite.js"
 
 export async function logadd(user, sessionId, time, model, input_token_ct, input, output_token_ct, output, images, cost, ip, browser) {
   // Get username
@@ -55,6 +55,10 @@ export async function ensureSession(sessionId, username = "") {
   // Check if session exists
   const session = await getSession(sessionId);
   if (session) {
+    // Session started anonymously and the user logged in midway: claim it for the user
+    if (!session.created_by && username) {
+      await updateSessionCreatedBy(sessionId, username);
+    }
     return;
   }
 

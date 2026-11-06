@@ -1671,6 +1671,26 @@ const insertSession = async (id, parentId, createdBy) => {
   }
 }
 
+// Claim an anonymous session for a user (only when created_by is empty)
+const updateSessionCreatedBy = async (id, createdBy) => {
+  const db = await getDatabaseConnection();
+  try {
+    return await new Promise((resolve, reject) => {
+      const stmt = db.prepare(`UPDATE sessions SET created_by = ?, updated_at = ? WHERE id = ? AND (created_by IS NULL OR created_by = '')`);
+      stmt.run([createdBy, getTimestamp(), id], function (err) {
+        if (err) {
+          reject(err);
+          return;
+        }
+        resolve(this.changes);
+      });
+      stmt.finalize();
+    });
+  } finally {
+    db.close();
+  }
+}
+
 // VII. Models
 // Get model by name
 const getModel = async (name) => {
@@ -1777,6 +1797,7 @@ export {
   getPreviousSession,
   getNextSession,
   insertSession,
+  updateSessionCreatedBy,
   getModel,
   getModels,
 };
